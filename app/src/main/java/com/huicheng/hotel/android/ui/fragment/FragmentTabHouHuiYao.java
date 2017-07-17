@@ -302,10 +302,10 @@ public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, 
                 viewHolder.tv_hotel_name.getPaint().setFakeBoldText(true);
                 viewHolder.tv_date = (TextView) convertView.findViewById(R.id.tv_date);
                 viewHolder.tv_point = (TextView) convertView.findViewById(R.id.tv_point);
-                ((TextView)convertView.findViewById(R.id.tv_buy_price_note)).getPaint().setFakeBoldText(true);
+                ((TextView) convertView.findViewById(R.id.tv_buy_price_note)).getPaint().setFakeBoldText(true);
                 viewHolder.tv_buy_price = (TextView) convertView.findViewById(R.id.tv_buy_price);
                 viewHolder.tv_buy_price.getPaint().setFakeBoldText(true);
-                ((TextView)convertView.findViewById(R.id.tv_sale_price_note)).getPaint().setFakeBoldText(true);
+                ((TextView) convertView.findViewById(R.id.tv_sale_price_note)).getPaint().setFakeBoldText(true);
                 viewHolder.tv_sale_price = (TextView) convertView.findViewById(R.id.tv_sale_price);
                 viewHolder.tv_sale_price.getPaint().setFakeBoldText(true);
                 convertView.setTag(viewHolder);

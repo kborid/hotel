@@ -28,6 +28,7 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
@@ -100,7 +101,7 @@ public class AssessOrdersActivity extends BaseActivity implements DataCallback {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AssessOrdersActivity.this, AssessOrderDetailActivity.class);
-                intent.putExtra("order", (AssessOrderInfoBean)parent.getAdapter().getItem(position));
+                intent.putExtra("order", (AssessOrderInfoBean) parent.getAdapter().getItem(position));
                 startActivityForResult(intent, 0x01);
             }
         });
@@ -225,32 +226,32 @@ public class AssessOrdersActivity extends BaseActivity implements DataCallback {
             }
 
             // 设置adapter数据
-            if ("0".equals(list.get(position).isevaluated)) { //待评价
+            AssessOrderInfoBean bean = list.get(position);
+            if (StringUtil.isEmpty(bean.isevaluated) || "0".equals(bean.isevaluated)) { //待评价
                 viewHolder.root_lay.setBackgroundResource(R.drawable.iv_assess_hotel);
                 viewHolder.tv_title.setTextColor(context.getResources().getColor(R.color.white));
                 viewHolder.tv_time.setTextColor(context.getResources().getColor(R.color.white));
                 viewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.white));
                 viewHolder.tv_status.setText("待评价");
                 viewHolder.assess_star.setVisibility(View.GONE);
-            } else if ("1".equals(list.get(position).isevaluated)) { //已评价
+            } else if ("1".equals(bean.isevaluated)) { //已评价
                 viewHolder.root_lay.setBackgroundResource(R.drawable.iv_assess_hotel_complete);
                 viewHolder.tv_title.setTextColor(context.getResources().getColor(R.color.noDiscountColor));
                 viewHolder.tv_time.setTextColor(context.getResources().getColor(R.color.noDiscountColor));
                 viewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.noDiscountColor));
                 viewHolder.tv_status.setText("已评价");
                 viewHolder.assess_star.setVisibility(View.VISIBLE);
-                viewHolder.assess_star.setColorStars(Integer.parseInt(list.get(position).grade));
-            } else if ("2".equals(list.get(position).isevaluated)) { //已删除
+                viewHolder.assess_star.setColorStars(Integer.parseInt(bean.grade));
+            } else if ("2".equals(bean.isevaluated)) { //已删除
                 viewHolder.tv_status.setText("已删除");
             } else { //无
                 LogUtil.i(TAG, "warning!!!");
             }
 
-            viewHolder.tv_title.setText(list.get(position).hotelName + "(" + list.get(position).cityName + ")");
-            String start = DateUtil.getDay("yyyy年MM月dd日", list.get(position).startTime);
-            String end = DateUtil.getDay("dd日", list.get(position).endTime);
-            LogUtil.i(TAG, start);
-            LogUtil.i(TAG, end);
+            viewHolder.tv_title.setText(bean.hotelName + "(" + bean.cityName + ")");
+            String start = DateUtil.getDay("yyyy年MM月dd日", bean.startTime);
+            String end = DateUtil.getDay("dd日", bean.endTime);
+            LogUtil.i(TAG, "开始时间：" + start + ", 结束时间：" + end);
             viewHolder.tv_time.setText(start + "-" + end);
 
             return convertView;

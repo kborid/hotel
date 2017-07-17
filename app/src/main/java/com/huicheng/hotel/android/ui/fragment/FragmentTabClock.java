@@ -1,23 +1,15 @@
 package com.huicheng.hotel.android.ui.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -29,15 +21,13 @@ import com.huicheng.hotel.android.net.bean.HotelInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.ui.activity.HotelListActivity;
 import com.huicheng.hotel.android.ui.activity.RoomListActivity;
+import com.huicheng.hotel.android.ui.adapter.HotelListAdapter;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
-import com.huicheng.hotel.android.ui.custom.RoundedTopImageView;
-import com.huicheng.hotel.android.ui.mapoverlay.AMapUtil;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
-import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -54,7 +44,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     public static boolean isFirstLoad = false;
     private String key = null;
     private PullLoadMoreRecyclerView pullLoadMoreRecyclerView;
-    private HotelDataAdapter adapter = null;
+    private HotelListAdapter adapter = null;
     private List<HotelInfoBean> list = new ArrayList<>();
 
     private static final int PAGESIZE = 10;
@@ -111,7 +101,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         super.initViews(view);
         pullLoadMoreRecyclerView = (PullLoadMoreRecyclerView) view.findViewById(R.id.pullLoadMoreRecyclerView);
         pullLoadMoreRecyclerView.setStaggeredGridLayout(2);//参数为列数
-        adapter = new HotelDataAdapter(getActivity(), list);
+        adapter = new HotelListAdapter(getActivity(), list, HotelCommDef.TYPE_CLOCK);
         pullLoadMoreRecyclerView.setAdapter(adapter);
     }
 
@@ -140,7 +130,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
                 requestHotelClockList(++pageIndex);
             }
         });
-        adapter.setOnItemClickListener(new HotelDataAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new HotelListAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
                 HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_CLOCK);
@@ -288,148 +278,5 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         this.keyword = keyword;
         refreshType = 0;
         requestHotelClockList(pageIndex);
-    }
-
-    private static class HotelDataAdapter extends RecyclerView.Adapter<HotelDataAdapter.HotelViewHolder> {
-        private static final String TAG = "HotelDataAdapter";
-
-        private Context context;
-        private List<HotelInfoBean> list;
-
-        public HotelDataAdapter(Context context, List<HotelInfoBean> list) {
-            this.context = context;
-            this.list = list;
-        }
-
-        @Override
-        public HotelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            HotelViewHolder hotelViewHolder = new HotelViewHolder(LayoutInflater.from(context).inflate(R.layout.lv_hotel_item, parent, false));
-            hotelViewHolder.setIsRecyclable(true);
-            return hotelViewHolder;
-        }
-
-        @Override
-        public void onBindViewHolder(final HotelViewHolder holder, final int position) {
-
-            HotelInfoBean bean = list.get(position);
-            loadImage(holder.iv_hotel_icon, R.drawable.def_room_list, bean.hotelFeaturePic, 690, 500);
-            if (HotelCommDef.IS_VIP.equals(bean.vipEnable) && bean.vipPrice > 0) {
-                holder.vip_layout.setVisibility(View.VISIBLE);
-                holder.tv_vip_price.setText(bean.vipPrice + "");
-            } else {
-                holder.vip_layout.setVisibility(View.GONE);
-            }
-            holder.content_layout.setBackgroundResource(R.color.transparent);
-            holder.tv_hotel_name.setTextColor(context.getResources().getColor(R.color.registerhintColor));
-            holder.tv_hotel_dis.setTextColor(context.getResources().getColor(R.color.registerhintColor));
-            holder.tv_hotel_price.setTextColor(context.getResources().getColor(R.color.registerhintColor));
-            holder.tv_hotel_special_price_note.setTextColor(context.getResources().getColor(R.color.mainColorAccent));
-            holder.tv_hotel_special_price.setTextColor(context.getResources().getColor(R.color.mainColorAccent));
-
-            LatLng start = null, des = null;
-            float lon = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "0", false));
-            float lat = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "0", false));
-            if (lon != 0 && lat != 0 && StringUtil.notEmpty(bean.hotelCoordinate)) {
-                start = new LatLng(lat, lon);
-                String[] pos = bean.hotelCoordinate.split("\\|");
-                des = new LatLng(Float.valueOf(pos[0]), Float.valueOf(pos[1]));
-                float dis = AMapUtils.calculateLineDistance(start, des);
-                holder.tv_hotel_dis.setText(AMapUtil.getFriendlyLength((int) dis));
-                holder.tv_hotel_dis.setVisibility(View.VISIBLE);
-            } else {
-                holder.tv_hotel_dis.setVisibility(View.GONE);
-            }
-
-            float point = 0;
-            if (StringUtil.notEmpty(bean.hotelGrade)) {
-                point = Float.parseFloat(bean.hotelGrade);
-                holder.tv_hotel_point.setText(String.valueOf(point));
-            } else {
-                holder.tv_hotel_point.setText("0.0");
-            }
-            if (point >= 4) {
-                holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_high));
-            } else if (point >= 3) {
-                holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_mid));
-            } else {
-                holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_low));
-            }
-            holder.tv_hotel_name.setText(bean.hotelName);
-
-            if (bean.speciallyPrice > 0) {
-                if (bean.clockPrice <= bean.speciallyPrice) {
-                    holder.tv_hotel_price.setVisibility(View.GONE);
-                } else {
-                    holder.tv_hotel_price.setVisibility(View.VISIBLE);
-                    holder.tv_hotel_price.setText(bean.clockPrice + "元起");
-                }
-                holder.tv_hotel_special_price_note.setText("特价：");
-                holder.tv_hotel_special_price.setText(bean.speciallyPrice + " 元");
-            } else {
-                holder.tv_hotel_price.setVisibility(View.GONE);
-                holder.tv_hotel_special_price_note.setText("价格：");
-                holder.tv_hotel_special_price.setText((bean.clockPrice <= 0) ? "暂无" : bean.clockPrice + " 元起");
-            }
-
-            holder.cardview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (null != listener) {
-                        listener.OnItemClick(v, position);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return list.size();
-        }
-
-        class HotelViewHolder extends RecyclerView.ViewHolder {
-
-            CardView cardview;
-            LinearLayout content_layout;
-            LinearLayout vip_layout;
-            TextView tv_vip_price;
-            RoundedTopImageView iv_hotel_icon;
-            TextView tv_hotel_point;
-            TextView tv_hotel_name;
-            TextView tv_hotel_dis;
-            TextView tv_hotel_price;
-            TextView tv_hotel_special_price_note;
-            TextView tv_hotel_special_price;
-
-            public HotelViewHolder(View itemView) {
-                super(itemView);
-                cardview = (CardView) itemView.findViewById(R.id.cardview);
-                content_layout = (LinearLayout) itemView.findViewById(R.id.content_layout);
-                vip_layout = (LinearLayout) itemView.findViewById(R.id.vip_layout);
-                ((TextView) itemView.findViewById(R.id.tv_vip_price_note)).getPaint().setFakeBoldText(true);
-                tv_vip_price = (TextView) itemView.findViewById(R.id.tv_vip_price);
-                ((TextView) itemView.findViewById(R.id.tv_vip_price_unit)).getPaint().setFakeBoldText(true);
-                iv_hotel_icon = (RoundedTopImageView) itemView.findViewById(R.id.iv_hotel_icon);
-                tv_hotel_point = (TextView) itemView.findViewById(R.id.tv_point);
-                tv_hotel_name = (TextView) itemView.findViewById(R.id.tv_hotel_name);
-                tv_hotel_name.getPaint().setFakeBoldText(true);
-                tv_hotel_dis = (TextView) itemView.findViewById(R.id.tv_hotel_dis);
-                tv_hotel_price = (TextView) itemView.findViewById(R.id.tv_hotel_price);
-                tv_hotel_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                tv_hotel_special_price_note = (TextView) itemView.findViewById(R.id.tv_hotel_special_price_note);
-                tv_hotel_special_price_note.getPaint().setFakeBoldText(true);
-                tv_hotel_special_price = (TextView) itemView.findViewById(R.id.tv_hotel_special_price);
-                tv_hotel_special_price.getPaint().setFakeBoldText(true);
-            }
-        }
-
-        public interface OnItemClickListener {
-            void OnItemClick(View view, int position);
-        }
-
-        private OnItemClickListener listener = null;
-
-        public void setOnItemClickListener(OnItemClickListener listener) {
-            this.listener = listener;
-        }
     }
 }
