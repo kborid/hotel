@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.huicheng.hotel.android">
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
+
+    <application
+        android:name=".app.PRJApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.activity.WelcomeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/openInstallScheme" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.GuideSwitchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MainFragmentActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <!-- 登录 -->
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <!-- 注册 -->
+        <activity
+            android:name=".ui.activity.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <!-- 忘记密码 -->
+        <activity
+            android:name=".ui.activity.ForgetPwdActivity"
+            android:screenOrientation="portrait" />
+        <!-- 三方登录 的绑定 -->
+        <activity
+            android:name=".ui.activity.BindPhoneActivity"
+            android:screenOrientation="portrait" />
+        <!--个人中心-->
+        <activity
+            android:name=".ui.activity.UserCenterActivity"
+            android:screenOrientation="portrait" />
+        <!--消息-->
+        <activity
+            android:name=".ui.activity.MessageListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <!--我的订单-->
+        <activity
+            android:name=".ui.activity.MyOrdersActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!--我的优惠券-->
+        <activity
+            android:name=".ui.activity.MyDiscountCouponActivity"
+            android:screenOrientation="portrait" />
+        <!--酒店订单详情-->
+        <activity
+            android:name=".ui.activity.HotelOrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--机票订单详情-->
+        <activity
+            android:name=".ui.activity.PlaneOrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--消费详情-->
+        <activity
+            android:name=".ui.activity.ConsumptionDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--订单评价-->
+        <activity
+            android:name=".ui.activity.AssessOrdersActivity"
+            android:screenOrientation="portrait" />
+        <!--评价详情-->
+        <activity
+            android:name=".ui.activity.AssessOrderDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <!--评论列表画面-->
+        <activity
+            android:name=".ui.activity.AssessCommendActivity"
+            android:screenOrientation="portrait" />
+        <!--粉絲酒店-->
+        <activity
+            android:name=".ui.activity.FansHotelActivity"
+            android:screenOrientation="portrait" />
+        <!-- 意见反馈 -->
+        <activity
+            android:name=".ui.activity.FeedbackActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <!-- 关于 -->
+        <activity
+            android:name=".ui.activity.AboutActivity"
+            android:screenOrientation="portrait" />
+        <!--debugInfo-->
+        <activity
+            android:name=".ui.activity.DebugInfoActivity"
+            android:screenOrientation="portrait" />
+        <!--设置-->
+        <activity
+            android:name=".ui.activity.SettingActivity"
+            android:screenOrientation="portrait" />
+        <!--城市选择画面-->
+        <activity
+            android:name=".ui.activity.LocationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <activity
+            android:name=".ui.activity.LocationActivity2"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <!--酒店日期选择画面-->
+        <activity
+            android:name=".ui.activity.HotelCalendarChooseActivity"
+            android:screenOrientation="portrait" />
+        <!--0元住首页画面-->
+        <activity
+            android:name=".ui.activity.Hotel0YuanHomeActivity"
+            android:screenOrientation="portrait" />
+        <!--0元住酒店选择画面-->
+        <activity
+            android:name=".ui.activity.Hotel0YuanChooseActivity"
+            android:screenOrientation="portrait" />
+        <!--酒店列表搜索画面-->
+        <activity
+            android:name=".ui.activity.HotelListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <!--后悔药出售画面-->
+        <activity
+            android:name=".ui.activity.HouHuiYaoSalingActivity"
+            android:screenOrientation="portrait" />
+        <!--后悔药订单详情-->
+        <activity
+            android:name=".ui.activity.HouHuiYaoOrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--酒店地图搜索画面-->
+        <activity
+            android:name=".ui.activity.HotelMapActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!--房間選擇畫面-->
+        <activity
+            android:name=".ui.activity.RoomListActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- 酒店空间主页 -->
+        <activity
+            android:name=".ui.activity.HotelSpaceHomeActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+
+        <!-- 酒店空间详情 -->
+        <activity
+            android:name=".ui.activity.HotelSpaceDetailActivity"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <!-- 酒店空间发表评论 -->
+        <activity
+            android:name=".ui.activity.HotelSpacePublishActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- 图片放大显示画面 -->
+        <activity
+            android:name=".ui.activity.ImageScaleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ImageTransparent" />
+
+        <!-- 关注好友列表画面 -->
+        <activity
+            android:name=".ui.activity.AttendPersonActivity"
+            android:screenOrientation="portrait" />
+        <!--服務附加頁面-->
+        <activity
+            android:name=".ui.activity.RoomDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <!--订单确认画面-->
+        <activity
+            android:name=".ui.activity.RoomOrderConfirmActivity"
+            android:screenOrientation="portrait" />
+        <!--支付方式画面-->
+        <activity
+            android:name=".ui.activity.OrderPayActivity"
+            android:screenOrientation="portrait" />
+        <!--支付结果画面-->
+        <activity
+            android:name=".ui.activity.OrderPaySuccessActivity"
+
+            android:screenOrientation="portrait" />
+        <!--发票页面-->
+        <activity
+            android:name=".ui.activity.InvoiceDetailActivity"
+            android:screenOrientation="portrait" />
+        <!-- h5应用页面 -->
+        <activity
+            android:name=".ui.activity.HtmlActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <!-- 普通html页面 -->
+        <activity
+            android:name=".ui.activity.WebViewActivity"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".ui.service.TestIntentservice">
+            <intent-filter>
+                <action android:name="com.huicheng.hotel.intentservice.action.PARSE_AREAJSON" />
+            </intent-filter>
+        </service>
+
+
+        <receiver android:name="com.huicheng.hotel.android.common.pay.wxpay.AppRegister">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+        <!-- ###################注册SDK使用的Activity###################### -->
+        <!-- 微信回调activity -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 微信回调activity -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- ############ QQ空间和QQ SSO授权的Activity注册 ############ -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/qq_scheme" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- alipay sdk begin -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" />
+        <!-- alipay sdk end -->
+
+        <!-- JPush Receiver -->
+        <receiver
+            android:name="com.huicheng.hotel.android.broatcast.JPushReceiver"
+            android:enabled="true">
+                
+            <intent-filter>
+                        
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                        
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                        
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                        
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                        
+                <category android:name="com.huicheng.hotel.android" />
+                    
+            </intent-filter>
+        </receiver>
+
+        <!--open installed-->
+        <meta-data
+            android:name="com.openinstall.APP_KEY"
+            android:value="@string/openInstallKey" />
+        <!--高德地图-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="@string/amap_appkey" />
+        <service android:name="com.amap.api.location.APSService" />
+
+        <!-- ###################添加UmengAppkey###################### -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="@string/umeng_appkey" />
+
+        <!-- 添加渠道 -->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Develop_Test" />
+
+
+    </application>
+    <!--地图包、搜索包需要的基础权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--允许程序改变网络连接状态 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <!--读取联系人权限，上传联系人需要用到此权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!--配置权限，用来记录应用配置信息 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <permission android:name="android.permission.WRITE_APN_SETTINGS" />
+    <!--定位包、导航包需要的额外权限（注：基础权限也需要）-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.ACCESS_ASSISTED_GPS" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+</manifest>

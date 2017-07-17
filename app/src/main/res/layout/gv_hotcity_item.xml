@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_city"
+        android:layout_width="wrap_content"
+        android:minWidth="60dp"
+        android:layout_height="30dp"
+        android:background="@color/secColorShadow"
+        android:gravity="center"
+        android:text="上海"
+        android:textColor="@color/secColor"
+        android:textSize="@dimen/common_15sp" />
+</LinearLayout>

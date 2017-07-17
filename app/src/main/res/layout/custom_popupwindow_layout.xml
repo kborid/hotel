@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/pop_lay"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/comm_rectangle_btn_transparent_withbound"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="2016"
+            android:textColor="@color/main_white_selector"
+            android:textSize="@dimen/common_12sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/indicator_down_selector" />
+    </LinearLayout>
+</LinearLayout>

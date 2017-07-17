@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:drawableRight="@drawable/iv_info"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:text="入住人"
+            android:textColor="@color/mainColor"
+            android:textSize="@dimen/common_12sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/et_last"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/comm_rectangle_gray"
+                android:hint="姓氏"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:textColor="@color/mainColor"
+                android:textColorHint="#e1e1e1"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_first"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/comm_rectangle_gray"
+                android:hint="名字"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:textColor="@color/mainColor"
+                android:textColorHint="#e1e1e1"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_remove"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/iv_sub" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:text="联系方式"
+            android:textColor="@color/mainColor"
+            android:textSize="@dimen/common_12sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="+86"
+                android:textColor="@color/mainColor"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/comm_rectangle_gray"
+                android:hint="电话号码"
+                android:inputType="number"
+                android:maxLength="11"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/mainColor"
+                android:textColorHint="#e1e1e1"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_add"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/iv_add" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

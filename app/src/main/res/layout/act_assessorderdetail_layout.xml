@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ratingbar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/viewPager">
+
+    <include layout="@layout/comm_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbarThumbVertical="@drawable/p3016_scrollbar">
+
+        <LinearLayout
+            android:id="@+id/root_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView xmlns:card="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="325dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:focusable="false"
+                    card:cardCornerRadius="10dp"
+                    card:cardElevation="5dp"
+                    card:cardPreventCornerOverlap="false">
+
+                    <com.huicheng.hotel.android.ui.custom.RoundedAllImageView xmlns:roundImage="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/iv_background"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/def_hotel_banner"
+                        roundImage:radius="10dp" />
+                </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_hotel_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="游艇酒店（北京）"
+                                android:textColor="@color/noDiscountColor"
+                                android:textSize="@dimen/common_18sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="入住时间："
+                                    android:textColor="@color/noDiscountColor"
+                                    android:textSize="@dimen/common_12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="2016年11月29日-30日"
+                                    android:textColor="@color/mainColor"
+                                    android:textSize="@dimen/common_12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/point_lay"
+                            android:layout_width="35dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_point"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="4.5"
+                                android:textColor="@color/assessPointColorHigh"
+                                android:textSize="@dimen/common_18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_comment"
+                                android:layout_width="match_parent"
+                                android:layout_height="15dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/comm_rectangle_btn_assesspoint_bg"
+                                android:gravity="center"
+                                android:text="201条"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/common_9sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/lineColor2" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/lineShadowColor" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="对酒店的评分："
+                            android:textColor="@color/noDiscountColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <com.huicheng.hotel.android.ui.custom.CustomRatingBar
+                            android:id="@+id/ratingbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            ratingbar:starCount="5"
+                            ratingbar:starDistance="30dp"
+                            ratingbar:starEmpty="@drawable/iv_inactive_star_bound"
+                            ratingbar:starFill="@drawable/iv_inactive_star_selected"
+                            ratingbar:starSize="30dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="出行类型："
+                            android:textColor="@color/noDiscountColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <com.zhy.view.flowlayout.TagFlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/flowlayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            app:gravity="center"
+                            app:max_select="-1" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:focusable="false"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="评价："
+                            android:textColor="@color/noDiscountColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/comm_rectangle_transparent_withbound_gray"
+                            android:gravity="center_vertical"
+                            android:hint="标题"
+                            android:inputType="text"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:textColor="@color/mainColor"
+                            android:textColorHint="@color/noDiscountColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:visibility="gone" />
+
+                        <EditText
+                            android:id="@+id/et_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/comm_rectangle_transparent_withbound_gray"
+                            android:gravity="left"
+                            android:hint="内容"
+                            android:minHeight="100dp"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/mainColor"
+                            android:textColorHint="@color/noDiscountColor"
+                            android:textSize="@dimen/common_12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_picture"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:scaleType="fitCenter"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/iv_screen"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/comm_rectangle_btn"
+                            android:elevation="5dp"
+                            android:padding="10dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/iv_camer"
+                            tools:ignore="UnusedAttribute" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_public"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/comm_indicator_gray_selector"
+                android:gravity="center"
+                android:text="发布评论"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

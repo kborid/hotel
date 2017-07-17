@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comm_title_rl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingBottom="@dimen/title_padding_bottom"
+    android:paddingTop="@dimen/title_padding_top">
+
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:scaleType="center"
+        android:src="@drawable/iv_back" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_center_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/secColor"
+            android:textSize="@dimen/common_15sp" />
+
+        <TextView
+            android:id="@+id/tv_center_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:textColor="@color/secColor"
+            android:textSize="@dimen/common_10sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/btn_right"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="center"
+        android:src="@drawable/iv_close"
+        android:visibility="invisible" />
+
+</LinearLayout>

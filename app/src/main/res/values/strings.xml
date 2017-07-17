@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- common string -->
+    <string name="app_name">ABC旅行预订</string>
+    <string name="exit_tip">是否确定退出？</string>
+    <string name="alert">提示</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="done">完成</string>
+    <string name="back">返回</string>
+    <string name="close">关闭</string>
+    <string name="exit">退出</string>
+    <string name="loading">正在加载，请稍候…</string>
+    <string name="submitting">正在提交，请稍候…</string>
+    <string name="fail_present">提交数据失败</string>
+    <string name="suc_present">提交成功</string>
+    <string name="dialog_tip_net_error">网络连接失败，请检查网络</string>
+    <string name="dialog_tip_null_error">数据请求失败，请重试</string>
+    <string name="dialog_tip_bind_phone_error">手机绑定失败，请重试</string>
+    <string name="not_install_wx">没有安装微信</string>
+
+    <item name="tag_key" type="id" />
+
+    <string name="footer_loading">正在加载</string>
+    <string name="footer_nomore">没有更多数据</string>
+    <string name="footer_click">点击加载更多</string>
+    <string name="footer_pullup">上滑加载更多</string>
+
+    <!--登录-->
+    <string name="agree_agement">我已阅读并同意</string>
+    <string name="agement">《注册协议》</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="login">ABC账号登录</string>
+    <string name="login_wx">微信登录</string>
+    <string name="login_qq">QQ账号登录</string>
+    <string name="create">创建账号</string>
+    <string name="forget_pwd">忘记密码</string>
+    <string name="register">立即注册</string>
+    <string name="login_thrid">使用第三方账号登录</string>
+    <string name="reset_pwd">重置密码</string>
+    <string name="get_checknumber">获取验证码</string>
+
+    <!--我的-->
+
+    <!--侧滑-->
+    <string name="side_hi">Hi</string>
+    <string name="side_tips">还未登陆\nABC旅行预订</string>
+    <string name="side_login">立即登陆</string>
+    <string name="side_wait">再转转</string>
+    <string name="side_sytk">使用条款</string>
+    <string name="side_yssm">隐私声明</string>
+    <string name="side_uc">个人中心</string>
+    <string name="side_order">我的订单</string>
+    <string name="side_msg">消息</string>
+    <string name="side_yhq">我的优惠券</string>
+    <string name="side_assess">评价</string>
+    <string name="side_fans">粉丝酒店</string>
+    <string name="side_setting">设置</string>
+    <string name="side_fd">使用反馈</string>
+
+    <!-- ========个人中心======== -->
+    <string name="uc_phone">手机</string>
+    <string name="uc_phoneNum">手机号码</string>
+    <string name="uc_birthday">出生日期</string>
+    <string name="uc_fav">出行偏好设置</string>
+
+
+
+    <!--设置-->
+    <string name="setting">设置</string>
+    <string name="setting_version">版本介绍</string>
+    <string name="setting_private">隐私声明</string>
+    <string name="setting_condition">相关条款</string>
+    <string name="setting_usage_condition">使用条款</string>
+
+    <string name="moreReply"><b>%1$s</b>…等人<b>共%2$d条</b>回复</string>
+    <string name="ygrRoomCount">剩余%1$d间</string>
+    <string name="ygrNote">只能预订当日夜归人\n已为您推荐 %1$s 夜归人</string>
+
+    <string name="no_coupon_note">最近一次0元住，开放房量%1$d间。</string>
+    <string name="coupon_note">— 本券仅限在“<font color="#001a58">%1$s</font>”使用\n\n— 本房券可抵扣1间夜房费（具体详见免费房券使用规则）\n\n— 不可用于店内mini bar、餐饮、小商品等非房费消费\n\n— 不可与其他优惠同时使用、不得兑换现金\n\n— 用房券结算的房费部分，不开具发票\n\n— 点击“立即使用”，选择规定时间内的入住及退房日期，验证成功后提交订单，酒店确认订单后即可生效\n\n— 本券有效期至：<font color="#001a58">%2$s</font></string>
+    <string name="about_us">关于我们</string>
+    <string name="about_us_content">ABC旅行预订是中国最具颠覆性的无中介旅行预订平台，由杭州惠程信息技术有限公司于2016年创立。ABC旅行预订致力于建立一个优先为酒店业创造价值的预订平台，并帮助客人实现最好的预订体验、最高的预订效率以及最低的旅行成本。\n\nABC旅行预订通过在线平台为酒店提供独一无二的技术基础设施；通过移动客户端，随时随地的为旅行者提供性价比最高、最放心、最真实的旅行产品和最便捷的预订方式。</string>
+    <string name="company">杭州惠程信息技术有限公司</string>
+    <string name="copyright">Copyright © 2016–2018</string>
+    <string name="version">版本介绍</string>
+    <string name="versionIntroduce">最具颠覆性的无中介旅行预订平台\n\n－ 没有佣金，价格更低\n－ 优惠直给，拒绝套路\n－ 直接联系酒店，预订更放心\n－ 无竞价排名，还原真实搜索结果\n－ “房型＋服务”订房模式，效率倍增</string>
+
+    <string-array name="order_status">
+        <item>所有订单</item>
+        <item>待支付</item>
+        <item>待确认</item>
+        <item>已确认</item>
+        <item>已取消</item>
+        <item>已完成</item>
+    </string-array>
+
+    <string-array name="sex">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+
+    <string name="iflytek_tips">语音技术由科大讯飞提供</string>
+
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载…</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="test">该View是通过ListView实现的，通过实体两个字段内容content和时间time来展示每个ListItem，在ListView中，设置其分割线为空，并且没有点击效果。</string>
+</resources>

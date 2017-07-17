@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/viewPager">
+
+    <include layout="@layout/comm_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.amap.api.maps.MapView
+            android:id="@+id/mapview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--map over layout-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="13dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_horizontal">
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="290dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/search_rectangle_bg"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:paddingLeft="16dp"
+                android:textColor="@color/secColor"
+                android:textSize="@dimen/common_15sp" />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/et_search"
+                android:src="@drawable/iv_search" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_zoom_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:src="@drawable/iv_zoom_in" />
+
+            <ImageView
+                android:id="@+id/iv_zoom_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/iv_zoom_out" />
+
+            <ImageView
+                android:id="@+id/iv_loc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:scaleType="center"
+                android:src="@drawable/iv_location_small" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_show_area_hotel"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/comm_rectangle_btn_yello"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="隐藏区域内酒店"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_10sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_driver"
+                android:layout_width="75dp"
+                android:layout_height="35dp"
+                android:background="@drawable/comm_rectangle_textleft"
+                android:gravity="center"
+                android:text="开车"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_15sp" />
+
+            <TextView
+                android:id="@+id/tv_foot"
+                android:layout_width="75dp"
+                android:layout_height="35dp"
+                android:background="@drawable/comm_rectangle_textright"
+                android:gravity="center"
+                android:text="步行"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_15sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="20dp">
+
+            <ImageView
+                android:id="@+id/iv_reroute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:src="@drawable/iv_reroute" />
+
+            <ImageView
+                android:id="@+id/iv_navi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_reroute"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/iv_navi" />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,21 @@
+<resources>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="MyProgressBar" parent="Base.Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTint">@color/secColor</item>
+        <item name="android:indeterminateTintMode">src_atop</item>
+    </style>
+
+    <style name="MyMaterialDialog" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorPrimary">@color/secColor</item>
+        <item name="android:colorPrimaryDark">@color/secColor</item>
+        <item name="android:colorAccent">@color/secColor</item>
+    </style>
+
+</resources>

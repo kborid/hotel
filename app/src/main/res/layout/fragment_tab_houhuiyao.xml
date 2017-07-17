@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_nodata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="30dp"
+                android:text="暂无数据"
+                android:textColor="@color/lableColor"
+                android:textSize="@dimen/common_12sp" />
+
+            <LinearLayout
+                android:id="@+id/recommend_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_recommend_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="10dp"
+                    android:text="ABC推荐"
+                    android:textColor="@color/lableColor"
+                    android:textSize="@dimen/common_12sp" />
+
+                <com.huicheng.hotel.android.ui.custom.MyListViewWidget
+                    android:id="@+id/lv_recommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/transparent"
+                    android:animateLayoutChanges="true"
+                    android:listSelector="@color/transparent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/other_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_other_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="10dp"
+                    android:text="其他日期订单"
+                    android:textColor="@color/lableColor"
+                    android:textSize="@dimen/common_12sp" />
+
+                <com.huicheng.hotel.android.ui.custom.MyListViewWidget
+                    android:id="@+id/lv_other"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:cacheColorHint="@color/transparent"
+                    android:divider="@color/transparent"
+                    android:listSelector="@color/transparent" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

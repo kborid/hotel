@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/viewPager">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/comm_title" />
+
+        <TextView
+            android:id="@+id/tv_debuginfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/mainColor"
+            android:textSize="@dimen/common_12sp" />
+
+        <Button
+            android:id="@+id/btn_changed"
+            style="@style/blue_button_style"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:text="环境切换"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_JS"
+            style="@style/blue_button_style"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="JS测试"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_close"
+            style="@style/blue_button_style"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Debug Off"
+            android:visibility="visible" />
+    </LinearLayout>
+</LinearLayout>

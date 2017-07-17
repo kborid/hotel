@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TagCloudView">
+        <attr name="tcvBackground" format="reference" />
+        <attr name="tcvTextColor" format="color" />
+        <attr name="tcvBorder" format="dimension" />
+        <attr name="tcvTextSize" format="integer" />
+        <attr name="tcvBorderItem" format="dimension" />
+        <attr name="tcvItemBorderVertical" format="dimension" />
+        <attr name="tcvItemBorderHorizontal" format="dimension" />
+
+        <attr name="tcvSingleLine" format="boolean" />
+        <attr name="tcvShowEndText" format="boolean" />
+        <attr name="tcvShowRightImg" format="boolean" />
+        <attr name="tcvEndText" format="string" />
+        <attr name="tcvRightResId" format="reference" />
+        <attr name="tcvCanTagClick" format="boolean" />
+
+        <attr name="tcvTagResId" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ProgressWheel">
+        <attr name="matProg_progressIndeterminate" format="boolean" />
+        <attr name="matProg_barColor" format="color" />
+        <attr name="matProg_rimColor" format="color" />
+        <attr name="matProg_rimWidth" format="dimension" />
+        <attr name="matProg_spinSpeed" format="float" />
+        <attr name="matProg_barSpinCycleTime" format="integer" />
+        <attr name="matProg_circleRadius" format="dimension" />
+        <attr name="matProg_fillRadius" format="boolean" />
+        <attr name="matProg_barWidth" format="dimension" />
+        <attr name="matProg_linearProgress" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="GridViewWidgetRows">
+        <attr name="rowscount" format="integer" />
+        <attr name="showLine" format="boolean" />
+        <attr name="lineColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="RichText">
+        <attr name="placeHolder" format="reference" />
+        <attr name="errorImage" format="reference" />
+        <attr name="default_width" format="dimension" />
+        <attr name="default_height" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="RangeSeekBar">
+        <attr name="max" format="float" />
+        <attr name="min" format="float" />
+        <attr name="reserve" format="float" />
+        <attr name="cells" format="integer" />
+        <attr name="lineColorUnSelected" format="color" />
+        <attr name="lineColorSelected" format="color" />
+        <attr name="lineColorEdge" format="color" />
+        <attr name="seekBarResId" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomCalendarView">
+        <attr name="colorCurrentDay" format="color" />
+        <attr name="colorSelectedDayBackground" format="color" />
+        <attr name="colorSelectedDayText" format="color" />
+        <attr name="colorPreviousDay" format="color" />
+        <attr name="colorNormalDay" format="color" />
+        <attr name="colorMonthName" format="color" />
+        <attr name="colorDayName" format="color" />
+        <attr name="textSizeDay" format="dimension" />
+        <attr name="textSizeMonth" format="dimension" />
+        <attr name="textSizeDayName" format="dimension" />
+        <attr name="headerMonthHeight" format="dimension" />
+        <attr name="selectedDayRadius" format="dimension" />
+        <attr name="calendarHeight" format="dimension" />
+        <attr name="enablePreviousDay" format="boolean" />
+        <attr name="currentDaySelected" format="boolean" />
+        <attr name="drawRoundRect" format="boolean" />
+        <attr name="firstMonth" format="enum">
+            <enum name="january" value="0" />
+            <enum name="february" value="1" />
+            <enum name="march" value="2" />
+            <enum name="april" value="3" />
+            <enum name="may" value="4" />
+            <enum name="june" value="5" />
+            <enum name="july" value="6" />
+            <enum name="august" value="7" />
+            <enum name="september" value="8" />
+            <enum name="october" value="9" />
+            <enum name="november" value="10" />
+            <enum name="december" value="11" />
+        </attr>
+        <attr name="lastMonth" format="enum">
+            <enum name="january" value="0" />
+            <enum name="february" value="1" />
+            <enum name="march" value="2" />
+            <enum name="april" value="3" />
+            <enum name="may" value="4" />
+            <enum name="june" value="5" />
+            <enum name="july" value="6" />
+            <enum name="august" value="7" />
+            <enum name="september" value="8" />
+            <enum name="october" value="9" />
+            <enum name="november" value="10" />
+            <enum name="december" value="11" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="RatingBar">
+        <!--星星间距-->
+        <attr name="starDistance" format="dimension" />
+        <!--星星大小-->
+        <attr name="starSize" format="dimension" />
+        <!--星星个数-->
+        <attr name="starCount" format="integer" />
+        <!--星星空图-->
+        <attr name="starEmpty" format="reference" />
+        <!--星星满图-->
+        <attr name="starFill" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="roundedImage">
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+</resources>

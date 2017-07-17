@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    xmlns:roundImage="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="180dp"
+        android:focusable="false"
+        card:cardBackgroundColor="@color/mainColor"
+        card:cardCornerRadius="5dp"
+        card:cardElevation="5dp"
+        card:cardPreventCornerOverlap="false"
+        card:contentPadding="0dp">
+
+        <com.huicheng.hotel.android.ui.custom.RoundedAllImageView
+            android:id="@+id/iv_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.4"
+            android:scaleType="fitXY"
+            roundImage:radius="5dp" />
+
+        <com.huicheng.hotel.android.ui.custom.RoundedAllImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_yhq"
+            android:scaleType="fitXY"
+            roundImage:radius="5dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="15dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="30dp">
+
+            <com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout
+                android:id="@+id/start_lay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="酒店名字"
+                android:layout_below="@id/start_lay"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_15sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/tv_valid_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/discount_name_lay"
+                    android:text="有效期：2016/12/30"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_9sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/discount_name_lay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0元住"
+                        android:textColor="@color/mainColor"
+                        android:textSize="@dimen/common_12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="免费房券"
+                        android:textColor="@color/mainColor"
+                        android:textSize="@dimen/common_18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

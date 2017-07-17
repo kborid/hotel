@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/viewPager">
+
+    <include layout="@layout/comm_text_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/lineColor2" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/lineShadowColor" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:gravity="left"
+        android:hint="发表评论"
+        android:minHeight="180dp"
+        android:lineSpacingExtra="5dp"
+        android:padding="20dp"
+        android:textColor="@color/lableColor"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/common_12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/lineColor2" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/lineShadowColor" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_upload_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/iv_add_picture" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/iv_picture"
+            style="@style/Base.Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/iv_space_pic" />
+
+        <TextView
+            android:id="@+id/tv_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="添加图片"
+            android:textColor="@color/secColor"
+            android:textSize="@dimen/common_12sp" />
+    </LinearLayout>
+</LinearLayout>

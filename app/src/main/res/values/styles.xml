@@ -1,0 +1,109 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/share_bg</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--新建项目自带主题，以后备用-->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ImageTransparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- ui 最外层风格 -->
+    <style name="viewPager">
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/bg_gray</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!-- 底部 导航风格 -->
+    <style name="redio_btn_style">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+    </style>
+
+    <!--评分bar样式-->
+    <style name="roomRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/comm_ratingbar</item>
+    </style>
+
+    <!-- checkBox风格 -->
+    <style name="checkBox_style" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_selector</item>
+    </style>
+    <!--usercenter checkbox 风格-->
+    <style name="usercenter_checkBox_style" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/usercenter_checkbox_selector</item>
+    </style>
+
+    <!-- login checkBox风格 -->
+    <style name="login_checkBox_style" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/login_checkbox_show_pwd</item>
+    </style>
+
+    <style name="MyMaterialDialog" parent="@style/iphone_progress_dialog">
+    </style>
+
+    <style name="iphone_progress_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+        <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
+    </style>
+
+    <style name="blue_button_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:background">@drawable/comm_rectangle_btn</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="AnimTools" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_in</item>
+        <item name="android:windowExitAnimation">@anim/push_out</item>
+    </style>
+
+    <style name="textNoShadow" parent="android:style/Widget.TextView">
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">0</item>
+    </style>
+
+    <style name="hotelItemStyle">
+        <item name="android:background">@drawable/comm_gradient_ygr_color</item>
+    </style>
+
+    <style name="consider_anmi" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+    <style name="tabTextAppearance">
+        <item name="android:textSize">@dimen/common_15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/searchHintColor</item>
+    </style>
+
+    <style name="MyProgressBar" parent="Base.Widget.AppCompat.ProgressBar"/>
+</resources>

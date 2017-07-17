@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="425dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:clickable="true"
+    android:clipChildren="false">
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="筛选项"
+            android:textColor="@color/secColor"
+            android:textSize="@dimen/common_18sp"
+            android:textStyle="bold" />
+
+        <!--评价-->
+        <LinearLayout
+            android:id="@+id/point_layout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/transparent5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_point_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:text="评价："
+                android:textColor="@color/secColor"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rg_point"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checkedButton="@+id/point_00"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/point_00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="无"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/point_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="21dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="4.5以上"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/point_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="3.5-4.5"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/point_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="28dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="3.5以下"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
+            </RadioGroup>
+        </LinearLayout>
+
+
+        <!--类型-->
+        <LinearLayout
+            android:id="@+id/type_layout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_type_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:text="类型："
+                android:textColor="@color/secColor"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rg_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checkedButton="@+id/type_00"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/type_00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="无"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_13sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/type_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="城市酒店"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_13sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/type_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="度假酒店"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_13sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/type_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="青年旅社"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_13sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/type_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="机场酒店"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_13sp"
+                    android:textStyle="bold" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <!--价格-->
+        <LinearLayout
+            android:id="@+id/price_layout"
+            android:layout_width="match_parent"
+            android:layout_height="121dp"
+            android:background="@color/transparent5"
+            android:orientation="vertical"
+            android:paddingTop="13dp">
+
+            <TextView
+                android:id="@+id/tv_price_lable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="价格：(单位：元)"
+                android:textColor="@color/secColor"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+
+            <com.huicheng.hotel.android.ui.custom.RangeSeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
+                app:cells="5"
+                app:lineColorEdge="@color/secColor"
+                app:lineColorSelected="@color/indicatorColor"
+                app:lineColorUnSelected="@color/tabDefaultColor"
+                app:max="5"
+                app:min="0"
+                app:reserve="1"
+                app:seekBarResId="@drawable/iv_thumb_yw" />
+        </LinearLayout>
+
+        <!--星级-->
+        <LinearLayout
+            android:id="@+id/grade_layout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_grade_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:text="星级："
+                android:textColor="@color/secColor"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rg_grade"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checkedButton="@+id/grade_00"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/grade_00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="无"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/grade_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="21dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="三星"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/grade_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="33dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="四星"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/grade_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="33dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:text="五星"
+                    android:textColor="@color/selection_text_color"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
+            </RadioGroup>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center_horizontal">
+
+        <ImageView
+            android:id="@+id/iv_reset"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="150dp"
+            android:src="@drawable/iv_reset" />
+    </RelativeLayout>
+
+</FrameLayout>

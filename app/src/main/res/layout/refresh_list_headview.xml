@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.huicheng.hotel.android.ui.custom.ProgressWheel
+            android:id="@+id/pb_listview_header"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/tv_listview_header_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="下拉刷新"
+            android:textColor="@color/secColor"
+            android:textSize="@dimen/common_12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_listview_header_last_update_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="时间"
+        android:textColor="@color/lableColor"
+        android:textSize="@dimen/common_10sp" />
+</LinearLayout>

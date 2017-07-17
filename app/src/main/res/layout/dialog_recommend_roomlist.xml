@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="@color/selectedBarColor"
+        android:textSize="@dimen/common_14sp" />
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@color/transparent"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:divider="@color/transparent"
+        android:listSelector="@color/transparent"
+        android:scrollbarThumbVertical="@drawable/p3016_scrollbar" />
+</LinearLayout>

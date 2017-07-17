@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 颜色集合 -->
+<resources>
+
+    <!-- 常用颜色表 -->
+    <color name="transparent">#00000000</color>
+    <color name="transparent5">#0D000000</color>
+    <color name="transparent10">#1A000000</color>
+    <color name="transparent20">#33000000</color>
+    <color name="transparent30">#4D000000</color>
+    <color name="transparent40">#66000000</color>
+    <color name="transparent50">#80000000</color>
+    <color name="transparent60">#99000000</color>
+    <color name="transparent70">#B3000000</color>
+    <color name="transparent80">#CC000000</color>
+    <color name="transparent90">#E6000000</color>
+    <color name="transparent5_">#0Dffffff</color>
+    <color name="transparent10_">#1Affffff</color>
+    <color name="transparent20_">#33ffffff</color>
+    <color name="transparent30_">#4Dffffff</color>
+    <color name="transparent40_">#66ffffff</color>
+    <color name="transparent50_">#80ffffff</color>
+    <color name="transparent60_">#99ffffff</color>
+    <color name="transparent70_">#B3ffffff</color>
+    <color name="transparent80_">#CCffffff</color>
+    <color name="transparent90_">#E6ffffff</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="red">#FF0000</color>
+    <color name="purple">#800080</color>
+    <color name="green">#00ff00</color>
+    <color name="blue">#0000ff</color>
+    <color name="black">#000000</color>
+
+    <!--主颜色-->
+    <color name="mainColor">#001a58</color>
+    <color name="mainColorDark">#042456</color>
+    <color name="mainColorAccent">#0d47a1</color>
+    <color name="mainColorShadow">#88001a58</color>
+    <color name="mainColorIndicator">#0e3f97</color>
+
+    <color name="secColor">#646464</color>
+    <color name="secColorShadow">#33646464</color>
+
+    <color name="tabHotelColor">#9aca40</color>
+    <color name="tabTrainColor">#0d47a1</color>
+    <color name="tabPlaneColor">#42a5f5</color>
+    <color name="tabTaxiColor">#fcb819</color>
+    <color name="tabDefaultColor">@color/secColorShadow</color>
+
+    <color name="hhyMainTextColor">#3d82cf</color>
+    <color name="deleteColor">#ef5669</color>
+    <color name="btnBoundColor">#98a2bb</color>
+    <color name="darkIndicatorColor">#eaa708</color>
+    <color name="indicatorColor">#fcb819</color>
+    <color name="searchBgColor">@color/transparent80_</color>
+    <color name="indicatorDisableColor">#40fcb819</color>
+    <color name="saveColor">#8bc349</color>
+    <color name="airTicketColor">#1565b0</color>
+    <color name="hotelColor">#009fda</color>
+    <color name="citySelColor">#f5f5f5</color>
+
+    <color name="assessPointColorHigh">#b7cd66</color>
+    <color name="assessPointColorMid">#ffa046</color>
+    <color name="assessPointColorLow">#ef5669</color>
+    <color name="selectedBarColor">#535353</color>
+    <color name="unselectedBarColor">#d7d7d7</color>
+    <color name="unSelectedTextColor">#464646</color>
+
+    <color name="houhuiyaoLableColor">@color/secColor</color>
+    <color name="payLableColor">#DCDCDC</color>
+    <color name="payPriceColor">#9aca40</color>
+
+    <color name="lineColor">#646260</color>
+    <color name="lineShadowColor">#fffefd</color>
+    <color name="lineColor2">#cfcfcf</color>
+
+    <color name="noDiscountColor">#969696</color>
+    <color name="lableColor">#989898</color>
+    <color name="editColor">@color/mainColor</color>
+    <color name="hintColor">#e6e6e6</color>
+    <color name="searchHintColor">#c8c8c8</color>
+    <color name="registerhintColor">#acacac</color>
+    <color name="history">#E1E1E1</color>
+
+    <color name="wxColor">#2dc100</color>
+    <color name="qqColor">#0896ff</color>
+
+    <!-- dialog -->
+    <color name="dialog_text_checked">#ff2380e3</color>
+    <color name="dialog_text_unchecked">#ff5056cd</color>
+</resources>

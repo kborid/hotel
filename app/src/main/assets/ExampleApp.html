@@ -1,0 +1,120 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+    <script language="javascript">
+            function setupWebViewJavascriptBridge(callback) {
+
+                //Android使用
+                if (window.WebViewJavascriptBridge) {
+                    callback(WebViewJavascriptBridge)
+                } else {
+                    document.addEventListener('WebViewJavascriptBridgeReady', function() {
+                                               callback(WebViewJavascriptBridge)
+                                               }, false)
+                }
+
+                //iOS使用
+                if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+                if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+                window.WVJBCallbacks = [callback];
+                var WVJBIframe = document.createElement('iframe');
+                WVJBIframe.style.display = 'none';
+                WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+                document.documentElement.appendChild(WVJBIframe);
+                setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+        }
+            
+           setupWebViewJavascriptBridge(function(bridge) {
+           bridge.init(function(message, responseCallback) {
+                                               log('JS got a message', message)
+                                               var data = { 'Javascript Responds':'Wee!' }
+                                               log('JS responding with', data)
+                                               responseCallback(data)
+                                               })
+                                               })
+                                         
+            function getUserTicketClick() {
+               WebViewJavascriptBridge.callHandler('getUserTicket', null, function(response) {
+                                                   alert(response);
+                                                   document.getElementById("returnValue").value = response;
+                                                   })
+            }
+            
+            
+            function colseAndReloadListClick() {
+                WebViewJavascriptBridge.callHandler('colseAndReloadList', null, function(response) {
+                                                    alert(response);
+                                                    document.getElementById("returnValue").value = response;
+                                                    });
+            }
+            
+            function openNativeOrderListClick() {
+                WebViewJavascriptBridge.callHandler('openNativeOrderList', null, function(response) {
+                                                    alert(response);
+                                                    document.getElementById("returnValue").value = response;
+                                                    });
+            }
+            
+            function reBookPlaneClick() {
+                WebViewJavascriptBridge.callHandler('reBookPlane',
+                                                    null,
+                                                    function(response) {
+                                                    alert(response);
+                                                    document.getElementById("returnValue").value = response;
+                                                    });
+            }
+            
+            function WechatClick() {
+                WebViewJavascriptBridge.callHandler('payPlaneTicket', {'orderNo':'JP2017032414231490336634340395','payChannel':'02'},function(response) {
+                                                    alert(response);
+                                                    document.getElementById("returnValue").value = response;
+                                                    });
+            }
+            
+            function alipayClick() {
+                WebViewJavascriptBridge.callHandler('payPlaneTicket', {'orderNo':'JP2017032414231490336634340395','payChannel':'01'},function(response) {
+                                                    alert(response);
+                                                    document.getElementById("returnValue").value = response;
+                                                    });
+            }
+            function getServiceHost() {
+                WebViewJavascriptBridge.callHandler('getServiceHost', null, function(response) {
+                                                    alert(response);
+                                                    document.getElementById("returnValue").value = response;
+                                                    })
+            }
+
+             function airPlaneChanged() {
+                WebViewJavascriptBridge.callHandler('airPlaneChanged', {'yiorderid':'JP2017032414231490336634340395'}, function(response) {
+                                                    alert(response);
+                                                    document.getElementById("returnValue").value = response;
+                                                    })
+             }
+            
+
+
+
+    </script>
+</head>
+
+<body>
+<h1>这是按钮调用</h1>
+<input id='ticketBtn' type="button" value="getUserTicketClick" onclick="getUserTicketClick()"/>
+<input id='refreshListBtn' type="button" value="colseAndReloadListClick" onclick="colseAndReloadListClick()"/>
+<input id='openListBtn' type="button" value="openNativeOrderListClick" onclick="openNativeOrderListClick()"/>
+<input id='reBookPlaneBtn' type="button" value="reBookPlaneClick" onclick="reBookPlaneClick()"/>
+<input id='wxPayBtn' type="button" value="WechatClick" onclick="WechatClick()"/>
+<input id='aliPayBtn' type="button" value="alipayClick" onclick="alipayClick()"/>
+<input id='serviceHostBtn' type="button" value="getServiceHost" onclick="getServiceHost()"/>
+<input id='reChangedPlaneBtn' type="button" value="airPlaneChanged" onclick="airPlaneChanged()"/>
+
+<h1>这是文件上传</h1>
+
+<input type="file"/>
+
+<h1>这是回调结果展示区</h1>
+        <textarea id="returnValue" type="value" rows="5" cols="50">
+        </textarea>
+
+</body>
+</html>

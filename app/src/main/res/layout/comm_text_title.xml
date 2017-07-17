@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/title_padding_bottom"
+    android:paddingTop="@dimen/title_padding_top">
+
+    <TextView
+        android:id="@+id/tv_left"
+        style="@style/Base.Widget.AppCompat.Toolbar.Button.Navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="取消"
+        android:textColor="@color/secColor"
+        android:textSize="@dimen/common_12sp" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:text="标题"
+        android:textColor="@color/secColor"
+        android:textSize="@dimen/common_15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_right"
+        style="@style/Base.Widget.AppCompat.Toolbar.Button.Navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="发送"
+        android:textColor="@color/secColor"
+        android:textSize="@dimen/common_12sp" />
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <dimen name="common_9sp"> 8sp </dimen>
+    <dimen name="common_10sp">9sp</dimen>
+    <dimen name="common_11sp">10sp</dimen>
+    <dimen name="common_12sp">11sp</dimen>
+    <dimen name="common_13sp">12sp</dimen>
+    <dimen name="common_14sp">13sp</dimen>
+    <dimen name="common_15sp">14sp</dimen>
+    <dimen name="common_16sp">15sp</dimen>
+    <dimen name="common_17sp">16sp</dimen>
+    <dimen name="common_18sp">17sp</dimen>
+    <dimen name="common_19sp">18sp</dimen>
+    <dimen name="common_20sp">19sp</dimen>
+    <dimen name="common_21sp">20sp</dimen>
+    <dimen name="common_22sp">21sp</dimen>
+    <dimen name="common_23sp">22sp</dimen>
+    <dimen name="common_24sp">23sp</dimen>
+    <dimen name="common_30sp">29sp</dimen>
+    <dimen name="common_32sp">31sp</dimen>
+    <dimen name="common_40sp">39sp</dimen>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:roundImage="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="125dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp">
+
+        <com.huicheng.hotel.android.ui.custom.RoundedAllImageView
+            android:id="@+id/iv_hotel_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/def_free"
+            roundImage:radius="20dp" />
+        <com.huicheng.hotel.android.ui.custom.RoundedAllImageView
+            android:id="@+id/iv_hotel_alpha"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            roundImage:radius="20dp" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_15sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</RelativeLayout>

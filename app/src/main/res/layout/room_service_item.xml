@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <TextView
+        android:id="@+id/tv_service_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="接賓資質"
+        android:textColor="@color/lableColor"
+        android:textSize="@dimen/common_12sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="："
+        android:textColor="@color/lableColor"
+        android:textSize="@dimen/common_12sp" />
+
+    <TextView
+        android:id="@+id/tv_service_item_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="内賓/外賓"
+        android:textColor="@color/lableColor"
+        android:textSize="@dimen/common_12sp" />
+</LinearLayout>
