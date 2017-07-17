@@ -62,11 +62,10 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         initViews();
         initParams();
         initListeners();
-//        initJsonData();
+        initJsonData();
         requestAppVersionInfo();
-
-        System.out.println("IntentService begin ......");
-        TestIntentservice.startParse(this);
+//        System.out.println("IntentService begin ......");
+//        TestIntentservice.startParse(this);
     }
 
     @Override

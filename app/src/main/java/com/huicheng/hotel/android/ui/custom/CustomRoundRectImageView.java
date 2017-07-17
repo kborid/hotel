@@ -18,6 +18,8 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.prj.sdk.util.Utils;
+
 /**
  * 自定义的圆角矩形ImageView，可以直接当组件在布局中使用。
  *
@@ -51,7 +53,7 @@ public class CustomRoundRectImageView extends ImageView {
         Drawable drawable = getDrawable();
         if (null != drawable) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            Bitmap b = getRoundBitmap(bitmap, 20);
+            Bitmap b = getRoundBitmap(bitmap, Utils.dip2px(10));
             final Rect rectSrc = new Rect(0, 0, b.getWidth(), b.getHeight());
             final Rect rectDest = new Rect(0, 0, getWidth(), getHeight());
             paint.reset();

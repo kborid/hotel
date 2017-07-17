@@ -17,7 +17,7 @@ public class AssessOrderInfoBean implements Serializable{
     public int hotelId;
     public String hotelName;
     public int id;
-    public String isevaluated;
+    public String isevaluated; //0或者null-未评价 1-已评价 2-评价被删除
     public int orderMoney;
     public String orderName;
     public String orderNo;

@@ -7,13 +7,15 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.prj.sdk.util.Utils;
+
 /**
  * @author kborid
  * @date 2016/11/9 0009
  */
 public class RoundedLeftImageView extends ImageView {
     /*圆角的半径，依次为左上角xy半径，右上角，右下角，左下角*/
-    private float[] rids = {20.0f, 20.0f, 0.0f, 0.0f, 0.0f, 0.0f, 20.0f, 20.0f,};
+    private float[] rids = {Utils.dip2px(10), Utils.dip2px(10), 0.0f, 0.0f, 0.0f, 0.0f, Utils.dip2px(10), Utils.dip2px(10),};
 
     public RoundedLeftImageView(Context context) {
         super(context);
