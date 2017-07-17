@@ -40,13 +40,6 @@ import com.prj.sdk.widget.CustomToast;
 import com.prj.sdk.widget.webview.ChooserFileController;
 import com.prj.sdk.widget.webview.WebChromeClientCompat;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
 /**
  * 中间件处理，加载html5应用数据
  *
@@ -118,10 +111,19 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener,
             public void onClick(View v) {
                 URL = et_url.getText().toString().trim();
                 if (StringUtil.notEmpty(URL)) {
-                    if ()
-                }
-                if ("0".equals(URL) || "1".equals(URL) || "2".equals(URL)) {
-                    SharedPreferenceUtil.getInstance().setInt(AppConst.APPTYPE, Integer.parseInt(URL));// 保存切换地址类型
+                    if ("0".equals(URL) || "1".equals(URL)) {
+                        SharedPreferenceUtil.getInstance().setInt(AppConst.APPTYPE, Integer.parseInt(URL));// 保存切换地址类型
+                    } else {
+                        if (!URL.startsWith("http") && !URL.endsWith("/")) {
+                            URL = "http" + URL + "/";
+                        } else if (!URL.startsWith("http")) {
+                            URL = "http://" + URL;
+                        } else if (!URL.endsWith("/")) {
+                            URL = URL + "/";
+                        }
+                        SharedPreferenceUtil.getInstance().setInt(AppConst.APPTYPE, 2);// 保存切换地址类型
+                        SharedPreferenceUtil.getInstance().setString(AppConst.DEV_URL, URL, false);
+                    }
 
                     AppContext.mMainHandler.postDelayed(new Runnable() {
                         @Override
@@ -132,11 +134,8 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener,
                             ActivityTack.getInstanse().exit();
                         }
                     }, 2000);
-                    CustomToast.show("切换成功，即将退出，请手动重启", 0);
-                    return;
+                    CustomToast.show("切换成功，即将退出，请手动重启", CustomToast.LENGTH_SHORT);
                 }
-
-                mWebView.loadUrl(URL);
             }
         });
     }
@@ -448,6 +447,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener,
      */
     public interface ActivityResult {
         void onActivityResult(int requestCode, int resultCode, Intent data);
+
     }
 
     public void setActivityForResult(ActivityResult mResult) {

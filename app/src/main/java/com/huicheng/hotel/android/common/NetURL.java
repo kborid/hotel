@@ -5,18 +5,21 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 public final class NetURL {
 
     public static String getApi() {
-        final String[] SERVER_USRS = {"http://101.37.32.245/", "http://118.178.225.32/", ""};
-
+        final String[] SERVER_USRS = {"http://101.37.32.245/", "http://118.178.225.32/"};
         if (AppConst.ISDEVELOP) {
             int status = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
-            return SERVER_USRS[status];
+            if (status == 2) {
+                String url = "http://" + SharedPreferenceUtil.getInstance().getString(AppConst.DEV_URL, "", false) + "/";
+                return url;
+            } else {
+                return SERVER_USRS[status];
+            }
         } else {
             return SERVER_USRS[1];
         }
     }
 
-    public static String API_LINK = getApi();
-    public static final String PORTAL = API_LINK + "hmp_website/"; // PORTAL地址  hmp_website/
+    private static final String PORTAL = getApi() + "hmp_website/"; // PORTAL地址  hmp_website/
 
     //---------------------------------上传图片------------------------------------------------------
     public static final String UPLOAD = PORTAL + "upload/img.up"; // 上传图片

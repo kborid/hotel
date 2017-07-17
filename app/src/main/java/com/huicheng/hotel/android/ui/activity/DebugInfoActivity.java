@@ -51,8 +51,24 @@ public class DebugInfoActivity extends BaseActivity {
         sb.append("\nPackageName : ").append(BuildConfig.APPLICATION_ID);
         sb.append("\nVersionName : ").append(BuildConfig.VERSION_NAME);
         sb.append("\nVersionCode : ").append(BuildConfig.VERSION_CODE);
+        String env = "";
+        int type = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
+        switch (type){
+            case 0:
+                env = "测试环境";
+                break;
+            case 1:
+                env = "正式环境";
+                break;
+            case 2:
+                env = "开发环境";
+                break;
+            default:
+                env = "测试环境";
+                break;
+        }
         sb.append("\nEnvironment : ")
-                .append(SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0) == 0 ? "测试环境" : "正式环境")
+                .append(env)
                 .append("(").append(NetURL.getApi()).append(")");
         sb.append("\nBuildType : ").append(BuildConfig.BUILD_TYPE);
         sb.append("\nDebugSwitch : ").append(LogUtil.isDebug());

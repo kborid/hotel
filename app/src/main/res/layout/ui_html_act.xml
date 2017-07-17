@@ -71,7 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:hint="(模式切换 0:uat 1:非uat 2:研发) 请输入地址"
+                android:hint="(模式切换 0:测试 1:生产 研发环境请输入IP地址)"
                 android:inputType="textUri"
                 android:textSize="@dimen/common_description_size" />
 

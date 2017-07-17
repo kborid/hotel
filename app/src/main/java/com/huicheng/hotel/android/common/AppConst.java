@@ -13,7 +13,7 @@ public final class AppConst {
     public static final String APPINFO = "app_info"; //app版本信息
     public static final String IGNORE_UPDATE_VERSION = "ignore_update_version"; //忽略更新版本
     public static final String APPTYPE = "type"; // 类型：0代表UAT，1代表生产
-    public static final String APP_DEV_URL = "";
+    public static final String DEV_URL = "dev_url";
     public static final String ACCESS_TICKET = "accessTicket"; // 记录用户登录ticket
     public static final String LAST_LOGIN_DATE = "last_login_time"; // 上次登录时间
     public static final String USERNAME = "username"; // 用户名
