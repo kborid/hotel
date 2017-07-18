@@ -13,22 +13,11 @@
         android:textColor="@color/unSelectedTextColor"
         android:textSize="@dimen/common_14sp" />
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="2dp"
         android:layout_marginTop="15dp"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineColor2" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineShadowColor" />
-    </LinearLayout>
+        android:background="@drawable/comm_line2" />
 
     <LinearLayout
         android:id="@+id/service_lay"

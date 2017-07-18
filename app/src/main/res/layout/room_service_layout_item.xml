@@ -4,57 +4,29 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_service_layout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="10dp"
+        android:text="酒店设施"
+        android:textColor="@color/mainColor"
+        android:textSize="@dimen/common_12sp" />
 
-        <TextView
-            android:id="@+id/tv_service_layout_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="酒店设施"
-            android:textColor="@color/mainColor"
-            android:textSize="@dimen/common_12sp" />
+    <View
+        android:id="@+id/line_lay"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/comm_line2" />
 
-        <LinearLayout
-            android:id="@+id/line_lay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/service_layout_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/lineColor2" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/lineShadowColor" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/service_layout_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/lineColor2" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/lineShadowColor" />
-        </LinearLayout>
-    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/comm_line2" />
 </LinearLayout>

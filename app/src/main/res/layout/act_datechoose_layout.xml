@@ -6,13 +6,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/lineColor2" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/lineShadowColor" />
+        android:layout_height="2dp"
+        android:background="@drawable/comm_line2" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,17 +48,10 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="2dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/lineColor2" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/lineShadowColor" />
+        android:background="@drawable/comm_line2" />
 
     <LinearLayout
         android:id="@+id/week_lay"
@@ -73,13 +61,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/lineColor2" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/lineShadowColor" />
+        android:layout_height="2dp"
+        android:background="@drawable/comm_line2" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -100,22 +100,11 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/iv_search_blue" />
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="2dp"
                 android:layout_alignParentBottom="true"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineColor2" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineShadowColor" />
-            </LinearLayout>
+                android:background="@drawable/comm_line2" />
         </RelativeLayout>
 
         <LinearLayout

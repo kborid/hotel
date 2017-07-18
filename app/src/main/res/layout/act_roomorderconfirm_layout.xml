@@ -5,21 +5,10 @@
 
     <include layout="@layout/comm_title" />
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineColor2" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineShadowColor" />
-    </LinearLayout>
+        android:layout_height="2dp"
+        android:background="@drawable/comm_line2" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -84,21 +73,10 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineColor2" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineShadowColor" />
-            </LinearLayout>
+                android:layout_height="2dp"
+                android:background="@drawable/comm_line2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -131,42 +109,20 @@
                         android:layout_marginRight="20dp" />
                 </LinearLayout>
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <com.huicheng.hotel.android.ui.custom.CommonCustomInfoLayout
                     android:id="@+id/custom_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -197,21 +153,10 @@
                         android:textSize="@dimen/common_12sp" />
                 </LinearLayout>
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -251,21 +196,10 @@
                         android:src="@drawable/iv_next" />
                 </LinearLayout>
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -352,21 +286,10 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineColor2" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineShadowColor" />
-            </LinearLayout>
+                android:layout_height="2dp"
+                android:background="@drawable/comm_line2" />
 
             <LinearLayout
                 android:layout_width="match_parent"

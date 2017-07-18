@@ -33,21 +33,10 @@
             android:paddingRight="5dp"
             android:paddingTop="15dp">
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineColor2" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineShadowColor" />
-            </LinearLayout>
+                android:layout_height="2dp"
+                android:background="@drawable/comm_line2" />
 
             <include layout="@layout/lv_hotelspace_parter_item" />
         </LinearLayout>

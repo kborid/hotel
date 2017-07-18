@@ -95,23 +95,11 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="2dp"
                     android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-
-                </LinearLayout>
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -220,22 +208,11 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="2dp"
                     android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:background="@drawable/comm_line2" />
 
                 <!--饼图-->
                 <com.huicheng.hotel.android.ui.custom.CustomCirclePieChart
@@ -244,22 +221,11 @@
                     android:layout_height="200dp"
                     android:layout_marginTop="20dp" />
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="2dp"
                     android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

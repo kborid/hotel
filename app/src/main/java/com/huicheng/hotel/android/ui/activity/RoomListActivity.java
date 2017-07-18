@@ -432,7 +432,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
                 tv_service_layout_title.getPaint().setFakeBoldText(true);
                 LinearLayout service_layout_item = (LinearLayout) view1.findViewById(R.id.service_layout_item);
                 tv_service_layout_title.setVisibility(View.GONE);
-                LinearLayout line_lay = (LinearLayout) view1.findViewById(R.id.line_lay);
+                View line_lay = view1.findViewById(R.id.line_lay);
                 line_lay.setVisibility(View.GONE);
                 service_layout_item.removeAllViews();
                 //接宾资质

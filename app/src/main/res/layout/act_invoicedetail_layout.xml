@@ -4,22 +4,11 @@
 
     <include layout="@layout/comm_title" />
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineColor2" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineShadowColor" />
-    </LinearLayout>
+        android:layout_height="2dp"
+        android:background="@drawable/comm_line2"
+        android:focusable="true" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -62,21 +51,10 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -133,21 +111,10 @@
                         android:focusableInTouchMode="true"
                         android:orientation="vertical">
                         <!-- line -->
-                        <LinearLayout
+                        <View
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/lineColor2" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/lineShadowColor" />
-                        </LinearLayout>
+                            android:layout_height="2dp"
+                            android:background="@drawable/comm_line2" />
 
                         <!--发票抬头-->
                         <LinearLayout
@@ -177,21 +144,10 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
 
-                        <LinearLayout
+                        <View
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/lineColor2" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/lineShadowColor" />
-                        </LinearLayout>
+                            android:layout_height="2dp"
+                            android:background="@drawable/comm_line2" />
 
                         <!--纳税人识别号-->
                         <LinearLayout
@@ -221,21 +177,10 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
 
-                        <LinearLayout
+                        <View
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/lineColor2" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/lineShadowColor" />
-                        </LinearLayout>
+                            android:layout_height="2dp"
+                            android:background="@drawable/comm_line2" />
 
                         <LinearLayout
                             android:id="@+id/special_lay"
@@ -270,21 +215,10 @@
                                     android:textStyle="bold" />
                             </LinearLayout>
 
-                            <LinearLayout
+                            <View
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineColor2" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineShadowColor" />
-                            </LinearLayout>
+                                android:layout_height="2dp"
+                                android:background="@drawable/comm_line2" />
                             <!--公司电话-->
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -314,21 +248,10 @@
                                     android:textStyle="bold" />
                             </LinearLayout>
 
-                            <LinearLayout
+                            <View
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineColor2" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineShadowColor" />
-                            </LinearLayout>
+                                android:layout_height="2dp"
+                                android:background="@drawable/comm_line2" />
                             <!--开户行-->
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -357,21 +280,10 @@
                                     android:textStyle="bold" />
                             </LinearLayout>
 
-                            <LinearLayout
+                            <View
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineColor2" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineShadowColor" />
-                            </LinearLayout>
+                                android:layout_height="2dp"
+                                android:background="@drawable/comm_line2" />
                             <!--银行账户-->
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -401,21 +313,10 @@
                                     android:textStyle="bold" />
                             </LinearLayout>
 
-                            <LinearLayout
+                            <View
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineColor2" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineShadowColor" />
-                            </LinearLayout>
+                                android:layout_height="2dp"
+                                android:background="@drawable/comm_line2" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -514,22 +415,11 @@
                                 </LinearLayout>
                             </LinearLayout>
 
-                            <LinearLayout
+                            <View
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="2dp"
                                 android:layout_marginTop="20dp"
-                                android:orientation="vertical">
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineColor2" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineShadowColor" />
-                            </LinearLayout>
+                                android:background="@drawable/comm_line2" />
                         </LinearLayout>
 
                         <TextView

@@ -43,13 +43,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineColor" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineShadowColor" />
+            android:layout_height="2dp"
+            android:background="@drawable/comm_line" />
 
         <TableRow
             android:gravity="center_vertical"
@@ -95,13 +90,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineColor" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineShadowColor" />
+            android:layout_height="2dp"
+            android:background="@drawable/comm_line" />
 
         <TableRow
             android:gravity="center_vertical"
@@ -131,13 +121,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineColor" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineShadowColor" />
+            android:layout_height="2dp"
+            android:background="@drawable/comm_line" />
 
         <TableRow
             android:gravity="center_vertical"
@@ -167,13 +152,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineColor" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineShadowColor" />
+            android:layout_height="2dp"
+            android:background="@drawable/comm_line" />
     </TableLayout>
 
     <Button

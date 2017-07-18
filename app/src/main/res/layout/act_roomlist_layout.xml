@@ -29,8 +29,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginRight="30dp"
+                    android:layout_marginTop="5dp"
                     android:clipChildren="false"
                     android:overScrollMode="never"
                     android:visibility="visible" />
@@ -51,21 +51,10 @@
                 android:orientation="vertical"
                 android:padding="15dp">
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -171,22 +160,11 @@
                         android:textSize="@dimen/common_12sp" />
                 </LinearLayout>
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="2dp"
                     android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:id="@+id/btn_layout"
@@ -235,22 +213,11 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="2dp"
                 android:layout_marginTop="5dp"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineColor2" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineShadowColor" />
-            </LinearLayout>
+                android:background="@drawable/comm_line2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -299,21 +266,10 @@
                 </TabHost>
             </LinearLayout>
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineColor2" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/lineShadowColor" />
-            </LinearLayout>
+                android:layout_height="2dp"
+                android:background="@drawable/comm_line2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -327,33 +283,23 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:textStyle="bold"
                     android:text="桔子水晶酒店(三星)"
                     android:textColor="@color/mainColor"
-                    android:textSize="@dimen/common_12sp" />
+                    android:textSize="@dimen/common_12sp"
+                    android:textStyle="bold" />
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="2dp"
                     android:layout_marginTop="15dp"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:id="@+id/service_lay1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
+
                 <LinearLayout
                     android:id="@+id/service_lay2"
                     android:layout_width="match_parent"

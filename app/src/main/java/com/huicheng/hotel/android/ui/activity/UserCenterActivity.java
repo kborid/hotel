@@ -76,9 +76,9 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     private RelativeLayout photo_lay;
     private EditText et_name;
     private ImageView iv_clear;
-    private LinearLayout line_lay;
 
-    private LinearLayout male_lay, female_lay, line_male_lay, line_female_lay;
+    private LinearLayout male_lay, female_lay;
+    private View line_lay, line_male_lay, line_female_lay;
 
     private TextView tv_phone, tv_birthday;
     private int mYear, mMonth, mDay;
@@ -126,11 +126,11 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
 
         male_lay = (LinearLayout) findViewById(R.id.male_lay);
         female_lay = (LinearLayout) findViewById(R.id.female_lay);
-        line_male_lay = (LinearLayout) findViewById(R.id.line_male_lay);
-        line_female_lay = (LinearLayout) findViewById(R.id.line_female_lay);
+        line_male_lay = findViewById(R.id.line_male_lay);
+        line_female_lay = findViewById(R.id.line_female_lay);
 
         iv_clear = (ImageView) findViewById(R.id.iv_clear);
-        line_lay = (LinearLayout) findViewById(R.id.line_lay);
+        line_lay = findViewById(R.id.line_lay);
 
         tv_phone = (TextView) findViewById(R.id.tv_phone);
         tv_birthday = (TextView) findViewById(R.id.tv_birthday);
@@ -451,7 +451,6 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
             case R.id.cb_setting:
                 isEdited = cb_setting.isChecked();
                 if (!isEdited) {
-                    //TODO set save value
                     SharedPreferenceUtil.getInstance().setFloat("range_min", minValue);
                     SharedPreferenceUtil.getInstance().setFloat("range_max", maxValue);
                     requestSaveUserPerferSetting();

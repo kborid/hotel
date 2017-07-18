@@ -72,8 +72,8 @@
     <color name="payPriceColor">#9aca40</color>
 
     <color name="lineColor">#646260</color>
-    <color name="lineShadowColor">#fffefd</color>
     <color name="lineColor2">#cfcfcf</color>
+    <color name="lineShadowColor">#fffefd</color>
 
     <color name="noDiscountColor">#969696</color>
     <color name="lableColor">#989898</color>

@@ -77,23 +77,12 @@
                             android:visibility="gone" />
                     </LinearLayout>
 
-                    <LinearLayout
+                    <View
                         android:id="@+id/line_lay"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="2dp"
                         android:layout_marginTop="7dp"
-                        android:orientation="vertical">
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="@color/lineColor2" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="@color/lineShadowColor" />
-                    </LinearLayout>
+                        android:background="@drawable/comm_line2" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -115,24 +104,13 @@
                                 android:textColor="@color/white"
                                 android:textSize="24sp" />
 
-                            <LinearLayout
+                            <View
                                 android:id="@+id/line_male_lay"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="2dp"
                                 android:layout_marginTop="7dp"
-                                android:orientation="vertical"
-                                android:visibility="visible">
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineColor2" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineShadowColor" />
-                            </LinearLayout>
+                                android:background="@drawable/comm_line2"
+                                android:visibility="visible" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -149,24 +127,13 @@
                                 android:textColor="@color/white"
                                 android:textSize="24sp" />
 
-                            <LinearLayout
+                            <View
                                 android:id="@+id/line_female_lay"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="2dp"
                                 android:layout_marginTop="7dp"
-                                android:orientation="vertical"
-                                android:visibility="visible">
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineColor2" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.5dp"
-                                    android:background="@color/lineShadowColor" />
-                            </LinearLayout>
+                                android:background="@drawable/comm_line2"
+                                android:visibility="visible" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -207,24 +174,13 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:visibility="visible">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/comm_line2"
+                    android:visibility="visible" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -252,24 +208,13 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:visibility="visible">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineColor2" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/lineShadowColor" />
-                </LinearLayout>
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/comm_line2"
+                    android:visibility="visible" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
