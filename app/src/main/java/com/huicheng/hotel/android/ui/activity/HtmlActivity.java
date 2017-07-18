@@ -115,7 +115,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener,
                         SharedPreferenceUtil.getInstance().setInt(AppConst.APPTYPE, Integer.parseInt(URL));// 保存切换地址类型
                     } else {
                         if (!URL.startsWith("http") && !URL.endsWith("/")) {
-                            URL = "http" + URL + "/";
+                            URL = "http://" + URL + "/";
                         } else if (!URL.startsWith("http")) {
                             URL = "http://" + URL;
                         } else if (!URL.endsWith("/")) {

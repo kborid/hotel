@@ -9,8 +9,7 @@ public final class NetURL {
         if (AppConst.ISDEVELOP) {
             int status = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
             if (status == 2) {
-                String url = "http://" + SharedPreferenceUtil.getInstance().getString(AppConst.DEV_URL, "", false) + "/";
-                return url;
+                return SharedPreferenceUtil.getInstance().getString(AppConst.DEV_URL, "", false);
             } else {
                 return SERVER_USRS[status];
             }
@@ -19,7 +18,7 @@ public final class NetURL {
         }
     }
 
-    private static final String PORTAL = getApi() + "hmp_website/"; // PORTAL地址  hmp_website/
+    private static final String PORTAL = (SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0) == 2) ? getApi() : getApi() + "hmp_website/"; // PORTAL地址  hmp_website/
 
     //---------------------------------上传图片------------------------------------------------------
     public static final String UPLOAD = PORTAL + "upload/img.up"; // 上传图片
