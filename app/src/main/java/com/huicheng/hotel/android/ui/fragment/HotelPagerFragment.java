@@ -34,6 +34,7 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
@@ -175,7 +176,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.tv_city:
             case R.id.iv_location:
-                //        Intent resIntent = new Intent(getActivity(), LocationActivity.class);
                 Intent resIntent = new Intent(getActivity(), LocationActivity2.class);
                 resIntent.putExtra("city", tv_city.getText().toString());
                 startActivityForResult(resIntent, 0x01);
@@ -194,7 +194,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                         System.out.println("onResult()");
                         if (b) {
                             String jsonStr = recognizerResult.getResultString();
-                            System.out.println("result = " + jsonStr);
                             JSONObject mJson = JSON.parseObject(jsonStr);
                             if (mJson.containsKey("text")) {
                                 et_keyword.setText(mJson.getString("text"));
@@ -204,7 +203,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onError(SpeechError speechError) {
-                        System.out.println("onError()");
+                        LogUtil.e(TAG, "voice error code:" + speechError.getErrorCode() + ", " + speechError.getErrorDescription());
                     }
                 });
                 mDialog.show();
@@ -269,7 +268,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("onActivityResult()");
         if (Activity.RESULT_OK != resultCode) {
             return;
         }

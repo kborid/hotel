@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/iv_zero" android:state_pressed="true" />
-    <item android:drawable="@drawable/iv_zero" />
+    <item android:drawable="@drawable/iv_zero" android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/transparent10" />
+            <corners android:radius="25dp" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/iv_zero">
+        <shape>
+            <solid android:color="@color/transparent" />
+            <corners android:radius="25dp" />
+        </shape>
+    </item>
 </selector>

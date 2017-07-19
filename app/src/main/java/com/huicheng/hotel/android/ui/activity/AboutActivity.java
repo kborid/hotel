@@ -47,9 +47,11 @@ public class AboutActivity extends BaseActivity {
             if (bundle.getString("content") != null) {
                 content = bundle.getString("content");
                 tv_content.setVisibility(View.VISIBLE);
-                tv_iflytek_tips.setVisibility(View.VISIBLE);
             }
             index = bundle.getInt("index");
+            if (index == 0) {
+                tv_iflytek_tips.setVisibility(View.VISIBLE);
+            }
         }
     }
 

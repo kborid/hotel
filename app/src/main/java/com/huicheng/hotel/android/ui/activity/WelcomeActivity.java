@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -27,7 +28,6 @@ import com.huicheng.hotel.android.net.bean.AppInfoBean;
 import com.huicheng.hotel.android.tools.PinyinUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
-import com.huicheng.hotel.android.ui.service.TestIntentservice;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
@@ -62,8 +62,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         initViews();
         initParams();
         initListeners();
-        initJsonData();
-        requestAppVersionInfo();
 //        System.out.println("IntentService begin ......");
 //        TestIntentservice.startParse(this);
     }
@@ -93,9 +91,9 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         if (hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View decorView = getWindow().getDecorView();
 //            状态栏透明
-//            getWindow().setFlags(
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             decorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 //                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -262,6 +260,16 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.i(TAG, "WelcomeActivity onResume()");
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                LogUtil.i(TAG, "initJsonData() begin....");
+                initJsonData();
+                requestAppVersionInfo();
+            }
+        }.start();
     }
 
     @Override
@@ -276,7 +284,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     @Override
     public void preExecute(ResponseData request) {
-
     }
 
     @Override

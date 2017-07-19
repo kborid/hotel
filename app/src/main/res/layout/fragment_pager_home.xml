@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/viewPager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:baselineAligned="false">
 
     <LinearLayout
@@ -133,7 +135,7 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_gravity="right"
-            android:layout_margin="20dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/comm_rectangle_btn_transparent_withbound"
             android:drawablePadding="10dp"
             android:drawableRight="@drawable/accessory_selector"
@@ -166,12 +168,14 @@
 
         <ImageButton
             android:id="@+id/btn_0yz"
-            android:layout_width="325dp"
+            android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_below="@id/tv_info"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/comm_rectangle_btn_zero"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
@@ -179,15 +183,17 @@
             android:paddingTop="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/iv_freeonenight_blue"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/btn_ygr"
-            android:layout_width="325dp"
+            android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_below="@id/btn_0yz"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/comm_rectangle_btn_ygr"
             android:text="夜归人"
@@ -196,16 +202,18 @@
 
         <Button
             android:id="@+id/btn_hhy"
-            android:layout_width="325dp"
+            android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_below="@+id/btn_ygr"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/comm_rectangle_btn_white"
             android:text="后悔药"
             android:textColor="@color/hhyMainTextColor"
             android:textSize="@dimen/common_15sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </RelativeLayout>
 </LinearLayout>
