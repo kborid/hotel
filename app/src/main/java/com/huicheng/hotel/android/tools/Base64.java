@@ -82,7 +82,7 @@ public class Base64 {
 		int lengthDataBits = binaryData.length * 8;
 		int fewerThan24bits = lengthDataBits % 24;
 		int numberTriplets = lengthDataBits / 24;
-		byte[] encodedData = (byte[]) null;
+		byte[] encodedData = null;
 		int encodedDataLength = 0;
 		int nbrChunks = 0;
 		if (fewerThan24bits != 0)
@@ -158,7 +158,7 @@ public class Base64 {
 		if (base64Data.length == 0)
 			return new byte[0];
 		int numberQuadruple = base64Data.length / 4;
-		byte[] decodedData = (byte[]) null;
+		byte[] decodedData = null;
 		byte b1 = 0;
 		byte b2 = 0;
 		byte b3 = 0;

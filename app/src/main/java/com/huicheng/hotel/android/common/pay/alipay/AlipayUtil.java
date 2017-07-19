@@ -12,6 +12,7 @@ import com.huicheng.hotel.android.R;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.widget.CustomToast;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -26,24 +27,7 @@ public class AlipayUtil {
     private static final int SDK_PAY_FLAG = 0x01;
     private Activity mContext;
     private PayTask mPayTask = null;
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case SDK_PAY_FLAG: {
-                    Intent mIntent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
-                    PayResult payResult = new PayResult((String) msg.obj);
-                    mIntent.putExtra("info", new Gson().toJson(payResult));
-                    mIntent.putExtra("type", "aliPay");
-                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-    };
+    private Handler mHandler = new MyHandler(this);
 
     public AlipayUtil(Activity context) {
         mContext = context;
@@ -211,5 +195,33 @@ public class AlipayUtil {
      */
     public String getSignType() {
         return "sign_type=\"RSA\"";
+    }
+
+    private static class MyHandler extends Handler {
+        WeakReference<AlipayUtil> mActivity;
+
+        MyHandler(AlipayUtil activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            final AlipayUtil activity = mActivity.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case SDK_PAY_FLAG: {
+                        Intent mIntent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
+                        PayResult payResult = new PayResult((String) msg.obj);
+                        mIntent.putExtra("info", new Gson().toJson(payResult));
+                        mIntent.putExtra("type", "aliPay");
+                        LocalBroadcastManager.getInstance(mActivity.get().mContext).sendBroadcast(mIntent);
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+        }
     }
 }

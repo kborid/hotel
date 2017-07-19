@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +35,13 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
     private Context context;
     private List<CouponDetailInfoBean> list;
     private List<Integer> marginValue;
-    private Map<Integer, int[]> colorMap;
+    private SparseArray<int[]> colorMap;
 
     public Hotel0YuanAdapter(Context context, List<CouponDetailInfoBean> list) {
         this.context = context;
         this.list = list;
         marginValue = new ArrayList<>();
-        colorMap = new HashMap<>();
+        colorMap = new SparseArray<>();
     }
 
     @Override
@@ -91,7 +92,7 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        listener.OnItemClickListener(v, position);
+                        listener.OnItemClickListeners(v, position);
                     }
                 }
             });
@@ -128,11 +129,11 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
         }
     }
 
-    private OnItemClickListener listener = null;
-    public interface OnItemClickListener {
-        void OnItemClickListener(View v, int index);
+    private OnItemClickListeners listener = null;
+    public interface OnItemClickListeners {
+        void OnItemClickListeners(View v, int index);
     }
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnItemClickListeners listener) {
         this.listener = listener;
     }
 }

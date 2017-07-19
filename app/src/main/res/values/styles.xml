@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <!--默认背景颜色-->
         <item name="android:windowBackground">@drawable/bg_gray</item>
+        <item name="colorAccent">@color/mainColorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -54,7 +55,7 @@
         <item name="android:button">@drawable/login_checkbox_show_pwd</item>
     </style>
 
-    <style name="MyMaterialDialog" parent="@style/iphone_progress_dialog"></style>
+    <style name="MyMaterialDialog" parent="@style/iphone_progress_dialog"/>
 
     <style name="iphone_progress_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>

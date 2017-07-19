@@ -63,7 +63,7 @@ public class SelectDate extends LinearLayout {
         button.setText(R.string.ok);
 
         dialogLayout = new LinearLayout(mContext);
-        LayoutParams params = new LayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         dialogLayout.setLayoutParams(params);
         dialogLayout.setOrientation(LinearLayout.VERTICAL);
         dialogLayout.setBackgroundColor(Color.argb(60, 255, 255, 255));
@@ -72,7 +72,7 @@ public class SelectDate extends LinearLayout {
         calendar = Calendar.getInstance();
 
         datePicker = new DatePicker(mContext);
-        LayoutParams params2 = new LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        LayoutParams params2 = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params2.gravity = Gravity.CENTER_HORIZONTAL;
         params2.topMargin = 10;
         datePicker.setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);

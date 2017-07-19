@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +31,7 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -43,23 +45,7 @@ public class MessageListActivity extends BaseActivity implements DataCallback {
     private static final String MESSAGE_TYPE_UNREAD = "01";
     private static final String MESSAGE_TYPE_READED = "03";
     private static final int PAGESIZE = 10;
-    private Handler myHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0x01:
-                    MessageInfoBean bean = (MessageInfoBean) msg.obj;
-                    tv_subject.setText(bean.title);
-                    tv_sender.setText(bean.sendUserName);
-                    tv_content.setText(bean.content);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
+    private Handler myHandler = new MyHandler(this);
     private TextView tv_subject, tv_sender, tv_content;
     private Spinner spinner_type;
     private String[] keys = new String[]{"全", "已", "未"};
@@ -231,6 +217,7 @@ public class MessageListActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        myHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -363,11 +350,11 @@ public class MessageListActivity extends BaseActivity implements DataCallback {
         void onUpdateInfo(MessageInfoBean bean);
     }
 
-    class MyMsgTypeAdapter extends BaseAdapter {
+    private class MyMsgTypeAdapter extends BaseAdapter {
         private Context context;
         private String[] keys = new String[3];
 
-        public MyMsgTypeAdapter(Context context, String[] keys) {
+        MyMsgTypeAdapter(Context context, String[] keys) {
             this.context = context;
             this.keys = keys;
         }
@@ -395,6 +382,32 @@ public class MessageListActivity extends BaseActivity implements DataCallback {
                 iv_item.setText(keys[position]);
             }
             return convertView;
+        }
+    }
+
+    private static class MyHandler extends Handler {
+        WeakReference<MessageListActivity> mActivity;
+
+        MyHandler(MessageListActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            final Activity activity = mActivity.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case 0x01:
+                        MessageInfoBean bean = (MessageInfoBean) msg.obj;
+                        mActivity.get().tv_subject.setText(bean.title);
+                        mActivity.get().tv_sender.setText(bean.sendUserName);
+                        mActivity.get().tv_content.setText(bean.content);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

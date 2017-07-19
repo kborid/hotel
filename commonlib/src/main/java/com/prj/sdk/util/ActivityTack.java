@@ -1,15 +1,13 @@
 package com.prj.sdk.util;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 
 import com.prj.sdk.app.AppContext;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Activity栈管理类：包括退出管理
@@ -134,26 +132,5 @@ public class ActivityTack {
 	public final void clearNotificaction() {
 		NotificationManager manager = (NotificationManager) AppContext.mAppContext.getSystemService(Context.NOTIFICATION_SERVICE);
 		manager.cancelAll();
-	}
-
-	public boolean isRunActivity(Context context, String packageName) {
-		ActivityManager __am = (ActivityManager) context
-				.getApplicationContext().getSystemService(
-						Context.ACTIVITY_SERVICE);
-		List<ActivityManager.RunningTaskInfo> __list = __am.getRunningTasks(100);
-		if (__list.size() == 0)
-			return false;
-		for (ActivityManager.RunningTaskInfo task : __list) {
-			if (task.topActivity.getPackageName().equals(packageName)) {
-
-				Intent activityIntent = new Intent();
-				activityIntent.setComponent(task.topActivity);
-				activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-						| Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				context.startActivity(activityIntent);
-				return true;
-			}
-		}
-		return false;
 	}
 }

@@ -1,219 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:baselineAligned="false">
+    android:layout_height="match_parent">
+
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:fillViewport="true"-->
+    <!--android:scrollbars="none">-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/bg_white"
-        android:focusable="false"
-        android:focusableInTouchMode="true"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingLeft="17dp"
-        android:paddingRight="17dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="17dp">
 
-            <TextView
-                android:id="@+id/tv_city_lable"
-                android:layout_width="65dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="城市"
-                android:textColor="@color/secColor"
-                android:textSize="@dimen/common_15sp"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_city"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:hint="城市"
-                android:paddingLeft="25dp"
-                android:textColor="@color/secColor"
-                android:textColorHint="@color/tabDefaultColor"
-                android:textSize="@dimen/common_24sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_city_lable"
+                    android:layout_width="65dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="城市"
+                    android:textColor="@color/secColor"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="10dp">
+                <TextView
+                    android:id="@+id/tv_city"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:hint="城市"
+                    android:paddingLeft="25dp"
+                    android:textColor="@color/secColor"
+                    android:textColorHint="@color/tabDefaultColor"
+                    android:textSize="@dimen/common_24sp"
+                    android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/iv_location"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/iv_location" />
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
 
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/iv_location"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/iv_location" />
+                </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@drawable/comm_line2" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:orientation="horizontal">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/comm_line2" />
 
-            <TextView
-                android:id="@+id/tv_key_lable"
-                android:layout_width="65dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="关键词"
-                android:textColor="@color/secColor"
-                android:textSize="@dimen/common_15sp"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/et_keyword"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="left|center_vertical"
-                android:hint="酒店名/位置/品牌"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:lines="1"
-                android:paddingLeft="25dp"
-                android:textColor="@color/secColor"
-                android:textColorHint="@color/tabDefaultColor"
-                android:textSize="@dimen/common_18sp" />
+                <TextView
+                    android:id="@+id/tv_key_lable"
+                    android:layout_width="65dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="关键词"
+                    android:textColor="@color/secColor"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="10dp">
+                <EditText
+                    android:id="@+id/et_keyword"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="left|center_vertical"
+                    android:hint="酒店名/位置/品牌"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:paddingLeft="25dp"
+                    android:textColor="@color/secColor"
+                    android:textColorHint="@color/tabDefaultColor"
+                    android:textSize="@dimen/common_18sp" />
 
                 <ImageView
                     android:id="@+id/iv_reset"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/delete_btn_selector"
-                    android:scaleType="centerInside" />
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/delete_btn_selector" />
 
-                <ImageView
-                    android:id="@+id/iv_voice"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/iv_reset"
-                    android:src="@drawable/voice_selector" />
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/iv_voice"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/voice_selector" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/comm_line2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_price_label"
+                    android:layout_width="65dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="价位"
+                    android:textColor="@color/secColor"
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:hint="不限"
+                    android:paddingLeft="25dp"
+                    android:textColor="@color/secColor"
+                    android:textColorHint="@color/tabDefaultColor"
+                    android:textSize="@dimen/common_18sp" />
+
+                <RelativeLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/iv_pull"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/iv_home_pull" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/comm_line2" />
+
+            <TextView
+                android:id="@+id/tv_next_search"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="23dp"
+                android:layout_marginTop="17dp"
+                android:background="@drawable/comm_rectangle_btn_transparent_withbound"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/accessory_selector"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="搜索酒店"
+                android:textColor="@color/main_white_selector"
+                android:textSize="@dimen/common_15sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
-        <View
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@drawable/comm_line2" />
-
-        <TextView
-            android:id="@+id/tv_next_search"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_gravity="right"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/comm_rectangle_btn_transparent_withbound"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/accessory_selector"
-            android:gravity="center"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="搜索酒店"
-            android:textColor="@color/main_white_selector"
-            android:textSize="@dimen/common_15sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="20dp">
-
-        <TextView
-            android:id="@+id/tv_info"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="27dp"
-            android:layout_marginTop="15dp"
-            android:drawablePadding="7dp"
-            android:drawableRight="@drawable/iv_info"
-            android:text="惠省钱"
-            android:textColor="@color/lableColor"
-            android:textSize="@dimen/common_15sp" />
+            android:padding="15dp">
 
-        <ImageButton
-            android:id="@+id/btn_0yz"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@id/tv_info"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/comm_rectangle_btn_zero"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="100dp"
-            android:paddingTop="10dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/iv_freeonenight_blue"
-            android:visibility="visible" />
+            <TextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:drawablePadding="7dp"
+                android:drawableRight="@drawable/iv_info"
+                android:text="惠省钱"
+                android:textColor="@color/lableColor"
+                android:textSize="@dimen/common_15sp" />
 
-        <Button
-            android:id="@+id/btn_ygr"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@id/btn_0yz"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/comm_rectangle_btn_ygr"
-            android:text="夜归人"
-            android:textColor="@color/white"
-            android:textSize="@dimen/common_15sp" />
+            <ImageButton
+                android:id="@+id/btn_0yz"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@id/tv_info"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/comm_rectangle_btn_zero"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="100dp"
+                android:paddingTop="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/iv_freeonenight_blue"
+                android:visibility="gone" />
 
-        <Button
-            android:id="@+id/btn_hhy"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@+id/btn_ygr"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/comm_rectangle_btn_white"
-            android:text="后悔药"
-            android:textColor="@color/hhyMainTextColor"
-            android:textSize="@dimen/common_15sp"
-            android:visibility="visible" />
-    </RelativeLayout>
+            <Button
+                android:id="@+id/btn_ygr"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@id/btn_0yz"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/comm_rectangle_btn_ygr"
+                android:text="夜归人"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_15sp" />
+
+            <Button
+                android:id="@+id/btn_hhy"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/btn_ygr"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/comm_rectangle_btn_white"
+                android:text="后悔药"
+                android:textColor="@color/hhyMainTextColor"
+                android:textSize="@dimen/common_15sp"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+    <!--</ScrollView>-->
 </LinearLayout>

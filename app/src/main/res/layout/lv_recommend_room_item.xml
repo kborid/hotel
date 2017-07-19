@@ -99,7 +99,7 @@
 
                 <RelativeLayout
                     android:id="@+id/note_lay"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center">
@@ -144,7 +144,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
-                    android:layout_toRightOf="@id/note_lay"
                     android:src="@drawable/iv_accessory_blue" />
             </LinearLayout>
         </LinearLayout>

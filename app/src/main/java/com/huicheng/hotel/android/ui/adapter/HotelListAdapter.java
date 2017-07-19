@@ -66,7 +66,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
         switch (type) {
             case HotelCommDef.TYPE_YEGUIREN:
-                holder.content_layout.setBackgroundResource(R.drawable.comm_gradient_ygr_color);
+                holder.cardview.setBackgroundResource(R.drawable.comm_gradient_ygr_color);
                 holder.tv_hotel_name.setTextColor(context.getResources().getColor(R.color.white));
                 holder.tv_hotel_dis.setTextColor(context.getResources().getColor(R.color.white));
                 holder.tv_hotel_price.setTextColor(context.getResources().getColor(R.color.white));
@@ -76,7 +76,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             case HotelCommDef.TYPE_ALL:
             case HotelCommDef.TYPE_CLOCK:
             default:
-                holder.content_layout.setBackgroundResource(R.color.transparent);
+                holder.cardview.setBackgroundResource(R.drawable.comm_10radius_white_color);
                 holder.tv_hotel_name.setTextColor(context.getResources().getColor(R.color.registerhintColor));
                 holder.tv_hotel_dis.setTextColor(context.getResources().getColor(R.color.registerhintColor));
                 holder.tv_hotel_price.setTextColor(context.getResources().getColor(R.color.registerhintColor));
@@ -149,7 +149,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     class HotelViewHolder extends RecyclerView.ViewHolder {
 
         CardView cardview;
-        LinearLayout content_layout;
         LinearLayout vip_layout;
         TextView tv_vip_price;
         RoundedTopImageView iv_hotel_icon;
@@ -163,7 +162,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         HotelViewHolder(View itemView) {
             super(itemView);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
-            content_layout = (LinearLayout) itemView.findViewById(R.id.content_layout);
             vip_layout = (LinearLayout) itemView.findViewById(R.id.vip_layout);
             ((TextView) itemView.findViewById(R.id.tv_vip_price_note)).getPaint().setFakeBoldText(true);
             tv_vip_price = (TextView) itemView.findViewById(R.id.tv_vip_price);

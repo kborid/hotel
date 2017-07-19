@@ -32,6 +32,7 @@ public class MyGridViewWidget extends GridView {
         rowsCount = array.getInt(R.styleable.GridViewWidgetRows_rowscount, 3);
         showLine = array.getBoolean(R.styleable.GridViewWidgetRows_showLine, false);
         lineColor = array.getColor(R.styleable.GridViewWidgetRows_lineColor, resources.getColor(R.color.tabDefaultColor));
+        array.recycle();
     }
 
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

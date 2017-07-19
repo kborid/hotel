@@ -24,7 +24,7 @@
             android:drawableLeft="@drawable/iv_phone"
             android:drawablePadding="17dp"
             android:hint="手机号码"
-            android:inputType="text"
+            android:inputType="phone"
             android:textColorHint="@color/registerhintColor"
             android:textSize="@dimen/common_18sp" />
 

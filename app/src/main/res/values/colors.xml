@@ -48,6 +48,7 @@
     <color name="tabTaxiColor">#fcb819</color>
     <color name="tabDefaultColor">@color/secColorShadow</color>
 
+    <color name="freeShadowColor">#ccfcb82b</color>
     <color name="hhyMainTextColor">#3d82cf</color>
     <color name="deleteColor">#ef5669</color>
     <color name="btnBoundColor">#98a2bb</color>

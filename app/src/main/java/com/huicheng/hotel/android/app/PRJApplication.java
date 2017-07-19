@@ -21,7 +21,6 @@ import com.prj.sdk.app.AppContext;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
-import com.squareup.leakcanary.LeakCanary;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
@@ -29,8 +28,6 @@ import com.umeng.socialize.PlatformConfig;
 import java.util.Collections;
 
 import cn.jpush.android.api.JPushInterface;
-
-import static com.umeng.socialize.utils.DeviceConfig.context;
 
 public class PRJApplication extends Application {
     UnLoginBroadcastReceiver mReceiver = new UnLoginBroadcastReceiver();

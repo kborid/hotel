@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,6 +28,7 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.widget.CustomToast;
 
+import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,26 +54,7 @@ public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelD
     private int hour, min, sec;
     private TextView tv_hour, tv_min, tv_sec;
     private Timer timer;
-    private Handler myHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case UPDATETIMER:
-                    tv_hour.setText(String.format("%02d", hour));
-                    tv_min.setText(String.format("%02d", min));
-                    tv_sec.setText(String.format("%02d", sec));
-                    break;
-                case GAMEOVER:
-                    timer.cancel();
-                    CustomToast.show("活动已结束", CustomToast.LENGTH_SHORT);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
+    private Handler myHandler = new MyHandler(this);
     private RecyclerView recyclerView;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private Hotel0YuanAdapter adapter = null;
@@ -185,9 +168,9 @@ public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelD
         super.initListeners();
         iv_back.setOnClickListener(this);
         addr_lay.setOnClickListener(this);
-        adapter.setOnItemClickListener(new Hotel0YuanAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new Hotel0YuanAdapter.OnItemClickListeners() {
             @Override
-            public void OnItemClickListener(View v, int index) {
+            public void OnItemClickListeners(View v, int index) {
                 requestGrabCoupon(list.get(index).couponId);
             }
         });
@@ -219,6 +202,7 @@ public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelD
     protected void onDestroy() {
         super.onDestroy();
         timer.cancel();
+        myHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -296,6 +280,35 @@ public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelD
                 }
             }
             myHandler.sendEmptyMessage(UPDATETIMER);
+        }
+    }
+
+    private static class MyHandler extends Handler {
+        WeakReference<Hotel0YuanChooseActivity> mActivity;
+
+        MyHandler(Hotel0YuanChooseActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            final Activity activity = mActivity.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case UPDATETIMER:
+                        mActivity.get().tv_hour.setText(String.format("%02d", mActivity.get().hour));
+                        mActivity.get().tv_min.setText(String.format("%02d", mActivity.get().min));
+                        mActivity.get().tv_sec.setText(String.format("%02d", mActivity.get().sec));
+                        break;
+                    case GAMEOVER:
+                        mActivity.get().timer.cancel();
+                        CustomToast.show("活动已结束", CustomToast.LENGTH_SHORT);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

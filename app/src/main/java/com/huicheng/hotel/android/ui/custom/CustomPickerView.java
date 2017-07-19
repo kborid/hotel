@@ -130,7 +130,7 @@ public class CustomPickerView extends View {
      */
     private void drawText(Canvas canvas, int position, int direction) {
         // 元素距离控件中心的相对距离
-        float offset = (float) (mDistance * position + direction * mMoveLen);
+        float offset = mDistance * position + direction * mMoveLen;
 
         // 缩放倍数：位于控件中心时，缩放倍数是1;控件中心的前一个数据和后一个数据的缩放倍数是0
         float f = (float) (1 - Math.pow(offset / mDistance, 2));// 按抛物线缩放

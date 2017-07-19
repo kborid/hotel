@@ -43,10 +43,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/common_10sp"
-                    android:padding="5dp"
-                    android:visibility="gone"
                     android:background="@drawable/comm_rectangle_btn_white_alpha"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/time_lay"
@@ -61,6 +61,7 @@
                             android:text="有效时间："
                             android:textColor="@color/indicatorColor"
                             android:textSize="@dimen/common_9sp" />
+
                         <TextView
                             android:id="@+id/tv_time"
                             android:layout_width="wrap_content"
@@ -70,6 +71,7 @@
                             android:textColor="@color/indicatorColor"
                             android:textSize="@dimen/common_9sp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/durning_lay"
                         android:layout_width="match_parent"
@@ -82,6 +84,7 @@
                             android:text="入住时长："
                             android:textColor="@color/indicatorColor"
                             android:textSize="@dimen/common_9sp" />
+
                         <TextView
                             android:id="@+id/tv_during"
                             android:layout_width="wrap_content"
@@ -102,7 +105,7 @@
 
                 <RelativeLayout
                     android:id="@+id/note_lay"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center">
@@ -147,7 +150,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
-                    android:layout_toRightOf="@id/note_lay"
                     android:src="@drawable/iv_accessory_black_alpha3" />
             </LinearLayout>
         </LinearLayout>

@@ -38,6 +38,8 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
+import static com.huicheng.hotel.android.R.id.btn_0yz;
+
 /**
  * Fragment home
  */
@@ -110,7 +112,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         iv_voice = (ImageView) view.findViewById(R.id.iv_voice);
         tv_next_search = (TextView) view.findViewById(R.id.tv_next_search);
         tv_info = (TextView) view.findViewById(R.id.tv_info);
-        btn_zero = (ImageButton) view.findViewById(R.id.btn_0yz);
+        btn_zero = (ImageButton) view.findViewById(btn_0yz);
         btn_night = (Button) view.findViewById(R.id.btn_ygr);
         btn_hhy = (Button) view.findViewById(R.id.btn_hhy);
     }
@@ -126,6 +128,11 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 tv_city.setText(city);
             }
         }
+        if (AppConst.ISDEVELOP) {
+            btn_zero.setVisibility(View.VISIBLE);
+        }
+
+        System.out.println("App is running " + SessionContext.isRunningApp(getActivity(), "com.huicheng.hotel.android"));
     }
 
     @Override
@@ -232,7 +239,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
                 break;
-            case R.id.btn_0yz:
+            case btn_0yz:
                 if (!SessionContext.isLogin()) {
                     getActivity().sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                     return;

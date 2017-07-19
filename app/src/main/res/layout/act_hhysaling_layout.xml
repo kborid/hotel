@@ -13,7 +13,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:scrollbarThumbVertical="@drawable/p3016_scrollbar">
 
@@ -37,7 +37,7 @@
 
                 <TextView
                     android:id="@+id/tv_order_id"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="dingdan123123123123123"
@@ -60,7 +60,7 @@
 
                 <TextView
                     android:id="@+id/tv_bedtype"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="大床房"
@@ -83,7 +83,7 @@
 
                 <TextView
                     android:id="@+id/tv_date"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="8月26日-8月27日"
@@ -167,7 +167,7 @@
                         android:textSize="@dimen/common_12sp" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="420元"

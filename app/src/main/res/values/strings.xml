@@ -20,8 +20,6 @@
     <string name="dialog_tip_bind_phone_error">手机绑定失败，请重试</string>
     <string name="not_install_wx">没有安装微信</string>
 
-    <item name="tag_key" type="id" />
-
     <string name="footer_loading">正在加载</string>
     <string name="footer_nomore">没有更多数据</string>
     <string name="footer_click">点击加载更多</string>
@@ -67,7 +65,6 @@
     <string name="uc_fav">出行偏好设置</string>
 
 
-
     <!--设置-->
     <string name="setting">设置</string>
     <string name="setting_version">版本介绍</string>
@@ -111,4 +108,8 @@
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
     <string name="test">该View是通过ListView实现的，通过实体两个字段内容content和时间time来展示每个ListItem，在ListView中，设置其分割线为空，并且没有点击效果。</string>
+    <string name="freeAct">0元住</string>
+    <string name="freeProc">活动流程</string>
+    <string name="freeActNote">—注册ABC账号\n—发送活动连接邀请好友\n   一同参与抢房\n—好友注册成功ABC账号后，\n   您的0元抢房权限即刻激活\n—每名注册用户每次活动限\n   抢一张免费房券</string>
+    <string name="freeBegin">开始抢房</string>
 </resources>

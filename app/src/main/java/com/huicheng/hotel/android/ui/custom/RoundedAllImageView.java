@@ -35,6 +35,7 @@ public class RoundedAllImageView extends ImageView {
         TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.roundedImage);
         float radius = (int) mTypedArray.getDimension(R.styleable.roundedImage_radius, 0);
         rids = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
+        mTypedArray.recycle();
     }
 
     /**

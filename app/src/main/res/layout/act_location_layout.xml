@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg_white">
+    android:background="@drawable/bg_white"
+    android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
 
@@ -129,7 +129,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/bg_gray"
         android:orientation="vertical">
@@ -145,7 +145,6 @@
         <com.huicheng.hotel.android.ui.custom.CityAreaWheelView
             android:id="@+id/wheelview"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>
