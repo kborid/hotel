@@ -43,7 +43,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * @author kborid
@@ -550,9 +549,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
 
     private void closeOtherItem() {
         // 采用Iterator的原因是for是线程不安全的，迭代器是线程安全的
-        ListIterator<CustomSwipeView> slideDeleteListIterator = slideDeleteArrayList.listIterator();
-        while (slideDeleteListIterator.hasNext()) {
-            CustomSwipeView swipeView = slideDeleteListIterator.next();
+        for (CustomSwipeView swipeView : slideDeleteArrayList) {
             swipeView.isShowDelete(false);
         }
         slideDeleteArrayList.clear();

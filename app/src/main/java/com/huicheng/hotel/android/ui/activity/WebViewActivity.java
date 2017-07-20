@@ -135,7 +135,7 @@ public class WebViewActivity extends BaseActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             // dealError();
-            if ((url != null) && (!"".equals(url)) && (url.indexOf("/") < 0)) {
+            if ((url != null) && (!"".equals(url)) && (!url.contains("/"))) {
                 CustomToast.show("链接地址不正确", 0);
                 return false;
             }

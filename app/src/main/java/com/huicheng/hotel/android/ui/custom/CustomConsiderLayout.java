@@ -117,10 +117,46 @@ public class CustomConsiderLayout extends RelativeLayout implements View.OnClick
         grade_index = -1;
         type_index = -1;
         rangeMin = 0f;
-        rangeMax = 5f;
+        rangeMax = 6f;
         rg_point.getChildAt(0).performClick();
         rg_grade.getChildAt(0).performClick();
         rg_type.getChildAt(0).performClick();
+        rangeSeekBar.setValue(rangeMin, rangeMax);
+    }
+
+    public void setPriceRange(int index) {
+        switch (index) {
+            case 0:
+                rangeMin = 0f;
+                rangeMax = 6f;
+                break;
+            case 1:
+                rangeMin = 0f;
+                rangeMax = 2f;
+                break;
+            case 2:
+                rangeMin = 2f;
+                rangeMax = 3f;
+                break;
+            case 3:
+                rangeMin = 3f;
+                rangeMax = 4f;
+                break;
+            case 4:
+                rangeMin = 4f;
+                rangeMax = 5f;
+                break;
+            case 5:
+                rangeMin = 5f;
+                rangeMax = 6f;
+                break;
+            default:
+                rangeMin = 0f;
+                rangeMax = 6f;
+                break;
+        }
+        SharedPreferenceUtil.getInstance().setFloat(AppConst.RANGE_MIN, rangeMin);
+        SharedPreferenceUtil.getInstance().setFloat(AppConst.RANGE_MAX, rangeMax);
         rangeSeekBar.setValue(rangeMin, rangeMax);
     }
 

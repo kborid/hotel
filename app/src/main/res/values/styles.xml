@@ -6,6 +6,10 @@
         <!--默认背景颜色-->
         <item name="android:windowBackground">@drawable/bg_gray</item>
         <item name="colorAccent">@color/mainColorAccent</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge
+        </item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall
+        </item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -15,10 +19,15 @@
         <item name="android:windowBackground">@drawable/share_bg</item>
     </style>
 
-    <!--新建项目自带主题，以后备用-->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="myPopupMenuTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/secColor</item>
+        <item name="android:textSize">@dimen/common_18sp</item>
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="myPopupMenuTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/secColor</item>
+        <item name="android:textSize">@dimen/common_18sp</item>
+    </style>
 
     <style name="ImageTransparent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -55,7 +64,7 @@
         <item name="android:button">@drawable/login_checkbox_show_pwd</item>
     </style>
 
-    <style name="MyMaterialDialog" parent="@style/iphone_progress_dialog"/>
+    <style name="MyMaterialDialog" parent="@style/iphone_progress_dialog" />
 
     <style name="iphone_progress_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
@@ -72,7 +81,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">45dp</item>
         <item name="android:background">@drawable/comm_rectangle_btn</item>
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="AnimTools" parent="@android:style/Animation">
@@ -84,10 +93,6 @@
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">0</item>
         <item name="android:shadowRadius">0</item>
-    </style>
-
-    <style name="hotelItemStyle">
-        <item name="android:background">@drawable/comm_gradient_ygr_color</item>
     </style>
 
     <style name="consider_anmi" parent="@android:style/Animation">

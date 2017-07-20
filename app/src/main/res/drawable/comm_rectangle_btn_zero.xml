@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!--<item android:height="46dp">-->
-    <!--<shape>-->
-    <!--<corners android:radius="25dp" />-->
-    <!--<gradient-->
-    <!--android:angle="270"-->
-    <!--android:endColor="@color/transparent5_"-->
-    <!--android:startColor="@color/freeShadowColor"-->
-    <!--android:type="linear" />-->
-    <!--</shape>-->
-    <!--</item>-->
-
-    <item android:drawable="@drawable/iv_free_bg">
-        <!--android:height="44dp"-->
-        <!--android:left="2dp"-->
-        <!--android:right="2dp">-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/iv_free_bg" android:state_pressed="true">
         <shape>
             <corners android:radius="25dp" />
         </shape>
     </item>
-</layer-list>
+
+    <item android:drawable="@drawable/iv_free_bg">
+        <shape>
+            <corners android:radius="25dp" />
+        </shape>
+    </item>
+</selector>

@@ -7,7 +7,8 @@ import android.view.View;
 import com.prj.sdk.util.Utils;
 
 /**
- * Created by Nate on 2016/7/22.
+ * @auth Nate
+ * @date 2016/7/22.
  */
 public class VerticalStackTransformer extends VerticalBaseTransformer {
 

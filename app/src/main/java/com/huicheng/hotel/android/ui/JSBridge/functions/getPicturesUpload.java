@@ -81,8 +81,6 @@ public class getPicturesUpload implements HtmlActivity.ActivityResult, WVJBWebVi
 						uploadImg(mBitmap);
 						mBitmap.recycle();
 						mBitmap = null;
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

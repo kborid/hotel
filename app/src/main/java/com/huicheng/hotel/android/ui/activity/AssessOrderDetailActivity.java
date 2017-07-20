@@ -328,6 +328,7 @@ public class AssessOrderDetailActivity extends BaseActivity implements DataCallb
                 dialog.dismiss();
             }
         });
+        mDialog.setCanceledOnTouchOutside(true);
 
         mDialog.show();
     }

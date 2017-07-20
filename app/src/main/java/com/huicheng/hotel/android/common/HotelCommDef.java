@@ -121,6 +121,9 @@ public class HotelCommDef {
             case 5:
                 price = "2000";
                 break;
+            case 6:
+                price = "";
+                break;
             default:
                 price = "0";
                 break;

@@ -40,6 +40,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
     private boolean rebooking = false;
     private String hotelId = null;
     private String keyword = null;
+    private int mPriceIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
             if (bundle.getString("keyword") != null) {
                 keyword = bundle.getString("keyword");
             }
+            mPriceIndex = bundle.getInt("priceIndex");
         }
     }
 
@@ -123,6 +125,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
                 HotelOrderManager.getInstance().setDateStr((begin.getMonth() + 1) + "." + begin.getDay() /*+ DateUtil.dateToWeek2(begin.getDate())*/ + " - "/* + (end.getMonth() + 1) + "."*/ + end.getDay()/* + DateUtil.dateToWeek2(end.getDate())*/);
                 intent.putExtra("index", jumpIndex);
                 intent.putExtra("keyword", keyword);
+                intent.putExtra("priceIndex", mPriceIndex);
                 startActivity(intent);
                 break;
             default:

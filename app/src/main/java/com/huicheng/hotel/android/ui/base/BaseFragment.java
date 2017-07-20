@@ -128,11 +128,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public final boolean isProgressShowing() {
-        if (mProgressDialog != null) {
-            return mProgressDialog.isShowing();
-        } else {
-            return false;
-        }
+        return mProgressDialog != null && mProgressDialog.isShowing();
     }
 
     /**

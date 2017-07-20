@@ -66,6 +66,7 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
     private CustomConsiderLayout customConsiderLayout;
     private float mWidth, mHeight;
     private String keyword = "";
+    private int mPriceIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +128,7 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
             if (bundle.getString("keyword") != null) {
                 keyword = bundle.getString("keyword");
             }
+            mPriceIndex = bundle.getInt("priceIndex");
         }
     }
 
@@ -140,9 +142,7 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
 
         setIndicator(tabs, 40, 40);
         customConsiderLayout.initAndRestoreConfig();
-//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) fab.getLayoutParams();
-//        lp.bottomMargin = Utils.mNavigationBarHeight;
-//        fab.setLayoutParams(lp);
+        customConsiderLayout.setPriceRange(mPriceIndex);
     }
 
     @Override
@@ -323,11 +323,11 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return FragmentTabAllDay.newInstance(HotelCommDef.ALLDAY, keyword);
+                    return FragmentTabAllDay.newInstance(HotelCommDef.ALLDAY, keyword, mPriceIndex);
                 case 1:
-                    return FragmentTabClock.newInstance(HotelCommDef.CLOCK, keyword);
+                    return FragmentTabClock.newInstance(HotelCommDef.CLOCK, keyword, mPriceIndex);
                 case 2:
-                    return FragmentTabYeGuiRen.newInstance(HotelCommDef.YEGUIREN, keyword);
+                    return FragmentTabYeGuiRen.newInstance(HotelCommDef.YEGUIREN, keyword, mPriceIndex);
 //                case 3:
 //                    return FragmentTabHouHuiYao.newInstance(HotelCommDef.HOUHUIYAO, dateStr);
                 default:

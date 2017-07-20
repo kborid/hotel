@@ -412,7 +412,7 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
                         final Bitmap bmp = getNameBitmap(name);
 
                         // 这里会出现删除过的用户，需要做判断，过滤掉
-                        if (tmp.indexOf(name) >= 0 && (tmp.indexOf(name) + name.length()) <= tmp.length()) {
+                        if (tmp.contains(name) && (tmp.indexOf(name) + name.length()) <= tmp.length()) {
 
                             // 把取到的要@的人名，用DynamicDrawableSpan代替
                             ss.setSpan(

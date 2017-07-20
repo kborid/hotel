@@ -21,9 +21,7 @@
         <RelativeLayout
             android:layout_width="60dp"
             android:id="@+id/umeng_back"
-
             android:visibility="visible"
-            android:onClick="onCancel"
             android:layout_height="match_parent">
             <ImageButton
 

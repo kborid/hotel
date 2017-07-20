@@ -170,7 +170,7 @@ public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelD
         addr_lay.setOnClickListener(this);
         adapter.setOnItemClickListener(new Hotel0YuanAdapter.OnItemClickListeners() {
             @Override
-            public void OnItemClickListeners(View v, int index) {
+            public void OnItemClick(View v, int index) {
                 requestGrabCoupon(list.get(index).couponId);
             }
         });

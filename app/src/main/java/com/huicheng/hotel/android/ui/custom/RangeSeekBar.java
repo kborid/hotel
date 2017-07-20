@@ -26,7 +26,7 @@ import com.huicheng.hotel.android.R;
  */
 
 public class RangeSeekBar extends View {
-    public static final String[] textSummary = {"0", "100", "300", "500", "1000", "2000"};
+    public static final String[] textSummary = {"0", "100", "300", "500", "1000", "2000", "以上"};
     private Paint paint = new Paint();
 
     private int lineTop, lineBottom, lineLeft, lineRight;
@@ -53,6 +53,7 @@ public class RangeSeekBar extends View {
     private float reserveValue;
     private int reserveCount;
     private float reservePercent;
+    private int cellCount = 1;
 
     private int thumbWidth;
     private int startPosition;
@@ -150,8 +151,8 @@ public class RangeSeekBar extends View {
         float min = t.getFloat(R.styleable.RangeSeekBar_min, 0);
         float max = t.getFloat(R.styleable.RangeSeekBar_max, 1);
         float reserve = t.getFloat(R.styleable.RangeSeekBar_reserve, 0);
-        int cells = t.getInt(R.styleable.RangeSeekBar_cells, 1);
-        setRules(min, max, reserve, cells);
+        cellCount = t.getInt(R.styleable.RangeSeekBar_cells, 1);
+        setRules(min, max, reserve, cellCount);
         t.recycle();
     }
 
@@ -333,7 +334,7 @@ public class RangeSeekBar extends View {
         //设置选中状态的画笔颜色
         paint.setColor(colorLineSelected);
         //画选中的小圆点
-        for (int i = (int) (leftSB.currPercent * 5); i <= (int) (rightSB.currPercent * 5); i++) {
+        for (int i = (int) (leftSB.currPercent * cellCount); i <= (int) (rightSB.currPercent * cellCount); i++) {
             canvas.drawCircle(lineLeft + i * cellsPercent * lineWidth, lineTop + lineHeight / 2, 10, paint);
         }
         //画选中的线

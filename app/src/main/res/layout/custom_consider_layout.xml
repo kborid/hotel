@@ -216,11 +216,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="27dp"
-                app:cells="5"
+                app:cells="6"
                 app:lineColorEdge="@color/secColor"
                 app:lineColorSelected="@color/indicatorColor"
                 app:lineColorUnSelected="@color/tabDefaultColor"
-                app:max="5"
+                app:max="6"
                 app:min="0"
                 app:reserve="1"
                 app:seekBarResId="@drawable/iv_thumb_yw" />

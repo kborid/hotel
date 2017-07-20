@@ -12,14 +12,14 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="我的测试页"
+        android:text="内容页面"
         android:textColor="@color/secColor"
         android:textSize="50sp" />
 
     <LinearLayout
         android:id="@+id/menu_bottom"
         android:layout_width="match_parent"
-        android:layout_height="57dp"
+        android:layout_height="60dp"
         android:background="@drawable/bg_gray"
         android:orientation="horizontal">
 
@@ -74,7 +74,7 @@
         <LinearLayout
             android:id="@+id/view_tab_post"
             android:layout_width="0dp"
-            android:layout_height="73dp"
+            android:layout_height="75dp"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:gravity="center_horizontal"

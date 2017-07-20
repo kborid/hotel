@@ -1,13 +1,16 @@
 package com.huicheng.hotel.android.ui.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -58,12 +62,17 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     private ImageButton btn_zero;
     private Button btn_night, btn_hhy;
 
+    private TextView tv_price;
+    private int mPriceIndex = 0;
+    private ImageView iv_pull;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         isFirstLoad = true;
         getArguments().getString("key");
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_pager_home, container, false);
         initViews(view);
         initParams();
@@ -115,6 +124,9 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         btn_zero = (ImageButton) view.findViewById(btn_0yz);
         btn_night = (Button) view.findViewById(R.id.btn_ygr);
         btn_hhy = (Button) view.findViewById(R.id.btn_hhy);
+
+        tv_price = (TextView) view.findViewById(R.id.tv_price);
+        iv_pull = (ImageView) view.findViewById(R.id.iv_pull);
     }
 
     @Override
@@ -147,6 +159,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         btn_zero.setOnClickListener(this);
         btn_night.setOnClickListener(this);
         btn_hhy.setOnClickListener(this);
+        tv_price.setOnClickListener(this);
+        iv_pull.setOnClickListener(this);
 
         et_keyword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -177,6 +191,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         });
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     public void onClick(View v) {
         Intent intent = null;
@@ -225,6 +240,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 intent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
                 intent.putExtra("index", 0);
                 intent.putExtra("keyword", et_keyword.getText().toString());
+                intent.putExtra("priceIndex", mPriceIndex);
                 break;
             case R.id.tv_info:
                 CustomDialog dialog = new CustomDialog(getActivity());
@@ -263,6 +279,21 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 intent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
                 HotelOrderManager.getInstance().reset();
                 intent.putExtra("index", 3);
+                break;
+            case R.id.tv_price:
+            case R.id.iv_pull:
+                PopupMenu popup = new PopupMenu(getActivity(), et_keyword);
+                getActivity().getMenuInflater().inflate(R.menu.hotel_home_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        mPriceIndex = item.getOrder();
+                        tv_price.setText(item.getTitle());
+                        System.out.println("order = " + mPriceIndex + ", title = " + tv_price.getText());
+                        return false;
+                    }
+                });
+                popup.show();
                 break;
             default:
                 break;

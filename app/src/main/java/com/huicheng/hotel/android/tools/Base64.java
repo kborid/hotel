@@ -49,9 +49,7 @@ public class Base64 {
 	}
 
 	private static boolean isBase64(byte octect) {
-		if (octect == 61)
-			return true;
-		return base64Alphabet[octect] != -1;
+		return octect == 61 || base64Alphabet[octect] != -1;
 	}
 
 	public static boolean isArrayByteBase64(byte[] arrayOctect) {

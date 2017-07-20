@@ -112,4 +112,11 @@
     <string name="freeProc">活动流程</string>
     <string name="freeActNote">—注册ABC账号\n—发送活动连接邀请好友\n   一同参与抢房\n—好友注册成功ABC账号后，\n   您的0元抢房权限即刻激活\n—每名注册用户每次活动限\n   抢一张免费房券</string>
     <string name="freeBegin">开始抢房</string>
+
+    <string name="menu_price0">不限</string>
+    <string name="menu_price1">0–300元</string>
+    <string name="menu_price2">300–500元</string>
+    <string name="menu_price3">500–1000元</string>
+    <string name="menu_price4">1000–2000元</string>
+    <string name="menu_price5">2000元以上</string>
 </resources>

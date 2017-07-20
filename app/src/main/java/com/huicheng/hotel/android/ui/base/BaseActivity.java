@@ -146,11 +146,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
     }
 
     public final boolean isProgressShowing() {
-        if (mProgressDialog != null) {
-            return mProgressDialog.isShowing();
-        } else {
-            return false;
-        }
+        return mProgressDialog != null && mProgressDialog.isShowing();
     }
 
     /**

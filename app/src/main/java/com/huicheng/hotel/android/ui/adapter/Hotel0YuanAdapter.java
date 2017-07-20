@@ -20,9 +20,7 @@ import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -92,7 +90,7 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        listener.OnItemClickListeners(v, position);
+                        listener.OnItemClick(v, position);
                     }
                 }
             });
@@ -131,7 +129,7 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
 
     private OnItemClickListeners listener = null;
     public interface OnItemClickListeners {
-        void OnItemClickListeners(View v, int index);
+        void OnItemClick(View v, int index);
     }
     public void setOnItemClickListener(OnItemClickListeners listener) {
         this.listener = listener;

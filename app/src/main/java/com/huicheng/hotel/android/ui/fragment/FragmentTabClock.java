@@ -48,7 +48,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     private List<HotelInfoBean> list = new ArrayList<>();
 
     private static final int PAGESIZE = 10;
-    private int pageIndex = 0;
+    private int pageIndex = 0, priceIndex = 0;
     private String keyword = "";
     private String star, priceStart, priceEnd, type;
     private String[] point = new String[]{"", ""};
@@ -59,6 +59,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         isFirstLoad = true;
         key = getArguments().getString("key");
         keyword = getArguments().getString("keyword");
+        priceIndex = getArguments().getInt("priceIndex");
         View view = inflater.inflate(R.layout.fragment_tab_clock, container, false);
         initViews(view);
         initParams();
@@ -66,11 +67,12 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         return view;
     }
 
-    public static Fragment newInstance(String key, String keyword) {
+    public static Fragment newInstance(String key, String keyword, int priceIndex) {
         Fragment fragment = new FragmentTabClock();
         Bundle bundle = new Bundle();
         bundle.putString("key", key);
         bundle.putString("keyword", keyword);
+        bundle.putInt("priceIndex", priceIndex);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -109,6 +111,12 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     protected void initParams() {
         super.initParams();
         pullLoadMoreRecyclerView.setColorSchemeResources(R.color.mainColor);
+        if (priceIndex != 0) {
+            float priceMin = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MIN, 0f);
+            float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 6f);
+            priceStart = HotelCommDef.convertHotelPrice((int) priceMin);
+            priceEnd = HotelCommDef.convertHotelPrice((int) priceMax);
+        }
     }
 
     @Override
@@ -270,7 +278,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         star = HotelCommDef.convertHotelGrade(SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_GRADE, -1));
         point = HotelCommDef.convertHotelPoint(SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_POINT, -1));
         float priceMin = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MIN, 0f);
-        float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 5f);
+        float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 6f);
         priceStart = HotelCommDef.convertHotelPrice((int) priceMin);
         priceEnd = HotelCommDef.convertHotelPrice((int) priceMax);
         type = HotelCommDef.convertHotelType(SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_TYPE, -1));
