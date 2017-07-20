@@ -243,6 +243,22 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/tv_free_service_note"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="17dp"
+                            android:text="包含服务"
+                            android:textColor="@color/mainColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/free_service_lay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+
+                        <TextView
                             android:id="@+id/tv_choose_service_note"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -285,22 +301,6 @@
                                 android:layout_marginLeft="5dp"
                                 android:src="@drawable/iv_down_white" />
                         </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/tv_free_service_note"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="17dp"
-                            android:text="包含服务"
-                            android:textColor="@color/mainColor"
-                            android:textSize="@dimen/common_12sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:id="@+id/free_service_lay"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
 
                     </LinearLayout>
 

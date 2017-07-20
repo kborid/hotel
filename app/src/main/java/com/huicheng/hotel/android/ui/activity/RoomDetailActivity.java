@@ -125,7 +125,9 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         tabHost = (TabHost) findViewById(R.id.tabHost);
         ((TextView) findViewById(R.id.tv_price_note)).getPaint().setFakeBoldText(true);
         tv_date = (TextView) findViewById(R.id.tv_date);
+        tv_date.getPaint().setFakeBoldText(true);
         tv_during = (TextView) findViewById(R.id.tv_during);
+        tv_during.getPaint().setFakeBoldText(true);
         tv_pay_type = (TextView) findViewById(R.id.tv_pay_type);
         tv_price = (TextView) findViewById(R.id.tv_price);
         tv_price.getPaint().setFakeBoldText(true);
@@ -568,26 +570,40 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         if (freeChooseList.size() > 0) {
             findViewById(R.id.tv_free_service_note).setVisibility(View.VISIBLE);
             free_service_lay.removeAllViews();
+            TextView tv_content = new TextView(this);
+            tv_content.setTextSize(15);
+            tv_content.setTextColor(getResources().getColor(R.color.lableColor));
+            tv_content.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
             for (int i = 0; i < freeChooseList.size(); i++) {
-                View view = LayoutInflater.from(this).inflate(R.layout.lv_choose_service_item, null);
-                TextView tv_choose_service_title = (TextView) view.findViewById(R.id.tv_choose_service_title);
-                tv_choose_service_title.getPaint().setFakeBoldText(true);
-                final TextView tv_choose_service_price = (TextView) view.findViewById(R.id.tv_choose_service_price);
-                final TextView tv_choose_service_total_price = (TextView) view.findViewById(R.id.tv_choose_service_total_price);
-                tv_choose_service_total_price.getPaint().setFakeBoldText(true);
-                CommonAddSubLayout addSubLayout = (CommonAddSubLayout) view.findViewById(R.id.addSubLayout);
-                addSubLayout.setUnit("份");
-                addSubLayout.setMaxvalue(freeChooseList.get(i).limitCnt);
-                addSubLayout.setCount(freeChooseList.get(i).limitCnt);
-                addSubLayout.setButtonEnable(false);
-                System.out.println("limit count = " + freeChooseList.get(i).limitCnt);
-                tv_choose_service_title.setText(freeChooseList.get(i).serviceName);
-                tv_choose_service_price.setText((HotelOrderManager.getInstance().isVipHotel() ? freeChooseList.get(i).vipPrice : freeChooseList.get(i).price) + "元/份");
-                tv_choose_service_total_price.setText("0元");
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                lp.topMargin = Utils.dip2px(17);
-                free_service_lay.addView(view, lp);
+//                View view = LayoutInflater.from(this).inflate(R.layout.lv_choose_service_item, null);
+//                TextView tv_choose_service_title = (TextView) view.findViewById(R.id.tv_choose_service_title);
+//                tv_choose_service_title.getPaint().setFakeBoldText(true);
+//                final TextView tv_choose_service_price = (TextView) view.findViewById(R.id.tv_choose_service_price);
+//                final TextView tv_choose_service_total_price = (TextView) view.findViewById(R.id.tv_choose_service_total_price);
+//                tv_choose_service_total_price.getPaint().setFakeBoldText(true);
+//                CommonAddSubLayout addSubLayout = (CommonAddSubLayout) view.findViewById(R.id.addSubLayout);
+//                addSubLayout.setUnit("份");
+//                addSubLayout.setMaxvalue(freeChooseList.get(i).limitCnt);
+//                addSubLayout.setCount(freeChooseList.get(i).limitCnt);
+//                addSubLayout.setButtonEnable(false);
+//                System.out.println("limit count = " + freeChooseList.get(i).limitCnt);
+//                tv_choose_service_title.setText(freeChooseList.get(i).serviceName);
+//                tv_choose_service_price.setText((HotelOrderManager.getInstance().isVipHotel() ? freeChooseList.get(i).vipPrice : freeChooseList.get(i).price) + "元/份");
+//                tv_choose_service_total_price.setText("0元");
+//                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//                lp.topMargin = Utils.dip2px(17);
+//                free_service_lay.addView(view, lp);
+
+                tv_content.append(freeChooseList.get(i).serviceName);
+                tv_content.append("*");
+                tv_content.append(String.valueOf(freeChooseList.get(i).limitCnt));
+                if (i != freeChooseList.size() - 1) {
+                    tv_content.append("，");
+                }
             }
+            free_service_lay.setPadding(0, Utils.dip2px(17), 0, 0);
+            free_service_lay.addView(tv_content);
         } else {
             findViewById(R.id.tv_free_service_note).setVisibility(View.GONE);
         }
@@ -644,11 +660,11 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         }
     }
 
-    class MyPagerAdapter extends PagerAdapter {
+    private class MyPagerAdapter extends PagerAdapter {
         private Context context;
         private List<String> list = new ArrayList<>();
 
-        public MyPagerAdapter(Context context, List<String> list) {
+        MyPagerAdapter(Context context, List<String> list) {
             this.context = context;
             this.list = list;
         }
@@ -678,11 +694,11 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         }
     }
 
-    class RoomServiceGridViewAdapter extends BaseAdapter {
+    private class RoomServiceGridViewAdapter extends BaseAdapter {
         private Context context;
         private List<RoomDetailInfoBean.CapacityVOList> list;
 
-        public RoomServiceGridViewAdapter(Context context, List<RoomDetailInfoBean.CapacityVOList> list) {
+        RoomServiceGridViewAdapter(Context context, List<RoomDetailInfoBean.CapacityVOList> list) {
             this.list = list;
             this.context = context;
         }
