@@ -1,12 +1,12 @@
 <resources>
 
-    <style name="AppTheme.NoActionBar">
+    <!--欢迎界面theme-->
+    <style name="WelTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <!-- 提示背景图片 -->
-        <item name="android:windowBackground">@drawable/share_bg</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <!-- 启动背景图片 -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
 
     <style name="MyProgressBar" parent="Base.Widget.AppCompat.ProgressBar">

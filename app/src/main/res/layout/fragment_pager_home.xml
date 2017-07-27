@@ -155,8 +155,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="不限"
                     android:paddingLeft="25dp"
+                    android:text="不限"
                     android:textColor="@color/secColor"
                     android:textColorHint="@color/tabDefaultColor"
                     android:textSize="@dimen/common_18sp" />
@@ -211,8 +211,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:drawablePadding="7dp"
-                android:drawableRight="@drawable/iv_info"
-                android:text="惠省钱"
+                android:drawableRight="?attr/infoImage"
+                android:text="@string/hsqString"
                 android:textColor="@color/lableColor"
                 android:textSize="@dimen/common_15sp" />
 
@@ -240,7 +240,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_margin="10dp"
                 android:background="@drawable/comm_rectangle_btn_ygr"
-                android:text="夜归人"
+                android:text="@string/ygrString"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_15sp" />
 
@@ -252,8 +252,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_margin="10dp"
                 android:background="@drawable/comm_rectangle_btn_white"
-                android:text="后悔药"
-                android:textColor="@color/hhyMainTextColor"
+                android:text="@string/hhyString"
+                android:textColor="?attr/hhyMainTextColor"
                 android:textSize="@dimen/common_15sp"
                 android:visibility="gone" />
         </RelativeLayout>

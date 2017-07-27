@@ -146,7 +146,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
         } else {
             for (int i = 0; i < length; i++) {
                 View view = new View(context);
-                view.setBackgroundResource(R.drawable.banner_indicator_bg);
+                view.setBackgroundResource(R.drawable.indicator_selector);
                 view.setEnabled(false);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(7), Utils.dip2px(7));
                 if (i > 0) {

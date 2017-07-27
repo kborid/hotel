@@ -139,8 +139,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
             TextView tv_week = new TextView(this);
             tv_week.setText(CalendarUtils.getWeekStringByNum(i));
             tv_week.setGravity(Gravity.CENTER);
-            tv_week.setTextColor(getResources().getColor(R.color.tabDefaultColor
-            ));
+            tv_week.setTextColor(getResources().getColor(R.color.secColor));
             tv_week.setTextSize(12);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             lp.weight = 1;

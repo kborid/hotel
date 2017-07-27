@@ -63,6 +63,7 @@ class SimpleMonthView extends View {
     private Paint mSelectedCircleBLPaint;
     private Paint mSelectedCirclePaint;
     private Paint mTodayPaint;
+    private int mCurrentDayCircleColor;
     private int mCurrentDayTextColor;
     private int mMonthTextColor;
     private int mDayTextColor;
@@ -110,12 +111,13 @@ class SimpleMonthView extends View {
         today.setToNow();
 //        mDayOfWeekTypeface = resources.getString(R.string.sans_serif);
 //        mMonthTitleTypeface = resources.getString(R.string.sans_serif);
-        mCurrentDayTextColor = typedArray.getColor(R.styleable.CustomCalendarView_colorCurrentDay, resources.getColor(R.color.mainColor));
-        mMonthTextColor = typedArray.getColor(R.styleable.CustomCalendarView_colorMonthName, resources.getColor(R.color.mainColor));
-        mDayTextColor = typedArray.getColor(R.styleable.CustomCalendarView_colorDayName, resources.getColor(R.color.mainColor));
-        mDayNumColor = typedArray.getColor(R.styleable.CustomCalendarView_colorNormalDay, resources.getColor(R.color.mainColor));
+        mCurrentDayCircleColor = typedArray.getColor(R.styleable.CustomCalendarView_colorCurrentDayCircle, resources.getColor(R.color.indicatorColor));
+        mCurrentDayTextColor = typedArray.getColor(R.styleable.CustomCalendarView_colorCurrentDay, resources.getColor(R.color.secColor));
+        mMonthTextColor = typedArray.getColor(R.styleable.CustomCalendarView_colorMonthName, resources.getColor(R.color.secColor));
+        mDayTextColor = typedArray.getColor(R.styleable.CustomCalendarView_colorDayName, resources.getColor(R.color.secColor));
+        mDayNumColor = typedArray.getColor(R.styleable.CustomCalendarView_colorNormalDay, resources.getColor(R.color.secColor));
         mPreviousDayColor = typedArray.getColor(R.styleable.CustomCalendarView_colorPreviousDay, resources.getColor(R.color.searchHintColor));
-        mSelectedDaysColor = typedArray.getColor(R.styleable.CustomCalendarView_colorSelectedDayBackground, resources.getColor(R.color.mainColorAccent));
+        mSelectedDaysColor = typedArray.getColor(R.styleable.CustomCalendarView_colorSelectedDayBackground, resources.getColor(R.color.selDayBackground));
         mMonthTitleBGColor = typedArray.getColor(R.styleable.CustomCalendarView_colorSelectedDayText, resources.getColor(R.color.white));
         mDrawRect = typedArray.getBoolean(R.styleable.CustomCalendarView_drawRoundRect, false);
         MINI_DAY_NUMBER_TEXT_SIZE = typedArray.getDimensionPixelSize(R.styleable.CustomCalendarView_textSizeDay, resources.getDimensionPixelSize(R.dimen.text_size_day));
@@ -194,7 +196,7 @@ class SimpleMonthView extends View {
                 if (mSelectedBeginYear == mYear && mSelectedBeginMonth == mMonth && mSelectedBeginDay == day) {
                     mTodayPaint.setColor(getResources().getColor(R.color.transparent));
                 } else {
-                    mTodayPaint.setColor(getResources().getColor(R.color.indicatorColor));
+                    mTodayPaint.setColor(mCurrentDayCircleColor);
                 }
                 canvas.drawCircle(x, y - MINI_DAY_NUMBER_TEXT_SIZE / 3, DAY_SELECTED_CIRCLE_SIZE, mTodayPaint);
             } else {

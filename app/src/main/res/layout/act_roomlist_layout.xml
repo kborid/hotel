@@ -106,8 +106,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="7dp"
-                                android:text="201條評論"
-                                android:textColor="@color/mainColor"
+                                android:text="201条评论"
+                                android:textColor="?attr/roomMainText"
                                 android:textSize="9sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -182,7 +182,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/iv_location_yellow"
+                        android:drawableLeft="?attr/roomDetailMap"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
                         android:text="地图查找"
@@ -194,7 +194,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/iv_phone_yellow"
+                        android:drawableLeft="?attr/roomDetailPhone"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
                         android:text="酒店客服"
@@ -206,7 +206,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/iv_message_yellow"
+                        android:drawableLeft="?attr/roomDetailSpace"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
                         android:text="酒店空间"
@@ -286,7 +286,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="桔子水晶酒店(三星)"
-                    android:textColor="@color/mainColor"
+                    android:textColor="@color/secColor"
                     android:textSize="@dimen/common_12sp"
                     android:textStyle="bold" />
 

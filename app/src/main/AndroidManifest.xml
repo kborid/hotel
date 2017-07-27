@@ -18,9 +18,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.WelcomeActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/WelTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -225,13 +223,6 @@
         <activity
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait" />
-
-        <service android:name=".ui.service.TestIntentservice">
-            <intent-filter>
-                <action android:name="com.huicheng.hotel.intentservice.action.PARSE_AREAJSON" />
-            </intent-filter>
-        </service>
-
 
         <receiver android:name="com.huicheng.hotel.android.common.pay.wxpay.AppRegister">
             <intent-filter>

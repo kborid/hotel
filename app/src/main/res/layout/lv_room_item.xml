@@ -59,7 +59,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="有效时间："
-                            android:textColor="@color/indicatorColor"
+                            android:textColor="?attr/roomItemPrice"
                             android:textSize="@dimen/common_9sp" />
 
                         <TextView
@@ -68,7 +68,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="13:00-15:00"
-                            android:textColor="@color/indicatorColor"
+                            android:textColor="?attr/roomItemPrice"
                             android:textSize="@dimen/common_9sp" />
                     </LinearLayout>
 
@@ -82,7 +82,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="入住时长："
-                            android:textColor="@color/indicatorColor"
+                            android:textColor="?attr/roomItemPrice"
                             android:textSize="@dimen/common_9sp" />
 
                         <TextView
@@ -91,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="4小时"
-                            android:textColor="@color/indicatorColor"
+                            android:textColor="?attr/roomItemPrice"
                             android:textSize="@dimen/common_9sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -115,7 +115,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="高級大床房"
+                        android:text="高级大床房"
                         android:textColor="@color/registerhintColor"
                         android:textSize="@dimen/common_12sp" />
 
@@ -140,7 +140,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="480元"
-                            android:textColor="@color/indicatorColor"
+                            android:textColor="?attr/roomItemPrice"
                             android:textSize="@dimen/common_24sp"
                             android:textStyle="bold" />
                     </LinearLayout>

@@ -45,7 +45,17 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
     @Override
     public HotelListAdapter.HotelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        HotelListAdapter.HotelViewHolder hotelViewHolder = new HotelListAdapter.HotelViewHolder(LayoutInflater.from(context).inflate(R.layout.lv_hotel_item, parent, false));
+        HotelListAdapter.HotelViewHolder hotelViewHolder = null;
+        switch (type) {
+            case HotelCommDef.TYPE_YEGUIREN:
+                hotelViewHolder = new HotelListAdapter.HotelViewHolder(LayoutInflater.from(context).inflate(R.layout.lv_hotelitem_ygr, parent, false));
+                break;
+            case HotelCommDef.TYPE_ALL:
+            case HotelCommDef.TYPE_CLOCK:
+            default:
+                hotelViewHolder = new HotelListAdapter.HotelViewHolder(LayoutInflater.from(context).inflate(R.layout.lv_hotelitem_allday, parent, false));
+                break;
+        }
         hotelViewHolder.setIsRecyclable(true);
         return hotelViewHolder;
     }
@@ -67,21 +77,11 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         switch (type) {
             case HotelCommDef.TYPE_YEGUIREN:
                 holder.cardview.setBackgroundResource(R.drawable.comm_gradient_ygr_color);
-                holder.tv_hotel_name.setTextColor(context.getResources().getColor(R.color.white));
-                holder.tv_hotel_dis.setTextColor(context.getResources().getColor(R.color.white));
-                holder.tv_hotel_price.setTextColor(context.getResources().getColor(R.color.white));
-                holder.tv_hotel_special_price_note.setTextColor(context.getResources().getColor(R.color.white));
-                holder.tv_hotel_special_price.setTextColor(context.getResources().getColor(R.color.white));
                 break;
             case HotelCommDef.TYPE_ALL:
             case HotelCommDef.TYPE_CLOCK:
             default:
                 holder.cardview.setBackgroundResource(R.drawable.comm_10radius_white_color);
-                holder.tv_hotel_name.setTextColor(context.getResources().getColor(R.color.registerhintColor));
-                holder.tv_hotel_dis.setTextColor(context.getResources().getColor(R.color.registerhintColor));
-                holder.tv_hotel_price.setTextColor(context.getResources().getColor(R.color.registerhintColor));
-                holder.tv_hotel_special_price_note.setTextColor(context.getResources().getColor(R.color.mainColorAccent));
-                holder.tv_hotel_special_price.setTextColor(context.getResources().getColor(R.color.mainColorAccent));
                 break;
         }
 
@@ -172,7 +172,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             tv_hotel_name.getPaint().setFakeBoldText(true);
             tv_hotel_dis = (TextView) itemView.findViewById(R.id.tv_hotel_dis);
             tv_hotel_price = (TextView) itemView.findViewById(R.id.tv_hotel_price);
-            tv_hotel_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            tv_hotel_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
             tv_hotel_special_price_note = (TextView) itemView.findViewById(R.id.tv_hotel_special_price_note);
             tv_hotel_special_price_note.getPaint().setFakeBoldText(true);
             tv_hotel_special_price = (TextView) itemView.findViewById(R.id.tv_hotel_special_price);

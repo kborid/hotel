@@ -1,7 +1,9 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,10 +53,12 @@ import java.util.Map;
 public class WelcomeActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener, DataCallback {
 
     private final String TAG = getClass().getSimpleName();
-    private long start = 0;                                // 记录启动时间
+    private long start = 0; // 记录启动时间
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getWindow().setBackgroundDrawable(null);
+        initStatus();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_welcome_layout);
         start = SystemClock.elapsedRealtime();
@@ -62,8 +66,20 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         initViews();
         initParams();
         initListeners();
-//        System.out.println("IntentService begin ......");
-//        TestIntentservice.startParse(this);
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void initStatus() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            View decoderView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+            decoderView.setSystemUiVisibility(option);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
+            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
     @Override
@@ -83,34 +99,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         OpenInstall.getInstall(this, this);
         Utils.initScreenSize(this);// 设置手机屏幕大小
         SessionContext.initUserInfo();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            View decorView = getWindow().getDecorView();
-//            状态栏透明
-            getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            decorView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION //隐藏Navigation Bar
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN //隐藏Status Bar
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-    }
-
-    @Override
-    public void initListeners() {
-        super.initListeners();
-    }
-
-    @Override
-    public void onClick(View v) {
     }
 
     //启动时解析area.json数据
@@ -179,6 +167,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     }
 
     private void requestAppVersionInfo() {
+        LogUtil.i(TAG, "requestAppVersionInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("contype", "0"); // 0:android, 1:ios
         ResponseData d = b.syncRequest(b);
@@ -204,6 +193,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     }
 
     private void goToNextActivity() {
+        LogUtil.i(TAG, "goToNextActivity()");
         long end = SystemClock.elapsedRealtime();
 
         long LOADING_TIME = 1500;
@@ -260,26 +250,14 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtil.i(TAG, "WelcomeActivity onResume()");
         new Thread() {
             @Override
             public void run() {
                 super.run();
-                LogUtil.i(TAG, "initJsonData() begin....");
                 initJsonData();
                 requestAppVersionInfo();
             }
         }.start();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -290,7 +268,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.APP_INFO) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 AppInfoBean bean = JSON.parseObject(response.body.toString(), AppInfoBean.class);
                 SharedPreferenceUtil.getInstance().setString(AppConst.APPINFO, response.body.toString(), false);
                 if (bean.isforce == 0) {

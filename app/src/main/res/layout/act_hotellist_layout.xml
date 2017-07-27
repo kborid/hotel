@@ -88,7 +88,7 @@
                 android:inputType="text"
                 android:lines="1"
                 android:textColor="@color/editColor"
-                android:textColorHint="@color/searchHintColor"
+                android:textColorHint="@color/secColorShadow"
                 android:textSize="@dimen/common_24sp" />
 
             <ImageView
@@ -119,10 +119,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 app:tabBackground="@drawable/common_item_selector_bg"
-                app:tabIndicatorColor="@color/mainColorAccent"
+                app:tabIndicatorColor="?attr/hotelListTab"
                 app:tabIndicatorHeight="2.5dp"
                 app:tabMode="fixed"
-                app:tabSelectedTextColor="@color/mainColorAccent"
+                app:tabSelectedTextColor="?attr/hotelListTab"
                 app:tabTextAppearance="@style/tabTextAppearance" />
 
             <View
@@ -163,7 +163,7 @@
         android:layout_marginBottom="@dimen/fab_margin"
         android:scaleType="center"
         android:src="@drawable/iv_input_add"
-        app:backgroundTint="@color/indicatorColor"
+        app:backgroundTint="?attr/considerFab"
         app:elevation="15dp"
-        app:rippleColor="@color/darkIndicatorColor" />
+        app:rippleColor="?attr/considerFab" />
 </RelativeLayout>

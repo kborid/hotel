@@ -25,6 +25,12 @@
     <string name="footer_click">点击加载更多</string>
     <string name="footer_pullup">上滑加载更多</string>
 
+    <string name="hsqString">惠省钱</string>
+    <string name="hsqNote">0元住：邀请好友注册，立享免费客房\n\n夜归人：晚归旅客的专属优惠空间\n\n后悔药：退不掉的客房，就卖掉吧</string>
+    <string name="hsqNote2">更多优惠活动陆续开通，敬请期待</string>
+    <string name="ygrString">夜归人</string>
+    <string name="hhyString">后悔药</string>
+
     <!--登录-->
     <string name="agree_agement">我已阅读并同意</string>
     <string name="agement">《注册协议》</string>

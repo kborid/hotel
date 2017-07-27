@@ -3,7 +3,10 @@ package com.huicheng.hotel.android.ui.base;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.AppConst;
 import com.prj.sdk.util.ActivityTack;
+import com.prj.sdk.util.SharedPreferenceUtil;
 
 /**
  * FragmentActivity 基类提供公共属性
@@ -13,6 +16,11 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
+            setTheme(R.style.femaleTheme);
+        } else {
+            setTheme(R.style.defaultTheme);
+        }
         ActivityTack.getInstanse().addActivity(this);
     }
 

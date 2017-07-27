@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margin"
-    android:background="@drawable/comm_10radius_white_color"
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp"
     app:cardPreventCornerOverlap="false">
@@ -26,7 +25,6 @@
             android:id="@+id/vip_layout"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:background="@color/searchBgColor"
             android:orientation="horizontal"
             android:visibility="visible">
 
@@ -83,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="桔子水晶酒店(杭州火车东站店)"
-                android:textColor="@color/registerhintColor"
+                android:textColor="@color/white"
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />
 
@@ -93,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="500米"
-                android:textColor="@color/registerhintColor"
+                android:textColor="@color/white"
                 android:textSize="@dimen/common_12sp" />
 
             <TextView
@@ -103,8 +101,8 @@
                 android:layout_marginTop="5dp"
                 android:gravity="right"
                 android:text="480元起"
-                android:textColor="@color/registerhintColor"
-                android:textSize="@dimen/common_9sp"
+                android:textColor="?attr/hotelItemDelPrice"
+                android:textSize="@dimen/common_10sp"
                 android:visibility="gone" />
 
             <LinearLayout
@@ -119,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="特价："
-                    android:textColor="@color/mainColorAccent"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/common_9sp"
                     android:textStyle="bold" />
 
@@ -128,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="420 元"
-                    android:textColor="@color/mainColorAccent"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/common_18sp"
                     android:textStyle="bold" />
             </LinearLayout>

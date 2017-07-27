@@ -66,7 +66,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     private int mPriceIndex = 0;
     private ImageView iv_pull;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -191,6 +190,15 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         });
     }
 
+    private void reLoad() {
+        Intent intent = getActivity().getIntent();
+        getActivity().overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        getActivity().finish();
+        getActivity().overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     public void onClick(View v) {
@@ -231,10 +239,12 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 mDialog.show();
                 break;
             case R.id.tv_next_search:
+
                 if (!SessionContext.isLogin()) {
                     getActivity().sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                     return;
                 }
+
                 et_keyword.setFocusable(false);
                 et_keyword.setFocusableInTouchMode(true);
                 intent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
@@ -243,15 +253,10 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 intent.putExtra("priceIndex", mPriceIndex);
                 break;
             case R.id.tv_info:
+                reLoad();
                 CustomDialog dialog = new CustomDialog(getActivity());
-                dialog.setTitle("惠省钱");
-                String content = "0元住：邀请好友注册，立享免费客房\n" +
-                        "\n" +
-                        "夜归人：晚归旅客的专属优惠空间\n" +
-                        "\n" +
-                        "后悔药：退不掉的客房，就卖掉吧";
-                content = "更多优惠活动陆续开通，敬请期待";
-                dialog.setMessage(content);
+                dialog.setTitle(getString(R.string.hsqString));
+                dialog.setMessage(getString(R.string.hsqNote2));
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
                 break;

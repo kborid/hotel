@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_gray"
     android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
@@ -69,15 +70,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/bg_white">
+        android:layout_weight="1">
 
         <com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarView xmlns:calendar="http://schemas.android.com/apk/res-auto"
             android:id="@+id/calendar_lay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_white"
             calendar:calendarHeight="400dp"
+            calendar:colorCurrentDayCircle="?attr/currentDayCircle"
+            calendar:colorSelectedDayBackground="?attr/selDayBackground"
             calendar:enablePreviousDay="false" />
 
     </RelativeLayout>
@@ -85,7 +86,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/bg_gray"
+        android:background="@drawable/bg_white"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -95,9 +96,9 @@
             android:layout_height="45dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/comm_rectangle_gray_selector"
+            android:background="@drawable/rectangle_bottom_selector"
             android:text="确定"
-            android:textColor="@color/sec_white_selector"
+            android:textColor="?attr/commBottomText"
             android:textSize="@dimen/common_15sp"
             android:textStyle="bold" />
     </LinearLayout>

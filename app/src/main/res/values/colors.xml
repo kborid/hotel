@@ -32,38 +32,23 @@
     <color name="blue">#0000ff</color>
     <color name="black">#000000</color>
 
-    <!--主颜色-->
-    <color name="mainColor">#001a58</color>
-    <color name="mainColorDark">#042456</color>
-    <color name="mainColorAccent">#0d47a1</color>
-    <color name="mainColorShadow">#88001a58</color>
-    <color name="mainColorIndicator">#0e3f97</color>
-
+    <!--common-->
     <color name="secColor">#646464</color>
     <color name="secColorShadow">#33646464</color>
-
-    <color name="tabHotelColor">#9aca40</color>
-    <color name="tabTrainColor">#0d47a1</color>
-    <color name="tabPlaneColor">#42a5f5</color>
-    <color name="tabTaxiColor">#fcb819</color>
     <color name="tabDefaultColor">@color/secColorShadow</color>
 
-    <color name="freeShadowColor">#ccfcb82b</color>
-    <color name="hhyMainTextColor">#3d82cf</color>
-    <color name="deleteColor">#ef5669</color>
-    <color name="btnBoundColor">#98a2bb</color>
-    <color name="darkIndicatorColor">#eaa708</color>
-    <color name="indicatorColor">#fcb819</color>
-    <color name="searchBgColor">@color/transparent80_</color>
-    <color name="indicatorDisableColor">#40fcb819</color>
-    <color name="saveColor">#8bc349</color>
-    <color name="airTicketColor">#1565b0</color>
-    <color name="hotelColor">#009fda</color>
-    <color name="citySelColor">#f5f5f5</color>
+    <color name="hintColor">#e6e6e6</color>
+    <color name="lineColor">#646260</color>
+    <color name="lineColor2">#cfcfcf</color>
+    <color name="lineShadowColor">#fffefd</color>
+
+    <color name="wxColor">#2dc100</color>
+    <color name="qqColor">#0896ff</color>
 
     <color name="assessPointColorHigh">#b7cd66</color>
     <color name="assessPointColorMid">#ffa046</color>
     <color name="assessPointColorLow">#ef5669</color>
+
     <color name="selectedBarColor">#535353</color>
     <color name="unselectedBarColor">#d7d7d7</color>
     <color name="unSelectedTextColor">#464646</color>
@@ -72,22 +57,83 @@
     <color name="payLableColor">#DCDCDC</color>
     <color name="payPriceColor">#9aca40</color>
 
-    <color name="lineColor">#646260</color>
-    <color name="lineColor2">#cfcfcf</color>
-    <color name="lineShadowColor">#fffefd</color>
-
     <color name="noDiscountColor">#969696</color>
     <color name="lableColor">#989898</color>
     <color name="editColor">@color/mainColor</color>
-    <color name="hintColor">#e6e6e6</color>
+
     <color name="searchHintColor">#c8c8c8</color>
     <color name="registerhintColor">#acacac</color>
-    <color name="history">#E1E1E1</color>
+    <color name="deleteColor">#ef5669</color>
 
-    <color name="wxColor">#2dc100</color>
-    <color name="qqColor">#0896ff</color>
+    <color name="saveColor">#8bc349</color>
+    <color name="airTicketColor">#1565b0</color>
+    <color name="hotelColor">#009fda</color>
+    <color name="searchBgColor">@color/transparent80_</color>
+    <color name="btnBoundColor">#98a2bb</color>
 
-    <!-- dialog -->
-    <color name="dialog_text_checked">#ff2380e3</color>
-    <color name="dialog_text_unchecked">#ff5056cd</color>
+
+    <!--default color-->
+    <color name="defaultBG">#f5f5f5</color>
+    <color name="mainColor">#001a58</color>
+    <color name="mainColorDark">#042456</color>
+    <color name="mainColorAccent">#0d47a1</color>
+    <color name="mainColorShadow">#88001a58</color>
+    <color name="tabHotelColor">#9aca40</color>
+    <color name="tabTrainColor">#0d47a1</color>
+    <color name="tabPlaneColor">#42a5f5</color>
+    <color name="tabTaxiColor">#fcb819</color>
+    <color name="ygrStartColor">#29c2f5</color>
+    <color name="ygrEndColor">#3175cc</color>
+    <color name="hhyMainTextColor">#3d82cf</color>
+    <color name="indicatorColor">#fcb819</color>
+    <color name="citySelColor">#f5f5f5</color>
+    <color name="cityIndexSelColor">@color/mainColorAccent</color>
+    <color name="commBottom">#e6e6e6</color>
+    <color name="commBottomPress">#c8c8c8</color>
+    <color name="commBottomText">@color/secColor</color>
+    <color name="hotelListTab">@color/mainColorAccent</color>
+    <color name="hotelItemDelPrice">@color/mainColorAccent</color>
+    <color name="hotelItemPrice">@color/mainColorAccent</color>
+    <color name="currentDayCircle">#feb000</color>
+    <color name="selDayBackground">@color/mainColorAccent</color>
+    <color name="considerText">@color/indicatorColor</color>
+    <color name="considerFab">@color/indicatorColor</color>
+    <color name="considerBackground">@color/transparent5</color>
+    <color name="considerShadow">@color/black</color>
+    <color name="mapShowArea">@color/indicatorColor</color>
+    <color name="mapShowAreaDisable">#40fcb819</color>
+    <color name="roomMainText">@color/mainColor</color>
+
+    <!--female color-->
+    <color name="female_defaultBG">#fbf3f2</color>
+    <color name="female_mainColor">#671c0b</color>
+    <color name="female_mainColorDark">#561809</color>
+    <color name="female_mainColorAccent">#9A2A0A</color>
+    <color name="female_mainColorShadow">#889A2A0A</color>
+    <color name="female_tabHotelColor">#eed0ce</color>
+    <color name="female_tabTrainColor">#eed0ce</color>
+    <color name="female_tabPlaneColor">#eed0ce</color>
+    <color name="female_tabTaxiColor">#eed0ce</color>
+    <color name="female_ygrStartColor">#f2cac7</color>
+    <color name="female_ygrEndColor">#ea898b</color>
+    <color name="female_hhyMainTextColor">#a78757</color>
+    <color name="female_indicatorColor">#a78757</color>
+    <color name="female_citySelColor">#fcf3f3</color>
+    <color name="female_cityIndexSelColor">@color/female_mainColor</color>
+    <color name="female_commBottom">#efd1cf</color>
+    <color name="female_commBottomPress">#EAB8B5</color>
+    <color name="female_commBottomText">@color/white</color>
+    <color name="female_hotelListTab">#d39fa0</color>
+    <color name="female_hotelItemDelPrice">@color/female_mainColor</color>
+    <color name="female_hotelItemPrice">#a78757</color>
+    <color name="female_currentDayCircle">@color/female_hotelListTab</color>
+    <color name="female_selDayBackground">@color/female_hotelItemPrice</color>
+    <color name="female_considerText">#a28355</color>
+    <color name="female_considerFab">@color/female_considerText</color>
+    <color name="female_considerBackground">@color/female_citySelColor</color>
+    <color name="female_considerShadow">#efd1cf</color>
+    <color name="female_mapShowArea">@color/female_hhyMainTextColor</color>
+    <color name="female_mapShowAreaDisable">#40a78757</color>
+    <color name="female_roomMainText">@color/female_mainColor</color>
+
 </resources>

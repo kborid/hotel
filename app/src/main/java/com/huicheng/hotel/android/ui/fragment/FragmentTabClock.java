@@ -110,7 +110,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     @Override
     protected void initParams() {
         super.initParams();
-        pullLoadMoreRecyclerView.setColorSchemeResources(R.color.mainColor);
+        pullLoadMoreRecyclerView.setColorSchemeResources(mSwipeRefreshColorId);
         if (priceIndex != 0) {
             float priceMin = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MIN, 0f);
             float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 6f);

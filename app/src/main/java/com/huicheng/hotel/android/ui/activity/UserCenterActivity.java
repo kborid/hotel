@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -16,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -71,7 +71,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     private Calendar calendar = Calendar.getInstance();
     private boolean isEdited = false;
     private ScrollView scroll_view;
-    private CheckBox cb_setting;
+    private Button btn_setting;
     private RelativeLayout camer_lay;
     private RelativeLayout photo_lay;
     private EditText et_name;
@@ -106,10 +106,23 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
 
     private String bgPath = null;
 
+    private int lineSelectedColorId, lineSelectedDisableColorId;
+    private int thumbId, thumbDisableId, settingId, settingOkId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_usercenter_layout);
+
+        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
+        lineSelectedColorId = ta.getInt(R.styleable.MyTheme_userCenterThumbText, getResources().getColor(R.color.mainColor));
+        lineSelectedDisableColorId = ta.getInt(R.styleable.MyTheme_userCenterThumbTextDisable, getResources().getColor(R.color.indicatorColor));
+        thumbId = ta.getResourceId(R.styleable.MyTheme_userCenterThumb, R.drawable.iv_thumb);
+        thumbDisableId = ta.getResourceId(R.styleable.MyTheme_userCenterThumbDisable, R.drawable.iv_thumb_yello);
+        settingId = ta.getResourceId(R.styleable.MyTheme_settingButton, R.drawable.iv_setting);
+        settingOkId = ta.getResourceId(R.styleable.MyTheme_settingOKButton, R.drawable.iv_setting_ok);
+        ta.recycle();
+
         initViews();
         initParams();
         initListeners();
@@ -119,7 +132,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     public void initViews() {
         super.initViews();
         scroll_view = (ScrollView) findViewById(R.id.scroll_view);
-        cb_setting = (CheckBox) findViewById(R.id.cb_setting);
+        btn_setting = (Button) findViewById(R.id.btn_setting);
         camer_lay = (RelativeLayout) findViewById(R.id.camer_lay);
         photo_lay = (RelativeLayout) findViewById(R.id.photo_lay);
         et_name = (EditText) findViewById(R.id.et_name);
@@ -155,7 +168,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         super.initParams();
         btn_back.setImageResource(R.drawable.iv_back_white);
         setCountDownTimer(60 * 1000, 1000);
-        scroll_view.getBackground().mutate().setAlpha((int) (0.2 * 255));
+        scroll_view.getBackground().mutate().setAlpha((int) (0.8 * 255));
 
         //更新个人中心信息
         // 设置头像
@@ -326,7 +339,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     @Override
     public void initListeners() {
         super.initListeners();
-        cb_setting.setOnClickListener(this);
+        btn_setting.setOnClickListener(this);
         camer_lay.setOnClickListener(this);
         iv_clear.setOnClickListener(this);
         male_lay.setOnClickListener(this);
@@ -448,8 +461,8 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
                 female_lay.setSelected(true);
                 refreshSexStatus();
                 break;
-            case R.id.cb_setting:
-                isEdited = cb_setting.isChecked();
+            case R.id.btn_setting:
+                isEdited = !isEdited;
                 if (!isEdited) {
                     SharedPreferenceUtil.getInstance().setFloat("range_min", minValue);
                     SharedPreferenceUtil.getInstance().setFloat("range_max", maxValue);
@@ -654,9 +667,11 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         if (male_lay.isSelected()) {
             line_male_lay.setVisibility(View.VISIBLE);
             line_female_lay.setVisibility(View.INVISIBLE);
+            SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 0);
         } else if (female_lay.isSelected()) {
             line_male_lay.setVisibility(View.INVISIBLE);
             line_female_lay.setVisibility(View.VISIBLE);
+            SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 1);
         } else {
             LogUtil.d(TAG, "warning!!!");
         }
@@ -677,6 +692,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
 
     private void changeEditedStatus(boolean isflag) {
         if (isflag) {
+            btn_setting.setBackgroundResource(settingOkId);
             camer_lay.setVisibility(View.VISIBLE);
 
             line_lay.setVisibility(View.VISIBLE);
@@ -696,9 +712,9 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
             lp.leftMargin = Utils.dip2px(15);
             female_lay.setLayoutParams(lp);
 
-            seekbar.setSeekBarResId(R.drawable.iv_thumb);
-            seekbar.setColorLineEdge(getResources().getColor(R.color.mainColor));
-            seekbar.setColorLineSelected(getResources().getColor(R.color.mainColor));
+            seekbar.setSeekBarResId(thumbId);
+            seekbar.setColorLineEdge(lineSelectedColorId);
+            seekbar.setColorLineSelected(lineSelectedColorId);
             seekbar.setCanTouch(true);
 
             assess_ratingbar.setStarEmptyDrawable(getResources().getDrawable(R.drawable.iv_active_star));
@@ -709,7 +725,9 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
             grade_ratingbar.setCanTouch(true);
 
             flowlayout.setEnabled(true);
+            changeTagFlowStatus(true);
         } else {
+            btn_setting.setBackgroundResource(settingId);
             camer_lay.setVisibility(View.GONE);
 
             line_lay.setVisibility(View.INVISIBLE);
@@ -729,9 +747,9 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
             line_male_lay.setVisibility(View.INVISIBLE);
             line_female_lay.setVisibility(View.INVISIBLE);
 
-            seekbar.setSeekBarResId(R.drawable.iv_thumb_yello);
-            seekbar.setColorLineEdge(getResources().getColor(R.color.secColor));
-            seekbar.setColorLineSelected(getResources().getColor(R.color.indicatorColor));
+            seekbar.setSeekBarResId(thumbDisableId);
+            seekbar.setColorLineEdge(lineSelectedDisableColorId);
+            seekbar.setColorLineSelected(lineSelectedDisableColorId);
             seekbar.setCanTouch(false);
 
             assess_ratingbar.setStarEmptyDrawable(getResources().getDrawable(R.drawable.iv_inactive_star));
@@ -742,6 +760,15 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
             grade_ratingbar.setCanTouch(false);
 
             flowlayout.setEnabled(false);
+            changeTagFlowStatus(false);
+        }
+    }
+
+    private void changeTagFlowStatus(boolean flag) {
+        if (flowlayout != null) {
+            for (int i = 0; i < flowlayout.getChildCount(); i++) {
+                flowlayout.getChildAt(i).setEnabled(flag);
+            }
         }
     }
 

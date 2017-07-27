@@ -62,15 +62,11 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     private Intent doActionIntent = null;
 
     public LeftDrawerLayout(Context context) {
-        super(context);
-        this.context = context;
-        init();
+        this(context, null);
     }
 
     public LeftDrawerLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.context = context;
-        init();
+        this(context, attrs, 0);
     }
 
     public LeftDrawerLayout(Context context, AttributeSet attrs, int defStyleAttr) {

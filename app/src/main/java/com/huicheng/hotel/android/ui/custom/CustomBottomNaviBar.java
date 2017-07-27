@@ -3,6 +3,8 @@ package com.huicheng.hotel.android.ui.custom;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -36,12 +38,7 @@ public class CustomBottomNaviBar extends LinearLayout {
             R.drawable.iv_tab_train,
             R.drawable.iv_tab_taxi
     };
-    private int[] mIndicatorColorId = {
-            R.color.tabHotelColor,
-            R.color.tabPlaneColor,
-            R.color.tabTrainColor,
-            R.color.tabTaxiColor
-    };
+    private int[] mTabColorId = new int[4];
 
     public CustomBottomNaviBar(Context context) {
         this(context, null);
@@ -54,6 +51,13 @@ public class CustomBottomNaviBar extends LinearLayout {
     public CustomBottomNaviBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
+        Resources resources = context.getResources();
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CustomBottomNaviBar);
+        mTabColorId[0] = ta.getColor(R.styleable.CustomBottomNaviBar_hotelColor, resources.getColor(R.color.tabHotelColor));
+        mTabColorId[1] = ta.getColor(R.styleable.CustomBottomNaviBar_planeColor, resources.getColor(R.color.tabPlaneColor));
+        mTabColorId[2] = ta.getColor(R.styleable.CustomBottomNaviBar_trainColor, resources.getColor(R.color.tabTrainColor));
+        mTabColorId[3] = ta.getColor(R.styleable.CustomBottomNaviBar_taxiColor, resources.getColor(R.color.tabTaxiColor));
+        ta.recycle();
         init();
     }
 
@@ -79,10 +83,11 @@ public class CustomBottomNaviBar extends LinearLayout {
             ImageView iv_indicator = (ImageView) v.findViewById(R.id.tab_indicator);
             ImageView iv_icon = (ImageView) v.findViewById(R.id.tab_icon);
             if (0 == i) {
-                iv_indicator.setBackgroundResource(mIndicatorColorId[i]);
-                iv_icon.setImageResource(mResId[i]);
+                iv_indicator.setBackgroundColor(mTabColorId[i]);
+                Bitmap bm = BitmapUtils.getAlphaBitmap(context.getResources().getDrawable(mResId[i]), mTabColorId[i]);
+                iv_icon.setImageBitmap(bm);
             } else {
-                iv_indicator.setBackgroundResource(R.color.transparent);
+                iv_indicator.setBackgroundColor(context.getResources().getColor(R.color.transparent));
                 Bitmap bm = BitmapUtils.getAlphaBitmap(context.getResources().getDrawable(mResId[i]), context.getResources().getColor(R.color.tabDefaultColor));
                 iv_icon.setImageBitmap(bm);
             }
@@ -140,10 +145,11 @@ public class CustomBottomNaviBar extends LinearLayout {
         for (int i = 0; i < 4; i++) {
             View v = root_lay.getChildAt(i);
             if (index == i) {
-                v.findViewById(R.id.tab_indicator).setBackgroundResource(mIndicatorColorId[i]);
-                ((ImageView) v.findViewById(R.id.tab_icon)).setImageResource(mResId[i]);
+                v.findViewById(R.id.tab_indicator).setBackgroundColor(mTabColorId[i]);
+                Bitmap bm = BitmapUtils.getAlphaBitmap(context.getResources().getDrawable(mResId[i]), mTabColorId[i]);
+                ((ImageView) v.findViewById(R.id.tab_icon)).setImageBitmap(bm);
             } else {
-                v.findViewById(R.id.tab_indicator).setBackgroundResource(R.color.transparent);
+                v.findViewById(R.id.tab_indicator).setBackgroundColor(context.getResources().getColor(R.color.transparent));
                 Bitmap bm = BitmapUtils.getAlphaBitmap(context.getResources().getDrawable(mResId[i]), context.getResources().getColor(R.color.tabDefaultColor));
                 ((ImageView) v.findViewById(R.id.tab_icon)).setImageBitmap(bm);
             }

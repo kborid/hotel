@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -95,11 +96,16 @@ public class HotelMapActivity extends BaseActivity
 
     private boolean isShowMarker = false;
 
+    private int mPinId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.d(TAG, "onCreate()");
         setContentView(R.layout.act_hotelmap_layout);
+        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
+        mPinId = ta.getResourceId(R.styleable.MyTheme_mapPinImage, R.drawable.iv_pin);
+        ta.recycle();
+
         initViews();
         initParams();
         initListeners();
@@ -193,7 +199,7 @@ public class HotelMapActivity extends BaseActivity
             param.put("address", hotelDetailInfoBean.address);
             param.put("hotelId", String.valueOf(hotelDetailInfoBean.id));
             markerOptions.snippet(new Gson().toJson(param));
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.iv_pin)));
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), mPinId)));
             Marker marker = amap.addMarker(markerOptions);
             markerOptionses.add(markerOptions);
             markers.add(marker);
@@ -223,7 +229,7 @@ public class HotelMapActivity extends BaseActivity
                     param.put("hotelId", String.valueOf(bean.hotelId));
                     markerOptions.snippet(new Gson().toJson(param));
                     LogUtil.i(TAG, "name = " + bean.hotelName + ", addr = " + bean.hotelAddress);
-                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.iv_pin)));
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), mPinId)));
                     markerOptionses.add(markerOptions);
                 }
             }

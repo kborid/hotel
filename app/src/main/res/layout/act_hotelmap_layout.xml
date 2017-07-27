@@ -43,7 +43,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/et_search"
-                android:src="@drawable/iv_search" />
+                android:src="?attr/mapSearchImage" />
         </RelativeLayout>
 
         <LinearLayout
@@ -86,7 +86,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/comm_rectangle_btn_yello"
+            android:background="@drawable/mapshowarea_selector"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"

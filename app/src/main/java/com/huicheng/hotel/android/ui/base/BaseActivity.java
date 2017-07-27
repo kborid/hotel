@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.ui.activity.InvoiceDetailActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
@@ -22,6 +23,7 @@ import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.ActivityTack;
+import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 import com.umeng.analytics.MobclickAgent;
@@ -38,17 +40,17 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
+            setTheme(R.style.femaleTheme);
+        } else {
+            setTheme(R.style.defaultTheme);
+        }
         ActivityTack.getInstanse().addActivity(this);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
     }
 
     @Override
@@ -64,11 +66,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
 //        removeProgressDialog();// pause时关闭加载框
         MobclickAgent.onPageEnd(this.getClass().getName());
         MobclickAgent.onPause(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.huicheng.hotel.android.ui.fragment;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -291,6 +293,7 @@ public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, 
             return position;
         }
 
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;

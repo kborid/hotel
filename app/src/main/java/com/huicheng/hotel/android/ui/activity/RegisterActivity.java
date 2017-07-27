@@ -421,6 +421,12 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                     }
                 });
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
+
+                //注册成功，自动登录，根据性别设置主题
+                int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
+                SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
+
+
                 if (SessionContext.getRecommandAppData() != null) {
                     requestSaveRecommandData();
                 } else {

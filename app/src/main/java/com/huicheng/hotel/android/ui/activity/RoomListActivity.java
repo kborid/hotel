@@ -2,7 +2,9 @@ package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -73,10 +75,19 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
     private boolean isClickYgr = false;
     private HotelDetailInfoBean hotelDetailInfoBean = null;
 
+    private int mRoomPriceColorId;
+    private Drawable mRoomDetailSpaceId, mRoomDetailSpace2Id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_roomlist_layout);
+        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
+        mRoomPriceColorId = ta.getInt(R.styleable.MyTheme_roomItemPrice, getResources().getColor(R.color.indicatorColor));
+        mRoomDetailSpaceId = ta.getDrawable(R.styleable.MyTheme_roomDetailSpace);
+        mRoomDetailSpace2Id = ta.getDrawable(R.styleable.MyTheme_roomDetailSpace2);
+        ta.recycle();
+
         initViews();
         initParams();
         initListeners();
@@ -281,9 +292,9 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
 
     private void updateSpaceAreaStatus(boolean isFlag) {
         if (isFlag) {
-            tv_view_comment.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.iv_message_yellow2), null, null, null);
+            tv_view_comment.setCompoundDrawablesWithIntrinsicBounds(mRoomDetailSpace2Id, null, null, null);
         } else {
-            tv_view_comment.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.iv_message_yellow), null, null, null);
+            tv_view_comment.setCompoundDrawablesWithIntrinsicBounds(mRoomDetailSpaceId, null, null, null);
         }
     }
 
@@ -347,7 +358,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
                     content_layout.setBackgroundResource(0);
                     tv_title.setTextColor(getResources().getColor(R.color.registerhintColor));
                     tv_price_note.setTextColor(getResources().getColor(R.color.registerhintColor));
-                    tv_price.setTextColor(getResources().getColor(R.color.indicatorColor));
+                    tv_price.setTextColor(mRoomPriceColorId);
                 }
             } else {
                 clock_lay.setVisibility(View.GONE);
@@ -582,7 +593,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         if (count >= 1) {
             for (int i = 0; i < count; i++) {
                 View view = new View(this);
-                view.setBackgroundResource(R.drawable.banner_indicator_indicator_bg);
+                view.setBackgroundResource(R.drawable.indicator_selector);
                 view.setEnabled(false);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(7), Utils.dip2px(7));
                 if (i > 0) {

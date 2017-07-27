@@ -6,7 +6,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/comm_rectangle_btn_transparent_checked_withbound"
+    android:background="@drawable/tagflow_item_selector"
     android:gravity="center"
     android:paddingLeft="@dimen/considerTextMarginSize"
     android:paddingRight="@dimen/considerTextMarginSize"

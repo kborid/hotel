@@ -4,8 +4,7 @@
     xmlns:ratingbar="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_lay"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/scroll_view"
@@ -267,12 +266,12 @@
                             android:layout_marginTop="20dp"
                             app:cells="5"
                             app:lineColorEdge="@color/secColor"
-                            app:lineColorSelected="@color/indicatorColor"
+                            app:lineColorSelected="?attr/userCenterThumbText"
                             app:lineColorUnSelected="@color/tabDefaultColor"
                             app:max="5"
                             app:min="0"
                             app:reserve="1"
-                            app:seekBarResId="@drawable/iv_thumb" />
+                            app:seekBarResId="?attr/userCenterThumb" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -355,14 +354,14 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/cb_setting"
-                style="@style/usercenter_checkBox_style"
+            <Button
+                android:id="@+id/btn_setting"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="25dp"
-                android:layout_marginTop="290dp" />
+                android:layout_marginTop="290dp"
+                android:background="?attr/settingButton" />
 
             <include layout="@layout/comm_title" />
         </RelativeLayout>
@@ -375,7 +374,7 @@
         android:layout_width="65dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@drawable/bg_gray">
+        android:alpha="0.2">
 
         <ImageView
             android:id="@+id/iv_logo_vertical"
@@ -395,7 +394,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="50dp"
             android:layout_marginRight="24dp"
-            android:src="@drawable/iv_left"
+            android:src="?attr/leftImage"
             android:visibility="visible" />
     </RelativeLayout>
 </RelativeLayout>

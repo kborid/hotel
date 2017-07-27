@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="MyTheme">
+        <attr name="defaultBg" format="color|reference" />
+        <attr name="hhyMainTextColor" format="color" />
+        <attr name="ygrStartColor" format="color" />
+        <attr name="ygrEndColor" format="color" />
+        <attr name="infoImage" format="reference" />
+        <attr name="tabHotelColor" format="color" />
+        <attr name="tabPlaneColor" format="color" />
+        <attr name="tabTrainColor" format="color" />
+        <attr name="tabTaxiColor" format="color" />
+        <attr name="citySelColor" format="color" />
+        <attr name="cityIndexSelColor" format="color" />
+        <attr name="commBottom" format="color" />
+        <attr name="commBottomPress" format="color" />
+        <attr name="commBottomText" format="color" />
+        <attr name="hotelListTab" format="color" />
+        <attr name="hotelRefreshColor" format="color"/>
+        <attr name="hotelItemDelPrice" format="color"/>
+        <attr name="hotelItemPrice" format="color" />
+        <attr name="currentDayCircle" format="color" />
+        <attr name="selDayBackground" format="color" />
+        <attr name="considerText" format="color" />
+        <attr name="considerFab" format="color" />
+        <attr name="considerBackground" format="color" />
+        <attr name="considerThumb" format="reference" />
+        <attr name="considerShadow" format="color" />
+        <attr name="mapSearchImage" format="reference" />
+        <attr name="mapShowArea" format="color" />
+        <attr name="mapShowAreaDisable" format="color" />
+        <attr name="mapPinImage" format="reference" />
+        <attr name="roomMainText" format="color"/>
+        <attr name="roomItemPrice" format="color"/>
+        <attr name="indicatorColor" format="color"/>
+        <attr name="roomDetailMap" format="reference"/>
+        <attr name="roomDetailPhone" format="reference"/>
+        <attr name="roomDetailSpace" format="reference"/>
+        <attr name="roomDetailSpace2" format="reference"/>
+        <attr name="settingButton" format="reference"/>
+        <attr name="settingOKButton" format="reference"/>
+        <attr name="leftImage" format="reference"/>
+        <attr name="userCenterThumb" format="reference"/>
+        <attr name="userCenterThumbDisable" format="reference"/>
+        <attr name="userCenterThumbText" format="color"/>
+        <attr name="userCenterThumbTextDisable" format="color"/>
+        <attr name="tagFlowCheckColor" format="color"/>
+        <attr name="tagFlowCheckDisableColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomBottomNaviBar">
+        <attr name="hotelColor" format="color" />
+        <attr name="planeColor" format="color" />
+        <attr name="trainColor" format="color" />
+        <attr name="taxiColor" format="color" />
+    </declare-styleable>
+
     <declare-styleable name="TagCloudView">
         <attr name="tcvBackground" format="reference" />
         <attr name="tcvTextColor" format="color" />
@@ -63,6 +118,7 @@
     </declare-styleable>
 
     <declare-styleable name="CustomCalendarView">
+        <attr name="colorCurrentDayCircle" format="color" />
         <attr name="colorCurrentDay" format="color" />
         <attr name="colorSelectedDayBackground" format="color" />
         <attr name="colorSelectedDayText" format="color" />

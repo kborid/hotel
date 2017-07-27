@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:minWidth="60dp"
         android:layout_height="30dp"
-        android:background="@color/secColorShadow"
+        android:background="?attr/citySelColor"
         android:gravity="center"
         android:text="上海"
         android:textColor="@color/secColor"

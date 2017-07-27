@@ -3,21 +3,125 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <!--默认背景颜色-->
-        <item name="android:windowBackground">@drawable/bg_gray</item>
-        <item name="colorAccent">@color/mainColorAccent</item>
         <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge
         </item>
         <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall
         </item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <!--欢迎界面theme-->
+    <style name="WelTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- 启动背景图片 -->
-        <item name="android:windowBackground">@drawable/share_bg</item>
+        <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
+
+
+    <!--默认主题 Default-->
+    <!--男性界面主题-->
+    <style name="defaultTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/defaultBG</item>
+        <item name="colorAccent">@color/mainColorAccent</item>
+        <item name="tabHotelColor">@color/tabHotelColor</item>
+        <item name="tabPlaneColor">@color/tabPlaneColor</item>
+        <item name="tabTrainColor">@color/tabTrainColor</item>
+        <item name="tabTaxiColor">@color/tabTaxiColor</item>
+        <item name="infoImage">@drawable/iv_info</item>
+        <item name="ygrStartColor">@color/ygrStartColor</item>
+        <item name="ygrEndColor">@color/ygrEndColor</item>
+        <item name="hhyMainTextColor">@color/hhyMainTextColor</item>
+        <item name="citySelColor">@color/citySelColor</item>
+        <item name="cityIndexSelColor">@color/cityIndexSelColor</item>
+        <item name="commBottom">@color/commBottom</item>
+        <item name="commBottomPress">@color/commBottomPress</item>
+        <item name="commBottomText">@color/commBottomText</item>
+        <item name="hotelListTab">@color/hotelListTab</item>
+        <item name="hotelRefreshColor">@color/mainColorAccent</item>
+        <item name="hotelItemDelPrice">@color/hotelItemDelPrice</item>
+        <item name="hotelItemPrice">@color/hotelItemPrice</item>
+        <item name="currentDayCircle">@color/currentDayCircle</item>
+        <item name="selDayBackground">@color/selDayBackground</item>
+        <item name="considerText">@color/considerText</item>
+        <item name="considerFab">@color/considerFab</item>
+        <item name="considerBackground">@color/considerBackground</item>
+        <item name="considerThumb">@drawable/iv_thumb_consider</item>
+        <item name="considerShadow">@color/considerShadow</item>
+        <item name="mapSearchImage">@drawable/iv_search</item>
+        <item name="mapShowArea">@color/mapShowArea</item>
+        <item name="mapShowAreaDisable">@color/mapShowAreaDisable</item>
+        <item name="mapPinImage">@drawable/iv_pin</item>
+        <item name="roomMainText">@color/roomMainText</item>
+        <item name="roomItemPrice">@color/indicatorColor</item>
+        <item name="indicatorColor">@color/indicatorColor</item>
+        <item name="roomDetailMap">@drawable/iv_location_yellow</item>
+        <item name="roomDetailPhone">@drawable/iv_phone_yellow</item>
+        <item name="roomDetailSpace">@drawable/iv_message_yellow</item>
+        <item name="roomDetailSpace2">@drawable/iv_message_yellow2</item>
+        <item name="settingButton">@drawable/iv_setting</item>
+        <item name="settingOKButton">@drawable/iv_setting_ok</item>
+        <item name="leftImage">@drawable/iv_left</item>
+        <item name="userCenterThumb">@drawable/iv_thumb</item>
+        <item name="userCenterThumbDisable">@drawable/iv_thumb_yello</item>
+        <item name="userCenterThumbText">@color/mainColor</item>
+        <item name="userCenterThumbTextDisable">@color/indicatorColor</item>
+        <item name="tagFlowCheckColor">@color/mainColorAccent</item>
+        <item name="tagFlowCheckDisableColor">@color/mainColorAccent</item>
+    </style>
+
+
+    <!--女性界面主题-->
+    <style name="femaleTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/female_defaultBG</item>
+        <item name="colorAccent">@color/female_mainColorAccent</item>
+        <item name="tabHotelColor">@color/female_tabHotelColor</item>
+        <item name="tabPlaneColor">@color/female_tabPlaneColor</item>
+        <item name="tabTrainColor">@color/female_tabTrainColor</item>
+        <item name="tabTaxiColor">@color/female_tabTaxiColor</item>
+        <item name="infoImage">@drawable/iv_info_female</item>
+        <item name="ygrStartColor">@color/female_ygrStartColor</item>
+        <item name="ygrEndColor">@color/female_ygrEndColor</item>
+        <item name="hhyMainTextColor">@color/female_hhyMainTextColor</item>
+        <item name="citySelColor">@color/female_citySelColor</item>
+        <item name="cityIndexSelColor">@color/female_cityIndexSelColor</item>
+        <item name="commBottom">@color/female_commBottom</item>
+        <item name="commBottomPress">@color/female_commBottomPress</item>
+        <item name="commBottomText">@color/female_commBottomText</item>
+        <item name="hotelListTab">@color/female_hotelListTab</item>
+        <item name="hotelRefreshColor">@color/female_mainColorAccent</item>
+        <item name="hotelItemDelPrice">@color/female_hotelItemDelPrice</item>
+        <item name="hotelItemPrice">@color/female_hotelItemPrice</item>
+        <item name="currentDayCircle">@color/female_currentDayCircle</item>
+        <item name="selDayBackground">@color/female_selDayBackground</item>
+        <item name="considerText">@color/female_considerText</item>
+        <item name="considerFab">@color/female_considerFab</item>
+        <item name="considerBackground">@color/female_considerBackground</item>
+        <item name="considerThumb">@drawable/iv_thumb_consider_female</item>
+        <item name="considerShadow">@color/female_considerShadow</item>
+        <item name="mapSearchImage">@drawable/iv_search_female</item>
+        <item name="mapShowArea">@color/female_mapShowArea</item>
+        <item name="mapShowAreaDisable">@color/female_mapShowAreaDisable</item>
+        <item name="mapPinImage">@drawable/iv_pin_female</item>
+        <item name="roomMainText">@color/female_roomMainText</item>
+        <item name="roomItemPrice">@color/female_indicatorColor</item>
+        <item name="indicatorColor">@color/female_indicatorColor</item>
+        <item name="roomDetailMap">@drawable/iv_location_yellow_female</item>
+        <item name="roomDetailPhone">@drawable/iv_phone_yellow_female</item>
+        <item name="roomDetailSpace">@drawable/iv_message_yellow_female</item>
+        <item name="roomDetailSpace2">@drawable/iv_message_yellow2</item>
+        <item name="settingButton">@drawable/iv_setting_female</item>
+        <item name="settingOKButton">@drawable/iv_setting_ok_female</item>
+        <item name="leftImage">@drawable/iv_left_female</item>
+        <item name="userCenterThumb">@drawable/iv_thumb_consider_female</item>
+        <item name="userCenterThumbDisable">@drawable/iv_thumb_yello_female</item>
+        <item name="userCenterThumbText">@color/female_indicatorColor</item>
+        <item name="userCenterThumbTextDisable">@color/female_mainColor</item>
+        <item name="tagFlowCheckColor">@color/female_indicatorColor</item>
+        <item name="tagFlowCheckDisableColor">@color/female_mainColor</item>
+    </style>
+
 
     <style name="myPopupMenuTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
         <item name="android:textColor">@color/secColor</item>
@@ -53,10 +157,6 @@
     <!-- checkBox风格 -->
     <style name="checkBox_style" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/checkbox_selector</item>
-    </style>
-    <!--usercenter checkbox 风格-->
-    <style name="usercenter_checkBox_style" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/usercenter_checkbox_selector</item>
     </style>
 
     <!-- login checkBox风格 -->

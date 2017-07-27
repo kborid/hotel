@@ -1,8 +1,11 @@
 package com.huicheng.hotel.android.ui.base;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,6 +28,7 @@ import com.umeng.analytics.MobclickAgent;
 public abstract class BaseFragment extends Fragment {
     private ProgressDialog mProgressDialog;
     protected static String requestID;
+    protected int mSwipeRefreshColorId = R.color.mainColorAccent;
     /**
      * Fragment当前状态是否可见
      */
@@ -48,6 +52,10 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isPrepared = true;
+        //TODO color set not effect
+        TypedArray ta = getActivity().obtainStyledAttributes(R.styleable.MyTheme);
+        mSwipeRefreshColorId = ta.getInt(R.styleable.MyTheme_hotelRefreshColor, getActivity().getResources().getColor(R.color.mainColorAccent));
+        ta.recycle();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -157,6 +165,7 @@ public abstract class BaseFragment extends Fragment {
 
         if (StringUtil.notEmpty(url)) {
             ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
+                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                 @Override
                 public void imageCallback(Bitmap bm, String url, String imageTag) {
                     if (null != bm) {

@@ -30,7 +30,7 @@
             android:id="@+id/point_layout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@color/transparent5"
+            android:background="?attr/considerBackground"
             android:orientation="horizontal">
 
             <TextView
@@ -60,7 +60,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="无"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
@@ -72,7 +72,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="4.5以上"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="3.5-4.5"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
@@ -96,7 +96,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="3.5以下"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
             </RadioGroup>
@@ -137,7 +137,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="无"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_13sp"
                     android:textStyle="bold" />
 
@@ -149,7 +149,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="城市酒店"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_13sp"
                     android:textStyle="bold" />
 
@@ -161,7 +161,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="度假酒店"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_13sp"
                     android:textStyle="bold" />
 
@@ -173,7 +173,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="青年旅社"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_13sp"
                     android:textStyle="bold" />
 
@@ -185,7 +185,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="机场酒店"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_13sp"
                     android:textStyle="bold" />
             </RadioGroup>
@@ -196,7 +196,7 @@
             android:id="@+id/price_layout"
             android:layout_width="match_parent"
             android:layout_height="121dp"
-            android:background="@color/transparent5"
+            android:background="?attr/considerBackground"
             android:orientation="vertical"
             android:paddingTop="13dp">
 
@@ -218,12 +218,12 @@
                 android:layout_marginTop="27dp"
                 app:cells="6"
                 app:lineColorEdge="@color/secColor"
-                app:lineColorSelected="@color/indicatorColor"
+                app:lineColorSelected="?attr/considerText"
                 app:lineColorUnSelected="@color/tabDefaultColor"
                 app:max="6"
                 app:min="0"
                 app:reserve="1"
-                app:seekBarResId="@drawable/iv_thumb_yw" />
+                app:seekBarResId="?attr/considerThumb" />
         </LinearLayout>
 
         <!--星级-->
@@ -260,7 +260,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="无"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
@@ -272,7 +272,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="三星"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
@@ -284,7 +284,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="四星"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
@@ -296,7 +296,7 @@
                     android:background="@null"
                     android:button="@null"
                     android:text="五星"
-                    android:textColor="@color/selection_text_color"
+                    android:textColor="@color/consider_text_selector"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
             </RadioGroup>

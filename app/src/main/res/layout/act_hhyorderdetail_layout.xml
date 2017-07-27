@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/bg_white"
         android:fillViewport="true"
         android:scrollbarThumbVertical="@drawable/p3016_scrollbar">
 
@@ -314,7 +313,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/bg_gray"
+        android:background="@drawable/bg_white"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -324,9 +323,9 @@
             android:layout_height="45dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/comm_rectangle_gray_selector"
+            android:background="@drawable/rectangle_bottom_selector"
             android:text="确定"
-            android:textColor="@color/sec_white_selector"
+            android:textColor="?attr/commBottomText"
             android:textSize="@dimen/common_15sp"
             android:textStyle="bold" />
     </LinearLayout>
