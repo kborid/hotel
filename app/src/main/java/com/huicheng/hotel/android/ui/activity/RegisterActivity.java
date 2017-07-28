@@ -426,15 +426,15 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                 int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
                 SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
 
-
                 if (SessionContext.getRecommandAppData() != null) {
                     requestSaveRecommandData();
                 } else {
+                    startActivity(new Intent(this, MainFragmentActivity.class));
                     this.finish();
                 }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
                 removeProgressDialog();
-                System.out.println("json = " + response.body.toString());
+                startActivity(new Intent(this, MainFragmentActivity.class));
                 this.finish();
             }
         }

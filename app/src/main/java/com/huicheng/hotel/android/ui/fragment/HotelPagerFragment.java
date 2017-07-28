@@ -3,6 +3,7 @@ package com.huicheng.hotel.android.ui.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,11 +39,10 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-
-import static com.huicheng.hotel.android.R.id.btn_0yz;
 
 /**
  * Fragment home
@@ -73,6 +73,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         getArguments().getString("key");
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_pager_home, container, false);
+        initTypedArrayValue();
         initViews(view);
         initParams();
         initListeners();
@@ -120,7 +121,9 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         iv_voice = (ImageView) view.findViewById(R.id.iv_voice);
         tv_next_search = (TextView) view.findViewById(R.id.tv_next_search);
         tv_info = (TextView) view.findViewById(R.id.tv_info);
-        btn_zero = (ImageButton) view.findViewById(btn_0yz);
+        btn_zero = (ImageButton) view.findViewById(R.id.btn_zero);
+        Bitmap bm = BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_freeonenight_blue), getResources().getColor(mMainColor));
+        btn_zero.setImageBitmap(bm);
         btn_night = (Button) view.findViewById(R.id.btn_ygr);
         btn_hhy = (Button) view.findViewById(R.id.btn_hhy);
 
@@ -190,15 +193,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         });
     }
 
-    private void reLoad() {
-        Intent intent = getActivity().getIntent();
-        getActivity().overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        getActivity().finish();
-        getActivity().overridePendingTransition(0, 0);
-        startActivity(intent);
-    }
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     public void onClick(View v) {
@@ -253,14 +247,13 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 intent.putExtra("priceIndex", mPriceIndex);
                 break;
             case R.id.tv_info:
-                reLoad();
                 CustomDialog dialog = new CustomDialog(getActivity());
                 dialog.setTitle(getString(R.string.hsqString));
                 dialog.setMessage(getString(R.string.hsqNote2));
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
                 break;
-            case btn_0yz:
+            case R.id.btn_zero:
                 if (!SessionContext.isLogin()) {
                     getActivity().sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                     return;

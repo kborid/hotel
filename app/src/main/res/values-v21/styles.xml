@@ -2,8 +2,6 @@
 
     <!--欢迎界面theme-->
     <style name="WelTheme" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <!-- 启动背景图片 -->
         <item name="android:windowBackground">@drawable/launch_background</item>

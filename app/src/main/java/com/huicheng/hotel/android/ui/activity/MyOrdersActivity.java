@@ -112,7 +112,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
         resIdList.add(BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_tab_hotel), getResources().getColor(R.color.white)));
         resIdList.add(BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_tab_plane), getResources().getColor(R.color.white)));
         spinner_type_adapter = new MyOrderTypeAdapter(this, resIdList);
-        spinner_type.setPopupBackgroundDrawable(getResources().getDrawable(R.drawable.comm_rectangle_btn_yello));
+//        spinner_type.setPopupBackgroundResource(R.drawable.comm_rectangle_btn_yello);
         spinner_type.setAdapter(spinner_type_adapter);
 
 

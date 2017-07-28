@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -106,12 +107,14 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
 
     private String bgPath = null;
 
+    private int oldSkinIndex = 0;
     private int lineSelectedColorId, lineSelectedDisableColorId;
     private int thumbId, thumbDisableId, settingId, settingOkId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("onCreate()");
         setContentView(R.layout.act_usercenter_layout);
 
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
@@ -170,6 +173,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         setCountDownTimer(60 * 1000, 1000);
         scroll_view.getBackground().mutate().setAlpha((int) (0.8 * 255));
 
+        oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
         //更新个人中心信息
         // 设置头像
         String photoUrl = SessionContext.mUser.user.headphotourl;
@@ -433,6 +437,10 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.btn_back:
+                startActivity(new Intent(this, MainFragmentActivity.class));
+                finish();
+                break;
             case R.id.camer_lay:
                 if (!isEdited) {
                     return;
@@ -556,6 +564,15 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         }
     };
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == keyCode) {
+            btn_back.performClick();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     private void requestSaveUserPerferSetting() {
         LogUtil.i(TAG, "requestSaveUserPerferSetting()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
@@ -651,16 +668,20 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onResume() {
         super.onResume();
+        System.out.println("onResume()");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        System.out.println("onPause()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        System.out.println("onDestroy()");
+        isEdited = false;
     }
 
     private void refreshSexStatus() {
@@ -872,6 +893,12 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
+                int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
+                if (oldSkinIndex != newSkinIndex) {
+                    startActivity(new Intent(this, UserCenterActivity.class));
+                    overridePendingTransition(R.anim.act_restart, R.anim.act_restop);
+                    finish();
+                }
             }
         }
     }

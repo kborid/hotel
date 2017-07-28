@@ -121,7 +121,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 holder.tv_hotel_price.setVisibility(View.GONE);
             } else {
                 holder.tv_hotel_price.setVisibility(View.VISIBLE);
-                holder.tv_hotel_price.setText(price + "元起");
+                holder.tv_hotel_price.setText(" " + price + "元起 ");
             }
             holder.tv_hotel_special_price_note.setText("特价：");
             holder.tv_hotel_special_price.setText(bean.speciallyPrice + " 元");

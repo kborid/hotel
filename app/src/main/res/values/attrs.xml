@@ -47,6 +47,9 @@
         <attr name="userCenterThumbTextDisable" format="color"/>
         <attr name="tagFlowCheckColor" format="color"/>
         <attr name="tagFlowCheckDisableColor" format="color"/>
+        <attr name="zeroButtonBg" format="reference"/>
+        <attr name="mainColor" format="color"/>
+        <attr name="mainColorAccent" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="CustomBottomNaviBar">

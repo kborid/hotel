@@ -658,23 +658,23 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
             }
             container.addView(view);
             //add listeners here if necessary
-            final int finalPosition = position;
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, ImageScaleActivity.class);
-                    intent.putExtra("url", list.get(finalPosition));
-                    ImageView imageView = (ImageView) view.findViewById(R.id.iv_background);
-                    int[] location = new int[2];
-                    imageView.getLocationOnScreen(location);
-                    intent.putExtra("locationX", location[0]);//必须
-                    intent.putExtra("locationY", location[1]);//必须
-                    intent.putExtra("width", imageView.getWidth());//必须
-                    intent.putExtra("height", imageView.getHeight());//必须
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                }
-            });
+//            final int finalPosition = position;
+//            view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(context, ImageScaleActivity.class);
+//                    intent.putExtra("url", list.get(finalPosition));
+//                    ImageView imageView = (ImageView) view.findViewById(R.id.iv_background);
+//                    int[] location = new int[2];
+//                    imageView.getLocationOnScreen(location);
+//                    intent.putExtra("locationX", location[0]);//必须
+//                    intent.putExtra("locationY", location[1]);//必须
+//                    intent.putExtra("width", imageView.getWidth());//必须
+//                    intent.putExtra("height", imageView.getHeight());//必须
+//                    startActivity(intent);
+//                    overridePendingTransition(0, 0);
+//                }
+//            });
             return view;
         }
 

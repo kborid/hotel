@@ -155,9 +155,6 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
     @Override
     protected void onResume() {
         super.onResume();
-        if (SessionContext.isLogin()) {
-            this.finish();
-        }
     }
 
     @Override
@@ -382,7 +379,7 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
             //登录成功，根据性别设置主题
             int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
             SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
-
+            startActivity(new Intent(this, MainFragmentActivity.class));
             this.finish();
 
         } else if (request.flag == AppConst.BIND_CHECK) {// 如果绑定，直接获取用户信息，没有绑定到绑定页面

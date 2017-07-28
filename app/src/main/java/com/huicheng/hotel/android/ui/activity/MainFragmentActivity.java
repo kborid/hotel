@@ -67,9 +67,12 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     private static boolean isReload = false;
     private static String planeOrderId = "";
 
+    private int oldSkinIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println(TAG + ":onCreate()");
         setContentView(R.layout.ui_main_tab);
         initViews();
         dealIntent();
@@ -79,6 +82,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
     public void initViews() {
         super.initViews();
+        System.out.println(TAG + ":initViews()");
         viewPager = (CustomViewPager) findViewById(R.id.viewPager);
         if (viewPager != null) {
             viewPager.setPagingEnabled(false);
@@ -99,11 +103,13 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     @Override
     public void initParams() {
         super.initParams();
+        System.out.println(TAG + ":initParams()");
         if (SessionContext.isLogin()) {
             String lastLoginTime = SharedPreferenceUtil.getInstance().getString(AppConst.LAST_LOGIN_DATE, "", false);
             System.out.println("Last LoginTime:" + lastLoginTime);
         }
-
+        oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
+        System.out.println(TAG + ":initParams() oldSkinIndex = " + oldSkinIndex);
         initFragmentView();
     }
 
@@ -216,7 +222,14 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        System.out.println(TAG + ":onNewIntent()");
         // Note that getIntent() still returns the original Intent. You can use setIntent(Intent) to update it to this new Intent.
+        int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
+        System.out.println(TAG + ":onNewIntent() oldSkinIndex = " + oldSkinIndex + ", newSkinIndex = " + newSkinIndex);
+        if (oldSkinIndex != newSkinIndex) {
+            oldSkinIndex = newSkinIndex;
+            recreate();
+        }
         setIntent(intent);
         dealIntent();
     }
@@ -244,6 +257,19 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
             @Override
             public void closeDrawer() {
                 drawer_layout.closeDrawers();
+            }
+
+            @Override
+            public void onReCreate() {
+                System.out.println(TAG + ":onReCreate()");
+                //TODO need optimize
+                int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
+                System.out.println(TAG + ":onNewIntent() oldSkinIndex = " + oldSkinIndex + ", newSkinIndex = " + newSkinIndex);
+                if (oldSkinIndex != newSkinIndex) {
+                    oldSkinIndex = newSkinIndex;
+//                    overridePendingTransition(R.anim.act_restart, R.anim.act_restop);
+                    recreate();
+                }
             }
         });
         drawer_layout.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -298,12 +324,15 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     @Override
     public void onPause() {
         super.onPause();
+        System.out.println(TAG + ":onPause()");
         currentIndex = viewPager.getCurrentItem();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        System.out.println(TAG + ":onDestroy()");
+        left_layout.unregisterBroadReceiver();
     }
 
     @Override

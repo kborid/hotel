@@ -282,6 +282,9 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
             }
             logout();
             context.sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
+            if (listener != null) {
+                listener.onReCreate();
+            }
         }
     }
 
@@ -315,6 +318,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
     public interface OnLeftDrawerListener {
         void closeDrawer();
+        void onReCreate();
     }
 
     private OnLeftDrawerListener listener = null;

@@ -13,8 +13,6 @@
 
     <!--欢迎界面theme-->
     <style name="WelTheme" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
         <!-- 启动背景图片 -->
         <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
@@ -69,6 +67,9 @@
         <item name="userCenterThumbTextDisable">@color/indicatorColor</item>
         <item name="tagFlowCheckColor">@color/mainColorAccent</item>
         <item name="tagFlowCheckDisableColor">@color/mainColorAccent</item>
+        <item name="zeroButtonBg">@drawable/iv_free_bg</item>
+        <item name="mainColor">@color/mainColor</item>
+        <item name="mainColorAccent">@color/mainColorAccent</item>
     </style>
 
 
@@ -120,6 +121,9 @@
         <item name="userCenterThumbTextDisable">@color/female_mainColor</item>
         <item name="tagFlowCheckColor">@color/female_indicatorColor</item>
         <item name="tagFlowCheckDisableColor">@color/female_mainColor</item>
+        <item name="zeroButtonBg">@drawable/iv_free_bg_female</item>
+        <item name="mainColor">@color/female_mainColor</item>
+        <item name="mainColorAccent">@color/female_mainColorAccent</item>
     </style>
 
 
@@ -133,7 +137,7 @@
         <item name="android:textSize">@dimen/common_18sp</item>
     </style>
 
-    <style name="ImageTransparent" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="ImageTransparent" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>

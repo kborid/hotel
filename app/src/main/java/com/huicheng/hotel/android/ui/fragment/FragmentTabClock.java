@@ -61,6 +61,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         keyword = getArguments().getString("keyword");
         priceIndex = getArguments().getInt("priceIndex");
         View view = inflater.inflate(R.layout.fragment_tab_clock, container, false);
+        initTypedArrayValue();
         initViews(view);
         initParams();
         initListeners();
@@ -110,7 +111,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     @Override
     protected void initParams() {
         super.initParams();
-        pullLoadMoreRecyclerView.setColorSchemeResources(mSwipeRefreshColorId);
+        pullLoadMoreRecyclerView.setColorSchemeResources(mSwipeRefreshColor);
         if (priceIndex != 0) {
             float priceMin = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MIN, 0f);
             float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 6f);

@@ -99,7 +99,8 @@
                 android:id="@+id/spinner_type"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/comm_rectangle_btn_yello"/>
+                android:background="@drawable/comm_rectangle_btn_yello"
+                android:popupBackground="@drawable/comm_rectangle_btn_yello" />
 
             <Spinner
                 android:id="@+id/spinner_status"
@@ -123,10 +124,10 @@
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
             android:animateLayoutChanges="true"
             android:divider="@color/transparent"
             android:listSelector="@color/transparent"
+            android:overScrollMode="never"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:scrollbarThumbVertical="@drawable/p3016_scrollbar"
@@ -137,10 +138,10 @@
     <RelativeLayout
         android:id="@+id/blur_lay"
         android:layout_width="65dp"
-        android:visibility="gone"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@drawable/bg_gray">
+        android:background="@drawable/bg_gray"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_logo_vertical"

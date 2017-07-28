@@ -22,13 +22,13 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  * fragment基类，提供公共属性
- *
- * @author LiaoBo
  */
 public abstract class BaseFragment extends Fragment {
     private ProgressDialog mProgressDialog;
     protected static String requestID;
-    protected int mSwipeRefreshColorId = R.color.mainColorAccent;
+    protected int mMainColor = R.color.mainColor;
+    protected int mMainColorAccent = R.color.mainColorAccent;
+    protected int mSwipeRefreshColor = mMainColorAccent;
     /**
      * Fragment当前状态是否可见
      */
@@ -52,11 +52,15 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isPrepared = true;
-        //TODO color set not effect
-        TypedArray ta = getActivity().obtainStyledAttributes(R.styleable.MyTheme);
-        mSwipeRefreshColorId = ta.getInt(R.styleable.MyTheme_hotelRefreshColor, getActivity().getResources().getColor(R.color.mainColorAccent));
-        ta.recycle();
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    protected void initTypedArrayValue() {
+        TypedArray ta = getActivity().obtainStyledAttributes(R.styleable.MyTheme);
+        mMainColor = ta.getResourceId(R.styleable.MyTheme_mainColor, R.color.mainColor);
+        mMainColorAccent = ta.getResourceId(R.styleable.MyTheme_mainColorAccent, R.color.mainColorAccent);
+        mSwipeRefreshColor = ta.getResourceId(R.styleable.MyTheme_hotelRefreshColor, mMainColorAccent);
+        ta.recycle();
     }
 
     protected void onVisible() {

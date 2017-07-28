@@ -19,6 +19,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.ui.activity.InvoiceDetailActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
+import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.image.ImageLoader;
@@ -114,7 +115,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
             case R.id.btn_back:
                 if (getClass().equals(InvoiceDetailActivity.class)
                         || getClass().equals(OrderPayActivity.class)
-                        || getClass().equals(OrderPaySuccessActivity.class)) {
+                        || getClass().equals(OrderPaySuccessActivity.class)
+                        || getClass().equals(UserCenterActivity.class)) {
                     //do nothing
                 } else {
                     finish();

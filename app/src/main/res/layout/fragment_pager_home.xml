@@ -217,13 +217,13 @@
                 android:textSize="@dimen/common_15sp" />
 
             <ImageButton
-                android:id="@+id/btn_0yz"
+                android:id="@+id/btn_zero"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_below="@id/tv_info"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="10dp"
-                android:background="@drawable/comm_rectangle_btn_zero"
+                android:background="?attr/zeroButtonBg"
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="100dp"
@@ -236,7 +236,7 @@
                 android:id="@+id/btn_ygr"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@id/btn_0yz"
+                android:layout_below="@id/btn_zero"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="10dp"
                 android:background="@drawable/comm_rectangle_btn_ygr"

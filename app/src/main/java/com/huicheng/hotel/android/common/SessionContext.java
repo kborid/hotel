@@ -194,6 +194,7 @@ public class SessionContext {
         SharedPreferenceUtil.getInstance().setString(AppConst.LAST_LOGIN_DATE, "", false);// 置空登录时间
         SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, "", true);
         SharedPreferenceUtil.getInstance().setString(AppConst.ACCESS_TICKET, "", true);
+        SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 0);
     }
 
     /**

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.SmoothImageView;
 import com.prj.sdk.app.AppContext;
@@ -28,6 +29,7 @@ public class ImageScaleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.ImageTransparent);
         overridePendingTransition(0, 0);
         iv_picture = new SmoothImageView(this);
         setContentView(iv_picture);
