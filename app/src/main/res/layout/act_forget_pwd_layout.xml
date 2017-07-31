@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/share_bg">
+    android:background="@drawable/share_bg"
+    android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
 
@@ -71,6 +71,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="验证码"
+                    android:inputType="number"
                     android:lines="1"
                     android:maxLength="10"
                     android:textColor="@color/secColor"
@@ -113,6 +114,7 @@
                 android:background="@null"
                 android:gravity="left|center_vertical"
                 android:hint="重新设置您的登录密码"
+                android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:lines="1"
                 android:maxLength="20"
@@ -144,6 +146,7 @@
                 android:background="@null"
                 android:gravity="left|center_vertical"
                 android:hint="请确认您的登录密码"
+                android:imeOptions="actionGo"
                 android:inputType="textPassword"
                 android:lines="1"
                 android:maxLength="20"

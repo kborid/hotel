@@ -262,12 +262,10 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
             @Override
             public void onReCreate() {
                 System.out.println(TAG + ":onReCreate()");
-                //TODO need optimize
                 int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
-                System.out.println(TAG + ":onNewIntent() oldSkinIndex = " + oldSkinIndex + ", newSkinIndex = " + newSkinIndex);
+                System.out.println(TAG + ":onReCreate() oldSkinIndex = " + oldSkinIndex + ", newSkinIndex = " + newSkinIndex);
                 if (oldSkinIndex != newSkinIndex) {
                     oldSkinIndex = newSkinIndex;
-//                    overridePendingTransition(R.anim.act_restart, R.anim.act_restop);
                     recreate();
                 }
             }

@@ -215,7 +215,7 @@ public class BindPhoneActivity extends BaseActivity implements DataCallback, Dia
                 int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
                 SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
                 startActivity(new Intent(this, MainFragmentActivity.class));
-                this.finish();
+//                this.finish();
             }
         }
     }

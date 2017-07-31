@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -101,6 +103,16 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                 if (!hasFocus) {
                     requestCheckYZM();
                 }
+            }
+        });
+        et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    btn_register.performClick();
+                    return true;
+                }
+                return false;
             }
         });
         rg_sex_lay.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -430,12 +442,12 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                     requestSaveRecommandData();
                 } else {
                     startActivity(new Intent(this, MainFragmentActivity.class));
-                    this.finish();
+//                    this.finish();
                 }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
                 removeProgressDialog();
                 startActivity(new Intent(this, MainFragmentActivity.class));
-                this.finish();
+//                this.finish();
             }
         }
 

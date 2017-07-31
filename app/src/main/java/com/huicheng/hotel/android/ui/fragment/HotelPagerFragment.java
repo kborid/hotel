@@ -145,8 +145,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         if (AppConst.ISDEVELOP) {
             btn_zero.setVisibility(View.VISIBLE);
         }
-
-        System.out.println("App is running " + SessionContext.isRunningApp(getActivity(), "com.huicheng.hotel.android"));
     }
 
     @Override
@@ -215,7 +213,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 mDialog.setListener(new RecognizerDialogListener() {
                     @Override
                     public void onResult(RecognizerResult recognizerResult, boolean b) {
-                        System.out.println("onResult()");
                         if (b) {
                             String jsonStr = recognizerResult.getResultString();
                             JSONObject mJson = JSON.parseObject(jsonStr);
@@ -287,7 +284,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                     public boolean onMenuItemClick(MenuItem item) {
                         mPriceIndex = item.getOrder();
                         tv_price.setText(item.getTitle());
-                        System.out.println("order = " + mPriceIndex + ", title = " + tv_price.getText());
                         return false;
                     }
                 });

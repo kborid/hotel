@@ -439,7 +439,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         switch (v.getId()) {
             case R.id.btn_back:
                 startActivity(new Intent(this, MainFragmentActivity.class));
-                finish();
+//                finish();
                 break;
             case R.id.camer_lay:
                 if (!isEdited) {
@@ -637,7 +637,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     private void requestCheckYZM() {
         LogUtil.i(TAG, "requestCheckYZM()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("businesstype", AppConst.BUSINESS_TYPE_REGISTER);
+        b.addBody("businesstype", AppConst.BUSINESS_TYPE_CHANGEPHONE);
         b.addBody("mobile", phoneNumber);
         b.addBody("code", code);
 

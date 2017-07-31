@@ -86,6 +86,7 @@
                 android:drawableLeft="@drawable/iv_pwd"
                 android:drawablePadding="15dp"
                 android:hint="设置密码"
+                android:imeOptions="actionGo"
                 android:inputType="textPassword"
                 android:textColorHint="@color/registerhintColor"
                 android:textSize="@dimen/common_18sp" />

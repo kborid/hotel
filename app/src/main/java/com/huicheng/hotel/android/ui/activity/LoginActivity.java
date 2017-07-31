@@ -7,6 +7,7 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -110,6 +111,16 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
         btn_cancel.setOnClickListener(this);
         btn_wx.setOnClickListener(this);
         btn_qq.setOnClickListener(this);
+        et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    btn_login.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
         super.initListeners();
     }
 
@@ -380,7 +391,7 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
             int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
             SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
             startActivity(new Intent(this, MainFragmentActivity.class));
-            this.finish();
+//            this.finish();
 
         } else if (request.flag == AppConst.BIND_CHECK) {// 如果绑定，直接获取用户信息，没有绑定到绑定页面
             removeProgressDialog();

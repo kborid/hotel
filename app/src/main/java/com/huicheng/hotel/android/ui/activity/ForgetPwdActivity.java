@@ -3,9 +3,12 @@ package com.huicheng.hotel.android.ui.activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -73,6 +76,16 @@ public class ForgetPwdActivity extends BaseActivity implements DataCallback, Dia
                 if (!hasFocus) {
                     requestCheckYZM();
                 }
+            }
+        });
+        et_password2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    btn_reset.performClick();
+                    return true;
+                }
+                return false;
             }
         });
     }

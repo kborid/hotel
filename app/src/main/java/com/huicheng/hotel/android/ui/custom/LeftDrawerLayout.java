@@ -282,15 +282,15 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
             }
             logout();
             context.sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
-            if (listener != null) {
-                listener.onReCreate();
-            }
+//            if (listener != null) {
+//                listener.onReCreate();
+//            }
         }
     }
 
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
-//        removeProgressDialog();
+        mProgressDialog.dismiss();
         String message;
         if (e != null && e instanceof ConnectException) {
             message = context.getResources().getString(R.string.dialog_tip_net_error);
