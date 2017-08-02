@@ -116,59 +116,66 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     @Override
     public void onResume() {
         super.onResume();
-        if (isFirstLaunch) {
-            isFirstLaunch = false;
-            if (SessionContext.getWakeUpAppData() != null) {
-                JSONObject mJson = JSON.parseObject(SessionContext.getWakeUpAppData().getData());
-                if (mJson.containsKey("channel")) {
-                    String channel = mJson.getString("channel");
-                    if (HotelCommDef.SHARE_HOTEL.equals(channel)) {
-                        HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
-                        Intent intent = new Intent(this, RoomListActivity.class);
-                        intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                        long beginDate = Long.valueOf(mJson.getString("beginDate"));
-                        long endDate = Long.valueOf(mJson.getString("endDate"));
-                        HotelOrderManager.getInstance().setBeginTime(beginDate);
-                        HotelOrderManager.getInstance().setEndTime(endDate);
-                        String dateStr = (DateUtil.getDay("M.dd", beginDate)) + DateUtil.dateToWeek2(new Date(beginDate)) + " - " + DateUtil.getDay("M.dd", endDate) + DateUtil.dateToWeek2(new Date(endDate));
-                        intent.putExtra("date", dateStr);
-                        startActivity(intent);
-                    } else if (HotelCommDef.SHARE_ROOM.equals(channel)) {
-                        long beginDate = Long.valueOf(mJson.getString("beginDate"));
-                        long endDate = Long.valueOf(mJson.getString("endDate"));
-                        HotelOrderManager.getInstance().setBeginTime(beginDate);
-                        HotelOrderManager.getInstance().setEndTime(endDate);
-                        Intent intent = new Intent(this, RoomDetailActivity.class);
-                        intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                        intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
-                        intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
-                        intent.putExtra("hotelName", mJson.getString("hotelName"));
-                        startActivity(intent);
-                    } else if (HotelCommDef.SHARE_FREE.equals(channel)) {
-                        Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
-                        startActivity(intent);
-                    } else if (HotelCommDef.SHARE_TIE.equals(channel)) {
-                        Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
-                        intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                        intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
-                        startActivity(intent);
-                    } else {
-                        LogUtil.d("MainFragmentActivity", "warning~~~");
+        boolean isNotFirstLaunch = SharedPreferenceUtil.getInstance().getBoolean(AppConst.NOT_FIRST_LAUNCH, false);
+        if (!isNotFirstLaunch) {
+            SharedPreferenceUtil.getInstance().setBoolean(AppConst.NOT_FIRST_LAUNCH, true);
+//            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+            startActivity(new Intent(this, RegisterActivity.class));
+        } else {
+            if (isFirstLaunch) {
+                isFirstLaunch = false;
+                if (SessionContext.getWakeUpAppData() != null) {
+                    JSONObject mJson = JSON.parseObject(SessionContext.getWakeUpAppData().getData());
+                    if (mJson.containsKey("channel")) {
+                        String channel = mJson.getString("channel");
+                        if (HotelCommDef.SHARE_HOTEL.equals(channel)) {
+                            HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
+                            Intent intent = new Intent(this, RoomListActivity.class);
+                            intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                            long beginDate = Long.valueOf(mJson.getString("beginDate"));
+                            long endDate = Long.valueOf(mJson.getString("endDate"));
+                            HotelOrderManager.getInstance().setBeginTime(beginDate);
+                            HotelOrderManager.getInstance().setEndTime(endDate);
+                            String dateStr = (DateUtil.getDay("M.dd", beginDate)) + DateUtil.dateToWeek2(new Date(beginDate)) + " - " + DateUtil.getDay("M.dd", endDate) + DateUtil.dateToWeek2(new Date(endDate));
+                            intent.putExtra("date", dateStr);
+                            startActivity(intent);
+                        } else if (HotelCommDef.SHARE_ROOM.equals(channel)) {
+                            long beginDate = Long.valueOf(mJson.getString("beginDate"));
+                            long endDate = Long.valueOf(mJson.getString("endDate"));
+                            HotelOrderManager.getInstance().setBeginTime(beginDate);
+                            HotelOrderManager.getInstance().setEndTime(endDate);
+                            Intent intent = new Intent(this, RoomDetailActivity.class);
+                            intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                            intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
+                            intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
+                            intent.putExtra("hotelName", mJson.getString("hotelName"));
+                            startActivity(intent);
+                        } else if (HotelCommDef.SHARE_FREE.equals(channel)) {
+                            Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
+                            startActivity(intent);
+                        } else if (HotelCommDef.SHARE_TIE.equals(channel)) {
+                            Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
+                            intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                            intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
+                            startActivity(intent);
+                        } else {
+                            LogUtil.d("MainFragmentActivity", "warning~~~");
+                        }
                     }
                 }
             }
-        }
-        if (SessionContext.isLogin()) {
-            requestMessageCount();
-        }
-        if (currentIndex != 0) {
-            if (currentIndex == 1 && !SessionContext.isLogin()) {
-                sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, true));
-            } else {
-                viewPager.setCurrentItem(currentIndex);
+            if (SessionContext.isLogin()) {
+                requestMessageCount();
             }
-            if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
-                drawer_layout.closeDrawers();
+            if (currentIndex != 0) {
+                if (currentIndex == 1 && !SessionContext.isLogin()) {
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, true));
+                } else {
+                    viewPager.setCurrentItem(currentIndex);
+                }
+                if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
+                    drawer_layout.closeDrawers();
+                }
             }
         }
     }
@@ -372,7 +379,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
     @Override
     public void onChanged(int index) {
-        viewPager.setCurrentItem(index, true);
+        viewPager.setCurrentItem(index, false);
     }
 
     @Override

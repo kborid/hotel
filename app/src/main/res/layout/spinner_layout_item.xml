@@ -7,6 +7,6 @@
     android:drawablePadding="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:textColor="@color/mainColor"
+    android:textColor="?attr/mainColor"
     android:textSize="@dimen/common_12sp"
     android:textStyle="bold" />

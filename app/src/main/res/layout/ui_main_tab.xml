@@ -17,14 +17,10 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
         <!-- 底部导航栏 -->
-        <com.huicheng.hotel.android.ui.custom.CustomBottomNaviBar xmlns:CustomBottomNaviBar="http://schemas.android.com/apk/res-auto"
+        <com.huicheng.hotel.android.ui.custom.CustomBottomNaviBar
             android:id="@+id/custom_bar"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            CustomBottomNaviBar:hotelColor="?attr/tabHotelColor"
-            CustomBottomNaviBar:planeColor="?attr/tabPlaneColor"
-            CustomBottomNaviBar:taxiColor="?attr/tabTaxiColor"
-            CustomBottomNaviBar:trainColor="?attr/tabTrainColor" />
+            android:layout_height="60dp" />
     </LinearLayout>
 
     <!--毛玻璃背景-->

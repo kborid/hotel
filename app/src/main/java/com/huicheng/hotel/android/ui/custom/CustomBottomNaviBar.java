@@ -39,6 +39,7 @@ public class CustomBottomNaviBar extends LinearLayout {
             R.drawable.iv_tab_taxi
     };
     private int[] mTabColorId = new int[4];
+    private int hasMessageImageId;
 
     public CustomBottomNaviBar(Context context) {
         this(context, null);
@@ -52,11 +53,12 @@ public class CustomBottomNaviBar extends LinearLayout {
         super(context, attrs, defStyleAttr);
         this.context = context;
         Resources resources = context.getResources();
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CustomBottomNaviBar);
-        mTabColorId[0] = ta.getColor(R.styleable.CustomBottomNaviBar_hotelColor, resources.getColor(R.color.tabHotelColor));
-        mTabColorId[1] = ta.getColor(R.styleable.CustomBottomNaviBar_planeColor, resources.getColor(R.color.tabPlaneColor));
-        mTabColorId[2] = ta.getColor(R.styleable.CustomBottomNaviBar_trainColor, resources.getColor(R.color.tabTrainColor));
-        mTabColorId[3] = ta.getColor(R.styleable.CustomBottomNaviBar_taxiColor, resources.getColor(R.color.tabTaxiColor));
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MyTheme);
+        mTabColorId[0] = ta.getColor(R.styleable.MyTheme_tabHotelColor, resources.getColor(R.color.tabHotelColor));
+        mTabColorId[1] = ta.getColor(R.styleable.MyTheme_tabPlaneColor, resources.getColor(R.color.tabPlaneColor));
+        mTabColorId[2] = ta.getColor(R.styleable.MyTheme_tabTrainColor, resources.getColor(R.color.tabTrainColor));
+        mTabColorId[3] = ta.getColor(R.styleable.MyTheme_tabTaxiColor, resources.getColor(R.color.tabTaxiColor));
+        hasMessageImageId = ta.getResourceId(R.styleable.MyTheme_messageHasImage, R.drawable.iv_tab_msg2);
         ta.recycle();
         init();
     }
@@ -122,7 +124,7 @@ public class CustomBottomNaviBar extends LinearLayout {
 
     public void updateUserMsgBtnStatus(boolean hasMsg) {
         if (hasMsg) {
-            my_icon.setImageResource(R.drawable.iv_tab_msg2);
+            my_icon.setImageResource(hasMessageImageId);
         } else {
             my_icon.setImageResource(R.drawable.iv_tab_msg1);
         }

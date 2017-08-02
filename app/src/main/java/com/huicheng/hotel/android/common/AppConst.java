@@ -16,6 +16,7 @@ public final class AppConst {
     public static final String DEV_URL = "dev_url";
 
     public static final String SKIN_INDEX = "skin_index"; //皮肤资源index
+    public static final String NOT_FIRST_LAUNCH = "not_first_launch"; //第一次启动
 
     public static final String ACCESS_TICKET = "accessTicket"; // 记录用户登录ticket
     public static final String LAST_LOGIN_DATE = "last_login_time"; // 上次登录时间

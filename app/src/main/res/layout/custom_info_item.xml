@@ -16,11 +16,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="5dp"
-            android:drawableRight="@drawable/iv_info"
+            android:drawableRight="?attr/infoImage"
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="入住人"
-            android:textColor="@color/mainColor"
+            android:textColor="?attr/mainColor"
             android:textSize="@dimen/common_12sp"
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:singleLine="true"
-                android:textColor="@color/mainColor"
+                android:textColor="?attr/mainColor"
                 android:textColorHint="#e1e1e1"
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />
@@ -61,7 +61,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:singleLine="true"
-                android:textColor="@color/mainColor"
+                android:textColor="?attr/mainColor"
                 android:textColorHint="#e1e1e1"
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />
@@ -89,7 +89,7 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="联系方式"
-            android:textColor="@color/mainColor"
+            android:textColor="?attr/mainColor"
             android:textSize="@dimen/common_12sp"
             android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="+86"
-                android:textColor="@color/mainColor"
+                android:textColor="?attr/mainColor"
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />
 
@@ -122,7 +122,7 @@
                 android:maxLength="11"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:textColor="@color/mainColor"
+                android:textColor="?attr/mainColor"
                 android:textColorHint="#e1e1e1"
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />

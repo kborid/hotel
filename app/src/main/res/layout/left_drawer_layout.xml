@@ -11,7 +11,7 @@
         android:id="@+id/unlogin_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/comm_rectangle_btn"
+                    android:background="@drawable/comm_btn_maincolor_selector"
                     android:text="@string/side_login"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_15sp" />

@@ -87,7 +87,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     }
 
     private void findViews() {
-        LinearLayout root_lay = (LinearLayout) findViewById(R.id.root_lay);
+//        LinearLayout root_lay = (LinearLayout) findViewById(R.id.root_lay);
 //        root_lay.getBackground().mutate().setAlpha((int) (0.8 * 255));
 
         unlogin_lay = (RelativeLayout) findViewById(R.id.unlogin_lay);
@@ -146,7 +146,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
             }
             if (StringUtil.notEmpty(SessionContext.mUser.user.mobile)) {
                 tv_userid.setVisibility(VISIBLE);
-                tv_userid.setText("帐号：" + SessionContext.mUser.user.mobile);
+                tv_userid.setText(String.valueOf("帐号：" + SessionContext.mUser.user.mobile));
             } else {
                 tv_userid.setVisibility(GONE);
             }
@@ -318,6 +318,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
     public interface OnLeftDrawerListener {
         void closeDrawer();
+
         void onReCreate();
     }
 

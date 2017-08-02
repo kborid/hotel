@@ -112,18 +112,23 @@ public class GuideSwitchActivity extends BaseActivity {
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.putExtra("index", index);
             startActivity(intent);
-//            finish();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (SessionContext.getWakeUpAppData() != null || SessionContext.getRecommandAppData() != null) {
-            Intent intent = new Intent(this, MainFragmentActivity.class);
-            intent.putExtra("index", 0);
-            startActivity(intent);
-//            finish();
+        boolean isNotFirstLaunch = SharedPreferenceUtil.getInstance().getBoolean(AppConst.NOT_FIRST_LAUNCH, false);
+        if (!isNotFirstLaunch) {
+            SharedPreferenceUtil.getInstance().setBoolean(AppConst.NOT_FIRST_LAUNCH, true);
+//            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+            startActivity(new Intent(this, RegisterActivity.class));
+        } else {
+            if (SessionContext.getWakeUpAppData() != null || SessionContext.getRecommandAppData() != null) {
+                Intent intent = new Intent(this, MainFragmentActivity.class);
+                intent.putExtra("index", 0);
+                startActivity(intent);
+            }
         }
     }
 

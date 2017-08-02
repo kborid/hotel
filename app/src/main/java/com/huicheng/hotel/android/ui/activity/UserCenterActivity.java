@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -107,7 +109,8 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
 
     private String bgPath = null;
 
-    private int oldSkinIndex = 0;
+    private static Handler handler = new Handler(Looper.getMainLooper());
+    private int oldSkinIndex = 0, scrollY;
     private int lineSelectedColorId, lineSelectedDisableColorId;
     private int thumbId, thumbDisableId, settingId, settingOkId;
 
@@ -167,6 +170,15 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     }
 
     @Override
+    public void dealIntent() {
+        super.dealIntent();
+        Bundle bundle = getIntent().getExtras();
+        if (null != bundle) {
+            scrollY = bundle.getInt("scrollY");
+        }
+    }
+
+    @Override
     public void initParams() {
         super.initParams();
         btn_back.setImageResource(R.drawable.iv_back_white);
@@ -189,6 +201,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         } else {
             et_name.setText(SessionContext.mUser.user.username);
         }
+        et_name.setSelection(et_name.getText().length());
         // 设置性别
         if (StringUtil.notEmpty(SessionContext.mUser.user.sex)) {
             if ("1".equals(SessionContext.mUser.user.sex)) {
@@ -669,12 +682,20 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     protected void onResume() {
         super.onResume();
         System.out.println("onResume()");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scroll_view.scrollTo(0, scrollY);
+            }
+        }, 10);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         System.out.println("onPause()");
+        scrollY = scroll_view.getScrollY();
     }
 
     @Override
@@ -895,7 +916,9 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
                 int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
                 if (oldSkinIndex != newSkinIndex) {
-                    startActivity(new Intent(this, UserCenterActivity.class));
+                    Intent intent = new Intent(this, UserCenterActivity.class);
+                    intent.putExtra("scrollY", scroll_view.getScrollY());
+                    startActivity(intent);
                     overridePendingTransition(R.anim.act_restart, R.anim.act_restop);
                     finish();
                 }

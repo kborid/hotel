@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:text="0元"
-        android:textColor="@color/indicatorColor"
+        android:textColor="?attr/indicatorColor"
         android:textSize="@dimen/common_15sp"
         android:textStyle="bold" />
 </LinearLayout>

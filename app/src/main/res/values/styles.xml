@@ -3,10 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge
-        </item>
-        <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall
-        </item>
+        <item name="android:textAppearanceLargePopupMenu">@style/myPMAppearanceLarge</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/myPMAppearanceSmall</item>
+        <item name="android:windowAnimationStyle">@style/actAnimationStyle</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -70,6 +69,8 @@
         <item name="zeroButtonBg">@drawable/iv_free_bg</item>
         <item name="mainColor">@color/mainColor</item>
         <item name="mainColorAccent">@color/mainColorAccent</item>
+        <item name="mainColorDark">@color/mainColorDark</item>
+        <item name="messageHasImage">@drawable/iv_tab_msg2</item>
     </style>
 
 
@@ -111,7 +112,7 @@
         <item name="roomDetailMap">@drawable/iv_location_yellow_female</item>
         <item name="roomDetailPhone">@drawable/iv_phone_yellow_female</item>
         <item name="roomDetailSpace">@drawable/iv_message_yellow_female</item>
-        <item name="roomDetailSpace2">@drawable/iv_message_yellow2</item>
+        <item name="roomDetailSpace2">@drawable/iv_message_yellow2_female</item>
         <item name="settingButton">@drawable/iv_setting_female</item>
         <item name="settingOKButton">@drawable/iv_setting_ok_female</item>
         <item name="leftImage">@drawable/iv_left_female</item>
@@ -124,15 +125,17 @@
         <item name="zeroButtonBg">@drawable/iv_free_bg_female</item>
         <item name="mainColor">@color/female_mainColor</item>
         <item name="mainColorAccent">@color/female_mainColorAccent</item>
+        <item name="mainColorDark">@color/female_mainColorDark</item>
+        <item name="messageHasImage">@drawable/iv_tab_msg2_female</item>
     </style>
 
 
-    <style name="myPopupMenuTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
+    <style name="myPMAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
         <item name="android:textColor">@color/secColor</item>
         <item name="android:textSize">@dimen/common_18sp</item>
     </style>
 
-    <style name="myPopupMenuTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
+    <style name="myPMAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
         <item name="android:textColor">@color/secColor</item>
         <item name="android:textSize">@dimen/common_18sp</item>
     </style>
@@ -142,6 +145,14 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!--画面迁移、转场动画-->
+    <style name="actAnimationStyle" parent="@android:style/Animation.Activity" mce_bogus="1">
+        <item name="android:activityOpenEnterAnimation">@anim/push_right_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/push_left_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/push_left_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/push_right_out</item>
     </style>
 
     <!-- 底部 导航风格 -->
@@ -184,7 +195,7 @@
     <style name="blue_button_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">45dp</item>
-        <item name="android:background">@drawable/comm_rectangle_btn</item>
+        <item name="android:background">@drawable/comm_btn_maincolor_selector</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

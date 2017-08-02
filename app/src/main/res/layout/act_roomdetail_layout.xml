@@ -194,7 +194,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:text="房费"
-                            android:textColor="@color/mainColor"
+                            android:textColor="?attr/mainColor"
                             android:textSize="@dimen/common_12sp"
                             android:textStyle="bold" />
 
@@ -237,7 +237,7 @@
                                 android:layout_weight="1"
                                 android:gravity="right"
                                 android:text="1000元"
-                                android:textColor="@color/indicatorColor"
+                                android:textColor="?attr/indicatorColor"
                                 android:textSize="@dimen/common_15sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -248,7 +248,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="17dp"
                             android:text="包含服务"
-                            android:textColor="@color/mainColor"
+                            android:textColor="?attr/mainColor"
                             android:textSize="@dimen/common_12sp"
                             android:textStyle="bold" />
 
@@ -264,7 +264,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="17dp"
                             android:text="选购服务"
-                            android:textColor="@color/mainColor"
+                            android:textColor="?attr/mainColor"
                             android:textSize="@dimen/common_12sp"
                             android:textStyle="bold" />
 
@@ -332,7 +332,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="总价："
-                        android:textColor="@color/mainColor"
+                        android:textColor="?attr/mainColor"
                         android:textSize="@dimen/common_12sp"
                         android:textStyle="bold" />
 
@@ -342,7 +342,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:text="1150元"
-                        android:textColor="@color/indicatorColor"
+                        android:textColor="?attr/indicatorColor"
                         android:textSize="30sp"
                         android:textStyle="bold" />
                 </LinearLayout>

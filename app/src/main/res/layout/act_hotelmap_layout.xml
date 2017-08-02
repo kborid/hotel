@@ -21,6 +21,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="13dp"
             android:focusable="true"
+            android:visibility="gone"
             android:focusableInTouchMode="true"
             android:gravity="center_horizontal">
 

@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="需要发票"
-                    android:textColor="@color/mainColor"
+                    android:textColor="?attr/mainColor"
                     android:textSize="@dimen/common_12sp"
                     android:textStyle="bold" />
 
@@ -129,7 +129,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="发票抬头"
-                                android:textColor="@color/mainColor"
+                                android:textColor="?attr/mainColor"
                                 android:textSize="@dimen/common_12sp"
                                 android:textStyle="bold" />
 
@@ -162,7 +162,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="纳税人识别号"
-                                android:textColor="@color/mainColor"
+                                android:textColor="?attr/mainColor"
                                 android:textSize="@dimen/common_12sp"
                                 android:textStyle="bold" />
 
@@ -200,7 +200,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="公司地址"
-                                    android:textColor="@color/mainColor"
+                                    android:textColor="?attr/mainColor"
                                     android:textSize="@dimen/common_12sp"
                                     android:textStyle="bold" />
 
@@ -232,7 +232,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="公司电话"
-                                    android:textColor="@color/mainColor"
+                                    android:textColor="?attr/mainColor"
                                     android:textSize="@dimen/common_12sp"
                                     android:textStyle="bold" />
 
@@ -265,7 +265,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="开户行"
-                                    android:textColor="@color/mainColor"
+                                    android:textColor="?attr/mainColor"
                                     android:textSize="@dimen/common_12sp"
                                     android:textStyle="bold" />
 
@@ -297,7 +297,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="银行帐户"
-                                    android:textColor="@color/mainColor"
+                                    android:textColor="?attr/mainColor"
                                     android:textSize="@dimen/common_12sp"
                                     android:textStyle="bold" />
 
@@ -340,7 +340,7 @@
                                         android:layout_height="wrap_content"
                                         android:drawablePadding="10dp"
                                         android:text="三证照片"
-                                        android:textColor="@color/mainColor"
+                                        android:textColor="?attr/mainColor"
                                         android:textSize="@dimen/common_12sp"
                                         android:textStyle="bold" />
 
@@ -351,7 +351,7 @@
                                         android:layout_marginLeft="20dp"
                                         android:drawablePadding="10dp"
                                         android:text="三证合一照片"
-                                        android:textColor="@color/mainColor"
+                                        android:textColor="?attr/mainColor"
                                         android:textSize="@dimen/common_12sp"
                                         android:textStyle="bold" />
                                 </RadioGroup>

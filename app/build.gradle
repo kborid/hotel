@@ -5,7 +5,7 @@ static def getAppName() {
 }
 
 static def getCurrentDate() {
-    return new Date().format('yyyyMMddHHmm');
+    return new Date().format('yyyyMMdd');
 }
 
 android {
@@ -106,7 +106,7 @@ android {
                 if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
                     def apkFile = new File(
                             output.outputFile.getParent(),
-                            "${getAppName()}_v${variant.versionName}_${variant.buildType.name}.apk")
+                            "${getAppName()}_v${variant.versionName}_${getCurrentDate()}_${variant.buildType.name}.apk")
                     output.outputFile = apkFile
                 }
             }

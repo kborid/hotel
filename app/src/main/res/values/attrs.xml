@@ -50,13 +50,8 @@
         <attr name="zeroButtonBg" format="reference"/>
         <attr name="mainColor" format="color"/>
         <attr name="mainColorAccent" format="color"/>
-    </declare-styleable>
-
-    <declare-styleable name="CustomBottomNaviBar">
-        <attr name="hotelColor" format="color" />
-        <attr name="planeColor" format="color" />
-        <attr name="trainColor" format="color" />
-        <attr name="taxiColor" format="color" />
+        <attr name="mainColorDark" format="color"/>
+        <attr name="messageHasImage" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="TagCloudView">

@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/comm_rectangle_btn"
+            android:background="@drawable/comm_btn_maincolor_selector"
             android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="@dimen/common_15sp" />

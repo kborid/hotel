@@ -51,7 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="15dp">
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="15dp">
 
                 <View
                     android:layout_width="match_parent"
@@ -171,8 +173,8 @@
                 <LinearLayout
                     android:id="@+id/btn_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="60dp"
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
@@ -180,7 +182,7 @@
                     <TextView
                         android:id="@+id/tv_map"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:drawableLeft="?attr/roomDetailMap"
                         android:drawablePadding="5dp"
@@ -192,7 +194,7 @@
                     <TextView
                         android:id="@+id/tv_service"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:drawableLeft="?attr/roomDetailPhone"
                         android:drawablePadding="5dp"
@@ -204,7 +206,7 @@
                     <TextView
                         android:id="@+id/tv_view_comment"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:drawableLeft="?attr/roomDetailSpace"
                         android:drawablePadding="5dp"
@@ -218,7 +220,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="5dp"
                 android:background="@drawable/comm_line2" />
 
             <LinearLayout

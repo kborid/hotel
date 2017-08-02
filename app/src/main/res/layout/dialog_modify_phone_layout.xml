@@ -43,7 +43,7 @@
             android:layout_width="110dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/comm_rectangle_btn"
+            android:background="@drawable/comm_btn_maincolor_selector"
             android:text="获取验证码"
             android:textColor="@color/white"
             android:textSize="@dimen/common_12sp" />
