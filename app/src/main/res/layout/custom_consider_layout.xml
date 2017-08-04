@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="425dp"
     android:layout_marginLeft="20dp"
@@ -31,14 +30,15 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="?attr/considerBackground"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/tv_point_lable"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="20dp"
                 android:text="评价："
                 android:textColor="@color/secColor"
                 android:textSize="@dimen/common_12sp"
@@ -54,68 +54,71 @@
 
                 <RadioButton
                     android:id="@+id/point_00"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="无"
-                    android:textColor="@color/consider_text_selector"
+                    android:textColor="?attr/considerTextSel"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/point_0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="21dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="4.5以上"
-                    android:textColor="@color/consider_text_selector"
+                    android:textColor="?attr/considerTextSel"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/point_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="22dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="3.5-4.5"
-                    android:textColor="@color/consider_text_selector"
+                    android:textColor="?attr/considerTextSel"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/point_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="3.5以下"
-                    android:textColor="@color/consider_text_selector"
+                    android:textColor="?attr/considerTextSel"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
             </RadioGroup>
         </LinearLayout>
-
 
         <!--类型-->
         <LinearLayout
             android:id="@+id/type_layout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/tv_type_lable"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="20dp"
                 android:text="类型："
                 android:textColor="@color/secColor"
                 android:textSize="@dimen/common_12sp"
@@ -131,62 +134,66 @@
 
                 <RadioButton
                     android:id="@+id/type_00"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="无"
-                    android:textColor="@color/consider_text_selector"
-                    android:textSize="@dimen/common_13sp"
+                    android:textColor="?attr/considerTextSel"
+                    android:textSize="@dimen/common_14sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/type_0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="城市酒店"
-                    android:textColor="@color/consider_text_selector"
-                    android:textSize="@dimen/common_13sp"
+                    android:textColor="?attr/considerTextSel"
+                    android:textSize="@dimen/common_14sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/type_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="度假酒店"
-                    android:textColor="@color/consider_text_selector"
-                    android:textSize="@dimen/common_13sp"
+                    android:textColor="?attr/considerTextSel"
+                    android:textSize="@dimen/common_14sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/type_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
-                    android:text="青年旅社"
-                    android:textColor="@color/consider_text_selector"
-                    android:textSize="@dimen/common_13sp"
+                    android:gravity="center"
+                    android:text="精品民宿"
+                    android:textColor="?attr/considerTextSel"
+                    android:textSize="@dimen/common_14sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/type_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="机场酒店"
-                    android:textColor="@color/consider_text_selector"
-                    android:textSize="@dimen/common_13sp"
+                    android:textColor="?attr/considerTextSel"
+                    android:textSize="@dimen/common_14sp"
                     android:textStyle="bold" />
             </RadioGroup>
         </LinearLayout>
@@ -198,20 +205,20 @@
             android:layout_height="121dp"
             android:background="?attr/considerBackground"
             android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:paddingTop="13dp">
 
             <TextView
                 android:id="@+id/tv_price_lable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:text="价格：(单位：元)"
                 android:textColor="@color/secColor"
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />
 
-            <com.huicheng.hotel.android.ui.custom.RangeSeekBar
+            <com.huicheng.hotel.android.ui.custom.RangeSeekBar xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -224,6 +231,7 @@
                 app:min="0"
                 app:reserve="1"
                 app:seekBarResId="?attr/considerThumb" />
+
         </LinearLayout>
 
         <!--星级-->
@@ -231,14 +239,15 @@
             android:id="@+id/grade_layout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/tv_grade_lable"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="20dp"
                 android:text="星级："
                 android:textColor="@color/secColor"
                 android:textSize="@dimen/common_12sp"
@@ -254,49 +263,52 @@
 
                 <RadioButton
                     android:id="@+id/grade_00"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="无"
-                    android:textColor="@color/consider_text_selector"
+                    android:textColor="?attr/considerTextSel"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/grade_0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="21dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="三星"
-                    android:textColor="@color/consider_text_selector"
+                    android:textColor="?attr/considerTextSel"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/grade_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="33dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="四星"
-                    android:textColor="@color/consider_text_selector"
+                    android:textColor="?attr/considerTextSel"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/grade_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="33dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:button="@null"
+                    android:gravity="center"
                     android:text="五星"
-                    android:textColor="@color/consider_text_selector"
+                    android:textColor="?attr/considerTextSel"
                     android:textSize="@dimen/common_15sp"
                     android:textStyle="bold" />
             </RadioGroup>
@@ -308,7 +320,8 @@
         android:id="@+id/btn_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom|center_horizontal">
+        android:gravity="bottom|center_horizontal"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/iv_reset"

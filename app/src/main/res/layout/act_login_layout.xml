@@ -34,8 +34,8 @@
                 android:drawablePadding="12dp"
                 android:hint="用户名 / 邮箱 / 手机号"
                 android:inputType="text"
-                android:textColor="@color/mainColor"
-                android:textColorHint="@color/registerhintColor"
+                android:textColor="@color/secColor"
+                android:textColorHint="@color/secColorShadow"
                 android:textSize="@dimen/common_18sp" />
 
             <ImageView
@@ -70,8 +70,8 @@
                 android:hint="密码"
                 android:imeOptions="actionGo"
                 android:inputType="textPassword"
-                android:textColor="@color/mainColor"
-                android:textColorHint="@color/registerhintColor"
+                android:textColor="@color/secColor"
+                android:textColorHint="@color/secColorShadow"
                 android:textSize="@dimen/common_18sp" />
 
             <CheckBox
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/comm_btn_maincolor_selector"
+            android:background="?attr/mainColorBtnSel"
             android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="@dimen/common_15sp" />

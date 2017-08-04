@@ -2,13 +2,13 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="?attr/commBottomPress" />
+            <solid android:color="@color/commBottomPress" />
             <corners android:radius="10dp" />
         </shape>
     </item>
     <item>
         <shape>
-            <solid android:color="?attr/commBottom" />
+            <solid android:color="@color/commBottom" />
             <corners android:radius="10dp" />
         </shape>
     </item>

@@ -87,7 +87,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/mapshowarea_selector"
+            android:background="?attr/indicatorBgSel"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"

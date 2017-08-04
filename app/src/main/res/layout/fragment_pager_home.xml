@@ -239,7 +239,7 @@
                 android:layout_below="@id/btn_zero"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="10dp"
-                android:background="@drawable/comm_rectangle_btn_ygr"
+                android:background="?attr/ygrBtnSel"
                 android:text="@string/ygrString"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_15sp" />

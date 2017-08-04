@@ -45,13 +45,25 @@
         <attr name="userCenterThumbDisable" format="reference"/>
         <attr name="userCenterThumbText" format="color"/>
         <attr name="userCenterThumbTextDisable" format="color"/>
-        <attr name="tagFlowCheckColor" format="color"/>
-        <attr name="tagFlowCheckDisableColor" format="color"/>
         <attr name="zeroButtonBg" format="reference"/>
         <attr name="mainColor" format="color"/>
         <attr name="mainColorAccent" format="color"/>
         <attr name="mainColorDark" format="color"/>
         <attr name="messageHasImage" format="reference"/>
+
+        <!--selector-->
+        <attr name="mainColorBtnSel" format="reference"/>
+        <attr name="indicatorBgSel" format="reference"/>
+        <attr name="ygrBtnSel" format="reference"/>
+        <attr name="bottomBtnSel" format="reference"/>
+        <attr name="tagFlowBgSel" format="reference"/>
+        <attr name="orderSpinnerSel" format="reference"/>
+        <attr name="orderTimeCheckSel" format="reference"/>
+        <attr name="locationChooseSel" format="reference"/>
+        <attr name="indicatorSel" format="reference"/>
+        <attr name="yhqActiveBg" format="reference"/>
+        <attr name="roomItemGradient" format="reference"/>
+        <attr name="considerTextSel" format="color|reference"/>
     </declare-styleable>
 
     <declare-styleable name="TagCloudView">

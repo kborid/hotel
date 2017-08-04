@@ -57,7 +57,8 @@
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/comm_btn_maincolor_selector"
+                    android:layout_marginBottom="10dp"
+                    android:background="?attr/mainColorBtnSel"
                     android:text="@string/side_login"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_15sp" />
@@ -67,7 +68,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
                     android:background="@drawable/comm_rectangle_btn_transparent_withbound"
                     android:text="@string/side_wait"
                     android:textColor="@color/main_white_selector"
@@ -179,13 +179,8 @@
 
                 <View
                     android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#d7d7d7" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#ffffff" />
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <TextView
                     android:id="@+id/tv_myorder"
@@ -200,13 +195,8 @@
 
                 <View
                     android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#d7d7d7" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#ffffff" />
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -231,7 +221,7 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="50dp"
-                        android:background="@drawable/comm_rectangle_btn_yello"
+                        android:background="?attr/indicatorBgSel"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="@dimen/common_15sp"
@@ -241,13 +231,8 @@
 
                 <View
                     android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#d7d7d7" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#ffffff" />
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <TextView
                     android:id="@+id/tv_yhq"
@@ -262,13 +247,8 @@
 
                 <View
                     android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#d7d7d7" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#ffffff" />
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
 
                 <TextView
@@ -284,13 +264,8 @@
 
                 <View
                     android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#d7d7d7" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#ffffff" />
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <TextView
                     android:id="@+id/tv_vip"
@@ -305,13 +280,8 @@
 
                 <View
                     android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#d7d7d7" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#ffffff" />
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <TextView
                     android:id="@+id/tv_setting"
@@ -326,13 +296,8 @@
 
                 <View
                     android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#d7d7d7" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#ffffff" />
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
 
                 <TextView
                     android:id="@+id/tv_feedback"
@@ -347,13 +312,8 @@
 
                 <View
                     android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#d7d7d7" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="0.5dp"
-                    android:background="#ffffff" />
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
             </LinearLayout>
 
             <Button
@@ -363,7 +323,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="25dp"
-
                 android:background="@drawable/comm_rectangle_btn_transparent_withbound"
                 android:text="@string/exit"
                 android:textColor="@color/main_white_selector"

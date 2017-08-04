@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.ui.adapter;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -36,11 +37,15 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     private Context context;
     private List<HotelInfoBean> list;
     private int type = 0;
+    private int ygrRoomItemBackgroundId;
 
     public HotelListAdapter(Context context, List<HotelInfoBean> list, int type) {
         this.context = context;
         this.list = list;
         this.type = type;
+        TypedArray ta = context.obtainStyledAttributes(R.styleable.MyTheme);
+        ygrRoomItemBackgroundId = ta.getResourceId(R.styleable.MyTheme_roomItemGradient, R.drawable.roomitem_ygr_gradient);
+        ta.recycle();
     }
 
     @Override
@@ -76,7 +81,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
         switch (type) {
             case HotelCommDef.TYPE_YEGUIREN:
-                holder.cardview.setBackgroundResource(R.drawable.comm_gradient_ygr_color);
+                holder.cardview.setBackgroundResource(ygrRoomItemBackgroundId);
                 break;
             case HotelCommDef.TYPE_ALL:
             case HotelCommDef.TYPE_CLOCK:

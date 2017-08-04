@@ -4,7 +4,7 @@
     <item android:state_enabled="true">
         <shape android:shape="oval">
             <corners android:radius="2dp" />
-            <solid android:color="@color/indicatorColor" />
+            <solid android:color="@color/female_indicatorColor" />
         </shape>
     </item>
     <item>

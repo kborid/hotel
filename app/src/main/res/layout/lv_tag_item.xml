@@ -6,7 +6,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/tagflow_item_selector"
+    android:background="?attr/tagFlowBgSel"
     android:gravity="center"
     android:paddingLeft="@dimen/considerTextMarginSize"
     android:paddingRight="@dimen/considerTextMarginSize"

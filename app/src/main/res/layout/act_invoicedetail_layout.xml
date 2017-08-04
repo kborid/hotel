@@ -430,7 +430,7 @@
                             android:layout_height="40dp"
                             android:layout_gravity="right"
                             android:layout_margin="15dp"
-                            android:background="@drawable/comm_rectangle_btn_yello"
+                            android:background="?attr/indicatorBgSel"
                             android:gravity="center"
                             android:text="确定信息"
                             android:textColor="@color/white"

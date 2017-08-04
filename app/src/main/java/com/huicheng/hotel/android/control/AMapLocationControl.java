@@ -46,14 +46,14 @@ public class AMapLocationControl {
         mAmapLocationClient.setLocationOption(option);
     }
 
-    public synchronized void startLocationOnce(Context context) {
-        initLocation(context, true);
+    public synchronized void startLocationOnce(Context context, boolean isOnce) {
+        initLocation(context, isOnce);
         mAmapLocationClient.setLocationListener(listener);
         mAmapLocationClient.startLocation();
     }
 
-    public synchronized void startLocationOnce(Context context, MyLocationListener myLocationListener) {
-        initLocation(context, true);
+    public synchronized void startLocationOnce(Context context, MyLocationListener myLocationListener, boolean isOnce) {
+        initLocation(context, isOnce);
         mAmapLocationClient.setLocationListener(listener);
         this.myLocationListener = myLocationListener;
         mAmapLocationClient.startLocation();
@@ -85,10 +85,10 @@ public class AMapLocationControl {
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {
             LogUtil.i(TAG, "AMapLocationControl onLocationChanged()");
+            stopLocation();
             if (null != aMapLocation) {
                 if (aMapLocation.getErrorCode() == 0) {
                     //定位成功回调信息，设置相关消息
-                    stopLocation();
                     LogUtil.i(TAG, "=======location info======");
                     LogUtil.i(TAG, aMapLocation.toString().replace("#", "\n"));
                     try {

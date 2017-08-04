@@ -204,7 +204,7 @@ public class HotelOrderDetailActivity extends BaseActivity implements DataCallba
                 } else {
                     btn_hhy.setVisibility(View.VISIBLE);
                 }
-                btn_cancel.setEnabled(true);
+                btn_cancel.setEnabled(false);
                 btn_modify.setEnabled(false);
                 btn_assess.setEnabled(false);
                 break;

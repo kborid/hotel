@@ -36,7 +36,7 @@ public class ForgetPwdActivity extends BaseActivity implements DataCallback, Dia
     private Button btn_reset, btn_getYZM;
     private String mPhoneNum;
     private CountDownTimer mCountDownTimer;
-    private boolean isVaild = false;
+    private boolean isValid = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +70,6 @@ public class ForgetPwdActivity extends BaseActivity implements DataCallback, Dia
         super.initListeners();
         btn_reset.setOnClickListener(this);
         btn_getYZM.setOnClickListener(this);
-        et_yzm.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    requestCheckYZM();
-                }
-            }
-        });
         et_password2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -137,11 +129,7 @@ public class ForgetPwdActivity extends BaseActivity implements DataCallback, Dia
                     CustomToast.show("两次密码不一致", 0);
                     return;
                 }
-                if (isVaild) {
-                    requestResetPwd();
-                } else {
-                    CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
-                }
+                requestCheckYZM();
                 break;
             default:
                 break;
@@ -181,6 +169,10 @@ public class ForgetPwdActivity extends BaseActivity implements DataCallback, Dia
         d.path = NetURL.CHECK_YZM;
         d.flag = AppConst.CHECK_YZM;
 
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -193,12 +185,8 @@ public class ForgetPwdActivity extends BaseActivity implements DataCallback, Dia
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.FIND_PASSWORD;
-//        d.path = "http://192.168.1.78:8881/user/sendsms.json";
         d.flag = AppConst.FIND_PASSWORD;
 
-        if (!isProgressShowing()) {
-            showProgressDialog(this);
-        }
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -225,17 +213,30 @@ public class ForgetPwdActivity extends BaseActivity implements DataCallback, Dia
                 String status = mjson.getString("status");
                 switch (status) {
                     case "0":
-                        CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
-                        isVaild = false;
+                        isValid = false;
                         break;
                     case "1":
-                        CustomToast.show("验证码正确", CustomToast.LENGTH_SHORT);
-                        isVaild = true;
+                        isValid = true;
                         break;
                     default:
                         break;
                 }
+
+                if (isValid) {
+                    requestResetPwd();
+                } else {
+                    removeProgressDialog();
+                    CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
+                }
             }
+        }
+    }
+
+    @Override
+    protected void onNotifyError(ResponseData request) {
+        super.onNotifyError(request);
+        if (request.flag == AppConst.CHECK_YZM) {
+            isValid = false;
         }
     }
 

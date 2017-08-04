@@ -28,7 +28,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -102,7 +101,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     private String phoneNumber, code;
     private Button btn_yzm;
     private CountDownTimer mCountDownTimer;
-    private boolean isValided = false;
+    private boolean isValid = false;
     private CustomDialog dialog;
 
     private Switch btn_switch;
@@ -420,7 +419,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
                     i.setType("image/*");
                     startActivityForResult(i, AppConst.ACTIVITY_GET_IMAGE);
                 } else {
-                    CustomToast.show("内存卡不可用，请检测内存卡", Toast.LENGTH_LONG);
+                    CustomToast.show("内存卡不可用，请检测内存卡", CustomToast.LENGTH_SHORT);
                 }
                 dialog.dismiss();
             }
@@ -436,7 +435,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
                     intent.putExtra("android.intent.extra.screenOrientation", false);
                     startActivityForResult(intent, AppConst.ACTIVITY_IMAGE_CAPTURE);
                 } else {
-                    CustomToast.show("内存卡不可用，请检测内存卡", Toast.LENGTH_LONG);
+                    CustomToast.show("内存卡不可用，请检测内存卡", CustomToast.LENGTH_SHORT);
                 }
                 dialog.dismiss();
             }
@@ -825,7 +824,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();
-                CustomToast.show("验证码已发送，请稍候...", Toast.LENGTH_LONG);
+                CustomToast.show("验证码已发送，请稍候...", CustomToast.LENGTH_SHORT);
                 btn_yzm.setEnabled(false);
                 mCountDownTimer.start();// 启动倒计时
             } else if (request.flag == AppConst.CHECK_PHONE) {
@@ -856,29 +855,23 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
                     String status = mjson.getString("status");
                     switch (status) {
                         case "0":
-                            CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
-                            isValided = false;
+                            isValid = false;
                             break;
                         case "1":
-                            CustomToast.show("验证码正确", CustomToast.LENGTH_SHORT);
-                            isValided = true;
+                            isValid = true;
                             break;
                         default:
                             break;
                     }
-
-                    if (isValided) {
+                    if (isValid) {
                         requestChangePhoneNumber();
                     } else {
-                        if (isProgressShowing()) {
-                            removeProgressDialog();
-                        }
+                        removeProgressDialog();
+                        CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
                     }
                 }
             } else if (request.flag == AppConst.CHANGE_PHONENUMBER) {
-                if (isProgressShowing()) {
-                    removeProgressDialog();
-                }
+                removeProgressDialog();
                 dialog.dismiss();
                 tv_phone.setText(phoneNumber);
             } else if (request.flag == AppConst.UPLOAD) {
@@ -923,6 +916,14 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
                     finish();
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onNotifyError(ResponseData request) {
+        super.onNotifyError(request);
+        if (request.flag == AppConst.CHECK_YZM) {
+            isValid = false;
         }
     }
 

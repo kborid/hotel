@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="?attr/commBottomPress">
+    android:color="@color/female_commBottomPress">
     <item>
         <shape>
-            <solid android:color="?attr/commBottom" />
+            <solid android:color="@color/female_commBottom" />
             <corners android:radius="10dp" />
         </shape>
     </item>

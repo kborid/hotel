@@ -5,12 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.widget.Toast;
 
+import com.huicheng.hotel.android.common.AppConst;
 import com.prj.sdk.util.GUIDGenerator;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
-import com.huicheng.hotel.android.common.AppConst;
 
 import java.io.File;
 
@@ -69,7 +68,7 @@ public class GetPicDialog {
                     i.setType("image/*");
                     mAct.startActivityForResult(i, AppConst.ACTIVITY_GET_IMAGE);
                 } else {
-                    CustomToast.show("内存卡不可用，请检测内存卡", Toast.LENGTH_LONG);
+                    CustomToast.show("内存卡不可用，请检测内存卡", CustomToast.LENGTH_SHORT);
                 }
                 dialog.dismiss();
             }
@@ -83,7 +82,7 @@ public class GetPicDialog {
                     intent.putExtra("android.intent.extra.screenOrientation", false);
                     mAct.startActivityForResult(intent, AppConst.ACTIVITY_IMAGE_CAPTURE);
                 } else {
-                    CustomToast.show("内存卡不可用，请检测内存卡", Toast.LENGTH_LONG);
+                    CustomToast.show("内存卡不可用，请检测内存卡", CustomToast.LENGTH_SHORT);
                 }
                 dialog.dismiss();
             }

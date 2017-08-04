@@ -24,10 +24,13 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.ui.activity.Hotel0YuanHomeActivity;
 import com.huicheng.hotel.android.ui.activity.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.LocationActivity2;
@@ -141,9 +144,50 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
             if (city.equals(province)) {
                 tv_city.setText(city);
             }
+        } else {
+            AMapLocationControl.getInstance().startLocationAlways(getActivity(), new AMapLocationListener() {
+
+                @Override
+                public void onLocationChanged(AMapLocation aMapLocation) {
+                    if (null != aMapLocation) {
+                        if (aMapLocation.getErrorCode() == 0) {
+                            //定位成功回调信息，设置相关消息
+                            AMapLocationControl.getInstance().stopLocation();
+                            LogUtil.i(TAG, aMapLocation.toString().replace("#", "\n"));
+                            try {
+                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
+                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
+                                String loc_province = aMapLocation.getProvince().replace("省", "");
+                                String loc_city = aMapLocation.getCity().replace("市", "");
+                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_PROVINCE, loc_province, false);
+                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_CITY, loc_city, false);
+                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_SITEID, String.valueOf(aMapLocation.getAdCode()), false);
+
+                                SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, loc_province, false);
+                                SharedPreferenceUtil.getInstance().setString(AppConst.CITY, loc_city, false);
+                                SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, String.valueOf(aMapLocation.getAdCode()), false);
+
+                                tv_city.setText(loc_city + " " + loc_province);
+                                if (loc_city.equals(loc_province)) {
+                                    tv_city.setText(loc_city);
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            LogUtil.e(TAG, "location Error, ErrCode:"
+                                    + aMapLocation.getErrorCode() + ", errInfo:"
+                                    + aMapLocation.getErrorInfo());
+                        }
+                    }
+                }
+            });
         }
         if (AppConst.ISDEVELOP) {
             btn_zero.setVisibility(View.VISIBLE);
+        } else {
+            btn_zero.setVisibility(View.GONE);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
@@ -26,9 +27,13 @@ import com.prj.sdk.util.StringUtil;
 public class PinInfoWindowAdapter implements AMap.InfoWindowAdapter {
 
     private Context context;
+    private int pinBackgroundId;
 
     public PinInfoWindowAdapter(Context context) {
         this.context = context;
+        TypedArray ta = context.obtainStyledAttributes(R.styleable.MyTheme);
+        pinBackgroundId = ta.getInt(R.styleable.MyTheme_mainColor, R.color.mainColor);
+        ta.recycle();
     }
 
     @Override
@@ -36,7 +41,7 @@ public class PinInfoWindowAdapter implements AMap.InfoWindowAdapter {
         marker.isInfoWindowEnable();
         final View infoWindow = LayoutInflater.from(context).inflate(R.layout.comm_pininfo_layout, null);
         LinearLayout root_lay = (LinearLayout) infoWindow.findViewById(R.id.root_lay);
-        Bitmap bm = BitmapUtils.getAlphaBitmap(context.getResources().getDrawable(R.drawable.iv_pin_bg), context.getResources().getColor(R.color.mainColor));
+        Bitmap bm = BitmapUtils.getAlphaBitmap(context.getResources().getDrawable(R.drawable.iv_pin_bg), context.getResources().getColor(pinBackgroundId));
         root_lay.setBackground(new BitmapDrawable(bm));
         final RoundedAllImageView iv_hotel_icon = (RoundedAllImageView) infoWindow.findViewById(R.id.iv_hotel_icon);
         TextView tv_title = (TextView) infoWindow.findViewById(R.id.tv_title);

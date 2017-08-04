@@ -1,13 +1,16 @@
 package com.prj.sdk.widget.webview;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.webkit.ValueCallback;
-import android.widget.Toast;
+
+import com.prj.sdk.widget.CustomToast;
 
 import java.io.File;
 
@@ -169,7 +172,7 @@ class UploadHandler {
                         ChooserFileController.FILE_SELECTED);
             } catch (ActivityNotFoundException e2) {
                 // Nothing can return us a file, so file upload is effectively disabled.
-                Toast.makeText(mController.getActivity(), "File uploads are disabled.", Toast.LENGTH_LONG).show();
+                CustomToast.show("File uploads are disabled.", CustomToast.LENGTH_SHORT);
             }
         }
     }
@@ -201,6 +204,7 @@ class UploadHandler {
         return i;
     }
 
+    @TargetApi(Build.VERSION_CODES.FROYO)
     private Intent createCameraIntent() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File externalDataDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);

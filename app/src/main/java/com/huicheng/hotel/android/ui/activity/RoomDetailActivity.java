@@ -235,7 +235,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         if (count > 1) {
             for (int i = 0; i < count; i++) {
                 View view = new View(this);
-                view.setBackgroundResource(R.drawable.indicator_selector);
+                view.setBackgroundResource(R.drawable.indicator_sel);
                 view.setEnabled(false);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(7), Utils.dip2px(7));
                 if (i > 0) {

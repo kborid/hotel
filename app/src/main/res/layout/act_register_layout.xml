@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/share_bg">
+    android:background="@drawable/share_bg"
+    android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
 
@@ -24,8 +24,11 @@
             android:drawableLeft="@drawable/iv_phone"
             android:drawablePadding="17dp"
             android:hint="手机号码"
-            android:inputType="text"
-            android:textColorHint="@color/registerhintColor"
+            android:inputType="number"
+            android:lines="1"
+            android:maxLength="11"
+            android:textColor="@color/secColor"
+            android:textColorHint="@color/secColorShadow"
             android:textSize="@dimen/common_18sp" />
 
         <View
@@ -49,8 +52,11 @@
                 android:drawableLeft="@drawable/iv_code"
                 android:drawablePadding="12dp"
                 android:hint="验证码"
-                android:inputType="text"
-                android:textColorHint="@color/registerhintColor"
+                android:inputType="number"
+                android:lines="1"
+                android:maxLength="6"
+                android:textColor="@color/secColor"
+                android:textColorHint="@color/secColorShadow"
                 android:textSize="@dimen/common_18sp" />
 
             <Button
@@ -58,7 +64,7 @@
                 android:layout_width="110dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/comm_btn_maincolor_selector"
+                android:background="?attr/mainColorBtnSel"
                 android:text="获取验证码"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_12sp" />
@@ -88,7 +94,9 @@
                 android:hint="设置密码"
                 android:imeOptions="actionGo"
                 android:inputType="textPassword"
-                android:textColorHint="@color/registerhintColor"
+                android:lines="1"
+                android:textColor="@color/secColor"
+                android:textColorHint="@color/secColorShadow"
                 android:textSize="@dimen/common_18sp" />
 
             <CheckBox
@@ -131,7 +139,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:text="男"
-                    android:textColor="@color/mainColor"
+                    android:textColor="?attr/mainColor"
                     android:textSize="@dimen/common_18sp"
                     android:textStyle="bold" />
 
@@ -142,7 +150,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:text="女"
-                    android:textColor="@color/mainColor"
+                    android:textColor="?attr/mainColor"
                     android:textSize="@dimen/common_18sp"
                     android:textStyle="bold" />
             </RadioGroup>
@@ -175,7 +183,7 @@
                 android:layout_toRightOf="@id/cb_check"
                 android:paddingLeft="5dp"
                 android:text="@string/agree_agement"
-                android:textColor="@color/mainColor"
+                android:textColor="?attr/mainColor"
                 android:textSize="@dimen/common_10sp" />
 
             <TextView
@@ -185,7 +193,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/tv_agree"
                 android:text="@string/agement"
-                android:textColor="@color/mainColor"
+                android:textColor="?attr/mainColor"
                 android:textSize="@dimen/common_10sp" />
         </RelativeLayout>
 
@@ -194,7 +202,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/comm_btn_maincolor_selector"
+            android:background="?attr/mainColorBtnSel"
             android:text="@string/create"
             android:textColor="@color/white"
             android:textSize="@dimen/common_15sp" />

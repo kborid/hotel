@@ -7,7 +7,6 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
@@ -174,7 +173,7 @@ public class BindPhoneActivity extends BaseActivity implements DataCallback, Dia
         if (response != null && response.body != null) {
             if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();
-                CustomToast.show("验证码已发送，请稍候...", Toast.LENGTH_LONG);
+                CustomToast.show("验证码已发送，请稍候...", CustomToast.LENGTH_SHORT);
                 btn_yzm.setEnabled(false);
                 mCountDownTimer.start();// 启动倒计时
             } else if (request.flag == AppConst.BIND) {

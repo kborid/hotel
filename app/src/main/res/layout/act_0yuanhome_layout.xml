@@ -70,7 +70,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/comm_rectangle_btn_ygr"
+                android:background="@drawable/ygr_home_btn_sel"
                 android:enabled="false"
                 android:text="@string/freeBegin"
                 android:textColor="@color/white"

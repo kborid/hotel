@@ -19,7 +19,6 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
@@ -379,7 +378,7 @@ public class InvoiceDetailActivity extends BaseActivity implements DataCallback 
                     i.setType("image/*");
                     startActivityForResult(i, AppConst.ACTIVITY_GET_IMAGE);
                 } else {
-                    CustomToast.show("内存卡不可用，请检测内存卡", Toast.LENGTH_LONG);
+                    CustomToast.show("内存卡不可用，请检测内存卡", CustomToast.LENGTH_SHORT);
                 }
                 dialog.dismiss();
             }
@@ -395,7 +394,7 @@ public class InvoiceDetailActivity extends BaseActivity implements DataCallback 
                     intent.putExtra("android.intent.extra.screenOrientation", false);
                     startActivityForResult(intent, AppConst.ACTIVITY_IMAGE_CAPTURE);
                 } else {
-                    CustomToast.show("内存卡不可用，请检测内存卡", Toast.LENGTH_LONG);
+                    CustomToast.show("内存卡不可用，请检测内存卡", CustomToast.LENGTH_SHORT);
                 }
                 dialog.dismiss();
             }

@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
@@ -307,7 +306,7 @@ public class AssessOrderDetailActivity extends BaseActivity implements DataCallb
                     i.setType("image/*");
                     startActivityForResult(i, AppConst.ACTIVITY_GET_IMAGE);
                 } else {
-                    CustomToast.show("内存卡不可用，请检测内存卡", Toast.LENGTH_LONG);
+                    CustomToast.show("内存卡不可用，请检测内存卡", CustomToast.LENGTH_SHORT);
                 }
                 dialog.dismiss();
             }
@@ -323,7 +322,7 @@ public class AssessOrderDetailActivity extends BaseActivity implements DataCallb
                     intent.putExtra("android.intent.extra.screenOrientation", false);
                     startActivityForResult(intent, AppConst.ACTIVITY_IMAGE_CAPTURE);
                 } else {
-                    CustomToast.show("内存卡不可用，请检测内存卡", Toast.LENGTH_LONG);
+                    CustomToast.show("内存卡不可用，请检测内存卡", CustomToast.LENGTH_SHORT);
                 }
                 dialog.dismiss();
             }

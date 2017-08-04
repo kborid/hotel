@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true" android:state_pressed="true">
         <shape>
-            <solid android:color="?attr/mainColorDark" />
+            <solid android:color="@color/female_mainColorDark" />
             <corners android:radius="25dp" />
         </shape>
     </item>
@@ -14,7 +14,7 @@
     </item>
     <item android:state_enabled="true">
         <shape>
-            <solid android:color="?attr/mainColor" />
+            <solid android:color="@color/female_mainColor" />
             <corners android:radius="25dp" />
         </shape>
     </item>

@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -143,11 +144,12 @@ public class RangeSeekBar extends View {
 
     public RangeSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Resources resources = context.getResources();
         TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.RangeSeekBar);
-        seekBarResId = t.getResourceId(R.styleable.RangeSeekBar_seekBarResId, 0);
-        colorLineUnSelected = t.getColor(R.styleable.RangeSeekBar_lineColorUnSelected, 0xFFFFFFFF);
-        colorLineSelected = t.getColor(R.styleable.RangeSeekBar_lineColorSelected, 0xFF001a58);
-        colorLineEdge = t.getColor(R.styleable.RangeSeekBar_lineColorEdge, 0xFFFFFFFF);
+        seekBarResId = t.getResourceId(R.styleable.RangeSeekBar_seekBarResId, R.drawable.iv_thumb_consider);
+        colorLineUnSelected = t.getInt(R.styleable.RangeSeekBar_lineColorUnSelected, resources.getColor(R.color.tabDefaultColor));
+        colorLineSelected = t.getInt(R.styleable.RangeSeekBar_lineColorSelected, resources.getColor(R.color.considerText));
+        colorLineEdge = t.getInt(R.styleable.RangeSeekBar_lineColorEdge, resources.getColor(R.color.secColor));
         float min = t.getFloat(R.styleable.RangeSeekBar_min, 0);
         float max = t.getFloat(R.styleable.RangeSeekBar_max, 1);
         float reserve = t.getFloat(R.styleable.RangeSeekBar_reserve, 0);

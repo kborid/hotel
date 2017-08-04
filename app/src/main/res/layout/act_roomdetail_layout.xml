@@ -352,7 +352,7 @@
                     android:layout_width="100dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/comm_rectangle_btn_yello"
+                    android:background="?attr/indicatorBgSel"
                     android:drawableRight="@drawable/iv_accessory_white"
                     android:gravity="center"
                     android:paddingLeft="20dp"

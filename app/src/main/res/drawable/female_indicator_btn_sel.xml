@@ -2,19 +2,19 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true" android:state_pressed="true">
         <shape>
-            <gradient android:angle="0" android:endColor="?attr/ygrEndColor" android:startColor="?attr/ygrStartColor" />
+            <solid android:color="@color/female_mapShowArea" />
             <corners android:radius="25dp" />
         </shape>
     </item>
     <item android:state_enabled="false">
         <shape>
-            <gradient android:angle="0" android:endColor="@color/registerhintColor" android:startColor="@color/searchHintColor" />
+            <solid android:color="@color/female_mapShowAreaDisable" />
             <corners android:radius="25dp" />
         </shape>
     </item>
-    <item android:state_enabled="true">
+    <item>
         <shape>
-            <gradient android:angle="0" android:endColor="?attr/ygrEndColor" android:startColor="?attr/ygrStartColor" />
+            <solid android:color="@color/female_mapShowArea" />
             <corners android:radius="25dp" />
         </shape>
     </item>

@@ -265,14 +265,14 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener,
     class MyWebViewClient extends WVJBWebViewClient {
 
         public MyWebViewClient(WebView webView) {
-            // support js send
-            // super(webView, new WVJBWebViewClient.WVJBHandler() {
-            // @Override
-            // public void request(Object data, WVJBResponseCallback callback) {
-            // Toast.makeText(HtmlActivity.this, "Java Received message from JS:" + data, Toast.LENGTH_LONG).show();
-            // callback.callback("Response for message from Java");
-            // }
-            // });
+//             support js send
+//            super(webView, new WVJBWebViewClient.WVJBHandler() {
+//                @Override
+//                public void request(Object data, WVJBResponseCallback callback) {
+//                    CustomToast.show("Java Received message from JS:" + data, CustomToast.LENGTH_SHORT);
+//                    callback.callback("Response for message from Java");
+//                }
+//            });
             super(webView);
             new RegisterHandler(this, HtmlActivity.this).init();
         }

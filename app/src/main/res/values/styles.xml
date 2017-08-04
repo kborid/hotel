@@ -13,7 +13,7 @@
     <!--欢迎界面theme-->
     <style name="WelTheme" parent="AppTheme">
         <!-- 启动背景图片 -->
-        <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:windowBackground">@drawable/bg_welcome</item>
     </style>
 
 
@@ -64,13 +64,24 @@
         <item name="userCenterThumbDisable">@drawable/iv_thumb_yello</item>
         <item name="userCenterThumbText">@color/mainColor</item>
         <item name="userCenterThumbTextDisable">@color/indicatorColor</item>
-        <item name="tagFlowCheckColor">@color/mainColorAccent</item>
-        <item name="tagFlowCheckDisableColor">@color/mainColorAccent</item>
         <item name="zeroButtonBg">@drawable/iv_free_bg</item>
         <item name="mainColor">@color/mainColor</item>
         <item name="mainColorAccent">@color/mainColorAccent</item>
         <item name="mainColorDark">@color/mainColorDark</item>
         <item name="messageHasImage">@drawable/iv_tab_msg2</item>
+        <!--selector-->
+        <item name="mainColorBtnSel">@drawable/maincolor_btn_sel</item>
+        <item name="indicatorBgSel">@drawable/indicator_btn_sel</item>
+        <item name="ygrBtnSel">@drawable/ygr_home_btn_sel</item>
+        <item name="bottomBtnSel">@drawable/comm_rect_bottombtn_sel</item>
+        <item name="tagFlowBgSel">@drawable/tf_item_sel</item>
+        <item name="orderSpinnerSel">@drawable/order_spinner_sel</item>
+        <item name="orderTimeCheckSel">@drawable/order_time_check_sel</item>
+        <item name="locationChooseSel">@drawable/city_a_sel</item>
+        <item name="indicatorSel">@drawable/indicator_sel</item>
+        <item name="yhqActiveBg">@drawable/yhq_rect_act_bg</item>
+        <item name="roomItemGradient">@drawable/roomitem_ygr_gradient</item>
+        <item name="considerTextSel">@color/consider_text_sel</item>
     </style>
 
 
@@ -120,13 +131,24 @@
         <item name="userCenterThumbDisable">@drawable/iv_thumb_yello_female</item>
         <item name="userCenterThumbText">@color/female_indicatorColor</item>
         <item name="userCenterThumbTextDisable">@color/female_mainColor</item>
-        <item name="tagFlowCheckColor">@color/female_indicatorColor</item>
-        <item name="tagFlowCheckDisableColor">@color/female_mainColor</item>
         <item name="zeroButtonBg">@drawable/iv_free_bg_female</item>
         <item name="mainColor">@color/female_mainColor</item>
         <item name="mainColorAccent">@color/female_mainColorAccent</item>
         <item name="mainColorDark">@color/female_mainColorDark</item>
         <item name="messageHasImage">@drawable/iv_tab_msg2_female</item>
+        <!--selector-->
+        <item name="mainColorBtnSel">@drawable/female_maincolor_btn_sel</item>
+        <item name="indicatorBgSel">@drawable/female_indicator_btn_sel</item>
+        <item name="ygrBtnSel">@drawable/female_ygr_home_btn_sel</item>
+        <item name="bottomBtnSel">@drawable/female_comm_rect_bottombtn_sel</item>
+        <item name="tagFlowBgSel">@drawable/female_tf_item_sel</item>
+        <item name="orderSpinnerSel">@drawable/female_order_spinner_sel</item>
+        <item name="orderTimeCheckSel">@drawable/female_order_time_check_sel</item>
+        <item name="locationChooseSel">@drawable/female_city_a_sel</item>
+        <item name="indicatorSel">@drawable/female_indicator_sel</item>
+        <item name="yhqActiveBg">@drawable/female_yhq_rect_act_bg</item>
+        <item name="roomItemGradient">@drawable/female_roomitem_ygr_gradient</item>
+        <item name="considerTextSel">@color/female_consider_text_sel</item>
     </style>
 
 
@@ -195,7 +217,7 @@
     <style name="blue_button_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">45dp</item>
-        <item name="android:background">@drawable/comm_btn_maincolor_selector</item>
+        <item name="android:background">?attr/mainColorBtnSel</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

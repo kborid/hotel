@@ -380,16 +380,16 @@ public class LocationActivity2 extends BaseActivity {
             }
 
             viewHolder.tv_city.setText(indexList.get(position));
-            if (position % 2 == 1) {
-                viewHolder.tv_city.setBackgroundResource(R.drawable.sel_city_b_selector);
-            } else {
-                viewHolder.tv_city.setBackgroundResource(R.drawable.sel_city_a_selector);
-            }
-
             if (selectedIndex == position) {
                 viewHolder.tv_city.setSelected(true);
             } else {
                 viewHolder.tv_city.setSelected(false);
+            }
+
+            if (position % 2 == 1) {
+                convertView.setBackgroundColor(context.getResources().getColor(R.color.citySelColor));
+            } else {
+                convertView.setBackgroundColor(context.getResources().getColor(R.color.transparent));
             }
 
             return convertView;

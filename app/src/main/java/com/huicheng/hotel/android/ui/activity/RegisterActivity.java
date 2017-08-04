@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -55,7 +54,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
     private CountDownTimer mCountDownTimer;
     private RelativeLayout checkbox_lay;
     private CheckBox cb_change;
-    private boolean isValided = false;
+    private boolean isValid = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,14 +96,6 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
         tv_agreement.setOnClickListener(this);
         checkbox_lay.setOnClickListener(this);
 
-        et_yzm.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    requestCheckYZM();
-                }
-            }
-        });
         et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -166,10 +157,6 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                 break;
             }
             case R.id.btn_register: {
-                if (!isValided) {
-                    CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
-                    return;
-                }
                 if (cb_check.isChecked()) {
                     String phone = et_phone.getText().toString().trim();
                     String yzm = et_yzm.getText().toString().trim();
@@ -197,7 +184,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                             return;
                         }
                     }
-                    requestRegister();
+                    requestCheckYZM();
                 } else {
                     CustomToast.show("请先阅读《注册协议》", CustomToast.LENGTH_SHORT);
                 }
@@ -264,6 +251,10 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
         d.path = NetURL.CHECK_YZM;
         d.flag = AppConst.CHECK_YZM;
 
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -287,10 +278,6 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
         ResponseData data = b.syncRequest(b);
         data.path = NetURL.REGISTER;
         data.flag = AppConst.REGISTER;
-
-        if (!isProgressShowing()) {
-            showProgressDialog(this);
-        }
 
         requestID = DataLoader.getInstance().loadData(this, data);
     }
@@ -368,7 +355,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                 }
             } else if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();
-                CustomToast.show("验证码已发送，请稍候...", Toast.LENGTH_LONG);
+                CustomToast.show("验证码已发送，请稍候...", CustomToast.LENGTH_SHORT);
                 btn_yzm.setEnabled(false);
                 mCountDownTimer.start();// 启动倒计时
             } else if (request.flag == AppConst.CHECK_YZM) {
@@ -378,15 +365,20 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                     String status = mJson.getString("status");
                     switch (status) {
                         case "0":
-                            CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
-                            isValided = false;
+                            isValid = false;
                             break;
                         case "1":
-                            CustomToast.show("验证码正确", CustomToast.LENGTH_SHORT);
-                            isValided = true;
+                            isValid = true;
                             break;
                         default:
                             break;
+                    }
+
+                    if (isValid) {
+                        requestRegister();
+                    } else {
+                        removeProgressDialog();
+                        CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
                     }
                 }
             } else if (request.flag == AppConst.REGISTER) {
@@ -441,6 +433,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                 if (SessionContext.getRecommandAppData() != null) {
                     requestSaveRecommandData();
                 } else {
+                    removeProgressDialog();
                     startActivity(new Intent(this, MainFragmentActivity.class));
 //                    this.finish();
                 }
@@ -450,7 +443,14 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
 //                this.finish();
             }
         }
+    }
 
+    @Override
+    protected void onNotifyError(ResponseData request) {
+        super.onNotifyError(request);
+        if (request.flag == AppConst.CHECK_YZM) {
+            isValid = false;
+        }
     }
 
     @Override

@@ -147,7 +147,7 @@ public class LocationActivity extends BaseActivity {
                     SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_SITEID, String.valueOf(aMapLocation.getAdCode()), false);
                     tv_current.setText(city);
                 }
-            });
+            }, true);
         }
 
         String historyCity = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY_CITY, "", false);

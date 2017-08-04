@@ -77,6 +77,8 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
 
     private int mRoomPriceColorId;
     private Drawable mRoomDetailSpaceId, mRoomDetailSpace2Id;
+    private int ygrRoomItemBackgroundId;
+    private int indicatorSelId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,8 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         mRoomPriceColorId = ta.getInt(R.styleable.MyTheme_roomItemPrice, getResources().getColor(R.color.indicatorColor));
         mRoomDetailSpaceId = ta.getDrawable(R.styleable.MyTheme_roomDetailSpace);
         mRoomDetailSpace2Id = ta.getDrawable(R.styleable.MyTheme_roomDetailSpace2);
+        ygrRoomItemBackgroundId = ta.getResourceId(R.styleable.MyTheme_roomItemGradient, R.drawable.roomitem_ygr_gradient);
+        indicatorSelId = ta.getResourceId(R.styleable.MyTheme_indicatorSel, R.drawable.indicator_sel);
         ta.recycle();
 
         initViews();
@@ -349,7 +353,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
                     clock_lay.setVisibility(View.VISIBLE);
                     ((TextView) time_lay.findViewById(R.id.tv_time_label)).setText("入住时段：");
                     ((TextView) time_lay.findViewById(R.id.tv_time)).setText(hotelDetailInfoBean.roomList.get(i).yeguirenRoomTime);
-                    content_layout.setBackgroundResource(R.drawable.comm_gradient_ygr_color);
+                    content_layout.setBackgroundResource(ygrRoomItemBackgroundId);
                     tv_title.setTextColor(getResources().getColor(R.color.white));
                     tv_price_note.setTextColor(getResources().getColor(R.color.white));
                     tv_price.setTextColor(getResources().getColor(R.color.white));
@@ -593,7 +597,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         if (count >= 1) {
             for (int i = 0; i < count; i++) {
                 View view = new View(this);
-                view.setBackgroundResource(R.drawable.indicator_selector);
+                view.setBackgroundResource(indicatorSelId);
                 view.setEnabled(false);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(7), Utils.dip2px(7));
                 if (i > 0) {

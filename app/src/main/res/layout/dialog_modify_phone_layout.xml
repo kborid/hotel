@@ -12,7 +12,9 @@
         android:drawableLeft="@drawable/iv_phone"
         android:drawablePadding="17dp"
         android:hint="手机号码"
-        android:inputType="text"
+        android:inputType="phone"
+        android:lines="1"
+        android:maxLength="11"
         android:textColorHint="@color/registerhintColor"
         android:textSize="@dimen/common_text_size" />
 
@@ -34,7 +36,9 @@
             android:drawableLeft="@drawable/iv_code"
             android:drawablePadding="12dp"
             android:hint="验证码"
-            android:inputType="text"
+            android:inputType="number"
+            android:lines="1"
+            android:maxLength="6"
             android:textColorHint="@color/registerhintColor"
             android:textSize="@dimen/common_text_size" />
 
@@ -43,7 +47,7 @@
             android:layout_width="110dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/comm_btn_maincolor_selector"
+            android:background="?attr/mainColorBtnSel"
             android:text="获取验证码"
             android:textColor="@color/white"
             android:textSize="@dimen/common_12sp" />

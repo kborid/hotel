@@ -37,7 +37,7 @@ public class PRJApplication extends Application {
         super.onCreate();
         AppContext.init(this);
         CrashHandler.getInstance().init(this);
-        AMapLocationControl.getInstance().startLocationOnce(this);
+        AMapLocationControl.getInstance().startLocationOnce(this, true);
         PlatformConfig.setWeixin(getResources().getString(R.string.wx_appid), getResources().getString(R.string.wx_appsecret));
         PlatformConfig.setQQZone(getResources().getString(R.string.qq_appid), getResources().getString(R.string.qq_appkey));
         Config.DEBUG = AppConst.ISDEVELOP;

@@ -392,7 +392,7 @@
                                     android:id="@+id/btn_confirm"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
-                                    android:background="@drawable/comm_rectangle_btn_yello"
+                                    android:background="?attr/indicatorBgSel"
                                     android:enabled="false"
                                     android:text="确认修改"
                                     android:textColor="@color/mainColor"
@@ -416,7 +416,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginTop="20dp"
-                            android:background="@drawable/comm_rectangle_btn_yello"
+                            android:background="?attr/indicatorBgSel"
                             android:text="再次预定"
                             android:textColor="@color/mainColor"
                             android:textSize="@dimen/common_15sp" />

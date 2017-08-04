@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:visibility="gone"
-            android:background="@drawable/yhq_rectangle_act_bg"
+            android:background="?attr/yhqActiveBg"
             android:orientation="vertical"
             android:paddingBottom="12dp"
             android:paddingLeft="15dp"
@@ -141,7 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/comm_btn_maincolor_selector"
+                android:background="?attr/mainColorBtnSel"
                 android:text="立即使用"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_15sp" />

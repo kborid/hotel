@@ -16,8 +16,8 @@ android {
         applicationId "com.huicheng.hotel.android" //JPush上注册的包名.
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 4
-        versionName "1.2.0（测试版）"
+        versionCode 5
+        versionName "1.2.1（测试版）"
 
         multiDexEnabled true
         ndk {

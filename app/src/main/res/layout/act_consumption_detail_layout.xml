@@ -27,7 +27,7 @@
                     android:id="@+id/spinner"
                     android:layout_width="75dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/comm_rectangle_btn_transparent_withbound_for_spinner" />
+                    android:background="@drawable/order_spinner_sel" />
 
                 <ImageView
                     android:layout_width="wrap_content"
