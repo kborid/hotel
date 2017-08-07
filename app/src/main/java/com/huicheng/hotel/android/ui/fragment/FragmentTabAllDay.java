@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +31,8 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
-import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -46,7 +49,11 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
     private String key = null;
     private List<HotelInfoBean> list = new ArrayList<>();
     private HotelListAdapter adapter = null;
-    private PullLoadMoreRecyclerView pullLoadMoreRecyclerView;
+    private RecyclerView recyclerView;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private int lastVisibleItem = 0;
+    private boolean isNoMore = false;
 
     private int refreshType = 0;
     private static final int PAGESIZE = 10;
@@ -84,9 +91,8 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         super.onVisible();
         if (isFirstLoad) {
             isFirstLoad = false;
-            pullLoadMoreRecyclerView.setRefreshing(true);
+            swipeRefreshLayout.setRefreshing(true);
             new Handler().postDelayed(new Runnable() {
-
                 @Override
                 public void run() {
                     requestHotelAllDayList(pageIndex);
@@ -98,50 +104,76 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
     @Override
     protected void onInvisible() {
         super.onInvisible();
-        pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     protected void initViews(View view) {
         super.initViews(view);
-        pullLoadMoreRecyclerView = (PullLoadMoreRecyclerView) view.findViewById(R.id.pullLoadMoreRecyclerView);
-        pullLoadMoreRecyclerView.setStaggeredGridLayout(2);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
         adapter = new HotelListAdapter(getActivity(), list, HotelCommDef.TYPE_ALL);
-        pullLoadMoreRecyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
     protected void initParams() {
         super.initParams();
-        pullLoadMoreRecyclerView.setColorSchemeResources(mSwipeRefreshColor);
+        swipeRefreshLayout.setColorSchemeResources(mSwipeRefreshColor);
+        swipeRefreshLayout.setDistanceToTriggerSync(200);
+        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dip2px(20));
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+
         if (priceIndex != 0) {
             float priceMin = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MIN, 0f);
             float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 6f);
             priceStart = HotelCommDef.convertHotelPrice((int) priceMin);
             priceEnd = HotelCommDef.convertHotelPrice((int) priceMax);
         }
-        System.out.println("priceIndex = " + priceIndex);
-        System.out.println("startPrice = " + priceStart + ", endPrice = " + priceEnd);
     }
 
     @Override
     protected void initListeners() {
         super.initListeners();
         HotelListActivity.registerOnUpdateHotelInfoListener(this);
-        pullLoadMoreRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 pageIndex = 0;
                 refreshType = 0;
                 requestHotelAllDayList(pageIndex);
             }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                staggeredGridLayoutManager.invalidateSpanAssignments();
+                if (!isNoMore) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
+                        swipeRefreshLayout.setRefreshing(true);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshType = 1;
+                                requestHotelAllDayList(++pageIndex);
+                            }
+                        }, 500);
+                    }
+                }
+            }
 
             @Override
-            public void onLoadMore() {
-                refreshType = 1;
-                requestHotelAllDayList(++pageIndex);
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = getLastVisibleItem();
             }
         });
+
         adapter.setOnItemClickListener(new HotelListAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -152,6 +184,20 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
                 startActivity(intent);
             }
         });
+    }
+
+    private int getLastVisibleItem() {
+        int[] lastPositions = staggeredGridLayoutManager.findLastVisibleItemPositions(new int[staggeredGridLayoutManager.getSpanCount()]);
+        return getMaxPosition(lastPositions);
+    }
+
+    private int getMaxPosition(int[] positions) {
+        int size = positions.length;
+        int maxPosition = Integer.MIN_VALUE;
+        for (int i = 0; i < size; i++) {
+            maxPosition = Math.max(maxPosition, positions[i]);
+        }
+        return maxPosition;
     }
 
     private void requestHotelAllDayList(int pageIndex) {
@@ -192,11 +238,6 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         HotelListActivity.unRegisterOnUpdateHotelInfoListener(this);
@@ -226,11 +267,10 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
             message = response != null && response.data != null ? response.data.toString() : getString(R.string.dialog_tip_null_error);
         }
         CustomToast.show(message, CustomToast.LENGTH_SHORT);
-        pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private class MyAsyncTask extends AsyncTask<Integer, Void, Void> {
-        private boolean isNoMore = false;
         private ResponseData response = null;
 
         public MyAsyncTask(ResponseData response) {
@@ -240,13 +280,17 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         @Override
         protected Void doInBackground(Integer... params) {
             if (response != null && response.body != null && !"{}".equals(response.body.toString())) {
-                System.out.println("json = " + response.body.toString());
                 List<HotelInfoBean> temp = JSON.parseArray(response.body.toString(), HotelInfoBean.class);
                 if (params[0] == 0) {
                     list.clear();
                 }
                 list.addAll(temp);
-                isNoMore = temp.size() <= 0;
+
+                if (temp.size() >= PAGESIZE) {
+                    isNoMore = false;
+                } else {
+                    isNoMore = true;
+                }
 
                 //设置缓存
                 List<HotelMapInfoBean> allDayList = new ArrayList<>();
@@ -272,7 +316,7 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }, 300);
             adapter.notifyDataSetChanged();
@@ -296,6 +340,10 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         this.keyword = keyword;
         pageIndex = 0;
         refreshType = 0;
-        requestHotelAllDayList(pageIndex);
+        if (getUserVisibleHint()) {
+            requestHotelAllDayList(pageIndex);
+        } else {
+            isFirstLoad = true;
+        }
     }
 }

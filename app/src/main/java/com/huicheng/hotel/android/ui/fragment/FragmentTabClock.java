@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +31,8 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
-import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -43,9 +46,13 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     private static final String TAG = "FragmentTagClock";
     public static boolean isFirstLoad = false;
     private String key = null;
-    private PullLoadMoreRecyclerView pullLoadMoreRecyclerView;
     private HotelListAdapter adapter = null;
     private List<HotelInfoBean> list = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private int lastVisibleItem = 0;
+    private boolean isNoMore = false;
 
     private static final int PAGESIZE = 10;
     private int pageIndex = 0, priceIndex = 0;
@@ -83,10 +90,10 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         super.onVisible();
         if (isFirstLoad) {
             isFirstLoad = false;
+            swipeRefreshLayout.setRefreshing(true);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    pullLoadMoreRecyclerView.setRefreshing(true);
                     requestHotelClockList(pageIndex);
                 }
             }, 500);
@@ -96,22 +103,29 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     @Override
     protected void onInvisible() {
         super.onInvisible();
-        pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     protected void initViews(View view) {
         super.initViews(view);
-        pullLoadMoreRecyclerView = (PullLoadMoreRecyclerView) view.findViewById(R.id.pullLoadMoreRecyclerView);
-        pullLoadMoreRecyclerView.setStaggeredGridLayout(2);//参数为列数
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
         adapter = new HotelListAdapter(getActivity(), list, HotelCommDef.TYPE_CLOCK);
-        pullLoadMoreRecyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
     protected void initParams() {
         super.initParams();
-        pullLoadMoreRecyclerView.setColorSchemeResources(mSwipeRefreshColor);
+        swipeRefreshLayout.setColorSchemeResources(mSwipeRefreshColor);
+        swipeRefreshLayout.setDistanceToTriggerSync(200);
+        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dip2px(20));
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+
         if (priceIndex != 0) {
             float priceMin = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MIN, 0f);
             float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 6f);
@@ -125,20 +139,41 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         super.initListeners();
         HotelListActivity.registerOnUpdateHotelInfoListener(this);
 
-        pullLoadMoreRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 pageIndex = 0;
                 refreshType = 0;
                 requestHotelClockList(pageIndex);
             }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                staggeredGridLayoutManager.invalidateSpanAssignments();
+                if (!isNoMore) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
+                        swipeRefreshLayout.setRefreshing(true);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshType = 1;
+                                requestHotelClockList(++pageIndex);
+                            }
+                        }, 500);
+                    }
+                }
+            }
 
             @Override
-            public void onLoadMore() {
-                refreshType = 1;
-                requestHotelClockList(++pageIndex);
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = getLastVisibleItem();
             }
         });
+
         adapter.setOnItemClickListener(new HotelListAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -149,6 +184,20 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
                 startActivity(intent);
             }
         });
+    }
+
+    private int getLastVisibleItem() {
+        int[] lastPositions = staggeredGridLayoutManager.findLastVisibleItemPositions(new int[staggeredGridLayoutManager.getSpanCount()]);
+        return getMaxPosition(lastPositions);
+    }
+
+    private int getMaxPosition(int[] positions) {
+        int size = positions.length;
+        int maxPosition = Integer.MIN_VALUE;
+        for (int i = 0; i < size; i++) {
+            maxPosition = Math.max(maxPosition, positions[i]);
+        }
+        return maxPosition;
     }
 
     private void requestHotelClockList(int pageIndex) {
@@ -189,11 +238,6 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         HotelListActivity.unRegisterOnUpdateHotelInfoListener(this);
@@ -216,7 +260,6 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
-        pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
         String message;
         if (e != null && e instanceof ConnectException) {
             message = getString(R.string.dialog_tip_net_error);
@@ -224,10 +267,10 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
             message = response != null && response.data != null ? response.data.toString() : getString(R.string.dialog_tip_null_error);
         }
         CustomToast.show(message, CustomToast.LENGTH_SHORT);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private class MyAsyncTask extends AsyncTask<Integer, Void, Void> {
-        private boolean isNoMore = false;
         private ResponseData response = null;
 
         public MyAsyncTask(ResponseData response) {
@@ -242,7 +285,14 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
                     list.clear();
                 }
                 list.addAll(temp);
-                isNoMore = temp.size() <= 0;
+
+                if (temp.size() >= PAGESIZE) {
+                    isNoMore = false;
+                } else {
+                    isNoMore = true;
+                }
+
+                //设置缓存
                 List<HotelMapInfoBean> clockList = new ArrayList<>();
                 for (int i = 0; i < list.size(); i++) {
                     HotelMapInfoBean bean = new HotelMapInfoBean();
@@ -263,13 +313,13 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            adapter.notifyDataSetChanged();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }, 300);
+            adapter.notifyDataSetChanged();
             if (isNoMore) {
                 CustomToast.show("没有更多数据", CustomToast.LENGTH_SHORT);
             }
@@ -289,6 +339,10 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         isFirstLoad = false;
         this.keyword = keyword;
         refreshType = 0;
-        requestHotelClockList(pageIndex);
+        if (getUserVisibleHint()) {
+            requestHotelClockList(pageIndex);
+        } else {
+            isFirstLoad = true;
+        }
     }
 }
