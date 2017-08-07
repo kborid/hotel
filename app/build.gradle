@@ -127,7 +127,6 @@ dependencies {
     compile 'com.bartoszlipinski.flippablestackview:library:1.2.1'
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile 'com.android.support:multidex:1.0.1'
-//    compile 'net.qiujuer.genius:blur:2.0.0-beta4'
     //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
     //极光推送JPush
@@ -135,5 +134,5 @@ dependencies {
     compile 'cn.jiguang.sdk:jcore:1.1.1'
 
     // 内存泄漏检查工具库
-    compile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1' // or 1.4-beta1
+//    compile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
 }

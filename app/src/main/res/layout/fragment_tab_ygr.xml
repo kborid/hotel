@@ -21,7 +21,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="@string/ygrNote"
-            android:textColor="@color/mainColor"
+            android:textColor="?attr/mainColor"
             android:textSize="@dimen/common_10sp"
             android:visibility="gone" />
 

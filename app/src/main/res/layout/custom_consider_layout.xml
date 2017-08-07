@@ -218,19 +218,19 @@
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />
 
-            <com.huicheng.hotel.android.ui.custom.RangeSeekBar xmlns:app="http://schemas.android.com/apk/res-auto"
+            <com.huicheng.hotel.android.ui.custom.RangeSeekBar xmlns:customseekbar="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="27dp"
-                app:cells="6"
-                app:lineColorEdge="@color/secColor"
-                app:lineColorSelected="?attr/considerText"
-                app:lineColorUnSelected="@color/tabDefaultColor"
-                app:max="6"
-                app:min="0"
-                app:reserve="1"
-                app:seekBarResId="?attr/considerThumb" />
+                customseekbar:cells="6"
+                customseekbar:lineColorEdge="@color/secColor"
+                customseekbar:lineColorSelected="?attr/considerText"
+                customseekbar:lineColorUnSelected="@color/tabDefaultColor"
+                customseekbar:max="6"
+                customseekbar:min="0"
+                customseekbar:reserve="1"
+                customseekbar:seekBarResId="?attr/considerThumb" />
 
         </LinearLayout>
 

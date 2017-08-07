@@ -77,7 +77,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     private RelativeLayout camer_lay;
     private RelativeLayout photo_lay;
     private EditText et_name;
-    private ImageView iv_clear;
+    private ImageView iv_clear, iv_left;
 
     private LinearLayout male_lay, female_lay;
     private View line_lay, line_male_lay, line_female_lay;
@@ -111,7 +111,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     private static Handler handler = new Handler(Looper.getMainLooper());
     private int oldSkinIndex = 0, scrollY;
     private int lineSelectedColorId, lineSelectedDisableColorId;
-    private int thumbId, thumbDisableId, settingId, settingOkId;
+    private int thumbId, thumbDisableId, settingId, settingOkId, leftImageId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +126,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         thumbDisableId = ta.getResourceId(R.styleable.MyTheme_userCenterThumbDisable, R.drawable.iv_thumb_yello);
         settingId = ta.getResourceId(R.styleable.MyTheme_settingButton, R.drawable.iv_setting);
         settingOkId = ta.getResourceId(R.styleable.MyTheme_settingOKButton, R.drawable.iv_setting_ok);
+        leftImageId = ta.getResourceId(R.styleable.MyTheme_leftImage, R.drawable.iv_left);
         ta.recycle();
 
         initViews();
@@ -149,6 +150,8 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
 
         iv_clear = (ImageView) findViewById(R.id.iv_clear);
         line_lay = findViewById(R.id.line_lay);
+        iv_left = (ImageView) findViewById(R.id.iv_left);
+        iv_left.setImageResource(leftImageId);
 
         tv_phone = (TextView) findViewById(R.id.tv_phone);
         tv_birthday = (TextView) findViewById(R.id.tv_birthday);

@@ -150,7 +150,7 @@ public class RangeSeekBar extends View {
         super(context, attrs, defStyleAttr);
         Resources resources = context.getResources();
         TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.RangeSeekBar);
-        seekBarResId = t.getResourceId(R.styleable.RangeSeekBar_seekBarResId, R.drawable.iv_thumb_consider);
+//        seekBarResId = t.getResourceId(R.styleable.RangeSeekBar_seekBarResId, R.drawable.iv_thumb_consider);
         colorLineUnSelected = t.getInt(R.styleable.RangeSeekBar_lineColorUnSelected, resources.getColor(R.color.tabDefaultColor));
         colorLineSelected = t.getInt(R.styleable.RangeSeekBar_lineColorSelected, resources.getColor(R.color.considerText));
         colorLineEdge = t.getInt(R.styleable.RangeSeekBar_lineColorEdge, resources.getColor(R.color.secColor));
@@ -160,12 +160,14 @@ public class RangeSeekBar extends View {
         cellCount = t.getInt(R.styleable.RangeSeekBar_cells, 1);
         setRules(min, max, reserve, cellCount);
         t.recycle();
+        TypedArray ta = context.obtainStyledAttributes(R.styleable.MyTheme);
+        seekBarResId = t.getResourceId(R.styleable.MyTheme_considerThumb, R.drawable.iv_thumb_consider);
+        ta.recycle();
     }
 
     public void setSeekBarResId(int resId) {
         seekBarResId = resId;
 
-        
         Bitmap original = BitmapFactory.decodeResource(getContext().getResources(), resId);
         Matrix matrix = new Matrix();
         float scaleWidth = ((float) thumbWidth) / original.getWidth();
