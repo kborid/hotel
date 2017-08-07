@@ -12,9 +12,6 @@
         <attr name="tabTrainColor" format="color" />
         <attr name="tabTaxiColor" format="color" />
         <attr name="citySelColor" format="color" />
-        <attr name="cityIndexSelColor" format="color" />
-        <attr name="commBottom" format="color" />
-        <attr name="commBottomPress" format="color" />
         <attr name="commBottomText" format="color" />
         <attr name="hotelListTab" format="color" />
         <attr name="hotelRefreshColor" format="color"/>
@@ -28,8 +25,6 @@
         <attr name="considerThumb" format="reference" />
         <attr name="considerShadow" format="color" />
         <attr name="mapSearchImage" format="reference" />
-        <attr name="mapShowArea" format="color" />
-        <attr name="mapShowAreaDisable" format="color" />
         <attr name="mapPinImage" format="reference" />
         <attr name="roomMainText" format="color"/>
         <attr name="roomItemPrice" format="color"/>
@@ -48,7 +43,6 @@
         <attr name="zeroButtonBg" format="reference"/>
         <attr name="mainColor" format="color"/>
         <attr name="mainColorAccent" format="color"/>
-        <attr name="mainColorDark" format="color"/>
         <attr name="messageHasImage" format="reference"/>
 
         <!--selector-->

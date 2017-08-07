@@ -242,25 +242,28 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
 
         @Override
         protected Void doInBackground(Integer... params) {
-            List<HotelInfoBean> temp = JSON.parseArray(response.body.toString(), HotelInfoBean.class);
-            if (params[0] == 0) {
-                list.clear();
-            }
-            list.addAll(temp);
-            isNoMore = temp.size() <= 0;
+            if (response != null && response.body != null && !"{}".equals(response.body.toString())) {
+                List<HotelInfoBean> temp = JSON.parseArray(response.body.toString(), HotelInfoBean.class);
+                if (params[0] == 0) {
+                    list.clear();
+                }
+                list.addAll(temp);
+                isNoMore = temp.size() <= 0;
 
-            List<HotelMapInfoBean> clockList = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                HotelMapInfoBean bean = new HotelMapInfoBean();
-                bean.coordinate = list.get(i).hotelCoordinate;
-                bean.hotelAddress = list.get(i).hotelAddress;
-                bean.hotelName = list.get(i).hotelName;
-                bean.hotelIcon = list.get(i).hotelFeaturePic;
-                bean.hotelId = list.get(i).hotelId;
-                clockList.add(bean);
+                List<HotelMapInfoBean> clockList = new ArrayList<>();
+                for (int i = 0; i < list.size(); i++) {
+                    HotelMapInfoBean bean = new HotelMapInfoBean();
+                    bean.coordinate = list.get(i).hotelCoordinate;
+                    bean.hotelAddress = list.get(i).hotelAddress;
+                    bean.hotelName = list.get(i).hotelName;
+                    bean.hotelIcon = list.get(i).hotelFeaturePic;
+                    bean.hotelId = list.get(i).hotelId;
+                    clockList.add(bean);
+                }
+                SessionContext.setYgrList(clockList);
+            } else {
+                isNoMore = true;
             }
-            SessionContext.setYgrList(clockList);
-
             return null;
         }
 

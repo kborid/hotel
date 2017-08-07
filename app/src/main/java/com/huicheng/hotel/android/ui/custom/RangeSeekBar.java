@@ -143,7 +143,11 @@ public class RangeSeekBar extends View {
     }
 
     public RangeSeekBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+
+    public RangeSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         Resources resources = context.getResources();
         TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.RangeSeekBar);
         seekBarResId = t.getResourceId(R.styleable.RangeSeekBar_seekBarResId, R.drawable.iv_thumb_consider);
@@ -161,6 +165,7 @@ public class RangeSeekBar extends View {
     public void setSeekBarResId(int resId) {
         seekBarResId = resId;
 
+        
         Bitmap original = BitmapFactory.decodeResource(getContext().getResources(), resId);
         Matrix matrix = new Matrix();
         float scaleWidth = ((float) thumbWidth) / original.getWidth();

@@ -46,6 +46,7 @@ import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
+import com.prj.sdk.widget.CustomToast;
 
 /**
  * Fragment home
@@ -277,6 +278,11 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
                 if (!SessionContext.isLogin()) {
                     getActivity().sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    return;
+                }
+
+                if (StringUtil.isEmpty(tv_city.getText().toString())) {
+                    CustomToast.show("定位失败，请打开GPS或手动选择城市", CustomToast.LENGTH_SHORT);
                     return;
                 }
 

@@ -31,9 +31,6 @@
         <item name="ygrEndColor">@color/ygrEndColor</item>
         <item name="hhyMainTextColor">@color/hhyMainTextColor</item>
         <item name="citySelColor">@color/citySelColor</item>
-        <item name="cityIndexSelColor">@color/cityIndexSelColor</item>
-        <item name="commBottom">@color/commBottom</item>
-        <item name="commBottomPress">@color/commBottomPress</item>
         <item name="commBottomText">@color/commBottomText</item>
         <item name="hotelListTab">@color/hotelListTab</item>
         <item name="hotelRefreshColor">@color/mainColorAccent</item>
@@ -47,8 +44,6 @@
         <item name="considerThumb">@drawable/iv_thumb_consider</item>
         <item name="considerShadow">@color/considerShadow</item>
         <item name="mapSearchImage">@drawable/iv_search</item>
-        <item name="mapShowArea">@color/mapShowArea</item>
-        <item name="mapShowAreaDisable">@color/mapShowAreaDisable</item>
         <item name="mapPinImage">@drawable/iv_pin</item>
         <item name="roomMainText">@color/roomMainText</item>
         <item name="roomItemPrice">@color/indicatorColor</item>
@@ -67,7 +62,6 @@
         <item name="zeroButtonBg">@drawable/iv_free_bg</item>
         <item name="mainColor">@color/mainColor</item>
         <item name="mainColorAccent">@color/mainColorAccent</item>
-        <item name="mainColorDark">@color/mainColorDark</item>
         <item name="messageHasImage">@drawable/iv_tab_msg2</item>
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/maincolor_btn_sel</item>
@@ -98,9 +92,6 @@
         <item name="ygrEndColor">@color/female_ygrEndColor</item>
         <item name="hhyMainTextColor">@color/female_hhyMainTextColor</item>
         <item name="citySelColor">@color/female_citySelColor</item>
-        <item name="cityIndexSelColor">@color/female_cityIndexSelColor</item>
-        <item name="commBottom">@color/female_commBottom</item>
-        <item name="commBottomPress">@color/female_commBottomPress</item>
         <item name="commBottomText">@color/female_commBottomText</item>
         <item name="hotelListTab">@color/female_hotelListTab</item>
         <item name="hotelRefreshColor">@color/female_mainColorAccent</item>
@@ -114,8 +105,6 @@
         <item name="considerThumb">@drawable/iv_thumb_consider_female</item>
         <item name="considerShadow">@color/female_considerShadow</item>
         <item name="mapSearchImage">@drawable/iv_search_female</item>
-        <item name="mapShowArea">@color/female_mapShowArea</item>
-        <item name="mapShowAreaDisable">@color/female_mapShowAreaDisable</item>
         <item name="mapPinImage">@drawable/iv_pin_female</item>
         <item name="roomMainText">@color/female_roomMainText</item>
         <item name="roomItemPrice">@color/female_indicatorColor</item>
@@ -134,7 +123,6 @@
         <item name="zeroButtonBg">@drawable/iv_free_bg_female</item>
         <item name="mainColor">@color/female_mainColor</item>
         <item name="mainColorAccent">@color/female_mainColorAccent</item>
-        <item name="mainColorDark">@color/female_mainColorDark</item>
         <item name="messageHasImage">@drawable/iv_tab_msg2_female</item>
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/female_maincolor_btn_sel</item>

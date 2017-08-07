@@ -10,7 +10,7 @@
         android:id="@+id/comm_title_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/mainColor"
+        android:background="?attr/mainColor"
         android:paddingBottom="@dimen/title_padding_bottom"
         android:paddingTop="@dimen/title_padding_top">
 
