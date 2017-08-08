@@ -14,8 +14,8 @@
         <attr name="citySelColor" format="color" />
         <attr name="commBottomText" format="color" />
         <attr name="hotelListTab" format="color" />
-        <attr name="hotelRefreshColor" format="color"/>
-        <attr name="hotelItemDelPrice" format="color"/>
+        <attr name="hotelRefreshColor" format="color" />
+        <attr name="hotelItemDelPrice" format="color" />
         <attr name="hotelItemPrice" format="color" />
         <attr name="currentDayCircle" format="color" />
         <attr name="selDayBackground" format="color" />
@@ -26,38 +26,38 @@
         <attr name="considerShadow" format="color" />
         <attr name="mapSearchImage" format="reference" />
         <attr name="mapPinImage" format="reference" />
-        <attr name="roomMainText" format="color"/>
-        <attr name="roomItemPrice" format="color"/>
-        <attr name="indicatorColor" format="color"/>
-        <attr name="roomDetailMap" format="reference"/>
-        <attr name="roomDetailPhone" format="reference"/>
-        <attr name="roomDetailSpace" format="reference"/>
-        <attr name="roomDetailSpace2" format="reference"/>
-        <attr name="settingButton" format="reference"/>
-        <attr name="settingOKButton" format="reference"/>
-        <attr name="leftImage" format="reference"/>
-        <attr name="userCenterThumb" format="reference"/>
-        <attr name="userCenterThumbDisable" format="reference"/>
-        <attr name="userCenterThumbText" format="color"/>
-        <attr name="userCenterThumbTextDisable" format="color"/>
-        <attr name="zeroButtonBg" format="reference"/>
-        <attr name="mainColor" format="color"/>
-        <attr name="mainColorAccent" format="color"/>
-        <attr name="messageHasImage" format="reference"/>
+        <attr name="roomMainText" format="color" />
+        <attr name="roomItemPrice" format="color" />
+        <attr name="indicatorColor" format="color" />
+        <attr name="roomDetailMap" format="reference" />
+        <attr name="roomDetailPhone" format="reference" />
+        <attr name="roomDetailSpace" format="reference" />
+        <attr name="roomDetailSpace2" format="reference" />
+        <attr name="settingButton" format="reference" />
+        <attr name="settingOKButton" format="reference" />
+        <attr name="leftImage" format="reference" />
+        <attr name="userCenterThumb" format="reference" />
+        <attr name="userCenterThumbDisable" format="reference" />
+        <attr name="userCenterThumbText" format="color" />
+        <attr name="userCenterThumbTextDisable" format="color" />
+        <attr name="zeroButtonBg" format="reference" />
+        <attr name="mainColor" format="color" />
+        <attr name="mainColorAccent" format="color" />
+        <attr name="messageHasImage" format="reference" />
 
         <!--selector-->
-        <attr name="mainColorBtnSel" format="reference"/>
-        <attr name="indicatorBgSel" format="reference"/>
-        <attr name="ygrBtnSel" format="reference"/>
-        <attr name="bottomBtnSel" format="reference"/>
-        <attr name="tagFlowBgSel" format="reference"/>
-        <attr name="orderSpinnerSel" format="reference"/>
-        <attr name="orderTimeCheckSel" format="reference"/>
-        <attr name="locationChooseSel" format="reference"/>
-        <attr name="indicatorSel" format="reference"/>
-        <attr name="yhqActiveBg" format="reference"/>
-        <attr name="roomItemGradient" format="reference"/>
-        <attr name="considerTextSel" format="color|reference"/>
+        <attr name="mainColorBtnSel" format="reference" />
+        <attr name="indicatorBgSel" format="reference" />
+        <attr name="ygrBtnSel" format="reference" />
+        <attr name="bottomBtnSel" format="reference" />
+        <attr name="tagFlowBgSel" format="reference" />
+        <attr name="orderSpinnerSel" format="reference" />
+        <attr name="orderTimeCheckSel" format="reference" />
+        <attr name="locationChooseSel" format="reference" />
+        <attr name="indicatorSel" format="reference" />
+        <attr name="yhqActiveBg" format="reference" />
+        <attr name="roomItemGradient" format="reference" />
+        <attr name="considerTextSel" format="color|reference" />
     </declare-styleable>
 
     <declare-styleable name="TagCloudView">
@@ -184,6 +184,11 @@
 
     <declare-styleable name="roundedImage">
         <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CommonSingleSelLayout">
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="color|reference" />
     </declare-styleable>
 
 </resources>

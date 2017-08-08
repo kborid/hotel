@@ -341,7 +341,13 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         pageIndex = 0;
         refreshType = 0;
         if (getUserVisibleHint()) {
-            requestHotelAllDayList(pageIndex);
+            swipeRefreshLayout.setRefreshing(true);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    requestHotelAllDayList(pageIndex);
+                }
+            }, 500);
         } else {
             isFirstLoad = true;
         }

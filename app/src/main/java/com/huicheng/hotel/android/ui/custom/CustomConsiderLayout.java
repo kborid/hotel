@@ -17,31 +17,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 
 /**
  * @author kborid
  * @date 2016/11/14 0014
  */
-public class CustomConsiderLayout extends RelativeLayout implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, RangeSeekBar.OnRangeChangedListener {
+public class CustomConsiderLayout extends RelativeLayout implements View.OnClickListener, RangeSeekBar.OnRangeChangedListener {
 
     private static final String TAG = "CustomConsiderLayout";
 
     private Context context;
 
     private LinearLayout root_lay;
-    private RadioGroup rg_point, rg_grade, rg_type;
-    private int point_index, grade_index, type_index;
+    private int pointIndex, gradeIndex, typeIndex;
+    private CommonSingleSelLayout pointLay, typeLay, gradeLay;
     private RangeSeekBar rangeSeekBar;
     private float rangeMin, rangeMax;
     private ImageView iv_reset;
+
 
     public CustomConsiderLayout(Context context) {
         this(context, null);
@@ -59,7 +59,6 @@ public class CustomConsiderLayout extends RelativeLayout implements View.OnClick
 
     private void init() {
         LayoutInflater.from(context).inflate(R.layout.custom_consider_layout, this);
-
         findViews();
         initParamers();
         setClickListeners();
@@ -68,29 +67,13 @@ public class CustomConsiderLayout extends RelativeLayout implements View.OnClick
     private void findViews() {
         root_lay = (LinearLayout) findViewById(R.id.root);
         ((TextView) findViewById(R.id.tv_title)).getPaint().setFakeBoldText(true);
-
         ((TextView) findViewById(R.id.tv_point_lable)).getPaint().setFakeBoldText(true);
-        rg_point = (RadioGroup) findViewById(R.id.rg_point);
-        ((RadioButton) findViewById(R.id.point_00)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.point_0)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.point_1)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.point_2)).getPaint().setFakeBoldText(true);
-
         ((TextView) findViewById(R.id.tv_price_lable)).getPaint().setFakeBoldText(true);
         ((TextView) findViewById(R.id.tv_grade_lable)).getPaint().setFakeBoldText(true);
-        rg_grade = (RadioGroup) findViewById(R.id.rg_grade);
-        ((RadioButton) findViewById(R.id.grade_00)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.grade_0)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.grade_1)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.grade_2)).getPaint().setFakeBoldText(true);
-
         ((TextView) findViewById(R.id.tv_type_lable)).getPaint().setFakeBoldText(true);
-        rg_type = (RadioGroup) findViewById(R.id.rg_type);
-        ((RadioButton) findViewById(R.id.type_00)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.type_0)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.type_1)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.type_2)).getPaint().setFakeBoldText(true);
-        ((RadioButton) findViewById(R.id.type_3)).getPaint().setFakeBoldText(true);
+        pointLay = (CommonSingleSelLayout) findViewById(R.id.pointLay);
+        typeLay = (CommonSingleSelLayout) findViewById(R.id.typeLay);
+        gradeLay = (CommonSingleSelLayout) findViewById(R.id.gradeLay);
 
         rangeSeekBar = (RangeSeekBar) findViewById(R.id.seekbar);
         iv_reset = (ImageView) findViewById(R.id.iv_reset);
@@ -101,27 +84,26 @@ public class CustomConsiderLayout extends RelativeLayout implements View.OnClick
         Bitmap bm = getRoundedCornerBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_white), 25);
         root_lay.setBackground(new BitmapDrawable(context.getResources(), bm));
         root_lay.getBackground().mutate().setAlpha((int) (255 * 0.95f));
+
+        pointLay.setData(context.getResources().getStringArray(R.array.HotelPoint));
+        typeLay.setData(context.getResources().getStringArray(R.array.HotelType));
+        gradeLay.setData(context.getResources().getStringArray(R.array.HotelStar));
 //        initAndRestoreConfig();
     }
 
     private void setClickListeners() {
-        rg_point.setOnCheckedChangeListener(this);
-        rg_type.setOnCheckedChangeListener(this);
         rangeSeekBar.setOnRangeChangedListener(this);
-
         iv_reset.setOnClickListener(this);
     }
 
     public void initAndRestoreConfig() {
-        point_index = -1;
-        grade_index = -1;
-        type_index = -1;
         rangeMin = 0f;
         rangeMax = 6f;
-        rg_point.getChildAt(0).performClick();
-        rg_grade.getChildAt(0).performClick();
-        rg_type.getChildAt(0).performClick();
         rangeSeekBar.setValue(rangeMin, rangeMax);
+        pointIndex = pointLay.resetSelectedIndex();
+        typeIndex = typeLay.resetSelectedIndex();
+        gradeIndex = gradeLay.resetSelectedIndex();
+
     }
 
     public void setPriceRange(int index) {
@@ -161,9 +143,9 @@ public class CustomConsiderLayout extends RelativeLayout implements View.OnClick
     }
 
     private void saveConsiderConfig() {
-        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_POINT, point_index);
-        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_GRADE, grade_index);
-        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_TYPE, type_index);
+        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_POINT, pointIndex);
+        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_GRADE, gradeIndex);
+        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_TYPE, typeIndex);
         SharedPreferenceUtil.getInstance().setFloat(AppConst.RANGE_MIN, rangeMin);
         SharedPreferenceUtil.getInstance().setFloat(AppConst.RANGE_MAX, rangeMax);
     }
@@ -178,75 +160,11 @@ public class CustomConsiderLayout extends RelativeLayout implements View.OnClick
     }
 
     public void dismiss() {
+        pointIndex = pointLay.getSelectedIndex();
+        typeIndex = typeLay.getSelectedIndex();
+        gradeIndex = gradeLay.getSelectedIndex();
+        LogUtil.i(TAG, "pointIndex = " + pointIndex + ", typeIndex = " + typeIndex + ", gradeIndex = " + gradeIndex);
         saveConsiderConfig();
-    }
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (group.getId()) {
-            case R.id.rg_point:
-                switch (checkedId) {
-                    case R.id.point_00:
-                        point_index = -1;
-                        break;
-                    case R.id.point_0:
-                        point_index = 0;
-                        break;
-                    case R.id.point_1:
-                        point_index = 1;
-                        break;
-                    case R.id.point_2:
-                        point_index = 2;
-                        break;
-                    default:
-                        point_index = -1;
-                        break;
-                }
-                break;
-            case R.id.rg_grade:
-                switch (checkedId) {
-                    case R.id.grade_00:
-                        grade_index = -1;
-                        break;
-                    case R.id.grade_0:
-                        grade_index = 0;
-                        break;
-                    case R.id.grade_1:
-                        grade_index = 1;
-                        break;
-                    case R.id.grade_2:
-                        grade_index = 2;
-                        break;
-                    default:
-                        grade_index = -1;
-                        break;
-                }
-                break;
-            case R.id.rg_type:
-                switch (checkedId) {
-                    case R.id.type_00:
-                        type_index = -1;
-                        break;
-                    case R.id.type_0:
-                        type_index = 0;
-                        break;
-                    case R.id.type_1:
-                        type_index = 1;
-                        break;
-                    case R.id.type_2:
-                        type_index = 2;
-                        break;
-                    case R.id.type_3:
-                        type_index = 3;
-                        break;
-                    default:
-                        type_index = -1;
-                        break;
-                }
-                break;
-            default:
-                break;
-        }
     }
 
     @Override

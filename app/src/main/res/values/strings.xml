@@ -105,6 +105,23 @@
         <item>女</item>
     </string-array>
 
+    <string-array name="HotelStar">
+        <item>三星</item>
+        <item>四星</item>
+        <item>五星</item>
+    </string-array>
+    <string-array name="HotelType">
+        <item>城市酒店</item>
+        <item>度假酒店</item>
+        <item>精品民宿</item>
+        <item>机场酒店</item>
+    </string-array>
+    <string-array name="HotelPoint">
+        <item>4.5以上</item>
+        <item>3.5–4.5</item>
+        <item>3.5以下</item>
+    </string-array>
+
     <string name="iflytek_tips">语音技术由科大讯飞提供</string>
 
     <string name="xlistview_header_hint_normal">下拉刷新</string>

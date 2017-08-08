@@ -340,7 +340,13 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         this.keyword = keyword;
         refreshType = 0;
         if (getUserVisibleHint()) {
-            requestHotelClockList(pageIndex);
+            swipeRefreshLayout.setRefreshing(true);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    requestHotelClockList(pageIndex);
+                }
+            }, 500);
         } else {
             isFirstLoad = true;
         }

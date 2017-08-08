@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:singleSelLay="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="425dp"
     android:layout_marginLeft="20dp"
@@ -44,65 +45,11 @@
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />
 
-            <RadioGroup
-                android:id="@+id/rg_point"
+            <com.huicheng.hotel.android.ui.custom.CommonSingleSelLayout
+                android:id="@+id/pointLay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:checkedButton="@+id/point_00"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/point_00"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="无"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_15sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/point_0"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="4.5以上"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_15sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/point_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="3.5-4.5"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_15sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/point_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="3.5以下"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_15sp"
-                    android:textStyle="bold" />
-            </RadioGroup>
+                singleSelLay:textColor="?attr/considerTextSel" />
         </LinearLayout>
 
         <!--类型-->
@@ -124,78 +71,11 @@
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />
 
-            <RadioGroup
-                android:id="@+id/rg_type"
+            <com.huicheng.hotel.android.ui.custom.CommonSingleSelLayout
+                android:id="@+id/typeLay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:checkedButton="@+id/type_00"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/type_00"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="无"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_14sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/type_0"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="城市酒店"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_14sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/type_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="度假酒店"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_14sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/type_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="精品民宿"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_14sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/type_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="机场酒店"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_14sp"
-                    android:textStyle="bold" />
-            </RadioGroup>
+                singleSelLay:textColor="?attr/considerTextSel" />
         </LinearLayout>
 
         <!--价格-->
@@ -253,65 +133,11 @@
                 android:textSize="@dimen/common_12sp"
                 android:textStyle="bold" />
 
-            <RadioGroup
-                android:id="@+id/rg_grade"
+            <com.huicheng.hotel.android.ui.custom.CommonSingleSelLayout
+                android:id="@+id/gradeLay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:checkedButton="@+id/grade_00"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/grade_00"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="无"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_15sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/grade_0"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="三星"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_15sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/grade_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="四星"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_15sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/grade_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="五星"
-                    android:textColor="?attr/considerTextSel"
-                    android:textSize="@dimen/common_15sp"
-                    android:textStyle="bold" />
-            </RadioGroup>
+                singleSelLay:textColor="?attr/considerTextSel" />
         </LinearLayout>
 
     </LinearLayout>

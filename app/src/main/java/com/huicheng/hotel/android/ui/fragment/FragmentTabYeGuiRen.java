@@ -347,7 +347,13 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         this.keyword = keyword;
         refreshType = 0;
         if (getUserVisibleHint()) {
-            requestHotelYGRList(pageIndex);
+            swipeRefreshLayout.setRefreshing(true);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    requestHotelYGRList(pageIndex);
+                }
+            }, 500);
         } else {
             isFirstLoad = true;
         }
