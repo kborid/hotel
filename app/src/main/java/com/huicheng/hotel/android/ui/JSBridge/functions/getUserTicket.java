@@ -19,7 +19,6 @@ import org.json.JSONObject;
 public class getUserTicket implements WVJBWebViewClient.WVJBHandler {
     @Override
     public void request(Object data, WVJBResponseCallback callback) {
-        System.out.println("callback = " + callback);
         try {
             if (callback != null) {
                 if (StringUtil.notEmpty(SessionContext.getTicket())) {

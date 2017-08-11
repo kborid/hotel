@@ -263,8 +263,8 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
      */
     private void requestRegister() {
         LogUtil.d(TAG, "requestRegister()");
-        System.out.println("index = " + sex_index);
-        System.out.println("sex = " + getResources().getStringArray(R.array.sex)[sex_index]);
+        LogUtil.i(TAG, "index = " + sex_index);
+        LogUtil.i(TAG, "sex = " + getResources().getStringArray(R.array.sex)[sex_index]);
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("sex", String.valueOf(sex_index));
         b.addBody("businesstype", AppConst.BUSINESS_TYPE_REGISTER);
@@ -301,7 +301,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
     }
 
     private void requestUserInfo(String ticket) {
-        System.out.println("getUserInfo() ticket = " + ticket);
+        LogUtil.i(TAG, "getUserInfo() ticket = " + ticket);
         RequestBeanBuilder builder = RequestBeanBuilder.create(true);
 
         ResponseData data = builder.syncRequest(builder);
@@ -333,7 +333,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
 
         if (response != null && response.body != null) {
             if (request.flag == AppConst.CHECK_PHONE) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 if (mJson.containsKey("status")) {
                     String status = mJson.getString("status");
@@ -359,7 +359,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                 btn_yzm.setEnabled(false);
                 mCountDownTimer.start();// 启动倒计时
             } else if (request.flag == AppConst.CHECK_YZM) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 if (mJson.containsKey("status")) {
                     String status = mJson.getString("status");
@@ -403,7 +403,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                     return;
                 }
                 SessionContext.mUser = JSON.parseObject(response.body.toString(), UserInfo.class);
-                System.out.println(response.body.toString());
+                LogUtil.i(TAG, response.body.toString());
 
                 if (SessionContext.mUser == null || StringUtil.isEmpty(SessionContext.mUser)) {
                     CustomToast.show("获取用户信息失败，请重试2", 0);
@@ -421,7 +421,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
                     @Override
                     public void gotResult(int i, String s, Set<String> set) {
                         String result = (i == 0) ? "设置成功" : "设置失败";
-                        System.out.println(result + ", Alias = " + s + ", Tag = " + set);
+                        LogUtil.i(TAG, result + ", Alias = " + s + ", Tag = " + set);
                     }
                 });
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));

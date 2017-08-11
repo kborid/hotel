@@ -17,6 +17,7 @@ import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
@@ -26,6 +27,7 @@ import com.prj.sdk.widget.CustomToast;
  */
 public class OrderPaySuccessActivity extends BaseActivity implements DataCallback {
 
+    private static final String TAG = "OrderPaySuccessActivity";
     private Button btn_vip;
     private TextView tv_hotel_name, tv_room_name, tv_in_date;
     private RoundedAllImageView iv_hotel_icon;
@@ -59,7 +61,7 @@ public class OrderPaySuccessActivity extends BaseActivity implements DataCallbac
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
-            if (bundle.getString("checkRoomDate")!=null) {
+            if (bundle.getString("checkRoomDate") != null) {
                 checkRoomDate = bundle.getString("checkRoomDate");
             }
             if (bundle.getString("hotelName") != null && bundle.getString("roomName") != null) {
@@ -161,7 +163,7 @@ public class OrderPaySuccessActivity extends BaseActivity implements DataCallbac
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_VIP) {
                 removeProgressDialog();
-                System.out.println("Json = " + response.body.toString());
+                LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             }
         }

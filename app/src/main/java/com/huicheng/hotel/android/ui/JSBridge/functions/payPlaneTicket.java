@@ -23,6 +23,7 @@ import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.widget.CustomToast;
 
 import java.net.ConnectException;
@@ -33,6 +34,7 @@ import java.net.ConnectException;
  */
 public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
 
+    private static final String TAG = "payPlaneTicket";
     private Context mContext;
     private WVJBWebViewClient.WVJBResponseCallback mCallback;
     private String mItemName;
@@ -43,7 +45,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                System.out.println("payPlaneTicket onReceive ACTION_PAY_STATUS callback");
+                LogUtil.i(TAG,"payPlaneTicket onReceive ACTION_PAY_STATUS callback");
                 try {
                     String action = intent.getAction();
                     if (BroadCastConst.ACTION_PAY_STATUS.equals(action)) {
@@ -52,7 +54,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
                         String type = intent.getExtras().getString("type");
                         mJson.put("info", info);
                         mJson.put("type", type);
-                        System.out.println("info = " + info + ", type = " + type);
+                        LogUtil.i(TAG,"info = " + info + ", type = " + type);
                         mCallback.callback(mJson.toString());
                         unregisterReceiver();
                     }
@@ -71,7 +73,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
 
                 this.mCallback = callback;
 
-                System.out.println("data String = " + data.toString());
+                LogUtil.i(TAG,"data String = " + data.toString());
                 JSONObject mJson = JSON.parseObject(data.toString());
                 String payChannel = mJson.getString("payChannel");
                 String orderNo = mJson.getString("orderNo");
@@ -85,7 +87,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
 
 
     private void requestPayOrderInfo(String orderNo, String payChannel) {
-        System.out.println("requestPayOrderInfo() orderNo = " + orderNo + ", payChannel = " + payChannel);
+        LogUtil.i(TAG,"requestPayOrderInfo() orderNo = " + orderNo + ", payChannel = " + payChannel);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("orderNo", orderNo);
         b.addBody("tradeType", "02"); // 01 酒店业务，02 机票业务
@@ -104,7 +106,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
             public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
                 if (response != null && response.body != null) {
                     if (request.flag == AppConst.PAY) {
-                        System.out.println("json = " + response.body.toString());
+                        LogUtil.i(TAG,"json = " + response.body.toString());
                         JSONObject mJson = JSON.parseObject(response.body.toString());
                         if (mJson.containsKey(HotelCommDef.WXPAY)) {
                             JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
@@ -118,14 +120,14 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
 
             @Override
             public void notifyError(ResponseData request, ResponseData response, Exception e) {
-                System.out.println("payPlaneTIckey()");
+                LogUtil.i(TAG,"payPlaneTIckey()");
                 String message;
                 if (e != null && e instanceof ConnectException) {
                     message = mContext.getResources().getString(R.string.dialog_tip_net_error);
                 } else {
                     message = response != null && response.data != null ? response.data.toString() : mContext.getResources().getString(R.string.dialog_tip_null_error);
                 }
-                System.out.println("payPlaneTicket = " + message);
+                LogUtil.i(TAG,"payPlaneTicket = " + message);
                 CustomToast.show(message, CustomToast.LENGTH_SHORT);
             }
         }, d);

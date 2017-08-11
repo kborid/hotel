@@ -40,6 +40,7 @@ import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
@@ -53,6 +54,7 @@ import java.util.List;
  */
 public class RoomListActivity extends BaseActivity implements DataCallback {
 
+    private static final String TAG = "RoomListActivity";
     private static final int SELECTED_BAR_COUNT = 2;
     private LinearLayout root_detail_lay;
 
@@ -225,7 +227,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
     }
 
     private void requestHotelDetailInfo() {
-        System.out.println("requestHotelDetailInfo()");
+        LogUtil.i(TAG,"requestHotelDetailInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("hotelId", String.valueOf(hotelId));
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
@@ -552,7 +554,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.btn_right:
-                System.out.println("right button onclick");
+                LogUtil.i(TAG,"right button onclick");
                 requestHotelVip(hotelId);
                 break;
             case R.id.tv_map:
@@ -593,7 +595,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
 
     private void initIndicatorLay(int count) {
         indicator_lay.removeAllViews();
-        System.out.println("count = " + count);
+        LogUtil.i(TAG,"count = " + count);
         if (count >= 1) {
             for (int i = 0; i < count; i++) {
                 View view = new View(this);
@@ -699,17 +701,17 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_DETAIL) {
                 removeProgressDialog();
-                System.out.println("hoteldetail json = " + response.body.toString());
+                LogUtil.i(TAG,"hoteldetail json = " + response.body.toString());
                 hotelDetailInfoBean = JSON.parseObject(response.body.toString(), HotelDetailInfoBean.class);
                 HotelOrderManager.getInstance().setHotelDetailInfo(hotelDetailInfoBean);
                 refreshRoomListInfo();
             } else if (request.flag == AppConst.HOTEL_VIP) {
                 removeProgressDialog();
-                System.out.println("Json = " + response.body.toString());
+                LogUtil.i(TAG,"Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             } else if (request.flag == AppConst.CHECK_ROOM_EMPTY) {
                 removeProgressDialog();
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG,"json = " + response.body.toString());
                 RoomDetailCheckResultInfoBean bean = JSON.parseObject(response.body.toString(), RoomDetailCheckResultInfoBean.class);
                 if ("false".equals(bean.status)) {
                     showRecommendRoomListDialog(bean);

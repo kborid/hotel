@@ -29,6 +29,7 @@ import java.util.Map;
  */
 public class SessionContext {
 
+    private static final String TAG = "SessionContext";
     public static UserInfo mUser;                // 用户信息
     private static String mTicket;               // 票据信息
     private static AppData mAppdata;             // 推荐信息
@@ -287,7 +288,6 @@ public class SessionContext {
     }
 
     /**
-     *
      * @param versionServer
      * @param versionLocal
      * @return if versionServer > versionLocal, return 1, if equal, return 0, else return -1
@@ -302,21 +302,19 @@ public class SessionContext {
         int index2 = 0;
         while (index1 < version1.length() && index2 < version2.length()) {
             int[] number1 = getValue(version1, index1);
-            System.out.println(" ===== number1 ====" + Arrays.toString(number1));
+            LogUtil.i(TAG, " ===== number1 ====" + Arrays.toString(number1));
             int[] number2 = getValue(version2, index2);
-            System.out.println(" ===== number2 ====" + Arrays.toString(number2));
+            LogUtil.i(TAG, " ===== number2 ====" + Arrays.toString(number2));
 
-            if (number1[0] < number2[0]){
-                System.out.println(" ===== number1[0] ====" + number1[0]);
-                System.out.println(" ===== number2[0] ====" + number2[0]);
+            if (number1[0] < number2[0]) {
+                LogUtil.i(TAG, " ===== number1[0] ====" + number1[0]);
+                LogUtil.i(TAG, " ===== number2[0] ====" + number2[0]);
                 return -1;
-            }
-            else if (number1[0] > number2[0]){
-                System.out.println(" ===== number1[0] ====" + number1[0]);
-                System.out.println(" ===== number2[0] ====" + number2[0]);
+            } else if (number1[0] > number2[0]) {
+                LogUtil.i(TAG, " ===== number1[0] ====" + number1[0]);
+                LogUtil.i(TAG, " ===== number2[0] ====" + number2[0]);
                 return 1;
-            }
-            else {
+            } else {
                 index1 = number1[1] + 1;
                 index2 = number2[1] + 1;
             }
@@ -330,10 +328,8 @@ public class SessionContext {
     }
 
     /**
-     *
      * @param version
-     * @param index
-     *            the starting point
+     * @param index   the starting point
      * @return the number between two dots, and the index of the dot
      */
     public static int[] getValue(String version, int index) {

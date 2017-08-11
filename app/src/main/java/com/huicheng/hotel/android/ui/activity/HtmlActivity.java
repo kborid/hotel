@@ -189,7 +189,6 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener,
             }
             if (bundle.getString("title") != null) {
                 mTitle = bundle.getString("title");
-                System.out.println("title = " + mTitle);
             }
             if (bundle.getString("id") != null) {
                 mID = bundle.getString("id");

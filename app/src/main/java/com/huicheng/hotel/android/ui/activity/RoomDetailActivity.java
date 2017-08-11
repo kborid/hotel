@@ -43,6 +43,7 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
@@ -60,6 +61,7 @@ import java.util.Map;
  * @date 2017/1/3 0003
  */
 public class RoomDetailActivity extends BaseActivity implements DataCallback {
+    private static final String TAG = "RoomDetailActivity";
     private static final int SELECTED_BAR_COUNT = 2;
 
     private LinearLayout root_detail_lay;
@@ -219,7 +221,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                System.out.println("tabid = " + tabId);
+                LogUtil.i(TAG, "tabid = " + tabId);
                 if (null != roomDetailInfoBean) {
                     tabHost.setCurrentTabByTag(tabId);
                     updateTab(tabHost);
@@ -536,7 +538,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                 CommonAddSubLayout addSubLayout = (CommonAddSubLayout) view.findViewById(R.id.addSubLayout);
                 addSubLayout.setUnit("份");
                 addSubLayout.setMaxvalue(chooseList.get(i).limitCnt);
-                System.out.println("limit count = " + chooseList.get(i).limitCnt);
+                LogUtil.i(TAG, "limit count = " + chooseList.get(i).limitCnt);
                 tv_choose_service_title.setText(chooseList.get(i).serviceName);
                 tv_choose_service_price.setText((HotelOrderManager.getInstance().isVipHotel() ? chooseList.get(i).vipPrice : chooseList.get(i).price) + "元/份");
                 tv_choose_service_total_price.setText("0元");
@@ -578,7 +580,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                System.out.println("position = " + position);
+                                LogUtil.i(TAG, "position = " + position);
                                 Intent intent = new Intent(RoomDetailActivity.this, ImageScaleActivity.class);
                                 intent.putExtra("url", list.get(position));
                                 ImageView imageView = (ImageView) gridView.getChildAt(position).findViewById(R.id.imageView);
@@ -606,7 +608,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                         bean.servicePrice = HotelOrderManager.getInstance().isVipHotel() ? chooseList.get(finalI).vipPrice : chooseList.get(finalI).price;
                         bean.serviceTotalPrice = (HotelOrderManager.getInstance().isVipHotel() ? chooseList.get(finalI).vipPrice : chooseList.get(finalI).price) * count;
                         tv_choose_service_total_price.setText(bean.serviceTotalPrice + "元");
-                        System.out.println("choose service price = " + bean.serviceTotalPrice);
+                        LogUtil.i(TAG, "choose service price = " + bean.serviceTotalPrice);
 
                         chooseServiceInfoMap.put(bean.serviceTitle, bean);
 
@@ -641,7 +643,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
 //                addSubLayout.setMaxvalue(freeChooseList.get(i).limitCnt);
 //                addSubLayout.setCount(freeChooseList.get(i).limitCnt);
 //                addSubLayout.setButtonEnable(false);
-//                System.out.println("limit count = " + freeChooseList.get(i).limitCnt);
+//                LogUtil.i(TAG, "limit count = " + freeChooseList.get(i).limitCnt);
 //                tv_choose_service_title.setText(freeChooseList.get(i).serviceName);
 //                tv_choose_service_price.setText((HotelOrderManager.getInstance().isVipHotel() ? freeChooseList.get(i).vipPrice : freeChooseList.get(i).price) + "元/份");
 //                tv_choose_service_total_price.setText("0元");
@@ -671,7 +673,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                 chooseServiceTotal += chooseServiceInfoMap.get(key).serviceTotalPrice;
             }
         }
-        System.out.println("room total price = " + chooseServiceTotal);
+        LogUtil.i(TAG, "room total price = " + chooseServiceTotal);
         return chooseServiceTotal;
     }
 
@@ -695,12 +697,12 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ROOM_DETAIL) {
                 removeProgressDialog();
-                System.out.println("roomedetail json = " + response.body.toString());
+                LogUtil.i(TAG, "roomedetail json = " + response.body.toString());
                 roomDetailInfoBean = JSON.parseObject(response.body.toString(), RoomDetailInfoBean.class);
                 refreshRoomDetailInfo();
             } else if (request.flag == AppConst.HOTEL_VIP) {
                 removeProgressDialog();
-                System.out.println("Json = " + response.body.toString());
+                LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             }
         }

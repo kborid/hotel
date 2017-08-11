@@ -22,6 +22,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.widget.CustomToast;
 
 import java.util.Date;
@@ -31,6 +32,8 @@ import java.util.Date;
  * @date 2016/12/8 0008
  */
 public class HotelOrderDetailActivity extends BaseActivity implements DataCallback {
+
+    private static final String TAG = "HotelOrderDetailActivity";
 
     private String orderId, orderType;
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
@@ -357,7 +360,7 @@ public class HotelOrderDetailActivity extends BaseActivity implements DataCallba
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ORDER_DETAIL) {
                 removeProgressDialog();
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 orderPayDetailInfoBean = JSON.parseObject(response.body.toString(), OrderPayDetailInfoBean.class);
                 refreshOrderDetailInfo();
             } else if (request.flag == AppConst.ORDER_CANCEL) {

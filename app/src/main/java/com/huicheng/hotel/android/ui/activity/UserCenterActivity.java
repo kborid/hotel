@@ -116,7 +116,6 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("onCreate()");
         setContentView(R.layout.act_usercenter_layout);
 
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
@@ -225,7 +224,6 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
 
         // 设置生日
 
-        System.out.println("birthday = " + SessionContext.mUser.user.birthdate);
         if (StringUtil.notEmpty(SessionContext.mUser.user.birthdate)) {
             String[] birth = SessionContext.mUser.user.birthdate.split(" ");
             if (birth.length >= 3) {
@@ -684,7 +682,6 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println("onResume()");
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -697,14 +694,12 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onPause() {
         super.onPause();
-        System.out.println("onPause()");
         scrollY = scroll_view.getScrollY();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.out.println("onDestroy()");
         isEdited = false;
     }
 

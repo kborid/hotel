@@ -27,6 +27,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
@@ -40,6 +41,8 @@ import java.util.List;
  * @date 2017/1/13 0013
  */
 public class AssessCommendActivity extends BaseActivity implements DataCallback {
+
+    private static final String TAG = "AssessCommendActivity";
 
     private static final int PAGESIZE = 10;
     private int pageIndex = 0;
@@ -185,7 +188,7 @@ public class AssessCommendActivity extends BaseActivity implements DataCallback 
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_COMMENT) {
                 removeProgressDialog();
-                System.out.println("assesscommend json = " + response.body.toString());
+                LogUtil.i(TAG, "assesscommend json = " + response.body.toString());
                 bean = JSON.parseObject(response.body.toString(), AssessCommendInfoBean.class);
                 refreshCommendInfo();
 

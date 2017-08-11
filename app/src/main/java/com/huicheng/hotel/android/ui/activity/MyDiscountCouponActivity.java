@@ -33,6 +33,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ import java.util.List;
  * @modify 2017/02/20
  */
 public class MyDiscountCouponActivity extends BaseActivity implements DataCallback {
+
+    private static final String TAG = "MyDiscountCouponActivity";
 
     private LinearLayout noDiscountLayout, hasDiscountLayout, active_lay;
     private TextView tv_no_coupon_note, tv_no_coupon_time;
@@ -224,7 +227,7 @@ public class MyDiscountCouponActivity extends BaseActivity implements DataCallba
         if (response != null && response.body != null) {
             if (request.flag == AppConst.YHQ_COUPON) {
                 removeProgressDialog();
-                System.out.println("yhq json = " + response.body.toString());
+                LogUtil.i(TAG, "yhq json = " + response.body.toString());
                 couponInfoBean = JSON.parseObject(response.body.toString(), CouponInfoBean.class);
                 if (null != couponInfoBean) {
                     refreshScreenInfo();

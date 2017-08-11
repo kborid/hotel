@@ -28,6 +28,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
@@ -41,6 +42,7 @@ import java.util.List;
  * @date 2016/12/19 0019
  */
 public class MessageListActivity extends BaseActivity implements DataCallback {
+    private static final String TAG = "MessageListActivity";
     private static final String MESSAGE_TYPE_ALL = "";
     private static final String MESSAGE_TYPE_UNREAD = "01";
     private static final String MESSAGE_TYPE_READED = "03";
@@ -115,7 +117,7 @@ public class MessageListActivity extends BaseActivity implements DataCallback {
         spinner_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("spinner type 's OnItemSelectedListener request....");
+                LogUtil.i(TAG,"spinner type 's OnItemSelectedListener request....");
                 switch (position) {
                     case 1:
                         messageType = MESSAGE_TYPE_READED;
@@ -128,7 +130,7 @@ public class MessageListActivity extends BaseActivity implements DataCallback {
                         messageType = MESSAGE_TYPE_ALL;
                         break;
                 }
-                System.out.println("messageType = " + messageType);
+                LogUtil.i(TAG,"messageType = " + messageType);
                 listview.refreshingHeaderView();
             }
 
@@ -184,7 +186,7 @@ public class MessageListActivity extends BaseActivity implements DataCallback {
     }
 
     private void requestAllMessage(String keyword, String type, int pageIndex) {
-        System.out.println("keyword = " + keyword + ", type = " + type + ", pageIndex = " + pageIndex);
+        LogUtil.i(TAG,"keyword = " + keyword + ", type = " + type + ", pageIndex = " + pageIndex);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("keywords", keyword);
         b.addBody("type", type);
@@ -229,7 +231,7 @@ public class MessageListActivity extends BaseActivity implements DataCallback {
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ALL_MESSAGE) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG,"json = " + response.body.toString());
                 List<MessageInfoBean> temp = JSON.parseArray(response.body.toString(), MessageInfoBean.class);
                 if (temp != null) {
                     if (!isLoadMore) {
@@ -248,7 +250,7 @@ public class MessageListActivity extends BaseActivity implements DataCallback {
                     adapter.notifyDataSetChanged();
                 }
             } else if (request.flag == AppConst.MESSAGE_UPDATE) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG,"json = " + response.body.toString());
                 list.get(selectedIndex).statusCode = MESSAGE_TYPE_READED;
                 list.get(selectedIndex).statusName = "已读";
                 adapter.notifyDataSetChanged();

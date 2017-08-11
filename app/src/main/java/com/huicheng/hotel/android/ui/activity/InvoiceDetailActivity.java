@@ -261,7 +261,6 @@ public class InvoiceDetailActivity extends BaseActivity implements DataCallback 
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_back:
-                System.out.println("back click!!!");
                 if (!btn_switch.isChecked()) {
                     Intent data1 = new Intent();
                     data1.putExtra("isInvoice", btn_switch.isChecked());
@@ -502,7 +501,6 @@ public class InvoiceDetailActivity extends BaseActivity implements DataCallback 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            System.out.println("back click2!!!");
             btn_back.performClick();
             return true;
         }

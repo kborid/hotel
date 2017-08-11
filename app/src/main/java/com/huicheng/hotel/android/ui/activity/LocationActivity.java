@@ -24,6 +24,7 @@ import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.tools.PinyinUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CityAreaWheelView;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
@@ -37,6 +38,7 @@ import java.util.List;
  * @date 2017/1/17 0017
  */
 public class LocationActivity extends BaseActivity {
+    private static final String TAG = "LocationActivity";
     private MyAdapter adapter;
     private Gallery gallery;
     private CityAreaWheelView wheelView;
@@ -94,7 +96,7 @@ public class LocationActivity extends BaseActivity {
         gallery.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("gallery onItemSelected() citystr = " + cityStr);
+                LogUtil.i(TAG, "gallery onItemSelected() citystr = " + cityStr);
                 adapter.setSelectItem(position);
                 adapter.notifyDataSetChanged();
                 mFirstSpellChar = SessionContext.getCityIndexList().get(position);
@@ -111,7 +113,7 @@ public class LocationActivity extends BaseActivity {
             @Override
             public void onSelected(int selectedIndex, CityAreaInfoBean item) {
                 super.onSelected(selectedIndex, item);
-                System.out.println("wheel onSelected city name = " + item.shortName);
+                LogUtil.i(TAG, "wheel onSelected city name = " + item.shortName);
                 mCity = item.shortName;
                 for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
                     if (SessionContext.getCityAreaList().get(i).id.equals(item.parentId)) {
@@ -129,7 +131,7 @@ public class LocationActivity extends BaseActivity {
             }
         });
 
-        System.out.println("gallery setSelection mFirstSpellChar = " + mFirstSpellChar);
+        LogUtil.i(TAG, "gallery setSelection mFirstSpellChar = " + mFirstSpellChar);
         gallery.setSelection(SessionContext.getCityIndexList().indexOf(mFirstSpellChar));
 
         String currentCity = SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_CITY, "", false);
@@ -170,7 +172,7 @@ public class LocationActivity extends BaseActivity {
                     break;
                 }
             }
-            System.out.println("in for wheelView set selection index = " + index);
+            LogUtil.i(TAG, "in for wheelView set selection index = " + index);
             wheelView.setSeletion(index);
         } else {
             wheelView.setSeletion(0);
@@ -206,7 +208,7 @@ public class LocationActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                System.out.println("afterTextChanged s = " + s.toString());
+                LogUtil.i(TAG, "afterTextChanged s = " + s.toString());
                 if (StringUtil.isEmpty(s)) {
                     return;
                 }
@@ -261,7 +263,7 @@ public class LocationActivity extends BaseActivity {
                     mFirstSpellChar = String.valueOf(PinyinUtils.getFirstSpell(cityStr).charAt(0)).toUpperCase();
                     gallery.setSelection(SessionContext.getCityIndexList().indexOf(mFirstSpellChar));
                 }
-                System.out.println("gallery setSelection cityFirstSpell = " + mFirstSpellChar);
+                LogUtil.i(TAG, "gallery setSelection cityFirstSpell = " + mFirstSpellChar);
                 break;
             }
 
@@ -277,7 +279,7 @@ public class LocationActivity extends BaseActivity {
                     mFirstSpellChar = String.valueOf(PinyinUtils.getFirstSpell(cityStr).charAt(0)).toUpperCase();
                     gallery.setSelection(SessionContext.getCityIndexList().indexOf(mFirstSpellChar));
                 }
-                System.out.println("gallery setSelection cityFirstSpell = " + mFirstSpellChar);
+                LogUtil.i(TAG, "gallery setSelection cityFirstSpell = " + mFirstSpellChar);
                 break;
             }
             default:

@@ -39,6 +39,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
@@ -57,6 +58,7 @@ import java.util.List;
  */
 public class HotelSpaceDetailActivity extends BaseActivity implements DataCallback {
 
+    private static final String TAG = "HotelSpaceDetailActivity";
     private static final int PAGESIZE = 10;
     private WebView webview = null;
     protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -121,7 +123,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
 
                 @Override
                 public Bitmap getDefaultVideoPoster() {
-                    System.out.println("poster = " + super.getDefaultVideoPoster());
+                    LogUtil.i(TAG, "poster = " + super.getDefaultVideoPoster());
                     return super.getDefaultVideoPoster();
                 }
 
@@ -230,7 +232,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         webview.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                System.out.println("url = " + url);
+                LogUtil.i(TAG, "url = " + url);
                 Uri uri = Uri.parse(url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
@@ -240,7 +242,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("position = " + position);
+                LogUtil.i(TAG, "position = " + position);
                 Intent intent = new Intent(HotelSpaceDetailActivity.this, ImageScaleActivity.class);
                 intent.putExtra("url", pictureList.get(position));
                 ImageView imageView = (ImageView) gridview.getChildAt(position).findViewById(R.id.imageView);
@@ -279,7 +281,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                 requestHotelVip(hotelId);
                 break;
             case R.id.tv_space_share:
-                System.out.println("share button onclick!!!");
+                LogUtil.i(TAG, "share button onclick!!!");
                 HashMap<String, String> params = new HashMap<>();
                 params.put("type", "HotelZoneBlog");
                 params.put("hotelID", String.valueOf(hotelId));
@@ -303,14 +305,14 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
 
                 break;
             case R.id.tv_space_comment:
-                System.out.println("comment button onclick!!!");
+                LogUtil.i(TAG, "comment button onclick!!!");
                 Intent intent = new Intent(this, HotelSpacePublishActivity.class);
                 intent.putExtra("hotelId", hotelId);
                 intent.putExtra("tieDetail", hotelSpaceTieInfoBean);
                 startActivity(intent);
                 break;
             case R.id.tv_space_support:
-                System.out.println("support button onclick!!!");
+                LogUtil.i(TAG, "support button onclick!!!");
                 requestTieSupport();
                 break;
             default:
@@ -452,7 +454,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_TIE_COMMENT) {
                 removeProgressDialog();
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 List<HotelSpaceTieCommentInfoBean> temp = JSON.parseArray(response.body.toString(), HotelSpaceTieCommentInfoBean.class);
                 if (temp != null) {
                     if (!isLoadMore) {
@@ -471,16 +473,16 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                     replyAdapter.notifyDataSetChanged();
                 }
             } else if (request.flag == AppConst.HOTEL_TIE_DETAIL) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 hotelSpaceTieInfoBean = JSON.parseObject(response.body.toString(), HotelSpaceTieInfoBean.class);
                 refreshTieDetailInfo();
                 requestTieCommentInfo(pageIndex);
             } else if (request.flag == AppConst.HOTEL_VIP) {
                 removeProgressDialog();
-                System.out.println("Json = " + response.body.toString());
+                LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             } else if (request.flag == AppConst.HOTEL_TIE_SUPPORT) {
-                System.out.println("support json = " + response.body.toString());
+                LogUtil.i(TAG, "support json = " + response.body.toString());
                 tv_support.setText(String.valueOf(hotelSpaceTieInfoBean.praiseCnt + 1));
             } else if (request.flag == AppConst.HOTEL_TIE_SHARE) {
                 requestTieDetail(articleId);

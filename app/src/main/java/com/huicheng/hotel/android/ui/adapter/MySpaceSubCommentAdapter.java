@@ -30,6 +30,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.image.ImageLoader;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
@@ -43,6 +44,7 @@ import java.util.List;
  */
 public class MySpaceSubCommentAdapter extends BaseAdapter implements DataCallback {
 
+    private static final String TAG = "MySpaceSubCommentAdapter";
     private Context context;
     private List<HotelSpaceTieCommentInfoBean> list = new ArrayList<>();
     private int selectedPosition = 0;
@@ -239,7 +241,7 @@ public class MySpaceSubCommentAdapter extends BaseAdapter implements DataCallbac
             if (request.flag == AppConst.ATTEND_USER) {
                 CustomToast.show("关注成功", CustomToast.LENGTH_SHORT);
             } else if (request.flag == AppConst.HOTEL_TIE_SUPPORT) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 HotelSpaceTieCommentInfoBean bean = list.get(selectedPosition);
                 bean.praiseCnt += 1;
                 list.set(selectedPosition, bean);

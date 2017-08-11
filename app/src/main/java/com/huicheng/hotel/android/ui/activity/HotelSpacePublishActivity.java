@@ -37,6 +37,7 @@ import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.ThumbnailUtil;
 import com.prj.sdk.util.Utils;
@@ -51,6 +52,8 @@ import java.util.Map;
  * @date 2017/3/21 0021
  */
 public class HotelSpacePublishActivity extends BaseActivity implements DataCallback {
+    private static final String TAG = "HotelSpacePublishActivity";
+
     private TextView tv_left, tv_right, tv_title;
     private ImageView iv_upload_pic, iv_picture;
     private EditText et_input;
@@ -128,8 +131,8 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
                 this.finish();
                 break;
             case R.id.tv_right:
-                System.out.println("public button onClick");
-                System.out.println(et_input.getText().toString());
+                LogUtil.i(TAG,"public button onClick");
+                LogUtil.i(TAG,et_input.getText().toString());
                 requestPublishComment();
                 break;
             case R.id.iv_picture:
@@ -190,7 +193,7 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
      * 上传图片 。图片缩略图最大为480x800的50%精度质量
      */
     private void uploadImage(File file) {
-        System.out.println("UploadImage()");
+        LogUtil.i(TAG,"UploadImage()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("img", file);
         ResponseData d = b.syncRequestForForm(b);
@@ -258,7 +261,7 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
                 }
             } else if (request.flag == AppConst.PUBLIC_COMMENT) {
                 removeProgressDialog();
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG,"json = " + response.body.toString());
                 CustomToast.show("发表成功", CustomToast.LENGTH_SHORT);
                 setResult(RESULT_OK);
                 finish();
@@ -358,15 +361,15 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
                     et_input.getText().replace(curIndex - 1, curIndex, "");
                 }
                 setAtImageSpan(nameStr);
-                System.out.println("name str = " + nameStr);
-                System.out.println("id str = " + selectedCids);
+                LogUtil.i(TAG,"name str = " + nameStr);
+                LogUtil.i(TAG,"id str = " + selectedCids);
                 break;
             case AppConst.ACTIVITY_GET_IMAGE:
                 Uri imageUri = data.getData();
                 imageUri = ThumbnailUtil.geturi(this, data);//解决方案,小米手机无法获取filepath
                 if (imageUri != null) {
                     filePath = ThumbnailUtil.getPicPath(this, imageUri);
-                    System.out.println("filepath image = " + filePath);
+                    LogUtil.i(TAG,"filepath image = " + filePath);
                     bgPath = Utils.getFolderDir("pic") + "_temp_compress.jpg";
                     uploadImage(new File(ThumbnailUtil.compressImage(filePath, bgPath)));
                 } else {

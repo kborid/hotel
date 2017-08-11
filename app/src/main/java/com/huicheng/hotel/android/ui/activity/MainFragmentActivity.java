@@ -72,7 +72,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println(TAG + ":onCreate()");
         setContentView(R.layout.ui_main_tab);
         initViews();
         dealIntent();
@@ -82,7 +81,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
     public void initViews() {
         super.initViews();
-        System.out.println(TAG + ":initViews()");
         viewPager = (CustomViewPager) findViewById(R.id.viewPager);
         if (viewPager != null) {
             viewPager.setPagingEnabled(false);
@@ -103,13 +101,10 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     @Override
     public void initParams() {
         super.initParams();
-        System.out.println(TAG + ":initParams()");
         if (SessionContext.isLogin()) {
             String lastLoginTime = SharedPreferenceUtil.getInstance().getString(AppConst.LAST_LOGIN_DATE, "", false);
-            System.out.println("Last LoginTime:" + lastLoginTime);
         }
         oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
-        System.out.println(TAG + ":initParams() oldSkinIndex = " + oldSkinIndex);
         initFragmentView();
     }
 
@@ -183,7 +178,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     @Override
     public void dealIntent() {
         super.dealIntent();
-        System.out.println(TAG + ":dealIntent()");
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
             currentIndex = bundle.getInt("index");
@@ -192,7 +186,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
             planeOrderId = bundle.getString("orderId");
         }
         String path = BundleNavi.getInstance().getString("path");
-        System.out.println("MainFragmentActivity JPush:onReceiver value = " + path);
+        LogUtil.i(TAG, "MainFragmentActivity JPush:onReceiver value = " + path);
         if (path != null && !path.equals("")) {
             Intent intent = new Intent(this, HtmlActivity.class);
             intent.putExtra("path", path);
@@ -229,10 +223,8 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        System.out.println(TAG + ":onNewIntent()");
         // Note that getIntent() still returns the original Intent. You can use setIntent(Intent) to update it to this new Intent.
         int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
-        System.out.println(TAG + ":onNewIntent() oldSkinIndex = " + oldSkinIndex + ", newSkinIndex = " + newSkinIndex);
         if (oldSkinIndex != newSkinIndex) {
             oldSkinIndex = newSkinIndex;
             recreate();
@@ -268,9 +260,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
             @Override
             public void onReCreate() {
-                System.out.println(TAG + ":onReCreate()");
                 int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
-                System.out.println(TAG + ":onReCreate() oldSkinIndex = " + oldSkinIndex + ", newSkinIndex = " + newSkinIndex);
                 if (oldSkinIndex != newSkinIndex) {
                     oldSkinIndex = newSkinIndex;
                     recreate();
@@ -329,14 +319,12 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     @Override
     public void onPause() {
         super.onPause();
-        System.out.println(TAG + ":onPause()");
         currentIndex = viewPager.getCurrentItem();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.out.println(TAG + ":onDestroy()");
         left_layout.unregisterBroadReceiver();
     }
 
@@ -361,7 +349,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.MESSAGE_COUNT) {
-                System.out.println("json = " + response.body.toString());
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 if (mJson.containsKey("count")) {
                     custom_bar.updateUserMsgBtnStatus(!"0".equals(mJson.getString("count")));

@@ -38,6 +38,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
@@ -51,6 +52,7 @@ import java.util.List;
  * @date 2017/3/20 0020
  */
 public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback {
+    private static final String TAG = "HotelSpaceHomeActivity";
     /**
      * 视频全屏参数
      */
@@ -127,7 +129,7 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("position = " + position);
+                LogUtil.i(TAG, "position = " + position);
                 Intent intent = new Intent(HotelSpaceHomeActivity.this, HotelSpaceDetailActivity.class);
                 intent.putExtra("hotelId", HotelOrderManager.getInstance().getHotelDetailInfo().id);
                 intent.putExtra("articleId", list.get(position).id);
@@ -262,12 +264,12 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_SPACE) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 hotelSpaceBasicInfoBean = JSON.parseObject(response.body.toString(), HotelSpaceBasicInfoBean.class);
                 requestHotelSpaceTiesInfo(pageIndex);
             } else if (request.flag == AppConst.HOTEL_TIE) {
                 removeProgressDialog();
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 List<HotelSpaceTieInfoBean> temp = JSON.parseArray(response.body.toString(), HotelSpaceTieInfoBean.class);
                 if (temp.size() > 0) {
                     list.clear();
@@ -277,7 +279,7 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
                 refreshHotelSpaceBasicInfo();
             } else if (request.flag == AppConst.HOTEL_VIP) {
                 removeProgressDialog();
-                System.out.println("Json = " + response.body.toString());
+                LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             }
         }
@@ -339,7 +341,7 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
 
                     @Override
                     public Bitmap getDefaultVideoPoster() {
-                        System.out.println("poster = " + super.getDefaultVideoPoster());
+                        LogUtil.i(TAG, "poster = " + super.getDefaultVideoPoster());
                         return super.getDefaultVideoPoster();
                     }
 
@@ -457,11 +459,11 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
     }
 
     private void stopPlay() {
-        System.out.println("Stop play webview video");
+        LogUtil.i(TAG, "Stop play webview video");
         for (int i = 0; i < list.size(); i++) {
             WebView webView = (WebView) listview.getChildAt(i).findViewById(R.id.webview);
             if (webView.isShown()) {
-                System.out.println("index = " + i);
+                LogUtil.i(TAG, "index = " + i);
                 webView.reload();
             }
         }

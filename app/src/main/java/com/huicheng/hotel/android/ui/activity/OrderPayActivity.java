@@ -33,6 +33,7 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
@@ -44,6 +45,7 @@ import java.util.Date;
  */
 public class OrderPayActivity extends BaseActivity implements DataCallback {
 
+    private static final String TAG = "OrderPayActivity";
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
     private String during = null;
     private String checkRoomDate = null;
@@ -63,13 +65,13 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            System.out.println("OrderPayActivity onReceive ACTION_PAY_STATUS callback");
+            LogUtil.i(TAG, "OrderPayActivity onReceive ACTION_PAY_STATUS callback");
             String action = intent.getAction();
             if (BroadCastConst.ACTION_PAY_STATUS.equals(action)) {
                 String info = intent.getExtras().getString("info");
                 String type = intent.getExtras().getString("type");
-                System.out.println(info);
-                System.out.println(type);
+                LogUtil.i(TAG, info);
+                LogUtil.i(TAG, type);
                 if (isProgressShowing()) {
                     removeProgressDialog();
                 }
@@ -158,7 +160,7 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
                 }
             }
         }
-        System.out.println("checkRoomDate = " + checkRoomDate);
+        LogUtil.i(TAG, "checkRoomDate = " + checkRoomDate);
     }
 
     @Override
@@ -373,11 +375,11 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.PAY_ORDER_DETAIL) {
                 removeProgressDialog();
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 orderPayDetailInfoBean = JSON.parseObject(response.body.toString(), OrderPayDetailInfoBean.class);
                 refreshOrderDetailInfo();
             } else if (AppConst.PAY == request.flag) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 if (mJson.containsKey(HotelCommDef.ALIPAY)) {
                     alipay.pay(mJson.getString(HotelCommDef.ALIPAY));

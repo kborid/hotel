@@ -1,6 +1,7 @@
 package com.prj.sdk.net.http;
 
 import com.alibaba.fastjson.JSONObject;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 
 import java.io.File;
@@ -123,7 +124,7 @@ public class OkHttpClientControl {
 
     // ==== 构建 POST 请求====
     public Request buildPostRequest(String url, Map<String, Object> header, String mJson) {
-        System.out.println("buildPostRequest() json string");
+        LogUtil.i(TAG, "buildPostRequest() json string");
         final MediaType mMediaType = MediaType.parse("application/json; charset=utf-8");
 //        RequestBody requestBody = RequestBody.create(mMediaType, mJson);
         RequestBody requestBody = new FormBody.Builder().add("data", mJson).build();
@@ -131,14 +132,14 @@ public class OkHttpClientControl {
     }
 
     public Request buildPostRequest(String url, Map<String, Object> header, byte[] data) {
-        System.out.println("buildPostRequest() data byte");
+        LogUtil.i(TAG, "buildPostRequest() data byte");
         MediaType mMediaType = MediaType.parse("application/octet-stream; charset=utf-8");
         RequestBody requestBody = RequestBody.create(mMediaType, data);
         return new Request.Builder().url(url).headers(dealHeaders(header)).post(requestBody).build();
     }
 
     public Request buildPostFormRequest(String url, Map<String, Object> header, JSONObject mJson) {
-        System.out.println("buildPostFormRequest()");
+        LogUtil.i(TAG, "buildPostFormRequest()");
         FormBody.Builder builder = new FormBody.Builder();
         for (String key : mJson.keySet()) {
             if (StringUtil.isEmpty(key) || StringUtil.isEmpty(mJson.getString(key))) {

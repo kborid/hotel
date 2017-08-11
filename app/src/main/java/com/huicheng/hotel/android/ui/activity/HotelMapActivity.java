@@ -120,7 +120,7 @@ public class HotelMapActivity extends BaseActivity
         } else {
             isToMyLoc = true;
         }
-        System.out.println("isToMyLoc = " + isToMyLoc);
+        LogUtil.i(TAG, "isToMyLoc = " + isToMyLoc);
     }
 
     @Override
@@ -188,10 +188,6 @@ public class HotelMapActivity extends BaseActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-//        setIntent(intent);
-//        dealIntent();
-//        showSearchResultToMap();
-        System.out.println("onNewIntent()");
     }
 
     private Bitmap getMyPinBitmap(String price) {
@@ -447,7 +443,6 @@ public class HotelMapActivity extends BaseActivity
     protected void onPause() {
         super.onPause();
         mapview.onPause();
-        System.out.println("onPause()");
     }
 
     @Override
@@ -459,7 +454,6 @@ public class HotelMapActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.out.println("onDestroy()");
         if (null != markerOptionses) {
             markerOptionses.clear();
         }

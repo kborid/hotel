@@ -107,9 +107,9 @@ public class SettingActivity extends BaseActivity {
                 dialog.setPositiveButton("否", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        System.out.println(getDatabasePath("databases").getPath());
-                        System.out.println(getFileStreamPath("shared_pref").getPath());
-                        System.out.println(getFilesDir().getPath());
+                        LogUtil.i(TAG, getDatabasePath("databases").getPath());
+                        LogUtil.i(TAG, getFileStreamPath("shared_pref").getPath());
+                        LogUtil.i(TAG, getFilesDir().getPath());
                         dialog.dismiss();
                     }
                 });
@@ -153,7 +153,7 @@ public class SettingActivity extends BaseActivity {
                         SharedPreferenceUtil.getInstance().setBoolean("isShowDebug", true);
                         debug_lay.setVisibility(View.VISIBLE);
                     }
-                    System.out.println("Tap Count = " + mCCount);
+                    LogUtil.i(TAG, "Tap Count = " + mCCount);
                 }
                 break;
             case R.id.debug_lay:

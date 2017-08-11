@@ -3,6 +3,8 @@ package com.huicheng.hotel.android.control;
 import android.content.Context;
 import android.os.Environment;
 
+import com.prj.sdk.util.LogUtil;
+
 import java.io.File;
 import java.math.BigDecimal;
 
@@ -11,6 +13,8 @@ import java.math.BigDecimal;
  * @date 2016/12/19 0019
  */
 public class DataCleanManager {
+
+    private static final String TAG = "DataCleanManager";
 
     public static void clearAllCache(Context context) {
         deleteDir(context.getCacheDir());
@@ -104,7 +108,7 @@ public class DataCleanManager {
      * @param context
      */
     public static void cleanDatabases(Context context) {
-        System.out.println(context.getDatabasePath("databases").getPath());
+        LogUtil.i(TAG, context.getDatabasePath("databases").getPath());
         deleteFilesByDirectory(new File("/data/data/"
                 + context.getPackageName() + "/databases"));
     }
@@ -115,7 +119,7 @@ public class DataCleanManager {
      * @param context
      */
     public static void cleanSharedPreference(Context context) {
-        System.out.println(context.getFileStreamPath("shared_prefs").getPath());
+        LogUtil.i(TAG, context.getFileStreamPath("shared_prefs").getPath());
         deleteFilesByDirectory(new File("/data/data/"
                 + context.getPackageName() + "/shared_prefs"));
     }

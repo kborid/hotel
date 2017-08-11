@@ -54,7 +54,6 @@ public class GuideSwitchActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
-        System.out.println("appinfo = " + appInfo);
         if (StringUtil.notEmpty(appInfo)) {
             mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
             new Handler().postDelayed(new Runnable() {

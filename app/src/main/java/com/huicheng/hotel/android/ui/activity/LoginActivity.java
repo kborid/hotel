@@ -32,6 +32,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
@@ -52,6 +53,7 @@ import cn.jpush.android.api.TagAliasCallback;
  */
 public class LoginActivity extends BaseActivity implements DataCallback, DialogInterface.OnCancelListener, OnCheckedChangeListener {
 
+    private static final String TAG = "LoginActivity";
     private EditText et_phone, et_pwd;
     private Button btn_login;
     private TextView tv_forget_pwd, tv_reigster;
@@ -200,11 +202,11 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
                         thirdpartusername = info.get("name");
                         thirdpartuserheadphotourl = info.get("iconurl");
                         if (AppConst.ISDEVELOP) {
-                            System.out.println("QQ third name = " + thirdpartusername);
-                            System.out.println("QQ third url = " + thirdpartuserheadphotourl);
-                            System.out.println("QQ openid = " + openid);
-                            System.out.println("QQ uid = " + info.get("uid"));
-                            System.out.println("QQ usertoken = " + usertoken);
+                            LogUtil.i(TAG, "QQ third name = " + thirdpartusername);
+                            LogUtil.i(TAG, "QQ third url = " + thirdpartuserheadphotourl);
+                            LogUtil.i(TAG, "QQ openid = " + openid);
+                            LogUtil.i(TAG, "QQ uid = " + info.get("uid"));
+                            LogUtil.i(TAG, "QQ usertoken = " + usertoken);
                         }
                     } else if (platform == SHARE_MEDIA.WEIXIN) { // 微信
                         mPlatform = "03";
@@ -214,11 +216,11 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
                         thirdpartusername = info.get("name");
                         thirdpartuserheadphotourl = info.get("iconurl");
                         if (AppConst.ISDEVELOP) {
-                            System.out.println("WX third name = " + thirdpartusername);
-                            System.out.println("WX third url = " + thirdpartuserheadphotourl);
-                            System.out.println("WX openid = " + openid);
-                            System.out.println("WX uid = " + info.get("unionid"));
-                            System.out.println("WX usertoken = " + usertoken);
+                            LogUtil.i(TAG, "WX third name = " + thirdpartusername);
+                            LogUtil.i(TAG, "WX third url = " + thirdpartuserheadphotourl);
+                            LogUtil.i(TAG, "WX openid = " + openid);
+                            LogUtil.i(TAG, "WX uid = " + info.get("unionid"));
+                            LogUtil.i(TAG, "WX usertoken = " + usertoken);
                         }
                     }
 
@@ -226,7 +228,7 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
 
                     Set<String> keys = info.keySet();
                     for (String key : keys) {
-                        System.out.println(key + "=" + info.get(key) + "\r\n");
+                        LogUtil.i(TAG, key + "=" + info.get(key) + "\r\n");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -316,7 +318,7 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
      * 获取用户信息
      */
     private void getUserInfo(String ticket) {
-        System.out.println("getUserInfo() ticket = " + ticket);
+        LogUtil.i(TAG, "getUserInfo() ticket = " + ticket);
         RequestBeanBuilder builder = RequestBeanBuilder.create(true);
 
         ResponseData data = builder.syncRequest(builder);
@@ -361,7 +363,7 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
                 return;
             }
             SessionContext.mUser = JSON.parseObject(response.body.toString(), UserInfo.class);
-            System.out.println(response.body.toString());
+            LogUtil.i(TAG, response.body.toString());
 
             if (SessionContext.mUser == null || StringUtil.isEmpty(SessionContext.mUser)) {
                 CustomToast.show("获取用户信息失败，请重试2", 0);
@@ -379,7 +381,7 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {
                     String result = (i == 0) ? "设置成功" : "设置失败";
-                    System.out.println(result + ", Alias = " + s + ", Tag = " + set);
+                    LogUtil.i(TAG, result + ", Alias = " + s + ", Tag = " + set);
                 }
             });
             sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));

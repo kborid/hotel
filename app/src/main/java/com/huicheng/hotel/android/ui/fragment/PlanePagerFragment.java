@@ -26,9 +26,6 @@ import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 import com.prj.sdk.widget.webview.WebChromeClientCompat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Fragment plane
  */
@@ -39,7 +36,6 @@ public class PlanePagerFragment extends BaseFragment {
 
     private WebView mWebView;
     private CommonLoadingWidget common_loading_widget;
-    private List<String> testList = new ArrayList<>();
 
     public static Fragment newInstance(String key) {
         isFirstLoad = true;
@@ -67,12 +63,6 @@ public class PlanePagerFragment extends BaseFragment {
         LogUtil.d(TAG, ":onVisible()");
         boolean isReload = MainFragmentActivity.getIsNeedReload();
         String orderId = MainFragmentActivity.getPlaneOrderId();
-        for (int i = 0; i < 15; i++) {
-            testList.add(String.valueOf(i));
-        }
-        for (int i = 0; i < testList.size(); i++) {
-            System.out.println(i + ":" + testList.get(i));
-        }
         if (isFirstLoad || isReload) {
             isFirstLoad = false;
             String url = NetURL.PLANE_HOME;

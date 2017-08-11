@@ -370,11 +370,11 @@ public class AssessOrderDetailActivity extends BaseActivity implements DataCallb
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ASSESS_DETAIL) {
                 removeProgressDialog();
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 orderDetailBean = JSON.parseObject(response.body.toString(), AssessOrderDetailInfoBean.class);
                 refreshOrderInfo();
             } else if (request.flag == AppConst.HOTEL_DETAIL) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 hotelDetailBean = JSON.parseObject(response.body.toString(), HotelDetailInfoBean.class);
                 if (hotelDetailBean != null) {
                     requestOrderDetail();

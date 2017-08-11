@@ -23,6 +23,7 @@ import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
@@ -82,7 +83,7 @@ public class TaxiPagerFragment extends BaseFragment {
                             "");
                 }
                 bean.setSignature(bean.getSignatureSha1(getActivity()));
-                System.out.println("signature = " + bean.getSignature());
+                LogUtil.i(TAG,"signature = " + bean.getSignature());
                 String jsonStr = new Gson().toJson(bean);
                 params.put("key", getResources().getString(R.string.sz_appkey));
                 params.put("mobile", SessionContext.mUser.user.mobile);
@@ -101,7 +102,7 @@ public class TaxiPagerFragment extends BaseFragment {
             }
 
 
-            System.out.println("url = " + url);
+            LogUtil.i(TAG,"url = " + url);
             mWebView.loadUrl(url);
         }
     }

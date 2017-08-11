@@ -29,6 +29,7 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
@@ -42,6 +43,7 @@ import java.util.List;
  */
 public class MySpaceCommentAdapter extends BaseAdapter implements DataCallback {
 
+    private static final String TAG = "MySpaceCommentAdapter";
     private Context context;
     private List<HotelSpaceTieCommentInfoBean> list = new ArrayList<>();
     private int selectedPosition = 0;
@@ -263,13 +265,13 @@ public class MySpaceCommentAdapter extends BaseAdapter implements DataCallback {
             if (request.flag == AppConst.ATTEND_USER) {
                 CustomToast.show("关注成功", CustomToast.LENGTH_SHORT);
             } else if (request.flag == AppConst.HOTEL_TIE_SUPPORT) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 HotelSpaceTieCommentInfoBean bean = list.get(selectedPosition);
                 bean.praiseCnt += 1;
                 list.set(selectedPosition, bean);
                 notifyDataSetChanged();
             } else if (request.flag == AppConst.HOTEL_TIE_SUB_COMMENT) {
-                System.out.println("。。。。。json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 HotelSpaceTieCommentInfoBean bean = list.get(selectedPosition);
                 List<HotelSpaceTieCommentInfoBean> allReplyList = JSON.parseArray(response.body.toString(), HotelSpaceTieCommentInfoBean.class);
                 bean.replyList.clear();

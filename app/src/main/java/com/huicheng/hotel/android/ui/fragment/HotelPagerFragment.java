@@ -94,7 +94,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
     protected void onVisible() {
         super.onVisible();
-        System.out.println("onVisible()");
         if (isFirstLoad) {
             isFirstLoad = false;
         }

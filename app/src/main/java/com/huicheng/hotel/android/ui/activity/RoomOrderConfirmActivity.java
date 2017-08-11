@@ -32,6 +32,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.widget.CustomToast;
 
 import java.util.HashMap;
@@ -43,6 +44,7 @@ import java.util.Map;
  */
 public class RoomOrderConfirmActivity extends BaseActivity implements DataCallback {
 
+    private static final String TAG = "RoomOrderConfirmActivity";
     private RoomDetailInfoBean roomDetailInfoBean = null;
     //    private List<RoomConfirmInfoBean> roomConfirmList = new ArrayList<>();
     private Map<String, RoomConfirmInfoBean> roomServiceMap = new HashMap<>();
@@ -103,11 +105,11 @@ public class RoomOrderConfirmActivity extends BaseActivity implements DataCallba
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             isHhy = bundle.getBoolean("hhy");
-            System.out.println("isHhy = " + isHhy);
+            LogUtil.i(TAG, "isHhy = " + isHhy);
             roomPrice = bundle.getInt("roomPrice");
-            System.out.println("roomPrice = " + roomPrice);
+            LogUtil.i(TAG, "roomPrice = " + roomPrice);
             allChooseServicePrice = bundle.getInt("allChooseServicePrice");
-            System.out.println("allChooseServicePrice = " + allChooseServicePrice);
+            LogUtil.i(TAG, "allChooseServicePrice = " + allChooseServicePrice);
             if (bundle.getSerializable("roomDetailInfo") != null) {
                 roomDetailInfoBean = (RoomDetailInfoBean) bundle.getSerializable("roomDetailInfo");
             }
@@ -125,7 +127,7 @@ public class RoomOrderConfirmActivity extends BaseActivity implements DataCallba
             roomServiceMap = (Map<String, RoomConfirmInfoBean>) getIntent().getSerializableExtra("chooseServiceInfo");
             if (roomServiceMap != null && roomServiceMap.size() > 0) {
                 for (String key : roomServiceMap.keySet()) {
-                    System.out.println("ServiceTitle:" + roomServiceMap.get(key).serviceTitle + ", *" + roomServiceMap.get(key).serviceCount);
+                    LogUtil.i(TAG, "ServiceTitle:" + roomServiceMap.get(key).serviceTitle + ", *" + roomServiceMap.get(key).serviceCount);
                     serviceCounts.append(roomServiceMap.get(key).serviceCount).append("|");
                     serviceIds.append(roomServiceMap.get(key).serviceId).append("|");
                 }
@@ -172,7 +174,7 @@ public class RoomOrderConfirmActivity extends BaseActivity implements DataCallba
     }
 
     private void requestAddOrderDetail() {
-        System.out.println("requestAddOrderDetail() arrivedValue = " + arrivedValue);
+        LogUtil.i(TAG, "requestAddOrderDetail() arrivedValue = " + arrivedValue);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("hotelId", String.valueOf(hotelId));
         b.addBody("roomCount", String.valueOf(room_addsub_lay.getCount()));
@@ -257,8 +259,8 @@ public class RoomOrderConfirmActivity extends BaseActivity implements DataCallba
                     CustomToast.show("请填写正确的手机号码", CustomToast.LENGTH_SHORT);
                     return;
                 }
-                System.out.println("nameStr = " + custom_lay.getCustomUserNames());
-                System.out.println("phoneStr = " + custom_lay.getCustomUserPhones());
+                LogUtil.i(TAG, "nameStr = " + custom_lay.getCustomUserNames());
+                LogUtil.i(TAG, "phoneStr = " + custom_lay.getCustomUserPhones());
                 requestAddOrderDetail();
                 break;
             default:
@@ -305,11 +307,9 @@ public class RoomOrderConfirmActivity extends BaseActivity implements DataCallba
                     bean = new InvoiceDetailInfoBean();
                     tv_invoice_info.setText("不需要发票");
                 }
-                System.out.println(isInvoice);
-                System.out.println(invoiceType);
-                System.out.println(new Gson().toJson(bean));
+                LogUtil.i(TAG, new Gson().toJson(bean));
                 if (bean != null) {
-                    System.out.println(bean.toString());
+                    LogUtil.i(TAG, bean.toString());
                 }
             }
         }
@@ -325,7 +325,7 @@ public class RoomOrderConfirmActivity extends BaseActivity implements DataCallba
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ROOM_CONFIRM_ORDER) {
                 removeProgressDialog();
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 OrderDetailInfoBean bean = JSON.parseObject(response.body.toString(), OrderDetailInfoBean.class);
                 if (null != bean) {
                     if (HotelCommDef.PAY_ARR.equals(HotelOrderManager.getInstance().getPayType())) {

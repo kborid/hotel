@@ -34,6 +34,7 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
@@ -50,6 +51,7 @@ import java.util.List;
  */
 public class MyOrdersActivity extends BaseActivity implements DataCallback {
 
+    private static final String TAG = "MyOrdersActivity";
     private static final int PAGESIZE = 10;
 
     private SimpleRefreshListView listview;
@@ -83,7 +85,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        System.out.println("onNewIntent() test");
+        LogUtil.i(TAG, "onNewIntent() test");
         listview.refreshingHeaderView();
     }
 
@@ -165,7 +167,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
     }
 
     private void requestMyOrdersList(String orderType, String orderStatus, String startYear, String endYear, int pageIndex) {
-        System.out.println("type = " + orderType + ", status = " + orderStatus + ", startYear = " + startYear + ", endYear = " + endYear + ", pageIndex = " + pageIndex);
+        LogUtil.i(TAG, "type = " + orderType + ", status = " + orderStatus + ", startYear = " + startYear + ", endYear = " + endYear + ", pageIndex = " + pageIndex);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("orderType", orderType);
         b.addBody("status", orderStatus);
@@ -224,7 +226,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
         spinner_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("spinner type 's OnItemSelectedListener request....");
+                LogUtil.i(TAG, "spinner type 's OnItemSelectedListener request....");
                 if (isFirstLoad) {
                     return;
                 }
@@ -240,7 +242,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
                         orderType = "";
                         break;
                 }
-                System.out.println("order type = " + orderType);
+                LogUtil.i(TAG, "order type = " + orderType);
                 listview.refreshingHeaderView();
             }
 
@@ -253,7 +255,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
         spinner_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("spinner status 's OnItemSelectedListener request....");
+                LogUtil.i(TAG, "spinner status 's OnItemSelectedListener request....");
                 if (isFirstLoad) {
                     return;
                 }
@@ -278,7 +280,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
                         orderStatus = "";
                         break;
                 }
-                System.out.println("order status = " + orderStatus);
+                LogUtil.i(TAG, "order status = " + orderStatus);
                 listview.refreshingHeaderView();
             }
 
@@ -291,7 +293,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
         spinner_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("spinner date 's OnItemSelectedListener request....");
+                LogUtil.i(TAG, "spinner date 's OnItemSelectedListener request....");
                 if (isFirstLoad) {
                     return;
                 }
@@ -306,7 +308,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
                     startYear = selectedYear.split("年")[0];
                     endYear = String.valueOf(Integer.parseInt(startYear) + 1);
                 }
-                System.out.println("start = " + selectedYear + ", end = " + endYear);
+                LogUtil.i(TAG, "start = " + selectedYear + ", end = " + endYear);
                 listview.refreshingHeaderView();
             }
 
@@ -336,7 +338,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ORDER_LIST) {
-                System.out.println("json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 isFirstLoad = false;
                 List<OrderDetailInfoBean> temp = JSON.parseArray(response.body.toString(), OrderDetailInfoBean.class);
                 if (!isLoadMore) {
@@ -485,20 +487,20 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
                 public void onOpen(CustomSwipeView swipeView) {
                     closeOtherItem();
                     slideDeleteArrayList.add(swipeView);
-                    System.out.println("slideDeleteArrayList当前数量：" + slideDeleteArrayList.size());
+                    LogUtil.i(TAG, "slideDeleteArrayList当前数量：" + slideDeleteArrayList.size());
                 }
 
                 @Override
                 public void onClose(CustomSwipeView swipeView) {
                     slideDeleteArrayList.remove(swipeView);
-                    System.out.println("slideDeleteArrayList当前数量：" + slideDeleteArrayList.size());
+                    LogUtil.i(TAG, "slideDeleteArrayList当前数量：" + slideDeleteArrayList.size());
                 }
             });
 
             viewHolder.delete_lay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("delete onclick");
+                    LogUtil.i(TAG, "delete onclick");
                     closeOtherItem();
                     list.remove(position);
                     adapter.notifyDataSetChanged();
@@ -507,7 +509,7 @@ public class MyOrdersActivity extends BaseActivity implements DataCallback {
             viewHolder.item_lay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("item onclick");
+                    LogUtil.i(TAG, "item onclick");
                     if (slideDeleteArrayList.size() > 0) {
                         closeOtherItem();
                     } else {

@@ -244,9 +244,6 @@ public class RangeSeekBar extends View {
         if (reserve < 0) {
             throw new IllegalArgumentException("setRules() reserve must be greater than zero ! #reserve:" + reserve);
         }
-        System.out.println("reserve = " + reserve);
-        System.out.println("min = " + min);
-        System.out.println("max = " + max);
         if (reserve >= max - min) {
             throw new IllegalArgumentException("setRules() reserve must be less than (max - min) ! #reserve:" + reserve + " #max - min:" + (max - min));
         }
