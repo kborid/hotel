@@ -29,7 +29,7 @@ import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieCommentInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieInfoBean;
-import com.huicheng.hotel.android.ui.adapter.HotelSpacePicsAdapter;
+import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
 import com.huicheng.hotel.android.ui.adapter.MySpaceCommentAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.FullscreenHolder;
@@ -194,7 +194,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                     if (size > 9) {
                         pictureList = pictureList.subList(0, 9);
                     }
-                    HotelSpacePicsAdapter adapter = new HotelSpacePicsAdapter(this, pictureList, Utils.dip2px(55));
+                    CommonGridViewPicsAdapter adapter = new CommonGridViewPicsAdapter(this, pictureList, Utils.dip2px(55));
                     gridview.setAdapter(adapter);
                 } else {
                     gridview.setVisibility(View.GONE);

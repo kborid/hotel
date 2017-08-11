@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,10 +31,13 @@ import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.RoomConfirmInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomDetailInfoBean;
+import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
+import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
+import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
@@ -527,6 +531,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                 tv_choose_service_title.getPaint().setFakeBoldText(true);
                 final TextView tv_choose_service_price = (TextView) view.findViewById(R.id.tv_choose_service_price);
                 final TextView tv_choose_service_total_price = (TextView) view.findViewById(R.id.tv_choose_service_total_price);
+                final TextView tv_choose_service_detail = (TextView) view.findViewById(R.id.tv_choose_server_detail);
                 tv_choose_service_total_price.getPaint().setFakeBoldText(true);
                 CommonAddSubLayout addSubLayout = (CommonAddSubLayout) view.findViewById(R.id.addSubLayout);
                 addSubLayout.setUnit("份");
@@ -536,13 +541,62 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                 tv_choose_service_price.setText((HotelOrderManager.getInstance().isVipHotel() ? chooseList.get(i).vipPrice : chooseList.get(i).price) + "元/份");
                 tv_choose_service_total_price.setText("0元");
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                lp.topMargin = Utils.dip2px(17);
+                lp.topMargin = Utils.dip2px(20);
                 if (i >= 3 && isShowMore) {
                     more_lay.setVisibility(View.VISIBLE);
                     view.setVisibility(View.GONE);
                 }
                 final int finalI = i;
                 final RoomConfirmInfoBean bean = new RoomConfirmInfoBean();
+                tv_choose_service_detail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final CustomDialog detailDialog = new CustomDialog(RoomDetailActivity.this);
+                        View view = LayoutInflater.from(RoomDetailActivity.this).inflate(R.layout.dialog_service_detail_item_lay, null);
+                        TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
+                        tv_title.getPaint().setFakeBoldText(true);
+                        TextView tv_content = (TextView) view.findViewById(R.id.tv_content);
+                        tv_content.getPaint().setFakeBoldText(true);
+                        ImageView iv_close = (ImageView) view.findViewById(R.id.iv_close);
+                        final NoScrollGridView gridView = (NoScrollGridView) view.findViewById(R.id.gridview);
+
+                        //TODO setData
+                        tv_title.setText(chooseList.get(finalI).serviceName);
+                        final ArrayList<String> list = new ArrayList<>();
+                        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1503050866&di=3261f622a326aa462c7ed0d5f7b4e7cb&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.pp3.cn%2Fuploads%2F201601%2F2016011405.jpg");
+                        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456289108&di=a7154df521b41104fdd44e3036eb23b8&imgtype=0&src=http%3A%2F%2Fimg.tupianzj.com%2Fuploads%2Fallimg%2F160821%2F9-160R1150R1.jpg");
+                        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456289107&di=a5198b5891256c827c48eff38b16309e&imgtype=0&src=http%3A%2F%2Fbpic.ooopic.com%2F16%2F09%2F03%2F16090347-66e506bde737aa4c806fe24f47062ab0.jpg");
+                        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456313861&di=ee3c8fb4fecf8520baec261b80417b80&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D3974436224%2C4269321529%26fm%3D214%26gp%3D0.jpg");
+
+                        gridView.setAdapter(new CommonGridViewPicsAdapter(RoomDetailActivity.this, list, Utils.dip2px(90), 2 / 3f));
+                        iv_close.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                detailDialog.dismiss();
+                            }
+                        });
+                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                System.out.println("position = " + position);
+                                Intent intent = new Intent(RoomDetailActivity.this, ImageScaleActivity.class);
+                                intent.putExtra("url", list.get(position));
+                                ImageView imageView = (ImageView) gridView.getChildAt(position).findViewById(R.id.imageView);
+                                int[] location = new int[2];
+                                imageView.getLocationOnScreen(location);
+                                intent.putExtra("locationX", location[0]);//必须
+                                intent.putExtra("locationY", location[1]);//必须
+                                intent.putExtra("width", imageView.getWidth());//必须
+                                intent.putExtra("height", imageView.getHeight());//必须
+                                startActivity(intent);
+                                overridePendingTransition(0, 0);
+                            }
+                        });
+                        detailDialog.addView(view);
+                        detailDialog.setCanceledOnTouchOutside(true);
+                        detailDialog.show();
+                    }
+                });
                 addSubLayout.setOnCountChangedListener(new CommonAddSubLayout.OnCountChangedListener() {
                     @Override
                     public void onCountChanged(int count) {
@@ -571,7 +625,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
             findViewById(R.id.tv_free_service_note).setVisibility(View.VISIBLE);
             free_service_lay.removeAllViews();
             TextView tv_content = new TextView(this);
-            tv_content.setTextSize(15);
+            tv_content.setTextSize(12);
             tv_content.setTextColor(getResources().getColor(R.color.lableColor));
             tv_content.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -602,7 +656,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                     tv_content.append("，");
                 }
             }
-            free_service_lay.setPadding(0, Utils.dip2px(17), 0, 0);
+            free_service_lay.setPadding(0, Utils.dip2px(20), 0, 0);
             free_service_lay.addView(tv_content);
         } else {
             findViewById(R.id.tv_free_service_note).setVisibility(View.GONE);

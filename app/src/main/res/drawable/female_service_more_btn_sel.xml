@@ -3,19 +3,19 @@
     <item android:state_enabled="true" android:state_pressed="true">
         <shape>
             <solid android:color="@color/female_indicatorColor" />
-            <corners android:radius="25dp" />
+            <corners android:radius="5dp" />
         </shape>
     </item>
     <item android:state_enabled="false">
         <shape>
             <solid android:color="@color/female_indicatorDisColor" />
-            <corners android:radius="25dp" />
+            <corners android:radius="5dp" />
         </shape>
     </item>
     <item>
         <shape>
             <solid android:color="@color/female_indicatorColor" />
-            <corners android:radius="25dp" />
+            <corners android:radius="5dp" />
         </shape>
     </item>
 </selector>

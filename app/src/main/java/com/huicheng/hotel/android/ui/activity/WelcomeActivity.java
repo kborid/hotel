@@ -36,6 +36,7 @@ import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
@@ -269,11 +270,13 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         if (response != null && response.body != null) {
             if (request.flag == AppConst.APP_INFO) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
-                AppInfoBean bean = JSON.parseObject(response.body.toString(), AppInfoBean.class);
-                SharedPreferenceUtil.getInstance().setString(AppConst.APPINFO, response.body.toString(), false);
-                if (bean.isforce == 0) {
-                    showUpdateDialog(bean);
-                    return;
+                if (StringUtil.notEmpty(response.body.toString()) && !response.body.toString().equals("{}")) {
+                    AppInfoBean bean = JSON.parseObject(response.body.toString(), AppInfoBean.class);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.APPINFO, response.body.toString(), false);
+                    if (bean.isforce == 0) {
+                        showUpdateDialog(bean);
+                        return;
+                    }
                 }
                 goToNextActivity();
             }

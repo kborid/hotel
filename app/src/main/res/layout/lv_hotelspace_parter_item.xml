@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
@@ -50,7 +50,7 @@
             android:gravity="center_vertical"
             android:text="200"
             android:textColor="@color/lableColor"
-            android:textSize="@dimen/common_9sp" />
+            android:textSize="@dimen/common_10sp" />
 
         <TextView
             android:id="@+id/tv_space_comment"
@@ -62,7 +62,7 @@
             android:gravity="center_vertical"
             android:text="200"
             android:textColor="@color/lableColor"
-            android:textSize="@dimen/common_9sp" />
+            android:textSize="@dimen/common_10sp" />
 
         <TextView
             android:id="@+id/tv_space_support"
@@ -74,6 +74,6 @@
             android:gravity="center_vertical"
             android:text="200"
             android:textColor="@color/lableColor"
-            android:textSize="@dimen/common_9sp" />
+            android:textSize="@dimen/common_10sp" />
     </LinearLayout>
 </LinearLayout>

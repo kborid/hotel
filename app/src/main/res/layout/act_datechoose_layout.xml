@@ -27,7 +27,7 @@
             android:gravity="center"
             android:hint="入住日期"
             android:textColor="@color/calendarTextColor"
-            android:textColorHint="@color/bottomBtnTextDisable"
+            android:textColorHint="@color/lableColor"
             android:textSize="@dimen/common_32sp" />
 
         <TextView
@@ -36,7 +36,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:text="×"
-            android:textColor="@color/bottomBtnTextDisable"
+            android:textColor="@color/lableColor"
             android:textSize="@dimen/common_30sp" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:hint="退房日期"
             android:textColor="@color/calendarTextColor"
-            android:textColorHint="@color/bottomBtnTextDisable"
+            android:textColorHint="@color/lableColor"
             android:textSize="@dimen/common_32sp" />
     </LinearLayout>
 

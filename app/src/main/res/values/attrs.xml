@@ -60,6 +60,7 @@
         <attr name="yhqActiveBg" format="reference" />
         <attr name="roomItemGradient" format="reference" />
         <attr name="considerTextSel" format="color|reference" />
+        <attr name="moreServiceSel" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="TagCloudView">

@@ -78,6 +78,7 @@
         <item name="yhqActiveBg">@drawable/yhq_rect_act_bg</item>
         <item name="roomItemGradient">@drawable/roomitem_ygr_gradient</item>
         <item name="considerTextSel">@color/consider_text_sel</item>
+        <item name="moreServiceSel">@drawable/service_more_btn_sel</item>
     </style>
 
 
@@ -141,6 +142,7 @@
         <item name="yhqActiveBg">@drawable/female_yhq_rect_act_bg</item>
         <item name="roomItemGradient">@drawable/female_roomitem_ygr_gradient</item>
         <item name="considerTextSel">@color/female_consider_text_sel</item>
+        <item name="moreServiceSel">@drawable/female_service_more_btn_sel</item>
     </style>
 
 

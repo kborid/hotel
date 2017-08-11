@@ -16,16 +16,24 @@ import com.prj.sdk.util.Utils;
 
 import java.util.List;
 
-public class HotelSpacePicsAdapter extends BaseAdapter {
+public class CommonGridViewPicsAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<String> list;
     private int paddingValue = 0;
+    private float widthHeightScale = 1f;
 
-    public HotelSpacePicsAdapter(Context context, List<String> list, int paddingValue) {
+    public CommonGridViewPicsAdapter(Context context, List<String> list, int paddingValue) {
         this.mContext = context;
         this.list = list;
         this.paddingValue = paddingValue;
+    }
+
+    public CommonGridViewPicsAdapter(Context context, List<String> list, int paddingValue, float widthHeightScale) {
+        this.mContext = context;
+        this.list = list;
+        this.paddingValue = paddingValue;
+        this.widthHeightScale = widthHeightScale;
     }
 
     @Override
@@ -57,7 +65,7 @@ public class HotelSpacePicsAdapter extends BaseAdapter {
             viewHolder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
             ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) viewHolder.imageView.getLayoutParams();
             lp.width = (int) ((float) (Utils.mScreenWidth - paddingValue) / 3);
-            lp.height = lp.width;
+            lp.height = (int) (lp.width * widthHeightScale);
             viewHolder.imageView.setLayoutParams(lp);
             convertView.setTag(viewHolder);
         } else {
@@ -82,6 +90,6 @@ public class HotelSpacePicsAdapter extends BaseAdapter {
                 }
             }
 
-        }, url, url, 1920, 1080, 0);
+        }, url, url, 1024, 1024, 0);
     }
 }

@@ -46,7 +46,7 @@ import cn.jpush.android.api.TagAliasCallback;
 public class RegisterActivity extends BaseActivity implements DataCallback, DialogInterface.OnCancelListener {
     private static final String TAG = "RegisterActivity";
     private EditText et_phone, et_yzm, et_pwd;
-    private int sex_index = 0;
+    private int sex_index = 1; //默认男性
     private RadioGroup rg_sex_lay;
     private CheckBox cb_check;
     private TextView tv_agreement;

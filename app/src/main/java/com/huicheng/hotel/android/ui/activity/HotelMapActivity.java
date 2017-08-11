@@ -188,6 +188,9 @@ public class HotelMapActivity extends BaseActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+//        setIntent(intent);
+//        dealIntent();
+//        showSearchResultToMap();
         System.out.println("onNewIntent()");
     }
 
@@ -280,7 +283,8 @@ public class HotelMapActivity extends BaseActivity
         });
         amap.setInfoWindowAdapter(infoWindowAdapter);
         MyLocationStyle myLocationStyle = new MyLocationStyle();
-        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.iv_gps));
         amap.setMyLocationStyle(myLocationStyle);
     }
 

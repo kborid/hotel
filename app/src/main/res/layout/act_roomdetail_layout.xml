@@ -192,16 +192,16 @@
                             android:id="@+id/tv_price_note"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="13dp"
                             android:text="房费"
                             android:textColor="?attr/mainColor"
-                            android:textSize="@dimen/common_12sp"
+                            android:textSize="@dimen/common_15sp"
                             android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="17dp"
+                            android:layout_marginTop="20dp"
                             android:orientation="horizontal">
 
                             <TextView
@@ -210,7 +210,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="11月26日-28日"
                                 android:textColor="@color/lableColor"
-                                android:textSize="@dimen/common_15sp" />
+                                android:textSize="@dimen/common_12sp" />
 
                             <TextView
                                 android:id="@+id/tv_during"
@@ -219,7 +219,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:text="2晚"
                                 android:textColor="@color/lableColor"
-                                android:textSize="@dimen/common_15sp" />
+                                android:textSize="@dimen/common_12sp" />
 
                             <TextView
                                 android:id="@+id/tv_pay_type"
@@ -228,7 +228,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:text="（到店付）"
                                 android:textColor="@color/lableColor"
-                                android:textSize="@dimen/common_15sp" />
+                                android:textSize="@dimen/common_12sp" />
 
                             <TextView
                                 android:id="@+id/tv_price"
@@ -238,7 +238,7 @@
                                 android:gravity="right"
                                 android:text="1000元"
                                 android:textColor="?attr/indicatorColor"
-                                android:textSize="@dimen/common_15sp"
+                                android:textSize="@dimen/common_14sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -246,10 +246,10 @@
                             android:id="@+id/tv_free_service_note"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="17dp"
+                            android:layout_marginTop="20dp"
                             android:text="包含服务"
                             android:textColor="?attr/mainColor"
-                            android:textSize="@dimen/common_12sp"
+                            android:textSize="@dimen/common_15sp"
                             android:textStyle="bold" />
 
                         <LinearLayout
@@ -262,10 +262,10 @@
                             android:id="@+id/tv_choose_service_note"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="17dp"
+                            android:layout_marginTop="20dp"
                             android:text="选购服务"
                             android:textColor="?attr/mainColor"
-                            android:textSize="@dimen/common_12sp"
+                            android:textSize="@dimen/common_15sp"
                             android:textStyle="bold" />
 
                         <LinearLayout
@@ -279,7 +279,7 @@
                             android:layout_width="70dp"
                             android:layout_height="25dp"
                             android:layout_marginTop="25dp"
-                            android:background="@drawable/comm_rectangle_btn_more"
+                            android:background="?attr/moreServiceSel"
                             android:gravity="center"
                             android:orientation="horizontal"
                             android:visibility="gone">
@@ -330,7 +330,7 @@
                     <TextView
                         android:id="@+id/tv_total_note"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="总价："
                         android:textColor="?attr/mainColor"
                         android:textSize="@dimen/common_12sp"
@@ -339,11 +339,11 @@
                     <TextView
                         android:id="@+id/tv_total_price"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="16dp"
                         android:text="1150元"
                         android:textColor="?attr/indicatorColor"
-                        android:textSize="30sp"
+                        android:textSize="@dimen/common_24sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 

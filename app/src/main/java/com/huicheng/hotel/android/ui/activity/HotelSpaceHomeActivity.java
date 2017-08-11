@@ -28,7 +28,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelSpaceBasicInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieInfoBean;
-import com.huicheng.hotel.android.ui.adapter.HotelSpacePicsAdapter;
+import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.FullscreenHolder;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
@@ -314,11 +314,10 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
                 viewHolder = new ViewHolder();
                 convertView = LayoutInflater.from(context).inflate(R.layout.lv_hotelspace_item, null);
                 viewHolder.tv_time_label = (TextView) convertView.findViewById(R.id.tv_time_label);
-                viewHolder.tv_time_label.getPaint().setFakeBoldText(true);
                 viewHolder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);
                 viewHolder.tv_content.setLines(4);
-                viewHolder.tv_content.setTextSize(14);
-                viewHolder.tv_content.setTextColor(context.getResources().getColor(R.color.secColor));
+                viewHolder.tv_content.setTextSize(13);
+                viewHolder.tv_content.setTextColor(context.getResources().getColor(R.color.calendarTextColor));
                 viewHolder.tv_content.setEllipsize(TextUtils.TruncateAt.END);
                 viewHolder.gridview = (NoScrollGridView) convertView.findViewById(R.id.gridview);
                 viewHolder.webview = (WebView) convertView.findViewById(R.id.webview);
@@ -368,13 +367,11 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
             // 设置数据
             final HotelSpaceTieInfoBean bean = list.get(position);
             String thisBlankDate = DateUtil.getDateBlank(System.currentTimeMillis(), bean.createTimeStamp);
-            System.out.println("thisBlankDate = " + thisBlankDate);
             if (0 == position) {
                 viewHolder.tv_time_label.setVisibility(View.VISIBLE);
                 viewHolder.tv_time_label.setText(thisBlankDate);
             } else {
                 String lastBlankDate = DateUtil.getDateBlank(System.currentTimeMillis(), list.get(position - 1).createTimeStamp);
-                System.out.println("lastBlankDate = " + lastBlankDate);
                 if (lastBlankDate.equals(thisBlankDate)) {
                     viewHolder.tv_time_label.setVisibility(View.INVISIBLE);
                 } else {
@@ -401,7 +398,7 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
                 if (size > 9) {
                     pictureList = pictureList.subList(0, 9);
                 }
-                HotelSpacePicsAdapter adapter = new HotelSpacePicsAdapter(context, pictureList, Utils.dip2px(115));
+                CommonGridViewPicsAdapter adapter = new CommonGridViewPicsAdapter(context, pictureList, Utils.dip2px(115));
                 viewHolder.gridview.setAdapter(adapter);
             } else {
                 viewHolder.gridview.setVisibility(View.GONE);
