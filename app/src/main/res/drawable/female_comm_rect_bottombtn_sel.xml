@@ -8,13 +8,13 @@
     </item>
     <item android:state_enabled="true" android:state_pressed="true">
         <shape>
-            <solid android:color="@color/female_mainColor" />
+            <solid android:color="@color/female_mainColorShadow" />
             <corners android:radius="10dp" />
         </shape>
     </item>
     <item>
         <shape>
-            <solid android:color="@color/female_mainColorAccent" />
+            <solid android:color="@color/female_considerShadow" />
             <corners android:radius="10dp" />
         </shape>
     </item>

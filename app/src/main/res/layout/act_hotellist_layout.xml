@@ -85,7 +85,7 @@
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:lines="1"
-                android:textColor="@color/editColor"
+                android:textColor="?attr/mainColor"
                 android:textColorHint="@color/secColorShadow"
                 android:textSize="@dimen/common_24sp" />
 
