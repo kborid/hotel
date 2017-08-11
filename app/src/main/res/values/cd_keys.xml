@@ -17,6 +17,9 @@
     <string name="qq_appkey">605K7QNA500pwuG5</string>
     <string name="qq_scheme">tencent1105934443</string>
 
+    <!--神舟专车-->
+    <string name="sz_appsecret">9a2l6ol0qmm7d0skadi4</string>
+    <string name="sz_appkey">cmRmQXlYNmY4cm1FVnN2QjZCQktBRGU0SWQxckpDYjRiV2RRem53TjN2eW1PMm51bXBlVkxvcUNzOXRwYjBjX0dRMXhTZllYRkM2LW9TWFg1VnpfejZ4ZmJ2a3pBR0NlNnh4eThsT1k3ZFE9</string>
     <!-- 支付宝帐号 -->
         <!--商户收款账号-->
     <string name="partnerId">2088811019618951</string>

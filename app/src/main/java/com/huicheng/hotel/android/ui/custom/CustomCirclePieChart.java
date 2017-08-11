@@ -173,7 +173,7 @@ public class CustomCirclePieChart extends View {
             upDis = 10;
             downDis = 10;
         } else {
-            upDis = -linePaint.measureText("￥" + String.valueOf(cost)) - 10;
+            upDis = -linePaint.measureText(context.getResources().getString(R.string.RMB) + String.valueOf(cost)) - 10;
             downDis = -linePaint.measureText(strMethod) - 10;
         }
         canvas.drawText("￥" + String.valueOf(cost), end2X + endX + upDis, endY - 15, linePaint);

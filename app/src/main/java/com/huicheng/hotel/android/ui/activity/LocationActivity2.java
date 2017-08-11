@@ -46,7 +46,6 @@ public class LocationActivity2 extends BaseActivity {
     private TextView tv_city_index;
 
     private String mProvince, mCity, mSiteId;
-    private String cityStr = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +73,6 @@ public class LocationActivity2 extends BaseActivity {
     @Override
     public void dealIntent() {
         super.dealIntent();
-        Bundle bundle = getIntent().getExtras();
-        if (null != bundle && bundle.getString("city") != null && StringUtil.notEmpty(bundle.getString("city"))) {
-            cityStr = bundle.getString("city").split(" ")[0];
-        }
     }
 
     @Override
@@ -86,6 +81,7 @@ public class LocationActivity2 extends BaseActivity {
 
         tv_center_title.setText("选择城市");
 
+        String cityStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         if (StringUtil.notEmpty(cityStr)) {
             et_city.setText(cityStr);
         }

@@ -21,9 +21,9 @@
             android:layout_height="50dp"
             android:layout_marginTop="13dp"
             android:focusable="true"
-            android:visibility="gone"
             android:focusableInTouchMode="true"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/et_search"
@@ -88,6 +88,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
             android:background="?attr/indicatorBgSel"
+            android:enabled="false"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"

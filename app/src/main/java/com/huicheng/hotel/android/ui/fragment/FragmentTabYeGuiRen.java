@@ -267,20 +267,19 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
-        String message;
+        String message = response != null && response.data != null ? response.data.toString() : getString(R.string.dialog_tip_null_error);
         if (e != null && e instanceof ConnectException) {
             message = getString(R.string.dialog_tip_net_error);
-        } else {
-            message = response != null && response.data != null ? response.data.toString() : getString(R.string.dialog_tip_null_error);
         }
         CustomToast.show(message, CustomToast.LENGTH_SHORT);
+        SessionContext.setYgrList(null);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     private class MyAsyncTask extends AsyncTask<Integer, Void, Void> {
         private ResponseData response = null;
 
-        public MyAsyncTask(ResponseData response) {
+        MyAsyncTask(ResponseData response) {
             this.response = response;
         }
 
@@ -293,11 +292,7 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
                 }
                 list.addAll(temp);
 
-                if (temp.size() >= PAGESIZE) {
-                    isNoMore = false;
-                } else {
-                    isNoMore = true;
-                }
+                isNoMore = temp.size() < PAGESIZE;
 
                 //设置缓存
                 List<HotelMapInfoBean> ygrList = new ArrayList<>();
@@ -308,6 +303,7 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
                     bean.hotelName = list.get(i).hotelName;
                     bean.hotelIcon = list.get(i).hotelFeaturePic;
                     bean.hotelId = list.get(i).hotelId;
+                    bean.price = list.get(i).price;
                     ygrList.add(bean);
                 }
                 SessionContext.setYgrList(ygrList);

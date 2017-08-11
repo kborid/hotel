@@ -97,7 +97,7 @@ public class GuideSwitchActivity extends BaseActivity {
                 index = 3;
                 break;
         }
-        if (!AppConst.ISDEVELOP && 1 == index) {
+        if (!AppConst.ISDEVELOP && (1 == index || 3 == index)) {
             CustomDialog dialog = new CustomDialog(this);
             dialog.setMessage("机票预订正在测试中，即将与您见面");
             dialog.setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {

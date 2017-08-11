@@ -198,10 +198,11 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         }
 
         // 设置名字
+        et_name.setHint(SessionContext.mUser.user.username);
         if (StringUtil.notEmpty(SessionContext.mUser.user.nickname)) {
             et_name.setText(SessionContext.mUser.user.nickname);
-        } else {
-            et_name.setText(SessionContext.mUser.user.username);
+//        } else {
+//            et_name.setText(SessionContext.mUser.user.username);
         }
         et_name.setSelection(et_name.getText().length());
         // 设置性别
@@ -711,11 +712,9 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         if (male_lay.isSelected()) {
             line_male_lay.setVisibility(View.VISIBLE);
             line_female_lay.setVisibility(View.INVISIBLE);
-            SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 0);
         } else if (female_lay.isSelected()) {
             line_male_lay.setVisibility(View.INVISIBLE);
             line_female_lay.setVisibility(View.VISIBLE);
-            SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 1);
         } else {
             LogUtil.d(TAG, "warning!!!");
         }
@@ -893,6 +892,11 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
                     }
                 }
             } else if (request.flag == AppConst.SAVE_USERINFO) {
+                if (male_lay.isShown()) {
+                    SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 0);
+                } else {
+                    SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 1);
+                }
                 reqeustGetUserInfo();
             } else if (request.flag == AppConst.CENTER_USERINFO) {
                 removeProgressDialog();

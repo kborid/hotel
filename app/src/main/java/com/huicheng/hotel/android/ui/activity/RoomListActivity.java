@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -35,6 +34,7 @@ import com.huicheng.hotel.android.net.bean.RoomDetailCheckResultInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomListInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
+import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
@@ -652,7 +652,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
                 position = list.size() + position;
             }
             final View view = LayoutInflater.from(context).inflate(R.layout.room_banner_item, null);
-            ImageView iv_background = (ImageView) view.findViewById(R.id.iv_background);
+            final RoundedAllImageView iv_background = (RoundedAllImageView) view.findViewById(R.id.iv_background);
             loadImage(iv_background, R.drawable.def_hotel_banner, list.get(position), 1920, 1080);
             //如果View已经在之前添加到了一个父组件，则必须先remove，否则会抛出IllegalStateException。
             ViewParent vp = view.getParent();

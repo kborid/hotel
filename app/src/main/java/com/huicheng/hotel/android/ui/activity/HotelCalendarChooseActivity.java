@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -19,6 +20,8 @@ import com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarView;
 import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
 /**
@@ -92,17 +95,14 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         super.initListeners();
         calendar_lay.setController(this);
         btn_next.setOnClickListener(this);
+        tv_center_title.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_next:
-                if (tv_begin.getText().toString().equals("入住日期") || tv_end.getText().toString().equals("退房日期")) {
-                    CustomToast.show("请先选择日期", CustomToast.LENGTH_SHORT);
-                    return;
-                }
+            case R.id.btn_next: {
                 Intent intent = null;
                 if (rebooking) {
                     HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
@@ -127,9 +127,33 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
                 intent.putExtra("keyword", keyword);
                 intent.putExtra("priceIndex", mPriceIndex);
                 startActivity(intent);
-                break;
+            }
+            break;
+            case R.id.tv_center_title: {
+                Intent intent = new Intent(this, LocationActivity2.class);
+                startActivityForResult(intent, 0x01);
+            }
+            break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (RESULT_OK != resultCode) {
+            return;
+        }
+        if (requestCode == 0x01) {
+            String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+            String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+            if (StringUtil.notEmpty(tempProvince) && tempProvince.equals(tempCity)) {
+                HotelOrderManager.getInstance().setCityStr(tempProvince);
+            } else {
+                HotelOrderManager.getInstance().setCityStr(tempCity + "-" + tempProvince);
+            }
+            tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
         }
     }
 
@@ -139,7 +163,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
             TextView tv_week = new TextView(this);
             tv_week.setText(CalendarUtils.getWeekStringByNum(i));
             tv_week.setGravity(Gravity.CENTER);
-            tv_week.setTextColor(getResources().getColor(R.color.secColor));
+            tv_week.setTextColor(getResources().getColor(R.color.bottomBtnTextDisable));
             tv_week.setTextSize(12);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             lp.weight = 1;
@@ -151,7 +175,8 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
     public void onDayOfMonthSelected(int year, int month, int day) {
         LogUtil.i(TAG, "Day Selected = " + day + " / " + month + " / " + year);
         tv_begin.setText(month + 1 + "月" + day + "日");
-        tv_end.setText("退房日期");
+        tv_end.setText("");
+        btn_next.setEnabled(false);
     }
 
     @Override
@@ -163,12 +188,15 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
             if (HotelOrderManager.getInstance().isUseCoupon() && HotelOrderManager.getInstance().getCouponId() != -1) {
                 if (DateUtil.getGapCount(selectedDays.getFirst().getDate(), selectedDays.getLast().getDate()) > 1) {
                     CustomToast.show("使用优惠券只能住一晚，请重新选择", CustomToast.LENGTH_SHORT);
+                    btn_next.setEnabled(false);
                     return;
                 }
             }
             tv_end.setText(selectedDays.getLast().getMonth() + 1 + "月" + selectedDays.getLast().getDay() + "日");
+            btn_next.setEnabled(true);
         } else {
-            tv_end.setText("退房日期");
+            tv_end.setText("");
+            btn_next.setEnabled(false);
         }
         if (selectedDays.getFirst() != null) {
             HotelOrderManager.getInstance().setBeginTime(selectedDays.getFirst().getDate().getTime() / 1000 * 1000);

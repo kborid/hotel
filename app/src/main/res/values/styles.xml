@@ -45,6 +45,8 @@
         <item name="considerShadow">@color/considerShadow</item>
         <item name="mapSearchImage">@drawable/iv_search</item>
         <item name="mapPinImage">@drawable/iv_pin</item>
+        <item name="mapPricePinImage">@drawable/iv_pin_price</item>
+        <item name="mapPinTextColor">@color/pinTextColor</item>
         <item name="roomMainText">@color/roomMainText</item>
         <item name="roomItemPrice">@color/indicatorColor</item>
         <item name="indicatorColor">@color/indicatorColor</item>
@@ -106,6 +108,8 @@
         <item name="considerShadow">@color/female_considerShadow</item>
         <item name="mapSearchImage">@drawable/iv_search_female</item>
         <item name="mapPinImage">@drawable/iv_pin_female</item>
+        <item name="mapPinTextColor">@color/white</item>
+        <item name="mapPricePinImage">@drawable/iv_pin_price_female</item>
         <item name="roomMainText">@color/female_roomMainText</item>
         <item name="roomItemPrice">@color/female_indicatorColor</item>
         <item name="indicatorColor">@color/female_indicatorColor</item>

@@ -20,6 +20,8 @@
     <string name="dialog_tip_bind_phone_error">手机绑定失败，请重试</string>
     <string name="not_install_wx">没有安装微信</string>
 
+    <string name="RMB">￥</string>
+
     <string name="footer_loading">正在加载</string>
     <string name="footer_nomore">没有更多数据</string>
     <string name="footer_click">点击加载更多</string>

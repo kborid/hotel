@@ -10,5 +10,6 @@ public class HotelMapInfoBean {
     public String coordinate;
     public String hotelIcon;
     public int hotelId;
+    public int price;
 }
 

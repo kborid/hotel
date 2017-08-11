@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/female_commBottomPress">
+    android:color="@color/female_mainColor">
     <item>
-        <shape>
-            <solid android:color="@color/female_commBottom" />
-            <corners android:radius="10dp" />
-        </shape>
+        <selector>
+            <item android:state_enabled="false">
+                <shape>
+                    <solid android:color="@color/commBottom" />
+                    <corners android:radius="10dp" />
+                </shape>
+            </item>
+            <!--<item android:state_enabled="true" android:state_pressed="true">
+                <shape>
+                    <solid android:color="@color/mainColor" />
+                    <corners android:radius="10dp" />
+                </shape>
+            </item>-->
+            <item>
+                <shape>
+                    <solid android:color="@color/female_mainColorAccent" />
+                    <corners android:radius="10dp" />
+                </shape>
+            </item>
+        </selector>
     </item>
 </ripple>

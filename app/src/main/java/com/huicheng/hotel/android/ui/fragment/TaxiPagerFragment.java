@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -12,15 +13,22 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.gson.Gson;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.NetURL;
+import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.net.bean.ShenZhouConfigBean;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
+import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 import com.prj.sdk.widget.webview.WebChromeClientCompat;
+
+import java.util.HashMap;
 
 /**
  * Fragment car
@@ -29,6 +37,9 @@ public class TaxiPagerFragment extends BaseFragment {
 
     private static final String TAG = "TaxiPagerFragment";
     private static boolean isFirstLoad = false;
+
+    private HashMap<String, String> params = new HashMap<>();
+    private ShenZhouConfigBean bean = null;
 
     private WebView mWebView;
     private CommonLoadingWidget common_loading_widget;
@@ -47,6 +58,7 @@ public class TaxiPagerFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         getArguments().getString("key");
         View view = inflater.inflate(R.layout.fragment_pager_car, container, false);
+        initTypedArrayValue();
         initViews(view);
         initParams();
         initListeners();
@@ -55,9 +67,42 @@ public class TaxiPagerFragment extends BaseFragment {
 
     protected void onVisible() {
         super.onVisible();
+
         if (isFirstLoad) {
             isFirstLoad = false;
-            mWebView.loadUrl(NetURL.TEXI_HOME);
+            String url = NetURL.SZ_TAXI_HOME;
+            String mainColorStr = Integer.toHexString(getResources().getColor(mMainColor));
+            if (SessionContext.isLogin()) {
+                long timeStamp = System.currentTimeMillis();
+                if (null == bean) {
+                    bean = new ShenZhouConfigBean(mainColorStr.substring(2, mainColorStr.length()),
+                            SessionContext.mUser.user.userid,
+                            SessionContext.mUser.user.mobile,
+                            String.valueOf(timeStamp),
+                            "");
+                }
+                bean.setSignature(bean.getSignatureSha1(getActivity()));
+                System.out.println("signature = " + bean.getSignature());
+                String jsonStr = new Gson().toJson(bean);
+                params.put("key", getResources().getString(R.string.sz_appkey));
+                params.put("mobile", SessionContext.mUser.user.mobile);
+                params.put("q", jsonStr);
+
+                if (StringUtil.notEmpty(url)) {
+                    url += "?";
+                    for (String key : params.keySet()) {
+                        url = url + key + "=" + params.get(key) + "&";
+                    }
+                }
+
+            } else {
+                getActivity().sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                return;
+            }
+
+
+            System.out.println("url = " + url);
+            mWebView.loadUrl(url);
         }
     }
 
@@ -111,6 +156,8 @@ public class TaxiPagerFragment extends BaseFragment {
         mWebView.setWebViewClient(new MyWebViewClient(mWebView));
         mWebView.setWebChromeClient(new WebChromeClientCompat(getActivity(), null, null));
     }
+
+
 
     class MyWebViewClient extends WVJBWebViewClient {
 

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;

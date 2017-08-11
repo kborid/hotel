@@ -25,8 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="入住日期"
-            android:textColor="@color/searchHintColor"
+            android:hint="入住日期"
+            android:textColor="@color/calendarTextColor"
+            android:textColorHint="@color/bottomBtnTextDisable"
             android:textSize="@dimen/common_32sp" />
 
         <TextView
@@ -35,7 +36,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:text="×"
-            android:textColor="@color/searchHintColor"
+            android:textColor="@color/bottomBtnTextDisable"
             android:textSize="@dimen/common_30sp" />
 
         <TextView
@@ -44,8 +45,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="退房日期"
-            android:textColor="@color/searchHintColor"
+            android:hint="退房日期"
+            android:textColor="@color/calendarTextColor"
+            android:textColorHint="@color/bottomBtnTextDisable"
             android:textSize="@dimen/common_32sp" />
     </LinearLayout>
 
@@ -77,7 +79,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             calendar:calendarHeight="400dp"
+            calendar:colorCurrentDay="?attr/mainColorAccent"
             calendar:colorCurrentDayCircle="?attr/currentDayCircle"
+            calendar:colorDayName="?attr/mainColorAccent"
+            calendar:colorMonthName="?attr/mainColorAccent"
+            calendar:colorNormalDay="?attr/mainColorAccent"
             calendar:colorSelectedDayBackground="?attr/selDayBackground"
             calendar:enablePreviousDay="false" />
 
@@ -97,8 +103,9 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="?attr/bottomBtnSel"
+            android:enabled="false"
             android:text="确定"
-            android:textColor="?attr/commBottomText"
+            android:textColor="@color/bottom_btn_text_selector"
             android:textSize="@dimen/common_15sp"
             android:textStyle="bold" />
     </LinearLayout>

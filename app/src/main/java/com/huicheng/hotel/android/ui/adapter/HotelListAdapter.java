@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.model.LatLng;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -25,8 +26,6 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
 import java.util.List;
-
-import static com.huicheng.hotel.android.ui.base.BaseFragment.loadImage;
 
 /**
  * @auth kborid
@@ -70,8 +69,14 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     public void onBindViewHolder(final HotelListAdapter.HotelViewHolder holder, final int position) {
 
         HotelInfoBean bean = list.get(position);
+//        loadImage(holder.iv_hotel_icon, R.drawable.def_hotel_list, bean.hotelFeaturePic, 690, 500);
+        Glide.with(context)
+                .load(bean.hotelFeaturePic)
+                .placeholder(R.drawable.def_hotel_list)
+                .error(R.drawable.def_hotel_list)
+                .crossFade()
+                .into(holder.iv_hotel_icon);
 
-        loadImage(holder.iv_hotel_icon, R.drawable.def_hotel_list, bean.hotelFeaturePic, 690, 500);
         if (HotelCommDef.IS_VIP.equals(bean.vipEnable) && bean.vipPrice > 0 && bean.vipPrice < bean.price) {
             holder.vip_layout.setVisibility(View.VISIBLE);
             holder.tv_vip_price.setText(String.valueOf(bean.vipPrice));

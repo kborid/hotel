@@ -17,7 +17,7 @@
         <com.huicheng.hotel.android.ui.custom.RoundedTopImageView
             android:id="@+id/iv_hotel_icon"
             android:layout_width="match_parent"
-            android:layout_height="125dp"
+            android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:src="@drawable/def_hotel_list" />
 

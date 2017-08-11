@@ -108,7 +108,7 @@ public class CustomBottomNaviBar extends LinearLayout {
                         });
                         dialog.setCanceledOnTouchOutside(true);
                         dialog.show();
-                    } else if (!SessionContext.isLogin() && 1 == finalI) {
+                    } else if (!SessionContext.isLogin() && (1 == finalI || 3 == finalI)) {
                         context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, true));
                     } else {
                         refreshTabLayout(finalI, true);

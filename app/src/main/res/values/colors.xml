@@ -42,6 +42,9 @@
     <color name="lineColor2">#cfcfcf</color>
     <color name="lineShadowColor">#fffefd</color>
 
+    <color name="calendarTextColor">#4d4d4d</color>
+    <color name="bottomBtnTextDisable">#808080</color>
+
     <color name="wxColor">#2dc100</color>
     <color name="qqColor">#0896ff</color>
 
@@ -70,6 +73,8 @@
     <color name="hotelColor">#009fda</color>
     <color name="searchBgColor">@color/transparent80_</color>
     <color name="btnBoundColor">#98a2bb</color>
+
+    <color name="pinTextColor">#1a1a1a</color>
 
 
     <!--default color-->

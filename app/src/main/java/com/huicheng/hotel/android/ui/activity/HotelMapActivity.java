@@ -1,11 +1,14 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +25,7 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DrivePath;
@@ -40,6 +44,7 @@ import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.ui.adapter.PinInfoWindowAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.mapoverlay.DrivingRouteOverlay;
 import com.huicheng.hotel.android.ui.mapoverlay.WalkRouteOverlay;
 import com.prj.sdk.util.LogUtil;
@@ -76,9 +81,6 @@ public class HotelMapActivity extends BaseActivity
     private MapView mapview = null;
     private AMap amap = null;
     private Marker currentMarker;
-    private boolean isFirst = true;
-    private boolean toMyLoc = false;
-
     private OnLocationChangedListener mListener;
     private AMapLocation aMapLocation;
     private RouteSearch routeSearch;
@@ -86,17 +88,16 @@ public class HotelMapActivity extends BaseActivity
     private DriveRouteResult driveRouteResult = null;
     private WalkRouteOverlay walkRouteOverlay = null;
     private WalkRouteResult walkRouteResult = null;
+    private ArrayList<MarkerOptions> markerOptionses = new ArrayList<>();
+    private List<Marker> markers = new ArrayList<>();
+    private boolean isShowMarker = false;
+    private boolean isToMyLoc = false;
 
     private HotelDetailInfoBean hotelDetailInfoBean = null;
     private List<HotelMapInfoBean> hotelList = new ArrayList<>();
     private String key = null;
 
-    private ArrayList<MarkerOptions> markerOptionses = new ArrayList<>();
-    private List<Marker> markers = new ArrayList<>();
-
-    private boolean isShowMarker = false;
-
-    private int mPinId;
+    private int mPinId, mPricePinId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class HotelMapActivity extends BaseActivity
         setContentView(R.layout.act_hotelmap_layout);
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         mPinId = ta.getResourceId(R.styleable.MyTheme_mapPinImage, R.drawable.iv_pin);
+        mPricePinId = ta.getResourceId(R.styleable.MyTheme_mapPricePinImage, R.drawable.iv_pin_price);
         ta.recycle();
 
         initViews();
@@ -112,12 +114,18 @@ public class HotelMapActivity extends BaseActivity
         //在activity执行onCreate时执行mapview.onCreate(savedInstanceState)，实现地图生命周期管理
         mapview.onCreate(savedInstanceState);
         refreshMapOverLayout(false);
+        if (hotelList.size() > 0 || hotelDetailInfoBean != null) {
+            isToMyLoc = false;
+            showSearchResultToMap();
+        } else {
+            isToMyLoc = true;
+        }
+        System.out.println("isToMyLoc = " + isToMyLoc);
     }
 
     @Override
     public void initViews() {
         super.initViews();
-
         iv_zoom_out = (ImageView) findViewById(R.id.iv_zoom_out);
         iv_zoom_in = (ImageView) findViewById(R.id.iv_zoom_in);
         iv_loc = (ImageView) findViewById(R.id.iv_loc);
@@ -128,7 +136,6 @@ public class HotelMapActivity extends BaseActivity
         iv_search = (ImageView) findViewById(R.id.iv_search);
         tv_driver = (TextView) findViewById(R.id.tv_driver);
         tv_foot = (TextView) findViewById(R.id.tv_foot);
-
         mapview = (MapView) findViewById(R.id.mapview);
     }
 
@@ -176,21 +183,34 @@ public class HotelMapActivity extends BaseActivity
             setUpMap();
         }
         routeSearch = new RouteSearch(this);
-//        showSearchResultToMap();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        System.out.println("onNewIntent()");
+    }
+
+    private Bitmap getMyPinBitmap(String price) {
+        View view = LayoutInflater.from(this).inflate(R.layout.map_item_pin, null);
+        view.setBackgroundResource(mPricePinId);
+        TextView tv_price = (TextView) view.findViewById(R.id.tv_price);
+        tv_price.setText(price);
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.buildDrawingCache();
+        return view.getDrawingCache();
     }
 
     private void showSearchResultToMap() {
         LogUtil.i(TAG, "showSearchResultToMap()");
-        LogUtil.i(TAG, "hoteldetailinfobean = " + hotelDetailInfoBean);
         markerOptionses.clear();
         markers.clear();
+
         if (hotelDetailInfoBean != null) {
-            System.out.println("hotelDetailInfoBean != null");
-            System.out.println("hotelDetailInfoBean lon = " + hotelDetailInfoBean.lon);
-            System.out.println("hotelDetailInfoBean lat = " + hotelDetailInfoBean.lat);
-            double lonn = Double.parseDouble(hotelDetailInfoBean.lon);
-            double latt = Double.parseDouble(hotelDetailInfoBean.lat);
-            LatLng latLng = new LatLng(latt, lonn);
+            double lon = Double.parseDouble(hotelDetailInfoBean.lon);
+            double lat = Double.parseDouble(hotelDetailInfoBean.lat);
+            LatLng latLng = new LatLng(lat, lon);
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng).title(hotelDetailInfoBean.name).draggable(true);
             Map<String, String> param = new HashMap<>();
@@ -200,26 +220,17 @@ public class HotelMapActivity extends BaseActivity
             param.put("hotelId", String.valueOf(hotelDetailInfoBean.id));
             markerOptions.snippet(new Gson().toJson(param));
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), mPinId)));
-            Marker marker = amap.addMarker(markerOptions);
             markerOptionses.add(markerOptions);
-            markers.add(marker);
-            amap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f));
         } else {
             LogUtil.i(TAG, "current marker = " + currentMarker);
             if (currentMarker != null) {
                 amap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentMarker.getPosition().latitude, currentMarker.getPosition().longitude), 12f));
-            } else {
-                if (aMapLocation != null) {
-                    amap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), 12f));
-                }
             }
-            ArrayList<MarkerOptions> markerOptionses = new ArrayList<>();
             for (int i = 0; i < hotelList.size(); i++) {
                 HotelMapInfoBean bean = hotelList.get(i);
                 if (StringUtil.notEmpty(bean.coordinate)) {
                     String[] latlngStr = bean.coordinate.split("\\|");
                     LatLng latLng = new LatLng(Double.parseDouble(latlngStr[0]), Double.parseDouble(latlngStr[1]));
-                    LogUtil.i(TAG, "lat = " + latLng.latitude + ", lng = " + latLng.longitude);
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latLng).title(bean.hotelName).draggable(true);
                     Map<String, String> param = new HashMap<>();
@@ -228,16 +239,16 @@ public class HotelMapActivity extends BaseActivity
                     param.put("address", bean.hotelAddress);
                     param.put("hotelId", String.valueOf(bean.hotelId));
                     markerOptions.snippet(new Gson().toJson(param));
-                    LogUtil.i(TAG, "name = " + bean.hotelName + ", addr = " + bean.hotelAddress);
-                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), mPinId)));
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMyPinBitmap(String.valueOf(bean.price))));
                     markerOptionses.add(markerOptions);
                 }
             }
-            this.markerOptionses = markerOptionses;
-            markers = amap.addMarkers(markerOptionses, true);
         }
-        if (markers.size() > 0) {
+
+        markers = amap.addMarkers(markerOptionses, true);
+        if (markers != null && markers.size() > 0) {
             isShowMarker = true;
+            tv_show_area_hotel.setEnabled(true);
         }
     }
 
@@ -268,6 +279,9 @@ public class HotelMapActivity extends BaseActivity
             }
         });
         amap.setInfoWindowAdapter(infoWindowAdapter);
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
+        amap.setMyLocationStyle(myLocationStyle);
     }
 
     @Override
@@ -282,20 +296,19 @@ public class HotelMapActivity extends BaseActivity
         iv_reroute.setOnClickListener(this);
         iv_navi.setOnClickListener(this);
         routeSearch.setRouteSearchListener(this);
+        tv_show_area_hotel.setOnClickListener(this);
+
         amap.setOnMarkerClickListener(this);
         amap.setLocationSource(this);// 设置定位监听
         amap.setMyLocationEnabled(true);
-        amap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
         amap.setOnMapClickListener(new AMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                LogUtil.i(TAG, "windowinfo is show " + currentMarker.isInfoWindowShown());
                 if (currentMarker.isInfoWindowShown()) {
                     currentMarker.hideInfoWindow();
                 }
             }
         });
-        tv_show_area_hotel.setOnClickListener(this);
     }
 
 
@@ -327,7 +340,7 @@ public class HotelMapActivity extends BaseActivity
                 if (aMapLocation != null) {
                     amap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), amap.getCameraPosition().zoom));
                 } else {
-                    toMyLoc = true;
+                    isToMyLoc = true;
                     AMapLocationControl.getInstance().startLocationAlways(this, this);
                 }
                 break;
@@ -359,9 +372,23 @@ public class HotelMapActivity extends BaseActivity
             case R.id.iv_navi:
                 if (currentMarker != null) {
                     try {
-                        Uri mUri = Uri.parse("geo:" + currentMarker.getPosition().latitude + "," + currentMarker.getPosition().longitude + "?q=" + currentMarker.getTitle());
-                        Intent intent = new Intent(Intent.ACTION_VIEW, mUri);
-                        startActivity(intent);
+                        CustomDialog dialog = new CustomDialog(this);
+                        dialog.setMessage("是否启动本手机的自带导航");
+                        dialog.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Uri mUri = Uri.parse("geo:" + currentMarker.getPosition().latitude + "," + currentMarker.getPosition().longitude + "?q=" + currentMarker.getTitle());
+                                Intent intent = new Intent(Intent.ACTION_VIEW, mUri);
+                                startActivity(intent);
+                            }
+                        });
+                        dialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
                     } catch (Exception e) {
                         e.printStackTrace();
                         CustomToast.show("您的手机中未安装任何地图导航工具", Toast.LENGTH_SHORT);
@@ -369,10 +396,6 @@ public class HotelMapActivity extends BaseActivity
                 }
                 break;
             case R.id.tv_show_area_hotel:
-                if (markers == null && markers.size() == 0) {
-                    return;
-                }
-                System.out.println("marker size = " + markers.size());
                 if (isShowMarker) {
                     isShowMarker = false;
                     tv_show_area_hotel.setText("显示区域内酒店");
@@ -420,6 +443,7 @@ public class HotelMapActivity extends BaseActivity
     protected void onPause() {
         super.onPause();
         mapview.onPause();
+        System.out.println("onPause()");
     }
 
     @Override
@@ -431,6 +455,16 @@ public class HotelMapActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        System.out.println("onDestroy()");
+        if (null != markerOptionses) {
+            markerOptionses.clear();
+        }
+        if (null != markers) {
+            markers.clear();
+        }
+        if (null != amap) {
+            amap.clear();
+        }
         mapview.onDestroy();
         AMapLocationControl.getInstance().stopLocation();
     }
@@ -467,16 +501,12 @@ public class HotelMapActivity extends BaseActivity
         walkRouteResult = null;
         driveRouteResult = null;
         amap.clear();
-        toMyLoc = true;
         refreshMapOverLayout(false);
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (driveRouteResult == null && walkRouteResult == null) {
-            if (aMapLocation == null) {
-                isFirst = false;
-            }
             currentMarker = marker;
             amap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentMarker.getPosition(), amap.getCameraPosition().zoom));
             return false;
@@ -488,7 +518,6 @@ public class HotelMapActivity extends BaseActivity
 
     @Override
     public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
-
     }
 
     @Override
@@ -512,7 +541,7 @@ public class HotelMapActivity extends BaseActivity
                 tv_driver.setSelected(true);
                 tv_foot.setSelected(false);
             } else {
-                CustomToast.show("对不起，没有搜索到相关数据！", CustomToast.LENGTH_SHORT);
+                CustomToast.show("算路失败", CustomToast.LENGTH_SHORT);
             }
         } else {
             LogUtil.i(TAG, "算路失败(" + rCode + ")");
@@ -539,7 +568,7 @@ public class HotelMapActivity extends BaseActivity
                 tv_driver.setSelected(false);
                 tv_foot.setSelected(true);
             } else {
-                CustomToast.show("对不起，没有搜索到相关数据！", CustomToast.LENGTH_SHORT);
+                CustomToast.show("算路失败", CustomToast.LENGTH_SHORT);
             }
         } else {
             LogUtil.i(TAG, "算路失败(" + rCode + ")");
@@ -568,25 +597,16 @@ public class HotelMapActivity extends BaseActivity
         LogUtil.i(TAG, "onLocationChanged()");
         if (null != aMapLocation) {
             if (aMapLocation.getErrorCode() == 0) {
-                this.aMapLocation = aMapLocation;
                 if (mListener != null) {
-                    if (driveRouteResult == null && walkRouteResult == null) {
-                        LogUtil.i(TAG, "isFirst = " + isFirst + ", toMyLoc = " + toMyLoc);
-                        if (isFirst || toMyLoc) {
-                            isFirst = false;
-                            toMyLoc = false;
-                            LogUtil.i(TAG, "isFirst = " + isFirst + ", toMyLoc = " + toMyLoc);
-                            LogUtil.i(TAG, "mListener.onLocationChanged(aMapLocation)");
-                            mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
-                            showSearchResultToMap();
-                        }
-                    }
-                    float bearing = amap.getCameraPosition().bearing;
-                    amap.setMyLocationRotateAngle(bearing);// 设置小蓝点旋转角度
+                    mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
+                }
+                this.aMapLocation = aMapLocation;
+                if (isToMyLoc) {
+                    isToMyLoc = false;
+                    amap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), amap.getCameraPosition().zoom));
                 }
             } else {
-                String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
-                android.util.Log.e("AmapErr", errText);
+                LogUtil.e(TAG, "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo());
             }
         }
     }
@@ -596,6 +616,7 @@ public class HotelMapActivity extends BaseActivity
         if (KeyEvent.KEYCODE_BACK == keyCode) {
             if (driveRouteResult != null || walkRouteResult != null) {
                 clearRoute();
+                showSearchResultToMap();
                 return true;
             }
         }

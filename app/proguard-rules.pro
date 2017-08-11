@@ -295,3 +295,5 @@ public <fields>;
 -keep class com.iflytek.**{*;}
 -keepattributes Signature
 
+#银联在线
+-dontwarn org.simalliance.openmobileapi.**

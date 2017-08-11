@@ -94,6 +94,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
     protected void onVisible() {
         super.onVisible();
+        System.out.println("onVisible()");
         if (isFirstLoad) {
             isFirstLoad = false;
         }
@@ -104,6 +105,10 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
             HotelOrderManager.getInstance().setCityStr(tempProvince);
         } else {
             HotelOrderManager.getInstance().setCityStr(tempCity + "-" + tempProvince);
+        }
+        tv_city.setText(tempCity + " " + tempProvince);
+        if (tempCity.equals(tempProvince)) {
+            tv_city.setText(tempCity);
         }
     }
 
@@ -171,6 +176,12 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                                 tv_city.setText(loc_city + " " + loc_province);
                                 if (loc_city.equals(loc_province)) {
                                     tv_city.setText(loc_city);
+                                }
+
+                                if (StringUtil.notEmpty(loc_province) && loc_province.equals(loc_city)) {
+                                    HotelOrderManager.getInstance().setCityStr(loc_province);
+                                } else {
+                                    HotelOrderManager.getInstance().setCityStr(loc_city + "-" + loc_province);
                                 }
 
                             } catch (Exception e) {
@@ -244,7 +255,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
             case R.id.tv_city:
             case R.id.iv_location:
                 Intent resIntent = new Intent(getActivity(), LocationActivity2.class);
-                resIntent.putExtra("city", tv_city.getText().toString());
                 startActivityForResult(resIntent, 0x01);
                 break;
             case R.id.iv_reset:
@@ -348,21 +358,26 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (Activity.RESULT_OK != resultCode) {
             return;
         }
 
-        if (requestCode == 0x01) {
-            if (null != data) {
-                String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-                String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-                tv_city.setText(city + " " + province);
-                if (city.equals(province)) {
-                    tv_city.setText(city);
-                }
-            }
-        }
+//        if (requestCode == 0x01) {
+//            if (null != data) {
+//                String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+//                String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+//                tv_city.setText(city + " " + province);
+//                if (city.equals(province)) {
+//                    tv_city.setText(city);
+//                }
+//            }
+//        }
     }
 }

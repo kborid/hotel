@@ -32,7 +32,7 @@ public class PinInfoWindowAdapter implements AMap.InfoWindowAdapter {
     public PinInfoWindowAdapter(Context context) {
         this.context = context;
         TypedArray ta = context.obtainStyledAttributes(R.styleable.MyTheme);
-        pinBackgroundId = ta.getInt(R.styleable.MyTheme_mainColor, R.color.mainColor);
+        pinBackgroundId = ta.getResourceId(R.styleable.MyTheme_mainColor, R.color.mainColor);
         ta.recycle();
     }
 
