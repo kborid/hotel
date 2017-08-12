@@ -226,31 +226,30 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     @Override
     public void onInstallFinish(AppData appData, com.fm.openinstall.model.Error error) {
-        LogUtil.d(TAG, "onInstallFinish()");
+        LogUtil.i(TAG, "onInstallFinish()");
         if (error == null) {
-            LogUtil.d(TAG, "OpenInstall install-data : " + appData.toString());
+            LogUtil.i(TAG, "OpenInstall install-data : " + appData.toString());
             SessionContext.setRecommandAppData(appData);
-            finish();
         } else {
-            LogUtil.d(TAG, "error : " + error.toString());
+            LogUtil.i(TAG, "error : " + error.toString());
         }
     }
 
     @Override
     public void onWakeUpFinish(AppData appData, Error error) {
-        LogUtil.d(TAG, "onWakeUpFinish()");
+        LogUtil.i(TAG, "onWakeUpFinish()");
         if (error == null) {
             SessionContext.setWakeUpAppData(appData);
-            finish();
-            LogUtil.d("MainActivity", "OpenInstall wakeup-data : " + appData.toString());
+            LogUtil.i(TAG, "OpenInstall wakeup-data : " + appData.toString());
         } else {
-            LogUtil.d("MainActivity", "error : " + error.toString());
+            LogUtil.i(TAG, "error : " + error.toString());
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.i(TAG, "onResume()");
         new Thread() {
             @Override
             public void run() {
