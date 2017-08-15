@@ -15,26 +15,38 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/photo_lay"
                 android:layout_width="match_parent"
                 android:layout_height="310dp">
 
-                <RelativeLayout
-                    android:id="@+id/camer_lay"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/transparent50_"
-                    android:gravity="center"
-                    android:visibility="gone">
+                    android:layout_height="match_parent">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/iv_camer" />
-                </RelativeLayout>
+                        android:id="@+id/iv_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+
+                    <RelativeLayout
+                        android:id="@+id/camer_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent50_"
+                        android:gravity="center"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/iv_camer" />
+                    </RelativeLayout>
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -137,6 +149,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
             </RelativeLayout>
 
             <LinearLayout
@@ -177,8 +190,7 @@
                     android:layout_height="2dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/comm_line2"
-                    android:visibility="visible" />
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -211,8 +223,7 @@
                     android:layout_height="2dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/comm_line2"
-                    android:visibility="visible" />
+                    android:background="@drawable/comm_line2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -353,16 +364,17 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <include layout="@layout/comm_title" />
+
             <Button
                 android:id="@+id/btn_setting"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
+                android:layout_below="@id/photo_lay"
                 android:layout_marginRight="25dp"
-                android:layout_marginTop="290dp"
+                android:layout_marginTop="-20dp"
                 android:background="?attr/settingButton" />
-
-            <include layout="@layout/comm_title" />
         </RelativeLayout>
 
     </ScrollView>

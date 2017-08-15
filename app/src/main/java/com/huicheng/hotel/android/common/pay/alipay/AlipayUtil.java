@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.LocalBroadcastManager;
 
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.Gson;
@@ -215,7 +214,8 @@ public class AlipayUtil {
                         PayResult payResult = new PayResult((String) msg.obj);
                         mIntent.putExtra("info", new Gson().toJson(payResult));
                         mIntent.putExtra("type", "aliPay");
-                        LocalBroadcastManager.getInstance(mActivity.get().mContext).sendBroadcast(mIntent);
+//                        LocalBroadcastManager.getInstance(mActivity.get().mContext).sendBroadcast(mIntent);
+                        mActivity.get().mContext.sendBroadcast(mIntent);
                         break;
                     }
                     default:

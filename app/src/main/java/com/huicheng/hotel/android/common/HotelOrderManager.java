@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.common;
 
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
+import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +25,7 @@ public class HotelOrderManager {
     private String cityStr = null;
     private String dateStr = null;
     private HotelDetailInfoBean hotelDetailInfoBean = null;
+    private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
 
     private HotelOrderManager() {
         Calendar calendar = Calendar.getInstance();
@@ -139,9 +141,11 @@ public class HotelOrderManager {
         this.beginTime = beginTime;
         this.beginDate = new Date(beginTime);
     }
+
     public long getBeginTime() {
         return getBeginTime(false);
     }
+
     public long getBeginTime(boolean isYgr) {
         if (isYgr) {
             return ygrBeginTime;
@@ -149,14 +153,17 @@ public class HotelOrderManager {
             return beginTime;
         }
     }
+
     public void setEndTime(long endTime) {
         this.endTime = endTime;
         this.endDate = new Date(endTime);
     }
+
     public long getEndTime() {
         return getEndTime(false);
     }
-    public long getEndTime(boolean isYgr){
+
+    public long getEndTime(boolean isYgr) {
         if (isYgr) {
             return ygrEndTime;
         } else {
@@ -165,21 +172,26 @@ public class HotelOrderManager {
     }
 
     public void setHotelDetailInfo(HotelDetailInfoBean hotelDetailInfo) {
-        if (null != hotelDetailInfo) {
-            this.hotelDetailInfoBean = hotelDetailInfo;
-        } else {
-            this.hotelDetailInfoBean = new HotelDetailInfoBean();
-        }
+        this.hotelDetailInfoBean = hotelDetailInfo;
     }
 
     public HotelDetailInfoBean getHotelDetailInfo() {
-        if (null != hotelDetailInfoBean) {
-            return hotelDetailInfoBean;
-        } else {
-            return new HotelDetailInfoBean();
+        if (null == hotelDetailInfoBean) {
+            hotelDetailInfoBean = new HotelDetailInfoBean();
         }
+        return hotelDetailInfoBean;
     }
 
+    public void setOrderPayDetailInfo(OrderPayDetailInfoBean orderPayDetailInfoBean) {
+        this.orderPayDetailInfoBean = orderPayDetailInfoBean;
+    }
+
+    public OrderPayDetailInfoBean getOrderPayDetailInfo() {
+        if (null == orderPayDetailInfoBean) {
+            orderPayDetailInfoBean = new OrderPayDetailInfoBean();
+        }
+        return orderPayDetailInfoBean;
+    }
 
     public void reset() {
         hasCoupon = false;
@@ -189,5 +201,6 @@ public class HotelOrderManager {
         hotelType = 1;
         payType = "";
         hotelDetailInfoBean = null;
+        orderPayDetailInfoBean = null;
     }
 }

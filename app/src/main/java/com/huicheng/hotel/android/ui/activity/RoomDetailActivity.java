@@ -52,6 +52,7 @@ import com.umeng.socialize.media.UMWeb;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,6 +183,9 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         super.initParams();
         btn_back.setImageResource(R.drawable.iv_back_white);
 
+        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+            iv_favorite.setVisibility(View.VISIBLE);
+        }
         tabHost.setup();
         for (int i = 0; i < SELECTED_BAR_COUNT; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.selected_bar_item, null);
@@ -254,21 +258,6 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         }
     }
 
-    private void requestHotelVip(int hotelId) {
-        RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("hotelId", String.valueOf(hotelId));
-
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.HOTEL_VIP;
-        d.flag = AppConst.HOTEL_VIP;
-
-        if (!isProgressShowing()) {
-            showProgressDialog(this);
-        }
-
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
     private void requestRoomDetailInfo() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime(isYgr)));
@@ -283,6 +272,28 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         if (!isProgressShowing()) {
             showProgressDialog(this);
         }
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
+    @Override
+    protected void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
+        super.requestHotelVip2(email, idcode, realname, traveltype);
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+
+        b.addBody("email", email);
+        b.addBody("hotelId", String.valueOf(hotelId));
+        b.addBody("idcode", idcode);
+        b.addBody("realname", realname);
+        b.addBody("traveltype", traveltype);
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.HOTEL_VIP;
+        d.flag = AppConst.HOTEL_VIP;
+
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -462,7 +473,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                 ShareControl.getInstance(this).openShareDisplay(web);
                 break;
             case R.id.iv_favorite:
-                requestHotelVip(HotelOrderManager.getInstance().getHotelDetailInfo().id);
+                showAddVipDialog(this, HotelOrderManager.getInstance().getHotelDetailInfo());
                 break;
             case R.id.point_lay: {
                 Intent intent = new Intent(this, AssessCommendActivity.class);
@@ -528,6 +539,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
             chooseServiceInfoMap = new HashMap<>();
             choose_service_lay.removeAllViews();
             for (int i = 0; i < choose_service_size; i++) {
+                final RoomDetailInfoBean.ChooseService serviceBean = chooseList.get(i);
                 View view = LayoutInflater.from(this).inflate(R.layout.lv_choose_service_item, null);
                 TextView tv_choose_service_title = (TextView) view.findViewById(R.id.tv_choose_service_title);
                 tv_choose_service_title.getPaint().setFakeBoldText(true);
@@ -537,19 +549,27 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                 tv_choose_service_total_price.getPaint().setFakeBoldText(true);
                 CommonAddSubLayout addSubLayout = (CommonAddSubLayout) view.findViewById(R.id.addSubLayout);
                 addSubLayout.setUnit("份");
-                addSubLayout.setMaxvalue(chooseList.get(i).limitCnt);
-                LogUtil.i(TAG, "limit count = " + chooseList.get(i).limitCnt);
-                tv_choose_service_title.setText(chooseList.get(i).serviceName);
-                tv_choose_service_price.setText((HotelOrderManager.getInstance().isVipHotel() ? chooseList.get(i).vipPrice : chooseList.get(i).price) + "元/份");
+                addSubLayout.setMaxvalue(serviceBean.limitCnt);
+                LogUtil.i(TAG, "limit count = " + serviceBean.limitCnt);
+                tv_choose_service_title.setText(serviceBean.serviceName);
+                tv_choose_service_price.setText((HotelOrderManager.getInstance().isVipHotel() ? serviceBean.vipPrice : serviceBean.price) + "元/份");
                 tv_choose_service_total_price.setText("0元");
+
+                if (StringUtil.isEmpty(serviceBean.detail) && StringUtil.isEmpty(serviceBean.pics)) {
+                    tv_choose_service_detail.setVisibility(View.GONE);
+                } else {
+                    tv_choose_service_detail.setVisibility(View.VISIBLE);
+                }
+
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 lp.topMargin = Utils.dip2px(20);
                 if (i >= 3 && isShowMore) {
                     more_lay.setVisibility(View.VISIBLE);
                     view.setVisibility(View.GONE);
                 }
-                final int finalI = i;
+
                 final RoomConfirmInfoBean bean = new RoomConfirmInfoBean();
+
                 tv_choose_service_detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -562,15 +582,31 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                         ImageView iv_close = (ImageView) view.findViewById(R.id.iv_close);
                         final NoScrollGridView gridView = (NoScrollGridView) view.findViewById(R.id.gridview);
 
-                        //TODO setData
-                        tv_title.setText(chooseList.get(finalI).serviceName);
-                        final ArrayList<String> list = new ArrayList<>();
-                        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1503050866&di=3261f622a326aa462c7ed0d5f7b4e7cb&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.pp3.cn%2Fuploads%2F201601%2F2016011405.jpg");
-                        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456289108&di=a7154df521b41104fdd44e3036eb23b8&imgtype=0&src=http%3A%2F%2Fimg.tupianzj.com%2Fuploads%2Fallimg%2F160821%2F9-160R1150R1.jpg");
-                        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456289107&di=a5198b5891256c827c48eff38b16309e&imgtype=0&src=http%3A%2F%2Fbpic.ooopic.com%2F16%2F09%2F03%2F16090347-66e506bde737aa4c806fe24f47062ab0.jpg");
-                        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456313861&di=ee3c8fb4fecf8520baec261b80417b80&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D3974436224%2C4269321529%26fm%3D214%26gp%3D0.jpg");
+                        tv_title.setText(serviceBean.serviceName);
+                        String detail = serviceBean.detail;
+                        tv_content.setText(detail);
+                        if (StringUtil.isEmpty(detail)) {
+                            tv_content.setVisibility(View.GONE);
+                        } else {
+                            tv_content.setVisibility(View.VISIBLE);
+                        }
 
-                        gridView.setAdapter(new CommonGridViewPicsAdapter(RoomDetailActivity.this, list, Utils.dip2px(90), 2 / 3f));
+                        final ArrayList<String> list = new ArrayList<>();
+                        String pics = serviceBean.pics;
+                        if (StringUtil.isEmpty(pics)) {
+                            gridView.setVisibility(View.GONE);
+                        } else {
+                            String[] picArr = pics.split(";");
+                            list.addAll(Arrays.asList(picArr));
+                            list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1503050866&di=3261f622a326aa462c7ed0d5f7b4e7cb&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.pp3.cn%2Fuploads%2F201601%2F2016011405.jpg");
+                            list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456289108&di=a7154df521b41104fdd44e3036eb23b8&imgtype=0&src=http%3A%2F%2Fimg.tupianzj.com%2Fuploads%2Fallimg%2F160821%2F9-160R1150R1.jpg");
+                            list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456289107&di=a5198b5891256c827c48eff38b16309e&imgtype=0&src=http%3A%2F%2Fbpic.ooopic.com%2F16%2F09%2F03%2F16090347-66e506bde737aa4c806fe24f47062ab0.jpg");
+                            list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456313861&di=ee3c8fb4fecf8520baec261b80417b80&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D3974436224%2C4269321529%26fm%3D214%26gp%3D0.jpg");
+
+                            gridView.setAdapter(new CommonGridViewPicsAdapter(RoomDetailActivity.this, list, Utils.dip2px(90), 2 / 3f));
+                            gridView.setVisibility(View.VISIBLE);
+                        }
+
                         iv_close.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -602,11 +638,11 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                 addSubLayout.setOnCountChangedListener(new CommonAddSubLayout.OnCountChangedListener() {
                     @Override
                     public void onCountChanged(int count) {
-                        bean.serviceId = chooseList.get(finalI).id;
-                        bean.serviceTitle = chooseList.get(finalI).serviceName;
+                        bean.serviceId = serviceBean.id;
+                        bean.serviceTitle = serviceBean.serviceName;
                         bean.serviceCount = count;
-                        bean.servicePrice = HotelOrderManager.getInstance().isVipHotel() ? chooseList.get(finalI).vipPrice : chooseList.get(finalI).price;
-                        bean.serviceTotalPrice = (HotelOrderManager.getInstance().isVipHotel() ? chooseList.get(finalI).vipPrice : chooseList.get(finalI).price) * count;
+                        bean.servicePrice = HotelOrderManager.getInstance().isVipHotel() ? serviceBean.vipPrice : serviceBean.price;
+                        bean.serviceTotalPrice = (HotelOrderManager.getInstance().isVipHotel() ? serviceBean.vipPrice : serviceBean.price) * count;
                         tv_choose_service_total_price.setText(bean.serviceTotalPrice + "元");
                         LogUtil.i(TAG, "choose service price = " + bean.serviceTotalPrice);
 

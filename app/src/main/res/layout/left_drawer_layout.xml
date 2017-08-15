@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -123,12 +124,13 @@
                 android:orientation="horizontal"
                 android:paddingLeft="40dp">
 
-                <com.huicheng.hotel.android.ui.custom.CircleImageViewWithBound
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_photo"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/def_photo"
-                    android:tag="img" />
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="2dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

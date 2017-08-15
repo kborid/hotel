@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
@@ -40,6 +39,8 @@ import com.prj.sdk.widget.CustomToast;
 
 import java.net.ConnectException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * @author kborid
  * @date 2016/7/7
@@ -53,7 +54,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     private Button btn_login;
     private Button btn_cancel;
 
-    private CircleImageViewWithBound iv_photo;
+    private CircleImageView iv_photo;
     private TextView tv_username, tv_userid;
     private TextView tv_usercenter, tv_myorder, tv_msg, tv_yhq, tv_assess, tv_vip, tv_setting, tv_feedback;
     private TextView tv_msg_count;
@@ -97,7 +98,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_cancel = (Button) findViewById(R.id.btn_cancel);
 
-        iv_photo = (CircleImageViewWithBound) findViewById(R.id.iv_photo);
+        iv_photo = (CircleImageView) findViewById(R.id.iv_photo);
         tv_username = (TextView) findViewById(R.id.tv_username);
         tv_userid = (TextView) findViewById(R.id.tv_userid);
 

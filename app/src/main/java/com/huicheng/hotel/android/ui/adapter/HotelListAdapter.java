@@ -77,7 +77,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 .crossFade()
                 .into(holder.iv_hotel_icon);
 
-        if (HotelCommDef.IS_VIP.equals(bean.vipEnable) && bean.vipPrice > 0 && bean.vipPrice < bean.price) {
+        if (HotelCommDef.VIP_SUPPORT.equals(bean.vipEnable) && bean.vipPrice > 0 && bean.vipPrice < bean.price) {
             holder.vip_layout.setVisibility(View.VISIBLE);
             holder.tv_vip_price.setText(String.valueOf(bean.vipPrice));
         } else {

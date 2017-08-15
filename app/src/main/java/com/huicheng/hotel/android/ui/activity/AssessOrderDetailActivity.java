@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
+import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
@@ -55,8 +56,6 @@ import java.util.Set;
 public class AssessOrderDetailActivity extends BaseActivity implements DataCallback {
 
     private final String TAG = getClass().getSimpleName();
-    private static final String[] travelType = {"商务出行", "夫妻旅行", "好友", "家庭", "独自旅行"};
-    private static final String[] travelIndex = {"00", "01", "02", "03", "04"};
 
     private LinearLayout root_lay;
     private RoundedAllImageView iv_background;
@@ -141,7 +140,7 @@ public class AssessOrderDetailActivity extends BaseActivity implements DataCallb
 
         ratingBar.setStarMark(0.0f);
 
-        tagList.addAll(Arrays.asList(travelType));
+        tagList.addAll(Arrays.asList(getResources().getStringArray(R.array.TravelType)));
         flowlayout.setAdapter(new TagAdapter<String>(tagList) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
@@ -190,7 +189,7 @@ public class AssessOrderDetailActivity extends BaseActivity implements DataCallb
                 et_content.setEnabled(false);
                 if (StringUtil.notEmpty(orderDetailBean.imgUrl)) {
                     iv_picture.setVisibility(View.VISIBLE);
-                    loadImage(iv_picture, orderDetailBean.imgUrl, 1920, 1080);
+                    loadImage(iv_picture, orderDetailBean.imgUrl, 800, 600);
                 } else {
                     iv_picture.setVisibility(View.GONE);
                 }
@@ -207,7 +206,7 @@ public class AssessOrderDetailActivity extends BaseActivity implements DataCallb
         b.addBody("imgUrl", imgUrl);
         b.addBody("orderId", String.valueOf(orderBean.id));
         b.addBody("content", et_content.getText().toString());
-        b.addBody("traveltype", travelIndex[selectedIndex]);
+        b.addBody("traveltype", HotelCommDef.convertTravelType(selectedIndex));
         b.addBody("grade", String.valueOf((int) ratingBar.getStarMark()));
         b.addBody("hotelId", String.valueOf(orderBean.hotelId));
 

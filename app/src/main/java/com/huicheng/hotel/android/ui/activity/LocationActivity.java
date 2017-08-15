@@ -328,7 +328,7 @@ public class LocationActivity extends BaseActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view = LayoutInflater.from(context).inflate(R.layout.gallery_item_layout, null);
+            View view = LayoutInflater.from(context).inflate(R.layout.gl_item_layout, null);
             TextView tv_text = (TextView) view.findViewById(R.id.tv_text);
             tv_text.setText(list.get(position));
             Gallery.LayoutParams lp = new Gallery.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

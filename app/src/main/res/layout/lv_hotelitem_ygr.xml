@@ -14,12 +14,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.huicheng.hotel.android.ui.custom.RoundedTopImageView
+        <com.huicheng.hotel.android.ui.custom.RoundedTopImageView xmlns:roundImage="http://schemas.android.com/apk/res-auto"
             android:id="@+id/iv_hotel_icon"
             android:layout_width="match_parent"
             android:layout_height="125dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/def_hotel_list" />
+            android:src="@drawable/def_hotel_list"
+            roundImage:radius="10dp" />
 
         <LinearLayout
             android:id="@+id/vip_layout"

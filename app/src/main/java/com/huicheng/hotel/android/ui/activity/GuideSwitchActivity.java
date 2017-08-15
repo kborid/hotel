@@ -169,7 +169,7 @@ public class GuideSwitchActivity extends BaseActivity {
                 exitTime = System.currentTimeMillis();
             } else {
                 SessionContext.destroy();
-                MobclickAgent.onKillProcess(this);// 调用Process.kill或者System.exit之类的方法杀死进程前保存统计数据
+                MobclickAgent.onKillProcess(this); //调用Process.kill或者System.exit之类的方法杀死进程前保存统计数据
                 ActivityTack.getInstanse().exit();
             }
             return true;

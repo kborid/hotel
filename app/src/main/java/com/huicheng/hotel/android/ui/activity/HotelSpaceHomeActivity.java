@@ -112,14 +112,15 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
     @Override
     public void dealIntent() {
         super.dealIntent();
-        Bundle bundle = getIntent().getExtras();
     }
 
     @Override
     public void initParams() {
         super.initParams();
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
-        btn_right.setVisibility(View.VISIBLE);
+        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+            btn_right.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -143,16 +144,23 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_right:
-                requestHotelVip(HotelOrderManager.getInstance().getHotelDetailInfo().id);
+                showAddVipDialog(this, HotelOrderManager.getInstance().getHotelDetailInfo());
                 break;
             default:
                 break;
         }
     }
 
-    private void requestHotelVip(int hotelId) {
+    @Override
+    protected void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
+        super.requestHotelVip2(email, idcode, realname, traveltype);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("hotelId", String.valueOf(hotelId));
+
+        b.addBody("email", email);
+        b.addBody("hotelId", String.valueOf(HotelOrderManager.getInstance().getHotelDetailInfo().id));
+        b.addBody("idcode", idcode);
+        b.addBody("realname", realname);
+        b.addBody("traveltype", traveltype);
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.HOTEL_VIP;

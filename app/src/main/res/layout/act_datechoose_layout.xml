@@ -102,9 +102,9 @@
             android:layout_height="45dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="?attr/bottomBtnSel"
             android:enabled="false"
             android:text="确定"
+            android:background="?attr/bottomBtnSel"
             android:textColor="@color/bottom_btn_text_selector"
             android:textSize="@dimen/common_15sp"
             android:textStyle="bold" />

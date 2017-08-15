@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
+import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.ShareControl;
@@ -98,7 +99,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         super.initViews();
 
         //headerView放帖子详细内容
-        mHeaderView = LayoutInflater.from(this).inflate(R.layout.hotel_tiedetail_header_item, null);
+        mHeaderView = LayoutInflater.from(this).inflate(R.layout.header_hotel_tiedetail, null);
         tv_date = (TextView) mHeaderView.findViewById(R.id.tv_date);
         tv_comment_count = (TextView) mHeaderView.findViewById(R.id.tv_comment_count);
         tv_content = (TextView) mHeaderView.findViewById(R.id.tv_content);
@@ -169,7 +170,9 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         super.initParams();
         tv_center_title.setText("帖子详情");
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
-        btn_right.setVisibility(View.VISIBLE);
+        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+            btn_right.setVisibility(View.VISIBLE);
+        }
         if (!SessionContext.isLogin()) {
             SessionContext.initUserInfo();
         }
@@ -278,7 +281,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_right:
-                requestHotelVip(hotelId);
+                showAddVipDialog(this, HotelOrderManager.getInstance().getHotelDetailInfo());
                 break;
             case R.id.tv_space_share:
                 LogUtil.i(TAG, "share button onclick!!!");
@@ -404,9 +407,16 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         webview.setVisibility(View.VISIBLE);
     }
 
-    private void requestHotelVip(int hotelId) {
+    @Override
+    protected void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
+        super.requestHotelVip2(email, idcode, realname, traveltype);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
+
+        b.addBody("email", email);
         b.addBody("hotelId", String.valueOf(hotelId));
+        b.addBody("idcode", idcode);
+        b.addBody("realname", realname);
+        b.addBody("traveltype", traveltype);
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.HOTEL_VIP;

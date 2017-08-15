@@ -37,6 +37,8 @@ public class RoomDetailInfoBean implements Serializable {
         public String serviceName;
         public int unitPrice;
         public int vipPrice;
+        public String detail;
+        public String pics;
     }
 
     public static class TotalPriceList implements Serializable {

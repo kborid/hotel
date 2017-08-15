@@ -1,10 +1,14 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -29,12 +33,30 @@ public class ImageScaleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initStatus();
         setTheme(R.style.ImageTransparent);
         overridePendingTransition(0, 0);
         iv_picture = new SmoothImageView(this);
         setContentView(iv_picture);
         initParams();
         initListeners();
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void initStatus() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            View decoderView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+            decoderView.setSystemUiVisibility(option);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
+            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
     @Override

@@ -248,7 +248,8 @@ public class HotelOrderDetailActivity extends BaseActivity implements DataCallba
         switch (v.getId()) {
             case R.id.btn_pay:
                 intent = new Intent(this, OrderPayActivity.class);
-                intent.putExtra("orderPayDetailInfoBean", orderPayDetailInfoBean);
+                intent.putExtra("orderId", orderId);
+                intent.putExtra("orderType", orderType);
                 break;
             case R.id.btn_hhy:
                 intent = new Intent(this, HouHuiYaoOrderDetailActivity.class);

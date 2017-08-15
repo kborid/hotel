@@ -29,8 +29,8 @@ public class HotelCommDef {
     public static final String COUPON_HAVE = "1";
 
     // Hotel Vip
-    public static final String IS_VIP = "1";
-    public static final String NOT_VIP = "0";
+    public static final String VIP_SUPPORT = "1";
+    public static final String VIP_NOT_SUPPORT = "0";
 
     //Invoice Type
     public static final String COMMON_INVOICE = "0";
@@ -65,13 +65,20 @@ public class HotelCommDef {
     // 支付
     public static final String ALIPAY = "01";
     public static final String WXPAY = "02";
+    public static final String UNIONPAY = "03";
 
     public static String getPayChannel(int index) {
-        String payChannel = "";
-        if (0 == index) {
-            payChannel = ALIPAY;
-        } else {
-            payChannel = WXPAY;
+        String payChannel = ALIPAY;
+        switch (index) {
+            case 0:
+                payChannel = UNIONPAY;
+                break;
+            case 1:
+                payChannel = ALIPAY;
+                break;
+            case 2:
+                payChannel = WXPAY;
+                break;
         }
         return payChannel;
     }
@@ -203,5 +210,28 @@ public class HotelCommDef {
                 break;
         }
         return starStr;
+    }
+
+    //TravelType
+    public static String convertTravelType(int index) {
+        String travel = "00";
+        switch (index) {
+            case 0:
+                travel = "00";
+                break;
+            case 1:
+                travel = "01";
+                break;
+            case 2:
+                travel = "02";
+                break;
+            case 3:
+                travel = "03";
+                break;
+            case 4:
+                travel = "04";
+                break;
+        }
+        return travel;
     }
 }

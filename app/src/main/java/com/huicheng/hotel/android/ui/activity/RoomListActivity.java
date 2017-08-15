@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -144,7 +145,9 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         tv_center_title.setText(HotelOrderManager.getInstance().getCityStr() + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
         tv_center_title.getPaint().setFakeBoldText(true);
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
-        btn_right.setVisibility(View.VISIBLE);
+        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+            btn_right.setVisibility(View.VISIBLE);
+        }
         super.initParams();
 
         tabHost.setup();
@@ -211,9 +214,16 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         tv_comment.setOnClickListener(this);
     }
 
-    private void requestHotelVip(int hotelId) {
+    @Override
+    protected void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
+        super.requestHotelVip2(email, idcode, realname, traveltype);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
+
+        b.addBody("email", email);
         b.addBody("hotelId", String.valueOf(hotelId));
+        b.addBody("idcode", idcode);
+        b.addBody("realname", realname);
+        b.addBody("traveltype", traveltype);
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.HOTEL_VIP;
@@ -227,7 +237,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
     }
 
     private void requestHotelDetailInfo() {
-        LogUtil.i(TAG,"requestHotelDetailInfo()");
+        LogUtil.i(TAG, "requestHotelDetailInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("hotelId", String.valueOf(hotelId));
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
@@ -247,7 +257,6 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
 
     private void refreshRoomListInfo() {
         if (null != hotelDetailInfoBean) {
-            root_detail_lay.setVisibility(View.VISIBLE);
             //设置banner
             int marginValue = Utils.dip2px(10);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
@@ -291,8 +300,16 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
             //设置酒店服务信息
             refreshHotelServiceInfo();
 
-        } else {
-            root_detail_lay.setVisibility(View.GONE);
+            if (hotelDetailInfoBean.isPopup) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAddVipDialog(RoomListActivity.this, hotelDetailInfoBean);
+                    }
+                }, 500);
+            }
+
+            root_detail_lay.setVisibility(View.VISIBLE);
         }
     }
 
@@ -554,8 +571,8 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.btn_right:
-                LogUtil.i(TAG,"right button onclick");
-                requestHotelVip(hotelId);
+                LogUtil.i(TAG, "right button onclick");
+                showAddVipDialog(this, hotelDetailInfoBean);
                 break;
             case R.id.tv_map:
                 if (hotelDetailInfoBean != null) {
@@ -595,7 +612,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
 
     private void initIndicatorLay(int count) {
         indicator_lay.removeAllViews();
-        LogUtil.i(TAG,"count = " + count);
+        LogUtil.i(TAG, "count = " + count);
         if (count >= 1) {
             for (int i = 0; i < count; i++) {
                 View view = new View(this);
@@ -655,7 +672,7 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
             }
             final View view = LayoutInflater.from(context).inflate(R.layout.room_banner_item, null);
             final RoundedAllImageView iv_background = (RoundedAllImageView) view.findViewById(R.id.iv_background);
-            loadImage(iv_background, R.drawable.def_hotel_banner, list.get(position), 1920, 1080);
+            loadImage(iv_background, R.drawable.def_hotel_banner, list.get(position), 800, 800);
             //如果View已经在之前添加到了一个父组件，则必须先remove，否则会抛出IllegalStateException。
             ViewParent vp = view.getParent();
             if (vp != null) {
@@ -701,17 +718,18 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_DETAIL) {
                 removeProgressDialog();
-                LogUtil.i(TAG,"hoteldetail json = " + response.body.toString());
+                LogUtil.i(TAG, "hoteldetail json = " + response.body.toString());
                 hotelDetailInfoBean = JSON.parseObject(response.body.toString(), HotelDetailInfoBean.class);
                 HotelOrderManager.getInstance().setHotelDetailInfo(hotelDetailInfoBean);
                 refreshRoomListInfo();
             } else if (request.flag == AppConst.HOTEL_VIP) {
+                dismissAddVipDialog();
                 removeProgressDialog();
-                LogUtil.i(TAG,"Json = " + response.body.toString());
+                LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             } else if (request.flag == AppConst.CHECK_ROOM_EMPTY) {
                 removeProgressDialog();
-                LogUtil.i(TAG,"json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 RoomDetailCheckResultInfoBean bean = JSON.parseObject(response.body.toString(), RoomDetailCheckResultInfoBean.class);
                 if ("false".equals(bean.status)) {
                     showRecommendRoomListDialog(bean);
@@ -727,11 +745,11 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         }
     }
 
-    class MyRecommendRoomListAdapter extends BaseAdapter {
+    private class MyRecommendRoomListAdapter extends BaseAdapter {
         private Context context;
         private List<RoomListInfoBean> list = new ArrayList<>();
 
-        public MyRecommendRoomListAdapter(Context context, List<RoomListInfoBean> list) {
+        MyRecommendRoomListAdapter(Context context, List<RoomListInfoBean> list) {
             this.context = context;
             this.list = list;
         }

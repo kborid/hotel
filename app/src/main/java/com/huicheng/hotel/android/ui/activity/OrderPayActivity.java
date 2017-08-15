@@ -1,12 +1,11 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +17,13 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.broatcast.PayResultReceiver;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
+import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.pay.alipay.AlipayUtil;
+import com.huicheng.hotel.android.common.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.common.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
@@ -37,6 +39,10 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Date;
 
 /**
@@ -46,65 +52,27 @@ import java.util.Date;
 public class OrderPayActivity extends BaseActivity implements DataCallback {
 
     private static final String TAG = "OrderPayActivity";
+    private PayResultReceiver mPayReceiver = new PayResultReceiver();
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
-    private String during = null;
-    private String checkRoomDate = null;
+    private String during;
+    private String orderId, orderType;
+
     private LinearLayout root_lay;
     private TextView tv_address, tv_date, tv_room_name, tv_total_price, tv_detail, tv_comment;
     private Button btn_pay;
     private TextView tv_pay_title;
     private ImageView iv_pay_icon, iv_pay_change;
-    private String orderId = null;
-    private String hotelName = null, roomName = null;
 
     private AlipayUtil alipay = null;
     private WXPayUtils wxpay = null;
+    private UnionPayUtil unionpay = null;
     private int payIndex = 0;
-    private int[] payIcon = new int[]{R.drawable.iv_pay_zhifubao, R.drawable.iv_pay_weixin};
-    private String[] payChannel = new String[]{"支付宝", "微信"};
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            LogUtil.i(TAG, "OrderPayActivity onReceive ACTION_PAY_STATUS callback");
-            String action = intent.getAction();
-            if (BroadCastConst.ACTION_PAY_STATUS.equals(action)) {
-                String info = intent.getExtras().getString("info");
-                String type = intent.getExtras().getString("type");
-                LogUtil.i(TAG, info);
-                LogUtil.i(TAG, type);
-                if (isProgressShowing()) {
-                    removeProgressDialog();
-                }
-
-                String code = "", msg = "";
-                if ("aliPay".equals(type)) {
-                    JSONObject mJson = JSON.parseObject(info);
-                    code = mJson.getString("resultStatus");
-                    msg = mJson.getString("memo");
-                } else {
-                    code = info;
-                    if ("-1".equals(code)) {
-                        msg = "支付失败";
-                    } else if ("-2".equals(code)) {
-                        msg = "取消支付";
-                    }
-                }
-
-                if ("9000".equals(code) || "0".equals(code)) {
-                    Intent intent1 = new Intent(OrderPayActivity.this, OrderPaySuccessActivity.class);
-                    intent1.putExtra("hotelName", hotelName);
-                    intent1.putExtra("roomName", roomName);
-                    intent1.putExtra("checkRoomDate", checkRoomDate);
-                    startActivity(intent1);
-                } else {
-                    if (StringUtil.isEmpty(msg)) {
-                        msg = "支付失败";
-                    }
-                    CustomToast.show(msg, CustomToast.LENGTH_SHORT);
-                }
-            }
-        }
+    private int[] payIcon = new int[]{
+            R.drawable.iv_pay_union,
+            R.drawable.iv_pay_zhifubao,
+            R.drawable.iv_pay_weixin
     };
+    private String[] payChannel = new String[]{"银联在线", "支付宝", "微信"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,11 +81,8 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
         initViews();
         initParams();
         initListeners();
-        if (StringUtil.notEmpty(orderPayDetailInfoBean)) {
-            refreshOrderDetailInfo();
-        } else if (StringUtil.notEmpty(orderId)) {
-            requestOrderDetailInfo();
-        }
+
+        requestOrderDetailInfo();
     }
 
     @Override
@@ -145,22 +110,12 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
             if (bundle.getString("orderId") != null) {
                 orderId = bundle.getString("orderId");
             }
-            if (bundle.getSerializable("orderPayDetailInfoBean") != null) {
-                orderPayDetailInfoBean = (OrderPayDetailInfoBean) bundle.getSerializable("orderPayDetailInfoBean");
-                hotelName = orderPayDetailInfoBean.name;
-                roomName = orderPayDetailInfoBean.roomName;
-                checkRoomDate = orderPayDetailInfoBean.checkRoomDate;
-            } else {
-                if (bundle.getString("hotelName") != null && bundle.getString("roomName") != null) {
-                    hotelName = bundle.getString("hotelName");
-                    roomName = bundle.getString("roomName");
-                }
-                if (bundle.getString("checkRoomDate") != null) {
-                    checkRoomDate = bundle.getString("checkRoomDate");
-                }
+            LogUtil.i(TAG, "orderId = " + orderId);
+            if (bundle.getString("orderType") != null) {
+                orderType = bundle.getString("orderType");
             }
+            LogUtil.i(TAG, "orderType = " + orderType);
         }
-        LogUtil.i(TAG, "checkRoomDate = " + checkRoomDate);
     }
 
     @Override
@@ -169,11 +124,14 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
         tv_center_title.setText("支付方式");
         iv_pay_icon.setImageResource(payIcon[payIndex]);
         tv_pay_title.setText(payChannel[payIndex]);
+        unionpay = new UnionPayUtil(this);
         alipay = new AlipayUtil(this);
         wxpay = new WXPayUtils(this);
-        IntentFilter mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(BroadCastConst.ACTION_PAY_STATUS);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, mIntentFilter);
+
+        // 动态注册支付广播
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BroadCastConst.ACTION_PAY_STATUS);
+        registerReceiver(mPayReceiver, intentFilter);
     }
 
     private void requestOrderPayInfo(String orderNo) {
@@ -195,7 +153,7 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
     private void requestOrderDetailInfo() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("orderId", orderId);
-        b.addBody("orderType", "1"); //1-酒店 2-机票
+        b.addBody("orderType", orderType); //1-酒店 2-机票
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.PAY_ORDER_DETAIL;
@@ -213,9 +171,9 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
             tv_address.setText(orderPayDetailInfoBean.name);
             tv_room_name.setText(orderPayDetailInfoBean.roomName);
             during = DateUtil.getGapCount(new Date(orderPayDetailInfoBean.timeStart), new Date(orderPayDetailInfoBean.timeEnd)) + "晚";
-            if (StringUtil.notEmpty(checkRoomDate)) {
+            if (StringUtil.notEmpty(orderPayDetailInfoBean.checkRoomDate)) {
                 tv_date.setVisibility(View.VISIBLE);
-                tv_date.setText(checkRoomDate);
+                tv_date.setText(orderPayDetailInfoBean.checkRoomDate);
             } else {
                 tv_date.setVisibility(View.GONE);
             }
@@ -247,11 +205,11 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
         switch (v.getId()) {
             case R.id.tv_detail: {
                 final CustomDialog dialog = new CustomDialog(this);
-                View view = LayoutInflater.from(this).inflate(R.layout.order_detail_item, null);
+                View view = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_layout, null);
                 ((TextView) view.findViewById(R.id.tv_title)).getPaint().setFakeBoldText(true);
                 LinearLayout service_lay = (LinearLayout) view.findViewById(R.id.service_lay);
                 service_lay.removeAllViews();
-                View commView = LayoutInflater.from(this).inflate(R.layout.order_detail_service_item, null);
+                View commView = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
                 TextView tv_title_comm = (TextView) commView.findViewById(R.id.tv_title);
                 TextView tv_price_comm = (TextView) commView.findViewById(R.id.tv_price);
                 ((TextView) commView.findViewById(R.id.tv_price_unit)).getPaint().setFakeBoldText(true);
@@ -261,7 +219,7 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
                 service_lay.addView(commView);
 
                 for (int i = 0; i < orderPayDetailInfoBean.attachInfo.size(); i++) {
-                    View item = LayoutInflater.from(this).inflate(R.layout.order_detail_service_item, null);
+                    View item = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
                     TextView tv_title = (TextView) item.findViewById(R.id.tv_title);
                     TextView tv_price = (TextView) item.findViewById(R.id.tv_price);
                     ((TextView) item.findViewById(R.id.tv_price_unit)).getPaint().setFakeBoldText(true);
@@ -362,13 +320,82 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
+        wxpay = null;
+        alipay = null;
+        unionpay = null;
+        if (null != mPayReceiver) {
+            unregisterReceiver(mPayReceiver);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            return;
+        }
+        Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
+        if (data.hasExtra("pay_result")) {
+            intent.putExtra("info", data.getExtras().getString("pay_result"));
+            LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
+        }
+        intent.putExtra("type", "unionPay");
+        sendBroadcast(intent);
+    }
+
+    private void startUnionPay() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String tn = null;
+                InputStream is;
+                try {
+
+                    String url = "http://101.231.204.84:8091/sim/getacptn";
+
+                    URL myURL = new URL(url);
+                    URLConnection ucon = myURL.openConnection();
+                    ucon.setConnectTimeout(120000);
+                    is = ucon.getInputStream();
+                    int i = -1;
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    while ((i = is.read()) != -1) {
+                        baos.write(i);
+                    }
+
+                    tn = baos.toString();
+                    is.close();
+                    baos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Message msg = myHandler.obtainMessage();
+                msg.obj = tn;
+                msg.what = 0;
+                myHandler.sendMessage(msg);
+            }
+        }).start();
     }
 
     @Override
     public void preExecute(ResponseData request) {
 
     }
+
+    private Handler myHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    LogUtil.i(TAG, "tn = " + msg.obj.toString());
+                    removeProgressDialog();
+                    unionpay.unionStartPay(msg.obj.toString());
+                    break;
+            }
+        }
+    };
 
     @Override
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
@@ -377,25 +404,34 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
                 removeProgressDialog();
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 orderPayDetailInfoBean = JSON.parseObject(response.body.toString(), OrderPayDetailInfoBean.class);
+                HotelOrderManager.getInstance().setOrderPayDetailInfo(orderPayDetailInfoBean);
                 refreshOrderDetailInfo();
-            } else if (AppConst.PAY == request.flag) {
+            } else if (request.flag == AppConst.PAY) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 JSONObject mJson = JSON.parseObject(response.body.toString());
-                if (mJson.containsKey(HotelCommDef.ALIPAY)) {
-                    alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
-                } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
-                    JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
-                    wxpay.sendPayReq(
-                            mmJson.getString("package"),
-                            mmJson.getString("appid"),
-                            mmJson.getString("sign"),
-                            mmJson.getString("partnerid"),
-                            mmJson.getString("prepayid"),
-                            mmJson.getString("noncestr"),
-                            mmJson.getString("timestamp"));
+                if (payIndex == 0) {
+                    startUnionPay();
                 } else {
                     removeProgressDialog();
-                    CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
+                    if (mJson.containsKey(HotelCommDef.ALIPAY)) {
+                        alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
+                    } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
+                        JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
+                        wxpay.sendPayReq(
+                                mmJson.getString("package"),
+                                mmJson.getString("appid"),
+                                mmJson.getString("sign"),
+                                mmJson.getString("partnerid"),
+                                mmJson.getString("prepayid"),
+                                mmJson.getString("noncestr"),
+                                mmJson.getString("timestamp"));
+                    } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
+                        JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
+                        unionpay.unionStartPay(mmJson.getString("tn"));
+                    } else {
+                        removeProgressDialog();
+                        CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
+                    }
                 }
             }
         }

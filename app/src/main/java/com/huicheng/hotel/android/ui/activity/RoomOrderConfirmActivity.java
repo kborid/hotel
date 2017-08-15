@@ -330,16 +330,17 @@ public class RoomOrderConfirmActivity extends BaseActivity implements DataCallba
                 if (null != bean) {
                     if (HotelCommDef.PAY_ARR.equals(HotelOrderManager.getInstance().getPayType())) {
                         Intent intent = new Intent(this, OrderPaySuccessActivity.class);
-                        intent.putExtra("hotelName", roomDetailInfoBean.hotelName);
-                        intent.putExtra("roomName", roomDetailInfoBean.roomName);
+                        intent.putExtra("hotelId", String.valueOf(hotelId));
+                        intent.putExtra("hotelName", bean.hotelName);
+                        intent.putExtra("roomName", bean.roomName);
                         intent.putExtra("checkRoomDate", bean.checkInAndOutDate);
+                        intent.putExtra("beginTime", bean.beginDateLong);
+                        intent.putExtra("endTime", bean.endDateLong);
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(this, OrderPayActivity.class);
                         intent.putExtra("orderId", bean.orderId);
-                        intent.putExtra("hotelName", roomDetailInfoBean.hotelName);
-                        intent.putExtra("roomName", roomDetailInfoBean.roomName);
-                        intent.putExtra("checkRoomDate", bean.checkInAndOutDate);
+                        intent.putExtra("orderType", bean.orderType);
                         startActivity(intent);
                     }
                 }

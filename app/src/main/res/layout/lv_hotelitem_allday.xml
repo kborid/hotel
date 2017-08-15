@@ -15,9 +15,12 @@
         android:orientation="vertical">
 
         <com.huicheng.hotel.android.ui.custom.RoundedTopImageView
+            xmlns:roundImage="http://schemas.android.com/apk/res-auto"
+            roundImage:radius="10dp"
             android:id="@+id/iv_hotel_icon"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+
             android:scaleType="centerCrop"
             android:src="@drawable/def_hotel_list" />
 

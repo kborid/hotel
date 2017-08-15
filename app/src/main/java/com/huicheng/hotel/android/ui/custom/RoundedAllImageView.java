@@ -19,23 +19,22 @@ public class RoundedAllImageView extends ImageView {
     /*圆角的半径，依次为左上角xy半径，右上角，右下角，左下角*/
     private float[] rids;
 
+    public RoundedAllImageView(Context context) {
+        this(context, null);
+    }
+
     public RoundedAllImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.context = context;
-        init(attrs);
+        this(context, attrs, 0);
     }
 
     public RoundedAllImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
-        init(attrs);
-    }
-
-    private void init(AttributeSet attrs) {
         TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.roundedImage);
         float radius = (int) mTypedArray.getDimension(R.styleable.roundedImage_radius, 0);
         rids = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
         mTypedArray.recycle();
+
+        this.context = context;
     }
 
     /**

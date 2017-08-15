@@ -16,6 +16,13 @@
         <item name="android:windowBackground">@drawable/bg_welcome</item>
     </style>
 
+    <style name="ImageTransparent" parent="AppTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:background">@color/black</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
 
     <!--默认主题 Default-->
     <!--男性界面主题-->
@@ -154,13 +161,6 @@
     <style name="myPMAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
         <item name="android:textColor">@color/secColor</item>
         <item name="android:textSize">@dimen/common_18sp</item>
-    </style>
-
-    <style name="ImageTransparent" parent="AppTheme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <!--画面迁移、转场动画-->

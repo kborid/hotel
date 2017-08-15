@@ -4,8 +4,7 @@
     android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:background="@drawable/comm_customdialog_bg"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/id_ll_dialog_title"
@@ -16,7 +15,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="35dp"
             android:gravity="center">
 
             <ImageView
@@ -41,9 +40,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:background="@drawable/comm_line2" />
     </LinearLayout>
 
@@ -118,7 +116,7 @@
     <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="45dp"
         android:layout_gravity="bottom"
         android:gravity="center"
         android:splitMotionEvents="false">

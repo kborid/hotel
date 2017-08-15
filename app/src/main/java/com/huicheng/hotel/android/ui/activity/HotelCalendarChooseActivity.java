@@ -122,7 +122,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
                 }
                 SimpleMonthAdapter.CalendarDay begin = new SimpleMonthAdapter.CalendarDay(HotelOrderManager.getInstance().getBeginTime());
                 SimpleMonthAdapter.CalendarDay end = new SimpleMonthAdapter.CalendarDay(HotelOrderManager.getInstance().getEndTime());
-                HotelOrderManager.getInstance().setDateStr((begin.getMonth() + 1) + "." + begin.getDay() /*+ DateUtil.dateToWeek2(begin.getDate())*/ + " - "/* + (end.getMonth() + 1) + "."*/ + end.getDay()/* + DateUtil.dateToWeek2(end.getDate())*/);
+                HotelOrderManager.getInstance().setDateStr((begin.getMonth() + 1) + "." + begin.getDay() /*+ DateUtil.dateToWeek2(begin.getDate())*/ + " - " + (end.getMonth() + 1) + "." + end.getDay()/* + DateUtil.dateToWeek2(end.getDate())*/);
                 intent.putExtra("index", jumpIndex);
                 intent.putExtra("keyword", keyword);
                 intent.putExtra("priceIndex", mPriceIndex);

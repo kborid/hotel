@@ -125,6 +125,14 @@
         <item>3.5以下</item>
     </string-array>
 
+    <string-array name="TravelType">
+        <item>商务</item>
+        <item>休闲</item>
+        <item>疗养</item>
+        <item>度假</item>
+        <item>交友</item>
+    </string-array>
+
     <string name="iflytek_tips">语音技术由科大讯飞提供</string>
 
     <string name="xlistview_header_hint_normal">下拉刷新</string>

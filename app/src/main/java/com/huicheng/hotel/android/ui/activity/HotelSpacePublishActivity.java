@@ -131,8 +131,8 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
                 this.finish();
                 break;
             case R.id.tv_right:
-                LogUtil.i(TAG,"public button onClick");
-                LogUtil.i(TAG,et_input.getText().toString());
+                LogUtil.i(TAG, "public button onClick");
+                LogUtil.i(TAG, et_input.getText().toString());
                 requestPublishComment();
                 break;
             case R.id.iv_picture:
@@ -193,7 +193,7 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
      * 上传图片 。图片缩略图最大为480x800的50%精度质量
      */
     private void uploadImage(File file) {
-        LogUtil.i(TAG,"UploadImage()");
+        LogUtil.i(TAG, "UploadImage()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("img", file);
         ResponseData d = b.syncRequestForForm(b);
@@ -261,7 +261,7 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
                 }
             } else if (request.flag == AppConst.PUBLIC_COMMENT) {
                 removeProgressDialog();
-                LogUtil.i(TAG,"json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 CustomToast.show("发表成功", CustomToast.LENGTH_SHORT);
                 setResult(RESULT_OK);
                 finish();
@@ -361,15 +361,15 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
                     et_input.getText().replace(curIndex - 1, curIndex, "");
                 }
                 setAtImageSpan(nameStr);
-                LogUtil.i(TAG,"name str = " + nameStr);
-                LogUtil.i(TAG,"id str = " + selectedCids);
+                LogUtil.i(TAG, "name str = " + nameStr);
+                LogUtil.i(TAG, "id str = " + selectedCids);
                 break;
             case AppConst.ACTIVITY_GET_IMAGE:
                 Uri imageUri = data.getData();
                 imageUri = ThumbnailUtil.geturi(this, data);//解决方案,小米手机无法获取filepath
                 if (imageUri != null) {
                     filePath = ThumbnailUtil.getPicPath(this, imageUri);
-                    LogUtil.i(TAG,"filepath image = " + filePath);
+                    LogUtil.i(TAG, "filepath image = " + filePath);
                     bgPath = Utils.getFolderDir("pic") + "_temp_compress.jpg";
                     uploadImage(new File(ThumbnailUtil.compressImage(filePath, bgPath)));
                 } else {

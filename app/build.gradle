@@ -127,6 +127,7 @@ dependencies {
     compile 'com.bartoszlipinski.flippablestackview:library:1.2.1'
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile 'com.android.support:multidex:1.0.1'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
     //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
     //极光推送JPush

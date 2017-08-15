@@ -1,7 +1,9 @@
 package com.huicheng.hotel.android.common.pay.unionpay;
 
 import android.content.Context;
+import android.provider.Settings;
 
+import com.huicheng.hotel.android.common.AppConst;
 import com.unionpay.UPPayAssistEx;
 
 /**
@@ -11,11 +13,14 @@ import com.unionpay.UPPayAssistEx;
 
 public class UnionPayUtil {
 
+    private static final String RELEASE_MODE = "02";
+    private static final String DEBUG_MODE = "01";
     private Context context;
-    private String serverMode = "01";
+    private String serverMode = DEBUG_MODE;
 
     public UnionPayUtil(Context context) {
         this.context = context;
+        serverMode = AppConst.ISDEVELOP ? DEBUG_MODE : RELEASE_MODE;
     }
 
     /**
@@ -23,5 +28,10 @@ public class UnionPayUtil {
      */
     public boolean isUnionApkInstalled() {
         return UPPayAssistEx.checkInstalled(context);
+    }
+
+    public void unionStartPay(String tn) {
+        int ret = 0;
+        ret = UPPayAssistEx.startPay(context, null, null, tn, serverMode);
     }
 }

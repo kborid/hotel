@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -74,6 +73,8 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     private boolean isEdited = false;
     private ScrollView scroll_view;
     private Button btn_setting;
+
+    private ImageView iv_photo;
     private RelativeLayout camer_lay;
     private RelativeLayout photo_lay;
     private EditText et_name;
@@ -138,6 +139,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         super.initViews();
         scroll_view = (ScrollView) findViewById(R.id.scroll_view);
         btn_setting = (Button) findViewById(R.id.btn_setting);
+        iv_photo = (ImageView) findViewById(R.id.iv_photo);
         camer_lay = (RelativeLayout) findViewById(R.id.camer_lay);
         photo_lay = (RelativeLayout) findViewById(R.id.photo_lay);
         et_name = (EditText) findViewById(R.id.et_name);
@@ -190,18 +192,21 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         //更新个人中心信息
         // 设置头像
         String photoUrl = SessionContext.mUser.user.headphotourl;
+        RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) photo_lay.getLayoutParams();
+        rl.width = Utils.mScreenWidth - Utils.dip2px(65);
+        rl.height = rl.width;
+        photo_lay.setLayoutParams(rl);
+
         if (StringUtil.notEmpty(photoUrl)) {
-            loadImage(photo_lay, R.drawable.def_photo_bg, photoUrl, 1920, 1080);
+            loadImage(iv_photo, R.drawable.def_photo_bg, photoUrl, 800, 800);
         } else {
-            photo_lay.setBackgroundResource(R.drawable.def_photo_bg);
+            iv_photo.setBackgroundResource(R.drawable.def_photo_bg);
         }
 
         // 设置名字
         et_name.setHint(SessionContext.mUser.user.username);
         if (StringUtil.notEmpty(SessionContext.mUser.user.nickname)) {
             et_name.setText(SessionContext.mUser.user.nickname);
-//        } else {
-//            et_name.setText(SessionContext.mUser.user.username);
         }
         et_name.setSelection(et_name.getText().length());
         // 设置性别
@@ -223,7 +228,6 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         }
 
         // 设置生日
-
         if (StringUtil.notEmpty(SessionContext.mUser.user.birthdate)) {
             String[] birth = SessionContext.mUser.user.birthdate.split(" ");
             if (birth.length >= 3) {
@@ -877,7 +881,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
                     ContentResolver resolver = getContentResolver();
                     try {
                         Bitmap bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
-                        photo_lay.setBackground(new BitmapDrawable(bm));
+                        iv_photo.setImageBitmap(bm);
                         SessionContext.mUser.user.headphotourl = response.body.toString();
                         SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
                         SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, JSON.toJSONString(SessionContext.mUser), true);

@@ -1,13 +1,14 @@
 package com.huicheng.hotel.android.ui.custom;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.prj.sdk.util.Utils;
+import com.huicheng.hotel.android.R;
 
 /**
  * @author kborid
@@ -15,18 +16,22 @@ import com.prj.sdk.util.Utils;
  */
 public class RoundedTopImageView extends ImageView {
     /*圆角的半径，依次为左上角xy半径，右上角，右下角，左下角*/
-    private float[] rids = {Utils.dip2px(10), Utils.dip2px(10), Utils.dip2px(10), Utils.dip2px(10), 0f, 0f, 0f, 0f,};
+    private float[] rids;
 
     public RoundedTopImageView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public RoundedTopImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public RoundedTopImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.roundedImage);
+        float radius = (int) mTypedArray.getDimension(R.styleable.roundedImage_radius, 0);
+        rids = new float[]{radius, radius, radius, radius, 0, 0, 0, 0};
+        mTypedArray.recycle();
     }
 
 
