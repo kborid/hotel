@@ -101,7 +101,11 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                             holder.tv_hotel_price.setText(" " + bean.price + "元 ");
                         }
                         note = "特价：";
-                        price = bean.speciallyPrice + " 元起";
+                        if (bean.speciallyPrice != 0) {
+                            price = bean.speciallyPrice + " 元起";
+                        } else {
+                            price = "暂无";
+                        }
                     }
                 } else {
                     holder.tv_hotel_price.setVisibility(View.GONE);

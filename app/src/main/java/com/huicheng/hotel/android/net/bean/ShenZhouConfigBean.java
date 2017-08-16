@@ -3,6 +3,7 @@ package com.huicheng.hotel.android.net.bean;
 import android.content.Context;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.tools.SHA1;
 
 import java.io.Serializable;
@@ -46,7 +47,9 @@ public class ShenZhouConfigBean implements Serializable {
 
     public String getSignatureSha1(Context context) {
         StringBuilder sb = new StringBuilder();
-        sb.append(context.getResources().getString(R.string.sz_appsecret))
+        String secret = AppConst.ISDEVELOP ? context.getResources().getString(R.string.sz_appsecret_debug) :
+                context.getResources().getString(R.string.sz_appsecret_release);
+        sb.append(secret)
                 .append(mobile)
                 .append(timestamp)
                 .append(tpuid);

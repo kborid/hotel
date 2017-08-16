@@ -26,9 +26,7 @@ import com.huicheng.hotel.android.ui.custom.CustomBottomNaviBar;
 import com.huicheng.hotel.android.ui.custom.CustomViewPager;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.fragment.HotelPagerFragment;
-import com.huicheng.hotel.android.ui.fragment.PlanePagerFragment;
-import com.huicheng.hotel.android.ui.fragment.TaxiPagerFragment;
-import com.huicheng.hotel.android.ui.fragment.TrainPagerFragment;
+import com.huicheng.hotel.android.ui.fragment.WebViewPagerFragment;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
@@ -46,6 +44,11 @@ import java.util.Date;
 import java.util.List;
 
 public class MainFragmentActivity extends BaseFragmentActivity implements OnPageChangeListener, DataCallback, CustomBottomNaviBar.OnChangeClickListener, View.OnClickListener {
+
+    public static final String TAB_HOTEL = "tab_hotel";
+    public static final String TAB_PLANE = "tab_plane";
+    public static final String TAB_TRAIN = "tab_train";
+    public static final String TAB_TAXI = "tab_taxi";
 
     private static final String TAG = "MainFragmentActivity";
     private CustomViewPager viewPager;
@@ -238,10 +241,10 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
      */
     private void initFragmentView() {
         List<Fragment> mList = new ArrayList<>();
-        mList.add(HotelPagerFragment.newInstance("home"));
-        mList.add(PlanePagerFragment.newInstance("plane"));
-        mList.add(TrainPagerFragment.newInstance("train"));
-        mList.add(TaxiPagerFragment.newInstance("car"));
+        mList.add(HotelPagerFragment.newInstance(TAB_HOTEL));
+        mList.add(WebViewPagerFragment.newInstance(TAB_PLANE));
+        mList.add(WebViewPagerFragment.newInstance(TAB_TRAIN));
+        mList.add(WebViewPagerFragment.newInstance(TAB_TAXI));
         viewPager.setOffscreenPageLimit(mList.size());
         viewPager.setAdapter(new MainFragmentAdapter(getSupportFragmentManager(), mList));
     }

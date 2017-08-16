@@ -51,7 +51,6 @@ public class SessionContext {
     public static boolean isLogin() {
         boolean ret = false;
         if (StringUtil.notEmpty(getTicket()) && mUser != null) {
-            LogUtil.i("SessionContext", "ticket = " + getTicket());
             ret = true;
         }
         return ret;
@@ -59,8 +58,6 @@ public class SessionContext {
 
     /**
      * 获取访问票据
-     *
-     * @return
      */
     public static String getTicket() {
         return mTicket;
@@ -293,17 +290,15 @@ public class SessionContext {
      * @return if versionServer > versionLocal, return 1, if equal, return 0, else return -1
      */
     public static int VersionComparison(String versionServer, String versionLocal) {
-        String version1 = versionServer;
-        String version2 = versionLocal;
-        if (version1 == null || version1.length() == 0 || version2 == null || version2.length() == 0)
+        if (versionServer == null || versionServer.length() == 0 || versionLocal == null || versionLocal.length() == 0)
             throw new IllegalArgumentException("Invalid parameter!");
 
         int index1 = 0;
         int index2 = 0;
-        while (index1 < version1.length() && index2 < version2.length()) {
-            int[] number1 = getValue(version1, index1);
+        while (index1 < versionServer.length() && index2 < versionLocal.length()) {
+            int[] number1 = getValue(versionServer, index1);
             LogUtil.i(TAG, " ===== number1 ====" + Arrays.toString(number1));
-            int[] number2 = getValue(version2, index2);
+            int[] number2 = getValue(versionLocal, index2);
             LogUtil.i(TAG, " ===== number2 ====" + Arrays.toString(number2));
 
             if (number1[0] < number2[0]) {
@@ -319,9 +314,9 @@ public class SessionContext {
                 index2 = number2[1] + 1;
             }
         }
-        if (index1 == version1.length() && index2 == version2.length())
+        if (index1 == versionServer.length() && index2 == versionLocal.length())
             return 0;
-        if (index1 < version1.length())
+        if (index1 < versionServer.length())
             return 1;
         else
             return -1;
@@ -332,7 +327,7 @@ public class SessionContext {
      * @param index   the starting point
      * @return the number between two dots, and the index of the dot
      */
-    public static int[] getValue(String version, int index) {
+    private static int[] getValue(String version, int index) {
         int[] value_index = new int[2];
         StringBuilder sb = new StringBuilder();
         while (index < version.length() && version.charAt(index) != '.') {
