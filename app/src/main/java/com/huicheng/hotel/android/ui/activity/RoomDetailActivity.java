@@ -598,10 +598,6 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                         } else {
                             String[] picArr = pics.split(";");
                             list.addAll(Arrays.asList(picArr));
-                            list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1503050866&di=3261f622a326aa462c7ed0d5f7b4e7cb&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.pp3.cn%2Fuploads%2F201601%2F2016011405.jpg");
-                            list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456289108&di=a7154df521b41104fdd44e3036eb23b8&imgtype=0&src=http%3A%2F%2Fimg.tupianzj.com%2Fuploads%2Fallimg%2F160821%2F9-160R1150R1.jpg");
-                            list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456289107&di=a5198b5891256c827c48eff38b16309e&imgtype=0&src=http%3A%2F%2Fbpic.ooopic.com%2F16%2F09%2F03%2F16090347-66e506bde737aa4c806fe24f47062ab0.jpg");
-                            list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502456313861&di=ee3c8fb4fecf8520baec261b80417b80&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D3974436224%2C4269321529%26fm%3D214%26gp%3D0.jpg");
 
                             gridView.setAdapter(new CommonGridViewPicsAdapter(RoomDetailActivity.this, list, Utils.dip2px(90), 2 / 3f));
                             gridView.setVisibility(View.VISIBLE);

@@ -17,4 +17,5 @@ public class HotelInfoBean {
     public String vipEnable;
     public int vipPrice;
     public int clockPrice;
+    public int yeguirenPrice;
 }

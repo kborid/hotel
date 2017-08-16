@@ -85,13 +85,52 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         }
 
         switch (type) {
-            case HotelCommDef.TYPE_YEGUIREN:
-                holder.cardview.setBackgroundResource(ygrRoomItemBackgroundId);
-                break;
             case HotelCommDef.TYPE_ALL:
-            case HotelCommDef.TYPE_CLOCK:
-            default:
                 holder.cardview.setBackgroundResource(R.drawable.comm_10radius_white_color);
+                String note, price;
+                if (bean.price != 0) {
+                    if (bean.speciallyPrice > bean.price) {
+                        holder.tv_hotel_price.setVisibility(View.GONE);
+                        note = "平台价：";
+                        price = bean.price + " 元起";
+                    } else {
+                        if (bean.speciallyPrice == bean.price) {
+                            holder.tv_hotel_price.setVisibility(View.GONE);
+                        } else {
+                            holder.tv_hotel_price.setVisibility(View.VISIBLE);
+                            holder.tv_hotel_price.setText(" " + bean.price + "元 ");
+                        }
+                        note = "特价：";
+                        price = bean.speciallyPrice + " 元起";
+                    }
+                } else {
+                    holder.tv_hotel_price.setVisibility(View.GONE);
+                    note = "平台价：";
+                    price = "暂无";
+                }
+                holder.tv_hotel_special_price_note.setText(note);
+                holder.tv_hotel_special_price.setText(price);
+                break;
+            case HotelCommDef.TYPE_CLOCK:
+                holder.tv_hotel_price.setVisibility(View.GONE);
+                holder.tv_hotel_special_price_note.setText("价格：");
+                if (bean.clockPrice != 0) {
+                    holder.tv_hotel_special_price.setText(bean.clockPrice + " 元起");
+                } else {
+                    holder.tv_hotel_special_price.setText("暂无");
+                }
+                holder.cardview.setBackgroundResource(R.drawable.comm_10radius_white_color);
+                break;
+            case HotelCommDef.TYPE_YEGUIREN:
+                holder.tv_hotel_price.setVisibility(View.GONE);
+                holder.tv_hotel_special_price_note.setText("价格：");
+                if (bean.yeguirenPrice != 0) {
+                    holder.tv_hotel_special_price.setText(bean.yeguirenPrice + " 元起");
+                } else {
+                    holder.tv_hotel_special_price.setText("暂无");
+                }
+                holder.cardview.setBackgroundResource(R.drawable.comm_10radius_white_color);
+                holder.cardview.setBackgroundResource(ygrRoomItemBackgroundId);
                 break;
         }
 
@@ -124,22 +163,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_low));
         }
         holder.tv_hotel_name.setText(bean.hotelName);
-
-        int price = HotelCommDef.TYPE_CLOCK == type ? bean.clockPrice : bean.price;
-        if (bean.speciallyPrice > 0) {
-            if (price <= bean.speciallyPrice) {
-                holder.tv_hotel_price.setVisibility(View.GONE);
-            } else {
-                holder.tv_hotel_price.setVisibility(View.VISIBLE);
-                holder.tv_hotel_price.setText(" " + price + "元起 ");
-            }
-            holder.tv_hotel_special_price_note.setText("特价：");
-            holder.tv_hotel_special_price.setText(bean.speciallyPrice + " 元");
-        } else {
-            holder.tv_hotel_price.setVisibility(View.GONE);
-            holder.tv_hotel_special_price_note.setText("价格：");
-            holder.tv_hotel_special_price.setText((price <= 0) ? "暂无" : price + " 元起");
-        }
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override

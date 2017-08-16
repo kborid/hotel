@@ -417,8 +417,8 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
             TextView tv_during = (TextView) view.findViewById(R.id.tv_during);
             loadImage(iv_icon, R.drawable.def_room_list, hotelDetailInfoBean.clockRoomList.get(i).picPath, 800, 480);
             tv_title.setText(hotelDetailInfoBean.clockRoomList.get(i).name);
-            tv_price_note.setText(hotelDetailInfoBean.roomList.get(i).priceType + "：");
-            tv_price.setText(hotelDetailInfoBean.clockRoomList.get(i).price + "元");
+            tv_price_note.setText(hotelDetailInfoBean.clockRoomList.get(i).priceType + "：");
+            tv_price.setText(hotelDetailInfoBean.clockRoomList.get(i).clockPrice + "元");
             tv_time.setText(hotelDetailInfoBean.clockRoomList.get(i).roomTime);
             tv_during.setText(Float.valueOf(hotelDetailInfoBean.clockRoomList.get(i).roomDuration) + "小时");
             final int finalI = i;

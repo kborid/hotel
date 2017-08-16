@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @date 2017/4/21 0021
  */
 public class RoomListInfoBean implements Serializable{
-    public float clockPrice;
+    public int clockPrice;
     public boolean hourSupport;
     public int id;
     public String isVip;
