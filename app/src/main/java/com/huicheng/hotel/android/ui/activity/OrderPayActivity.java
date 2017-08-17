@@ -29,7 +29,6 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
@@ -43,7 +42,7 @@ import java.util.Date;
  * @author kborid
  * @date 2017/3/7 0007
  */
-public class OrderPayActivity extends BaseActivity implements DataCallback {
+public class OrderPayActivity extends BaseActivity {
 
     private static final String TAG = "OrderPayActivity";
     private PayResultReceiver mPayReceiver = new PayResultReceiver();
@@ -344,7 +343,7 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.PAY_ORDER_DETAIL) {
                 removeProgressDialog();

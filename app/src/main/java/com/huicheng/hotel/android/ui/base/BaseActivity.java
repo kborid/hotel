@@ -22,17 +22,22 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
+import com.huicheng.hotel.android.common.HotelOrderManager;
+import com.huicheng.hotel.android.common.NetURL;
+import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.InvoiceDetailActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
-import com.huicheng.hotel.android.ui.activity.RoomListActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.DataCallback;
+import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.ActivityTack;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
@@ -48,7 +53,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class BaseActivity extends AppCompatActivity implements OnClickListener {
+public class BaseActivity extends AppCompatActivity implements OnClickListener, DataCallback {
 
     private CustomDialog mDialogVip;
     private ProgressDialog mProgressDialog;
@@ -82,7 +87,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
     @Override
     protected void onPause() {
         super.onPause();
-//        removeProgressDialog();// pause时关闭加载框
         MobclickAgent.onPageEnd(this.getClass().getName());
         MobclickAgent.onPause(this);
     }
@@ -341,15 +345,50 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
         mDialogVip.show();
     }
 
-    public void dismissAddVipDialog() {
+    private void dismissAddVipDialog() {
         if (mDialogVip != null) {
             mDialogVip.dismiss();
         }
     }
 
-    protected void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
+    private void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+
+        b.addBody("email", email);
+        b.addBody("hotelId", String.valueOf(HotelOrderManager.getInstance().getHotelDetailInfo().id));
+        b.addBody("idcode", idcode);
+        b.addBody("realname", realname);
+        b.addBody("traveltype", traveltype);
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.HOTEL_VIP;
+        d.flag = AppConst.HOTEL_VIP;
+
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+
+        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    @Override
+    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+        if (request.flag == AppConst.HOTEL_VIP) {
+            removeProgressDialog();
+            dismissAddVipDialog();
+            LogUtil.i("BaseActivity", "Json = " + response.body.toString());
+            CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
+            HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
+            btn_right.setVisibility(View.GONE);
+        }
+        onNotifyMessage(request, response);
+    }
+
+    @Override
+    public void preExecute(ResponseData request) {
+    }
+
+    @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
         String message;
@@ -362,6 +401,9 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
         onNotifyError(request);
     }
 
-    protected void onNotifyError(ResponseData request) {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
+    }
+
+    public void onNotifyError(ResponseData request) {
     }
 }

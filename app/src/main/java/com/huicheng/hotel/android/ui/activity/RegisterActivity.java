@@ -29,7 +29,6 @@ import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -43,7 +42,7 @@ import java.util.Set;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-public class RegisterActivity extends BaseActivity implements DataCallback, DialogInterface.OnCancelListener {
+public class RegisterActivity extends BaseActivity implements DialogInterface.OnCancelListener {
     private static final String TAG = "RegisterActivity";
     private EditText et_phone, et_yzm, et_pwd;
     private int sex_index = 1; //默认男性
@@ -329,8 +328,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
-
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.CHECK_PHONE) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
@@ -446,8 +444,7 @@ public class RegisterActivity extends BaseActivity implements DataCallback, Dial
     }
 
     @Override
-    protected void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
+    public void onNotifyError(ResponseData request) {
         if (request.flag == AppConst.CHECK_YZM) {
             isValid = false;
         }

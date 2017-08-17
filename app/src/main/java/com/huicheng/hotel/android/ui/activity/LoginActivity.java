@@ -29,7 +29,6 @@ import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -51,7 +50,7 @@ import cn.jpush.android.api.TagAliasCallback;
 /**
  * 登录
  */
-public class LoginActivity extends BaseActivity implements DataCallback, DialogInterface.OnCancelListener, OnCheckedChangeListener {
+public class LoginActivity extends BaseActivity implements DialogInterface.OnCancelListener, OnCheckedChangeListener {
 
     private static final String TAG = "LoginActivity";
     private EditText et_phone, et_pwd;
@@ -332,7 +331,7 @@ public class LoginActivity extends BaseActivity implements DataCallback, DialogI
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (request.flag == AppConst.CHECK_USER) {
             JSONObject mJson = JSON.parseObject(response.body.toString());
             if (mJson.containsKey("status")) {

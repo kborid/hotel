@@ -36,13 +36,11 @@ import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.CustomToast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +50,7 @@ import java.util.List;
  * @author kborid
  * @date 2017/3/20 0020
  */
-public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback {
+public class HotelSpaceHomeActivity extends BaseActivity {
     private static final String TAG = "HotelSpaceHomeActivity";
     /**
      * 视频全屏参数
@@ -161,28 +159,6 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
         }
     }
 
-    @Override
-    protected void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
-        super.requestHotelVip2(email, idcode, realname, traveltype);
-        RequestBeanBuilder b = RequestBeanBuilder.create(true);
-
-        b.addBody("email", email);
-        b.addBody("hotelId", String.valueOf(HotelOrderManager.getInstance().getHotelDetailInfo().id));
-        b.addBody("idcode", idcode);
-        b.addBody("realname", realname);
-        b.addBody("traveltype", traveltype);
-
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.HOTEL_VIP;
-        d.flag = AppConst.HOTEL_VIP;
-
-        if (!isProgressShowing()) {
-            showProgressDialog(this);
-        }
-
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
     private void requestHotelSpaceBasicInfo() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("hotelId", String.valueOf(HotelOrderManager.getInstance().getHotelDetailInfo().id));
@@ -260,6 +236,11 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
     @Override
     protected void onResume() {
         super.onResume();
+        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+            btn_right.setVisibility(View.VISIBLE);
+        } else {
+            btn_right.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -274,12 +255,7 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_SPACE) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
@@ -295,12 +271,6 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
                 }
                 adapter.notifyDataSetChanged();
                 refreshHotelSpaceBasicInfo();
-            } else if (request.flag == AppConst.HOTEL_VIP) {
-                removeProgressDialog();
-                dismissAddVipDialog();
-                btn_right.setVisibility(View.INVISIBLE);
-                LogUtil.i(TAG, "Json = " + response.body.toString());
-                CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             }
         }
     }

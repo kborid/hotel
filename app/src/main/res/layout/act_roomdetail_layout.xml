@@ -110,7 +110,7 @@
                         android:src="@drawable/iv_share_white" />
 
                     <ImageView
-                        android:id="@+id/iv_favorite"
+                        android:id="@+id/iv_fans"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"

@@ -18,7 +18,6 @@ import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -37,7 +36,7 @@ import cn.jpush.android.api.TagAliasCallback;
  *
  * @author LiaoBo
  */
-public class BindPhoneActivity extends BaseActivity implements DataCallback, DialogInterface.OnCancelListener {
+public class BindPhoneActivity extends BaseActivity implements DialogInterface.OnCancelListener {
     private static final String TAG = "BindPhoneActivity";
     private EditText et_phone, et_yzm;
     private Button btn_yzm, btn_bind;
@@ -164,12 +163,7 @@ public class BindPhoneActivity extends BaseActivity implements DataCallback, Dia
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();

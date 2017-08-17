@@ -44,6 +44,7 @@ import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ import java.util.Map;
  * @author kborid
  * @date 2017/3/21 0021
  */
-public class HotelSpacePublishActivity extends BaseActivity implements DataCallback {
+public class HotelSpacePublishActivity extends BaseActivity {
     private static final String TAG = "HotelSpacePublishActivity";
 
     private TextView tv_left, tv_right, tv_title;
@@ -246,13 +247,18 @@ public class HotelSpacePublishActivity extends BaseActivity implements DataCallb
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.UPLOAD) {
                 removeProgressDialog();
                 if (StringUtil.notEmpty(bgPath)) {
                     ContentResolver resolver = getContentResolver();
-                    Bitmap bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
+                    Bitmap bm = null;
+                    try {
+                        bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     iv_upload_pic.setVisibility(View.VISIBLE);
                     iv_upload_pic.setImageBitmap(bm);
                     if (response.body != null) {

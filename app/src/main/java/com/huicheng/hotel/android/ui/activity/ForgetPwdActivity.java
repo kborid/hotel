@@ -19,7 +19,6 @@ import com.huicheng.hotel.android.common.pay.wxpay.MD5;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
@@ -29,7 +28,7 @@ import com.prj.sdk.widget.CustomToast;
 /**
  * 找回密码
  */
-public class ForgetPwdActivity extends BaseActivity implements DataCallback, DialogInterface.OnCancelListener {
+public class ForgetPwdActivity extends BaseActivity implements DialogInterface.OnCancelListener {
     private static final String TAG = "ForgetPwdActivity";
 
     private EditText et_phone, et_yzm, et_password, et_password2;
@@ -191,11 +190,7 @@ public class ForgetPwdActivity extends BaseActivity implements DataCallback, Dia
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-    }
-
-    @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (request.flag == AppConst.GET_YZM) {
             removeProgressDialog();
             CustomToast.show("验证码已发送，请稍后...", 0);
@@ -233,8 +228,7 @@ public class ForgetPwdActivity extends BaseActivity implements DataCallback, Dia
     }
 
     @Override
-    protected void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
+    public void onNotifyError(ResponseData request) {
         if (request.flag == AppConst.CHECK_YZM) {
             isValid = false;
         }

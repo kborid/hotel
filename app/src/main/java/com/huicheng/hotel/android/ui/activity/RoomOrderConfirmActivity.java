@@ -29,7 +29,6 @@ import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
 import com.huicheng.hotel.android.ui.custom.CommonCustomInfoLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -42,7 +41,7 @@ import java.util.Map;
  * @author kborid
  * @date 2017/1/5 0005
  */
-public class RoomOrderConfirmActivity extends BaseActivity implements DataCallback {
+public class RoomOrderConfirmActivity extends BaseActivity {
 
     private static final String TAG = "RoomOrderConfirmActivity";
     private RoomDetailInfoBean roomDetailInfoBean = null;
@@ -316,12 +315,7 @@ public class RoomOrderConfirmActivity extends BaseActivity implements DataCallba
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ROOM_CONFIRM_ORDER) {
                 removeProgressDialog();

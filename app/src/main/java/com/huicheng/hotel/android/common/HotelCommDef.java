@@ -111,7 +111,7 @@ public class HotelCommDef {
         String price = null;
         switch (index) {
             case 0:
-                price = "0";
+                price = "";
                 break;
             case 1:
                 price = "100";
@@ -132,7 +132,7 @@ public class HotelCommDef {
                 price = "";
                 break;
             default:
-                price = "0";
+                price = "";
                 break;
         }
         return price;

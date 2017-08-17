@@ -42,7 +42,6 @@ import com.huicheng.hotel.android.ui.custom.RangeSeekBar;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -65,7 +64,7 @@ import java.util.Set;
  * @author kborid
  * @date 2016/11/30 0030
  */
-public class UserCenterActivity extends BaseActivity implements DataCallback {
+public class UserCenterActivity extends BaseActivity {
 
     private static final String TAG = "UserCenterActivity";
 
@@ -814,14 +813,10 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
         }
     }
 
-    @Override
-    public void preExecute(ResponseData request) {
-
-    }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();
@@ -926,8 +921,7 @@ public class UserCenterActivity extends BaseActivity implements DataCallback {
     }
 
     @Override
-    protected void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
+    public void onNotifyError(ResponseData request) {
         if (request.flag == AppConst.CHECK_YZM) {
             isValid = false;
         }

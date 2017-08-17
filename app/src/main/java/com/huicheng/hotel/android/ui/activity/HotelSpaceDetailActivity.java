@@ -407,30 +407,13 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     }
 
     @Override
-    protected void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
-        super.requestHotelVip2(email, idcode, realname, traveltype);
-        RequestBeanBuilder b = RequestBeanBuilder.create(true);
-
-        b.addBody("email", email);
-        b.addBody("hotelId", String.valueOf(hotelId));
-        b.addBody("idcode", idcode);
-        b.addBody("realname", realname);
-        b.addBody("traveltype", traveltype);
-
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.HOTEL_VIP;
-        d.flag = AppConst.HOTEL_VIP;
-
-        if (!isProgressShowing()) {
-            showProgressDialog(this);
-        }
-
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
+        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+            btn_right.setVisibility(View.VISIBLE);
+        } else {
+            btn_right.setVisibility(View.GONE);
+        }
         try {
             webview.getClass().getMethod("onResume").invoke(webview, (Object[]) null);
         } catch (Exception e) {
@@ -463,7 +446,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_TIE_COMMENT) {
                 removeProgressDialog();
@@ -490,12 +473,6 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                 hotelSpaceTieInfoBean = JSON.parseObject(response.body.toString(), HotelSpaceTieInfoBean.class);
                 refreshTieDetailInfo();
                 requestTieCommentInfo(pageIndex);
-            } else if (request.flag == AppConst.HOTEL_VIP) {
-                removeProgressDialog();
-                dismissAddVipDialog();
-                btn_right.setVisibility(View.INVISIBLE);
-                LogUtil.i(TAG, "Json = " + response.body.toString());
-                CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             } else if (request.flag == AppConst.HOTEL_TIE_SUPPORT) {
                 LogUtil.i(TAG, "support json = " + response.body.toString());
                 tv_support.setText(String.valueOf(hotelSpaceTieInfoBean.praiseCnt + 1));
@@ -506,8 +483,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     }
 
     @Override
-    protected void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
+    public void onNotifyError(ResponseData request) {
         replyListView.stopRefresh();
     }
 

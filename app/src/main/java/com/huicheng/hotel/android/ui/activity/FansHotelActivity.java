@@ -23,7 +23,6 @@ import com.huicheng.hotel.android.ui.custom.CustomCardStackViewPager;
 import com.huicheng.hotel.android.ui.custom.VerticalStackTransformer;
 import com.huicheng.hotel.android.ui.fragment.CardFragment;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import java.util.List;
  * @author kborid
  * @date 2016/12/20 0020
  */
-public class FansHotelActivity extends BaseActivity implements DataCallback {
+public class FansHotelActivity extends BaseActivity {
 
     private LinearLayout no_fans_lay, has_fans_lay;
     private Button btn_booking;
@@ -153,7 +152,7 @@ public class FansHotelActivity extends BaseActivity implements DataCallback {
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.VIP_HOTEL) {
                 removeProgressDialog();

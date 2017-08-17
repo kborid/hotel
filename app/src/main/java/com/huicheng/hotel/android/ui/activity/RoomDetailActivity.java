@@ -39,14 +39,12 @@ import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.CustomToast;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
@@ -61,7 +59,7 @@ import java.util.Map;
  * @author kborid
  * @date 2017/1/3 0003
  */
-public class RoomDetailActivity extends BaseActivity implements DataCallback {
+public class RoomDetailActivity extends BaseActivity {
     private static final String TAG = "RoomDetailActivity";
     private static final int SELECTED_BAR_COUNT = 2;
 
@@ -85,7 +83,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
 
     private LinearLayout free_service_lay;
 
-    private ImageView iv_share, iv_favorite;
+    private ImageView iv_share, iv_fans;
     private TextView tv_more;
     private TextView tv_confirm;
     private boolean isShowMore = false;
@@ -156,7 +154,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         tv_confirm.getPaint().setFakeBoldText(true);
 
         iv_share = (ImageView) findViewById(R.id.iv_share);
-        iv_favorite = (ImageView) findViewById(R.id.iv_favorite);
+        iv_fans = (ImageView) findViewById(R.id.iv_fans);
     }
 
     @Override
@@ -184,7 +182,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         btn_back.setImageResource(R.drawable.iv_back_white);
 
         if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
-            iv_favorite.setVisibility(View.VISIBLE);
+            iv_fans.setVisibility(View.VISIBLE);
         }
         tabHost.setup();
         for (int i = 0; i < SELECTED_BAR_COUNT; i++) {
@@ -236,7 +234,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         more_lay.setOnClickListener(this);
         tv_confirm.setOnClickListener(this);
         iv_share.setOnClickListener(this);
-        iv_favorite.setOnClickListener(this);
+        iv_fans.setOnClickListener(this);
         point_lay.setOnClickListener(this);
     }
 
@@ -272,28 +270,6 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
         if (!isProgressShowing()) {
             showProgressDialog(this);
         }
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    @Override
-    protected void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
-        super.requestHotelVip2(email, idcode, realname, traveltype);
-        RequestBeanBuilder b = RequestBeanBuilder.create(true);
-
-        b.addBody("email", email);
-        b.addBody("hotelId", String.valueOf(hotelId));
-        b.addBody("idcode", idcode);
-        b.addBody("realname", realname);
-        b.addBody("traveltype", traveltype);
-
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.HOTEL_VIP;
-        d.flag = AppConst.HOTEL_VIP;
-
-        if (!isProgressShowing()) {
-            showProgressDialog(this);
-        }
-
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -472,7 +448,7 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                 web.setDescription(tv_date.getText().toString() + " " + tv_during.getText().toString() + "\n共计：" + tv_price.getText().toString());
                 ShareControl.getInstance(this).openShareDisplay(web);
                 break;
-            case R.id.iv_favorite:
+            case R.id.iv_fans:
                 showAddVipDialog(this, HotelOrderManager.getInstance().getHotelDetailInfo());
                 break;
             case R.id.point_lay: {
@@ -712,6 +688,11 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onResume() {
         super.onResume();
+        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+            iv_fans.setVisibility(View.VISIBLE);
+        } else {
+            iv_fans.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -729,26 +710,21 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ROOM_DETAIL) {
                 removeProgressDialog();
                 LogUtil.i(TAG, "roomedetail json = " + response.body.toString());
                 roomDetailInfoBean = JSON.parseObject(response.body.toString(), RoomDetailInfoBean.class);
                 refreshRoomDetailInfo();
-            } else if (request.flag == AppConst.HOTEL_VIP) {
-                removeProgressDialog();
-                dismissAddVipDialog();
-                btn_right.setVisibility(View.INVISIBLE);
-                LogUtil.i(TAG, "Json = " + response.body.toString());
-                CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             }
+        } else if (request.flag == AppConst.HOTEL_VIP) {
+            iv_fans.setVisibility(View.GONE);
         }
     }
 
     @Override
-    protected void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
+    public void onNotifyError(ResponseData request) {
         if (request.flag == AppConst.ROOM_DETAIL) {
             this.finish();
         }

@@ -31,7 +31,6 @@ import com.huicheng.hotel.android.tools.PinyinUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
@@ -51,7 +50,7 @@ import java.util.Map;
 /**
  * 欢迎页面
  */
-public class WelcomeActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener, DataCallback {
+public class WelcomeActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener {
 
     private final String TAG = getClass().getSimpleName();
     private long start = 0; // 记录启动时间
@@ -265,7 +264,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.APP_INFO) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
@@ -283,8 +282,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     }
 
     @Override
-    protected void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
+    public void onNotifyError(ResponseData request) {
         goToNextActivity();
     }
 

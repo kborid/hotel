@@ -30,8 +30,6 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.prj.sdk.app.AppContext;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
@@ -47,7 +45,7 @@ import com.prj.sdk.widget.webview.WebChromeClientCompat;
  * @date 2014-7-8
  */
 @SuppressLint("SetJavaScriptEnabled")
-public class HtmlActivity extends BaseActivity implements onCancelLoginListener, DataCallback {
+public class HtmlActivity extends BaseActivity implements onCancelLoginListener {
 
     private static final String TAG = "HtmlActivity";
     private static final String CSS_STYLE = "<style>* {font-size:40px;padding:10px;}</style>";
@@ -482,15 +480,5 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener,
                 mWebView.reload();// 刷新
             }
         }
-    }
-
-    @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
-
     }
 }

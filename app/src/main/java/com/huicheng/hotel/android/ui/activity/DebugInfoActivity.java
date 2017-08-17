@@ -53,7 +53,7 @@ public class DebugInfoActivity extends BaseActivity {
         sb.append("\nVersionCode : ").append(BuildConfig.VERSION_CODE);
         String env = "";
         int type = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
-        switch (type){
+        switch (type) {
             case 0:
                 env = "测试环境";
                 break;

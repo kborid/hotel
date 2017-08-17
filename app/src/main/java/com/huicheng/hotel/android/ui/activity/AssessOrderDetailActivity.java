@@ -30,7 +30,6 @@ import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -43,6 +42,7 @@ import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -53,7 +53,7 @@ import java.util.Set;
  * @author kborid
  * @date 2016/12/22 0022
  */
-public class AssessOrderDetailActivity extends BaseActivity implements DataCallback {
+public class AssessOrderDetailActivity extends BaseActivity {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -365,7 +365,7 @@ public class AssessOrderDetailActivity extends BaseActivity implements DataCallb
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ASSESS_DETAIL) {
                 removeProgressDialog();
@@ -384,7 +384,12 @@ public class AssessOrderDetailActivity extends BaseActivity implements DataCallb
                 removeProgressDialog();
                 if (StringUtil.notEmpty(bgPath)) {
                     ContentResolver resolver = getContentResolver();
-                    Bitmap bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
+                    Bitmap bm = null;
+                    try {
+                        bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     iv_picture.setVisibility(View.VISIBLE);
                     iv_picture.setImageBitmap(bm);
                     if (response.body != null) {

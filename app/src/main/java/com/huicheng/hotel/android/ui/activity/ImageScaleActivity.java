@@ -28,6 +28,7 @@ public class ImageScaleActivity extends BaseActivity {
     private int mLocationX, mLocationY, mWidth, mHeight;
     private SmoothImageView iv_picture;
     private boolean isTransating = false;
+    private boolean isError = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +77,14 @@ public class ImageScaleActivity extends BaseActivity {
         isTransating = true;
         iv_picture.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         iv_picture.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
         ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
             @Override
             public void imageCallback(Bitmap bm, String url, String imageTag) {
                 if (null != bm) {
                     iv_picture.setImageBitmap(bm);
                 } else {
-                    finish();
+                    isError = true;
                     CustomToast.show("图片获取失败", CustomToast.LENGTH_SHORT);
                 }
             }
@@ -95,7 +97,15 @@ public class ImageScaleActivity extends BaseActivity {
         iv_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                transformEnd();
+                if (isError) {
+                    finishActivity();
+                    return;
+                }
+                if (isTransating) {
+                    return;
+                }
+                isTransating = true;
+                iv_picture.transformOut();
             }
         });
         iv_picture.setOnTransformListener(new SmoothImageView.TransformListener() {
@@ -103,8 +113,7 @@ public class ImageScaleActivity extends BaseActivity {
             public void onTransformComplete(int mode) { //mode STATE_TRANSFORM_IN 1 ,STATE_TRANSFORM_OUT 2
                 isTransating = false;
                 if (2 == mode) {
-                    finish();
-                    overridePendingTransition(0, 0);
+                    finishActivity();
                 }
             }
         });
@@ -115,18 +124,15 @@ public class ImageScaleActivity extends BaseActivity {
         super.onResume();
     }
 
-    private void transformEnd() {
-        if (isTransating) {
-            return;
-        }
-        isTransating = true;
-        iv_picture.transformOut();
+    private void finishActivity() {
+        finish();
+        overridePendingTransition(0, 0);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
-            transformEnd();
+            iv_picture.performClick();
             return true;
         }
         return super.onKeyDown(keyCode, event);

@@ -20,7 +20,6 @@ import com.huicheng.hotel.android.net.bean.HouHuiYaoDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomConfirmInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -33,7 +32,7 @@ import java.util.Map;
  * @author kborid
  * @date 2017/1/11 0011
  */
-public class HouHuiYaoOrderDetailActivity extends BaseActivity implements DataCallback {
+public class HouHuiYaoOrderDetailActivity extends BaseActivity {
 
     private LinearLayout root_lay;
     private TextView tv_hotel_name, tv_hotel_address, tv_hotel_phone, tv_hotel_detail;
@@ -232,7 +231,7 @@ public class HouHuiYaoOrderDetailActivity extends BaseActivity implements DataCa
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HHY_DETAIL) {
                 houHuiYaoDetailInfoBean = JSON.parseObject(response.body.toString(), HouHuiYaoDetailInfoBean.class);

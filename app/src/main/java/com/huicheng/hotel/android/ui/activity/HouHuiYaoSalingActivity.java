@@ -4,14 +4,12 @@ import android.os.Bundle;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 
 /**
  * @author kborid
  * @date 2017/2/26 0026
  */
-public class HouHuiYaoSalingActivity extends BaseActivity implements DataCallback {
+public class HouHuiYaoSalingActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +45,5 @@ public class HouHuiYaoSalingActivity extends BaseActivity implements DataCallbac
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
     }
 }

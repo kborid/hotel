@@ -24,7 +24,6 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -40,7 +39,7 @@ import java.util.List;
  * @author kborid
  * @date 2016/12/14 0014
  */
-public class AssessOrdersActivity extends BaseActivity implements DataCallback {
+public class AssessOrdersActivity extends BaseActivity {
 
     private final String TAG = getClass().getSimpleName();
     private static final int PAGESIZE = 10;
@@ -145,11 +144,6 @@ public class AssessOrdersActivity extends BaseActivity implements DataCallback {
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (RESULT_OK != resultCode) {
@@ -161,7 +155,7 @@ public class AssessOrdersActivity extends BaseActivity implements DataCallback {
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (request.flag == AppConst.ASSESS_ORDER) {
             if (response.body != null) {
                 JSONObject mJson = JSON.parseObject(response.body.toString());

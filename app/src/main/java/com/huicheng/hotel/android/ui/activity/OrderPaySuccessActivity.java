@@ -18,17 +18,15 @@ import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.widget.CustomToast;
 
 /**
  * @author kborid
  * @date 2017/3/13 0013
  */
-public class OrderPaySuccessActivity extends BaseActivity implements DataCallback {
+public class OrderPaySuccessActivity extends BaseActivity {
 
     private static final String TAG = "OrderPaySuccessActivity";
     private HotelDetailInfoBean hotelDetailInfoBean;
@@ -162,28 +160,6 @@ public class OrderPaySuccessActivity extends BaseActivity implements DataCallbac
     }
 
     @Override
-    protected void requestHotelVip2(String email, String idcode, String realname, String traveltype) {
-        super.requestHotelVip2(email, idcode, realname, traveltype);
-        RequestBeanBuilder b = RequestBeanBuilder.create(true);
-
-        b.addBody("email", email);
-        b.addBody("hotelId", String.valueOf(hotelDetailInfoBean.id));
-        b.addBody("idcode", idcode);
-        b.addBody("realname", realname);
-        b.addBody("traveltype", traveltype);
-
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.HOTEL_VIP;
-        d.flag = AppConst.HOTEL_VIP;
-
-        if (!isProgressShowing()) {
-            showProgressDialog(this);
-        }
-
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
     }
@@ -213,20 +189,16 @@ public class OrderPaySuccessActivity extends BaseActivity implements DataCallbac
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
-            if (request.flag == AppConst.HOTEL_VIP) {
-                removeProgressDialog();
-                dismissAddVipDialog();
-                btn_vip.setVisibility(View.GONE);
-                LogUtil.i(TAG, "Json = " + response.body.toString());
-                CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
-            } else if (request.flag == AppConst.HOTEL_DETAIL) {
+            if (request.flag == AppConst.HOTEL_DETAIL) {
                 removeProgressDialog();
                 LogUtil.i(TAG, "hoteldetail json = " + response.body.toString());
                 hotelDetailInfoBean = JSON.parseObject(response.body.toString(), HotelDetailInfoBean.class);
                 HotelOrderManager.getInstance().setHotelDetailInfo(hotelDetailInfoBean);
                 refreshHotelInfo();
+            } else if (request.flag == AppConst.HOTEL_VIP) {
+                btn_vip.setVisibility(View.GONE);
             }
         }
     }

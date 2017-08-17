@@ -30,7 +30,6 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
@@ -39,12 +38,13 @@ import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author kborid
  * @date 2017/1/7 0007
  */
-public class InvoiceDetailActivity extends BaseActivity implements DataCallback {
+public class InvoiceDetailActivity extends BaseActivity {
     private final String TAG = getClass().getSimpleName();
     private static final int SELECTED_BAR_COUNT = 2;
     private Switch btn_switch;
@@ -437,13 +437,17 @@ public class InvoiceDetailActivity extends BaseActivity implements DataCallback 
     }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.UPLOAD) {
                 removeProgressDialog();
                 ContentResolver resolver = getContentResolver();
-                Bitmap bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
-
+                Bitmap bm = null;
+                try {
+                    bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 switch (picType) {
                     case 0:
                         bean.thirdCommonPicPath = response.body.toString();

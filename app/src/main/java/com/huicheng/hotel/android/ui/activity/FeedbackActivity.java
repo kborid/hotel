@@ -24,7 +24,6 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
@@ -33,11 +32,12 @@ import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * 意见反馈
  */
-public class FeedbackActivity extends BaseActivity implements DataCallback, DialogInterface.OnCancelListener {
+public class FeedbackActivity extends BaseActivity implements DialogInterface.OnCancelListener {
 
     private final String TAG = getClass().getSimpleName();
     private EditText et_type, et_content;
@@ -208,16 +208,17 @@ public class FeedbackActivity extends BaseActivity implements DataCallback, Dial
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-    }
-
-    @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (request.flag == AppConst.UPLOAD) {
             removeProgressDialog();
             if (StringUtil.notEmpty(bgPath)) {
                 ContentResolver resolver = getContentResolver();
-                Bitmap bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
+                Bitmap bm = null;
+                try {
+                    bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 iv_picture.setVisibility(View.VISIBLE);
                 iv_picture.setImageBitmap(bm);
                 if (response.body != null) {

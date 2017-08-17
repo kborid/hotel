@@ -19,7 +19,6 @@ import com.huicheng.hotel.android.net.bean.FreeOneNightBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.widget.CustomToast;
@@ -32,7 +31,7 @@ import java.util.HashMap;
  * @author kborid
  * @date 2016/11/14 0014
  */
-public class Hotel0YuanHomeActivity extends BaseActivity implements DataCallback {
+public class Hotel0YuanHomeActivity extends BaseActivity {
 
     private Button btn_start;
     private RoundedAllImageView iv_share;
@@ -115,12 +114,7 @@ public class Hotel0YuanHomeActivity extends BaseActivity implements DataCallback
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.FREE_CURRENT_ACTIVE) {
                 removeProgressDialog();
