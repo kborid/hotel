@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -61,6 +62,7 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
     private FrameLayout fullscreenContainer;
     private WebChromeClient.CustomViewCallback myCallBack = null;
 
+    private CardView cardview;
     private MyListViewWidget listview;
     private List<HotelSpaceTieInfoBean> list = new ArrayList<>();
     private HotelSpaceItemAdapter adapter;
@@ -86,6 +88,7 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
         super.initViews();
         ScrollView scrollview = (ScrollView) findViewById(R.id.scrollview);
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        cardview = (CardView) findViewById(R.id.cardview);
         iv_hotel_bg = (RoundedAllImageView) findViewById(R.id.iv_hotel_bg);
         tv_tie_count = (TextView) findViewById(R.id.tv_tie_count);
         tv_fans_count = (TextView) findViewById(R.id.tv_fans_count);
@@ -121,6 +124,13 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
         if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
             btn_right.setVisibility(View.VISIBLE);
         }
+
+        //根据宽高比设置cardview大小，适配不同尺寸的屏幕
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        llp.width = Utils.mScreenWidth - Utils.dip2px(50);
+        llp.height = (int) ((float) llp.width / 13 * 8);
+        llp.topMargin = Utils.dip2px(5);
+        cardview.setLayoutParams(llp);
     }
 
     @Override
@@ -204,7 +214,7 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
         if (hotelSpaceBasicInfoBean != null) {
             root_lay.setVisibility(View.VISIBLE);
             tv_center_title.setText(hotelSpaceBasicInfoBean.hotelName + "的空间");
-            loadImage(iv_hotel_bg, R.drawable.def_hotel_banner, hotelSpaceBasicInfoBean.pic, 1920, 1080);
+            loadImage(iv_hotel_bg, R.drawable.def_hotel_banner, hotelSpaceBasicInfoBean.pic, 1024, 1024);
             tv_tie_count.setText(String.valueOf(hotelSpaceBasicInfoBean.articleCnt));
             tv_fans_count.setText(String.valueOf(hotelSpaceBasicInfoBean.vipCnt));
         } else {
@@ -287,6 +297,8 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
                 refreshHotelSpaceBasicInfo();
             } else if (request.flag == AppConst.HOTEL_VIP) {
                 removeProgressDialog();
+                dismissAddVipDialog();
+                btn_right.setVisibility(View.INVISIBLE);
                 LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             }
@@ -325,9 +337,7 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
                 convertView = LayoutInflater.from(context).inflate(R.layout.lv_hotelspace_item, null);
                 viewHolder.tv_time_label = (TextView) convertView.findViewById(R.id.tv_time_label);
                 viewHolder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);
-                viewHolder.tv_content.setLines(4);
-                viewHolder.tv_content.setTextSize(13);
-                viewHolder.tv_content.setTextColor(context.getResources().getColor(R.color.calendarTextColor));
+                viewHolder.tv_content.setMaxLines(4);
                 viewHolder.tv_content.setEllipsize(TextUtils.TruncateAt.END);
                 viewHolder.gridview = (NoScrollGridView) convertView.findViewById(R.id.gridview);
                 viewHolder.webview = (WebView) convertView.findViewById(R.id.webview);
@@ -377,6 +387,12 @@ public class HotelSpaceHomeActivity extends BaseActivity implements DataCallback
             // 设置数据
             final HotelSpaceTieInfoBean bean = list.get(position);
             String thisBlankDate = DateUtil.getDateBlank(System.currentTimeMillis(), bean.createTimeStamp);
+            if (thisBlankDate.equals("今日") || thisBlankDate.equals("昨日")) {
+                viewHolder.tv_time_label.setTextSize(18);
+            } else {
+                viewHolder.tv_time_label.setTextSize(12);
+            }
+
             if (0 == position) {
                 viewHolder.tv_time_label.setVisibility(View.VISIBLE);
                 viewHolder.tv_time_label.setText(thisBlankDate);

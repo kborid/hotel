@@ -16,13 +16,13 @@
                 android:id="@+id/tv_time_label"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical|right"
+                android:gravity="center"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:singleLine="true"
-                android:text="12月33日"
-                android:textColor="@color/lableColor"
-                android:textSize="@dimen/common_14sp"
+                android:text="12月31日"
+                android:textColor="@color/spaceDateLabelColor"
+                android:textSize="@dimen/common_12sp"
                 android:visibility="visible" />
 
             <RelativeLayout
@@ -34,7 +34,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:layout_marginLeft="5dp"
                     android:background="@drawable/comm_line2" />
             </RelativeLayout>
         </TableRow>
@@ -49,7 +48,7 @@
                 layout="@layout/lv_hotelspace_parter_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1" />
         </TableRow>
     </TableLayout>

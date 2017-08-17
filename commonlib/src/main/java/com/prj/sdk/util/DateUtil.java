@@ -195,10 +195,10 @@ public class DateUtil {
         if (days < 0) days = 0;
         switch ((int) days) {
             case 0:
-                blankStr = "今天 ";
+                blankStr = "今日";
                 break;
             case 1:
-                blankStr = "昨天 ";
+                blankStr = "昨日";
                 break;
 //            case 2:
 //                blankStr = "两天前";

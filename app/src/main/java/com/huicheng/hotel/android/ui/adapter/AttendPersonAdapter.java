@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.custom.CircleImageView;
-import com.prj.sdk.net.image.ImageLoader;
-import com.prj.sdk.util.StringUtil;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.huicheng.hotel.android.ui.base.BaseFragment.loadImage;
+
 
 public class AttendPersonAdapter extends BaseAdapter {
 
@@ -55,16 +56,7 @@ public class AttendPersonAdapter extends BaseAdapter {
 
         viewHolder.tv_name.setText(mList.get(position).attentusername);
         String url = mList.get(position).attentuserheadphoto;
-        if (StringUtil.notEmpty(url)) {
-            ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
-                @Override
-                public void imageCallback(Bitmap bm, String url, String imageTag) {
-                    if (null != bm) {
-                        viewHolder.iv_photo.setImageBitmap(bm);
-                    }
-                }
-            }, url, url, 200, 120, -1);
-        }
+        loadImage(viewHolder.iv_photo, R.drawable.def_photo, url, 0, 0);
 
         return convertView;
     }

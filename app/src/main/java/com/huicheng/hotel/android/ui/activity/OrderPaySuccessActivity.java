@@ -217,6 +217,8 @@ public class OrderPaySuccessActivity extends BaseActivity implements DataCallbac
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_VIP) {
                 removeProgressDialog();
+                dismissAddVipDialog();
+                btn_vip.setVisibility(View.GONE);
                 LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             } else if (request.flag == AppConst.HOTEL_DETAIL) {

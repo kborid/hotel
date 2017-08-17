@@ -325,7 +325,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
                         CustomToast.show("邮箱地址格式错误", CustomToast.LENGTH_SHORT);
                         return;
                     }
-                    mDialogVip.dismiss();
                     requestHotelVip2(et_email.getText().toString(),
                             et_id.getText().toString(),
                             et_username.getText().toString(),

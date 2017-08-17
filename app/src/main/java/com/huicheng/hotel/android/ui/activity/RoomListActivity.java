@@ -145,9 +145,6 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         tv_center_title.setText(HotelOrderManager.getInstance().getCityStr() + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
         tv_center_title.getPaint().setFakeBoldText(true);
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
-            btn_right.setVisibility(View.VISIBLE);
-        }
         super.initParams();
 
         tabHost.setup();
@@ -257,6 +254,9 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
 
     private void refreshRoomListInfo() {
         if (null != hotelDetailInfoBean) {
+            if (hotelDetailInfoBean.isPopup) {
+                btn_right.setVisibility(View.VISIBLE);
+            }
             //设置banner
             int marginValue = Utils.dip2px(10);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
@@ -637,6 +637,10 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (tabHost != null) {
+            tabHost.clearAllTabs();
+            tabHost = null;
+        }
     }
 
     class MyPagerAdapter extends PagerAdapter {
@@ -718,13 +722,16 @@ public class RoomListActivity extends BaseActivity implements DataCallback {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_DETAIL) {
                 removeProgressDialog();
-                LogUtil.i(TAG, "hoteldetail json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 hotelDetailInfoBean = JSON.parseObject(response.body.toString(), HotelDetailInfoBean.class);
                 HotelOrderManager.getInstance().setHotelDetailInfo(hotelDetailInfoBean);
                 refreshRoomListInfo();
             } else if (request.flag == AppConst.HOTEL_VIP) {
-                dismissAddVipDialog();
                 removeProgressDialog();
+                dismissAddVipDialog();
+                hotelDetailInfoBean.isPopup = false;
+                HotelOrderManager.getInstance().setHotelDetailInfo(hotelDetailInfoBean);
+                btn_right.setVisibility(View.INVISIBLE);
                 LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             } else if (request.flag == AppConst.CHECK_ROOM_EMPTY) {

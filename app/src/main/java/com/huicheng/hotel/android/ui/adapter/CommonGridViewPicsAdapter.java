@@ -90,6 +90,6 @@ public class CommonGridViewPicsAdapter extends BaseAdapter {
                 }
             }
 
-        }, url, url, 1024, 1024, 0);
+        }, url, url, 1000, 1000, -1);
     }
 }

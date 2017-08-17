@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.SmoothImageView;
-import com.prj.sdk.app.AppContext;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.widget.CustomToast;
 
@@ -77,7 +76,6 @@ public class ImageScaleActivity extends BaseActivity {
         isTransating = true;
         iv_picture.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         iv_picture.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
         ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
             @Override
             public void imageCallback(Bitmap bm, String url, String imageTag) {
@@ -88,7 +86,7 @@ public class ImageScaleActivity extends BaseActivity {
                     CustomToast.show("图片获取失败", CustomToast.LENGTH_SHORT);
                 }
             }
-        }, mUrl, mUrl, 1920, 1080, -1);
+        }, mUrl);
     }
 
     @Override
@@ -102,10 +100,19 @@ public class ImageScaleActivity extends BaseActivity {
         });
         iv_picture.setOnTransformListener(new SmoothImageView.TransformListener() {
             @Override
-            public void onTransformComplete(int mode) {
+            public void onTransformComplete(int mode) { //mode STATE_TRANSFORM_IN 1 ,STATE_TRANSFORM_OUT 2
                 isTransating = false;
+                if (2 == mode) {
+                    finish();
+                    overridePendingTransition(0, 0);
+                }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void transformEnd() {
@@ -114,14 +121,6 @@ public class ImageScaleActivity extends BaseActivity {
         }
         isTransating = true;
         iv_picture.transformOut();
-        AppContext.mMainHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                iv_picture.setAlpha(0f);
-                finish();
-                overridePendingTransition(0, 0);
-            }
-        }, 250);
     }
 
     @Override

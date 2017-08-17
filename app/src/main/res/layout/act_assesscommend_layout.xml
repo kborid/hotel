@@ -25,7 +25,7 @@
                 android:id="@+id/tv_comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/unSelectedTextColor"
+                android:textColor="@color/titleSummaryColor"
                 android:textSize="@dimen/common_15sp"
                 android:textStyle="bold" />
 

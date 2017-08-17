@@ -11,12 +11,11 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.huicheng.hotel.android.ui.custom.RoundedAllImageView xmlns:roundImage="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_photo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="fitXY"
-            roundImage:radius="20dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/def_photo" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -33,7 +32,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="程咬金"
-                android:textColor="@color/unSelectedTextColor"
+                android:textColor="@color/titleSummaryColor"
                 android:textSize="@dimen/common_15sp"
                 android:textStyle="bold" />
 
@@ -44,8 +43,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:text="1月12日"
-                android:textColor="@color/unSelectedTextColor"
-                android:textSize="@dimen/common_15sp" />
+                android:textColor="@color/spaceLabelColor"
+                android:textSize="@dimen/common_12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -62,7 +61,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="3.5分"
-                android:textColor="@color/secColor"
+                android:textColor="@color/spaceLabelColor"
                 android:textSize="@dimen/common_15sp" />
 
             <com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout
@@ -86,8 +85,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textColor="@color/unSelectedTextColor"
-        android:textSize="@dimen/common_12sp" />
+        android:textColor="@color/spaceContentColor"
+        android:textSize="@dimen/common_15sp" />
 
     <View
         android:layout_width="match_parent"

@@ -21,7 +21,6 @@ import com.huicheng.hotel.android.net.bean.AssessCommendInfoBean;
 import com.huicheng.hotel.android.net.bean.AssessOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
-import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
@@ -35,6 +34,8 @@ import com.prj.sdk.widget.CustomToast;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * @author kborid
@@ -239,7 +240,7 @@ public class AssessCommendActivity extends BaseActivity implements DataCallback 
             if (null == convertView) {
                 viewHolder = new ViewHolder();
                 convertView = LayoutInflater.from(context).inflate(R.layout.lv_assess_commend_item, null);
-                viewHolder.iv_photo = (RoundedAllImageView) convertView.findViewById(R.id.iv_photo);
+                viewHolder.iv_photo = (CircleImageView) convertView.findViewById(R.id.iv_photo);
                 viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                 viewHolder.tv_date = (TextView) convertView.findViewById(R.id.tv_date);
                 viewHolder.tv_point = (TextView) convertView.findViewById(R.id.tv_point);
@@ -251,7 +252,7 @@ public class AssessCommendActivity extends BaseActivity implements DataCallback 
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            loadImage(viewHolder.iv_photo, R.drawable.def_photo, list.get(position).headphotourl, 80, 48);
+            loadImage(viewHolder.iv_photo, R.drawable.def_photo, list.get(position).headphotourl, 0, 0);
             viewHolder.tv_name.setText(list.get(position).username);
             viewHolder.tv_name.getPaint().setFakeBoldText(true);
             viewHolder.tv_date.setText(DateUtil.getDay("MM月 yyyy", list.get(position).createTime));
@@ -267,7 +268,7 @@ public class AssessCommendActivity extends BaseActivity implements DataCallback 
 
             if (StringUtil.notEmpty(list.get(position).imgUrl)) {
                 viewHolder.iv_picture.setVisibility(View.VISIBLE);
-                loadImage(viewHolder.iv_picture, list.get(position).imgUrl, 800, 480);
+                loadImage(viewHolder.iv_picture, list.get(position).imgUrl, 1000, 1000);
             } else {
                 viewHolder.iv_picture.setVisibility(View.GONE);
             }
@@ -291,7 +292,7 @@ public class AssessCommendActivity extends BaseActivity implements DataCallback 
         }
 
         class ViewHolder {
-            RoundedAllImageView iv_photo;
+            CircleImageView iv_photo;
             TextView tv_name;
             TextView tv_date;
             TextView tv_point;

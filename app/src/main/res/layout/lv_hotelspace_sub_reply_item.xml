@@ -18,11 +18,10 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.huicheng.hotel.android.ui.custom.CircleImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_icon"
-                android:layout_width="15dp"
-                android:scaleType="fitCenter"
-                android:layout_height="15dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:src="@drawable/def_photo" />
 
             <LinearLayout
@@ -38,8 +37,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="项羽"
-                    android:textColor="@color/secColor"
-                    android:textSize="@dimen/common_12sp"
+                    android:textColor="@color/lableColor"
+                    android:textSize="@dimen/common_14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -49,7 +48,7 @@
                     android:text="3月29日 11:20"
                     android:visibility="gone"
                     android:textColor="@color/lableColor"
-                    android:textSize="@dimen/common_9sp" />
+                    android:textSize="@dimen/common_10sp" />
             </LinearLayout>
 
             <RelativeLayout
@@ -60,22 +59,20 @@
                 <TextView
                     android:id="@+id/tv_space_support"
                     android:layout_width="wrap_content"
-                    android:minWidth="45dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:drawableLeft="@drawable/iv_space_support"
                     android:drawablePadding="10dp"
                     android:gravity="center"
-                    android:text="33"
-                    android:textColor="@color/lableColor"
-                    android:textSize="@dimen/common_9sp"
-                    android:textStyle="bold" />
+                    android:minWidth="45dp"
+                    android:text="1111"
+                    android:textColor="@color/spaceLabelColor"
+                    android:textSize="@dimen/common_10sp" />
 
                 <TextView
                     android:id="@+id/tv_space_comment"
                     android:layout_width="wrap_content"
-                    android:minWidth="45dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
@@ -83,10 +80,10 @@
                     android:drawableLeft="@drawable/iv_space_comment"
                     android:drawablePadding="10dp"
                     android:gravity="center"
-                    android:text="4"
-                    android:textColor="@color/lableColor"
-                    android:textSize="@dimen/common_9sp"
-                    android:textStyle="bold" />
+                    android:minWidth="45dp"
+                    android:text="33w"
+                    android:textColor="@color/spaceLabelColor"
+                    android:textSize="@dimen/common_10sp" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -103,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:textColor="@color/secColor"
+                android:textColor="@color/lableColor"
                 android:textSize="@dimen/common_14sp" />
 
             <LinearLayout

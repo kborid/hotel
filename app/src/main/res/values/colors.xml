@@ -42,6 +42,9 @@
     <color name="lineColor2">#cfcfcf</color>
     <color name="lineShadowColor">#fffefd</color>
 
+    <color name="titleColor">#333333</color>
+    <color name="titleSummaryColor">#808080</color>
+
     <color name="calendarTextColor">#4d4d4d</color>
 
     <color name="wxColor">#2dc100</color>
@@ -62,6 +65,11 @@
     <color name="noDiscountColor">#969696</color>
     <color name="lableColor">#808080</color>
     <color name="editColor">@color/mainColor</color>
+
+    <color name="spaceLabelColor">#929292</color>
+    <color name="spaceDateLabelColor">#333333</color>
+    <color name="spaceContentColor">#636363</color>
+    <color name="spacePublishHintColor">#cccccc</color>
 
     <color name="searchHintColor">#c8c8c8</color>
     <color name="registerhintColor">#acacac</color>

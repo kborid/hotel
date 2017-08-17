@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +20,11 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieCommentInfoBean;
 import com.huicheng.hotel.android.ui.activity.HotelSpacePublishActivity;
 import com.huicheng.hotel.android.ui.activity.ImageScaleActivity;
-import com.huicheng.hotel.android.ui.custom.CircleImageView;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
@@ -36,6 +33,10 @@ import com.prj.sdk.widget.CustomToast;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.huicheng.hotel.android.ui.base.BaseFragment.loadImage;
 
 /**
  * @author kborid
@@ -94,17 +95,7 @@ public class MySpaceCommentAdapter extends BaseAdapter implements DataCallback {
 
         //设置list数据
         final HotelSpaceTieCommentInfoBean bean = list.get(position);
-        if (StringUtil.notEmpty(bean.replyUserHeadUrl)) {
-            viewHolder.iv_icon.setImageResource(R.drawable.def_photo);
-            ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
-                @Override
-                public void imageCallback(Bitmap bm, String url, String imageTag) {
-                    if (null != bm) {
-                        viewHolder.iv_icon.setImageBitmap(bm);
-                    }
-                }
-            }, bean.replyUserHeadUrl, bean.replyUserHeadUrl, 50, 50, -1);
-        }
+        loadImage(viewHolder.iv_icon, R.drawable.def_photo, bean.replyUserHeadUrl, 0, 0);
         viewHolder.tv_name.setText(bean.replyUserName);
         viewHolder.tv_date.setText(DateUtil.getDay("M月d日 HH:mm", bean.createTime));
         if (StringUtil.notEmpty(bean.content)) {
@@ -116,18 +107,8 @@ public class MySpaceCommentAdapter extends BaseAdapter implements DataCallback {
 
         if (StringUtil.notEmpty(bean.picUrl)) {
             viewHolder.picture_lay.setVisibility(View.VISIBLE);
-            final ImageView imageView = (ImageView) viewHolder.picture_lay.findViewById(R.id.imageView);
-            if (StringUtil.notEmpty(bean.replyUserHeadUrl)) {
-                imageView.setImageResource(R.color.hintColor);
-                ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
-                    @Override
-                    public void imageCallback(Bitmap bm, String url, String imageTag) {
-                        if (null != bm) {
-                            imageView.setImageBitmap(bm);
-                        }
-                    }
-                }, bean.picUrl, bean.picUrl, 1920, 1080, -1);
-            }
+            ImageView imageView = (ImageView) viewHolder.picture_lay.findViewById(R.id.imageView);
+            loadImage(imageView, bean.picUrl, 1000, 1000);
         } else {
             viewHolder.picture_lay.setVisibility(View.GONE);
         }

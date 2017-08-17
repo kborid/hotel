@@ -4,8 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,10 +37,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Date;
 
 /**
@@ -141,7 +135,7 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
         b.addBody("payChannel", HotelCommDef.getPayChannel(payIndex));
 
         ResponseData d = b.syncRequest(b);
-        d.path = NetURL.PAY;
+        d.path = NetURL.PAY/*"http://222.209.82.135:8881/pay/to_payment.json"*/;
         d.flag = AppConst.PAY;
 
         if (!isProgressShowing()) {
@@ -343,59 +337,11 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
         sendBroadcast(intent);
     }
 
-    private void startUnionPay() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String tn = null;
-                InputStream is;
-                try {
-
-                    String url = "http://101.231.204.84:8091/sim/getacptn";
-
-                    URL myURL = new URL(url);
-                    URLConnection ucon = myURL.openConnection();
-                    ucon.setConnectTimeout(120000);
-                    is = ucon.getInputStream();
-                    int i = -1;
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    while ((i = is.read()) != -1) {
-                        baos.write(i);
-                    }
-
-                    tn = baos.toString();
-                    is.close();
-                    baos.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                Message msg = myHandler.obtainMessage();
-                msg.obj = tn;
-                msg.what = 0;
-                myHandler.sendMessage(msg);
-            }
-        }).start();
-    }
 
     @Override
     public void preExecute(ResponseData request) {
 
     }
-
-    private Handler myHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    LogUtil.i(TAG, "tn = " + msg.obj.toString());
-                    removeProgressDialog();
-                    unionpay.unionStartPay(msg.obj.toString());
-                    break;
-            }
-        }
-    };
 
     @Override
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
@@ -409,29 +355,24 @@ public class OrderPayActivity extends BaseActivity implements DataCallback {
             } else if (request.flag == AppConst.PAY) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 JSONObject mJson = JSON.parseObject(response.body.toString());
-                if (payIndex == 0) {
-                    startUnionPay();
+                removeProgressDialog();
+                if (mJson.containsKey(HotelCommDef.ALIPAY)) {
+                    alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
+                } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
+                    JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
+                    wxpay.sendPayReq(
+                            mmJson.getString("package"),
+                            mmJson.getString("appid"),
+                            mmJson.getString("sign"),
+                            mmJson.getString("partnerid"),
+                            mmJson.getString("prepayid"),
+                            mmJson.getString("noncestr"),
+                            mmJson.getString("timestamp"));
+                } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
+                    JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
+                    unionpay.unionStartPay(mmJson.getString("tn"));
                 } else {
-                    removeProgressDialog();
-                    if (mJson.containsKey(HotelCommDef.ALIPAY)) {
-                        alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
-                    } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
-                        JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
-                        wxpay.sendPayReq(
-                                mmJson.getString("package"),
-                                mmJson.getString("appid"),
-                                mmJson.getString("sign"),
-                                mmJson.getString("partnerid"),
-                                mmJson.getString("prepayid"),
-                                mmJson.getString("noncestr"),
-                                mmJson.getString("timestamp"));
-                    } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
-                        JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
-                        unionpay.unionStartPay(mmJson.getString("tn"));
-                    } else {
-                        removeProgressDialog();
-                        CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
-                    }
+                    CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
                 }
             }
         }

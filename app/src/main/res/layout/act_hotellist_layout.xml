@@ -16,10 +16,9 @@
 
         <ImageView
             android:id="@+id/btn_back"
-            style="@style/Base.Widget.AppCompat.Toolbar.Button.Navigation"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:padding="10dp"
             android:scaleType="center"
             android:src="@drawable/iv_back" />
 
@@ -35,8 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textColor="@color/secColor"
-                android:textSize="@dimen/common_16sp"
+                android:textColor="@color/titleColor"
+                android:textSize="@dimen/common_18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -44,17 +43,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/mainColor"
+                android:textColor="@color/titleSummaryColor"
                 android:textSize="@dimen/common_10sp"
                 android:visibility="gone" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/btn_right"
-            style="@style/Base.Widget.AppCompat.Toolbar.Button.Navigation"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:padding="10dp"
             android:scaleType="center"
             android:src="@drawable/iv_map" />
 

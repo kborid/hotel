@@ -8,7 +8,9 @@
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        android:textColor="@color/spaceContentColor"
+        android:textSize="@dimen/common_15sp" />
 
     <com.huicheng.hotel.android.ui.custom.NoScrollGridView
         android:id="@+id/gridview"
@@ -49,7 +51,7 @@
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:text="200"
-            android:textColor="@color/lableColor"
+            android:textColor="@color/spaceLabelColor"
             android:textSize="@dimen/common_10sp" />
 
         <TextView
@@ -61,7 +63,7 @@
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:text="200"
-            android:textColor="@color/lableColor"
+            android:textColor="@color/spaceLabelColor"
             android:textSize="@dimen/common_10sp" />
 
         <TextView
@@ -73,7 +75,7 @@
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:text="200"
-            android:textColor="@color/lableColor"
+            android:textColor="@color/spaceLabelColor"
             android:textSize="@dimen/common_10sp" />
     </LinearLayout>
 </LinearLayout>

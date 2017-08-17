@@ -61,7 +61,7 @@ public class SmoothImageView extends ImageView {
         mPaint = new Paint();
         mPaint.setColor(mBgColor);
         mPaint.setStyle(Style.FILL);
-//		setBackgroundColor(mBgColor);
+		setBackgroundColor(mBgColor);
     }
 
     public void setOriginalInfo(int width, int height, int locationX, int locationY) {

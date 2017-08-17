@@ -67,7 +67,6 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     private FrameLayout fullscreenContainer;
     private WebChromeClient.CustomViewCallback myCallBack = null;
 
-    private View mHeaderView;
     private List<String> pictureList = new ArrayList<>();
     private NoScrollGridView gridview;
     private TextView tv_date, tv_comment_count;
@@ -99,7 +98,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         super.initViews();
 
         //headerView放帖子详细内容
-        mHeaderView = LayoutInflater.from(this).inflate(R.layout.header_hotel_tiedetail, null);
+        View mHeaderView = LayoutInflater.from(this).inflate(R.layout.header_hotel_tiedetail, null);
         tv_date = (TextView) mHeaderView.findViewById(R.id.tv_date);
         tv_comment_count = (TextView) mHeaderView.findViewById(R.id.tv_comment_count);
         tv_content = (TextView) mHeaderView.findViewById(R.id.tv_content);
@@ -181,7 +180,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     private void refreshTieDetailInfo() {
         if (hotelSpaceTieInfoBean != null) {
             tv_date.setText(DateUtil.getDay("MM月dd日 HH:mm", hotelSpaceTieInfoBean.createTimeStamp));
-            tv_comment_count.setText("评论：" + hotelSpaceTieInfoBean.replyCnt);
+            tv_comment_count.setText("评价 " + hotelSpaceTieInfoBean.replyCnt);
             if (StringUtil.notEmpty(hotelSpaceTieInfoBean.content)) {
                 tv_content.setVisibility(View.VISIBLE);
                 tv_content.setText(Html.fromHtml(hotelSpaceTieInfoBean.content));
@@ -199,7 +198,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                     if (size > 9) {
                         pictureList = pictureList.subList(0, 9);
                     }
-                    CommonGridViewPicsAdapter adapter = new CommonGridViewPicsAdapter(this, pictureList, Utils.dip2px(55));
+                    CommonGridViewPicsAdapter adapter = new CommonGridViewPicsAdapter(HotelSpaceDetailActivity.this, pictureList, Utils.dip2px(55), 1f);
                     gridview.setAdapter(adapter);
                 } else {
                     gridview.setVisibility(View.GONE);
@@ -451,6 +450,10 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
 
     @Override
     protected void onDestroy() {
+        if (webview != null) {
+            webview.stopLoading();
+            webview = null;
+        }
         super.onDestroy();
     }
 
@@ -489,6 +492,8 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                 requestTieCommentInfo(pageIndex);
             } else if (request.flag == AppConst.HOTEL_VIP) {
                 removeProgressDialog();
+                dismissAddVipDialog();
+                btn_right.setVisibility(View.INVISIBLE);
                 LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             } else if (request.flag == AppConst.HOTEL_TIE_SUPPORT) {

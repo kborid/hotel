@@ -717,6 +717,10 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (tabHost != null) {
+            tabHost.clearAllTabs();
+            tabHost = null;
+        }
     }
 
     @Override
@@ -734,6 +738,8 @@ public class RoomDetailActivity extends BaseActivity implements DataCallback {
                 refreshRoomDetailInfo();
             } else if (request.flag == AppConst.HOTEL_VIP) {
                 removeProgressDialog();
+                dismissAddVipDialog();
+                btn_right.setVisibility(View.INVISIBLE);
                 LogUtil.i(TAG, "Json = " + response.body.toString());
                 CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             }

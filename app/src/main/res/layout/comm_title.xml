@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/btn_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="10dp"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:padding="10dp"
         android:scaleType="center"
         android:src="@drawable/iv_back" />
 
@@ -27,8 +27,8 @@
             android:ellipsize="end"
             android:gravity="center"
             android:lines="1"
-            android:textColor="@color/secColor"
-            android:textSize="@dimen/common_16sp" />
+            android:textColor="@color/titleColor"
+            android:textSize="@dimen/common_18sp" />
 
         <TextView
             android:id="@+id/tv_center_summary"
@@ -37,17 +37,17 @@
             android:ellipsize="end"
             android:gravity="center"
             android:lines="1"
-            android:textColor="@color/secColor"
+            android:textColor="@color/titleSummaryColor"
             android:textSize="@dimen/common_10sp" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/btn_right"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginRight="10dp"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:padding="10dp"
         android:scaleType="center"
-        android:src="@drawable/iv_close"
+        android:src="@drawable/iv_favorite_gray"
         android:visibility="invisible" />
 
 </LinearLayout>
