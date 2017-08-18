@@ -30,7 +30,6 @@
 
     <!--Floating btn margin-->
     <dimen name="fab_margin">0dp</dimen>
-    <dimen name="card_margin">0dp</dimen>
 
     <!--consider-->
     <dimen name="seekMargin">40dp</dimen>

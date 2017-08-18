@@ -184,7 +184,6 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
     private void loadImg(String url, final ImageView imageView) {
         if (url != null) {
             imageView.setBackgroundResource(R.color.hintColor);
-            imageView.setTag(R.id.image_url, url);
             ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
                 @Override
                 public void imageCallback(Bitmap bm, String url,

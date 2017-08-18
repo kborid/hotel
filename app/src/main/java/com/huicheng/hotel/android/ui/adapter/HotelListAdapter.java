@@ -80,11 +80,23 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         // 是否显示vip价格
         holder.vip_layout.setVisibility(View.GONE);
         if (HotelCommDef.VIP_SUPPORT.equals(bean.vipEnable) && bean.vipPrice > 0) {
-            int minPrice;
-            if (bean.price != 0 && bean.speciallyPrice != 0) {
-                minPrice = Math.min(bean.price, bean.speciallyPrice);
+            int minPrice = 0;
+            switch (type) {
+                case HotelCommDef.TYPE_ALL:
+                    minPrice = bean.price;
+                    break;
+                case HotelCommDef.TYPE_CLOCK:
+                    minPrice = bean.clockPrice;
+                    break;
+                case HotelCommDef.TYPE_YEGUIREN:
+                    minPrice = bean.yeguirenPrice;
+                    break;
+            }
+
+            if (minPrice != 0 && bean.speciallyPrice != 0) {
+                minPrice = Math.min(minPrice, bean.speciallyPrice);
             } else {
-                minPrice = 0 != bean.price ? bean.price : bean.speciallyPrice;
+                minPrice = 0 != minPrice ? minPrice : bean.speciallyPrice;
             }
             if (bean.vipPrice < minPrice) {
                 holder.vip_layout.setVisibility(View.VISIBLE);
@@ -92,17 +104,18 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             }
         }
 
+        // 下方显示价格逻辑
         String note = "平台价：", price = "暂无";
         switch (type) {
             case HotelCommDef.TYPE_ALL:
-                holder.cardview.setBackgroundResource(R.drawable.comm_10radius_white_color);
+                holder.detail_lay.setBackgroundResource(R.drawable.lv_hotel_item_bg);
                 if (bean.price != 0) {
                     if (bean.speciallyPrice > bean.price) {
                         holder.tv_hotel_price.setVisibility(View.GONE);
                         price = bean.price + " 元起";
                     } else {
                         note = "特价：";
-                        //判断是否显示带删除线的平台价
+                        // 判断是否显示带删除线的平台价
                         if (bean.speciallyPrice == bean.price) {
                             holder.tv_hotel_price.setVisibility(View.GONE);
                         } else {
@@ -122,7 +135,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 holder.tv_hotel_special_price.setText(price);
                 break;
             case HotelCommDef.TYPE_CLOCK:
-                holder.cardview.setBackgroundResource(R.drawable.comm_10radius_white_color);
+                holder.detail_lay.setBackgroundResource(R.drawable.lv_hotel_item_bg);
                 holder.tv_hotel_price.setVisibility(View.GONE);
                 note = "价格：";
                 price = bean.clockPrice != 0 ? bean.clockPrice + " 元起" : price; //价格为0时判断处理
@@ -130,7 +143,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 holder.tv_hotel_special_price.setText(price);
                 break;
             case HotelCommDef.TYPE_YEGUIREN:
-                holder.cardview.setBackgroundResource(ygrRoomItemBackgroundId);
+                holder.detail_lay.setBackgroundResource(ygrRoomItemBackgroundId);
                 holder.tv_hotel_price.setVisibility(View.GONE);
                 note = "价格：";
                 price = bean.yeguirenPrice != 0 ? bean.yeguirenPrice + " 元起" : price; //价格为0时判断处理
@@ -139,6 +152,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 break;
         }
 
+        // 距离信息
         LatLng start = null, des = null;
         float lon = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "0", false));
         float lat = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "0", false));
@@ -153,6 +167,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             holder.tv_hotel_dis.setVisibility(View.GONE);
         }
 
+        // 评分信息
         float point = 0;
         if (StringUtil.notEmpty(bean.hotelGrade)) {
             point = Float.parseFloat(bean.hotelGrade);
@@ -167,6 +182,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         } else {
             holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_low));
         }
+
         holder.tv_hotel_name.setText(bean.hotelName);
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +206,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         LinearLayout vip_layout;
         TextView tv_vip_price;
         RoundedTopImageView iv_hotel_icon;
+        LinearLayout detail_lay;
         TextView tv_hotel_point;
         TextView tv_hotel_name;
         TextView tv_hotel_dis;
@@ -205,6 +222,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             tv_vip_price = (TextView) itemView.findViewById(R.id.tv_vip_price);
             ((TextView) itemView.findViewById(R.id.tv_vip_price_unit)).getPaint().setFakeBoldText(true);
             iv_hotel_icon = (RoundedTopImageView) itemView.findViewById(R.id.iv_hotel_icon);
+            detail_lay = (LinearLayout) itemView.findViewById(R.id.detail_lay);
             tv_hotel_point = (TextView) itemView.findViewById(R.id.tv_point);
             tv_hotel_name = (TextView) itemView.findViewById(R.id.tv_hotel_name);
             tv_hotel_name.getPaint().setFakeBoldText(true);

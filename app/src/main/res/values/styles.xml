@@ -44,6 +44,7 @@
         <item name="hotelItemDelPrice">@color/hotelItemDelPrice</item>
         <item name="hotelItemPrice">@color/hotelItemPrice</item>
         <item name="currentDayCircle">@color/currentDayCircle</item>
+        <item name="calendarNormalDayColor">@color/mainColorAccent</item>
         <item name="selDayBackground">@color/selDayBackground</item>
         <item name="considerText">@color/considerText</item>
         <item name="considerFab">@color/considerFab</item>
@@ -72,6 +73,9 @@
         <item name="mainColor">@color/mainColor</item>
         <item name="mainColorAccent">@color/mainColorAccent</item>
         <item name="messageHasImage">@drawable/iv_tab_msg2</item>
+        <item name="addButton">@drawable/iv_add</item>
+        <item name="subButton">@drawable/iv_sub</item>
+        <item name="nextButton">@drawable/iv_next</item>
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/maincolor_btn_sel</item>
         <item name="indicatorBgSel">@drawable/indicator_btn_sel</item>
@@ -108,6 +112,7 @@
         <item name="hotelItemDelPrice">@color/female_hotelItemDelPrice</item>
         <item name="hotelItemPrice">@color/female_hotelItemPrice</item>
         <item name="currentDayCircle">@color/female_currentDayCircle</item>
+        <item name="calendarNormalDayColor">@color/female_mainColor</item>
         <item name="selDayBackground">@color/female_selDayBackground</item>
         <item name="considerText">@color/female_considerText</item>
         <item name="considerFab">@color/female_considerFab</item>
@@ -136,6 +141,9 @@
         <item name="mainColor">@color/female_mainColor</item>
         <item name="mainColorAccent">@color/female_mainColorAccent</item>
         <item name="messageHasImage">@drawable/iv_tab_msg2_female</item>
+        <item name="addButton">@drawable/iv_add_female</item>
+        <item name="subButton">@drawable/iv_sub_female</item>
+        <item name="nextButton">@drawable/iv_next_female</item>
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/female_maincolor_btn_sel</item>
         <item name="indicatorBgSel">@drawable/female_indicator_btn_sel</item>

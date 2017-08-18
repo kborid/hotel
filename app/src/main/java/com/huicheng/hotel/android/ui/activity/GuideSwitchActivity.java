@@ -165,7 +165,7 @@ public class GuideSwitchActivity extends BaseActivity {
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-                CustomToast.show("再按一次 退出程序", CustomToast.LENGTH_SHORT);
+                CustomToast.show(getString(R.string.exit_tip), CustomToast.LENGTH_SHORT);
                 exitTime = System.currentTimeMillis();
             } else {
                 SessionContext.destroy();

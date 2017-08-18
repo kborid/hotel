@@ -94,6 +94,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        DataLoader.getInstance().clear(requestID);
         ActivityTack.getInstanse().removeActivity(this);
     }
 
@@ -379,7 +380,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             LogUtil.i("BaseActivity", "Json = " + response.body.toString());
             CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
             HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
-            btn_right.setVisibility(View.GONE);
+            btn_right.setVisibility(View.INVISIBLE);
         }
         onNotifyMessage(request, response);
     }

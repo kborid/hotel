@@ -214,7 +214,7 @@ public class RegisterActivity extends BaseActivity implements DialogInterface.On
         d.flag = AppConst.CHECK_PHONE;
 
         if (!isProgressShowing()) {
-            showProgressDialog(this, getString(R.string.loading));
+            showProgressDialog(this);
         }
         requestID = DataLoader.getInstance().loadData(this, d);
     }

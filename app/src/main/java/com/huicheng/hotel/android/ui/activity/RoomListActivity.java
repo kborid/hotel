@@ -611,7 +611,7 @@ public class RoomListActivity extends BaseActivity {
         if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
             btn_right.setVisibility(View.VISIBLE);
         } else {
-            btn_right.setVisibility(View.GONE);
+            btn_right.setVisibility(View.INVISIBLE);
         }
     }
 

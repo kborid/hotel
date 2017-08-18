@@ -412,7 +412,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
             btn_right.setVisibility(View.VISIBLE);
         } else {
-            btn_right.setVisibility(View.GONE);
+            btn_right.setVisibility(View.INVISIBLE);
         }
         try {
             webview.getClass().getMethod("onResume").invoke(webview, (Object[]) null);

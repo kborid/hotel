@@ -79,11 +79,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             calendar:calendarHeight="400dp"
-            calendar:colorCurrentDay="?attr/mainColorAccent"
+            calendar:colorCurrentDay="?attr/calendarNormalDayColor"
             calendar:colorCurrentDayCircle="?attr/currentDayCircle"
-            calendar:colorDayName="?attr/mainColorAccent"
-            calendar:colorMonthName="?attr/mainColorAccent"
-            calendar:colorNormalDay="?attr/mainColorAccent"
+            calendar:colorDayName="?attr/calendarNormalDayColor"
+            calendar:colorMonthName="?attr/calendarNormalDayColor"
+            calendar:colorNormalDay="?attr/calendarNormalDayColor"
             calendar:colorSelectedDayBackground="?attr/selDayBackground"
             calendar:enablePreviousDay="false" />
 

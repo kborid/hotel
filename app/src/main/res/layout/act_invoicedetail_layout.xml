@@ -140,7 +140,7 @@
                                 android:layout_marginTop="10dp"
                                 android:background="@null"
                                 android:hint="公司名称"
-                                android:textColor="@color/indicatorColor"
+                                android:textColor="?attr/indicatorColor"
                                 android:textColorHint="@color/lableColor"
                                 android:textSize="@dimen/common_18sp"
                                 android:textStyle="bold" />
@@ -173,7 +173,7 @@
                                 android:layout_marginTop="10dp"
                                 android:background="@null"
                                 android:hint="纳税人识别号"
-                                android:textColor="@color/indicatorColor"
+                                android:textColor="?attr/indicatorColor"
                                 android:textColorHint="@color/lableColor"
                                 android:textSize="@dimen/common_18sp"
                                 android:textStyle="bold" />
@@ -211,7 +211,7 @@
                                     android:layout_marginTop="10dp"
                                     android:background="@null"
                                     android:hint="公司地址"
-                                    android:textColor="@color/indicatorColor"
+                                    android:textColor="?attr/indicatorColor"
                                     android:textColorHint="@color/lableColor"
                                     android:textSize="@dimen/common_18sp"
                                     android:textStyle="bold" />
@@ -244,7 +244,7 @@
                                     android:background="@null"
                                     android:hint="公司电话"
                                     android:inputType="phone"
-                                    android:textColor="@color/indicatorColor"
+                                    android:textColor="?attr/indicatorColor"
                                     android:textColorHint="@color/lableColor"
                                     android:textSize="@dimen/common_18sp"
                                     android:textStyle="bold" />
@@ -276,7 +276,7 @@
                                     android:layout_marginTop="10dp"
                                     android:background="@null"
                                     android:hint="开户行"
-                                    android:textColor="@color/indicatorColor"
+                                    android:textColor="?attr/indicatorColor"
                                     android:textColorHint="@color/lableColor"
                                     android:textSize="@dimen/common_18sp"
                                     android:textStyle="bold" />
@@ -309,7 +309,7 @@
                                     android:background="@null"
                                     android:hint="银行帐户"
                                     android:inputType="number"
-                                    android:textColor="@color/indicatorColor"
+                                    android:textColor="?attr/indicatorColor"
                                     android:textColorHint="@color/lableColor"
                                     android:textSize="@dimen/common_18sp"
                                     android:textStyle="bold" />

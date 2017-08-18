@@ -35,6 +35,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textColor="@color/titleColor"
+                android:text="四川-成都"
                 android:textSize="@dimen/common_18sp"
                 android:textStyle="bold" />
 

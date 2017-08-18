@@ -9,7 +9,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/iv_sub" />
+        android:src="?attr/subButton" />
 
     <LinearLayout
         android:layout_width="70dp"
@@ -43,5 +43,5 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/iv_add" />
+        android:src="?attr/addButton" />
 </LinearLayout>

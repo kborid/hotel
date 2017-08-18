@@ -72,7 +72,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="15dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/iv_sub" />
+                android:src="?attr/subButton" />
         </LinearLayout>
 
     </LinearLayout>
@@ -133,7 +133,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="15dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/iv_add" />
+                android:src="?attr/addButton" />
         </LinearLayout>
 
     </LinearLayout>

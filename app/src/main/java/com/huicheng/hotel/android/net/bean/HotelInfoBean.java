@@ -12,10 +12,10 @@ public class HotelInfoBean {
     public int hotelId;
     public String hotelName;
     public String hotelStar;
-    public int price;
-    public int speciallyPrice;
     public String vipEnable;
     public int vipPrice;
+    public int price;
+    public int speciallyPrice;
     public int clockPrice;
     public int yeguirenPrice;
 }

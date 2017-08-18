@@ -18,6 +18,7 @@
         <attr name="hotelItemDelPrice" format="color" />
         <attr name="hotelItemPrice" format="color" />
         <attr name="currentDayCircle" format="color" />
+        <attr name="calendarNormalDayColor" format="color" />
         <attr name="selDayBackground" format="color" />
         <attr name="considerText" format="color" />
         <attr name="considerFab" format="color" />
@@ -26,8 +27,8 @@
         <attr name="considerShadow" format="color" />
         <attr name="mapSearchImage" format="reference" />
         <attr name="mapPinImage" format="reference" />
-        <attr name="mapPinTextColor" format="color"/>
-        <attr name="mapPricePinImage" format="reference"/>
+        <attr name="mapPinTextColor" format="color" />
+        <attr name="mapPricePinImage" format="reference" />
         <attr name="roomMainText" format="color" />
         <attr name="roomItemPrice" format="color" />
         <attr name="indicatorColor" format="color" />
@@ -46,6 +47,9 @@
         <attr name="mainColor" format="color" />
         <attr name="mainColorAccent" format="color" />
         <attr name="messageHasImage" format="reference" />
+        <attr name="addButton" format="reference" />
+        <attr name="subButton" format="reference" />
+        <attr name="nextButton" format="reference"/>
 
         <!--selector-->
         <attr name="mainColorBtnSel" format="reference" />
@@ -60,7 +64,7 @@
         <attr name="yhqActiveBg" format="reference" />
         <attr name="roomItemGradient" format="reference" />
         <attr name="considerTextSel" format="color|reference" />
-        <attr name="moreServiceSel" format="reference"/>
+        <attr name="moreServiceSel" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="TagCloudView">

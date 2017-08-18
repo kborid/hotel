@@ -3,6 +3,5 @@
 
     <!--Floating btn margin-->
     <dimen name="fab_margin">20dp</dimen>
-    <dimen name="card_margin">5dp</dimen>
 
 </resources>

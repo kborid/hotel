@@ -116,7 +116,7 @@ class SimpleMonthView extends View {
         mMonthTextColor = typedArray.getColor(R.styleable.CustomCalendarView_colorMonthName, resources.getColor(R.color.mainColorAccent));
         mDayTextColor = typedArray.getColor(R.styleable.CustomCalendarView_colorDayName, resources.getColor(R.color.mainColorAccent));
         mDayNumColor = typedArray.getColor(R.styleable.CustomCalendarView_colorNormalDay, resources.getColor(R.color.mainColorAccent));
-        mPreviousDayColor = typedArray.getColor(R.styleable.CustomCalendarView_colorPreviousDay, resources.getColor(R.color.lableColor));
+        mPreviousDayColor = typedArray.getColor(R.styleable.CustomCalendarView_colorPreviousDay, resources.getColor(R.color.secColorShadow));
         mSelectedDaysColor = typedArray.getColor(R.styleable.CustomCalendarView_colorSelectedDayBackground, resources.getColor(R.color.selDayBackground));
         mMonthTitleBGColor = typedArray.getColor(R.styleable.CustomCalendarView_colorSelectedDayText, resources.getColor(R.color.white));
         mDrawRect = typedArray.getBoolean(R.styleable.CustomCalendarView_drawRoundRect, false);

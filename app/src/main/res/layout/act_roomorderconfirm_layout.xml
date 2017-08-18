@@ -195,7 +195,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/iv_next" />
+                        android:src="?attr/nextButton" />
                 </LinearLayout>
 
                 <View
