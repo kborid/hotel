@@ -44,7 +44,7 @@
         <item name="hotelItemDelPrice">@color/hotelItemDelPrice</item>
         <item name="hotelItemPrice">@color/hotelItemPrice</item>
         <item name="currentDayCircle">@color/currentDayCircle</item>
-        <item name="calendarNormalDayColor">@color/mainColorAccent</item>
+        <item name="calendarNormalDayColor">@color/mainColor</item>
         <item name="selDayBackground">@color/selDayBackground</item>
         <item name="considerText">@color/considerText</item>
         <item name="considerFab">@color/considerFab</item>

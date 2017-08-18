@@ -8,11 +8,10 @@
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/card_margin"
         card:cardCornerRadius="10dp"
         card:cardElevation="3dp"
-        android:foreground="@drawable/common_item_selector_bg"
-        card:cardPreventCornerOverlap="false">
+        card:cardPreventCornerOverlap="false"
+        card:cardUseCompatPadding="true">
 
         <LinearLayout
             android:id="@+id/content_layout"
@@ -30,8 +29,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="125dp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/def_hhy"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:src="@drawable/def_hhy" />
 
                 <TextView
                     android:id="@+id/tv_point"
@@ -105,11 +104,12 @@
                             android:id="@+id/tv_buy_price"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
-                            android:text="420"
                             android:gravity="center"
+                            android:text="420"
                             android:textColor="@color/searchHintColor"
                             android:textSize="@dimen/common_18sp"
                             android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -139,11 +139,12 @@
                             android:id="@+id/tv_sale_price"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
-                            android:text="360"
                             android:gravity="center"
+                            android:text="360"
                             android:textColor="@color/mainColorAccent"
                             android:textSize="@dimen/common_18sp"
                             android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
