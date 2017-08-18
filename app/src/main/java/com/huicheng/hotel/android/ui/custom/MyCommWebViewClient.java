@@ -87,20 +87,20 @@ public class MyCommWebViewClient extends WVJBWebViewClient {
         handler.proceed();// 忽略证书信息继续加载
     }
 
-    @TargetApi(android.os.Build.VERSION_CODES.M)
-    @Override
-    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-        super.onReceivedHttpError(view, request, errorResponse);
-        LogUtil.i(TAG, "onReceivedHttpError()");
-        // 这个方法在6.0才出现
-        int statusCode = errorResponse.getStatusCode();
-        LogUtil.i(TAG, "onReceivedHttpError code = " + statusCode);
-        if (404 == statusCode || 500 == statusCode) {
-            if (null != listener) {
-                listener.onResult(RESULT_ERR);
-            }
-        }
-    }
+//    @TargetApi(android.os.Build.VERSION_CODES.M)
+//    @Override
+//    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+//        super.onReceivedHttpError(view, request, errorResponse);
+//        LogUtil.i(TAG, "onReceivedHttpError()");
+//        // 这个方法在6.0才出现
+//        int statusCode = errorResponse.getStatusCode();
+//        LogUtil.i(TAG, "onReceivedHttpError code = " + statusCode);
+//        if (404 == statusCode || 500 == statusCode) {
+//            if (null != listener) {
+//                listener.onResult(RESULT_ERR);
+//            }
+//        }
+//    }
 
     public interface LoadingResultListener {
         void onResult(int ret);

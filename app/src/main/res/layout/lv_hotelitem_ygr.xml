@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/secColorShadow"
+                    android:background="@color/hintColor"
                     android:gravity="center"
                     android:orientation="horizontal">
 
