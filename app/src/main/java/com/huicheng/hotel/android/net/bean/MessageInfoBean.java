@@ -14,4 +14,6 @@ public class MessageInfoBean {
     public String statusCode;
     public String statusName;
     public String title;
+    public String typeCode;
+    public String mark;
 }

@@ -1,7 +1,10 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -28,6 +32,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
@@ -47,10 +52,11 @@ public class MessageListActivity extends BaseActivity {
     private static final String MESSAGE_TYPE_READED = "03";
     private static final int PAGESIZE = 10;
     private Handler myHandler = new MyHandler(this);
-    private TextView tv_subject, tv_sender, tv_content;
+    private TextView tv_subject, tv_content;
     private Spinner spinner_type;
     private String[] keys = new String[]{"全", "已", "未"};
 
+    private LinearLayout detail_lay;
     private List<MessageInfoBean> list = new ArrayList<>();
     private SimpleRefreshListView listview;
     private MyMessageAdapter adapter;
@@ -72,13 +78,14 @@ public class MessageListActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
+        detail_lay = (LinearLayout) findViewById(R.id.detail_lay);
         tv_subject = (TextView) findViewById(R.id.tv_subject);
-        tv_sender = (TextView) findViewById(R.id.tv_sender);
         tv_content = (TextView) findViewById(R.id.tv_content);
         spinner_type = (Spinner) findViewById(R.id.spinner_type);
         listview = (SimpleRefreshListView) findViewById(R.id.listview);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void initParams() {
         super.initParams();
@@ -113,10 +120,11 @@ public class MessageListActivity extends BaseActivity {
     public void initListeners() {
         super.initListeners();
 
+        detail_lay.setOnClickListener(this);
         spinner_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LogUtil.i(TAG,"spinner type 's OnItemSelectedListener request....");
+                LogUtil.i(TAG, "spinner type 's OnItemSelectedListener request....");
                 switch (position) {
                     case 1:
                         messageType = MESSAGE_TYPE_READED;
@@ -129,7 +137,7 @@ public class MessageListActivity extends BaseActivity {
                         messageType = MESSAGE_TYPE_ALL;
                         break;
                 }
-                LogUtil.i(TAG,"messageType = " + messageType);
+                LogUtil.i(TAG, "messageType = " + messageType);
                 listview.refreshingHeaderView();
             }
 
@@ -179,13 +187,29 @@ public class MessageListActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.detail_lay:
+                if ("22".equals(list.get(selectedIndex).typeCode) || "23".equals(list.get(selectedIndex).typeCode)) {
+                    String mark = list.get(selectedIndex).mark;
+                    if (StringUtil.notEmpty(mark)) {
+                        try {
+                            String[] marks = mark.split("\\|");
+                            Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
+                            intent.putExtra("hotelId", Integer.valueOf(marks[0]));
+                            intent.putExtra("articleId", Integer.valueOf(marks[1]));
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                break;
             default:
                 break;
         }
     }
 
     private void requestAllMessage(String keyword, String type, int pageIndex) {
-        LogUtil.i(TAG,"keyword = " + keyword + ", type = " + type + ", pageIndex = " + pageIndex);
+        LogUtil.i(TAG, "keyword = " + keyword + ", type = " + type + ", pageIndex = " + pageIndex);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("keywords", keyword);
         b.addBody("type", type);
@@ -230,7 +254,7 @@ public class MessageListActivity extends BaseActivity {
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ALL_MESSAGE) {
-                LogUtil.i(TAG,"json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 List<MessageInfoBean> temp = JSON.parseArray(response.body.toString(), MessageInfoBean.class);
                 if (temp != null) {
                     if (!isLoadMore) {
@@ -249,7 +273,7 @@ public class MessageListActivity extends BaseActivity {
                     adapter.notifyDataSetChanged();
                 }
             } else if (request.flag == AppConst.MESSAGE_UPDATE) {
-                LogUtil.i(TAG,"json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 list.get(selectedIndex).statusCode = MESSAGE_TYPE_READED;
                 list.get(selectedIndex).statusName = "已读";
                 adapter.notifyDataSetChanged();
@@ -402,7 +426,6 @@ public class MessageListActivity extends BaseActivity {
                     case 0x01:
                         MessageInfoBean bean = (MessageInfoBean) msg.obj;
                         mActivity.get().tv_subject.setText(bean.title);
-                        mActivity.get().tv_sender.setText(bean.sendUserName);
                         mActivity.get().tv_content.setText(bean.content);
                         break;
                     default:

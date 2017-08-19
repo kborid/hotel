@@ -9,11 +9,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:fillViewport="true"
         android:overScrollMode="never"
-        android:paddingBottom="10dp"
         android:scrollbarThumbVertical="@drawable/p3016_scrollbar">
 
         <LinearLayout
+            android:id="@+id/detail_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -36,37 +37,7 @@
 
                 <TextView
                     android:id="@+id/tv_subject"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/searchHintColor"
-                    android:textSize="@dimen/common_12sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/comm_line2"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="55dp"
-                    android:layout_height="wrap_content"
-                    android:text="发件人："
-                    android:textColor="@color/mainColor"
-                    android:textSize="@dimen/common_12sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_sender"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/searchHintColor"
                     android:textSize="@dimen/common_12sp" />
@@ -94,15 +65,14 @@
 
                 <TextView
                     android:id="@+id/tv_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scrollbarThumbVertical="@drawable/p3016_scrollbar"
                     android:scrollbars="vertical"
                     android:textColor="@color/searchHintColor"
                     android:textSize="@dimen/common_12sp" />
             </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
 
     <LinearLayout

@@ -28,6 +28,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.net.bean.HotelSpaceBasicInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieCommentInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieInfoBean;
 import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
@@ -77,6 +78,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     private List<HotelSpaceTieCommentInfoBean> replyList = new ArrayList<>();
     private MySpaceCommentAdapter replyAdapter = null;
 
+    private HotelSpaceBasicInfoBean hotelSpaceBasicInfoBean = null;
     private HotelSpaceTieInfoBean hotelSpaceTieInfoBean = null;
     private int hotelId;
     private int articleId;
@@ -90,7 +92,11 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         initViews();
         initParams();
         initListeners();
-        replyListView.refreshingHeaderView();
+        if (null == hotelSpaceBasicInfoBean) {
+            requestHotelSpaceBasicInfo();
+        } else {
+            replyListView.refreshingHeaderView();
+        }
     }
 
     @Override
@@ -161,6 +167,9 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         if (null != bundle) {
             hotelId = bundle.getInt("hotelId");
             articleId = bundle.getInt("articleId");
+            if (bundle.get("hotelSpaceBasicInfoBean") != null) {
+                hotelSpaceBasicInfoBean = (HotelSpaceBasicInfoBean) bundle.get("hotelSpaceBasicInfoBean");
+            }
         }
     }
 
@@ -169,9 +178,6 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         super.initParams();
         tv_center_title.setText("帖子详情");
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
-            btn_right.setVisibility(View.VISIBLE);
-        }
         if (!SessionContext.isLogin()) {
             SessionContext.initUserInfo();
         }
@@ -322,6 +328,21 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         }
     }
 
+    private void requestHotelSpaceBasicInfo() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("hotelId", String.valueOf(hotelId));
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.HOTEL_SPACE;
+        d.flag = AppConst.HOTEL_SPACE;
+
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     private void requestTieSupport() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("replyId", "-1");
@@ -409,10 +430,12 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     @Override
     protected void onResume() {
         super.onResume();
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
-            btn_right.setVisibility(View.VISIBLE);
-        } else {
-            btn_right.setVisibility(View.INVISIBLE);
+        if (null != hotelSpaceBasicInfoBean) {
+            if (hotelSpaceBasicInfoBean.isPopup) {
+                btn_right.setVisibility(View.VISIBLE);
+            } else {
+                btn_right.setVisibility(View.INVISIBLE);
+            }
         }
         try {
             webview.getClass().getMethod("onResume").invoke(webview, (Object[]) null);
@@ -478,6 +501,16 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                 tv_support.setText(String.valueOf(hotelSpaceTieInfoBean.praiseCnt + 1));
             } else if (request.flag == AppConst.HOTEL_TIE_SHARE) {
                 requestTieDetail(articleId);
+            } else if (request.flag == AppConst.HOTEL_SPACE) {
+                removeProgressDialog();
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                hotelSpaceBasicInfoBean = JSON.parseObject(response.body.toString(), HotelSpaceBasicInfoBean.class);
+                if (hotelSpaceBasicInfoBean.isPopup) {
+                    btn_right.setVisibility(View.VISIBLE);
+                } else {
+                    btn_right.setVisibility(View.INVISIBLE);
+                }
+                replyListView.refreshingHeaderView();
             }
         }
     }

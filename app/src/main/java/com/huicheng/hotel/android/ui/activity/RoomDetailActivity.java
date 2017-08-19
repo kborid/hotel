@@ -303,14 +303,6 @@ public class RoomDetailActivity extends BaseActivity {
             }
 
             //设置付款信息
-            if (roomDetailInfoBean.totalPriceList != null) {
-                tabHost.getTabWidget().getChildAt(0).setEnabled(true);
-                ((TextView) tabHost.getTabWidget().getChildAt(0).findViewById(R.id.tv_tab)).setText("到店付:" + roomDetailInfoBean.totalPrice + "元");
-            } else {
-                tabHost.getTabWidget().getChildAt(0).setEnabled(false);
-                ((TextView) tabHost.getTabWidget().getChildAt(0).findViewById(R.id.tv_tab)).setText("到店付:不支持");
-            }
-
             if (roomDetailInfoBean.preTotalPriceList != null) {
                 tabHost.getTabWidget().getChildAt(1).setEnabled(true);
                 ((TextView) tabHost.getTabWidget().getChildAt(1).findViewById(R.id.tv_tab)).setText("预付:" + roomDetailInfoBean.preTotalPrice + "元");
@@ -319,8 +311,18 @@ public class RoomDetailActivity extends BaseActivity {
                 ((TextView) tabHost.getTabWidget().getChildAt(1).findViewById(R.id.tv_tab)).setText("预付:不支持");
             }
 
+            if (roomDetailInfoBean.totalPriceList != null && !roomDetailInfoBean.onlyOnline) {
+                tabHost.getTabWidget().getChildAt(0).setEnabled(true);
+                ((TextView) tabHost.getTabWidget().getChildAt(0).findViewById(R.id.tv_tab)).setText("到店付:" + roomDetailInfoBean.totalPrice + "元");
+            } else {
+                tabHost.getTabWidget().getChildAt(0).setEnabled(false);
+                ((TextView) tabHost.getTabWidget().getChildAt(0).findViewById(R.id.tv_tab)).setText("到店付:不支持");
+                tabHost.setCurrentTab(1);
+            }
+
             tv_date.setText(DateUtil.getDay("MM月dd日", HotelOrderManager.getInstance().getBeginTime(isYgr)) + "-" + DateUtil.getDay("dd日", HotelOrderManager.getInstance().getEndTime(isYgr)));
             tv_during.setText(DateUtil.getGapCount(HotelOrderManager.getInstance().getBeginDate(isYgr), HotelOrderManager.getInstance().getEndDate(isYgr)) + "晚");
+
             updateTab(tabHost);
 
             //设置选购服务
@@ -362,7 +364,7 @@ public class RoomDetailActivity extends BaseActivity {
                 tv_price.setText(roomDetailInfoBean.totalPrice + "元");
                 roomPrice = roomDetailInfoBean.totalPrice;
                 HotelOrderManager.getInstance().setPayType(HotelCommDef.PAY_ARR);
-                if (roomDetailInfoBean.totalPriceList == null) {
+                if (roomDetailInfoBean.totalPriceList == null || roomDetailInfoBean.onlyOnline) {
                     tv_confirm.setEnabled(false);
                 } else {
                     tv_confirm.setEnabled(true);

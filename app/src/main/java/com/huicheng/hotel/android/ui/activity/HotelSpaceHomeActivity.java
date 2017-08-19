@@ -119,9 +119,6 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
-            btn_right.setVisibility(View.VISIBLE);
-        }
 
         //根据宽高比设置cardview大小，适配不同尺寸的屏幕
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -142,6 +139,7 @@ public class HotelSpaceHomeActivity extends BaseActivity {
                 Intent intent = new Intent(HotelSpaceHomeActivity.this, HotelSpaceDetailActivity.class);
                 intent.putExtra("hotelId", HotelOrderManager.getInstance().getHotelDetailInfo().id);
                 intent.putExtra("articleId", list.get(position).id);
+                intent.putExtra("hotelSpaceBasicInfoBean", hotelSpaceBasicInfoBean);
                 startActivity(intent);
             }
         });
@@ -193,6 +191,13 @@ public class HotelSpaceHomeActivity extends BaseActivity {
             loadImage(iv_hotel_bg, R.drawable.def_hotel_banner, hotelSpaceBasicInfoBean.pic, 1024, 1024);
             tv_tie_count.setText(String.valueOf(hotelSpaceBasicInfoBean.articleCnt));
             tv_fans_count.setText(String.valueOf(hotelSpaceBasicInfoBean.vipCnt));
+
+            if (hotelSpaceBasicInfoBean.isPopup) {
+                btn_right.setVisibility(View.VISIBLE);
+            } else {
+                btn_right.setVisibility(View.INVISIBLE);
+            }
+
         } else {
             root_lay.setVisibility(View.GONE);
         }
@@ -236,10 +241,12 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
-            btn_right.setVisibility(View.VISIBLE);
-        } else {
-            btn_right.setVisibility(View.INVISIBLE);
+        if (null != hotelSpaceBasicInfoBean) {
+            if (hotelSpaceBasicInfoBean.isPopup) {
+                btn_right.setVisibility(View.VISIBLE);
+            } else {
+                btn_right.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

@@ -66,6 +66,14 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         initViews();
         initParams();
         initListeners();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                initJsonData();
+                requestAppVersionInfo();
+            }
+        }.start();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -249,14 +257,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     protected void onResume() {
         super.onResume();
         LogUtil.i(TAG, "onResume()");
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                initJsonData();
-                requestAppVersionInfo();
-            }
-        }.start();
     }
 
     @Override
