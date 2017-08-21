@@ -61,8 +61,6 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     private TextView tv_usage, tv_private;
     private Button btn_logout;
 
-    private Intent doActionIntent = null;
-
     public LeftDrawerLayout(Context context) {
         this(context, null);
     }
@@ -187,6 +185,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        Intent doActionIntent = null;
         switch (v.getId()) {
             case R.id.btn_login:
                 context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
@@ -237,16 +236,8 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         }
 
         if (null != doActionIntent) {
-            closeDrawer();
-        }
-    }
-
-    public void doActionIntent() {
-        if (doActionIntent != null) {
-//            closeDrawer();
             context.startActivity(doActionIntent);
         }
-        doActionIntent = null;
     }
 
     /**

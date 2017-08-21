@@ -91,20 +91,36 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/comm_rect_main_withwhite_bound" />
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/comm_rectangle_transparent_withbound_white"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/iv_search_transation"
-            android:gravity="center_vertical"
-            android:inputType="text"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/common_12sp" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_keyword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:gravity="center_vertical"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_12sp" />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/iv_search_transation" />
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
@@ -120,6 +136,7 @@
             android:background="@color/mainColor"
             android:divider="@drawable/line_message"
             android:dividerHeight="0.5dp"
+            android:footerDividersEnabled="false"
             android:listSelector="@color/transparent"
             android:scrollbarThumbVertical="@drawable/p3016_scrollbar" />
 

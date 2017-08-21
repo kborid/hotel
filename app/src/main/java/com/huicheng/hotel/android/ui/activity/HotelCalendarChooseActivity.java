@@ -21,7 +21,6 @@ import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
-import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
 /**
@@ -88,6 +87,9 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
         tv_center_title.getPaint().setFakeBoldText(true);
         initWeekLayout();
+        if (rebooking || HotelOrderManager.getInstance().isUseCoupon() || HotelOrderManager.getInstance().isVipHotel()) {
+            tv_center_title.setEnabled(false);
+        }
     }
 
     @Override
@@ -148,11 +150,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         if (requestCode == 0x01) {
             String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
             String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-            if (StringUtil.notEmpty(tempProvince) && tempProvince.equals(tempCity)) {
-                HotelOrderManager.getInstance().setCityStr(tempProvince);
-            } else {
-                HotelOrderManager.getInstance().setCityStr(tempCity + "-" + tempProvince);
-            }
+            HotelOrderManager.getInstance().setCityStr(tempProvince, tempCity);
             tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
         }
     }

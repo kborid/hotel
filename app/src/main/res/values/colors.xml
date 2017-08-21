@@ -62,7 +62,7 @@
     <color name="payLableColor">#DCDCDC</color>
     <color name="payPriceColor">#9aca40</color>
 
-    <color name="noDiscountColor">#969696</color>
+    <color name="noDiscountColor">#a7a7a7</color>
     <color name="lableColor">#808080</color>
     <color name="editColor">@color/mainColor</color>
 

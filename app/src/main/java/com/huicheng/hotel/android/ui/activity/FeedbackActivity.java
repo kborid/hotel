@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
@@ -40,10 +40,11 @@ import java.io.IOException;
 public class FeedbackActivity extends BaseActivity implements DialogInterface.OnCancelListener {
 
     private final String TAG = getClass().getSimpleName();
-    private EditText et_type, et_content;
+    private EditText et_content;
 
     private ImageView iv_picture, iv_screen;
-    private TextView tv_model, tv_os, tv_version;
+    private LinearLayout hotel_phone_lay, train_phone_lay, taxi_phone_lay;
+    private String model, osVersion, appVersion;
     private Button btn_submit;
     private String bgPath = null;
     private String imgUrl = null;
@@ -60,24 +61,23 @@ public class FeedbackActivity extends BaseActivity implements DialogInterface.On
     @Override
     public void initViews() {
         super.initViews();
-        et_type = (EditText) findViewById(R.id.et_type);
         et_content = (EditText) findViewById(R.id.et_content);
         iv_picture = (ImageView) findViewById(R.id.iv_picture);
         iv_screen = (ImageView) findViewById(R.id.iv_screen);
         btn_submit = (Button) findViewById(R.id.btn_submit);
 
-        tv_model = (TextView) findViewById(R.id.tv_model);
-        tv_os = (TextView) findViewById(R.id.tv_os);
-        tv_version = (TextView) findViewById(R.id.tv_version);
+        hotel_phone_lay = (LinearLayout) findViewById(R.id.hotel_phone_lay);
+        train_phone_lay = (LinearLayout) findViewById(R.id.train_phone_lay);
+        taxi_phone_lay = (LinearLayout) findViewById(R.id.taxi_phone_lay);
     }
 
     @Override
     public void initParams() {
         super.initParams();
         tv_center_title.setText(getString(R.string.side_fd));
-        tv_model.setText(Build.MODEL);
-        tv_os.setText("Android" + Build.VERSION.RELEASE);
-        tv_version.setText(BuildConfig.VERSION_NAME);
+        model = Build.MODEL;
+        osVersion = "Android" + Build.VERSION.RELEASE;
+        appVersion = BuildConfig.VERSION_NAME;
     }
 
     @Override
@@ -86,11 +86,15 @@ public class FeedbackActivity extends BaseActivity implements DialogInterface.On
         iv_screen.setOnClickListener(this);
         iv_picture.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
+        hotel_phone_lay.setOnClickListener(this);
+        train_phone_lay.setOnClickListener(this);
+        taxi_phone_lay.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.iv_screen:
                 choosePictureDialog();
@@ -115,18 +119,33 @@ public class FeedbackActivity extends BaseActivity implements DialogInterface.On
                 dialog.show();
                 break;
             case R.id.btn_submit:
-                if (StringUtil.isEmpty(et_type.getText().toString())) {
-                    CustomToast.show("请输入反馈类型", CustomToast.LENGTH_SHORT);
-                    return;
-                }
                 if (StringUtil.isEmpty(et_content.getText().toString())) {
                     CustomToast.show("请输入反馈描述", CustomToast.LENGTH_SHORT);
                     return;
                 }
                 requestSubmit();
                 break;
+            case R.id.hotel_phone_lay:
+                Uri hotelUri = Uri.parse("tel:" + getResources().getString(R.string.hotel_plane_phone));
+                intent = new Intent(Intent.ACTION_DIAL, hotelUri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                break;
+            case R.id.train_phone_lay:
+                Uri trainUri = Uri.parse("tel:" + getResources().getString(R.string.train_phone));
+                intent = new Intent(Intent.ACTION_DIAL, trainUri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                break;
+            case R.id.taxi_phone_lay:
+                Uri taxiUri = Uri.parse("tel:" + getResources().getString(R.string.taxi_phone));
+                intent = new Intent(Intent.ACTION_DIAL, taxiUri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                break;
             default:
                 break;
+        }
+
+        if (null != intent) {
+            startActivity(intent);
         }
     }
 
@@ -191,12 +210,11 @@ public class FeedbackActivity extends BaseActivity implements DialogInterface.On
 
     private void requestSubmit() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("title", et_type.getText().toString());
         b.addBody("content", et_content.getText().toString());
         b.addBody("imgUrl", imgUrl);
-        b.addBody("deviceInfo", tv_model.getText().toString());
-        b.addBody("deviceVersion", tv_os.getText().toString());
-        b.addBody("appVersion", tv_version.getText().toString());
+        b.addBody("deviceInfo", model);
+        b.addBody("deviceVersion", osVersion);
+        b.addBody("appVersion", appVersion);
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.FEEDBACK;
@@ -254,7 +272,7 @@ public class FeedbackActivity extends BaseActivity implements DialogInterface.On
                     bgPath = Utils.getFolderDir("pic") + "_temp_compress.jpg";
                     uploadImage(new File(ThumbnailUtil.compressImage(filePath, bgPath)));
                 } else {
-                    CustomToast.show("获取图片失败", 0);
+                    CustomToast.show("获取图片失败", CustomToast.LENGTH_SHORT);
                 }
                 break;
             case AppConst.ACTIVITY_IMAGE_CAPTURE:

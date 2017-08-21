@@ -10,11 +10,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -60,6 +63,8 @@ public class MessageListActivity extends BaseActivity {
     private List<MessageInfoBean> list = new ArrayList<>();
     private SimpleRefreshListView listview;
     private MyMessageAdapter adapter;
+    private EditText et_keyword;
+    private ImageView iv_search;
     private String keyword, messageType;
     private int pageIndex = 1;
     private boolean isLoadMore = false;
@@ -83,6 +88,8 @@ public class MessageListActivity extends BaseActivity {
         tv_content = (TextView) findViewById(R.id.tv_content);
         spinner_type = (Spinner) findViewById(R.id.spinner_type);
         listview = (SimpleRefreshListView) findViewById(R.id.listview);
+        et_keyword = (EditText) findViewById(R.id.et_keyword);
+        iv_search = (ImageView) findViewById(R.id.iv_search);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -181,6 +188,18 @@ public class MessageListActivity extends BaseActivity {
                 myHandler.sendMessage(msg);
             }
         });
+
+        et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    iv_search.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+        iv_search.setOnClickListener(this);
     }
 
     @Override
@@ -201,6 +220,12 @@ public class MessageListActivity extends BaseActivity {
                             e.printStackTrace();
                         }
                     }
+                }
+                break;
+            case R.id.iv_search:
+                if (!et_keyword.getText().toString().equals(keyword)) {
+                    keyword = et_keyword.getText().toString();
+                    listview.refreshingHeaderView();
                 }
                 break;
             default:
@@ -259,6 +284,7 @@ public class MessageListActivity extends BaseActivity {
                 if (temp != null) {
                     if (!isLoadMore) {
                         list.clear();
+                        selectedIndex = 0;
                         listview.setRefreshTime(DateUtil.getSecond(Calendar.getInstance().getTimeInMillis()));
                     } else {
                         isLoadMore = false;
@@ -269,8 +295,14 @@ public class MessageListActivity extends BaseActivity {
                     }
                     listview.stopLoadMore();
                     listview.stopRefresh();
+                    if (temp.size() < PAGESIZE) {
+                        listview.setPullLoadEnable(false);
+                    } else {
+                        listview.setPullLoadEnable(true);
+                    }
                     list.addAll(temp);
-                    adapter.notifyDataSetChanged();
+                    adapter.setSelectItem(selectedIndex);
+//                    adapter.notifyDataSetChanged();
                 }
             } else if (request.flag == AppConst.MESSAGE_UPDATE) {
                 LogUtil.i(TAG, "json = " + response.body.toString());

@@ -38,6 +38,11 @@ public final class AppConst {
     public static final String LOCATION_CITY = "location_city";
     public static final String LOCATION_SITEID = "location_siteid";
 
+    //粉丝申请用户信息缓存
+    public static final String FANS_NAME = "fans_name";
+    public static final String FANS_ID = "fans_id";
+    public static final String FANS_EMAIL = "fans_email";
+
     public static final String APPID = "ANDROID-0571-0001"; // appid
     public static final String APPKEY = "fbe938c4bfe0a7cda1dcae7c85c7f83e37736207d637dc1d";
     public static final String VERSION = "2.0"; // version

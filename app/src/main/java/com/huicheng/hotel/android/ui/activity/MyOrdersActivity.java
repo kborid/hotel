@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -70,10 +71,16 @@ public class MyOrdersActivity extends BaseActivity {
     private String orderType, orderStatus;
     private String startYear, endYear;
 
+    private int mMainColorId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_myorders_layout);
+        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
+        mMainColorId = ta.getColor(R.styleable.MyTheme_mainColor, getResources().getColor(R.color.mainColor));
+        ta.recycle();
+
         initViews();
         initParams();
         initListeners();
@@ -394,6 +401,7 @@ public class MyOrdersActivity extends BaseActivity {
                 viewHolder = new ViewHolder();
                 convertView = LayoutInflater.from(context).inflate(R.layout.lv_item_order, null);
                 viewHolder.root_lay = (LinearLayout) convertView.findViewById(R.id.root_lay);
+                viewHolder.iv_order_point = (ImageView) convertView.findViewById(R.id.iv_order_point);
                 viewHolder.shadow_up_view = convertView.findViewById(R.id.shadow_up_view);
                 viewHolder.shadow_down_view = convertView.findViewById(R.id.shadow_down_view);
                 viewHolder.swipeView = (CustomSwipeView) convertView.findViewById(R.id.swipeview);
@@ -426,6 +434,9 @@ public class MyOrdersActivity extends BaseActivity {
                     viewHolder.shadow_down_view.setVisibility(View.GONE);
                 }
             }
+
+            viewHolder.iv_order_point.setImageBitmap(BitmapUtils.getAlphaBitmap(context.getResources().getDrawable(R.drawable.iv_order_flag),
+                    mMainColorId));
 
             viewHolder.tv_order_title.setText(list.get(position).hotelName);
             if (StringUtil.notEmpty(list.get(position).cityName)) {
@@ -533,6 +544,7 @@ public class MyOrdersActivity extends BaseActivity {
 
         class ViewHolder {
             LinearLayout root_lay;
+            ImageView iv_order_point;
             View shadow_up_view;
             View shadow_down_view;
             CustomSwipeView swipeView;

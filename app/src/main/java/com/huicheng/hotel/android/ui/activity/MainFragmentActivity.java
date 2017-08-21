@@ -289,7 +289,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                left_layout.doActionIntent();
             }
 
             @Override

@@ -290,6 +290,11 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             final EditText et_id = (EditText) viewDetail.findViewById(R.id.et_id);
             final EditText et_email = (EditText) viewDetail.findViewById(R.id.et_email);
             final TagFlowLayout tagFlowLayout = (TagFlowLayout) viewDetail.findViewById(R.id.flowlayout);
+
+            et_username.setText(SharedPreferenceUtil.getInstance().getString(AppConst.FANS_NAME, "", true));
+            et_id.setText(SharedPreferenceUtil.getInstance().getString(AppConst.FANS_ID, "", true));
+            et_email.setText(SharedPreferenceUtil.getInstance().getString(AppConst.FANS_EMAIL, "", true));
+
             final int[] selectedIndex = {0};
             ArrayList<String> tagList = new ArrayList<>();
             tagList.addAll(Arrays.asList(getResources().getStringArray(R.array.TravelType)));
@@ -330,6 +335,12 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
                         CustomToast.show("邮箱地址格式错误", CustomToast.LENGTH_SHORT);
                         return;
                     }
+
+                    //缓存粉丝信息
+                    SharedPreferenceUtil.getInstance().setString(AppConst.FANS_NAME, et_username.getText().toString(), true);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.FANS_ID, et_id.getText().toString(), true);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.FANS_EMAIL, et_email.getText().toString(), true);
+
                     requestHotelVip2(et_email.getText().toString(),
                             et_id.getText().toString(),
                             et_username.getText().toString(),

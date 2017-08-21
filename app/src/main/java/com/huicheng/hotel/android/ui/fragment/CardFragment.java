@@ -58,6 +58,7 @@ public class CardFragment extends BaseFragment {
                 HotelOrderManager.getInstance().reset();
                 HotelOrderManager.getInstance().setIsVipHotel(true);
                 HotelOrderManager.getInstance().setVipHotelId(bean.hotelId);
+                HotelOrderManager.getInstance().setCityStr(bean.provinceName, bean.cityName);
                 startActivity(intent);
             }
         });

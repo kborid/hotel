@@ -272,6 +272,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
             case R.id.btn_booking_again:
                 intent = new Intent(this, HotelCalendarChooseActivity.class);
                 HotelOrderManager.getInstance().reset();
+                HotelOrderManager.getInstance().setCityStr(orderPayDetailInfoBean.province, orderPayDetailInfoBean.location);
                 intent.putExtra("rebooking", true);
                 intent.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
                 break;

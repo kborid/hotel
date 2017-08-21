@@ -49,7 +49,14 @@
     <string name="side_assess">评价</string>
     <string name="side_fans">粉丝酒店</string>
     <string name="side_setting">设置</string>
-    <string name="side_fd">使用反馈</string>
+    <string name="side_fd">服务支持或意见反馈</string>
+    <string name="service_phone">服务专线</string>
+    <string name="hotel_plane_booking">酒店与机票预订：</string>
+    <string name="hotel_plane_phone">400–000–8656</string>
+    <string name="train_booking">火车票预订：</string>
+    <string name="train_phone">400–830–6666</string>
+    <string name="taxi_booking">租车预订：</string>
+    <string name="taxi_phone">400–616–6666</string>
 
     <!-- ========个人中心======== -->
     <string name="uc_phone">手机</string>
