@@ -27,6 +27,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderDetailInfoBean;
+import com.huicheng.hotel.android.net.bean.OrdersSpendInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomSwipeView;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
@@ -56,6 +57,7 @@ public class MyOrdersActivity extends BaseActivity {
 
     private SimpleRefreshListView listview;
     private MyOrderAdapter adapter;
+    private OrdersSpendInfoBean ordersSpendInfoBean = null;
     private List<OrderDetailInfoBean> list = new ArrayList<>();
     // 继续有多少个条目的delete被展示出来的集合
     private List<CustomSwipeView> slideDeleteArrayList = new ArrayList<>();
@@ -71,6 +73,7 @@ public class MyOrdersActivity extends BaseActivity {
     private String orderType, orderStatus;
     private String startYear, endYear;
 
+    private TextView tv_spend_year, tv_save_year;
     private int mMainColorId;
 
     @Override
@@ -80,7 +83,6 @@ public class MyOrdersActivity extends BaseActivity {
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         mMainColorId = ta.getColor(R.styleable.MyTheme_mainColor, getResources().getColor(R.color.mainColor));
         ta.recycle();
-
         initViews();
         initParams();
         initListeners();
@@ -98,6 +100,9 @@ public class MyOrdersActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
+        tv_spend_year = (TextView) findViewById(R.id.tv_spend_year);
+        tv_save_year = (TextView) findViewById(R.id.tv_save_year);
+
         listview = (SimpleRefreshListView) findViewById(R.id.listview);
         if (listview != null) {
             listview.setPullRefreshEnable(true);
@@ -189,6 +194,19 @@ public class MyOrdersActivity extends BaseActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestSpendyearly(String startYear, String endYear) {
+        LogUtil.i(TAG, "requestSpendyearly()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("startYear", startYear);
+        b.addBody("endYear", endYear);
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.ORDER_SPEND;
+        d.flag = AppConst.ORDER_SPEND;
+
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     @Override
     public void initListeners() {
         super.initListeners();
@@ -199,6 +217,7 @@ public class MyOrdersActivity extends BaseActivity {
                 pageIndex = 0;
                 isLoadMore = false;
                 requestMyOrdersList(orderType, orderStatus, startYear, endYear, pageIndex);
+                requestSpendyearly(startYear, endYear);
             }
 
             @Override
@@ -330,14 +349,16 @@ public class MyOrdersActivity extends BaseActivity {
         super.onResume();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private void updateOrdersSpendInfo() {
+        if (ordersSpendInfoBean != null) {
+            tv_spend_year.setText(String.valueOf((int) ordersSpendInfoBean.spend));
+            tv_save_year.setText(String.valueOf((int) ordersSpendInfoBean.totalsave));
+        }
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -360,6 +381,10 @@ public class MyOrdersActivity extends BaseActivity {
                 listview.stopRefresh();
                 list.addAll(temp);
                 adapter.notifyDataSetChanged();
+            } else if (request.flag == AppConst.ORDER_SPEND) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                ordersSpendInfoBean = JSON.parseObject(response.body.toString(), OrdersSpendInfoBean.class);
+                updateOrdersSpendInfo();
             }
         }
     }
@@ -574,7 +599,6 @@ public class MyOrdersActivity extends BaseActivity {
         }
         if (requestCode == 0x01) {
             listview.refreshingHeaderView();
-//            requestMyOrdersList(orderType, orderStatus, startYear, endYear, pageIndex);
         }
     }
 

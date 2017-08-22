@@ -1,12 +1,14 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,10 +22,11 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.FansHotelInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomCardStackViewPager;
+import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.VerticalStackTransformer;
-import com.huicheng.hotel.android.ui.fragment.CardFragment;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +40,9 @@ public class FansHotelActivity extends BaseActivity {
     private LinearLayout no_fans_lay, has_fans_lay;
     private Button btn_booking;
     private CustomCardStackViewPager viewPager;
-    private List<Fragment> fragments = new ArrayList<>();
     private TextView tv_count;
     private List<FansHotelInfoBean> fanHotelList = new ArrayList<>();
-    private MyFragmentPageAdapter adapter;
+    private int positionIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +68,14 @@ public class FansHotelActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        tv_center_title.setText("粉丝酒店");
+        tv_center_title.setText(getString(R.string.side_fans));
         viewPager.setOrientation(CustomCardStackViewPager.Orientation.VERTICAL);
-        viewPager.setOffscreenPageLimit(3);
         viewPager.setPageTransformer(true, new VerticalStackTransformer(this));
-        adapter = new MyFragmentPageAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        llp.height = Utils.mScreenHeight - Utils.dip2px(45) - Utils.dip2px(150) - Utils.dip2px(40);
+        llp.width = (int) ((float) llp.height / 7 * 5.5f);
+        viewPager.setLayoutParams(llp);
     }
 
     @Override
@@ -86,7 +90,11 @@ public class FansHotelActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                tv_count.setText(position + 1 + " / " + fragments.size());
+                int newPosition = position % fanHotelList.size();
+                tv_count.setText(newPosition + 1 + " / " + fanHotelList.size());
+                if (positionIndex != newPosition) {
+                    positionIndex = newPosition;
+                }
             }
 
             @Override
@@ -125,11 +133,12 @@ public class FansHotelActivity extends BaseActivity {
         if (fanHotelList != null && fanHotelList.size() > 0) {
             no_fans_lay.setVisibility(View.GONE);
             has_fans_lay.setVisibility(View.VISIBLE);
-            for (int i = 0; i < fanHotelList.size(); i++) {
-                fragments.add(CardFragment.newInstance(i, fanHotelList.get(i)));
-            }
+            viewPager.setAdapter(new MyPageAdapter(this, fanHotelList));
             tv_count.setText(1 + " / " + fanHotelList.size());
-            adapter.notifyDataSetChanged();
+
+            //TODO viewPager一个假的无限循环，初始位置是viewPager count的100倍
+            viewPager.setCurrentItem(fanHotelList.size() * 100);
+            viewPager.setOffscreenPageLimit(fanHotelList.size());
         } else {
             no_fans_lay.setVisibility(View.VISIBLE);
             has_fans_lay.setVisibility(View.GONE);
@@ -166,20 +175,69 @@ public class FansHotelActivity extends BaseActivity {
         }
     }
 
-    private class MyFragmentPageAdapter extends FragmentPagerAdapter {
+    @Override
+    public void onNotifyError(ResponseData request) {
+        super.onNotifyError(request);
+        removeProgressDialog();
+        refreshFansHotelLayout();
+    }
 
-        public MyFragmentPageAdapter(FragmentManager fm) {
-            super(fm);
-        }
+    private class MyPageAdapter extends PagerAdapter {
+        private Context context;
+        private List<FansHotelInfoBean> fansList;
 
-        @Override
-        public Fragment getItem(int arg0) {
-            return fragments.get(arg0);
+        public MyPageAdapter(Context context, List<FansHotelInfoBean> fansList) {
+            this.context = context;
+            this.fansList = fansList;
         }
 
         @Override
         public int getCount() {
-            return fragments.size();
+            return Integer.MAX_VALUE;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return (view == object);
+        }
+
+        @Override
+        public Object instantiateItem(final ViewGroup container, int position) {
+            position %= fansList.size();
+            if (position < 0) {
+                position = fansList.size() + position;
+            }
+            final FansHotelInfoBean bean = fansList.get(position);
+            final View view = LayoutInflater.from(context).inflate(R.layout.vp_fanshotel_item, null);
+            final RoundedAllImageView iv_background = (RoundedAllImageView) view.findViewById(R.id.iv_background);
+            final TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
+            final TextView tv_order = (TextView) view.findViewById(R.id.tv_order);
+            loadImage(iv_background, R.drawable.def_fans, bean.featurePicPath, 750, 1050);
+            tv_name.setText(bean.name);
+            tv_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, HotelCalendarChooseActivity.class);
+                    HotelOrderManager.getInstance().reset();
+                    HotelOrderManager.getInstance().setIsVipHotel(true);
+                    HotelOrderManager.getInstance().setVipHotelId(bean.hotelId);
+                    HotelOrderManager.getInstance().setCityStr(bean.provinceName, bean.cityName);
+                    startActivity(intent);
+                }
+            });
+
+            //如果View已经在之前添加到了一个父组件，则必须先remove，否则会抛出IllegalStateException。
+            ViewParent vp = view.getParent();
+            if (vp != null) {
+                ViewGroup parent = (ViewGroup) vp;
+                parent.removeView(view);
+            }
+            container.addView(view);
+            return view;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
         }
     }
 }

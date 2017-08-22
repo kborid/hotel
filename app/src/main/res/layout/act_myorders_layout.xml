@@ -32,6 +32,7 @@
                     android:textSize="@dimen/common_12sp" />
 
                 <TextView
+                    android:id="@+id/tv_spend_year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -56,6 +57,7 @@
                     android:textSize="@dimen/common_12sp" />
 
                 <TextView
+                    android:id="@+id/tv_save_year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"

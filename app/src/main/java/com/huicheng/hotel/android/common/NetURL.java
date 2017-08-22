@@ -83,6 +83,7 @@ public final class NetURL {
     public static final String ROOM_CONFIRM_ORDER = PORTAL + "order/add.json"; //下单，确认订单
     public static final String PAY_ORDER_DETAIL = PORTAL + "order/shortdetail.json"; //订单详情服务
     public static final String ORDER_LIST = PORTAL + "order/list.json"; //订单列表
+    public static final String ORDER_SPEND = PORTAL + "order/spendyearly.json"; //消费年金
     public static final String ORDER_DETAIL = PORTAL + "order/detail.json"; //订单详情
     public static final String ORDER_CANCEL = PORTAL + "order/cancel.json"; //取消订单
     public static final String ORDER_MODIFY = PORTAL + "order/update.json"; //修改订单

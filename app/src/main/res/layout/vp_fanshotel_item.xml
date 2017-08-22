@@ -8,22 +8,23 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
         android:focusable="false"
         card:cardCornerRadius="10dp"
-        card:cardElevation="10dp"
+        card:cardElevation="5dp"
         card:cardPreventCornerOverlap="false"
-        card:contentPadding="0dp">
+        card:cardUseCompatPadding="true">
 
         <com.huicheng.hotel.android.ui.custom.RoundedAllImageView
             android:id="@+id/iv_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             roundImage:radius="5dp" />
 
         <RelativeLayout
