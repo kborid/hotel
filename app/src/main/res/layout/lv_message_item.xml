@@ -7,17 +7,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginRight="15dp"
-        android:background="@color/mainColor"
-        android:orientation="horizontal">
+        android:background="?attr/mainColor"
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
 
         <ImageView
             android:id="@+id/iv_flag"
             android:layout_width="5dp"
-            android:layout_height="match_parent"
+            android:layout_height="5dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="7dp"
-            android:src="@drawable/iv_thumb_yello" />
+            android:src="?attr/indicatorSel" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -27,7 +27,7 @@
             android:layout_marginLeft="7dp"
             android:layout_weight="1"
             android:text="ABC旅行预定账户通知"
-            android:textColor="@color/white_indicator_selector"
+            android:textColor="?attr/msgItemTextSel"
             android:textSize="@dimen/common_12sp"
             android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="7dp"
             android:text="2016/12/20"
-            android:textColor="@color/white_indicator_selector"
+            android:textColor="?attr/msgItemTextSel"
             android:textSize="@dimen/common_9sp"
             android:textStyle="bold" />
     </LinearLayout>

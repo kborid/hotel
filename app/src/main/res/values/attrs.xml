@@ -49,7 +49,9 @@
         <attr name="messageHasImage" format="reference" />
         <attr name="addButton" format="reference" />
         <attr name="subButton" format="reference" />
-        <attr name="nextButton" format="reference"/>
+        <attr name="nextButton" format="reference" />
+        <attr name="msgGradientShadow" format="reference" />
+        <attr name="msgSpinnerBg" format="reference" />
 
         <!--selector-->
         <attr name="mainColorBtnSel" format="reference" />
@@ -65,6 +67,8 @@
         <attr name="roomItemGradient" format="reference" />
         <attr name="considerTextSel" format="color|reference" />
         <attr name="moreServiceSel" format="reference" />
+        <attr name="msgItemTextSel" format="reference|color" />
+        <attr name="orderDetailTextSel" format="color|reference"/>
     </declare-styleable>
 
     <declare-styleable name="TagCloudView">

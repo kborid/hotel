@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainColor"
-    android:orientation="horizontal"
-    android:baselineAligned="false">
+    android:background="?attr/mainColor"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <include layout="@layout/comm_title" />
 
@@ -146,14 +146,14 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:text="服务项目"
-                                        android:textColor="@color/indicatorColor"
+                                        android:textColor="?attr/indicatorColor"
                                         android:textSize="@dimen/common_15sp" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="共"
-                                        android:textColor="@color/indicatorColor"
+                                        android:textColor="?attr/indicatorColor"
                                         android:textSize="@dimen/common_15sp" />
 
                                     <TextView
@@ -162,7 +162,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="10dp"
                                         android:text="1000元"
-                                        android:textColor="@color/indicatorColor"
+                                        android:textColor="?attr/indicatorColor"
                                         android:textSize="@dimen/common_15sp" />
                                 </LinearLayout>
 
@@ -185,7 +185,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0"
-                                    android:textColor="@color/indicatorColor"
+                                    android:textColor="?attr/indicatorColor"
                                     android:textSize="30sp"
                                     android:textStyle="bold" />
 
@@ -194,7 +194,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
                                     android:text="元"
-                                    android:textColor="@color/indicatorColor"
+                                    android:textColor="?attr/indicatorColor"
                                     android:textSize="30sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -339,7 +339,7 @@
                                 android:layout_marginTop="20dp"
                                 android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
                                 android:text="去支付"
-                                android:textColor="@color/white_main_selector"
+                                android:textColor="?attr/orderDetailTextSel"
                                 android:textSize="@dimen/common_15sp"
                                 android:visibility="gone" />
 
@@ -350,7 +350,7 @@
                                 android:layout_marginTop="20dp"
                                 android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
                                 android:text="后悔药"
-                                android:textColor="@color/white_main_selector"
+                                android:textColor="?attr/orderDetailTextSel"
                                 android:textSize="@dimen/common_15sp"
                                 android:visibility="gone" />
                         </FrameLayout>
@@ -369,7 +369,7 @@
                                 android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
                                 android:enabled="false"
                                 android:text="取消订单"
-                                android:textColor="@color/white_main_selector"
+                                android:textColor="?attr/orderDetailTextSel"
                                 android:textSize="@dimen/common_15sp" />
 
                             <FrameLayout
@@ -385,7 +385,7 @@
                                     android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
                                     android:enabled="false"
                                     android:text="修改订单"
-                                    android:textColor="@color/white_main_selector"
+                                    android:textColor="?attr/orderDetailTextSel"
                                     android:textSize="@dimen/common_15sp" />
 
                                 <Button
@@ -395,7 +395,7 @@
                                     android:background="?attr/indicatorBgSel"
                                     android:enabled="false"
                                     android:text="确认修改"
-                                    android:textColor="@color/mainColor"
+                                    android:textColor="?attr/mainColor"
                                     android:textSize="@dimen/common_15sp"
                                     android:visibility="gone" />
                             </FrameLayout>
@@ -408,7 +408,7 @@
                             android:layout_marginTop="20dp"
                             android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
                             android:text="去评论"
-                            android:textColor="@color/white_main_selector"
+                            android:textColor="?attr/orderDetailTextSel"
                             android:textSize="@dimen/common_15sp" />
 
                         <Button
@@ -418,7 +418,7 @@
                             android:layout_marginTop="20dp"
                             android:background="?attr/indicatorBgSel"
                             android:text="再次预定"
-                            android:textColor="@color/mainColor"
+                            android:textColor="?attr/mainColor"
                             android:textSize="@dimen/common_15sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -426,35 +426,4 @@
 
         </LinearLayout>
     </RelativeLayout>
-    <!--毛玻璃背景-->
-    <RelativeLayout
-        android:id="@+id/blur_lay"
-        android:layout_width="65dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/bg_gray"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/iv_logo_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/iv_logo_vertical"
-            android:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/iv_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="50dp"
-            android:layout_marginRight="24dp"
-            android:src="@drawable/iv_left"
-            android:visibility="visible" />
-    </RelativeLayout>
-
 </LinearLayout>

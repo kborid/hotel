@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,10 +71,16 @@ public class MessageListActivity extends BaseActivity {
     private boolean isLoadMore = false;
     private int selectedIndex = 0;
 
+    private int spinnerTypeBgResId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_message_layout);
+        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
+        spinnerTypeBgResId = ta.getResourceId(R.styleable.MyTheme_msgSpinnerBg, R.drawable.msg_spinner_mainwhite_withbound_bg);
+        ta.recycle();
+
         initViews();
         initParams();
         initListeners();
@@ -100,7 +107,7 @@ public class MessageListActivity extends BaseActivity {
         tv_content.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         MyMsgTypeAdapter spinner_type_adapter = new MyMsgTypeAdapter(this, keys);
-        spinner_type.setPopupBackgroundDrawable(getResources().getDrawable(R.drawable.comm_rect_main_withwhite_bound));
+        spinner_type.setPopupBackgroundResource(spinnerTypeBgResId);
         spinner_type.setAdapter(spinner_type_adapter);
 
         adapter = new MyMessageAdapter(this, list);
@@ -271,11 +278,6 @@ public class MessageListActivity extends BaseActivity {
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ALL_MESSAGE) {
@@ -313,14 +315,14 @@ public class MessageListActivity extends BaseActivity {
         }
     }
 
-    class MyMessageAdapter extends BaseAdapter {
+    private class MyMessageAdapter extends BaseAdapter {
 
         private Context context;
         private List<MessageInfoBean> list = new ArrayList<>();
         private int selectItem;
         private OnUpdateListener listener = null;
 
-        public MyMessageAdapter(Context context, List<MessageInfoBean> list) {
+        MyMessageAdapter(Context context, List<MessageInfoBean> list) {
             this.context = context;
             this.list = list;
             selectItem = 0;

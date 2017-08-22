@@ -123,7 +123,7 @@
     <color name="female_mainColor">#671c0b</color>
     <color name="female_mainColorDark">#561809</color>
     <color name="female_mainColorAccent">#9A2A0A</color>
-    <color name="female_mainColorShadow">#889A2A0A</color>
+    <color name="female_mainColorShadow">#88671c0b</color>
     <color name="female_tabHotelColor">#eed0ce</color>
     <color name="female_tabTrainColor">#eed0ce</color>
     <color name="female_tabPlaneColor">#eed0ce</color>

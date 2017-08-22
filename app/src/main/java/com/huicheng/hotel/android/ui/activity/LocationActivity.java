@@ -8,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -216,7 +215,6 @@ public class LocationActivity extends BaseActivity {
                 if (isEditable) {
                     et_city.setFocusable(false);
                     et_city.setFocusableInTouchMode(true);
-                    closeSoftKeyboard();
                     isJump = true;
                     cityStr = s.toString();
                     String firstSpellChar = SessionContext.getFirstSpellChat(s.toString());
@@ -349,14 +347,6 @@ public class LocationActivity extends BaseActivity {
                 tv_text.setAlpha(0.1f);
             }
             return view;
-        }
-    }
-
-    private void closeSoftKeyboard() {
-        View view = getWindow().peekDecorView();
-        if (view != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

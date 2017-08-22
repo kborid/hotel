@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,7 +39,7 @@ import java.io.IOException;
 /**
  * 意见反馈
  */
-public class FeedbackActivity extends BaseActivity implements DialogInterface.OnCancelListener {
+public class FeedbackActivity extends BaseActivity {
 
     private final String TAG = getClass().getSimpleName();
     private EditText et_content;
@@ -250,9 +252,8 @@ public class FeedbackActivity extends BaseActivity implements DialogInterface.On
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
-        DataLoader.getInstance().clear(requestID);
-        removeProgressDialog();
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:uses-permissionandroid="http://schemas.android.com/apk/res-auto"
     package="com.huicheng.hotel.android">
 
     <supports-screens
@@ -65,8 +64,8 @@
         <!--消息-->
         <activity
             android:name=".ui.activity.MessageListActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing" />
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait" />
         <!--我的订单-->
         <activity
             android:name=".ui.activity.MyOrdersActivity"
@@ -95,8 +94,7 @@
         <!--评价详情-->
         <activity
             android:name=".ui.activity.AssessOrderDetailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:screenOrientation="portrait" />
         <!--评论列表画面-->
         <activity
             android:name=".ui.activity.AssessCommendActivity"
@@ -108,8 +106,8 @@
         <!-- 意见反馈 -->
         <activity
             android:name=".ui.activity.FeedbackActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing" />
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait" />
         <!-- 关于 -->
         <activity
             android:name=".ui.activity.AboutActivity"
@@ -125,12 +123,10 @@
         <!--城市选择画面-->
         <activity
             android:name=".ui.activity.LocationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LocationActivity2"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing" />
+            android:screenOrientation="portrait" />
         <!--酒店日期选择画面-->
         <activity
             android:name=".ui.activity.HotelCalendarChooseActivity"
@@ -146,8 +142,7 @@
         <!--酒店列表搜索画面-->
         <activity
             android:name=".ui.activity.HotelListActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing" />
+            android:screenOrientation="portrait" />
         <!--后悔药出售画面-->
         <activity
             android:name=".ui.activity.HouHuiYaoSalingActivity"

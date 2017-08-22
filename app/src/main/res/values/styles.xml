@@ -90,6 +90,10 @@
         <item name="roomItemGradient">@drawable/roomitem_ygr_gradient</item>
         <item name="considerTextSel">@color/consider_text_sel</item>
         <item name="moreServiceSel">@drawable/service_more_btn_sel</item>
+        <item name="msgGradientShadow">@drawable/msg_gradient_shadow</item>
+        <item name="msgSpinnerBg">@drawable/msg_spinner_mainwhite_withbound_bg</item>
+        <item name="msgItemTextSel">@color/msg_item_selector</item>
+        <item name="orderDetailTextSel">@color/orderdetail_text_selector</item>
     </style>
 
 
@@ -158,6 +162,10 @@
         <item name="roomItemGradient">@drawable/female_roomitem_ygr_gradient</item>
         <item name="considerTextSel">@color/female_consider_text_sel</item>
         <item name="moreServiceSel">@drawable/female_service_more_btn_sel</item>
+        <item name="msgGradientShadow">@drawable/female_msg_gradient_shadow</item>
+        <item name="msgSpinnerBg">@drawable/female_msg_spinner_mainwhite_withbound_bg</item>
+        <item name="msgItemTextSel">@color/female_msg_item_selector</item>
+        <item name="orderDetailTextSel">@color/female_orderdetail_text_selector</item>
     </style>
 
 
