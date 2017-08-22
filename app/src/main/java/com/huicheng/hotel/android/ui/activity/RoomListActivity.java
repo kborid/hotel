@@ -242,7 +242,7 @@ public class RoomListActivity extends BaseActivity {
             viewPager.setAdapter(new MyPagerAdapter(this, hotelDetailInfoBean.picPath));
             initIndicatorLay(hotelDetailInfoBean.picPath.size());
 
-            //TODO viewPager一个假的无限循环，初始位置是viewPager count的100倍
+            //viewPager一个假的无限循环，初始位置是viewPager count的100倍
             viewPager.setCurrentItem(hotelDetailInfoBean.picPath.size() * 100);
             if (hotelDetailInfoBean.picPath.size() > 0) {
                 int offset = 0;

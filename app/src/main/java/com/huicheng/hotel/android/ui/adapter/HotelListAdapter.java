@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -69,6 +70,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     public void onBindViewHolder(final HotelListAdapter.HotelViewHolder holder, final int position) {
 
         HotelInfoBean bean = list.get(position);
+        holder.tv_hotel_name.setText(bean.hotelName);
 //        loadImage(holder.iv_hotel_icon, R.drawable.def_hotel_list, bean.hotelFeaturePic, 690, 500);
         Glide.with(context)
                 .load(bean.hotelFeaturePic)
@@ -202,8 +204,19 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_low));
         }
 
-        holder.tv_hotel_name.setText(bean.hotelName);
+        //诚信盾牌认证
+        if (StringUtil.isEmpty(bean.level) || HotelCommDef.CERT_NULL.equals(bean.level)) {
+            holder.iv_cert_icon.setVisibility(View.GONE);
+        } else {
+            if (HotelCommDef.CERT_GOLD.equals(bean.level)) {
+                holder.iv_cert_icon.setImageResource(R.drawable.iv_cert_gold);
+            } else {
+                holder.iv_cert_icon.setImageResource(R.drawable.iv_cert_silver);
+            }
+            holder.iv_cert_icon.setVisibility(View.VISIBLE);
+        }
 
+        // 点击事件
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,6 +245,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         TextView tv_hotel_price;
         TextView tv_hotel_special_price_note;
         TextView tv_hotel_special_price;
+        ImageView iv_cert_icon;
 
         HotelViewHolder(View itemView) {
             super(itemView);
@@ -252,6 +266,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             tv_hotel_special_price_note.getPaint().setFakeBoldText(true);
             tv_hotel_special_price = (TextView) itemView.findViewById(R.id.tv_hotel_special_price);
             tv_hotel_special_price.getPaint().setFakeBoldText(true);
+            iv_cert_icon = (ImageView) itemView.findViewById(R.id.iv_cert_icon);
         }
     }
 

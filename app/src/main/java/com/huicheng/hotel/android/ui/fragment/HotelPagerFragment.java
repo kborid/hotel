@@ -31,6 +31,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
+import com.huicheng.hotel.android.tools.CityStringUtils;
 import com.huicheng.hotel.android.ui.activity.Hotel0YuanHomeActivity;
 import com.huicheng.hotel.android.ui.activity.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.LocationActivity2;
@@ -100,8 +101,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         HotelOrderManager.getInstance().reset();
         String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        HotelOrderManager.getInstance().setCityStr(tempProvince, tempCity);
-        tv_city.setText(HotelOrderManager.getInstance().getCityStr().replace("-", " "));
+        HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(tempProvince, tempCity, "-"));
+        tv_city.setText(CityStringUtils.getProvinceCityString(tempProvince, tempCity, " "));
     }
 
     protected void onInvisible() {
@@ -165,8 +166,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                                 SharedPreferenceUtil.getInstance().setString(AppConst.CITY, loc_city, false);
                                 SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, String.valueOf(aMapLocation.getAdCode()), false);
 
-                                HotelOrderManager.getInstance().setCityStr(loc_province, loc_city);
-                                tv_city.setText(HotelOrderManager.getInstance().getCityStr().replace("-", " "));
+                                HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(loc_province, loc_city, "-"));
+                                tv_city.setText(CityStringUtils.getProvinceCityString(loc_province, loc_city, " "));
 
                             } catch (Exception e) {
                                 e.printStackTrace();

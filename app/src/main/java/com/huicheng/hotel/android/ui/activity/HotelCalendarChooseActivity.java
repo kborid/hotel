@@ -13,6 +13,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
+import com.huicheng.hotel.android.tools.CityStringUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarSelectedListener;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarUtils;
@@ -150,8 +151,9 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         if (requestCode == 0x01) {
             String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
             String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-            HotelOrderManager.getInstance().setCityStr(tempProvince, tempCity);
-            tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
+            String cityStr = CityStringUtils.getProvinceCityString(tempProvince, tempCity, "-");
+            HotelOrderManager.getInstance().setCityStr(cityStr);
+            tv_center_title.setText(cityStr);
         }
     }
 

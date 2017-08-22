@@ -54,22 +54,27 @@
     <color name="assessPointColorMid">#ffa046</color>
     <color name="assessPointColorLow">#ef5669</color>
 
+    <color name="commonHintColor">#cccccc</color>
+    <color name="vipAddressColor">#a7a7a7</color>
+    <color name="vipHotelNameColor">@color/commonHintColor</color>
     <color name="selectedBarColor">#535353</color>
     <color name="unselectedBarColor">#d7d7d7</color>
     <color name="unSelectedTextColor">#464646</color>
 
-    <color name="houhuiyaoLableColor">@color/secColor</color>
-    <color name="payLableColor">#DCDCDC</color>
-    <color name="payPriceColor">#9aca40</color>
-
-    <color name="noDiscountColor">#a7a7a7</color>
-    <color name="lableColor">#808080</color>
-    <color name="editColor">@color/mainColor</color>
-
     <color name="spaceLabelColor">#929292</color>
     <color name="spaceDateLabelColor">#333333</color>
     <color name="spaceContentColor">#636363</color>
-    <color name="spacePublishHintColor">#cccccc</color>
+    <color name="spacePublishHintColor">@color/commonHintColor</color>
+
+    <color name="noDiscountColor">#a7a7a7</color>
+    <color name="lableColor">#808080</color>
+
+    <color name="payLableColor">#DCDCDC</color>
+    <color name="payPriceColor">#9aca40</color>
+
+    <color name="pinTextColor">#1a1a1a</color>
+    <color name="serviceDetailTitle">#1d1d1d</color>
+    <color name="serviceDetailContent">#4c4c4c</color>
 
     <color name="searchHintColor">#c8c8c8</color>
     <color name="registerhintColor">#acacac</color>
@@ -80,10 +85,6 @@
     <color name="hotelColor">#009fda</color>
     <color name="searchBgColor">@color/transparent80_</color>
     <color name="btnBoundColor">#98a2bb</color>
-
-    <color name="pinTextColor">#1a1a1a</color>
-    <color name="serviceDetailTitle">#1d1d1d</color>
-    <color name="serviceDetailContent">#4c4c4c</color>
 
 
     <!--default color-->
@@ -99,7 +100,7 @@
     <color name="ygrStartColor">#29c2f5</color>
     <color name="ygrEndColor">#3175cc</color>
     <color name="hhyMainTextColor">#3d82cf</color>
-    <color name="indicatorColor">#fcb819</color>
+    <color name="indicatorColor">#fec31e</color>
     <color name="indicatorDisColor">#40fcb819</color>
     <color name="citySelColor">#f5f5f5</color>
     <color name="cityIndexSelColor">@color/mainColorAccent</color>
@@ -109,7 +110,7 @@
     <color name="hotelListTab">@color/mainColorAccent</color>
     <color name="hotelItemDelPrice">@color/mainColorAccent</color>
     <color name="hotelItemPrice">@color/mainColorAccent</color>
-    <color name="currentDayCircle">#feb000</color>
+    <color name="currentDayCircle">@color/indicatorColor</color>
     <color name="selDayBackground">@color/mainColorAccent</color>
     <color name="considerText">@color/indicatorColor</color>
     <color name="considerFab">@color/indicatorColor</color>
@@ -129,7 +130,7 @@
     <color name="female_tabTaxiColor">#eed0ce</color>
     <color name="female_ygrStartColor">#f2cac7</color>
     <color name="female_ygrEndColor">#ea898b</color>
-    <color name="female_hhyMainTextColor">#a78757</color>
+    <color name="female_hhyMainTextColor">@color/female_indicatorColor</color>
     <color name="female_indicatorColor">#a78757</color>
     <color name="female_indicatorDisColor">#40a78757</color>
     <color name="female_citySelColor">#fcf3f3</color>
@@ -139,10 +140,10 @@
     <color name="female_commBottomText">@color/white</color>
     <color name="female_hotelListTab">#d39fa0</color>
     <color name="female_hotelItemDelPrice">@color/female_mainColor</color>
-    <color name="female_hotelItemPrice">#a78757</color>
+    <color name="female_hotelItemPrice">@color/female_indicatorColor</color>
     <color name="female_currentDayCircle">@color/female_hotelListTab</color>
     <color name="female_selDayBackground">@color/female_hotelItemPrice</color>
-    <color name="female_considerText">#a28355</color>
+    <color name="female_considerText">@color/female_indicatorColor</color>
     <color name="female_considerFab">@color/female_considerText</color>
     <color name="female_considerBackground">@color/female_citySelColor</color>
     <color name="female_considerShadow">#efd1cf</color>

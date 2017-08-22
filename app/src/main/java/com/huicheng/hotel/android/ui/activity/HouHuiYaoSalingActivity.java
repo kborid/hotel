@@ -29,7 +29,6 @@ public class HouHuiYaoSalingActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText("后悔药");
-        tv_center_title.setTextColor(getResources().getColor(R.color.houhuiyaoLableColor));
     }
 
     @Override

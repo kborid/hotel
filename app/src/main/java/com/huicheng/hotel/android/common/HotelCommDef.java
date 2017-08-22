@@ -32,6 +32,11 @@ public class HotelCommDef {
     public static final String VIP_SUPPORT = "1";
     public static final String VIP_NOT_SUPPORT = "0";
 
+    // Hotel Cert ICON
+    public static final String CERT_NULL = "N";
+    public static final String CERT_GOLD = "G";
+    public static final String CERT_SILVER = "S";
+
     //Invoice Type
     public static final String COMMON_INVOICE = "0";
     public static final String SPECIAL_INVOICE = "1";

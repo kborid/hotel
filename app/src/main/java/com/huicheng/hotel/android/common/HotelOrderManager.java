@@ -122,24 +122,8 @@ public class HotelOrderManager {
         return couponId;
     }
 
-    public void setCityStr(String province, String city) {
-        String tempStr = "";
-        if (StringUtil.notEmpty(city)) {
-            if (city.contains("市")) {
-                city = city.replace("市", "");
-            }
-            tempStr += city;
-        }
-        if (StringUtil.notEmpty(province)) {
-            if (!province.equals(city)) {
-                if (province.contains("省")) {
-                    province = province.replace("省", "");
-                }
-                tempStr += "-";
-                tempStr += province;
-            }
-        }
-        this.cityStr = tempStr;
+    public void setCityStr(String cityStr) {
+        this.cityStr = cityStr;
     }
 
     public String getCityStr() {

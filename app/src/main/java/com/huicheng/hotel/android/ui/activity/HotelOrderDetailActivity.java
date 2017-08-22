@@ -17,6 +17,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
+import com.huicheng.hotel.android.tools.CityStringUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -272,7 +273,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
             case R.id.btn_booking_again:
                 intent = new Intent(this, HotelCalendarChooseActivity.class);
                 HotelOrderManager.getInstance().reset();
-                HotelOrderManager.getInstance().setCityStr(orderPayDetailInfoBean.province, orderPayDetailInfoBean.location);
+                HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(orderPayDetailInfoBean.province, orderPayDetailInfoBean.location, "-"));
                 intent.putExtra("rebooking", true);
                 intent.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
                 break;

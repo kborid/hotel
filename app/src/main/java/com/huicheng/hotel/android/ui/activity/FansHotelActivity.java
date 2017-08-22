@@ -20,6 +20,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.FansHotelInfoBean;
+import com.huicheng.hotel.android.tools.CityStringUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomCardStackViewPager;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
@@ -136,7 +137,7 @@ public class FansHotelActivity extends BaseActivity {
             viewPager.setAdapter(new MyPageAdapter(this, fanHotelList));
             tv_count.setText(1 + " / " + fanHotelList.size());
 
-            //TODO viewPager一个假的无限循环，初始位置是viewPager count的100倍
+            //viewPager一个假的无限循环，初始位置是viewPager count的100倍
             viewPager.setCurrentItem(fanHotelList.size() * 100);
             viewPager.setOffscreenPageLimit(fanHotelList.size());
         } else {
@@ -211,9 +212,12 @@ public class FansHotelActivity extends BaseActivity {
             final View view = LayoutInflater.from(context).inflate(R.layout.vp_fanshotel_item, null);
             final RoundedAllImageView iv_background = (RoundedAllImageView) view.findViewById(R.id.iv_background);
             final TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
+            tv_name.getPaint().setFakeBoldText(true);
+            final TextView tv_loc = (TextView) view.findViewById(R.id.tv_loc);
             final TextView tv_order = (TextView) view.findViewById(R.id.tv_order);
             loadImage(iv_background, R.drawable.def_fans, bean.featurePicPath, 750, 1050);
             tv_name.setText(bean.name);
+            tv_loc.setText(CityStringUtils.getProvinceCityString(bean.provinceName, bean.cityName, " "));
             tv_order.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -221,7 +225,7 @@ public class FansHotelActivity extends BaseActivity {
                     HotelOrderManager.getInstance().reset();
                     HotelOrderManager.getInstance().setIsVipHotel(true);
                     HotelOrderManager.getInstance().setVipHotelId(bean.hotelId);
-                    HotelOrderManager.getInstance().setCityStr(bean.provinceName, bean.cityName);
+                    HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(bean.provinceName, bean.cityName, "-"));
                     startActivity(intent);
                 }
             });
