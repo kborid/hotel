@@ -364,7 +364,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.tv_price:
             case R.id.iv_pull:
-                PopupMenu popup = new PopupMenu(getActivity(), price_line, Gravity.CENTER);
+                PopupMenu popup = new PopupMenu(getActivity(), tv_price, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
                 getActivity().getMenuInflater().inflate(R.menu.hotel_home_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
