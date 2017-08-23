@@ -273,7 +273,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/comm_indicator_gray_selector"
+                android:background="?attr/orderAssessPublishBtnSel"
                 android:gravity="center"
                 android:text="发布评论"
                 android:textColor="@color/white"

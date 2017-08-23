@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
+import com.huicheng.hotel.android.ui.custom.MyCommWebViewClient;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
@@ -23,14 +25,21 @@ import com.prj.sdk.widget.CustomToast;
  */
 public class PlaneOrderDetailActivity extends BaseActivity {
 
+    private static final String TAG = "PlaneOrderDetailActivity";
+
     private WebView mWebView;
     private CommonLoadingWidget common_loading_widget;
     private String url;
+    private int mMainColorId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_plane_orderdetail_layout);
+        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
+        mMainColorId = ta.getInt(R.styleable.MyTheme_mainColor, R.color.mainColor);
+        ta.recycle();
+
         initViews();
         initParams();
         initListeners();
@@ -84,7 +93,7 @@ public class PlaneOrderDetailActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        mWebView.setBackgroundColor(0); // 设置背景色
+        mWebView.setBackgroundColor(mMainColorId); // 设置背景色
         mWebView.getBackground().setAlpha(0); // 设置填充透明度 范围：0-255
 
         mWebView.loadUrl(url);
@@ -93,7 +102,7 @@ public class PlaneOrderDetailActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        mWebView.setWebViewClient(new MyWebViewClient(mWebView));
+        mWebView.setWebViewClient(new MyCommWebViewClient(TAG, mWebView, this));
     }
 
     @Override
@@ -112,9 +121,9 @@ public class PlaneOrderDetailActivity extends BaseActivity {
         common_loading_widget.closeLoading();
     }
 
-    class MyWebViewClient extends WVJBWebViewClient {
+    private class MyWebViewClient extends WVJBWebViewClient {
 
-        public MyWebViewClient(WebView webView) {
+        MyWebViewClient(WebView webView) {
             super(webView);
             new RegisterHandler(this, PlaneOrderDetailActivity.this).init();
         }

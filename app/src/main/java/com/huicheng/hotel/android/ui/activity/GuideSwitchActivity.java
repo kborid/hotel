@@ -31,6 +31,7 @@ public class GuideSwitchActivity extends BaseActivity {
     private AppInfoBean mAppInfoBean = null;
     private long exitTime = 0;
     private LinearLayout hotel_lay, plane_lay, train_lay, taxi_lay;
+    private String[] tips = new String[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class GuideSwitchActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+        tips = getResources().getStringArray(R.array.MainTabTips);
         String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
         if (StringUtil.notEmpty(appInfo)) {
             mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
@@ -97,10 +99,10 @@ public class GuideSwitchActivity extends BaseActivity {
                 index = 3;
                 break;
         }
-        if (!AppConst.ISDEVELOP && (1 == index || 3 == index)) {
+        if (!AppConst.ISDEVELOP && index != 0 && index != 1) {
             CustomDialog dialog = new CustomDialog(this);
-            dialog.setMessage("机票预订正在测试中，即将与您见面");
-            dialog.setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            dialog.setMessage(tips[index]);
+            dialog.setNegativeButton(getString(R.string.iknown), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();

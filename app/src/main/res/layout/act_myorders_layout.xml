@@ -68,10 +68,11 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/iv_accessory"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/iv_accessory_blue"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
 
         <View

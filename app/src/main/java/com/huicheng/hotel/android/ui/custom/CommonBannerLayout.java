@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.ui.custom;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -14,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.net.bean.MainBannerBean;
+import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.ui.activity.HtmlActivity;
 import com.huicheng.hotel.android.ui.adapter.BannerImageAdapter;
 import com.prj.sdk.net.image.ImageLoader;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPageChangeListener {
 
-    private static final int DELAYTIME = 3000;
+    private static final int DELAY_TIME = 3000;
     private Context context;
     private ArrayList<View> bannerViews = new ArrayList<>();
     private ViewPager viewpager;
@@ -41,14 +42,14 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
     private Handler myHandler = new Handler();
     private int pointIndex = 0;
 
+    private int mIndicatorResId;
+
     public CommonBannerLayout(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public CommonBannerLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public CommonBannerLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -59,6 +60,9 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
     private void init(Context context) {
         this.context = context;
         LayoutInflater.from(context).inflate(R.layout.comm_banner_layout, this);
+        TypedArray ta = context.obtainStyledAttributes(R.styleable.MyTheme);
+        mIndicatorResId = ta.getResourceId(R.styleable.MyTheme_indicatorSel, R.drawable.indicator_sel);
+        ta.recycle();
         findViews();
         initListener();
     }
@@ -81,20 +85,20 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
         }
     }
 
-    public void setImageResource(List<MainBannerBean> list, String domain) {
+    public void setImageResource(List<HomeBannerInfoBean> list, String domain) {
         clearBannerBitmap();
         bannerViews.clear();
         for (int i = 0; i < list.size(); i++) {
-            final MainBannerBean bean = list.get(i);
+            final HomeBannerInfoBean bean = list.get(i);
             ImageView view = new ImageView(context);
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             view.setScaleType(ImageView.ScaleType.FIT_XY);
-            loadImg(domain + bean.imgurls, view);
+            loadImg(domain + bean.url, view);
             view.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    String intentUrl = bean.linkurls;
+                    String intentUrl = bean.target;
 
                     // 添加友盟自定义事件
                     HashMap<String, String> map = new HashMap<>();
@@ -123,14 +127,14 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
         @Override
         public void run() {
             viewpager.setCurrentItem(viewpager.getCurrentItem() + 1);
-            myHandler.postDelayed(runnable, DELAYTIME);
+            myHandler.postDelayed(runnable, DELAY_TIME);
         }
     };
 
     public void startBanner() {
         myHandler.removeCallbacks(runnable);
         if (bannerViews.size() > 1) {
-            myHandler.postDelayed(runnable, DELAYTIME);
+            myHandler.postDelayed(runnable, DELAY_TIME);
         }
     }
 
@@ -146,7 +150,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
         } else {
             for (int i = 0; i < length; i++) {
                 View view = new View(context);
-                view.setBackgroundResource(R.drawable.indicator_sel);
+                view.setBackgroundResource(mIndicatorResId);
                 view.setEnabled(false);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(7), Utils.dip2px(7));
                 if (i > 0) {

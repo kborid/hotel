@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="android:textAppearanceLargePopupMenu">@style/myPMAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/myPMAppearanceSmall</item>
+        <item name="android:popupAnimationStyle">@style/Animation.AppCompat.Dialog</item>
         <item name="android:windowAnimationStyle">@style/actAnimationStyle</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -76,6 +77,9 @@
         <item name="addButton">@drawable/iv_add</item>
         <item name="subButton">@drawable/iv_sub</item>
         <item name="nextButton">@drawable/iv_next</item>
+        <item name="assessesItemBg">@drawable/iv_assess_hotel</item>
+        <item name="orderHotelItemBg">@drawable/iv_order_hotel</item>
+        <item name="orderPlaneItemBg">@drawable/iv_order_plane</item>
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/maincolor_btn_sel</item>
         <item name="indicatorBgSel">@drawable/indicator_btn_sel</item>
@@ -94,6 +98,7 @@
         <item name="msgSpinnerBg">@drawable/msg_spinner_mainwhite_withbound_bg</item>
         <item name="msgItemTextSel">@color/msg_item_selector</item>
         <item name="orderDetailTextSel">@color/orderdetail_text_selector</item>
+        <item name="orderAssessPublishBtnSel">@drawable/publish_btn_selector</item>
     </style>
 
 
@@ -148,6 +153,9 @@
         <item name="addButton">@drawable/iv_add_female</item>
         <item name="subButton">@drawable/iv_sub_female</item>
         <item name="nextButton">@drawable/iv_next_female</item>
+        <item name="assessesItemBg">@drawable/iv_assess_hotel_female</item>
+        <item name="orderHotelItemBg">@drawable/iv_order_hotel_female</item>
+        <item name="orderPlaneItemBg">@drawable/iv_order_plane_female</item>
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/female_maincolor_btn_sel</item>
         <item name="indicatorBgSel">@drawable/female_indicator_btn_sel</item>
@@ -166,21 +174,24 @@
         <item name="msgSpinnerBg">@drawable/female_msg_spinner_mainwhite_withbound_bg</item>
         <item name="msgItemTextSel">@color/female_msg_item_selector</item>
         <item name="orderDetailTextSel">@color/female_orderdetail_text_selector</item>
+        <item name="orderAssessPublishBtnSel">@drawable/female_publish_btn_selector</item>
     </style>
 
 
     <style name="myPMAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
         <item name="android:textColor">@color/secColor</item>
         <item name="android:textSize">@dimen/common_18sp</item>
+        <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="myPMAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
         <item name="android:textColor">@color/secColor</item>
         <item name="android:textSize">@dimen/common_18sp</item>
+        <item name="android:gravity">center_horizontal</item>
     </style>
 
     <!--画面迁移、转场动画-->
-    <style name="actAnimationStyle" parent="@android:style/Animation.Activity" mce_bogus="1">
+    <style name="actAnimationStyle" mce_bogus="1" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/push_right_in</item>
         <item name="android:activityOpenExitAnimation">@anim/push_left_out</item>
         <item name="android:activityCloseEnterAnimation">@anim/push_left_in</item>

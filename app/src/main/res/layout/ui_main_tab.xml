@@ -54,9 +54,8 @@
             android:layout_marginRight="24dp"
             android:src="?attr/leftImage" />
     </RelativeLayout>
+
     <!--侧滑内容-->
-
-
     <com.huicheng.hotel.android.ui.custom.LeftDrawerLayout
         android:id="@+id/left_layout"
         android:layout_width="match_parent"

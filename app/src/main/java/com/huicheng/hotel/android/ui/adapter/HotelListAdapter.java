@@ -111,12 +111,11 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         switch (type) {
             case HotelCommDef.TYPE_ALL:
 //                holder.detail_lay.setBackgroundResource(R.drawable.lv_hotel_item_bg);
-                if (bean.price != 0) {
-                    if (bean.speciallyPrice > bean.price) {
+                if (bean.price > 0) {
+                    if (bean.speciallyPrice > bean.price || bean.speciallyPrice <= 0) {
                         holder.tv_hotel_price.setVisibility(View.GONE);
                         price = bean.price + " 元起";
                     } else {
-                        note = "特价：";
                         // 判断是否显示带删除线的平台价
                         if (bean.speciallyPrice == bean.price) {
                             holder.tv_hotel_price.setVisibility(View.GONE);
@@ -125,10 +124,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                             holder.tv_hotel_price.setText(" " + bean.price + "元 ");
                         }
 
-                        //价格为0时判断处理
-                        if (bean.speciallyPrice != 0) {
-                            price = bean.speciallyPrice + " 元起";
-                        }
+                        note = "特价：";
+                        price = bean.speciallyPrice + " 元起";
                     }
                 } else {
                     holder.tv_hotel_price.setVisibility(View.GONE);
@@ -146,12 +143,11 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 break;
             case HotelCommDef.TYPE_YEGUIREN:
 //                holder.detail_lay.setBackgroundResource(ygrRoomItemBackgroundId);
-                if (bean.yeguirenPrice != 0) {
-                    if (bean.speciallyPrice > bean.yeguirenPrice) {
+                if (bean.yeguirenPrice > 0) {
+                    if (bean.speciallyPrice > bean.yeguirenPrice || bean.speciallyPrice <= 0) {
                         holder.tv_hotel_price.setVisibility(View.GONE);
                         price = bean.yeguirenPrice + " 元起";
                     } else {
-                        note = "特价：";
                         // 判断是否显示带删除线的平台价
                         if (bean.speciallyPrice == bean.yeguirenPrice) {
                             holder.tv_hotel_price.setVisibility(View.GONE);
@@ -160,10 +156,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                             holder.tv_hotel_price.setText(" " + bean.yeguirenPrice + "元 ");
                         }
 
-                        //价格为0时判断处理
-                        if (bean.speciallyPrice != 0) {
-                            price = bean.speciallyPrice + " 元起";
-                        }
+                        note = "特价：";
+                        price = bean.speciallyPrice + " 元起";
                     }
                 } else {
                     holder.tv_hotel_price.setVisibility(View.GONE);

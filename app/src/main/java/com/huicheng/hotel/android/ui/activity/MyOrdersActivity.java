@@ -67,14 +67,17 @@ public class MyOrdersActivity extends BaseActivity {
     private MyOrderTypeAdapter spinner_type_adapter;
     private ArrayAdapter spinner_status_adapter, spinner_date_adapter;
     private String[] year = new String[6];
+    private int dateSelectorIndex = 0;
     private int pageIndex = 0;
     private boolean isLoadMore = false;
     private boolean isFirstLoad = false;
     private String orderType, orderStatus;
     private String startYear, endYear;
 
+    private ImageView iv_accessory;
     private TextView tv_spend_year, tv_save_year;
     private int mMainColorId;
+    private int mOrderHotelItemBgResId, mOrderPlaneItemBgResId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,8 @@ public class MyOrdersActivity extends BaseActivity {
         setContentView(R.layout.act_myorders_layout);
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         mMainColorId = ta.getColor(R.styleable.MyTheme_mainColor, getResources().getColor(R.color.mainColor));
+        mOrderHotelItemBgResId = ta.getResourceId(R.styleable.MyTheme_orderHotelItemBg, R.drawable.iv_order_hotel);
+        mOrderPlaneItemBgResId = ta.getResourceId(R.styleable.MyTheme_orderPlaneItemBg, R.drawable.iv_order_plane);
         ta.recycle();
         initViews();
         initParams();
@@ -102,6 +107,7 @@ public class MyOrdersActivity extends BaseActivity {
         super.initViews();
         tv_spend_year = (TextView) findViewById(R.id.tv_spend_year);
         tv_save_year = (TextView) findViewById(R.id.tv_save_year);
+        iv_accessory = (ImageView) findViewById(R.id.iv_accessory);
 
         listview = (SimpleRefreshListView) findViewById(R.id.listview);
         if (listview != null) {
@@ -120,6 +126,8 @@ public class MyOrdersActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+
+        iv_accessory.setImageBitmap(BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_accessory_blue), mMainColorId));
 
         resIdList.add(BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_consider_white), getResources().getColor(R.color.white)));
         resIdList.add(BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_tab_hotel), getResources().getColor(R.color.white)));
@@ -230,8 +238,12 @@ public class MyOrdersActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 closeOtherItem();
-//                Intent intent = new Intent(MyOrdersActivity.this, ConsumptionDetailActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(MyOrdersActivity.this, ConsumptionDetailActivity.class);
+                intent.putExtra("ordersSpendInfoBean", ordersSpendInfoBean);
+                intent.putExtra("startYear", startYear);
+                intent.putExtra("endYear", endYear);
+                intent.putExtra("selectorIndex", dateSelectorIndex);
+                startActivity(intent);
             }
         });
 
@@ -322,7 +334,8 @@ public class MyOrdersActivity extends BaseActivity {
                 if (isFirstLoad) {
                     return;
                 }
-                String selectedYear = year[position];
+                dateSelectorIndex = position;
+                String selectedYear = year[dateSelectorIndex];
                 if (selectedYear.contains("全")) {
                     startYear = "";
                     endYear = "";
@@ -477,7 +490,7 @@ public class MyOrdersActivity extends BaseActivity {
                 if (HotelCommDef.Canceled == Integer.parseInt(list.get(position).orderStatus)) {
                     viewHolder.root_lay.setBackgroundResource(R.drawable.iv_order_hotel_canceled);
                 } else {
-                    viewHolder.root_lay.setBackgroundResource(R.drawable.iv_order_hotel);
+                    viewHolder.root_lay.setBackgroundResource(mOrderHotelItemBgResId);
                 }
                 viewHolder.tv_order_type.setVisibility(View.GONE);
             } else {
@@ -495,7 +508,7 @@ public class MyOrdersActivity extends BaseActivity {
                 if (HotelCommDef.Canceled == Integer.parseInt(list.get(position).orderStatus)) {
                     viewHolder.root_lay.setBackgroundResource(R.drawable.iv_order_plane_canceled);
                 } else {
-                    viewHolder.root_lay.setBackgroundResource(R.drawable.iv_order_plane);
+                    viewHolder.root_lay.setBackgroundResource(mOrderPlaneItemBgResId);
                 }
 
                 //机票购买状态

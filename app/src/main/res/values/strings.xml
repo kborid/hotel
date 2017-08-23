@@ -6,6 +6,7 @@
 
     <string name="RMB">¥</string>
     <string name="totalRMB">共 ¥</string>
+    <string name="rmbStr">¥ %1$s</string>
 
     <string name="footer_loading">正在加载</string>
     <string name="footer_nomore">没有更多数据</string>
@@ -122,6 +123,13 @@
         <item>疗养</item>
         <item>度假</item>
         <item>交友</item>
+    </string-array>
+
+    <string-array name="MainTabTips">
+        <item>你真棒</item>
+        <item>机票预订正在测试中，即将与您见面</item>
+        <item>火车票预订服务即将开通，敬请期待</item>
+        <item>租车服务即将开通，敬请期待</item>
     </string-array>
 
     <string name="iflytek_tips">语音技术由科大讯飞提供</string>

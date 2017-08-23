@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -49,10 +50,15 @@ public class AssessOrdersActivity extends BaseActivity {
     private MyAssessOrdersAdapter adapter;
     private List<AssessOrderInfoBean> list = new ArrayList<>();
 
+    private int mAssessHotelItemBgResId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_assessorder_layout);
+        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
+        mAssessHotelItemBgResId = ta.getResourceId(R.styleable.MyTheme_assessesItemBg, R.drawable.iv_assess_hotel);
+        ta.recycle();
         initViews();
         initParams();
         initListeners();
@@ -222,7 +228,7 @@ public class AssessOrdersActivity extends BaseActivity {
             // 设置adapter数据
             AssessOrderInfoBean bean = list.get(position);
             if (StringUtil.isEmpty(bean.isevaluated) || "0".equals(bean.isevaluated)) { //待评价
-                viewHolder.root_lay.setBackgroundResource(R.drawable.iv_assess_hotel);
+                viewHolder.root_lay.setBackgroundResource(mAssessHotelItemBgResId);
                 viewHolder.tv_title.setTextColor(context.getResources().getColor(R.color.white));
                 viewHolder.tv_time.setTextColor(context.getResources().getColor(R.color.white));
                 viewHolder.tv_status.setTextColor(context.getResources().getColor(R.color.white));

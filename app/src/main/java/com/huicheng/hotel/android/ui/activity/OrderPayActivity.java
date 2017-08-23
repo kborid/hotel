@@ -218,7 +218,7 @@ public class OrderPayActivity extends BaseActivity {
                     ((TextView) item.findViewById(R.id.tv_price_unit)).getPaint().setFakeBoldText(true);
                     tv_price.getPaint().setFakeBoldText(true);
                     tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " *" + orderPayDetailInfoBean.attachInfo.get(i).custCount);
-                    tv_price.setText(orderPayDetailInfoBean.attachInfo.get(i).servicePrice + "");
+                    tv_price.setText(orderPayDetailInfoBean.attachInfo.get(i).orderMoney + "");
                     service_lay.addView(item);
                 }
                 dialog.addView(view);

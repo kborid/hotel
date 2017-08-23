@@ -69,6 +69,10 @@
         <attr name="moreServiceSel" format="reference" />
         <attr name="msgItemTextSel" format="reference|color" />
         <attr name="orderDetailTextSel" format="color|reference"/>
+        <attr name="assessesItemBg" format="reference"/>
+        <attr name="orderHotelItemBg" format="reference"/>
+        <attr name="orderPlaneItemBg" format="reference"/>
+        <attr name="orderAssessPublishBtnSel" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="TagCloudView">

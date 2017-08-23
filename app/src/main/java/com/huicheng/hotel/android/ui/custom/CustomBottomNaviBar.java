@@ -39,6 +39,8 @@ public class CustomBottomNaviBar extends LinearLayout {
             R.drawable.iv_tab_taxi
     };
     private int[] mTabColorId = new int[4];
+    private String[] tips = new String[4];
+
     private int hasMessageImageId;
 
     public CustomBottomNaviBar(Context context) {
@@ -65,6 +67,7 @@ public class CustomBottomNaviBar extends LinearLayout {
 
     private void init() {
         LayoutInflater.from(context).inflate(R.layout.custom_bottom_navigation_bar, this);
+        tips = context.getResources().getStringArray(R.array.MainTabTips);
         findViews();
         initTabLayout();
         setListeners();
@@ -97,10 +100,10 @@ public class CustomBottomNaviBar extends LinearLayout {
             v.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!AppConst.ISDEVELOP && 1 == finalI) {
+                    if (!AppConst.ISDEVELOP && finalI != 0) {
                         CustomDialog dialog = new CustomDialog(context);
-                        dialog.setMessage("机票预订正在测试中，即将与您见面");
-                        dialog.setNegativeButton(context.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        dialog.setMessage(tips[finalI]);
+                        dialog.setNegativeButton(context.getResources().getString(R.string.iknown), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -108,7 +111,7 @@ public class CustomBottomNaviBar extends LinearLayout {
                         });
                         dialog.setCanceledOnTouchOutside(true);
                         dialog.show();
-                    } else if (!SessionContext.isLogin() && (1 == finalI || 3 == finalI)) {
+                    } else if (!SessionContext.isLogin() && finalI != 0) {
                         context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, true));
                     } else {
                         refreshTabLayout(finalI, true);

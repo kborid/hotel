@@ -304,6 +304,11 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                 drawer_layout.closeDrawers();
                 return true;
             }
+            if (currentIndex != 0) {
+                currentIndex = 0;
+                viewPager.setCurrentItem(currentIndex);
+                return true;
+            }
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                 CustomToast.show(getString(R.string.exit_tip), CustomToast.LENGTH_SHORT);
                 exitTime = System.currentTimeMillis();

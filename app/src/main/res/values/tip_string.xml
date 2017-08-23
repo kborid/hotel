@@ -8,6 +8,7 @@
 
     <!--Dialog-->
     <string name="alert">提示</string>
+    <string name="iknown">我知道了</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="done">完成</string>

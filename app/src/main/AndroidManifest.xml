@@ -40,32 +40,37 @@
             android:name=".ui.activity.MainFragmentActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 登录 -->
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <!-- 注册 -->
         <activity
             android:name=".ui.activity.RegisterActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <!-- 忘记密码 -->
         <activity
             android:name=".ui.activity.ForgetPwdActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <!-- 三方登录 的绑定 -->
         <activity
             android:name=".ui.activity.BindPhoneActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <!--个人中心-->
         <activity
             android:name=".ui.activity.UserCenterActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--消息-->
         <activity
             android:name=".ui.activity.MessageListActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--我的订单-->
         <activity
             android:name=".ui.activity.MyOrdersActivity"
@@ -78,7 +83,8 @@
         <!--酒店订单详情-->
         <activity
             android:name=".ui.activity.HotelOrderDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <!--机票订单详情-->
         <activity
             android:name=".ui.activity.PlaneOrderDetailActivity"
@@ -94,7 +100,8 @@
         <!--评价详情-->
         <activity
             android:name=".ui.activity.AssessOrderDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--评论列表画面-->
         <activity
             android:name=".ui.activity.AssessCommendActivity"
@@ -106,8 +113,8 @@
         <!-- 意见反馈 -->
         <activity
             android:name=".ui.activity.FeedbackActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 关于 -->
         <activity
             android:name=".ui.activity.AboutActivity"
@@ -123,7 +130,8 @@
         <!--城市选择画面-->
         <activity
             android:name=".ui.activity.LocationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity
             android:name=".ui.activity.LocationActivity2"
             android:screenOrientation="portrait" />
@@ -142,7 +150,8 @@
         <!--酒店列表搜索画面-->
         <activity
             android:name=".ui.activity.HotelListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--后悔药出售画面-->
         <activity
             android:name=".ui.activity.HouHuiYaoSalingActivity"
@@ -197,7 +206,8 @@
         <!--订单确认画面-->
         <activity
             android:name=".ui.activity.RoomOrderConfirmActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--支付方式画面-->
         <activity
             android:name=".ui.activity.OrderPayActivity"
@@ -210,7 +220,8 @@
         <!--发票页面-->
         <activity
             android:name=".ui.activity.InvoiceDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- h5应用页面 -->
         <activity
             android:name=".ui.activity.HtmlActivity"
