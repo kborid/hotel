@@ -218,8 +218,8 @@
             android:layout_height="45dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="支付"
             android:background="?attr/bottomBtnSel"
+            android:text="支付"
             android:textColor="@color/bottom_btn_text_selector"
             android:textSize="@dimen/common_15sp"
             android:textStyle="bold" />

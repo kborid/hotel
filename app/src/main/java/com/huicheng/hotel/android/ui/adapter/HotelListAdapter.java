@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.maps.AMapUtils;
@@ -102,7 +103,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             }
             if (bean.vipPrice < minPrice) {
                 holder.vip_layout.setVisibility(View.VISIBLE);
-                holder.tv_vip_price.setText(String.valueOf(bean.vipPrice));
+                holder.tv_vip_price.setText(String.valueOf(bean.vipPrice) + "元");
             }
         }
 
@@ -229,7 +230,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     class HotelViewHolder extends RecyclerView.ViewHolder {
 
         CardView cardview;
-        LinearLayout vip_layout;
+        RelativeLayout vip_layout;
         TextView tv_vip_price;
         RoundedTopImageView iv_hotel_icon;
         LinearLayout detail_lay;
@@ -244,10 +245,10 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         HotelViewHolder(View itemView) {
             super(itemView);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
-            vip_layout = (LinearLayout) itemView.findViewById(R.id.vip_layout);
-            ((TextView) itemView.findViewById(R.id.tv_vip_price_note)).getPaint().setFakeBoldText(true);
+            vip_layout = (RelativeLayout) itemView.findViewById(R.id.vip_layout);
+            ((TextView) itemView.findViewById(R.id.tv_vip_note)).getPaint().setFakeBoldText(true);
             tv_vip_price = (TextView) itemView.findViewById(R.id.tv_vip_price);
-            ((TextView) itemView.findViewById(R.id.tv_vip_price_unit)).getPaint().setFakeBoldText(true);
+            tv_vip_price.getPaint().setFakeBoldText(true);
             iv_hotel_icon = (RoundedTopImageView) itemView.findViewById(R.id.iv_hotel_icon);
             detail_lay = (LinearLayout) itemView.findViewById(R.id.detail_lay);
             tv_hotel_point = (TextView) itemView.findViewById(R.id.tv_point);

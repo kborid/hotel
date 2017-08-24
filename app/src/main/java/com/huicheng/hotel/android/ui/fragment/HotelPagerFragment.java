@@ -137,9 +137,11 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         super.initViews(view);
         banner_lay = (CommonBannerLayout) view.findViewById(R.id.banner_lay);
 
-        ((TextView) view.findViewById(R.id.tv_city_lable)).getPaint().setFakeBoldText(true);
-        ((TextView) view.findViewById(R.id.tv_key_lable)).getPaint().setFakeBoldText(true);
+        ((TextView) view.findViewById(R.id.tv_city_label)).getPaint().setFakeBoldText(true);
+        ((TextView) view.findViewById(R.id.tv_key_label)).getPaint().setFakeBoldText(true);
+        ((TextView) view.findViewById(R.id.tv_price_label)).getPaint().setFakeBoldText(true);
         tv_city = (TextView) view.findViewById(R.id.tv_city);
+        tv_city.getPaint().setFakeBoldText(true);
         et_keyword = (EditText) view.findViewById(R.id.et_keyword);
 
         iv_location = (ImageView) view.findViewById(R.id.iv_location);
@@ -147,6 +149,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         iv_reset.setEnabled(false);
         iv_voice = (ImageView) view.findViewById(R.id.iv_voice);
         tv_next_search = (TextView) view.findViewById(R.id.tv_next_search);
+        tv_next_search.getPaint().setFakeBoldText(true);
         tv_info = (TextView) view.findViewById(R.id.tv_info);
         btn_zero = (ImageButton) view.findViewById(R.id.btn_zero);
         Bitmap bm = BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_freeonenight_blue), getResources().getColor(mMainColor));

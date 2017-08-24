@@ -111,7 +111,6 @@ public class CustomDialog extends Dialog {
         ll_title = (LinearLayout) findViewById(R.id.id_ll_dialog_title);
         img_warning = (ImageView) findViewById(R.id.id_img_warning);
         title = (TextView) findViewById(R.id.title_view);
-        title.getPaint().setFakeBoldText(true);
         contextLayout = (RelativeLayout) findViewById(R.id.content_layout);
         message = (TextView) findViewById(R.id.message_view);
         buttonLayout = (LinearLayout) findViewById(R.id.button_layout);

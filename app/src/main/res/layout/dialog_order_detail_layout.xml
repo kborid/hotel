@@ -10,19 +10,26 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="详情"
-        android:textColor="@color/unSelectedTextColor"
+        android:textColor="@color/secColor"
         android:textSize="@dimen/common_14sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/comm_line2" />
 
-    <LinearLayout
-        android:id="@+id/service_lay"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/service_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 </LinearLayout>

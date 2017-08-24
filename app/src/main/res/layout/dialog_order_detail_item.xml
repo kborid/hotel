@@ -23,36 +23,26 @@
             android:textColor="@color/secColor"
             android:textSize="@dimen/common_12sp" />
 
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="right">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right">
-
-                <TextView
-                    android:id="@+id/tv_price_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/totalRMB"
-                    android:textColor="@color/payPriceColor"
-                    android:textSize="@dimen/common_18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/tv_price_unit"
-                    android:text="960"
-                    android:textColor="@color/payPriceColor"
-                    android:textSize="@dimen/common_18sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-        </LinearLayout>
+                android:text="¥960"
+                android:textColor="@color/payPriceColor"
+                android:textSize="@dimen/common_18sp" />
+        </RelativeLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/room_detail_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
 </LinearLayout>
