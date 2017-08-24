@@ -80,6 +80,7 @@
         <item name="assessesItemBg">@drawable/iv_assess_hotel</item>
         <item name="orderHotelItemBg">@drawable/iv_order_hotel</item>
         <item name="orderPlaneItemBg">@drawable/iv_order_plane</item>
+        <item name="pullDownAccessory">@drawable/iv_down</item>
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/maincolor_btn_sel</item>
         <item name="indicatorBgSel">@drawable/indicator_btn_sel</item>
@@ -156,6 +157,7 @@
         <item name="assessesItemBg">@drawable/iv_assess_hotel_female</item>
         <item name="orderHotelItemBg">@drawable/iv_order_hotel_female</item>
         <item name="orderPlaneItemBg">@drawable/iv_order_plane_female</item>
+        <item name="pullDownAccessory">@drawable/iv_down_female</item>
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/female_maincolor_btn_sel</item>
         <item name="indicatorBgSel">@drawable/female_indicator_btn_sel</item>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,11 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.ScaleAnimation;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -64,6 +61,7 @@ import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -86,14 +84,12 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     private Button btn_night, btn_hhy;
 
     private TextView tv_price;
-    private View price_line;
     private int mPriceIndex = 0;
     private ImageView iv_pull;
 
-    // 海南诚信广告蒙层
-    private RelativeLayout hainan_ad_lay;
-    private ImageView iv_ad_close;
+    // 海南诚信广告Popup
     private boolean isAdShowed = false;
+    private PopupWindow mAdHaiNanPopupWindow = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -160,11 +156,27 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
         tv_price = (TextView) view.findViewById(R.id.tv_price);
         iv_pull = (ImageView) view.findViewById(R.id.iv_pull);
-        price_line = view.findViewById(R.id.price_line);
 
-        hainan_ad_lay = (RelativeLayout) view.findViewById(R.id.hainan_ad_lay);
-        hainan_ad_lay.setLayoutAnimation(getAnimationController());
-        iv_ad_close = (ImageView) view.findViewById(R.id.iv_ad_close);
+        // 海南诚信认证广告
+        View adView = LayoutInflater.from(getActivity()).inflate(R.layout.pw_ad_hainan_layout, null);
+        mAdHaiNanPopupWindow = new PopupWindow(adView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        mAdHaiNanPopupWindow.getContentView().findViewById(R.id.iv_ad_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdHaiNanPopupWindow.dismiss();
+            }
+        });
+        int option = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
+        mAdHaiNanPopupWindow.setSoftInputMode(option);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                Field mLayoutInScreen = PopupWindow.class.getDeclaredField("mLayoutInScreen");
+                mLayoutInScreen.setAccessible(true);
+                mLayoutInScreen.set(mAdHaiNanPopupWindow, true);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -243,7 +255,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         btn_hhy.setOnClickListener(this);
         tv_price.setOnClickListener(this);
         iv_pull.setOnClickListener(this);
-        iv_ad_close.setOnClickListener(this);
 
         et_keyword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -376,9 +387,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 });
                 popup.show();
                 break;
-            case R.id.iv_ad_close:
-                hainan_ad_lay.setVisibility(View.GONE);
-                break;
             default:
                 break;
         }
@@ -390,32 +398,25 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        showHaiNanAd(tv_city.getText().toString());
-    }
-
-    private void showHaiNanAd(String city) {
         if (!isAdShowed) {
-            if (city.contains("海口")) {
-                isAdShowed = true;
-                hainan_ad_lay.setVisibility(View.VISIBLE);
-            } else {
-                hainan_ad_lay.setVisibility(View.GONE);
-            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showHaiNanAd(tv_city.getText().toString());
+                }
+            }, 300);
         }
     }
 
-    private LayoutAnimationController getAnimationController() {
-        LayoutAnimationController controller;
-        AnimationSet set = new AnimationSet(true);
-        Animation alpha = new AlphaAnimation(0f, 1f);
-        Animation scale = new ScaleAnimation(0.5f, 1.0f, 0.5f, 1.0f,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        set.addAnimation(alpha);
-        set.addAnimation(scale);
-        set.setDuration(500);
-        controller = new LayoutAnimationController(set, 0.1f);
-        controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
-        return controller;
+    private void showHaiNanAdPopupWindow() {
+        mAdHaiNanPopupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
+    }
+
+    private void showHaiNanAd(String city) {
+        if (city.contains("海口")) {
+            isAdShowed = true;
+            showHaiNanAdPopupWindow();
+        }
     }
 
     private void requestHotelBanner() {

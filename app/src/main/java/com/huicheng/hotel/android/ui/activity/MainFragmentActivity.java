@@ -304,9 +304,8 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                 drawer_layout.closeDrawers();
                 return true;
             }
-            if (currentIndex != 0) {
-                currentIndex = 0;
-                viewPager.setCurrentItem(currentIndex);
+            if (viewPager.getCurrentItem() != 0) {
+                viewPager.setCurrentItem(0, false);
                 return true;
             }
             if ((System.currentTimeMillis() - exitTime) > 2000) {

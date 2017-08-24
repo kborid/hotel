@@ -52,6 +52,7 @@
         <attr name="nextButton" format="reference" />
         <attr name="msgGradientShadow" format="reference" />
         <attr name="msgSpinnerBg" format="reference" />
+        <attr name="pullDownAccessory" format="reference"/>
 
         <!--selector-->
         <attr name="mainColorBtnSel" format="reference" />

@@ -261,30 +261,4 @@
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/hainan_ad_lay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent60"
-        android:clickable="true"
-        android:visibility="gone"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/bg_ad_hainan" />
-
-        <ImageView
-            android:id="@+id/iv_ad_close"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="13dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/iv_ad_close" />
-    </RelativeLayout>
 </FrameLayout>

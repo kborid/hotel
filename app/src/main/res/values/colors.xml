@@ -10,6 +10,7 @@
     <color name="transparent40">#66000000</color>
     <color name="transparent50">#80000000</color>
     <color name="transparent60">#99000000</color>
+    <color name="transparent65">#A6000000</color>
     <color name="transparent70">#B3000000</color>
     <color name="transparent80">#CC000000</color>
     <color name="transparent90">#E6000000</color>
@@ -83,8 +84,6 @@
     <color name="saveColor">#8bc349</color>
     <color name="airTicketColor">#1565b0</color>
     <color name="hotelColor">#009fda</color>
-    <color name="searchBgColor">@color/transparent80_</color>
-    <color name="btnBoundColor">#98a2bb</color>
 
 
     <!--default color-->

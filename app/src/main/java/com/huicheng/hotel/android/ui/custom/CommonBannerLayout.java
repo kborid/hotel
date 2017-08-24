@@ -21,10 +21,8 @@ import com.huicheng.hotel.android.ui.adapter.BannerImageAdapter;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -99,11 +97,6 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
                 @Override
                 public void onClick(View v) {
                     String intentUrl = bean.target;
-
-                    // 添加友盟自定义事件
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("url", intentUrl);
-                    MobclickAgent.onEvent(context, "ServiceDidTapped", map);
 
                     if (!StringUtil.isEmpty(intentUrl)) {
                         Intent intent = new Intent(context, HtmlActivity.class);
