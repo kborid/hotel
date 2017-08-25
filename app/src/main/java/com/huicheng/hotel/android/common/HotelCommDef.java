@@ -236,6 +236,9 @@ public class HotelCommDef {
             case 4:
                 travel = "04";
                 break;
+            default:
+                travel = "";
+                break;
         }
         return travel;
     }

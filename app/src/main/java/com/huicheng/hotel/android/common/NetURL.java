@@ -100,13 +100,14 @@ public final class NetURL {
     public static final String APP_INFO = PORTAL + "system/getappversion.json"; //app版本信息
     public static final String ADVERTISEMENT = PORTAL + "user/CW1011"; //广告
     public static final String HOTEL_BANNER = PORTAL + "activity/activityPics.json"; //首页banner
+    public static final String ACTIVE_ABOUT = PORTAL + "system/gettipshowornot.json"; //活动相关
 
     // -----------------------------------Html 5----------------------------------------------------
     public static final String SHARE = PORTAL + "pages/share.html"; //分享
     public static final String SAVE_RECOMMAND = PORTAL + "user/saveRecommand.json"; //推荐
     public static final String PLANE_HOME = PORTAL + "pages/plain/pages/air.html"; //机票页
     public static final String TRAIN_HOME = "https://m.ctrip.com/webapp/train/v2/index.html?allianceid=30613&sid=997104&hiderecommapp=1&popup=close&autoawaken=close&showhead=0"; //火车票首页
-//    public static final String DIDI_TAXI_HOME = "https://common.diditaxi.com.cn/general/webEntry?wx=true"; //滴滴首页
+    //    public static final String DIDI_TAXI_HOME = "https://common.diditaxi.com.cn/general/webEntry?wx=true"; //滴滴首页
     public static final String SZ_TAXI_HOME = "https://commonwappre.10101111.com/join";
 
     // --------------------------------------------设置缓存的URL-------------------------------------

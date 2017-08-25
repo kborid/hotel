@@ -145,6 +145,7 @@
     <string name="freeProc">活动流程</string>
     <string name="freeActNote">—注册ABC账号\n—发送活动连接邀请好友\n   一同参与抢房\n—好友注册成功ABC账号后，\n   您的0元抢房权限即刻激活\n—每名注册用户每次活动限\n   抢一张免费房券</string>
     <string name="freeBegin">开始抢房</string>
+
     <string name="vip_note">您已成为\n以上酒店的粉丝，点击\n预定即可享受\n该酒店的粉丝价！</string>
 
     <string name="menu_price0">不限</string>

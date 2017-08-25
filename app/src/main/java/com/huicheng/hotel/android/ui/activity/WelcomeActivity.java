@@ -71,7 +71,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             public void run() {
                 super.run();
                 initJsonData();
-                requestAppVersionInfo();
+                requestActiveAboutInfo();
             }
         }.start();
     }
@@ -185,6 +185,17 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestActiveAboutInfo() {
+        LogUtil.i(TAG, "requestActiveAboutInfo()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.ACTIVE_ABOUT;
+        d.flag = AppConst.ACTIVE_ABOUT;
+
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     public void intentActivity() {
         Intent intent;
         if (SessionContext.getWakeUpAppData() != null || SessionContext.getRecommandAppData() != null) {
@@ -277,6 +288,12 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                     }
                 }
                 goToNextActivity();
+            } else if (request.flag == AppConst.ACTIVE_ABOUT) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                if (StringUtil.notEmpty(response.body.toString())) {
+                    SessionContext.setHasActive(Boolean.parseBoolean(response.body.toString()));
+                }
+                requestAppVersionInfo();
             }
         }
     }

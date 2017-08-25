@@ -86,6 +86,7 @@ public class HotelSpaceHomeActivity extends BaseActivity {
         super.initViews();
         ScrollView scrollview = (ScrollView) findViewById(R.id.scrollview);
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         cardview = (CardView) findViewById(R.id.cardview);
         iv_hotel_bg = (RoundedAllImageView) findViewById(R.id.iv_hotel_bg);
         tv_tie_count = (TextView) findViewById(R.id.tv_tie_count);

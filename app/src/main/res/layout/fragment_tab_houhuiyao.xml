@@ -51,7 +51,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@color/transparent"
-                    android:animateLayoutChanges="true"
                     android:listSelector="@color/transparent" />
             </LinearLayout>
 
@@ -79,7 +78,6 @@
                     android:id="@+id/lv_other"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
                     android:cacheColorHint="@color/transparent"
                     android:divider="@color/transparent"
                     android:listSelector="@color/transparent" />

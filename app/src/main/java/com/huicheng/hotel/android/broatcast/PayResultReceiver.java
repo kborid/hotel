@@ -135,6 +135,7 @@ public class PayResultReceiver extends BroadcastReceiver {
                 intent1.putExtra("checkRoomDate", orderPayDetailInfoBean.checkRoomDate);
                 intent.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
                 intent.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
+                intent.putExtra("isPrePaySuccess", true);
                 context.startActivity(intent1);
             }
             CustomToast.show(msg, CustomToast.LENGTH_SHORT);

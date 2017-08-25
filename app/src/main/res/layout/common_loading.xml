@@ -11,7 +11,7 @@
         android:id="@+id/waitting_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/comm_customdialog_bg"
+        android:background="@drawable/comm_dialog_bg"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp">

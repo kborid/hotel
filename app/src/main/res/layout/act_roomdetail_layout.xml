@@ -10,7 +10,7 @@
         android:scrollbarThumbVertical="@drawable/p3016_scrollbar">
 
         <LinearLayout
-            android:id="@+id/root_detail_lay"
+            android:id="@+id/root_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -37,6 +37,15 @@
                     android:layout_marginBottom="70dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal" />
+
+                <ImageView
+                    android:id="@+id/iv_qtips_active"
+                    android:layout_width="240dp"
+                    android:layout_height="160dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="60dp"
+                    android:src="@drawable/iv_qtips_active" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -105,8 +114,8 @@
                         android:id="@+id/iv_share"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_marginRight="15dp"
                         android:layout_gravity="center"
+                        android:layout_marginRight="15dp"
                         android:src="@drawable/iv_share_white" />
 
                     <ImageView
@@ -115,8 +124,8 @@
                         android:layout_height="35dp"
                         android:layout_gravity="center"
                         android:layout_marginRight="15dp"
-                        android:visibility="gone"
-                        android:src="@drawable/iv_favorite_white" />
+                        android:src="@drawable/iv_favorite_white"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <include layout="@layout/comm_title" />

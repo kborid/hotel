@@ -71,6 +71,7 @@ public class AssessCommendActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         tv_commend_count = (TextView) findViewById(R.id.tv_comment_count);
         if (tv_commend_count != null) {
             tv_commend_count.getPaint().setFakeBoldText(true);

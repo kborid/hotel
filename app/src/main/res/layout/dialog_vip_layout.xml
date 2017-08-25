@@ -7,7 +7,7 @@
         android:id="@+id/replace_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
+        android:background="@drawable/dialog_vip_home_bg"
         android:orientation="vertical" />
 
     <ImageView

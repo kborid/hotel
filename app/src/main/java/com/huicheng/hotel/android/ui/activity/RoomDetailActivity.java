@@ -43,6 +43,7 @@ import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.umeng.socialize.media.UMImage;
@@ -63,10 +64,11 @@ public class RoomDetailActivity extends BaseActivity {
     private static final String TAG = "RoomDetailActivity";
     private static final int SELECTED_BAR_COUNT = 2;
 
-    private LinearLayout root_detail_lay;
+    private LinearLayout root_lay;
     private ViewPager viewPager;
     private LinearLayout indicator_lay;
     private int positionIndex = 0;
+    private ImageView iv_qtips_active;
 
     private RelativeLayout point_lay;
     private TextView tv_point, tv_comment, tv_room_name;
@@ -114,9 +116,19 @@ public class RoomDetailActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
-        root_detail_lay = (LinearLayout) findViewById(R.id.root_detail_lay);
+        root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
+        iv_qtips_active = (ImageView) findViewById(R.id.iv_qtips_active);
+        iv_qtips_active.setVisibility(View.GONE);
+        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        rlp.width = (int) ((float) Utils.mScreenWidth / 5 * 3);
+        rlp.height = (int) ((float) rlp.width / 3 * 2);
+        rlp.bottomMargin = Utils.dip2px(60);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        iv_qtips_active.setLayoutParams(rlp);
 
         point_lay = (RelativeLayout) findViewById(R.id.point_lay);
         tv_point = (TextView) findViewById(R.id.tv_point);
@@ -181,9 +193,19 @@ public class RoomDetailActivity extends BaseActivity {
         super.initParams();
         btn_back.setImageResource(R.drawable.iv_back_white);
 
+        if (SessionContext.isHasActive) {
+            String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+            if ("海南省".contains(province)) {
+                iv_qtips_active.setVisibility(View.VISIBLE);
+            }
+        }
+
         if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
             iv_fans.setVisibility(View.VISIBLE);
+        } else {
+            iv_fans.setVisibility(View.GONE);
         }
+
         tabHost.setup();
         for (int i = 0; i < SELECTED_BAR_COUNT; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.selected_bar_item, null);
@@ -275,7 +297,7 @@ public class RoomDetailActivity extends BaseActivity {
 
     private void refreshRoomDetailInfo() {
         if (null != roomDetailInfoBean) {
-            root_detail_lay.setVisibility(View.VISIBLE);
+            root_lay.setVisibility(View.VISIBLE);
             //设置banner
 //            viewPager.setPageMargin(Utils.dip2px(10));
             viewPager.setAdapter(new MyPagerAdapter(this, roomDetailInfoBean.picList));
@@ -331,7 +353,7 @@ public class RoomDetailActivity extends BaseActivity {
             //设置房间所提供的服务
             refreshRoomDetailService();
         } else {
-            root_detail_lay.setVisibility(View.GONE);
+            root_lay.setVisibility(View.GONE);
         }
     }
 

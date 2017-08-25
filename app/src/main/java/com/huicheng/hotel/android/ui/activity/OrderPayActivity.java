@@ -81,6 +81,7 @@ public class OrderPayActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         tv_address = (TextView) findViewById(R.id.tv_address);
         tv_room_name = (TextView) findViewById(R.id.tv_room_name);
         tv_date = (TextView) findViewById(R.id.tv_date);

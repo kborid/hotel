@@ -64,6 +64,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         tv_order_num = (TextView) findViewById(R.id.tv_order_num);
         tv_order_date = (TextView) findViewById(R.id.tv_order_date);
 

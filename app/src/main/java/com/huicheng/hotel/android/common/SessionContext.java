@@ -35,6 +35,8 @@ public class SessionContext {
     private static AppData mAppdata;             // 推荐信息
     private static AppData mWakeupData;          // 唤醒数据
 
+    public static boolean isHasActive = false;          // 是否显示活动提示
+
     private static List<String> cityIndexList = new ArrayList<>();
     private static Map<String, List<String>> cityNameMap = new HashMap<>();
     private static List<CityAreaInfoBean> cityAreaList = new ArrayList<>();
@@ -93,6 +95,10 @@ public class SessionContext {
             mUser = JSON.parseObject(json, UserInfo.class);
             setTicket(ticket);
         }
+    }
+
+    public static void setHasActive(boolean flag) {
+        isHasActive = flag;
     }
 
     public static List<String> getCityIndexList() {

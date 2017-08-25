@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -13,13 +14,16 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
+import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
 /**
@@ -40,6 +44,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
     private long beginTime, endTime;
     private String checkRoomDate;
     private String hotelId, hotelName, roomName;
+    private boolean isPrePaySuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         btn_vip = (Button) findViewById(R.id.btn_vip);
         tv_hotel_name = (TextView) findViewById(R.id.tv_hotel_name);
         tv_room_name = (TextView) findViewById(R.id.tv_room_name);
@@ -83,6 +89,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
             }
             beginTime = bundle.getLong("beginTime");
             endTime = bundle.getLong("endTime");
+            isPrePaySuccess = bundle.getBoolean("isPrePaySuccess");
         }
     }
 
@@ -92,6 +99,8 @@ public class OrderPaySuccessActivity extends BaseActivity {
         tv_center_title.setText("订单成功");
         if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
             btn_vip.setVisibility(View.VISIBLE);
+        } else {
+            btn_vip.setVisibility(View.GONE);
         }
     }
 
@@ -115,6 +124,32 @@ public class OrderPaySuccessActivity extends BaseActivity {
 
             root_lay.setVisibility(View.VISIBLE);
         }
+        if (SessionContext.isHasActive && isPrePaySuccess) {
+            String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+            if ("海南省".contains(province)) {
+                showBookingAirTicketDialog();
+            }
+        }
+    }
+
+    private void showBookingAirTicketDialog() {
+        CustomDialog dialog = new CustomDialog(this);
+        dialog.setMessage(getString(R.string.active_bookingAirTicket));
+        dialog.setNegativeButton(getString(R.string.active_go), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(OrderPaySuccessActivity.this, MainFragmentActivity.class);
+                intent.putExtra("index", 1);
+                startActivity(intent);
+            }
+        });
+        dialog.setPositiveButton(getString(R.string.active_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private void requestHotelDetailInfo() {

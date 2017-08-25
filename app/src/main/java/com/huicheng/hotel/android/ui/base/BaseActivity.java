@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -272,11 +275,12 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             ImageView iv_hotel_bg = (ImageView) viewHome.findViewById(R.id.iv_hotel_bg);
             loadImage(iv_hotel_bg, R.drawable.def_hotel_banner, hotelDetailInfoBean.picPath.get(0), 800, 800);
 
-            TextView tv_name = (TextView) viewHome.findViewById(R.id.tv_name);
-            tv_name.setText(hotelDetailInfoBean.name);
-            TextView tv_address = (TextView) viewHome.findViewById(R.id.tv_address);
-            tv_address.setText(hotelDetailInfoBean.address);
+            TextView tv_vip_name = (TextView) viewHome.findViewById(R.id.tv_vip_name);
+            tv_vip_name.getPaint().setFakeBoldText(true);
+            tv_vip_name.setText(hotelDetailInfoBean.name);
+            ((TextView) viewHome.findViewById(R.id.tv_vip_tips)).getPaint().setFakeBoldText(true);
             Button btn_join = (Button) viewHome.findViewById(R.id.btn_join);
+            btn_join.getPaint().setFakeBoldText(true);
             btn_join.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -301,7 +305,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             tagFlowLayout.setAdapter(new TagAdapter<String>(tagList) {
                 @Override
                 public View getView(FlowLayout parent, int position, String o) {
-                    TextView tv_tag = (TextView) LayoutInflater.from(context).inflate(R.layout.lv_tag_item, tagFlowLayout, false);
+                    TextView tv_tag = (TextView) LayoutInflater.from(context).inflate(R.layout.dialog_vip_tag_item, tagFlowLayout, false);
                     tv_tag.setText(o);
                     return tv_tag;
                 }
@@ -310,7 +314,11 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             tagFlowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
                 @Override
                 public void onSelected(Set<Integer> selectPosSet) {
-                    selectedIndex[0] = selectPosSet.iterator().next();
+                    if (selectPosSet != null && selectPosSet.iterator() != null && selectPosSet.iterator().hasNext()) {
+                        selectedIndex[0] = selectPosSet.iterator().next();
+                    } else {
+                        selectedIndex[0] = -1;
+                    }
                 }
             });
             Set<Integer> tagSet = new HashSet<>();
@@ -333,6 +341,10 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
                         return;
                     } else if (!Utils.isEmail(et_email.getText().toString())) {
                         CustomToast.show("邮箱地址格式错误", CustomToast.LENGTH_SHORT);
+                        return;
+                    }
+                    if (-1 == selectedIndex[0]) {
+                        CustomToast.show("请选择出行类型", CustomToast.LENGTH_SHORT);
                         return;
                     }
 
@@ -361,6 +373,18 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         if (mDialogVip != null) {
             mDialogVip.dismiss();
         }
+    }
+
+    protected LayoutAnimationController getAnimationController() {
+        LayoutAnimationController controller;
+        Animation alphaAnim = new AlphaAnimation(0f, 1f);
+//        Animation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+//                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+//                0.5f);// 从0.5倍放大到1倍
+        alphaAnim.setDuration(500);
+        controller = new LayoutAnimationController(alphaAnim, 0.1f);
+        controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
+        return controller;
     }
 
     private void requestHotelVip2(String email, String idcode, String realname, String traveltype) {

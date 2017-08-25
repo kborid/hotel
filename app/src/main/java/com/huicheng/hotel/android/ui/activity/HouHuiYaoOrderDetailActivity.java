@@ -60,6 +60,7 @@ public class HouHuiYaoOrderDetailActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         tv_hotel_name = (TextView) findViewById(R.id.tv_hotel_name);
         tv_hotel_address = (TextView) findViewById(R.id.tv_hotel_address);
         tv_hotel_phone = (TextView) findViewById(R.id.tv_hotel_phone);

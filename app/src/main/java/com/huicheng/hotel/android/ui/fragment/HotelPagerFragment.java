@@ -442,7 +442,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 LogUtil.i(TAG, "Hotel Main json = " + response.body.toString());
                 List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
                 if (temp.size() > 0) {
-                    banner_lay.setImageResource(temp, "");
+                    banner_lay.setImageResource(temp);
                 }
             }
         }

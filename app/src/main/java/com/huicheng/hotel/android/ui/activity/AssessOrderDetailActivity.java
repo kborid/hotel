@@ -93,6 +93,7 @@ public class AssessOrderDetailActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         iv_background = (RoundedAllImageView) findViewById(R.id.iv_background);
         tv_hotel_name = (TextView) findViewById(R.id.tv_hotel_name);
         tv_time = (TextView) findViewById(R.id.tv_time);
@@ -227,8 +228,11 @@ public class AssessOrderDetailActivity extends BaseActivity {
         flowlayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
             @Override
             public void onSelected(Set<Integer> selectPosSet) {
-                LogUtil.i(TAG, "position = " + selectPosSet.toString());
-                selectedIndex = selectPosSet.iterator().next();
+                if (selectPosSet != null && selectPosSet.iterator() != null && selectPosSet.iterator().hasNext()) {
+                    selectedIndex = selectPosSet.iterator().next();
+                } else {
+                    selectedIndex = -1;
+                }
                 LogUtil.i(TAG, "selectedIndex = " + selectedIndex);
             }
         });

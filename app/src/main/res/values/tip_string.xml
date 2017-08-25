@@ -15,4 +15,11 @@
     <string name="back">返回</string>
     <string name="close">关闭</string>
     <string name="exit">退出</string>
+
+    <string name="vip_tips">粉丝一下，立享低价</string>
+    <string name="vip_tobe">成为粉丝</string>
+
+    <string name="active_bookingAirTicket">免费海南机票在等你，快去预定吧！</string>
+    <string name="active_go">这就去</string>
+    <string name="active_cancel">不了，我游泳过去</string>
 </resources>

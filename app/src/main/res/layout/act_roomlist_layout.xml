@@ -12,7 +12,7 @@
         android:scrollbarThumbVertical="@drawable/p3016_scrollbar">
 
         <LinearLayout
-            android:id="@+id/root_detail_lay"
+            android:id="@+id/root_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="false"

@@ -59,6 +59,7 @@ public class ConsumptionDetailActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         chart_lay = (LinearLayout) findViewById(R.id.chart_lay);
         spinner = (Spinner) findViewById(R.id.spinner);
         pieChart = (CustomCirclePieChart) findViewById(R.id.piechart);

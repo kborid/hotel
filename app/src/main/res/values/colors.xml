@@ -58,6 +58,8 @@
     <color name="commonHintColor">#cccccc</color>
     <color name="vipAddressColor">#a7a7a7</color>
     <color name="vipHotelNameColor">@color/commonHintColor</color>
+    <color name="vipDialogInputColor">#f2f2f2</color>
+    <color name="vipDilaogInputBoundColor">@color/unselectedBarColor</color>
     <color name="selectedBarColor">#535353</color>
     <color name="unselectedBarColor">#d7d7d7</color>
     <color name="unSelectedTextColor">#464646</color>

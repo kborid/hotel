@@ -55,7 +55,7 @@ public class RoomListActivity extends BaseActivity {
 
     private static final String TAG = "RoomListActivity";
     private static final int SELECTED_BAR_COUNT = 2;
-    private LinearLayout root_detail_lay;
+    private LinearLayout root_lay;
 
     private ViewPager viewPager;
     private LinearLayout indicator_lay;
@@ -101,7 +101,8 @@ public class RoomListActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
-        root_detail_lay = (LinearLayout) findViewById(R.id.root_detail_lay);
+        root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setLayoutAnimation(getAnimationController());
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
         tv_assess_point = (TextView) findViewById(R.id.tv_assess_point);
@@ -232,6 +233,8 @@ public class RoomListActivity extends BaseActivity {
         if (null != hotelDetailInfoBean) {
             if (hotelDetailInfoBean.isPopup) {
                 btn_right.setVisibility(View.VISIBLE);
+            } else {
+                btn_right.setVisibility(View.INVISIBLE);
             }
             //设置banner
             int marginValue = Utils.dip2px(10);
@@ -285,7 +288,7 @@ public class RoomListActivity extends BaseActivity {
                 }, 500);
             }
 
-            root_detail_lay.setVisibility(View.VISIBLE);
+            root_lay.setVisibility(View.VISIBLE);
         }
     }
 
@@ -646,11 +649,6 @@ public class RoomListActivity extends BaseActivity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-//            View view = LayoutInflater.from(context).inflate(R.layout.room_banner_item, null);
-//            ImageView iv_background = (ImageView) view.findViewById(R.id.iv_background);
-//            loadImage(iv_background, list.get(position), 800, 480);
-//            container.addView(view, position);
-//            return view;
             position %= list.size();
             if (position < 0) {
                 position = list.size() + position;
@@ -665,31 +663,11 @@ public class RoomListActivity extends BaseActivity {
                 parent.removeView(view);
             }
             container.addView(view);
-            //add listeners here if necessary
-//            final int finalPosition = position;
-//            view.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(context, ImageScaleActivity.class);
-//                    intent.putExtra("url", list.get(finalPosition));
-//                    ImageView imageView = (ImageView) view.findViewById(R.id.iv_background);
-//                    int[] location = new int[2];
-//                    imageView.getLocationOnScreen(location);
-//                    intent.putExtra("locationX", location[0]);//必须
-//                    intent.putExtra("locationY", location[1]);//必须
-//                    intent.putExtra("width", imageView.getWidth());//必须
-//                    intent.putExtra("height", imageView.getHeight());//必须
-//                    startActivity(intent);
-//                    overridePendingTransition(0, 0);
-//                }
-//            });
             return view;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-//            container.removeView((View) object);
-            //Warning：不要在这里调用removeView
         }
     }
 

@@ -74,6 +74,8 @@
         <attr name="orderHotelItemBg" format="reference"/>
         <attr name="orderPlaneItemBg" format="reference"/>
         <attr name="orderAssessPublishBtnSel" format="reference"/>
+        <attr name="vipHomeButtonBg" format="reference"/>
+        <attr name="vipDetailTagSel" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="TagCloudView">

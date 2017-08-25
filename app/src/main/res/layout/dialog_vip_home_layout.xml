@@ -11,69 +11,55 @@
         android:scaleType="centerCrop"
         roundImage:radius="5dp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="-40dp"
+        android:background="@drawable/iv_dialog_vip_bg" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-40dp"
-        android:background="@drawable/iv_dialog_vip_bg"
         android:gravity="center"
         android:orientation="vertical"
+        android:paddingBottom="32dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="50dp">
+        android:paddingTop="25dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_vip_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/iv_hotel_icon"
+            android:drawablePadding="20dp"
             android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/iv_hotel_icon" />
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="ABC旅行酒店"
-                android:textColor="@color/calendarTextColor"
-                android:textSize="@dimen/common_18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:text="ABC旅行酒店"
+            android:textColor="@color/calendarTextColor"
+            android:textSize="@dimen/common_18sp" />
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="2dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/comm_line2" />
 
         <TextView
-            android:id="@+id/tv_address"
+            android:id="@+id/tv_vip_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="丰德国际广场E座一单元1609"
-            android:textColor="@color/secColor"
-            android:textSize="@dimen/common_18sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/iv_vip_icon" />
+            android:layout_marginTop="12dp"
+            android:text="@string/vip_tips"
+            android:textColor="@color/titleColor"
+            android:textSize="@dimen/common_15sp" />
 
         <Button
             android:id="@+id/btn_join"
             android:layout_width="160dp"
-            android:layout_height="45dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="30dp"
-            android:background="?attr/mainColorBtnSel"
-            android:text="加入"
+            android:layout_height="35dp"
+            android:layout_marginTop="25dp"
+            android:background="?attr/vipHomeButtonBg"
+            android:text="@string/vip_tobe"
             android:textColor="@color/white"
             android:textSize="@dimen/common_18sp" />
     </LinearLayout>

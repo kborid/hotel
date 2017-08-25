@@ -100,6 +100,8 @@
         <item name="msgItemTextSel">@color/msg_item_selector</item>
         <item name="orderDetailTextSel">@color/orderdetail_text_selector</item>
         <item name="orderAssessPublishBtnSel">@drawable/publish_btn_selector</item>
+        <item name="vipHomeButtonBg">@drawable/vip_home_btn_bg</item>
+        <item name="vipDetailTagSel">@drawable/vip_detail_tag_selector</item>
     </style>
 
 
@@ -177,6 +179,8 @@
         <item name="msgItemTextSel">@color/female_msg_item_selector</item>
         <item name="orderDetailTextSel">@color/female_orderdetail_text_selector</item>
         <item name="orderAssessPublishBtnSel">@drawable/female_publish_btn_selector</item>
+        <item name="vipHomeButtonBg">@drawable/female_vip_home_btn_bg</item>
+        <item name="vipDetailTagSel">@drawable/female_vip_detail_tag_selector</item>
     </style>
 
 
