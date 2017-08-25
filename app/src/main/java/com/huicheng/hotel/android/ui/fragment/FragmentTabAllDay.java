@@ -286,7 +286,7 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
                 }
                 list.addAll(temp);
 
-                isNoMore = temp.size() < PAGESIZE;
+                isNoMore = /*temp.size() < PAGESIZE*/temp.size() == 0;
 
                 //设置缓存
                 List<HotelMapInfoBean> allDayList = new ArrayList<>();

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -12,9 +13,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="好看不？"
         android:textColor="@color/secColor"
-        android:textSize="50sp" />
+        android:textSize="50sp"
+        tools:text="好看不？" />
 
     <LinearLayout
         android:id="@+id/menu_bottom"
@@ -42,9 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="酒店"
                 android:textColor="@color/secColor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                tools:text="酒店" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,9 +67,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="飞机"
                 android:textColor="@color/secColor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                tools:text="飞机" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,9 +92,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
-                android:text="心"
                 android:textColor="@color/secColor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                tools:text="心" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,9 +116,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="动火"
                 android:textColor="@color/secColor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                tools:text="动火" />
         </LinearLayout>
 
         <LinearLayout
@@ -139,9 +140,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="出租"
                 android:textColor="@color/secColor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                tools:text="出租" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

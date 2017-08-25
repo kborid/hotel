@@ -69,9 +69,9 @@
                                 android:id="@+id/tv_hotel_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="游艇酒店（北京）"
                                 android:textColor="@color/noDiscountColor"
-                                android:textSize="@dimen/common_18sp" />
+                                android:textSize="@dimen/common_18sp"
+                                tools:text="游艇酒店（北京）" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -91,10 +91,10 @@
                                     android:id="@+id/tv_time"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="2016年11月29日-30日"
                                     android:textColor="?attr/mainColor"
                                     android:textSize="@dimen/common_12sp"
-                                    android:textStyle="bold" />
+                                    android:textStyle="bold"
+                                    tools:text="2016年11月29日-30日" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -110,10 +110,10 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="4.5"
                                 android:textColor="@color/assessPointColorHigh"
                                 android:textSize="@dimen/common_18sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                tools:text="4.5" />
 
                             <TextView
                                 android:id="@+id/tv_comment"
@@ -122,10 +122,10 @@
                                 android:layout_marginTop="10dp"
                                 android:background="@drawable/comm_rectangle_btn_assesspoint_bg"
                                 android:gravity="center"
-                                android:text="201条"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/common_9sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                tools:text="201条" />
 
                         </LinearLayout>
                     </LinearLayout>

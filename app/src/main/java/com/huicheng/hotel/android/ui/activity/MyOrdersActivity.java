@@ -440,8 +440,9 @@ public class MyOrdersActivity extends BaseActivity {
                 convertView = LayoutInflater.from(context).inflate(R.layout.lv_item_order, null);
                 viewHolder.root_lay = (LinearLayout) convertView.findViewById(R.id.root_lay);
                 viewHolder.iv_order_point = (ImageView) convertView.findViewById(R.id.iv_order_point);
-                viewHolder.shadow_up_view = convertView.findViewById(R.id.shadow_up_view);
-                viewHolder.shadow_down_view = convertView.findViewById(R.id.shadow_down_view);
+                //TODO
+//                viewHolder.shadow_up_view = convertView.findViewById(R.id.shadow_up_view);
+//                viewHolder.shadow_down_view = convertView.findViewById(R.id.shadow_down_view);
                 viewHolder.swipeView = (CustomSwipeView) convertView.findViewById(R.id.swipeview);
                 viewHolder.delete_lay = (RelativeLayout) convertView.findViewById(R.id.delete_lay);
                 viewHolder.item_lay = (RelativeLayout) convertView.findViewById(R.id.item_lay);
@@ -457,21 +458,21 @@ public class MyOrdersActivity extends BaseActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            if (getCount() == 1) {
-                viewHolder.shadow_up_view.setVisibility(View.VISIBLE);
-                viewHolder.shadow_down_view.setVisibility(View.VISIBLE);
-            } else {
-                if (position == 0) {
-                    viewHolder.shadow_up_view.setVisibility(View.VISIBLE);
-                    viewHolder.shadow_down_view.setVisibility(View.GONE);
-                } else if (position == list.size() - 1) {
-                    viewHolder.shadow_up_view.setVisibility(View.GONE);
-                    viewHolder.shadow_down_view.setVisibility(View.VISIBLE);
-                } else {
-                    viewHolder.shadow_up_view.setVisibility(View.GONE);
-                    viewHolder.shadow_down_view.setVisibility(View.GONE);
-                }
-            }
+//            if (getCount() == 1) {
+//                viewHolder.shadow_up_view.setVisibility(View.VISIBLE);
+//                viewHolder.shadow_down_view.setVisibility(View.VISIBLE);
+//            } else {
+//                if (position == 0) {
+//                    viewHolder.shadow_up_view.setVisibility(View.VISIBLE);
+//                    viewHolder.shadow_down_view.setVisibility(View.GONE);
+//                } else if (position == list.size() - 1) {
+//                    viewHolder.shadow_up_view.setVisibility(View.GONE);
+//                    viewHolder.shadow_down_view.setVisibility(View.VISIBLE);
+//                } else {
+//                    viewHolder.shadow_up_view.setVisibility(View.GONE);
+//                    viewHolder.shadow_down_view.setVisibility(View.GONE);
+//                }
+//            }
 
             viewHolder.iv_order_point.setImageBitmap(BitmapUtils.getAlphaBitmap(context.getResources().getDrawable(R.drawable.iv_order_flag),
                     mMainColorId));
@@ -583,8 +584,8 @@ public class MyOrdersActivity extends BaseActivity {
         class ViewHolder {
             LinearLayout root_lay;
             ImageView iv_order_point;
-            View shadow_up_view;
-            View shadow_down_view;
+//            View shadow_up_view;
+//            View shadow_down_view;
             CustomSwipeView swipeView;
             RelativeLayout delete_lay;
             RelativeLayout item_lay;

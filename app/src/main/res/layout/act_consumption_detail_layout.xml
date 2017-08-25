@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -289,7 +290,7 @@
                                 android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:lines="1"
-                                android:text="99999"
+                                android:text="0"
                                 android:textColor="?attr/mainColor"
                                 android:textSize="@dimen/common_32sp"
                                 android:textStyle="bold" />
@@ -334,7 +335,7 @@
                                 android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:lines="1"
-                                android:text="99999"
+                                android:text="0"
                                 android:textColor="?attr/mainColor"
                                 android:textSize="@dimen/common_32sp"
                                 android:textStyle="bold" />
@@ -380,10 +381,11 @@
                                 android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:lines="1"
-                                android:text="99999"
+                                android:text="0"
                                 android:textColor="?attr/mainColor"
                                 android:textSize="@dimen/common_32sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                tools:text="99999" />
 
                             <TextView
                                 android:layout_width="wrap_content"

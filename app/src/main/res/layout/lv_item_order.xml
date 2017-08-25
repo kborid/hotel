@@ -16,7 +16,7 @@
             android:paddingRight="10dp"
             android:src="@drawable/iv_order_flag" />
 
-        <View
+        <!--<View
             android:id="@+id/shadow_up_view"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/comm_gradient_order_down_color" />
+            android:background="@drawable/comm_gradient_order_down_color" />-->
     </FrameLayout>
 
     <com.huicheng.hotel.android.ui.custom.CustomSwipeView
