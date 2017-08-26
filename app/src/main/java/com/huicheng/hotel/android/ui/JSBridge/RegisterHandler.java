@@ -10,6 +10,7 @@ import com.huicheng.hotel.android.ui.JSBridge.functions.getPhone;
 import com.huicheng.hotel.android.ui.JSBridge.functions.getPicturesUpload;
 import com.huicheng.hotel.android.ui.JSBridge.functions.getServiceHost;
 import com.huicheng.hotel.android.ui.JSBridge.functions.getUserId;
+import com.huicheng.hotel.android.ui.JSBridge.functions.getUserSexy;
 import com.huicheng.hotel.android.ui.JSBridge.functions.getUserTicket;
 import com.huicheng.hotel.android.ui.JSBridge.functions.handleError;
 import com.huicheng.hotel.android.ui.JSBridge.functions.openNativeOrderList;
@@ -48,6 +49,7 @@ public class RegisterHandler {
         mWVJBWebViewClient.registerHandler("getUserTicket", new getUserTicket());
         mWVJBWebViewClient.registerHandler("getPicturesUpload", new getPicturesUpload(mContext));
         mWVJBWebViewClient.registerHandler("getUserId", new getUserId());
+        mWVJBWebViewClient.registerHandler("getUserSexy", new getUserSexy());
         mWVJBWebViewClient.registerHandler("getPhone", new getPhone());
         mWVJBWebViewClient.registerHandler("getDeviceId", new getDeviceId());
         mWVJBWebViewClient.registerHandler("getCityInfo", new getCityInfo());

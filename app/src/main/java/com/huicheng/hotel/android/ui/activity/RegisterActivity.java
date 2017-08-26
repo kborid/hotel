@@ -432,13 +432,11 @@ public class RegisterActivity extends BaseActivity implements DialogInterface.On
                     requestSaveRecommandData();
                 } else {
                     removeProgressDialog();
-                    startActivity(new Intent(this, MainFragmentActivity.class));
-//                    this.finish();
+                    this.finish();
                 }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
                 removeProgressDialog();
-                startActivity(new Intent(this, MainFragmentActivity.class));
-//                this.finish();
+                this.finish();
             }
         }
     }

@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.fm.openinstall.model.AppData;
+import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.tools.PinyinUtils;
@@ -36,6 +37,8 @@ public class SessionContext {
     private static AppData mWakeupData;          // 唤醒数据
 
     public static boolean isHasActive = false;          // 是否显示活动提示
+
+    private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
 
     private static List<String> cityIndexList = new ArrayList<>();
     private static Map<String, List<String>> cityNameMap = new HashMap<>();
@@ -101,92 +104,112 @@ public class SessionContext {
         isHasActive = flag;
     }
 
-    public static List<String> getCityIndexList() {
-        if (null == cityIndexList) {
-            cityIndexList = new ArrayList<>();
+    public static List<HomeBannerInfoBean> getBannerList() {
+        return bannerList;
+    }
+
+    public static void setBannerList(List<HomeBannerInfoBean> list) {
+        if (null != list) {
+            bannerList = list;
+        } else {
+            bannerList = new ArrayList<>();
         }
+    }
+
+    public static List<String> getCityIndexList() {
         return cityIndexList;
     }
 
     public static void setCityIndexList(List<String> list) {
-        cityIndexList = list;
+        if (null != list) {
+            cityIndexList = list;
+        } else {
+            cityIndexList = new ArrayList<>();
+        }
     }
 
     public static Map<String, List<String>> getCityNameMap() {
-        if (null == cityNameMap) {
-            cityNameMap = new HashMap<>();
-        }
         return cityNameMap;
     }
 
     public static void setCityNameMap(Map<String, List<String>> map) {
-        cityNameMap = map;
+        if (null != map) {
+            cityNameMap = map;
+        } else {
+            cityNameMap = new HashMap<>();
+        }
     }
 
     public static List<CityAreaInfoBean> getCityAreaList() {
-        if (null == cityAreaList) {
-            cityAreaList = new ArrayList<>();
-        }
         return cityAreaList;
     }
 
     public static void setCityAreaList(List<CityAreaInfoBean> list) {
-        cityAreaList = list;
+        if (null != list) {
+            cityAreaList = list;
+        } else {
+            cityAreaList = new ArrayList<>();
+        }
     }
 
     public static Map<String, List<CityAreaInfoBean>> getCityAreaMap() {
-        if (null == cityAreaMap) {
-            cityAreaMap = new HashMap<>();
-        }
         return cityAreaMap;
     }
 
     public static void setCityAreaMap(Map<String, List<CityAreaInfoBean>> map) {
-        cityAreaMap = map;
+        if (null != map) {
+            cityAreaMap = map;
+        } else {
+            cityAreaMap = new HashMap<>();
+        }
     }
 
     public static List<HotelMapInfoBean> getAllDayList() {
-        if (null == allDayList) {
-            allDayList = new ArrayList<>();
-        }
         return allDayList;
     }
 
     public static void setAllDayList(List<HotelMapInfoBean> list) {
-        allDayList = list;
+        if (null != list) {
+            allDayList = list;
+        } else {
+            allDayList = new ArrayList<>();
+        }
     }
 
     public static List<HotelMapInfoBean> getClockList() {
-        if (null == clockList) {
-            clockList = new ArrayList<>();
-        }
         return clockList;
     }
 
     public static void setClockList(List<HotelMapInfoBean> list) {
-        clockList = list;
+        if (null != list) {
+            clockList = list;
+        } else {
+            clockList = new ArrayList<>();
+        }
     }
 
     public static List<HotelMapInfoBean> getYgrList() {
-        if (null == ygrList) {
-            ygrList = new ArrayList<>();
-        }
         return ygrList;
     }
 
     public static void setYgrList(List<HotelMapInfoBean> list) {
-        ygrList = list;
+        if (null != list) {
+            ygrList = list;
+        } else {
+            ygrList = new ArrayList<>();
+        }
     }
 
     public static List<HotelMapInfoBean> getHhyList() {
-        if (null == hhyList) {
-            hhyList = new ArrayList<>();
-        }
         return hhyList;
     }
 
     public static void setHhyList(List<HotelMapInfoBean> list) {
-        hhyList = list;
+        if (null != list) {
+            hhyList = list;
+        } else {
+            hhyList = new ArrayList<>();
+        }
     }
 
     /**

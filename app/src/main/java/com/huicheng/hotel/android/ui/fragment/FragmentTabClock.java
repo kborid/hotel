@@ -206,7 +206,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         String beginDate = String.valueOf(HotelOrderManager.getInstance().getBeginTime());
         String endDate = String.valueOf(HotelOrderManager.getInstance().getEndTime());
 
-        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("cityCode", cityCode);
         //星级
         b.addBody("star", star);

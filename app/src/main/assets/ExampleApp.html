@@ -90,6 +90,13 @@
                                                     document.getElementById("returnValue").value = response;
                                                     })
              }
+
+             function getUserSexy() {
+               WebViewJavascriptBridge.callHandler('getUserSexy', null, function(response) {
+                                                   alert(response);
+                                                   document.getElementById("returnValue").value = response;
+                                                   })
+            }
             
 
 
@@ -107,6 +114,7 @@
 <input id='aliPayBtn' type="button" value="alipayClick" onclick="alipayClick()"/>
 <input id='serviceHostBtn' type="button" value="getServiceHost" onclick="getServiceHost()"/>
 <input id='reChangedPlaneBtn' type="button" value="airPlaneChanged" onclick="airPlaneChanged()"/>
+<input id='getUserSexy' type="button" value="getUserSexy" onclick="getUserSexy()"/>
 
 <h1>这是文件上传</h1>
 

@@ -5,10 +5,10 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 public final class NetURL {
 
     public static String getApi() {
-        final String[] SERVER_USRS = {"http://101.37.32.245/", "http://118.178.225.32/"};
+        final String[] SERVER_USRS = {"http://101.37.32.245/", "http://118.178.225.32/", "https://dev.abcbooking.cn/"};
         if (AppConst.ISDEVELOP) {
             int status = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
-            if (status == 2) {
+            if (status == 3) {
                 return SharedPreferenceUtil.getInstance().getString(AppConst.DEV_URL, "", false);
             } else {
                 return SERVER_USRS[status];

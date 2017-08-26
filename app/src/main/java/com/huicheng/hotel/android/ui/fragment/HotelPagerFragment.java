@@ -33,11 +33,8 @@ import com.amap.api.location.AMapLocationListener;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
-import com.huicheng.hotel.android.net.RequestBeanBuilder;
-import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.tools.CityStringUtils;
 import com.huicheng.hotel.android.ui.activity.Hotel0YuanHomeActivity;
 import com.huicheng.hotel.android.ui.activity.HotelCalendarChooseActivity;
@@ -51,9 +48,6 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
-import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -62,12 +56,11 @@ import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 /**
  * Fragment home
  */
-public class HotelPagerFragment extends BaseFragment implements View.OnClickListener, DataCallback {
+public class HotelPagerFragment extends BaseFragment implements View.OnClickListener {
 
     private static final String TAG = "HotelPagerFragment";
     private static boolean isFirstLoad = false;
@@ -94,6 +87,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        LogUtil.i(TAG, "onCreateView()");
         isFirstLoad = true;
         getArguments().getString("key");
         setHasOptionsMenu(true);
@@ -106,6 +100,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     }
 
     public static Fragment newInstance(String key) {
+        LogUtil.i(TAG, "newInstance()");
         Fragment fragment = new HotelPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putString("key", key);
@@ -115,9 +110,9 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
     protected void onVisible() {
         super.onVisible();
+        LogUtil.i(TAG, "onVisible()");
         if (isFirstLoad) {
             isFirstLoad = false;
-            requestHotelBanner();
         }
         banner_lay.startBanner();
         HotelOrderManager.getInstance().reset();
@@ -129,12 +124,14 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
     protected void onInvisible() {
         super.onInvisible();
+        LogUtil.i(TAG, "onInvisible()");
         banner_lay.stopBanner();
     }
 
     @Override
     protected void initViews(View view) {
         super.initViews(view);
+        LogUtil.i(TAG, "initViews()");
         banner_lay = (CommonBannerLayout) view.findViewById(R.id.banner_lay);
 
         ((TextView) view.findViewById(R.id.tv_city_label)).getPaint().setFakeBoldText(true);
@@ -185,6 +182,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     protected void initParams() {
         super.initParams();
+        LogUtil.i(TAG, "initParams()");
         String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         if (StringUtil.notEmpty(province) && StringUtil.notEmpty(city)) {
@@ -238,6 +236,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
             btn_zero.setVisibility(View.GONE);
         }
 
+        banner_lay.setImageResource(SessionContext.getBannerList());
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         llp.width = Utils.mScreenWidth;
         llp.height = (int) ((float) llp.width / 25 * 14);
@@ -247,6 +246,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void initListeners() {
         super.initListeners();
+        LogUtil.i(TAG, "initListeners()");
         tv_city.setOnClickListener(this);
         iv_location.setOnClickListener(this);
         iv_reset.setOnClickListener(this);
@@ -327,11 +327,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.tv_next_search:
 
-                if (!SessionContext.isLogin()) {
-                    getActivity().sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-                    return;
-                }
-
                 if (StringUtil.isEmpty(tv_city.getText().toString())) {
                     CustomToast.show("定位失败，请打开GPS或手动选择城市", CustomToast.LENGTH_SHORT);
                     return;
@@ -401,6 +396,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
+        LogUtil.i(TAG, "onResume()");
         if (!isAdShowed) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -420,35 +416,5 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
             isAdShowed = true;
             showHaiNanAdPopupWindow();
         }
-    }
-
-    private void requestHotelBanner() {
-        LogUtil.i(TAG, "requestHotelBanner()");
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.HOTEL_BANNER;
-        d.flag = AppConst.HOTEL_BANNER;
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    @Override
-    public void preExecute(ResponseData request) {
-    }
-
-    @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
-        if (response != null && response.body != null) {
-            if (request.flag == AppConst.HOTEL_BANNER) {
-                LogUtil.i(TAG, "Hotel Main json = " + response.body.toString());
-                List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
-                if (temp.size() > 0) {
-                    banner_lay.setImageResource(temp);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void notifyError(ResponseData request, ResponseData response, Exception e) {
     }
 }

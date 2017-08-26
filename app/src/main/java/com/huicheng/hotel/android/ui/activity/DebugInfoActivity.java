@@ -61,10 +61,10 @@ public class DebugInfoActivity extends BaseActivity {
                 env = "正式环境";
                 break;
             case 2:
-                env = "开发环境";
+                env = "研发环境";
                 break;
-            default:
-                env = "测试环境";
+            case 3:
+                env = "本地环境";
                 break;
         }
         sb.append("\nEnvironment : ")

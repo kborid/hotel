@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.activity.AboutActivity;
 import com.huicheng.hotel.android.ui.activity.AssessOrdersActivity;
+import com.huicheng.hotel.android.ui.activity.DebugInfoActivity;
 import com.huicheng.hotel.android.ui.activity.FansHotelActivity;
 import com.huicheng.hotel.android.ui.activity.FeedbackActivity;
 import com.huicheng.hotel.android.ui.activity.MessageListActivity;
@@ -133,6 +135,27 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
         tv_usage.setOnClickListener(this);
         tv_private.setOnClickListener(this);
+
+        if (AppConst.ISDEVELOP) {
+            final long[] mPressTime = {0, 0};
+            btn_cancel.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        mPressTime[0] = System.currentTimeMillis();
+                    } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                        mPressTime[1] = System.currentTimeMillis();
+                        if (mPressTime[1] - mPressTime[0] >= 5000) {
+                            mPressTime[0] = mPressTime[1];
+                            Intent intent = new Intent(context, DebugInfoActivity.class);
+                            context.startActivity(intent);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     public void updateUserInfo() {
@@ -275,9 +298,6 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
             }
             logout();
             context.sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
-//            if (listener != null) {
-//                listener.onReCreate();
-//            }
         }
     }
 
@@ -311,8 +331,6 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
     public interface OnLeftDrawerListener {
         void closeDrawer();
-
-        void onReCreate();
     }
 
     private OnLeftDrawerListener listener = null;

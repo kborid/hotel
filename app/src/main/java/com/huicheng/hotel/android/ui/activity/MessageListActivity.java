@@ -214,17 +214,19 @@ public class MessageListActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.detail_lay:
-                if ("22".equals(list.get(selectedIndex).typeCode) || "23".equals(list.get(selectedIndex).typeCode)) {
-                    String mark = list.get(selectedIndex).mark;
-                    if (StringUtil.notEmpty(mark)) {
-                        try {
-                            String[] marks = mark.split("\\|");
-                            Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
-                            intent.putExtra("hotelId", Integer.valueOf(marks[0]));
-                            intent.putExtra("articleId", Integer.valueOf(marks[1]));
-                            startActivity(intent);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                if (list != null && list.size() > 0) {
+                    if ("22".equals(list.get(selectedIndex).typeCode) || "23".equals(list.get(selectedIndex).typeCode)) {
+                        String mark = list.get(selectedIndex).mark;
+                        if (StringUtil.notEmpty(mark)) {
+                            try {
+                                String[] marks = mark.split("\\|");
+                                Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
+                                intent.putExtra("hotelId", Integer.valueOf(marks[0]));
+                                intent.putExtra("articleId", Integer.valueOf(marks[1]));
+                                startActivity(intent);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

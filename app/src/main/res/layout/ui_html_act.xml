@@ -65,35 +65,38 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/et_url"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:hint="(模式切换 0:测试 1:生产 研发环境请输入IP地址)"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:inputType="textUri"
                 android:textSize="@dimen/common_description_size" />
 
             <Button
                 android:id="@+id/btn_go"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="GO" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="(模式切换 0:测试 1:生产 2:研发 或 输入IP:PORT[工程名]本地调试)"
+            android:textSize="@dimen/common_description_size" />
 
         <TextView
             android:id="@+id/tv_cur"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:padding="10dp"
-            android:textSize="@dimen/common_description_size"
-            android:visibility="gone" />
+            android:textSize="@dimen/common_description_size" />
 
     </LinearLayout>
 

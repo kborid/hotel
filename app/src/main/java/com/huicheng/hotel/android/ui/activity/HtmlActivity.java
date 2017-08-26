@@ -95,13 +95,12 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
         Button btn_go = (Button) findViewById(R.id.btn_go);
         TextView tv_cur = (TextView) findViewById(R.id.tv_cur);
         StringBuilder sb = new StringBuilder();
-        sb.append("\nCurrent Environment（")
+        sb.append("Current Environment（")
                 .append(SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0))
                 .append("：")
                 .append(NetURL.getApi())
                 .append("）");
         tv_cur.setText(sb);
-        tv_cur.setVisibility(View.VISIBLE);
         layout_test.setVisibility(View.VISIBLE);
         btn_go.setOnClickListener(new View.OnClickListener() {
 
@@ -109,7 +108,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
             public void onClick(View v) {
                 URL = et_url.getText().toString().trim();
                 if (StringUtil.notEmpty(URL)) {
-                    if ("0".equals(URL) || "1".equals(URL)) {
+                    if ("0".equals(URL) || "1".equals(URL) || "2".equals(URL)) {
                         SharedPreferenceUtil.getInstance().setInt(AppConst.APPTYPE, Integer.parseInt(URL));// 保存切换地址类型
                     } else {
                         if (!URL.startsWith("http") && !URL.endsWith("/")) {
@@ -119,7 +118,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
                         } else if (!URL.endsWith("/")) {
                             URL = URL + "/";
                         }
-                        SharedPreferenceUtil.getInstance().setInt(AppConst.APPTYPE, 2);// 保存切换地址类型
+                        SharedPreferenceUtil.getInstance().setInt(AppConst.APPTYPE, 3);// 保存切换地址类型
                         SharedPreferenceUtil.getInstance().setString(AppConst.DEV_URL, URL, false);
                     }
 

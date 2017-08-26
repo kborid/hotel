@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.ui.adapter.BannerImageAdapter;
-import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
     private LinearLayout indicator_lay;
     private Handler myHandler = new Handler();
     private int positionIndex = 0;
+    private CustomViewPagerScroller customViewPagerScroller;
     private List<HomeBannerInfoBean> mList = new ArrayList<>();
 
     private int mIndicatorResId;
@@ -55,6 +55,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
         TypedArray ta = context.obtainStyledAttributes(R.styleable.MyTheme);
         mIndicatorResId = ta.getResourceId(R.styleable.MyTheme_indicatorSel, R.drawable.indicator_sel);
         ta.recycle();
+
         findViews();
         initListener();
     }
@@ -65,6 +66,9 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
 
     private void findViews() {
         viewpager = (ViewPager) findViewById(R.id.viewpager);
+        customViewPagerScroller = new CustomViewPagerScroller(context);
+        customViewPagerScroller.setScrollDuration(1000);
+        customViewPagerScroller.initViewPagerScroll(viewpager);
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
     }
 
@@ -72,17 +76,11 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
         if (list != null && list.size() > 0) {
             mList.clear();
             mList.addAll(list);
-            viewpager.setAdapter(new BannerImageAdapter(context, mList));
-            initIndicatorLay(mList.size());
+            viewpager.setAdapter(new BannerImageAdapter(context, list));
+            initIndicatorLay(list.size());
             //viewPager一个假的无限循环，初始位置是viewPager count的100倍
-            viewpager.setCurrentItem(mList.size() * 100);
-            if (mList.size() > 0) {
-                int offset = 0;
-                if (mList.size() == 1) {
-                    offset = 1;
-                }
-                viewpager.setOffscreenPageLimit(mList.size() + offset);
-            }
+            viewpager.setCurrentItem(list.size() * 100);
+            viewpager.setOffscreenPageLimit(list.size());
         }
     }
 
@@ -100,7 +98,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
 
     public void startBanner() {
         myHandler.removeCallbacks(runnable);
-        if (mList.size() > 1) {
+        if (mList != null && mList.size() > 1) {
             myHandler.postDelayed(runnable, DELAY_TIME);
         }
     }

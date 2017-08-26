@@ -27,6 +27,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.BundleNavi;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
+import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.tools.PinyinUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -54,6 +55,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     private final String TAG = getClass().getSimpleName();
     private long start = 0; // 记录启动时间
+    private Map<Integer, Integer> mTag = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,9 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             public void run() {
                 super.run();
                 initJsonData();
+                requestHomeBannerInfo();
                 requestActiveAboutInfo();
+                requestAppVersionInfo();
             }
         }.start();
     }
@@ -181,18 +185,24 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.APP_INFO;
         d.flag = AppConst.APP_INFO;
-
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     private void requestActiveAboutInfo() {
         LogUtil.i(TAG, "requestActiveAboutInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.ACTIVE_ABOUT;
         d.flag = AppConst.ACTIVE_ABOUT;
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
 
+    private void requestHomeBannerInfo() {
+        LogUtil.i(TAG, "requestHotelBanner()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.HOTEL_BANNER;
+        d.flag = AppConst.HOTEL_BANNER;
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -278,29 +288,41 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.APP_INFO) {
+                mTag.put(AppConst.APP_INFO, AppConst.APP_INFO);
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString()) && !response.body.toString().equals("{}")) {
                     AppInfoBean bean = JSON.parseObject(response.body.toString(), AppInfoBean.class);
                     SharedPreferenceUtil.getInstance().setString(AppConst.APPINFO, response.body.toString(), false);
                     if (bean.isforce == 0) {
+                        mTag.remove(AppConst.APP_INFO);
                         showUpdateDialog(bean);
-                        return;
                     }
                 }
-                goToNextActivity();
             } else if (request.flag == AppConst.ACTIVE_ABOUT) {
+                mTag.put(AppConst.ACTIVE_ABOUT, AppConst.ACTIVE_ABOUT);
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString())) {
                     SessionContext.setHasActive(Boolean.parseBoolean(response.body.toString()));
                 }
-                requestAppVersionInfo();
+            } else if (request.flag == AppConst.HOTEL_BANNER) {
+                mTag.put(AppConst.HOTEL_BANNER, AppConst.HOTEL_BANNER);
+                LogUtil.i(TAG, "Hotel Main json = " + response.body.toString());
+                List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
+                SessionContext.setBannerList(temp);
+            }
+
+            if (mTag != null && mTag.size() == 3) {
+                goToNextActivity();
             }
         }
     }
 
     @Override
     public void onNotifyError(ResponseData request) {
-        goToNextActivity();
+        mTag.put(request.flag, request.flag);
+        if (mTag != null && mTag.size() == 3) {
+            goToNextActivity();
+        }
     }
 
     private void showUpdateDialog(final AppInfoBean bean) {
@@ -310,6 +332,8 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         dialog.setNegativeButton("退出", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                DataLoader.getInstance().clearRequests();
+                ActivityTack.getInstanse().exit();
             }
         });
         dialog.setPositiveButton("升级", new DialogInterface.OnClickListener() {
@@ -323,13 +347,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         });
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                DataLoader.getInstance().clearRequests();
-                ActivityTack.getInstanse().exit();
-            }
-        });
         dialog.show();
     }
 }

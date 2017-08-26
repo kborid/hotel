@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.ui.adapter;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.os.Build;
@@ -21,9 +22,11 @@ import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.bean.HotelInfoBean;
 import com.huicheng.hotel.android.ui.custom.RoundedTopImageView;
 import com.huicheng.hotel.android.ui.mapoverlay.AMapUtil;
+import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
@@ -215,6 +218,10 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!SessionContext.isLogin()) {
+                    context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    return;
+                }
                 if (null != listener) {
                     listener.OnItemClick(v, position);
                 }

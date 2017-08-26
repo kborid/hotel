@@ -207,8 +207,7 @@ public class BindPhoneActivity extends BaseActivity implements DialogInterface.O
                 //绑定成功，根据性别设置主题
                 int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
                 SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
-                startActivity(new Intent(this, MainFragmentActivity.class));
-//                this.finish();
+                this.finish();
             }
         }
     }

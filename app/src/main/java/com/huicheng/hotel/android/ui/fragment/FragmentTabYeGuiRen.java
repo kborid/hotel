@@ -214,7 +214,7 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
     private void requestHotelYGRList(int pageIndex) {
         LogUtil.i(TAG, "requestHotelYGRList() pageIndex = " + pageIndex);
 
-        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("cityCode", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
         //星级
         b.addBody("star", star);
