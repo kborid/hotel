@@ -15,6 +15,7 @@ public final class AppConst {
     public static final String APPTYPE = "type"; // 类型：0代表UAT，1代表生产
     public static final String DEV_URL = "dev_url";
 
+    public static final String IS_FIRST_LAUNCH = "first_launch"; //是否第一次启动
     public static final String SKIN_INDEX = "skin_index"; //皮肤资源index
 
     public static final String ACCESS_TICKET = "accessTicket"; // 记录用户登录ticket

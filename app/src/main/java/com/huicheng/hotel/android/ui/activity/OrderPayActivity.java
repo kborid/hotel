@@ -134,7 +134,8 @@ public class OrderPayActivity extends BaseActivity {
         b.addBody("payChannel", HotelCommDef.getPayChannel(payIndex));
 
         ResponseData d = b.syncRequest(b);
-        d.path = NetURL.PAY/*"http://222.209.82.135:8881/pay/to_payment.json"*/;
+        d.path = NetURL.PAY;
+//        d.path = "http://222.209.82.135:8881/pay/to_payment.json";
         d.flag = AppConst.PAY;
 
         if (!isProgressShowing()) {

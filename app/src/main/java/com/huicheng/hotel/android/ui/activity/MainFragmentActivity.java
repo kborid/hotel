@@ -250,6 +250,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
         viewPager.addOnPageChangeListener(this);
         custom_bar.setOnChangeClickListener(this);
         custom_bar.findViewById(R.id.my_lay).setOnClickListener(this);
+        custom_bar.findViewById(R.id.order_lay).setOnClickListener(this);
         left_layout.setOnLeftDrawerListener(new LeftDrawerLayout.OnLeftDrawerListener() {
             @Override
             public void closeDrawer() {
@@ -366,6 +367,14 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
         switch (v.getId()) {
             case R.id.my_lay:
                 drawer_layout.openDrawer(left_layout);
+                break;
+            case R.id.order_lay:
+                if (SessionContext.isLogin()) {
+                    Intent intent = new Intent(this, MyOrdersActivity.class);
+                    startActivity(intent);
+                } else {
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                }
                 break;
             default:
                 break;

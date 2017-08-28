@@ -3,6 +3,7 @@
 
     <!-- common string -->
     <string name="app_name">ABC旅行预订</string>
+    <string name="stringApp">开启旅程</string>
 
     <string name="RMB">¥</string>
     <string name="totalRMB">共 ¥</string>

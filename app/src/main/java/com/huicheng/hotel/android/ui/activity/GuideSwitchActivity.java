@@ -120,7 +120,7 @@ public class GuideSwitchActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (SessionContext.getWakeUpAppData() != null || SessionContext.getRecommandAppData() != null) {
+        if (SessionContext.getWakeUpAppData() != null) {
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.putExtra("index", 0);
             startActivity(intent);

@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.common.pay.unionpay;
 
 import android.content.Context;
-import android.provider.Settings;
 
 import com.huicheng.hotel.android.common.AppConst;
 import com.unionpay.UPPayAssistEx;
@@ -21,6 +20,10 @@ public class UnionPayUtil {
     public UnionPayUtil(Context context) {
         this.context = context;
         serverMode = AppConst.ISDEVELOP ? DEBUG_MODE : RELEASE_MODE;
+    }
+
+    public void setUnionPayServerMode(String mode) {
+        this.serverMode = mode;
     }
 
     /**

@@ -34,6 +34,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.activity.GuideLauncherActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.GuideSwitchActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -45,22 +48,22 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 注册 -->
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 忘记密码 -->
         <activity
             android:name=".ui.activity.ForgetPwdActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 三方登录 的绑定 -->
         <activity
             android:name=".ui.activity.BindPhoneActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--个人中心-->
         <activity
             android:name=".ui.activity.UserCenterActivity"
@@ -84,7 +87,7 @@
         <activity
             android:name=".ui.activity.HotelOrderDetailActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--机票订单详情-->
         <activity
             android:name=".ui.activity.PlaneOrderDetailActivity"
@@ -131,7 +134,7 @@
         <activity
             android:name=".ui.activity.LocationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".ui.activity.LocationActivity2"
             android:screenOrientation="portrait" />

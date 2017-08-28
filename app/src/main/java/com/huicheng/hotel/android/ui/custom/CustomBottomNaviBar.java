@@ -30,8 +30,8 @@ public class CustomBottomNaviBar extends LinearLayout {
     private Context context;
 
     private LinearLayout root_lay;
-    private RelativeLayout tab_my;
     private ImageView my_icon;
+
     private int[] mResId = {
             R.drawable.iv_tab_hotel,
             R.drawable.iv_tab_plane,
@@ -75,7 +75,6 @@ public class CustomBottomNaviBar extends LinearLayout {
 
     private void findViews() {
         root_lay = (LinearLayout) findViewById(R.id.tab_root_lay);
-        tab_my = (RelativeLayout) findViewById(R.id.my_lay);
         my_icon = (ImageView) findViewById(R.id.my_icon);
     }
 

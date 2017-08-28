@@ -38,6 +38,8 @@
     <color name="secColorShadow">#33646464</color>
     <color name="tabDefaultColor">@color/secColorShadow</color>
 
+    <color name="guideLauncherColor">#565656</color>
+
     <color name="hintColor">#e6e6e6</color>
     <color name="lineColor">#646260</color>
     <color name="lineColor2">#cfcfcf</color>
