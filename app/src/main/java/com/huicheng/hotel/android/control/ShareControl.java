@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.control;
 import android.app.Activity;
 import android.content.Context;
 
-import com.huicheng.hotel.android.ui.activity.HotelSpaceDetailActivity;
 import com.prj.sdk.widget.CustomToast;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -14,32 +13,36 @@ import com.umeng.socialize.media.UMWeb;
  * 分享操作
  */
 public class ShareControl {
-    private ShareAction mShareAction = null;
     private static ShareControl mInstance = null;
     private Context context;
+    private UMWeb mUMWeb = null;
+    private ShareResultListener listener = null;
 
-    private ShareControl(Context context) {
-        mShareAction = new ShareAction((Activity) context);
-        this.context = context;
+    private ShareControl() {
     }
 
-    /**
-     * 获得实例的唯一全局访问点
-     */
-    public static ShareControl getInstance(Context context) {
+    public static ShareControl getInstance() {
         if (mInstance == null) {
-            // 增加类锁,保证只初始化一次
             synchronized (ShareControl.class) {
                 if (mInstance == null) {
-                    mInstance = new ShareControl(context);
+                    mInstance = new ShareControl();
                 }
             }
         }
         return mInstance;
     }
 
-    public void openShareDisplay(UMWeb web, final HotelSpaceDetailActivity.ShareResultListener listener) {
-        new ShareAction((Activity) context).withMedia(web).setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE).setCallback(new UMShareListener() {
+    public void setUMWebContent(Context context, UMWeb web, ShareResultListener listener) {
+        this.context = context;
+        this.mUMWeb = web;
+        this.listener = listener;
+    }
+
+    public void shareUMWeb(SHARE_MEDIA platform) {
+        if (null == mUMWeb) {
+            return;
+        }
+        new ShareAction((Activity) context).withMedia(mUMWeb).setPlatform(platform).setCallback(new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
                 CustomToast.show("开始分享", CustomToast.LENGTH_SHORT);
@@ -68,10 +71,6 @@ public class ShareControl {
                     listener.onShareResult(false);
                 }
             }
-        }).open();
-    }
-
-    public void openShareDisplay(UMWeb web) {
-        openShareDisplay(web, null);
+        }).share();
     }
 }

@@ -124,6 +124,7 @@ public class GuideSwitchActivity extends BaseActivity {
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.putExtra("index", 0);
             startActivity(intent);
+            finish();
         }
     }
 

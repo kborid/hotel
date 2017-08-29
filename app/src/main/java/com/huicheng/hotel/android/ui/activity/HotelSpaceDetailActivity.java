@@ -3,13 +3,16 @@ package com.huicheng.hotel.android.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -17,6 +20,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -27,6 +31,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.ShareControl;
+import com.huicheng.hotel.android.control.ShareResultListener;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelSpaceBasicInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieCommentInfoBean;
@@ -34,12 +39,14 @@ import com.huicheng.hotel.android.net.bean.HotelSpaceTieInfoBean;
 import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
 import com.huicheng.hotel.android.ui.adapter.MySpaceCommentAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.FullscreenHolder;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
@@ -84,6 +91,9 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     private int articleId;
     private int pageIndex = 0;
     private boolean isLoadMore = false;
+
+    private PopupWindow mSharePopupWindow = null;
+    private CustomSharePopup mCustomShareView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -300,9 +310,16 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
 
                 UMWeb web = new UMWeb(url);
                 web.setTitle(hotelSpaceTieInfoBean.hotelName + "的空间");
-                web.setThumb(new UMImage(this, BitmapFactory.decodeResource(getResources(), R.drawable.logo)));
+                Bitmap thumbBM;
+                if (ImageLoader.getInstance().getCacheBitmap(hotelSpaceBasicInfoBean.pic) != null) {
+                    thumbBM = ImageLoader.getInstance().getCacheBitmap(hotelSpaceBasicInfoBean.pic);
+                } else {
+                    thumbBM = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+                }
+                web.setThumb(new UMImage(this, thumbBM));
                 web.setDescription(hotelSpaceTieInfoBean.content);
-                ShareControl.getInstance(this).openShareDisplay(web, new ShareResultListener() {
+
+                ShareControl.getInstance().setUMWebContent(this, web, new ShareResultListener() {
                     @Override
                     public void onShareResult(boolean isSuccess) {
                         if (isSuccess) {
@@ -310,6 +327,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                         }
                     }
                 });
+                showSharePopupWindow();
 
                 break;
             case R.id.tv_space_comment:
@@ -326,6 +344,34 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
             default:
                 break;
         }
+    }
+
+    private void showSharePopupWindow() {
+        if (null == mSharePopupWindow) {
+            mCustomShareView = new CustomSharePopup(this);
+            mCustomShareView.setOnCancelListener(new CustomSharePopup.OnCanceledListener() {
+                @Override
+                public void onDismiss() {
+                    mSharePopupWindow.dismiss();
+                }
+            });
+            mSharePopupWindow = new PopupWindow(mCustomShareView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        }
+        mSharePopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//        mSharePopupWindow.setAnimationStyle(R.style.share_anmi);
+        mSharePopupWindow.setBackgroundDrawable(new ColorDrawable(0));
+        mSharePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams params = getWindow().getAttributes();
+                params.alpha = 1.0f;
+                getWindow().setAttributes(params);
+            }
+        });
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.alpha = 0.8f;
+        getWindow().setAttributes(params);
+        mSharePopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
     }
 
     private void requestHotelSpaceBasicInfo() {
@@ -535,9 +581,5 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
             default:
                 return super.onKeyUp(keyCode, event);
         }
-    }
-
-    public interface ShareResultListener {
-        void onShareResult(boolean isSuccess);
     }
 }

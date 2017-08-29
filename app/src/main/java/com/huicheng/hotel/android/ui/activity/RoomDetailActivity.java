@@ -6,16 +6,20 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -35,6 +39,7 @@ import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
+import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -100,7 +105,9 @@ public class RoomDetailActivity extends BaseActivity {
     private int hotelId, room_type = -1, roomId;
     private String hotelName;
     private RoomDetailInfoBean roomDetailInfoBean = null;
-    private Bitmap thumb = null;
+
+    private PopupWindow mSharePopupWindow = null;
+    private CustomSharePopup mCustomShareView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +223,6 @@ public class RoomDetailActivity extends BaseActivity {
             }
         }
         tabHost.setCurrentTab(0);
-        thumb = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
     }
 
     @Override
@@ -276,6 +282,34 @@ public class RoomDetailActivity extends BaseActivity {
             }
             indicator_lay.getChildAt(positionIndex).setEnabled(true);
         }
+    }
+
+    private void showSharePopupWindow() {
+        if (null == mSharePopupWindow) {
+            mCustomShareView = new CustomSharePopup(this);
+            mCustomShareView.setOnCancelListener(new CustomSharePopup.OnCanceledListener() {
+                @Override
+                public void onDismiss() {
+                    mSharePopupWindow.dismiss();
+                }
+            });
+            mSharePopupWindow = new PopupWindow(mCustomShareView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        }
+        mSharePopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//        mSharePopupWindow.setAnimationStyle(R.style.share_anmi);
+        mSharePopupWindow.setBackgroundDrawable(new ColorDrawable(0));
+        mSharePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams params = getWindow().getAttributes();
+                params.alpha = 1.0f;
+                getWindow().setAttributes(params);
+            }
+        });
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.alpha = 0.8f;
+        getWindow().setAttributes(params);
+        mSharePopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
     }
 
     private void requestRoomDetailInfo() {
@@ -465,12 +499,16 @@ public class RoomDetailActivity extends BaseActivity {
 
                 UMWeb web = new UMWeb(url);
                 web.setTitle(roomDetailInfoBean.hotelName + " " + roomDetailInfoBean.roomName);
+                Bitmap thumbBM;
                 if (ImageLoader.getInstance().getCacheBitmap(roomDetailInfoBean.picList.get(0)) != null) {
-                    thumb = ImageLoader.getInstance().getCacheBitmap(roomDetailInfoBean.picList.get(0));
+                    thumbBM = ImageLoader.getInstance().getCacheBitmap(roomDetailInfoBean.picList.get(0));
+                } else {
+                    thumbBM = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
                 }
-                web.setThumb(new UMImage(this, thumb));
+                web.setThumb(new UMImage(this, thumbBM));
                 web.setDescription(tv_date.getText().toString() + " " + tv_during.getText().toString() + "\n共计：" + tv_price.getText().toString());
-                ShareControl.getInstance(this).openShareDisplay(web);
+                ShareControl.getInstance().setUMWebContent(this, web, null);
+                showSharePopupWindow();
                 break;
             case R.id.iv_fans:
                 showAddVipDialog(this, HotelOrderManager.getInstance().getHotelDetailInfo());

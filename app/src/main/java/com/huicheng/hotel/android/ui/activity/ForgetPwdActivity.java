@@ -149,7 +149,7 @@ public class ForgetPwdActivity extends BaseActivity implements DialogInterface.O
         d.flag = AppConst.GET_YZM;
 
         if (!isProgressShowing()) {
-            showProgressDialog(this, "正在加载，请稍候...");
+            showProgressDialog(this);
         }
         requestID = DataLoader.getInstance().loadData(this, d);
     }

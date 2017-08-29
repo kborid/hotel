@@ -15,6 +15,7 @@ import com.huicheng.hotel.android.common.CrashHandler;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
+import com.huicheng.hotel.android.control.ShareControl;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.prj.sdk.app.AppContext;
@@ -39,6 +40,8 @@ public class PRJApplication extends Application {
         AppContext.init(this);
         CrashHandler.getInstance().init(this);
         AMapLocationControl.getInstance().startLocationOnce(this, true);
+
+        //UMENG 分享
         PlatformConfig.setWeixin(getResources().getString(R.string.wx_appid), getResources().getString(R.string.wx_appsecret));
         PlatformConfig.setQQZone(getResources().getString(R.string.qq_appid), getResources().getString(R.string.qq_appkey));
         Config.DEBUG = AppConst.ISDEVELOP;

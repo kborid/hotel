@@ -311,7 +311,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCan
         data.flag = AppConst.BIND_CHECK;
 
         if (!isProgressShowing()) {
-            showProgressDialog(this, "正在登录，请稍候...");
+            showProgressDialog(this);
         }
         requestID = DataLoader.getInstance().loadData(this, data);
     }

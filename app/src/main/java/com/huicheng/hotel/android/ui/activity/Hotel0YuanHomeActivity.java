@@ -3,9 +3,14 @@ package com.huicheng.hotel.android.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.PopupWindow;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
@@ -17,6 +22,7 @@ import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.FreeOneNightBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -36,6 +42,9 @@ public class Hotel0YuanHomeActivity extends BaseActivity {
     private Button btn_start;
     private RoundedAllImageView iv_share;
     private FreeOneNightBean bean = null;
+
+    private PopupWindow mSharePopupWindow = null;
+    private CustomSharePopup mCustomShareView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +70,34 @@ public class Hotel0YuanHomeActivity extends BaseActivity {
         Bitmap bm = BitmapUtils.getGrayBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.iv_share));
         iv_share.setImageBitmap(bm);
         iv_share.setEnabled(false);
+    }
+
+    private void showSharePopupWindow() {
+        if (null == mSharePopupWindow) {
+            mCustomShareView = new CustomSharePopup(this);
+            mCustomShareView.setOnCancelListener(new CustomSharePopup.OnCanceledListener() {
+                @Override
+                public void onDismiss() {
+                    mSharePopupWindow.dismiss();
+                }
+            });
+            mSharePopupWindow = new PopupWindow(mCustomShareView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        }
+        mSharePopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//        mSharePopupWindow.setAnimationStyle(R.style.share_anmi);
+        mSharePopupWindow.setBackgroundDrawable(new ColorDrawable(0));
+        mSharePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams params = getWindow().getAttributes();
+                params.alpha = 1.0f;
+                getWindow().setAttributes(params);
+            }
+        });
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.alpha = 0.8f;
+        getWindow().setAttributes(params);
+        mSharePopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
     }
 
     private void requestCurrentHasFreeActive() {
@@ -106,7 +143,9 @@ public class Hotel0YuanHomeActivity extends BaseActivity {
                 web.setThumb(new UMImage(this, R.drawable.logo));
                 web.setDescription("开启无中介预定时代！");
 
-                ShareControl.getInstance(this).openShareDisplay(web);
+                ShareControl.getInstance().setUMWebContent(this, web, null);
+                showSharePopupWindow();
+
                 break;
             default:
                 break;

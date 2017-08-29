@@ -24,7 +24,6 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.control.BundleNavi;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
@@ -211,15 +210,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         boolean isFirstLaunch = false;
         isFirstLaunch = SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true);
         if (!isFirstLaunch) {
-            if (SessionContext.getWakeUpAppData() != null) {
-                intent = new Intent(this, MainFragmentActivity.class);
-                String value = BundleNavi.getInstance().getString("path");
-                if (value != null && !value.equals("")) {
-                    BundleNavi.getInstance().putString("path", value);
-                }
-            } else {
-                intent = new Intent(this, GuideSwitchActivity.class);
-            }
+            intent = new Intent(this, GuideSwitchActivity.class);
         } else {
             intent = new Intent(this, GuideLauncherActivity.class);
         }

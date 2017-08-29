@@ -18,7 +18,6 @@ import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.control.BundleNavi;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.adapter.MainFragmentAdapter;
 import com.huicheng.hotel.android.ui.base.BaseFragmentActivity;
@@ -62,7 +61,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     private ImageView iv_left;
 
     private long exitTime = 0;
-    private boolean isFirstLaunch = true;
     private int currentIndex = 0;
     private boolean isNeedCloseLeftDrawer = false;
 
@@ -120,49 +118,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
             oldSkinIndex = newSkinIndex;
             recreate();
         }
-
-        if (isFirstLaunch) {
-            isFirstLaunch = false;
-            if (SessionContext.getWakeUpAppData() != null) {
-                JSONObject mJson = JSON.parseObject(SessionContext.getWakeUpAppData().getData());
-                if (mJson.containsKey("channel")) {
-                    String channel = mJson.getString("channel");
-                    if (HotelCommDef.SHARE_HOTEL.equals(channel)) {
-                        HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
-                        Intent intent = new Intent(this, RoomListActivity.class);
-                        intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                        long beginDate = Long.valueOf(mJson.getString("beginDate"));
-                        long endDate = Long.valueOf(mJson.getString("endDate"));
-                        HotelOrderManager.getInstance().setBeginTime(beginDate);
-                        HotelOrderManager.getInstance().setEndTime(endDate);
-                        String dateStr = (DateUtil.getDay("M.dd", beginDate)) + DateUtil.dateToWeek2(new Date(beginDate)) + " - " + DateUtil.getDay("M.dd", endDate) + DateUtil.dateToWeek2(new Date(endDate));
-                        intent.putExtra("date", dateStr);
-                        startActivity(intent);
-                    } else if (HotelCommDef.SHARE_ROOM.equals(channel)) {
-                        long beginDate = Long.valueOf(mJson.getString("beginDate"));
-                        long endDate = Long.valueOf(mJson.getString("endDate"));
-                        HotelOrderManager.getInstance().setBeginTime(beginDate);
-                        HotelOrderManager.getInstance().setEndTime(endDate);
-                        Intent intent = new Intent(this, RoomDetailActivity.class);
-                        intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                        intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
-                        intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
-                        intent.putExtra("hotelName", mJson.getString("hotelName"));
-                        startActivity(intent);
-                    } else if (HotelCommDef.SHARE_FREE.equals(channel)) {
-                        Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
-                        startActivity(intent);
-                    } else if (HotelCommDef.SHARE_TIE.equals(channel)) {
-                        Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
-                        intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                        intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
-                        startActivity(intent);
-                    } else {
-                        LogUtil.d("MainFragmentActivity", "warning~~~");
-                    }
-                }
-            }
-        }
         if (SessionContext.isLogin()) {
             requestMessageCount();
         }
@@ -188,13 +143,45 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
             isReload = bundle.getBoolean("isReload");
             planeOrderId = bundle.getString("orderId");
         }
-        String path = BundleNavi.getInstance().getString("path");
-        LogUtil.i(TAG, "MainFragmentActivity JPush:onReceiver value = " + path);
-        if (path != null && !path.equals("")) {
-            Intent intent = new Intent(this, HtmlActivity.class);
-            intent.putExtra("path", path);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+        if (SessionContext.getWakeUpAppData() != null) {
+            JSONObject mJson = JSON.parseObject(SessionContext.getWakeUpAppData().getData());
+            if (mJson.containsKey("channel")) {
+                String channel = mJson.getString("channel");
+                if (HotelCommDef.SHARE_HOTEL.equals(channel)) {
+                    HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
+                    Intent intent = new Intent(this, RoomListActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
+                    long endDate = Long.valueOf(mJson.getString("endDate"));
+                    HotelOrderManager.getInstance().setBeginTime(beginDate);
+                    HotelOrderManager.getInstance().setEndTime(endDate);
+                    String dateStr = (DateUtil.getDay("M.dd", beginDate)) + DateUtil.dateToWeek2(new Date(beginDate)) + " - " + DateUtil.getDay("M.dd", endDate) + DateUtil.dateToWeek2(new Date(endDate));
+                    intent.putExtra("date", dateStr);
+                    startActivity(intent);
+                } else if (HotelCommDef.SHARE_ROOM.equals(channel)) {
+                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
+                    long endDate = Long.valueOf(mJson.getString("endDate"));
+                    HotelOrderManager.getInstance().setBeginTime(beginDate);
+                    HotelOrderManager.getInstance().setEndTime(endDate);
+                    Intent intent = new Intent(this, RoomDetailActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                    intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
+                    intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
+                    intent.putExtra("hotelName", mJson.getString("hotelName"));
+                    startActivity(intent);
+                } else if (HotelCommDef.SHARE_FREE.equals(channel)) {
+                    Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
+                    startActivity(intent);
+                } else if (HotelCommDef.SHARE_TIE.equals(channel)) {
+                    Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                    intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
+                    startActivity(intent);
+                } else {
+                    LogUtil.d("MainFragmentActivity", "warning~~~");
+                }
+            }
+            SessionContext.setWakeUpAppData(null);
         }
     }
 
