@@ -3,6 +3,7 @@ package com.huicheng.hotel.android.ui.activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -128,7 +129,7 @@ public class PlaneOrderDetailActivity extends BaseActivity {
             intent.putExtra("info", data.getExtras().getString("pay_result"));
             LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
             intent.putExtra("type", "unionPay");
-            sendBroadcast(intent);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }
 }

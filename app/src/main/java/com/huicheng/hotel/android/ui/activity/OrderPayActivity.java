@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,7 +134,7 @@ public class OrderPayActivity extends BaseActivity {
                     ((ImageView) payListLay.getChildAt(payIndex).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.ipro_set_pu_019);
                     for (int j = 0; j < payChannel.length; j++) {
                         if (j != payIndex) {
-                            ((ImageView) payListLay.getChildAt(j).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.iv_pay_check);
+                            ((ImageView) payListLay.getChildAt(j).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.ipro_set_pu_008);
                         }
                     }
                 }
@@ -148,7 +149,7 @@ public class OrderPayActivity extends BaseActivity {
         // 动态注册支付广播
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BroadCastConst.ACTION_PAY_STATUS);
-        registerReceiver(mPayReceiver, intentFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mPayReceiver, intentFilter);
     }
 
     private void requestOrderPayInfo(String orderNo) {
@@ -341,7 +342,7 @@ public class OrderPayActivity extends BaseActivity {
         alipay = null;
         unionpay = null;
         if (null != mPayReceiver) {
-            unregisterReceiver(mPayReceiver);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mPayReceiver);
         }
     }
 
@@ -356,7 +357,7 @@ public class OrderPayActivity extends BaseActivity {
             intent.putExtra("info", data.getExtras().getString("pay_result"));
             LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
             intent.putExtra("type", "unionPay");
-            sendBroadcast(intent);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }
 

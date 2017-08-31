@@ -3,6 +3,7 @@ package com.huicheng.hotel.android.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -207,7 +208,7 @@ public class WebViewPagerFragment extends BaseFragment {
                 intent.putExtra("info", data.getExtras().getString("pay_result"));
                 LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
                 intent.putExtra("type", "unionPay");
-                getActivity().sendBroadcast(intent);
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
             }
         }
     }

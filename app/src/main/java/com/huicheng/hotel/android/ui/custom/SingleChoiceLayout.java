@@ -11,7 +11,7 @@ public class SingleChoiceLayout extends CheckedRelativeLayout {
 
 	public SingleChoiceLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setImageResouce(R.drawable.iv_pay_check, R.drawable.iv_pay_check);
+		setImageResouce(R.drawable.ipro_set_pu_008, R.drawable.ipro_set_pu_019);
 	}
 
 }

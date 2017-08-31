@@ -3,6 +3,7 @@ package com.huicheng.hotel.android.wxapi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.huicheng.hotel.android.common.pay.wxpay.Constants;
 import com.prj.sdk.constants.BroadCastConst;
@@ -45,8 +46,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             Intent mIntent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
             mIntent.putExtra("info", String.valueOf(resp.errCode));
             mIntent.putExtra("type", "wechat");
-//            LocalBroadcastManager.getInstance(this).sendBroadcast(mIntent);
-            sendBroadcast(mIntent);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(mIntent);
             api.detach();
             this.finish();
         }
