@@ -293,10 +293,10 @@ public class RoomDetailActivity extends BaseActivity {
                     mSharePopupWindow.dismiss();
                 }
             });
-            mSharePopupWindow = new PopupWindow(mCustomShareView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            mSharePopupWindow = new PopupWindow(mCustomShareView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         }
         mSharePopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-//        mSharePopupWindow.setAnimationStyle(R.style.share_anmi);
+        mSharePopupWindow.setAnimationStyle(R.style.share_anmi);
         mSharePopupWindow.setBackgroundDrawable(new ColorDrawable(0));
         mSharePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override

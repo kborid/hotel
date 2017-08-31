@@ -120,10 +120,24 @@
 
     <string-array name="TravelType">
         <item>商务</item>
-        <item>休闲</item>
-        <item>疗养</item>
+        <!--<item>休闲</item>-->
+        <!--<item>疗养</item>-->
         <item>度假</item>
-        <item>交友</item>
+        <!--<item>交友</item>-->
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="HotCity">
+        <item>上海</item>
+        <item>北京</item>
+        <item>深圳</item>
+        <item>广州</item>
+        <item>杭州</item>
+        <item>三亚</item>
+        <item>海口</item>
+        <item>武汉</item>
+        <item>成都</item>
+        <item>昆明</item>
     </string-array>
 
     <string-array name="MainTabTips">

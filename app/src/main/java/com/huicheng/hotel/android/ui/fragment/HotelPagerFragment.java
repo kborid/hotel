@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.fragment;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -38,9 +39,11 @@ import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.tools.CityStringUtils;
 import com.huicheng.hotel.android.ui.activity.Hotel0YuanHomeActivity;
 import com.huicheng.hotel.android.ui.activity.HotelCalendarChooseActivity;
-import com.huicheng.hotel.android.ui.activity.LocationActivity2;
+import com.huicheng.hotel.android.ui.activity.HotelListActivity;
+import com.huicheng.hotel.android.ui.activity.LocationChooseActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
+import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
@@ -49,6 +52,7 @@ import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.BitmapUtils;
+import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
@@ -56,6 +60,7 @@ import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
 
 /**
  * Fragment home
@@ -79,6 +84,10 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     private TextView tv_price;
     private int mPriceIndex = 0;
     private ImageView iv_pull;
+
+    private TextView tv_date;
+    private ImageView iv_date;
+    private long beginTime, endTime;
 
     // 海南诚信广告Popup
     private boolean isAdShowed = false;
@@ -137,6 +146,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         ((TextView) view.findViewById(R.id.tv_city_label)).getPaint().setFakeBoldText(true);
         ((TextView) view.findViewById(R.id.tv_key_label)).getPaint().setFakeBoldText(true);
         ((TextView) view.findViewById(R.id.tv_price_label)).getPaint().setFakeBoldText(true);
+        ((TextView) view.findViewById(R.id.tv_date_label)).getPaint().setFakeBoldText(true);
         tv_city = (TextView) view.findViewById(R.id.tv_city);
         tv_city.getPaint().setFakeBoldText(true);
         et_keyword = (EditText) view.findViewById(R.id.et_keyword);
@@ -156,6 +166,9 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
         tv_price = (TextView) view.findViewById(R.id.tv_price);
         iv_pull = (ImageView) view.findViewById(R.id.iv_pull);
+
+        tv_date = (TextView) view.findViewById(R.id.tv_date);
+        iv_date = (ImageView) view.findViewById(R.id.iv_date);
 
         // 海南诚信认证广告
         View adView = LayoutInflater.from(getActivity()).inflate(R.layout.pw_ad_hainan_layout, null);
@@ -215,7 +228,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                                 HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(loc_province, loc_city, "-"));
                                 tv_city.setText(CityStringUtils.getProvinceCityString(loc_province, loc_city, " "));
 
-                                showHaiNanAd(tv_city.getText().toString());
+                                showHaiNanAd(loc_province);
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -241,6 +254,13 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         llp.width = Utils.mScreenWidth;
         llp.height = (int) ((float) llp.width / 25 * 14);
         banner_lay.setLayoutParams(llp);
+
+        // 初始化时间，今天到明天 1晚
+        Calendar calendar = Calendar.getInstance();
+        beginTime = calendar.getTime().getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
+        endTime = calendar.getTime().getTime();
+        tv_date.setText(DateUtil.getDay("M月d日", beginTime) + "-" + DateUtil.getDay("M月d日", endTime));
     }
 
     @Override
@@ -258,6 +278,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         btn_hhy.setOnClickListener(this);
         tv_price.setOnClickListener(this);
         iv_pull.setOnClickListener(this);
+        tv_date.setOnClickListener(this);
+        iv_date.setOnClickListener(this);
 
         et_keyword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -294,10 +316,11 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_city:
-            case R.id.iv_location:
-                Intent resIntent = new Intent(getActivity(), LocationActivity2.class);
+            case R.id.iv_location: {
+                Intent resIntent = new Intent(getActivity(), LocationChooseActivity.class);
                 startActivityForResult(resIntent, 0x01);
-                break;
+            }
+            break;
             case R.id.iv_reset:
                 et_keyword.setText("");
                 break;
@@ -327,6 +350,12 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.tv_next_search:
 
+                HotelOrderManager.getInstance().setBeginTime(beginTime);
+                HotelOrderManager.getInstance().setEndTime(endTime);
+                SimpleMonthAdapter.CalendarDay begin = new SimpleMonthAdapter.CalendarDay(beginTime);
+                SimpleMonthAdapter.CalendarDay end = new SimpleMonthAdapter.CalendarDay(endTime);
+                HotelOrderManager.getInstance().setDateStr((begin.getMonth() + 1) + "." + begin.getDay() /*+ DateUtil.dateToWeek2(begin.getDate())*/ + " - " + (end.getMonth() + 1) + "." + end.getDay()/* + DateUtil.dateToWeek2(end.getDate())*/);
+
                 if (StringUtil.isEmpty(tv_city.getText().toString())) {
                     CustomToast.show("定位失败，请打开GPS或手动选择城市", CustomToast.LENGTH_SHORT);
                     return;
@@ -334,7 +363,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
                 et_keyword.setFocusable(false);
                 et_keyword.setFocusableInTouchMode(true);
-                intent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
+//                intent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
+                intent = new Intent(getActivity(), HotelListActivity.class);
                 intent.putExtra("index", 0);
                 intent.putExtra("keyword", et_keyword.getText().toString());
                 intent.putExtra("priceIndex", mPriceIndex);
@@ -385,6 +415,14 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 });
                 popup.show();
                 break;
+            case R.id.tv_date:
+            case R.id.iv_date: {
+                Intent resIntent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
+                resIntent.putExtra("beginTime", beginTime);
+                resIntent.putExtra("endTime", endTime);
+                startActivityForResult(resIntent, 0x02);
+            }
+            break;
             default:
                 break;
         }
@@ -401,7 +439,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    showHaiNanAd(tv_city.getText().toString());
+                    String provinice = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+                    showHaiNanAd(provinice);
                 }
             }, 300);
         }
@@ -411,10 +450,26 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         mAdHaiNanPopupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
     }
 
-    private void showHaiNanAd(String city) {
-        if (city.contains("海口")) {
+    private void showHaiNanAd(String province) {
+        if (province.contains("海南")) {
             isAdShowed = true;
             showHaiNanAdPopupWindow();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (Activity.RESULT_OK != resultCode) {
+            return;
+        }
+        if (requestCode == 0x02) {
+            if (null != data) {
+                beginTime = data.getLongExtra("beginTime", beginTime);
+                endTime = data.getLongExtra("endTime", endTime);
+                tv_date.setText(DateUtil.getDay("M月d日", beginTime) + "-" + DateUtil.getDay("M月d日", endTime));
+            }
         }
     }
 }

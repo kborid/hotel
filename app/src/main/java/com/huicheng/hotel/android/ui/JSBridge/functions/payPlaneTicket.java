@@ -16,6 +16,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.pay.alipay.AlipayUtil;
+import com.huicheng.hotel.android.common.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.common.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
@@ -45,7 +46,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                LogUtil.i(TAG,"payPlaneTicket onReceive ACTION_PAY_STATUS callback");
+                LogUtil.i(TAG, "payPlaneTicket onReceive ACTION_PAY_STATUS callback");
                 try {
                     String action = intent.getAction();
                     if (BroadCastConst.ACTION_PAY_STATUS.equals(action)) {
@@ -54,7 +55,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
                         String type = intent.getExtras().getString("type");
                         mJson.put("info", info);
                         mJson.put("type", type);
-                        LogUtil.i(TAG,"info = " + info + ", type = " + type);
+                        LogUtil.i(TAG, "info = " + info + ", type = " + type);
                         mCallback.callback(mJson.toString());
                         unregisterReceiver();
                     }
@@ -73,7 +74,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
 
                 this.mCallback = callback;
 
-                LogUtil.i(TAG,"data String = " + data.toString());
+                LogUtil.i(TAG, "data String = " + data.toString());
                 JSONObject mJson = JSON.parseObject(data.toString());
                 String payChannel = mJson.getString("payChannel");
                 String orderNo = mJson.getString("orderNo");
@@ -87,7 +88,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
 
 
     private void requestPayOrderInfo(String orderNo, String payChannel) {
-        LogUtil.i(TAG,"requestPayOrderInfo() orderNo = " + orderNo + ", payChannel = " + payChannel);
+        LogUtil.i(TAG, "requestPayOrderInfo() orderNo = " + orderNo + ", payChannel = " + payChannel);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("orderNo", orderNo);
         b.addBody("tradeType", "02"); // 01 酒店业务，02 机票业务
@@ -106,13 +107,18 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
             public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
                 if (response != null && response.body != null) {
                     if (request.flag == AppConst.PAY) {
-                        LogUtil.i(TAG,"json = " + response.body.toString());
+                        LogUtil.i(TAG, "json = " + response.body.toString());
                         JSONObject mJson = JSON.parseObject(response.body.toString());
                         if (mJson.containsKey(HotelCommDef.WXPAY)) {
                             JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
                             wechatPay(mmJson);
-                        } else {
+                        } else if (mJson.containsKey(HotelCommDef.ALIPAY)) {
                             aliPay(mJson.getString(HotelCommDef.ALIPAY));
+                        } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
+                            JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
+                            unionPay(mmJson.getString("tn"));
+                        } else {
+                            CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
                         }
                     }
                 }
@@ -120,22 +126,19 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
 
             @Override
             public void notifyError(ResponseData request, ResponseData response, Exception e) {
-                LogUtil.i(TAG,"payPlaneTIckey()");
+                LogUtil.i(TAG, "payPlaneTicket()");
                 String message;
                 if (e != null && e instanceof ConnectException) {
                     message = mContext.getResources().getString(R.string.dialog_tip_net_error);
                 } else {
                     message = response != null && response.data != null ? response.data.toString() : mContext.getResources().getString(R.string.dialog_tip_null_error);
                 }
-                LogUtil.i(TAG,"payPlaneTicket = " + message);
+                LogUtil.i(TAG, "payPlaneTicket = " + message);
                 CustomToast.show(message, CustomToast.LENGTH_SHORT);
             }
         }, d);
     }
 
-    /**
-     * 选择支付方式
-     */
     private void selectPayType(final String[] array, final String alipayOrder, final String wechatOrder) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -207,6 +210,13 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
                     mmJson.getString("timestamp"));
             registerReceiver();
         }
+    }
+
+    private void unionPay(String tn) {
+        UnionPayUtil unionpay = new UnionPayUtil(mContext);
+        unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
+        unionpay.unionStartPay(tn);
+        registerReceiver();
     }
 
 

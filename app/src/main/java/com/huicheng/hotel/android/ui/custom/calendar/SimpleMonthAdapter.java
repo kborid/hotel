@@ -159,6 +159,14 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         notifyDataSetChanged();
     }
 
+    public void setBeginAndEndCalendarDay(CalendarDay beginDay, CalendarDay endDay) {
+        selectedDays.setFirst(null);
+        selectedDays.setFirst(beginDay);
+        selectedDays.setLast(null);
+        selectedDays.setLast(endDay);
+        notifyDataSetChanged();
+    }
+
     public static class CalendarDay implements Serializable {
         private static final long serialVersionUID = -5456695978688356202L;
         private Calendar calendar;
@@ -198,9 +206,11 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         public int getYear() {
             return year;
         }
+
         public int getMonth() {
             return month;
         }
+
         public int getDay() {
             return day;
         }

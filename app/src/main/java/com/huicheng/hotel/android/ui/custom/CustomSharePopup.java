@@ -23,7 +23,7 @@ public class CustomSharePopup extends LinearLayout implements View.OnClickListen
     private LinearLayout wx_lay;
     private LinearLayout circle_lay;
     private LinearLayout qq_lay;
-    private LinearLayout sina_lay;
+//    private LinearLayout sina_lay;
 
     private TextView tv_cancel;
 
@@ -51,7 +51,7 @@ public class CustomSharePopup extends LinearLayout implements View.OnClickListen
         wx_lay = (LinearLayout) findViewById(R.id.wx_share);
         circle_lay = (LinearLayout) findViewById(R.id.circle_share);
         qq_lay = (LinearLayout) findViewById(R.id.qq_share);
-        sina_lay = (LinearLayout) findViewById(R.id.sina_share);
+//        sina_lay = (LinearLayout) findViewById(R.id.sina_share);
 
         ((ImageView) wx_lay.findViewById(R.id.iv_icon)).setImageResource(R.drawable.iv_wx);
         ((TextView) wx_lay.findViewById(R.id.tv_title)).setText("微信好友");
@@ -62,8 +62,8 @@ public class CustomSharePopup extends LinearLayout implements View.OnClickListen
         ((ImageView) qq_lay.findViewById(R.id.iv_icon)).setImageResource(R.drawable.iv_qq);
         ((TextView) qq_lay.findViewById(R.id.tv_title)).setText("手机QQ");
 
-        ((ImageView) sina_lay.findViewById(R.id.iv_icon)).setImageResource(R.drawable.iv_sina);
-        ((TextView) sina_lay.findViewById(R.id.tv_title)).setText("新浪微博");
+//        ((ImageView) sina_lay.findViewById(R.id.iv_icon)).setImageResource(R.drawable.iv_sina);
+//        ((TextView) sina_lay.findViewById(R.id.tv_title)).setText("新浪微博");
 
         tv_cancel = (TextView) findViewById(R.id.tv_cancel);
     }
@@ -72,7 +72,7 @@ public class CustomSharePopup extends LinearLayout implements View.OnClickListen
         wx_lay.setOnClickListener(this);
         circle_lay.setOnClickListener(this);
         qq_lay.setOnClickListener(this);
-        sina_lay.setOnClickListener(this);
+//        sina_lay.setOnClickListener(this);
 
         tv_cancel.setOnClickListener(this);
     }
@@ -90,9 +90,9 @@ public class CustomSharePopup extends LinearLayout implements View.OnClickListen
             case R.id.qq_share:
                 sm = SHARE_MEDIA.QQ;
                 break;
-            case R.id.sina_share:
-                sm = SHARE_MEDIA.SINA;
-                break;
+//            case R.id.sina_share:
+//                sm = SHARE_MEDIA.SINA;
+//                break;
             case R.id.tv_cancel:
                 break;
             default:

@@ -165,14 +165,6 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
         });
     }
 
-    private void closeSoftKeyboard() {
-        View view = getWindow().peekDecorView();
-        if (view != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
     private void dismissConsiderLayout() {
         LogUtil.d(TAG, "HotelListActivity dismissConsiderLayout()");
         customConsiderLayout.dismiss();
@@ -290,7 +282,8 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
                 }
                 break;
             case R.id.iv_search:
-                closeSoftKeyboard();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 if (listenerList != null && listenerList.size() > 0) {
                     if (!keyword.equals(et_keyword.getText().toString())) {
                         keyword = et_keyword.getText().toString();

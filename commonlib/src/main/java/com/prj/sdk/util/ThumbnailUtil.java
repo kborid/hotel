@@ -390,7 +390,7 @@ public class ThumbnailUtil {
     public static String compressImage(String path, String newPath) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
+//        BitmapFactory.decodeFile(path, options);
         int inSampleSize = 1;
         int maxSize = 2000;
         if (options.outWidth > maxSize || options.outHeight > maxSize) {
@@ -401,39 +401,43 @@ public class ThumbnailUtil {
         options.inJustDecodeBounds = false;
         options.inSampleSize = inSampleSize;
         Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-        int w = bitmap.getWidth();
-        int h = bitmap.getHeight();
-        int newW = w;
-        int newH = h;
-        if (w > maxSize || h > maxSize) {
-            if (w > h) {
-                newW = maxSize;
-                newH = (int) (newW * h * 1.0 / w);
-            } else {
-                newH = maxSize;
-                newW = (int) (newH * w * 1.0 / h);
-            }
-        }
-        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, newW, newH, false);
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(newPath);
-            newBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (outputStream != null) {
-                    outputStream.close();
+        if (null != bitmap) {
+            int w = bitmap.getWidth();
+            int h = bitmap.getHeight();
+            int newW = w;
+            int newH = h;
+            if (w > maxSize || h > maxSize) {
+                if (w > h) {
+                    newW = maxSize;
+                    newH = (int) (newW * h * 1.0 / w);
+                } else {
+                    newH = maxSize;
+                    newW = (int) (newH * w * 1.0 / h);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+            Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, newW, newH, false);
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = new FileOutputStream(newPath);
+                newBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (outputStream != null) {
+                        outputStream.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+            }
+            recycle(newBitmap);
+            recycle(bitmap);
+            return newPath;
+        } else {
+            return "";
         }
-        recycle(newBitmap);
-        recycle(bitmap);
-        return newPath;
     }
 
     public static void recycle(Bitmap bitmap) {

@@ -47,7 +47,7 @@ public class BannerImageAdapter extends PagerAdapter {
         ImageView view = new ImageView(context);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         view.setScaleType(ImageView.ScaleType.FIT_XY);
-        loadImage(view, bean.url, 800, 400);
+        loadImage(view, bean.url, 1024, 768);
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override

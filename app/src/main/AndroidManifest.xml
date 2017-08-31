@@ -136,8 +136,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
-            android:name=".ui.activity.LocationActivity2"
+            android:name=".ui.activity.LocationChooseActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SearchResultActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <!--酒店日期选择画面-->
         <activity
             android:name=".ui.activity.HotelCalendarChooseActivity"

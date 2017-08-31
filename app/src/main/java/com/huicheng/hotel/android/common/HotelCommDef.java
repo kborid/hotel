@@ -76,13 +76,13 @@ public class HotelCommDef {
         String payChannel = ALIPAY;
         switch (index) {
             case 0:
-                payChannel = UNIONPAY;
-                break;
-            case 1:
                 payChannel = ALIPAY;
                 break;
-            case 2:
+            case 1:
                 payChannel = WXPAY;
+                break;
+            case 2:
+                payChannel = UNIONPAY;
                 break;
         }
         return payChannel;

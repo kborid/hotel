@@ -206,7 +206,8 @@ public class Utils {
      * @return
      */
     public static boolean checkUrl(String url) {
-        return url.matches("^[a-zA-z]+://[^\\s]*$");
+//        return url.matches("^[a-zA-z]+://[^\\s]*$");
+        return true;
     }
 
     /**

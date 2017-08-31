@@ -25,7 +25,7 @@ import java.util.List;
 public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPageChangeListener {
 
     private static final String TAG = "CommonBannerLayout";
-    private static final int DELAY_TIME = 3000;
+    private static final int DELAY_TIME = 5000;
     private Context context;
     private ViewPager viewpager;
     private LinearLayout indicator_lay;
@@ -67,7 +67,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
     private void findViews() {
         viewpager = (ViewPager) findViewById(R.id.viewpager);
         customViewPagerScroller = new CustomViewPagerScroller(context);
-        customViewPagerScroller.setScrollDuration(1000);
+        customViewPagerScroller.setScrollDuration(1500);
         customViewPagerScroller.initViewPagerScroll(viewpager);
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
     }

@@ -2,7 +2,6 @@ package com.huicheng.hotel.android.common;
 
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
-import com.prj.sdk.util.StringUtil;
 
 import java.util.Calendar;
 import java.util.Date;

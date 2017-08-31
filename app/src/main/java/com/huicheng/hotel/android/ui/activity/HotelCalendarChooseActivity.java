@@ -22,6 +22,7 @@ import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
 /**
@@ -36,14 +37,12 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
     private CustomCalendarView calendar_lay;
     private TextView tv_begin;
     private TextView tv_end;
-
     private Button btn_next;
 
-    private int jumpIndex = 0;
     private boolean rebooking = false;
     private String hotelId = null;
-    private String keyword = null;
-    private int mPriceIndex = 0;
+
+    private long beginTime, endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +69,12 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            jumpIndex = bundle.getInt("index");
             rebooking = bundle.getBoolean("rebooking");
             if (bundle.getString("hotelId") != null) {
                 hotelId = bundle.getString("hotelId");
             }
-            if (bundle.getString("keyword") != null) {
-                keyword = bundle.getString("keyword");
-            }
-            mPriceIndex = bundle.getInt("priceIndex");
+            beginTime = bundle.getLong("beginTime");
+            endTime = bundle.getLong("endTime");
         }
     }
 
@@ -91,12 +87,18 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         if (rebooking || HotelOrderManager.getInstance().isUseCoupon() || HotelOrderManager.getInstance().isVipHotel()) {
             tv_center_title.setEnabled(false);
         }
+        if (0 != beginTime && 0 != endTime) {
+            tv_begin.setText(DateUtil.getDay("M月d日", beginTime));
+            tv_end.setText(DateUtil.getDay("M月d日", endTime));
+            btn_next.setEnabled(true);
+        }
     }
 
     @Override
     public void initListeners() {
         super.initListeners();
         calendar_lay.setController(this);
+        calendar_lay.setBeginAndEndDays(beginTime, endTime);
         btn_next.setOnClickListener(this);
         tv_center_title.setOnClickListener(this);
     }
@@ -106,6 +108,12 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_next: {
+                SimpleMonthAdapter.CalendarDay begin = new SimpleMonthAdapter.CalendarDay(beginTime);
+                SimpleMonthAdapter.CalendarDay end = new SimpleMonthAdapter.CalendarDay(endTime);
+                HotelOrderManager.getInstance().setBeginTime(beginTime);
+                HotelOrderManager.getInstance().setEndTime(endTime);
+                HotelOrderManager.getInstance().setDateStr((begin.getMonth() + 1) + "." + begin.getDay() /*+ DateUtil.dateToWeek2(begin.getDate())*/ + " - " + (end.getMonth() + 1) + "." + end.getDay()/* + DateUtil.dateToWeek2(end.getDate())*/);
+
                 Intent intent = null;
                 if (rebooking) {
                     HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
@@ -121,19 +129,19 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
                     intent = new Intent(this, RoomOrderConfirmActivity.class);
                     intent.putExtra("hotelId", Integer.parseInt(hotelId));
                 } else {
-                    intent = new Intent(this, HotelListActivity.class);
+                    Intent dataIntent = new Intent();
+                    dataIntent.putExtra("beginTime", beginTime);
+                    dataIntent.putExtra("endTime", endTime);
+                    setResult(RESULT_OK, dataIntent);
+                    this.finish();
                 }
-                SimpleMonthAdapter.CalendarDay begin = new SimpleMonthAdapter.CalendarDay(HotelOrderManager.getInstance().getBeginTime());
-                SimpleMonthAdapter.CalendarDay end = new SimpleMonthAdapter.CalendarDay(HotelOrderManager.getInstance().getEndTime());
-                HotelOrderManager.getInstance().setDateStr((begin.getMonth() + 1) + "." + begin.getDay() /*+ DateUtil.dateToWeek2(begin.getDate())*/ + " - " + (end.getMonth() + 1) + "." + end.getDay()/* + DateUtil.dateToWeek2(end.getDate())*/);
-                intent.putExtra("index", jumpIndex);
-                intent.putExtra("keyword", keyword);
-                intent.putExtra("priceIndex", mPriceIndex);
-                startActivity(intent);
+                if (null != intent) {
+                    startActivity(intent);
+                }
             }
             break;
             case R.id.tv_center_title: {
-                Intent intent = new Intent(this, LocationActivity2.class);
+                Intent intent = new Intent(this, LocationChooseActivity.class);
                 startActivityForResult(intent, 0x01);
             }
             break;
@@ -199,10 +207,10 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
             btn_next.setEnabled(false);
         }
         if (selectedDays.getFirst() != null) {
-            HotelOrderManager.getInstance().setBeginTime(selectedDays.getFirst().getDate().getTime() / 1000 * 1000);
+            beginTime = selectedDays.getFirst().getDate().getTime() / 1000 * 1000;
         }
         if (selectedDays.getLast() != null) {
-            HotelOrderManager.getInstance().setEndTime(selectedDays.getLast().getDate().getTime() / 1000 * 1000);
+            endTime = selectedDays.getLast().getDate().getTime() / 1000 * 1000;
         }
     }
 }

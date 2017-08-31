@@ -79,23 +79,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_show_area_hotel"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/map_showarea_sel"
-            android:enabled="false"
-            android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="隐藏区域内酒店"
-            android:textColor="@color/white"
-            android:textSize="@dimen/common_10sp" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -74,6 +74,7 @@ public class UserCenterActivity extends BaseActivity {
     private Button btn_setting;
 
     private ImageView iv_photo;
+    private String headUrl;
     private RelativeLayout camer_lay;
     private RelativeLayout photo_lay;
     private EditText et_name;
@@ -190,14 +191,14 @@ public class UserCenterActivity extends BaseActivity {
         oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
         //更新个人中心信息
         // 设置头像
-        String photoUrl = SessionContext.mUser.user.headphotourl;
+        headUrl = SessionContext.mUser.user.headphotourl;
         RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) photo_lay.getLayoutParams();
         rl.width = Utils.mScreenWidth - Utils.dip2px(65);
         rl.height = rl.width;
         photo_lay.setLayoutParams(rl);
 
-        if (StringUtil.notEmpty(photoUrl)) {
-            loadImage(iv_photo, R.drawable.def_photo_bg, photoUrl, 800, 800);
+        if (StringUtil.notEmpty(headUrl)) {
+            loadImage(iv_photo, R.drawable.def_photo_bg, headUrl, 800, 800);
         } else {
             iv_photo.setBackgroundResource(R.drawable.def_photo_bg);
         }
@@ -595,7 +596,7 @@ public class UserCenterActivity extends BaseActivity {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("sex", male_lay.isSelected() ? "1" : "0");
         b.addBody("nickname", et_name.getText().toString());
-        b.addBody("headphotourl", SessionContext.mUser.user.headphotourl);
+        b.addBody("headphotourl", headUrl);
         b.addBody("birthdate", mYear + " " + mMonth + " " + mDay);
         b.addBody("isstartup", btn_switch.isChecked() ? "1" : "0");
         b.addBody("minprice", valueConvertPrice(minValue));
@@ -877,10 +878,7 @@ public class UserCenterActivity extends BaseActivity {
                     try {
                         Bitmap bm = MediaStore.Images.Media.getBitmap(resolver, Uri.fromFile(new File(bgPath)));
                         iv_photo.setImageBitmap(bm);
-                        SessionContext.mUser.user.headphotourl = response.body.toString();
-                        SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
-                        SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, JSON.toJSONString(SessionContext.mUser), true);
-                        sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
+                        headUrl = response.body.toString();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -943,7 +941,12 @@ public class UserCenterActivity extends BaseActivity {
                     filePath = ThumbnailUtil.getPicPath(this, imageUri);
                     LogUtil.i(TAG, "filepath image = " + filePath);
                     bgPath = Utils.getFolderDir("pic") + "_temp_compress.jpg";
-                    uploadImage(new File(ThumbnailUtil.compressImage(filePath, bgPath)));
+                    String newFilePath = ThumbnailUtil.compressImage(filePath, bgPath);
+                    if (StringUtil.notEmpty(newFilePath)) {
+                        uploadImage(new File(newFilePath));
+                    } else {
+                        CustomToast.show("图片无效", CustomToast.LENGTH_SHORT);
+                    }
                 } else {
                     CustomToast.show("获取图片失败", 0);
                 }
@@ -951,7 +954,12 @@ public class UserCenterActivity extends BaseActivity {
             case AppConst.ACTIVITY_IMAGE_CAPTURE:
                 filePath = Utils.getFolderDir("pic") + "_temp.jpg";
                 bgPath = Utils.getFolderDir("pic") + "_temp_compress.jpg";
-                uploadImage(new File(ThumbnailUtil.compressImage(filePath, bgPath)));
+                String newFilePath = ThumbnailUtil.compressImage(filePath, bgPath);
+                if (StringUtil.notEmpty(newFilePath)) {
+                    uploadImage(new File(newFilePath));
+                } else {
+                    CustomToast.show("图片无效", CustomToast.LENGTH_SHORT);
+                }
                 break;
             default:
                 break;

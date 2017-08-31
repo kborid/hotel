@@ -72,7 +72,6 @@ public class HotelMapActivity extends BaseActivity
     private ImageView iv_loc;
     private ImageView iv_reroute;
     private ImageView iv_navi;
-    private TextView tv_show_area_hotel;
     private EditText et_search;
     private ImageView iv_search;
     private TextView tv_driver;
@@ -90,7 +89,6 @@ public class HotelMapActivity extends BaseActivity
     private WalkRouteResult walkRouteResult = null;
     private ArrayList<MarkerOptions> markerOptionses = new ArrayList<>();
     private List<Marker> markers = new ArrayList<>();
-    private boolean isShowMarker = false;
     private boolean isToMyLoc = false;
 
     private HotelDetailInfoBean hotelDetailInfoBean = null;
@@ -131,7 +129,6 @@ public class HotelMapActivity extends BaseActivity
         iv_loc = (ImageView) findViewById(R.id.iv_loc);
         iv_reroute = (ImageView) findViewById(R.id.iv_reroute);
         iv_navi = (ImageView) findViewById(R.id.iv_navi);
-        tv_show_area_hotel = (TextView) findViewById(R.id.tv_show_area_hotel);
         et_search = (EditText) findViewById(R.id.et_search);
         iv_search = (ImageView) findViewById(R.id.iv_search);
         tv_driver = (TextView) findViewById(R.id.tv_driver);
@@ -245,10 +242,6 @@ public class HotelMapActivity extends BaseActivity
         }
 
         markers = amap.addMarkers(markerOptionses, true);
-        if (markers != null && markers.size() > 0) {
-            isShowMarker = true;
-            tv_show_area_hotel.setEnabled(true);
-        }
     }
 
     private void setUpMap() {
@@ -296,7 +289,6 @@ public class HotelMapActivity extends BaseActivity
         iv_reroute.setOnClickListener(this);
         iv_navi.setOnClickListener(this);
         routeSearch.setRouteSearchListener(this);
-        tv_show_area_hotel.setOnClickListener(this);
 
         amap.setOnMarkerClickListener(this);
         amap.setLocationSource(this);// 设置定位监听
@@ -395,19 +387,6 @@ public class HotelMapActivity extends BaseActivity
                     }
                 }
                 break;
-            case R.id.tv_show_area_hotel:
-                if (isShowMarker) {
-                    isShowMarker = false;
-                    tv_show_area_hotel.setText("显示区域内酒店");
-                    for (Marker marker : markers) {
-                        marker.remove();
-                    }
-                } else {
-                    isShowMarker = true;
-                    tv_show_area_hotel.setText("隐藏区域内酒店");
-                    markers = amap.addMarkers(markerOptionses, true);
-                }
-                break;
             default:
                 break;
         }
@@ -475,7 +454,6 @@ public class HotelMapActivity extends BaseActivity
 
             tv_driver.setVisibility(View.VISIBLE);
             tv_foot.setVisibility(View.VISIBLE);
-            tv_show_area_hotel.setVisibility(View.GONE);
         } else {
             iv_loc.setVisibility(View.VISIBLE);
             iv_reroute.setVisibility(View.GONE);
@@ -483,8 +461,6 @@ public class HotelMapActivity extends BaseActivity
 
             tv_driver.setVisibility(View.GONE);
             tv_foot.setVisibility(View.GONE);
-
-            tv_show_area_hotel.setVisibility(View.VISIBLE);
         }
     }
 

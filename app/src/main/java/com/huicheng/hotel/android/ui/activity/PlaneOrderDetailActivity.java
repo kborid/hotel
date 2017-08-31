@@ -1,23 +1,19 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.net.http.SslError;
 import android.os.Bundle;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
-import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.custom.MyCommWebViewClient;
+import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.CustomToast;
 
 /**
  * @author kborid
@@ -121,52 +117,18 @@ public class PlaneOrderDetailActivity extends BaseActivity {
         common_loading_widget.closeLoading();
     }
 
-    private class MyWebViewClient extends WVJBWebViewClient {
-
-        MyWebViewClient(WebView webView) {
-            super(webView);
-            new RegisterHandler(this, PlaneOrderDetailActivity.this).init();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            return;
         }
-
-
-        @Override
-        public void onPageStarted(final WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-            common_loading_widget.startLoading();
-//            mWebView.setEnabled(false);
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            common_loading_widget.closeLoading();
-//            mWebView.setEnabled(true);
-        }
-
-        public void onReceivedError(WebView webview, int errorCode, String description, String failingUrl) {
-            // super.onReceivedError(webview, errorCode, description, failingUrl);
-            try {
-                webview.stopLoading();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (mWebView.canGoBack()) {
-                mWebView.goBack();
-            }
-            if (errorCode == WebViewClient.ERROR_CONNECT || errorCode == WebViewClient.ERROR_TIMEOUT || errorCode == WebViewClient.ERROR_HOST_LOOKUP) {
-                mWebView.loadDataWithBaseURL(null, "<style>* {font-size:40px;padding:10px;}</style>" + "哎呀，出错了，请检查网络并关闭重试！", "text/html", "utf-8", null);// 显示空白，屏蔽显示出错的网络地址url
-            }
-        }
-
-        // 当load有ssl层的https页面时，如果这个网站的安全证书在Android无法得到认证，WebView就会变成一个空白页，而并不会像PC浏览器中那样跳出一个风险提示框
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            // 忽略证书的错误继续Load页面内容
-            CustomToast.show("已忽略证书信息继续加载", 0);
-            handler.proceed();// 忽略证书信息继续加载
-            // handler.cancel(); // Android默认的处理方式
-            // handleMessage(Message msg); // 进行其他处理
-            // super.onReceivedSslError(view, handler, error);
+        if (data.hasExtra("pay_result")) {
+            Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
+            intent.putExtra("info", data.getExtras().getString("pay_result"));
+            LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
+            intent.putExtra("type", "unionPay");
+            sendBroadcast(intent);
         }
     }
 }

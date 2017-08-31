@@ -22,4 +22,6 @@
     <string name="active_bookingAirTicket">免费海南机票在等你，快去预定吧！</string>
     <string name="active_go">这就去</string>
     <string name="active_cancel">不了，我游泳过去</string>
+
+    <string name="search_tips">城市/区域/位置/酒店名</string>
 </resources>

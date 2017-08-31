@@ -12,8 +12,8 @@ import com.unionpay.UPPayAssistEx;
 
 public class UnionPayUtil {
 
-    private static final String RELEASE_MODE = "00";
-    private static final String DEBUG_MODE = "01";
+    public static final String RELEASE_MODE = "00";
+    public static final String DEBUG_MODE = "01";
     private Context context;
     private String serverMode = DEBUG_MODE;
 

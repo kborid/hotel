@@ -31,10 +31,12 @@ import java.util.List;
  * @author kborid
  * @date 2017/1/17 0017
  */
-public class LocationActivity2 extends BaseActivity {
-    private String[] hotCityStr = {"上海", "北京", "深圳", "广州", "杭州"};
+public class LocationChooseActivity extends BaseActivity {
+
+    private TextView tv_search_input;
     private EditText et_city;
     private TextView tv_history;
+    private List<String> mHotCityList = new ArrayList<>();
 
     private ListView listView;
     private MyGridViewWidget gv_hotcity;
@@ -49,7 +51,7 @@ public class LocationActivity2 extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_location2_layout);
+        setContentView(R.layout.act_location_choose_layout);
         initViews();
         initParams();
         initListeners();
@@ -58,6 +60,7 @@ public class LocationActivity2 extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
+        tv_search_input = (TextView) findViewById(R.id.tv_search_input);
         et_city = (EditText) findViewById(R.id.et_city);
         if (et_city != null) {
             et_city.setEnabled(false);
@@ -78,8 +81,6 @@ public class LocationActivity2 extends BaseActivity {
     public void initParams() {
         super.initParams();
 
-        tv_center_title.setText("选择城市");
-
         String cityStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         if (StringUtil.notEmpty(cityStr)) {
             et_city.setText(cityStr);
@@ -92,7 +93,8 @@ public class LocationActivity2 extends BaseActivity {
         }
 
         // 热门城市
-        HotCityAdapter hotCityAdapter = new HotCityAdapter(this, Arrays.asList(hotCityStr));
+        mHotCityList = Arrays.asList(getResources().getStringArray(R.array.HotCity));
+        HotCityAdapter hotCityAdapter = new HotCityAdapter(this, mHotCityList);
         gv_hotcity.setAdapter(hotCityAdapter);
 
         cityIndexAdapter = new CityIndexAdapter(this, SessionContext.getCityIndexList());
@@ -107,6 +109,7 @@ public class LocationActivity2 extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
+        tv_search_input.setOnClickListener(this);
         tv_history.setOnClickListener(this);
         gv_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -166,7 +169,7 @@ public class LocationActivity2 extends BaseActivity {
                 SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_CITY, city, false);
                 SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_SITEID, siteId, false);
 
-                mCity = hotCityStr[position];
+                mCity = mHotCityList.get(position);
                 CityAreaInfoBean item = null;
                 for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
                     for (int j = 0; j < SessionContext.getCityAreaList().get(i).list.size(); j++) {
@@ -203,6 +206,11 @@ public class LocationActivity2 extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.tv_search_input:
+                Intent intent = new Intent(this, SearchResultActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
+                break;
             case R.id.tv_history: {
                 mProvince = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY_PROVINCE, "", false);
                 mCity = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY_CITY, "", false);

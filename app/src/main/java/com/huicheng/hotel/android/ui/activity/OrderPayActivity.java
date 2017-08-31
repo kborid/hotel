@@ -52,19 +52,19 @@ public class OrderPayActivity extends BaseActivity {
     private LinearLayout root_lay;
     private TextView tv_address, tv_date, tv_room_name, tv_total_price, tv_detail, tv_comment;
     private Button btn_pay;
-    private TextView tv_pay_title;
-    private ImageView iv_pay_icon, iv_pay_change;
 
     private AlipayUtil alipay = null;
     private WXPayUtils wxpay = null;
     private UnionPayUtil unionpay = null;
     private int payIndex = 0;
+
     private int[] payIcon = new int[]{
-            R.drawable.iv_pay_union,
             R.drawable.iv_pay_zhifubao,
-            R.drawable.iv_pay_weixin
+            R.drawable.iv_pay_weixin,
+            R.drawable.iv_pay_union
     };
-    private String[] payChannel = new String[]{"银联在线", "支付宝", "微信"};
+    private String[] payChannel = new String[]{"支付宝支付", "微信支付", "银联支付"};
+    private LinearLayout payListLay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +90,7 @@ public class OrderPayActivity extends BaseActivity {
         btn_pay = (Button) findViewById(R.id.btn_pay);
         tv_comment = (TextView) findViewById(R.id.tv_comment);
 
-        iv_pay_icon = (ImageView) findViewById(R.id.iv_pay_icon);
-        tv_pay_title = (TextView) findViewById(R.id.tv_pay_title);
-        iv_pay_change = (ImageView) findViewById(R.id.iv_pay_change);
+        payListLay = (LinearLayout) findViewById(R.id.payListLay);
     }
 
     @Override
@@ -115,8 +113,34 @@ public class OrderPayActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText("支付方式");
-        iv_pay_icon.setImageResource(payIcon[payIndex]);
-        tv_pay_title.setText(payChannel[payIndex]);
+
+        payListLay.removeAllViews();
+        for (int i = 0; i < payChannel.length; i++) {
+            View view = LayoutInflater.from(this).inflate(R.layout.lv_pay_item, null);
+            ImageView iv_pay_icon = (ImageView) view.findViewById(R.id.iv_pay_icon);
+            TextView tv_pay_title = (TextView) view.findViewById(R.id.tv_pay_title);
+            ImageView iv_pay_sel = (ImageView) view.findViewById(R.id.iv_pay_sel);
+            iv_pay_icon.setImageResource(payIcon[i]);
+            tv_pay_title.setText(payChannel[i]);
+            if (0 == i) {
+                iv_pay_sel.setImageResource(R.drawable.ipro_set_pu_019);
+            }
+            final int finalI = i;
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    payIndex = finalI;
+                    ((ImageView) payListLay.getChildAt(payIndex).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.ipro_set_pu_019);
+                    for (int j = 0; j < payChannel.length; j++) {
+                        if (j != payIndex) {
+                            ((ImageView) payListLay.getChildAt(j).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.iv_pay_check);
+                        }
+                    }
+                }
+            });
+            payListLay.addView(view);
+        }
+
         unionpay = new UnionPayUtil(this);
         alipay = new AlipayUtil(this);
         wxpay = new WXPayUtils(this);
@@ -189,7 +213,6 @@ public class OrderPayActivity extends BaseActivity {
         super.initListeners();
         tv_detail.setOnClickListener(this);
         btn_pay.setOnClickListener(this);
-        iv_pay_change.setOnClickListener(this);
     }
 
     @Override
@@ -268,22 +291,6 @@ public class OrderPayActivity extends BaseActivity {
                 dialog.show();
                 break;
             }
-            case R.id.iv_pay_change: {
-                CustomDialog dialog = new CustomDialog(this);
-                dialog.setTitle("选择支付方式");
-                dialog.setSingleChoiceItems(payChannel, payIndex, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        payIndex = which;
-                        iv_pay_icon.setImageResource(payIcon[payIndex]);
-                        tv_pay_title.setText(payChannel[payIndex]);
-                        dialog.dismiss();
-                    }
-                });
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-                break;
-            }
             case R.id.btn_back: {
                 CustomDialog dialog = new CustomDialog(this);
                 dialog.setTitle("温馨提示");
@@ -344,13 +351,13 @@ public class OrderPayActivity extends BaseActivity {
         if (data == null) {
             return;
         }
-        Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
         if (data.hasExtra("pay_result")) {
+            Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
             intent.putExtra("info", data.getExtras().getString("pay_result"));
             LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
+            intent.putExtra("type", "unionPay");
+            sendBroadcast(intent);
         }
-        intent.putExtra("type", "unionPay");
-        sendBroadcast(intent);
     }
 
 
@@ -386,6 +393,7 @@ public class OrderPayActivity extends BaseActivity {
                             mmJson.getString("timestamp"));
                 } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
                     JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
+                    unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
                     unionpay.unionStartPay(mmJson.getString("tn"));
                 } else {
                     CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);

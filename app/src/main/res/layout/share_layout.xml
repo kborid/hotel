@@ -4,7 +4,21 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:background="@drawable/comm_dialog_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:text="分享到"
+        android:textColor="@color/secColor"
+        android:textSize="@dimen/common_14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/comm_line" />
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
@@ -32,9 +46,9 @@
                 android:id="@+id/qq_share"
                 layout="@layout/popup_share_item" />
 
-            <include
+            <!--<include
                 android:id="@+id/sina_share"
-                layout="@layout/popup_share_item" />
+                layout="@layout/popup_share_item" />-->
 
         </LinearLayout>
     </HorizontalScrollView>

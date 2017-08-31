@@ -271,7 +271,12 @@ public class FeedbackActivity extends BaseActivity {
                     filePath = ThumbnailUtil.getPicPath(this, imageUri);
                     LogUtil.i(TAG, "filepath image = " + filePath);
                     bgPath = Utils.getFolderDir("pic") + "_temp_compress.jpg";
-                    uploadImage(new File(ThumbnailUtil.compressImage(filePath, bgPath)));
+                    String newFilePath = ThumbnailUtil.compressImage(filePath, bgPath);
+                    if (StringUtil.notEmpty(newFilePath)) {
+                        uploadImage(new File(newFilePath));
+                    } else {
+                        CustomToast.show("图片无效", CustomToast.LENGTH_SHORT);
+                    }
                 } else {
                     CustomToast.show("获取图片失败", CustomToast.LENGTH_SHORT);
                 }
@@ -279,7 +284,12 @@ public class FeedbackActivity extends BaseActivity {
             case AppConst.ACTIVITY_IMAGE_CAPTURE:
                 filePath = Utils.getFolderDir("pic") + "_temp.jpg";
                 bgPath = Utils.getFolderDir("pic") + "_temp_compress.jpg";
-                uploadImage(new File(ThumbnailUtil.compressImage(filePath, bgPath)));
+                String newFilePath = ThumbnailUtil.compressImage(filePath, bgPath);
+                if (StringUtil.notEmpty(newFilePath)) {
+                    uploadImage(new File(newFilePath));
+                } else {
+                    CustomToast.show("图片无效", CustomToast.LENGTH_SHORT);
+                }
                 break;
             default:
                 break;

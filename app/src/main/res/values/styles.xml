@@ -260,8 +260,13 @@
     </style>
 
     <style name="consider_anmi" parent="@android:style/Animation">
-        <item name="android:windowEnterAnimation">@anim/fade_in</item>
-        <item name="android:windowExitAnimation">@anim/fade_out</item>
+        <item name="android:windowEnterAnimation">@anim/consider_open</item>
+        <item name="android:windowExitAnimation">@anim/consider_close</item>
+    </style>
+
+    <style name="share_anmi" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_up_in</item>
+        <item name="android:windowExitAnimation">@anim/push_up_out</item>
     </style>
 
     <style name="tabTextAppearance">

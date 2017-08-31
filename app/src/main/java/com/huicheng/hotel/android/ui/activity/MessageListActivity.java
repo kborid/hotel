@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -104,7 +105,7 @@ public class MessageListActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText("消息");
-        tv_content.setMovementMethod(ScrollingMovementMethod.getInstance());
+//        tv_content.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         MyMsgTypeAdapter spinner_type_adapter = new MyMsgTypeAdapter(this, keys);
         spinner_type.setPopupBackgroundResource(spinnerTypeBgResId);
@@ -235,6 +236,8 @@ public class MessageListActivity extends BaseActivity {
                 if (!et_keyword.getText().toString().equals(keyword)) {
                     keyword = et_keyword.getText().toString();
                     listview.refreshingHeaderView();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
                 break;
             default:
