@@ -117,7 +117,7 @@
         <activity
             android:name=".ui.activity.FeedbackActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <!-- 关于 -->
         <activity
             android:name=".ui.activity.AboutActivity"
