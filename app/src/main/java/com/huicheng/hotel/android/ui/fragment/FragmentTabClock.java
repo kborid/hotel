@@ -286,7 +286,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
                 }
                 list.addAll(temp);
 
-                isNoMore = /*temp.size() < PAGESIZE*/temp.size() == 0;
+                isNoMore = temp.size() < PAGESIZE;
 
                 //设置缓存
                 List<HotelMapInfoBean> clockList = new ArrayList<>();

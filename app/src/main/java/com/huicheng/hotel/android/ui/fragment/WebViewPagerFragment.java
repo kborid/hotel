@@ -1,9 +1,7 @@
 package com.huicheng.hotel.android.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +18,12 @@ import com.huicheng.hotel.android.net.bean.ShenZhouConfigBean;
 import com.huicheng.hotel.android.ui.activity.MainFragmentActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.MyCommWebViewClient;
-import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.webview.WebChromeClientCompat;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * Fragment webView
@@ -194,22 +190,5 @@ public class WebViewPagerFragment extends BaseFragment {
                 error_lay.setVisibility(View.GONE);
             }
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) {
-            return;
-        }
-        if (MainFragmentActivity.TAB_PLANE.equals(keyIndex)) {
-            if (data.hasExtra("pay_result")) {
-                Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
-                intent.putExtra("info", data.getExtras().getString("pay_result"));
-                LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
-                intent.putExtra("type", "unionPay");
-                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-            }
-        }
     }
 }

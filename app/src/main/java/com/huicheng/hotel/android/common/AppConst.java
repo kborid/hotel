@@ -150,4 +150,5 @@ public final class AppConst {
 
     public static final int HOTEL_BANNER = CONST_HANDLE_FLAG + 61;
     public static final int ACTIVE_ABOUT = CONST_HANDLE_FLAG + 62;
+    public static final int ALL_SEARCH_HOTEL = CONST_HANDLE_FLAG + 63;
 }

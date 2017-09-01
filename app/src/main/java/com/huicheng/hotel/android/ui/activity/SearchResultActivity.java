@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,8 +18,13 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.AppConst;
+import com.huicheng.hotel.android.common.HotelCommDef;
+import com.huicheng.hotel.android.common.HotelOrderManager;
+import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
+import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.net.bean.HotelInfoBean;
 import com.huicheng.hotel.android.ui.adapter.SearchResultAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.iflytek.cloud.RecognizerResult;
@@ -26,9 +32,11 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.widget.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +49,7 @@ import java.util.List;
 public class SearchResultActivity extends BaseActivity {
 
     private static final String TAG = "SearchResultActivity";
+    private static final int PAGE_SIZE = 20;
 
     private EditText et_input;
     private ImageView iv_all_rec;
@@ -48,9 +57,10 @@ public class SearchResultActivity extends BaseActivity {
 
     private String keyWorld;
 
-    private List<HomeBannerInfoBean> list = new ArrayList<>();
+    private List<HotelInfoBean> list = new ArrayList<>();
     private SearchResultAdapter adapter;
     private ListView listview;
+    private TextView tv_empty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +78,20 @@ public class SearchResultActivity extends BaseActivity {
         iv_all_rec = (ImageView) findViewById(R.id.iv_all_rec);
         tv_cancel = (TextView) findViewById(R.id.tv_cancel);
         listview = (ListView) findViewById(R.id.listview);
+        tv_empty = (TextView) findViewById(R.id.tv_empty);
+    }
+
+    @Override
+    public void dealIntent() {
+        super.dealIntent();
     }
 
     @Override
     public void initParams() {
         super.initParams();
-        list.addAll(SessionContext.getBannerList());
         adapter = new SearchResultAdapter(this, list);
         listview.setAdapter(adapter);
+        listview.setEmptyView(tv_empty);
     }
 
     @Override
@@ -96,7 +112,7 @@ public class SearchResultActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 if (StringUtil.notEmpty(s) && !s.toString().equals(keyWorld)) {
                     keyWorld = s.toString();
-                    CustomToast.show("Search... " + keyWorld, CustomToast.LENGTH_SHORT);
+                    requestAllSearch(keyWorld);
                 }
             }
         });
@@ -109,7 +125,7 @@ public class SearchResultActivity extends BaseActivity {
                     if (StringUtil.notEmpty(keyWorld)) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                        CustomToast.show("Search... " + keyWorld, CustomToast.LENGTH_SHORT);
+                        requestAllSearch(keyWorld);
                     }
                     return true;
                 }
@@ -122,7 +138,16 @@ public class SearchResultActivity extends BaseActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CustomToast.show(list.get(position).url, CustomToast.LENGTH_SHORT);
+                if (!SessionContext.isLogin()) {
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    return;
+                }
+                HotelInfoBean bean = list.get(position);
+                HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
+                Intent intent = new Intent(SearchResultActivity.this, RoomListActivity.class);
+                intent.putExtra("key", HotelCommDef.ALLDAY);
+                intent.putExtra("hotelId", list.get(position).hotelId);
+                startActivity(intent);
             }
         });
     }
@@ -165,6 +190,20 @@ public class SearchResultActivity extends BaseActivity {
         }
     }
 
+    private void requestAllSearch(String keyWorld) {
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        b.addBody("keyword", keyWorld);
+        b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
+        b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
+        b.addBody("pageSize", String.valueOf(PAGE_SIZE));
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.ALL_SEARCH_HOTEL;
+        d.flag = AppConst.ALL_SEARCH_HOTEL;
+
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -173,6 +212,20 @@ public class SearchResultActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
+        if (response != null && response.body != null) {
+            if (request.flag == AppConst.ALL_SEARCH_HOTEL) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                List<HotelInfoBean> temp = JSON.parseArray(response.body.toString(), HotelInfoBean.class);
+                list.clear();
+                list.addAll(temp);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

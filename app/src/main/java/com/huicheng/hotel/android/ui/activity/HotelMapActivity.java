@@ -93,6 +93,7 @@ public class HotelMapActivity extends BaseActivity
 
     private HotelDetailInfoBean hotelDetailInfoBean = null;
     private List<HotelMapInfoBean> hotelList = new ArrayList<>();
+    private String hotelCityStr;
     private String key = null;
 
     private int mPinId, mPricePinId;
@@ -144,6 +145,9 @@ public class HotelMapActivity extends BaseActivity
             if (bundle.getSerializable("bean") != null) {
                 hotelDetailInfoBean = (HotelDetailInfoBean) bundle.getSerializable("bean");
             }
+            if (bundle.getString("hotelCityStr") != null) {
+                hotelCityStr = bundle.getString("hotelCityStr");
+            }
             switch (bundle.getInt("index")) {
                 case 0:
                     hotelList.addAll(SessionContext.getAllDayList());
@@ -171,9 +175,12 @@ public class HotelMapActivity extends BaseActivity
 
     @Override
     public void initParams() {
-        tv_center_title.setText(HotelOrderManager.getInstance().getCityStr() + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
-        tv_center_title.getPaint().setFakeBoldText(true);
         super.initParams();
+        if (StringUtil.isEmpty(hotelCityStr)) {
+            hotelCityStr = HotelOrderManager.getInstance().getCityStr();
+        }
+        tv_center_title.setText(hotelCityStr + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
+        tv_center_title.getPaint().setFakeBoldText(true);
 
         if (amap == null) {
             amap = mapview.getMap();

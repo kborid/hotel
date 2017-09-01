@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -33,7 +32,6 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -202,8 +200,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         LogUtil.i(TAG, "requestHotelBanner()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         ResponseData d = b.syncRequest(b);
-//        d.path = NetURL.HOTEL_BANNER;
-        d.path = "http://118.178.225.32/hmp_website/activity/activityPics.json";
+        d.path = NetURL.HOTEL_BANNER;
         d.flag = AppConst.HOTEL_BANNER;
         requestID = DataLoader.getInstance().loadData(this, d);
     }

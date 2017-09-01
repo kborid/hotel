@@ -18,7 +18,7 @@ public final class NetURL {
         }
     }
 
-    private static final String PORTAL = (SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0) == 2) ? getApi() : getApi() + "hmp_website/"; // PORTAL地址  hmp_website/
+    private static final String PORTAL = (SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0) == 3) ? getApi() : getApi() + "hmp_website/"; // PORTAL地址  hmp_website/
 
     //---------------------------------上传图片------------------------------------------------------
     public static final String UPLOAD = PORTAL + "upload/img.up"; // 上传图片
@@ -67,6 +67,7 @@ public final class NetURL {
     public static final String MESSAGE_UPDATE = PORTAL + "msg/update.json";
 
     //---------------------------------酒店---------------------------------------------------------
+    public static final String ALL_SEARCH_HOTEL = PORTAL + "hotel/search.json"; //全文检索
     public static final String HOTEL_LIST = PORTAL + "hotel/list.json";
     public static final String HOTEL_DETAIL = PORTAL + "hotel/detail.json";
     public static final String CHECK_ROOM_EMPTY = PORTAL + "hotel/before_room_detail.json";
@@ -103,7 +104,7 @@ public final class NetURL {
     public static final String ACTIVE_ABOUT = PORTAL + "system/gettipshowornot.json"; //活动相关
 
     // -----------------------------------Html 5----------------------------------------------------
-    public static final String SHARE = PORTAL + "pages/share.html"; //分享
+    public static final String SHARE = PORTAL + "pages/plain/pages/agreements/share.html"; //分享
     public static final String SAVE_RECOMMAND = PORTAL + "user/saveRecommand.json"; //推荐
     public static final String PLANE_HOME = PORTAL + "pages/plain/pages/air.html"; //机票页
     public static final String TRAIN_HOME = "https://m.ctrip.com/webapp/train/v2/index.html?allianceid=30613&sid=997104&hiderecommapp=1&popup=close&autoawaken=close&showhead=0"; //火车票首页

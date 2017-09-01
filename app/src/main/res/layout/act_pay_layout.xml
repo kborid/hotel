@@ -191,9 +191,9 @@
             android:layout_height="45dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="?attr/bottomBtnSel"
+            android:background="@drawable/pay_bottom_btn_sel"
             android:text="支付"
-            android:textColor="@color/bottom_btn_text_selector"
+            android:textColor="@color/white"
             android:textSize="@dimen/common_15sp"
             android:textStyle="bold" />
     </LinearLayout>

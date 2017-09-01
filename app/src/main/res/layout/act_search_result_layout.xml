@@ -73,4 +73,14 @@
         android:dividerHeight="1dp"
         android:listSelector="@drawable/common_item_selector_bg"
         android:scrollbarThumbVertical="@drawable/p3016_scrollbar" />
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="未找到任何结果"
+        android:textColor="@color/secColorShadow"
+        android:textSize="@dimen/common_15sp"
+        android:visibility="gone" />
 </LinearLayout>

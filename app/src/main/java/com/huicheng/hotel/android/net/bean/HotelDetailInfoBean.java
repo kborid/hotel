@@ -27,6 +27,9 @@ public class HotelDetailInfoBean implements Serializable {
     public String typeByService;
     public boolean hasArticle;
     public boolean isPopup;
+    public String provinceName;
+    public String cityName;
+
 
     public static class Attachments implements Serializable {
         public List<Contents> content;

@@ -33,6 +33,7 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomDetailCheckResultInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomListInfoBean;
+import com.huicheng.hotel.android.tools.CityStringUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
@@ -71,6 +72,7 @@ public class RoomListActivity extends BaseActivity {
     private TabHost tabHost;
     private LinearLayout tab_day, tab_clock;
     private String key = null;
+    private String hotelCityStr;
     private int hotelId = 0;
     private int roomId = -1, roomType = 0;
     private boolean isClickYgr = false;
@@ -141,7 +143,6 @@ public class RoomListActivity extends BaseActivity {
 
     @Override
     public void initParams() {
-        tv_center_title.setText(HotelOrderManager.getInstance().getCityStr() + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
         tv_center_title.getPaint().setFakeBoldText(true);
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
         super.initParams();
@@ -236,6 +237,10 @@ public class RoomListActivity extends BaseActivity {
             } else {
                 btn_right.setVisibility(View.INVISIBLE);
             }
+            //设置 title
+            hotelCityStr = CityStringUtils.getProvinceCityString(hotelDetailInfoBean.provinceName, hotelDetailInfoBean.cityName, "-");
+            tv_center_title.setText(hotelCityStr + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
+
             //设置banner
             int marginValue = Utils.dip2px(10);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
@@ -557,6 +562,7 @@ public class RoomListActivity extends BaseActivity {
                 if (hotelDetailInfoBean != null) {
                     intent = new Intent(this, HotelMapActivity.class);
                     intent.putExtra("bean", hotelDetailInfoBean);
+                    intent.putExtra("hotelCityStr", hotelCityStr);
                 }
                 break;
             case R.id.tv_service:

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
+import com.huicheng.hotel.android.net.bean.HotelInfoBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,9 @@ import java.util.List;
 
 public class SearchResultAdapter extends BaseAdapter {
     private Context context;
-    private List<HomeBannerInfoBean> list = new ArrayList<>();
+    private List<HotelInfoBean> list = new ArrayList<>();
 
-    public SearchResultAdapter(Context context, List<HomeBannerInfoBean> list) {
+    public SearchResultAdapter(Context context, List<HotelInfoBean> list) {
         this.context = context;
         this.list = list;
     }
@@ -56,8 +56,12 @@ public class SearchResultAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tv_title.setText(list.get(position).target);
-        viewHolder.tv_summary.setText(list.get(position).url);
+        viewHolder.tv_title.setText(list.get(position).hotelName);
+        viewHolder.tv_summary.setText(
+                String.format(context.getResources().getString(R.string.rmbStr), String.valueOf(list.get(position).price))
+                        + ", "
+                        + list.get(position).hotelAddress);
+        viewHolder.tv_point.setText(list.get(position).hotelGrade + "分");
 
         return convertView;
     }

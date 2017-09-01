@@ -638,7 +638,7 @@ public class UserCenterActivity extends BaseActivity {
     private void requestYZM() {
         LogUtil.d(TAG, "requestYZM()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("businesstype", AppConst.BUSINESS_TYPE_REGISTER);
+        b.addBody("businesstype", AppConst.BUSINESS_TYPE_CHANGEPHONE);
         b.addBody("mobile", phoneNumber);
         b.addBody("smsparam", "code");
 

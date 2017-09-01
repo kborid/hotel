@@ -293,7 +293,7 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
                 }
                 list.addAll(temp);
 
-                isNoMore = /*temp.size() < PAGESIZE*/temp.size() == 0;
+                isNoMore = temp.size() < PAGESIZE;
 
                 //设置缓存
                 List<HotelMapInfoBean> ygrList = new ArrayList<>();

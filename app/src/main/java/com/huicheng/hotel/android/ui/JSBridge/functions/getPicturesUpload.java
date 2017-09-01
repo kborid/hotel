@@ -117,7 +117,7 @@ public class getPicturesUpload implements HtmlActivity.ActivityResult, WVJBWebVi
 	 */
 	private void uploadImg(Bitmap bm) throws JSONException, RuntimeException {
 		ResponseData data = new ResponseData();
-		data.path = NetURL.UPLOAD;// "http://192.168.1.118:8080/img/base64upload";//
+		data.path = NetURL.UPLOAD;
 		data.isLocal = true;
 		data.type = InfoType.POST_REQUEST.toString();
 		JSONObject mJson = new JSONObject();

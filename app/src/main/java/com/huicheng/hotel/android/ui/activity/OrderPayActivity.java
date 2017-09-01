@@ -124,17 +124,17 @@ public class OrderPayActivity extends BaseActivity {
             iv_pay_icon.setImageResource(payIcon[i]);
             tv_pay_title.setText(payChannel[i]);
             if (0 == i) {
-                iv_pay_sel.setImageResource(R.drawable.ipro_set_pu_019);
+                iv_pay_sel.setImageResource(R.drawable.iv_pay_checked);
             }
             final int finalI = i;
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     payIndex = finalI;
-                    ((ImageView) payListLay.getChildAt(payIndex).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.ipro_set_pu_019);
+                    ((ImageView) payListLay.getChildAt(payIndex).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.iv_pay_checked);
                     for (int j = 0; j < payChannel.length; j++) {
                         if (j != payIndex) {
-                            ((ImageView) payListLay.getChildAt(j).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.ipro_set_pu_008);
+                            ((ImageView) payListLay.getChildAt(j).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.iv_pay_check);
                         }
                     }
                 }

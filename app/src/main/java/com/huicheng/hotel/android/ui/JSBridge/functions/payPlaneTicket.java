@@ -1,10 +1,8 @@
 package com.huicheng.hotel.android.ui.JSBridge.functions;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
@@ -20,6 +18,7 @@ import com.huicheng.hotel.android.common.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.common.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
+import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
@@ -37,8 +36,8 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
 
     private static final String TAG = "payPlaneTicket";
     private Context mContext;
+    private ProgressDialog mProgressDialog;
     private WVJBWebViewClient.WVJBResponseCallback mCallback;
-    private String mItemName;
     private BroadcastReceiver mBroadcastReceiver;
 
     public payPlaneTicket(Context context) {
@@ -98,6 +97,10 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
         d.path = NetURL.PAY;
         d.flag = AppConst.PAY;
 
+        if (!isProgressShowing()) {
+            showProgressDialog(mContext);
+        }
+
         DataLoader.getInstance().loadData(new DataCallback() {
             @Override
             public void preExecute(ResponseData request) {
@@ -108,6 +111,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
                 if (response != null && response.body != null) {
                     if (request.flag == AppConst.PAY) {
                         LogUtil.i(TAG, "json = " + response.body.toString());
+                        removeProgressDialog();
                         JSONObject mJson = JSON.parseObject(response.body.toString());
                         if (mJson.containsKey(HotelCommDef.WXPAY)) {
                             JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
@@ -127,6 +131,7 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
             @Override
             public void notifyError(ResponseData request, ResponseData response, Exception e) {
                 LogUtil.i(TAG, "payPlaneTicket()");
+                removeProgressDialog();
                 String message;
                 if (e != null && e instanceof ConnectException) {
                     message = mContext.getResources().getString(R.string.dialog_tip_net_error);
@@ -138,53 +143,6 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
             }
         }, d);
     }
-
-    private void selectPayType(final String[] array, final String alipayOrder, final String wechatOrder) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        // 设置对话框的标题
-        builder.setTitle("请选择支付方式");
-        builder.setSingleChoiceItems(array, 0, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                mItemName = array[which];
-            }
-        });
-
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                if (mItemName == null) {
-                    mItemName = array[0];
-                }
-                try {
-                    if ("支付宝".equals(mItemName)) {
-                        aliPay(alipayOrder);
-                    } else {
-//                        wechatPay(wechatOrder);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        });
-
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                JSONObject mJson = new JSONObject();
-                mJson.put("code", "-999");
-                mJson.put("msg", "用户取消");
-                mCallback.callback(mJson.toString());
-                unregisterReceiver();
-            }
-        });
-        builder.setCancelable(false);
-        builder.create().show();
-    }
-
 
     /**
      * 阿里支付
@@ -227,7 +185,6 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
         IntentFilter mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(BroadCastConst.ACTION_PAY_STATUS);
         LocalBroadcastManager.getInstance(mContext).registerReceiver(mBroadcastReceiver, mIntentFilter);
-
     }
 
     /**
@@ -238,6 +195,26 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
             LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mBroadcastReceiver);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void showProgressDialog(Context context) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(context);
+        }
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+    }
+
+
+    private boolean isProgressShowing() {
+        return mProgressDialog != null && mProgressDialog.isShowing();
+    }
+
+    private void removeProgressDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
         }
     }
 }

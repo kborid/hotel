@@ -11,15 +11,19 @@ public class CityStringUtils {
     public static String getProvinceCityString(String province, String city, String mid) {
         String tempStr = "";
         if (StringUtil.notEmpty(city)) {
-            if (city.contains("市")) {
+            if (city.endsWith("市")) {
                 city = city.replace("市", "");
+            } else if (city.endsWith("区")) {
+                city = city.replace("区", "");
             }
             tempStr += city;
         }
         if (StringUtil.notEmpty(province)) {
-            if (!province.equals(city)) {
-                if (province.contains("省")) {
+            if (!province.contains(city)) {
+                if (province.endsWith("省")) {
                     province = province.replace("省", "");
+                } else if (province.endsWith("市")) {
+                    province = province.replace("市", "");
                 }
                 tempStr += mid;
                 tempStr += province;

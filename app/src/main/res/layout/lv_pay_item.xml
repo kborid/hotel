@@ -33,6 +33,6 @@
             android:id="@+id/iv_pay_sel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ipro_set_pu_008" />
+            android:src="@drawable/iv_pay_check" />
     </LinearLayout>
 </LinearLayout>

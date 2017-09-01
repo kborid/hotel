@@ -18,6 +18,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
@@ -32,6 +33,7 @@ import java.util.List;
  * @date 2017/1/17 0017
  */
 public class LocationChooseActivity extends BaseActivity {
+    private static final String TAG = "LocationChooseActivity";
 
     private TextView tv_search_input;
     private EditText et_city;
@@ -136,7 +138,8 @@ public class LocationChooseActivity extends BaseActivity {
                 SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_SITEID, siteId, false);
 
                 CityAreaInfoBean item = cityList.get(position);
-                mCity = cityList.get(position).shortName;
+                mCity = item.shortName;
+                LogUtil.i(TAG, "[Info:]" + item.toString());
                 for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
                     if (SessionContext.getCityAreaList().get(i).id.equals(item.parentId)) {
                         mProvince = SessionContext.getCityAreaList().get(i).shortName;
@@ -148,6 +151,11 @@ public class LocationChooseActivity extends BaseActivity {
                         break;
                     }
                 }
+
+                LogUtil.i(TAG, "========= line == line == line =========");
+                LogUtil.i(TAG, "mSiteId = " + mSiteId);
+                LogUtil.i(TAG, "mProvince = " + mProvince);
+                LogUtil.i(TAG, "mCity = " + mCity);
 
                 SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
                 SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
