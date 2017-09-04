@@ -188,12 +188,11 @@ public class MyDiscountCouponActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_use:
-                Intent intent = new Intent(this, HotelCalendarChooseActivity.class);
                 HotelOrderManager.getInstance().reset();
-                if (couponInfoBean != null) {
-                    HotelOrderManager.getInstance().setUseCoupon(true);
-                    HotelOrderManager.getInstance().setCouponId(couponInfoBean.coupon.get(positionIndex).id);
-                }
+                HotelOrderManager.getInstance().setCouponInfoBean(couponInfoBean.coupon.get(positionIndex));
+                Intent intent = new Intent(this, HotelCalendarChooseActivity.class);
+                intent.putExtra("isForbidTitleClick", true);
+                intent.putExtra("isCouponBooking", true);
                 startActivity(intent);
                 break;
             case R.id.active_lay:
@@ -214,6 +213,7 @@ public class MyDiscountCouponActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        HotelOrderManager.getInstance().reset();
     }
 
     @Override

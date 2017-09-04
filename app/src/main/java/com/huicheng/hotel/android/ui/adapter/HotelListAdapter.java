@@ -111,7 +111,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         }
 
         // 下方显示价格逻辑
-        String note = "平台价：", price = "暂无";
+        String note = "价格：", price = "暂无";
         switch (type) {
             case HotelCommDef.TYPE_ALL:
 //                holder.detail_lay.setBackgroundResource(R.drawable.lv_hotel_item_bg);

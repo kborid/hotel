@@ -22,7 +22,6 @@ import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
-import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
 /**
@@ -39,8 +38,10 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
     private TextView tv_end;
     private Button btn_next;
 
-    private boolean rebooking = false;
-    private String hotelId = null;
+    private boolean isForbidTitleClick = false;
+    private boolean isReBooking = false;
+    private boolean isFansBooking = false;
+    private boolean isCouponBooking = false;
 
     private long beginTime, endTime;
 
@@ -69,10 +70,10 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            rebooking = bundle.getBoolean("rebooking");
-            if (bundle.getString("hotelId") != null) {
-                hotelId = bundle.getString("hotelId");
-            }
+            isForbidTitleClick = bundle.getBoolean("isForbidTitleClick");
+            isReBooking = bundle.getBoolean("isReBooking");
+            isFansBooking = bundle.getBoolean("isFansBooking");
+            isCouponBooking = bundle.getBoolean("isCouponBooking");
             beginTime = bundle.getLong("beginTime");
             endTime = bundle.getLong("endTime");
         }
@@ -84,8 +85,10 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
         tv_center_title.getPaint().setFakeBoldText(true);
         initWeekLayout();
-        if (rebooking || HotelOrderManager.getInstance().isUseCoupon() || HotelOrderManager.getInstance().isVipHotel()) {
+        if (isForbidTitleClick) {
             tv_center_title.setEnabled(false);
+        } else {
+            tv_center_title.setEnabled(true);
         }
         if (0 != beginTime && 0 != endTime) {
             tv_begin.setText(DateUtil.getDay("M月d日", beginTime));
@@ -108,26 +111,29 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_next: {
-                SimpleMonthAdapter.CalendarDay begin = new SimpleMonthAdapter.CalendarDay(beginTime);
-                SimpleMonthAdapter.CalendarDay end = new SimpleMonthAdapter.CalendarDay(endTime);
-                HotelOrderManager.getInstance().setBeginTime(beginTime);
-                HotelOrderManager.getInstance().setEndTime(endTime);
-                HotelOrderManager.getInstance().setDateStr((begin.getMonth() + 1) + "." + begin.getDay() /*+ DateUtil.dateToWeek2(begin.getDate())*/ + " - " + (end.getMonth() + 1) + "." + end.getDay()/* + DateUtil.dateToWeek2(end.getDate())*/);
-
                 Intent intent = null;
-                if (rebooking) {
+                if (isReBooking) {
+                    HotelOrderManager.getInstance().setBeginTime(beginTime);
+                    HotelOrderManager.getInstance().setEndTime(endTime);
+                    HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
                     HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
                     intent = new Intent(this, RoomListActivity.class);
                     intent.putExtra("key", HotelCommDef.ALLDAY);
-                    intent.putExtra("hotelId", Integer.parseInt(hotelId));
-                } else if (HotelOrderManager.getInstance().isVipHotel() && HotelOrderManager.getInstance().getVipHotelId() != -1) {
+                    intent.putExtra("hotelId", Integer.parseInt(HotelOrderManager.getInstance().getOrderPayDetailInfoBean().hotelID));
+                } else if (isFansBooking) {
+                    HotelOrderManager.getInstance().setBeginTime(beginTime);
+                    HotelOrderManager.getInstance().setEndTime(endTime);
+                    HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
                     HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
                     intent = new Intent(this, RoomListActivity.class);
                     intent.putExtra("key", HotelCommDef.ALLDAY);
-                    intent.putExtra("hotelId", HotelOrderManager.getInstance().getVipHotelId());
-                } else if (HotelOrderManager.getInstance().isUseCoupon() && HotelOrderManager.getInstance().getCouponId() != -1) {
+                    intent.putExtra("hotelId", HotelOrderManager.getInstance().getFansHotelInfoBean().hotelId);
+                } else if (isCouponBooking) {
+                    HotelOrderManager.getInstance().setBeginTime(beginTime);
+                    HotelOrderManager.getInstance().setEndTime(endTime);
+                    HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
                     intent = new Intent(this, RoomOrderConfirmActivity.class);
-                    intent.putExtra("hotelId", Integer.parseInt(hotelId));
+                    intent.putExtra("hotelId", HotelOrderManager.getInstance().getCouponInfoBean().hotelId);
                 } else {
                     Intent dataIntent = new Intent();
                     dataIntent.putExtra("beginTime", beginTime);
@@ -193,7 +199,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         LogUtil.i(TAG, "Selected last days = " + selectedDays.getLast());
         tv_begin.setText(selectedDays.getFirst().getMonth() + 1 + "月" + selectedDays.getFirst().getDay() + "日");
         if (selectedDays.getLast() != null) {
-            if (HotelOrderManager.getInstance().isUseCoupon() && HotelOrderManager.getInstance().getCouponId() != -1) {
+            if (isCouponBooking) {
                 if (DateUtil.getGapCount(selectedDays.getFirst().getDate(), selectedDays.getLast().getDate()) > 1) {
                     CustomToast.show("使用优惠券只能住一晚，请重新选择", CustomToast.LENGTH_SHORT);
                     btn_next.setEnabled(false);

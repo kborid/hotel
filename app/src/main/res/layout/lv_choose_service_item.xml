@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
-                android:gravity="center"
+                android:gravity="center_horizontal|bottom"
                 android:text="详情"
                 android:textColor="@color/secColor"
                 android:textSize="@dimen/common_10sp" />

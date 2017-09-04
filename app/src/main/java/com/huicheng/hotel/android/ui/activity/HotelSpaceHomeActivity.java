@@ -119,6 +119,7 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+        tv_center_title.setText("酒店空间");
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
 
         //根据宽高比设置cardview大小，适配不同尺寸的屏幕
@@ -188,7 +189,6 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     private void refreshHotelSpaceBasicInfo() {
         if (hotelSpaceBasicInfoBean != null) {
             root_lay.setVisibility(View.VISIBLE);
-            tv_center_title.setText(hotelSpaceBasicInfoBean.hotelName + "的空间");
             loadImage(iv_hotel_bg, R.drawable.def_hotel_banner, hotelSpaceBasicInfoBean.pic, 1024, 1024);
             tv_tie_count.setText(String.valueOf(hotelSpaceBasicInfoBean.articleCnt));
             tv_fans_count.setText(String.valueOf(hotelSpaceBasicInfoBean.vipCnt));

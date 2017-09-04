@@ -1,5 +1,7 @@
 package com.huicheng.hotel.android.common;
 
+import com.huicheng.hotel.android.net.bean.CouponInfoBean;
+import com.huicheng.hotel.android.net.bean.FansHotelInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 
@@ -16,15 +18,13 @@ public class HotelOrderManager {
     private long beginTime, endTime;
     private Date ygrBeginDate, ygrEndDate;
     private long ygrBeginTime, ygrEndTime;
-    private boolean hasCoupon = false;
-    private int couponId = -1;
-    private boolean isVipHotel = false;
-    private int vipHotelId = -1;
     private int hotelType = 1;
     private String payType;
     private String cityStr = null;
     private String dateStr = null;
     private HotelDetailInfoBean hotelDetailInfoBean = null;
+    private FansHotelInfoBean fansHotelInfoBean = null;
+    private CouponInfoBean.CouponInfo couponInfoBean = null;
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
 
     private HotelOrderManager() {
@@ -65,22 +65,6 @@ public class HotelOrderManager {
         this.hotelType = hotelType;
     }
 
-    public boolean isVipHotel() {
-        return isVipHotel;
-    }
-
-    public int getVipHotelId() {
-        return vipHotelId;
-    }
-
-    public void setIsVipHotel(boolean isVipHotel) {
-        this.isVipHotel = isVipHotel;
-    }
-
-    public void setVipHotelId(int vipHotelId) {
-        this.vipHotelId = vipHotelId;
-    }
-
     public Date getBeginDate() {
         return getBeginDate(false);
     }
@@ -103,22 +87,6 @@ public class HotelOrderManager {
         } else {
             return endDate;
         }
-    }
-
-    public void setUseCoupon(boolean isFlag) {
-        this.hasCoupon = isFlag;
-    }
-
-    public boolean isUseCoupon() {
-        return hasCoupon;
-    }
-
-    public void setCouponId(int couponId) {
-        this.couponId = couponId;
-    }
-
-    public int getCouponId() {
-        return couponId;
     }
 
     public void setCityStr(String cityStr) {
@@ -176,31 +144,39 @@ public class HotelOrderManager {
     }
 
     public HotelDetailInfoBean getHotelDetailInfo() {
-        if (null == hotelDetailInfoBean) {
-            hotelDetailInfoBean = new HotelDetailInfoBean();
-        }
         return hotelDetailInfoBean;
     }
 
-    public void setOrderPayDetailInfo(OrderPayDetailInfoBean orderPayDetailInfoBean) {
+    public void setFansHotelInfoBean(FansHotelInfoBean fansHotelInfo) {
+        this.fansHotelInfoBean = fansHotelInfo;
+    }
+
+    public FansHotelInfoBean getFansHotelInfoBean() {
+        return fansHotelInfoBean;
+    }
+
+    public void setCouponInfoBean(CouponInfoBean.CouponInfo couponInfoBean) {
+        this.couponInfoBean = couponInfoBean;
+    }
+
+    public CouponInfoBean.CouponInfo getCouponInfoBean() {
+        return couponInfoBean;
+    }
+
+    public void setOrderPayDetailInfoBean(OrderPayDetailInfoBean orderPayDetailInfoBean) {
         this.orderPayDetailInfoBean = orderPayDetailInfoBean;
     }
 
-    public OrderPayDetailInfoBean getOrderPayDetailInfo() {
-        if (null == orderPayDetailInfoBean) {
-            orderPayDetailInfoBean = new OrderPayDetailInfoBean();
-        }
+    public OrderPayDetailInfoBean getOrderPayDetailInfoBean() {
         return orderPayDetailInfoBean;
     }
 
     public void reset() {
-        hasCoupon = false;
-        couponId = -1;
-        isVipHotel = false;
-        vipHotelId = -1;
         hotelType = 1;
         payType = "";
         hotelDetailInfoBean = null;
+        fansHotelInfoBean = null;
+        couponInfoBean = null;
         orderPayDetailInfoBean = null;
     }
 }

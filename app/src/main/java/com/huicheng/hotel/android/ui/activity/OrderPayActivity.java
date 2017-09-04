@@ -257,7 +257,7 @@ public class OrderPayActivity extends BaseActivity {
                     TextView tv_title = (TextView) item.findViewById(R.id.tv_title);
                     TextView tv_price = (TextView) item.findViewById(R.id.tv_price);
                     tv_price.getPaint().setFakeBoldText(true);
-                    tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " *" + orderPayDetailInfoBean.attachInfo.get(i).custCount);
+                    tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).custCount);
                     tv_price.setText(String.format(getString(R.string.rmbStr), String.valueOf(orderPayDetailInfoBean.attachInfo.get(i).orderMoney)));
                     service_lay.addView(item);
                 }
@@ -305,8 +305,13 @@ public class OrderPayActivity extends BaseActivity {
                 dialog.setNegativeButton("确认离开", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (ActivityTack.getInstanse().isExitActivity(RoomOrderConfirmActivity.class)) {
-                            startActivity(new Intent(OrderPayActivity.this, MainFragmentActivity.class));
+                        if (ActivityTack.getInstanse().isExitActivity(HotelListActivity.class)) {
+                            startActivity(new Intent(OrderPayActivity.this, HotelListActivity.class));
+                        } else if (ActivityTack.getInstanse().isExitActivity(RoomOrderConfirmActivity.class)) {
+                            Intent intent = new Intent(OrderPayActivity.this, MainFragmentActivity.class);
+                            intent.putExtra("isClosed", true);
+                            intent.putExtra("index", 0);
+                            startActivity(intent);
                         } else {
                             finish();
                         }
@@ -374,7 +379,7 @@ public class OrderPayActivity extends BaseActivity {
                 removeProgressDialog();
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 orderPayDetailInfoBean = JSON.parseObject(response.body.toString(), OrderPayDetailInfoBean.class);
-                HotelOrderManager.getInstance().setOrderPayDetailInfo(orderPayDetailInfoBean);
+                HotelOrderManager.getInstance().setOrderPayDetailInfoBean(orderPayDetailInfoBean);
                 refreshOrderDetailInfo();
             } else if (request.flag == AppConst.PAY) {
                 LogUtil.i(TAG, "json = " + response.body.toString());

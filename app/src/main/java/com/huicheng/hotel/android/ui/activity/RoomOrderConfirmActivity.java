@@ -126,7 +126,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
             roomServiceMap = (Map<String, RoomConfirmInfoBean>) getIntent().getSerializableExtra("chooseServiceInfo");
             if (roomServiceMap != null && roomServiceMap.size() > 0) {
                 for (String key : roomServiceMap.keySet()) {
-                    LogUtil.i(TAG, "ServiceTitle:" + roomServiceMap.get(key).serviceTitle + ", *" + roomServiceMap.get(key).serviceCount);
+                    LogUtil.i(TAG, "ServiceTitle:" + roomServiceMap.get(key).serviceTitle + ", " + getString(R.string.multipleSign) + roomServiceMap.get(key).serviceCount);
                     serviceCounts.append(roomServiceMap.get(key).serviceCount).append("|");
                     serviceIds.append(roomServiceMap.get(key).serviceId).append("|");
                 }
@@ -156,7 +156,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                 tv_service.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
                 tv_service.setTextSize(15f);
                 tv_service.setTextColor(getResources().getColor(R.color.lableColor));
-                tv_service.setText(roomServiceMap.get(key).serviceTitle + " *" + roomServiceMap.get(key).serviceCount);
+                tv_service.setText(roomServiceMap.get(key).serviceTitle + " " + getString(R.string.multipleSign) + " " + roomServiceMap.get(key).serviceCount);
                 choose_service_lay.addView(tv_service);
             }
         }
@@ -165,7 +165,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         room_addsub_lay.setCount(1);
         finalPrice = roomPrice + allChooseServicePrice;
         tv_final_price.setText(finalPrice + "元");
-        if (isHhy || HotelOrderManager.getInstance().isUseCoupon()) {
+        if (isHhy || null != HotelOrderManager.getInstance().getCouponInfoBean()) {
             room_addsub_lay.setButtonEnable(false);
         }
 

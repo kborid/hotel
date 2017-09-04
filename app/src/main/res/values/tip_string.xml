@@ -24,4 +24,9 @@
     <string name="active_cancel">不了，我游泳过去</string>
 
     <string name="search_tips">城市/区域/位置/酒店名</string>
+
+    <string name="pay_success">支付成功</string>
+    <string name="pay_fail">支付失败</string>
+    <string name="pay_cancel">用户取消支付</string>
+    <string name="pay_error">未知异常</string>
 </resources>

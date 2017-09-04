@@ -272,11 +272,12 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_hotel_name:
             case R.id.btn_booking_again:
-                intent = new Intent(this, HotelCalendarChooseActivity.class);
                 HotelOrderManager.getInstance().reset();
+                HotelOrderManager.getInstance().setOrderPayDetailInfoBean(orderPayDetailInfoBean);
                 HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(orderPayDetailInfoBean.province, orderPayDetailInfoBean.location, "-"));
-                intent.putExtra("rebooking", true);
-                intent.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
+                intent = new Intent(this, HotelCalendarChooseActivity.class);
+                intent.putExtra("isReBooking", true);
+                intent.putExtra("isForbidTitleClick", true);
                 break;
             default:
                 break;
@@ -351,6 +352,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        HotelOrderManager.getInstance().reset();
     }
 
     @Override
@@ -360,6 +362,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 removeProgressDialog();
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 orderPayDetailInfoBean = JSON.parseObject(response.body.toString(), OrderPayDetailInfoBean.class);
+                HotelOrderManager.getInstance().setOrderPayDetailInfoBean(orderPayDetailInfoBean);
                 refreshOrderDetailInfo();
             } else if (request.flag == AppConst.ORDER_CANCEL) {
 //                requestOrderDetailInfo();

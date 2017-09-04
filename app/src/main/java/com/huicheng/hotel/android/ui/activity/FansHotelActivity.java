@@ -156,6 +156,7 @@ public class FansHotelActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        HotelOrderManager.getInstance().reset();
     }
 
     @Override
@@ -217,17 +218,19 @@ public class FansHotelActivity extends BaseActivity {
             tv_name.getPaint().setFakeBoldText(true);
             final TextView tv_loc = (TextView) view.findViewById(R.id.tv_loc);
             final TextView tv_order = (TextView) view.findViewById(R.id.tv_order);
+            tv_order.getPaint().setFakeBoldText(true);
             loadImage(iv_background, R.drawable.def_fans, bean.featurePicPath, 750, 1050);
             tv_name.setText(bean.name);
             tv_loc.setText(CityStringUtils.getProvinceCityString(bean.provinceName, bean.cityName, " "));
             tv_order.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, HotelCalendarChooseActivity.class);
                     HotelOrderManager.getInstance().reset();
-                    HotelOrderManager.getInstance().setIsVipHotel(true);
-                    HotelOrderManager.getInstance().setVipHotelId(bean.hotelId);
+                    HotelOrderManager.getInstance().setFansHotelInfoBean(bean);
                     HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(bean.provinceName, bean.cityName, "-"));
+                    Intent intent = new Intent(context, HotelCalendarChooseActivity.class);
+                    intent.putExtra("isForbidTitleClick", true);
+                    intent.putExtra("isFansBooking", true);
                     startActivity(intent);
                 }
             });

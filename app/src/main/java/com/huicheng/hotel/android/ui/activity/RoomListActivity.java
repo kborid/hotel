@@ -41,6 +41,7 @@ import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
@@ -72,11 +73,13 @@ public class RoomListActivity extends BaseActivity {
     private TabHost tabHost;
     private LinearLayout tab_day, tab_clock;
     private String key = null;
-    private String hotelCityStr;
+    private String hotelCityStr, hotelDateStr;
     private int hotelId = 0;
     private int roomId = -1, roomType = 0;
     private boolean isClickYgr = false;
     private HotelDetailInfoBean hotelDetailInfoBean = null;
+    private long beginTime, endTime;
+    private boolean isHasShowVipDialog = false;
 
     private int mRoomPriceColorId;
     private Drawable mRoomDetailSpaceId, mRoomDetailSpace2Id;
@@ -147,6 +150,11 @@ public class RoomListActivity extends BaseActivity {
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
         super.initParams();
 
+        hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
+        beginTime = HotelOrderManager.getInstance().getBeginTime();
+        endTime = HotelOrderManager.getInstance().getEndTime();
+        hotelDateStr = DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime);
+
         tabHost.setup();
         for (int i = 0; i < SELECTED_BAR_COUNT; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.selected_bar_item, null);
@@ -176,6 +184,7 @@ public class RoomListActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
+        tv_center_title.setOnClickListener(this);
         btn_right.setOnClickListener(this);
         tv_map.setOnClickListener(this);
         tv_service.setOnClickListener(this);
@@ -215,8 +224,8 @@ public class RoomListActivity extends BaseActivity {
         LogUtil.i(TAG, "requestHotelDetailInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("hotelId", String.valueOf(hotelId));
-        b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
-        b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
+        b.addBody("beginDate", String.valueOf(beginTime));
+        b.addBody("endDate", String.valueOf(endTime));
         b.addBody("type", String.valueOf(HotelOrderManager.getInstance().getHotelType()));
 
         ResponseData d = b.syncRequest(b);
@@ -239,7 +248,7 @@ public class RoomListActivity extends BaseActivity {
             }
             //设置 title
             hotelCityStr = CityStringUtils.getProvinceCityString(hotelDetailInfoBean.provinceName, hotelDetailInfoBean.cityName, "-");
-            tv_center_title.setText(hotelCityStr + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
+            tv_center_title.setText(hotelCityStr + "(" + hotelDateStr + ")");
 
             //设置banner
             int marginValue = Utils.dip2px(10);
@@ -284,13 +293,16 @@ public class RoomListActivity extends BaseActivity {
             //设置酒店服务信息
             refreshHotelServiceInfo();
 
-            if (hotelDetailInfoBean.isPopup) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showAddVipDialog(RoomListActivity.this, hotelDetailInfoBean);
-                    }
-                }, 500);
+            if (!isHasShowVipDialog) {
+                if (hotelDetailInfoBean.isPopup) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            isHasShowVipDialog = true;
+                            showAddVipDialog(RoomListActivity.this, hotelDetailInfoBean);
+                        }
+                    }, 500);
+                }
             }
 
             root_lay.setVisibility(View.VISIBLE);
@@ -421,8 +433,8 @@ public class RoomListActivity extends BaseActivity {
 
     private void requestCheckRoomEmpty(int hotelId, int roomId, int roomType) {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
-        b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
+        b.addBody("beginDate", String.valueOf(beginTime));
+        b.addBody("endDate", String.valueOf(endTime));
         b.addBody("hotelId", String.valueOf(hotelId));
         b.addBody("roomId", String.valueOf(roomId));
         b.addBody("type", String.valueOf(roomType));
@@ -554,6 +566,14 @@ public class RoomListActivity extends BaseActivity {
         super.onClick(v);
         Intent intent = null;
         switch (v.getId()) {
+            case R.id.tv_center_title: {
+                Intent intentRes = new Intent(this, HotelCalendarChooseActivity.class);
+                intentRes.putExtra("beginTime", beginTime);
+                intentRes.putExtra("endTime", endTime);
+                intentRes.putExtra("isForbidTitleClick", true);
+                startActivityForResult(intentRes, 0x01);
+            }
+            break;
             case R.id.btn_right:
                 LogUtil.i(TAG, "right button onclick");
                 showAddVipDialog(this, hotelDetailInfoBean);
@@ -617,7 +637,7 @@ public class RoomListActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+        if (null != hotelDetailInfoBean && hotelDetailInfoBean.isPopup) {
             btn_right.setVisibility(View.VISIBLE);
         } else {
             btn_right.setVisibility(View.INVISIBLE);
@@ -633,11 +653,30 @@ public class RoomListActivity extends BaseActivity {
         }
     }
 
-    class MyPagerAdapter extends PagerAdapter {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        if (requestCode == 0x01) {
+            if (null != data) {
+                beginTime = data.getLongExtra("beginTime", beginTime);
+                endTime = data.getLongExtra("endTime", endTime);
+                hotelDateStr = DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime);
+                HotelOrderManager.getInstance().setBeginTime(beginTime);
+                HotelOrderManager.getInstance().setEndTime(endTime);
+                HotelOrderManager.getInstance().setDateStr(hotelDateStr);
+                requestHotelDetailInfo();
+            }
+        }
+    }
+
+    private class MyPagerAdapter extends PagerAdapter {
         private Context context;
         private List<String> list = new ArrayList<>();
 
-        public MyPagerAdapter(Context context, List<String> list) {
+        MyPagerAdapter(Context context, List<String> list) {
             this.context = context;
             this.list = list;
         }

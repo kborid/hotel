@@ -590,7 +590,7 @@ public class RoomDetailActivity extends BaseActivity {
                 addSubLayout.setMaxvalue(serviceBean.limitCnt);
                 LogUtil.i(TAG, "limit count = " + serviceBean.limitCnt);
                 tv_choose_service_title.setText(serviceBean.serviceName);
-                tv_choose_service_price.setText((HotelOrderManager.getInstance().isVipHotel() ? serviceBean.vipPrice : serviceBean.price) + "元/份");
+                tv_choose_service_price.setText(serviceBean.price + "元/份");
                 tv_choose_service_total_price.setText("0元");
 
                 if (StringUtil.isEmpty(serviceBean.detail) && StringUtil.isEmpty(serviceBean.pics)) {
@@ -675,8 +675,8 @@ public class RoomDetailActivity extends BaseActivity {
                         bean.serviceId = serviceBean.id;
                         bean.serviceTitle = serviceBean.serviceName;
                         bean.serviceCount = count;
-                        bean.servicePrice = HotelOrderManager.getInstance().isVipHotel() ? serviceBean.vipPrice : serviceBean.price;
-                        bean.serviceTotalPrice = (HotelOrderManager.getInstance().isVipHotel() ? serviceBean.vipPrice : serviceBean.price) * count;
+                        bean.servicePrice = serviceBean.price;
+                        bean.serviceTotalPrice = serviceBean.price * count;
                         tv_choose_service_total_price.setText(bean.serviceTotalPrice + "元");
                         LogUtil.i(TAG, "choose service price = " + bean.serviceTotalPrice);
 
@@ -722,7 +722,7 @@ public class RoomDetailActivity extends BaseActivity {
 //                free_service_lay.addView(view, lp);
 
                 tv_content.append(freeChooseList.get(i).serviceName);
-                tv_content.append("*");
+                tv_content.append(" " + getString(R.string.multipleSign) + " ");
                 tv_content.append(String.valueOf(freeChooseList.get(i).limitCnt));
                 if (i != freeChooseList.size() - 1) {
                     tv_content.append("，");
@@ -875,7 +875,7 @@ public class RoomDetailActivity extends BaseActivity {
                 holder.tv_count.setVisibility(View.GONE);
             } else {
                 holder.tv_count.setVisibility(View.VISIBLE);
-                holder.tv_count.setText("×" + count);
+                holder.tv_count.setText(getString(R.string.multipleSign) + count);
             }
             return convertView;
         }

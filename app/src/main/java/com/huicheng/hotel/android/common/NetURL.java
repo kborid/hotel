@@ -99,7 +99,6 @@ public final class NetURL {
 
     // -------------------------------------------app信息（强制升级、邀请信息等）、广告-----------------
     public static final String APP_INFO = PORTAL + "system/getappversion.json"; //app版本信息
-    public static final String ADVERTISEMENT = PORTAL + "user/CW1011"; //广告
     public static final String HOTEL_BANNER = PORTAL + "activity/activityPics.json"; //首页banner
     public static final String ACTIVE_ABOUT = PORTAL + "system/gettipshowornot.json"; //活动相关
 

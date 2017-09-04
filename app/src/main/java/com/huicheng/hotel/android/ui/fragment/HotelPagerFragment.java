@@ -39,7 +39,6 @@ import com.huicheng.hotel.android.ui.activity.HotelListActivity;
 import com.huicheng.hotel.android.ui.activity.LocationChooseActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
-import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -231,12 +230,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
         endTime = calendar.getTime().getTime();
         tv_date.setText(DateUtil.getDay("M月d日", beginTime) + "-" + DateUtil.getDay("M月d日", endTime));
-
-        HotelOrderManager.getInstance().setBeginTime(beginTime);
-        HotelOrderManager.getInstance().setEndTime(endTime);
-        SimpleMonthAdapter.CalendarDay begin = new SimpleMonthAdapter.CalendarDay(beginTime);
-        SimpleMonthAdapter.CalendarDay end = new SimpleMonthAdapter.CalendarDay(endTime);
-        HotelOrderManager.getInstance().setDateStr((begin.getMonth() + 1) + "." + begin.getDay() /*+ DateUtil.dateToWeek2(begin.getDate())*/ + " - " + (end.getMonth() + 1) + "." + end.getDay()/* + DateUtil.dateToWeek2(end.getDate())*/);
     }
 
     @Override
@@ -324,9 +317,10 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                     CustomToast.show("定位失败，请打开GPS或手动选择城市", CustomToast.LENGTH_SHORT);
                     return;
                 }
+                HotelOrderManager.getInstance().setBeginTime(beginTime);
+                HotelOrderManager.getInstance().setEndTime(endTime);
+                HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
 
-                et_keyword.setFocusable(false);
-                et_keyword.setFocusableInTouchMode(true);
 //                intent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
                 intent = new Intent(getActivity(), HotelListActivity.class);
                 intent.putExtra("index", 0);
@@ -405,11 +399,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 beginTime = data.getLongExtra("beginTime", beginTime);
                 endTime = data.getLongExtra("endTime", endTime);
                 tv_date.setText(DateUtil.getDay("M月d日", beginTime) + "-" + DateUtil.getDay("M月d日", endTime));
-                HotelOrderManager.getInstance().setBeginTime(beginTime);
-                HotelOrderManager.getInstance().setEndTime(endTime);
-                SimpleMonthAdapter.CalendarDay begin = new SimpleMonthAdapter.CalendarDay(beginTime);
-                SimpleMonthAdapter.CalendarDay end = new SimpleMonthAdapter.CalendarDay(endTime);
-                HotelOrderManager.getInstance().setDateStr((begin.getMonth() + 1) + "." + begin.getDay() /*+ DateUtil.dateToWeek2(begin.getDate())*/ + " - " + (end.getMonth() + 1) + "." + end.getDay()/* + DateUtil.dateToWeek2(end.getDate())*/);
             }
         }
     }

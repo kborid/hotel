@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.pay.PayCommDef;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
@@ -46,7 +47,7 @@ public class PayResultReceiver extends BroadcastReceiver {
             LogUtil.i(TAG, type);
 
             int ret = PayCommDef.err_fail;
-            String msg = "支付失败";
+            String msg = context.getResources().getString(R.string.pay_fail);
 
             switch (type) {
                 case PayCommDef.ALIPAY:
@@ -91,52 +92,57 @@ public class PayResultReceiver extends BroadcastReceiver {
                     }
                     break;
                 case PayCommDef.UNIONPAY:
-                        LogUtil.i(TAG, "UnionPay: Code=" + info);
-                        switch (info) {
-                            case "success":
-                                ret = PayCommDef.err_success;
-                                break;
-                            case "fail":
-                                ret = PayCommDef.err_fail;
-                                break;
-                            case "cancel":
-                                ret = PayCommDef.err_cancel;
-                                break;
-                            default:
-                                ret = PayCommDef.err_unknown;
-                                break;
-                        }
+                    LogUtil.i(TAG, "UnionPay: Code=" + info);
+                    switch (info) {
+                        case "success":
+                            ret = PayCommDef.err_success;
+                            break;
+                        case "fail":
+                            ret = PayCommDef.err_fail;
+                            break;
+                        case "cancel":
+                            ret = PayCommDef.err_cancel;
+                            break;
+                        default:
+                            ret = PayCommDef.err_unknown;
+                            break;
+                    }
                     break;
             }
 
 
             switch (ret) {
                 case PayCommDef.err_success:
-                    msg = "支付成功";
+                    msg = context.getResources().getString(R.string.pay_success);
                     break;
                 case PayCommDef.err_fail:
-                    msg = "支付失败";
+                    msg = context.getResources().getString(R.string.pay_fail);
                     break;
                 case PayCommDef.err_cancel:
-                    msg = "用户取消支付";
+                    msg = context.getResources().getString(R.string.pay_cancel);
                     break;
                 case PayCommDef.err_error:
                 case PayCommDef.err_unknown:
-                    msg = "未知异常";
+                    msg = context.getResources().getString(R.string.pay_error);
                     break;
             }
 
             if (PayCommDef.err_success == ret) {
-                Intent intent1 = new Intent(context, OrderPaySuccessActivity.class);
-                OrderPayDetailInfoBean orderPayDetailInfoBean = HotelOrderManager.getInstance().getOrderPayDetailInfo();
-                intent1.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
-                intent1.putExtra("hotelName", orderPayDetailInfoBean.name);
-                intent1.putExtra("roomName", orderPayDetailInfoBean.roomName);
-                intent1.putExtra("checkRoomDate", orderPayDetailInfoBean.checkRoomDate);
-                intent.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
-                intent.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
-                intent.putExtra("isPrePaySuccess", true);
-                context.startActivity(intent1);
+                OrderPayDetailInfoBean orderPayDetailInfoBean = HotelOrderManager.getInstance().getOrderPayDetailInfoBean();
+                if (null != orderPayDetailInfoBean) {
+                    Intent intent1 = new Intent(context, OrderPaySuccessActivity.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent1.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
+                    intent1.putExtra("hotelName", orderPayDetailInfoBean.name);
+                    intent1.putExtra("roomName", orderPayDetailInfoBean.roomName);
+                    intent1.putExtra("checkRoomDate", orderPayDetailInfoBean.checkRoomDate);
+                    intent.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
+                    intent.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
+                    intent.putExtra("isPrePaySuccess", true);
+                    context.startActivity(intent1);
+                } else {
+                    CustomToast.show(context.getResources().getString(R.string.pay_error), CustomToast.LENGTH_SHORT);
+                }
             }
             CustomToast.show(msg, CustomToast.LENGTH_SHORT);
         }
