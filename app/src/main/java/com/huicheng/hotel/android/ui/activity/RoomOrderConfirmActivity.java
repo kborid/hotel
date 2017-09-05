@@ -176,7 +176,6 @@ public class RoomOrderConfirmActivity extends BaseActivity {
             ((EditText) custom_lay.getChildAt(0).findViewById(R.id.et_phone)).setText(SessionContext.mUser.user.mobile);
         } else {
             int person = custom_lay.setPersonInfos(jsonStr);
-            System.out.println("person = " + person);
         }
     }
 
