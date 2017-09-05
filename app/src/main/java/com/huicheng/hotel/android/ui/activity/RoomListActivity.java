@@ -271,7 +271,9 @@ public class RoomListActivity extends BaseActivity {
             //设置评分、等级、评论
             float grade = 0;
             try {
-                grade = Float.parseFloat(hotelDetailInfoBean.grade);
+                if (StringUtil.notEmpty(hotelDetailInfoBean.grade)) {
+                    grade = Float.parseFloat(hotelDetailInfoBean.grade);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -637,11 +639,19 @@ public class RoomListActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (null != hotelDetailInfoBean && hotelDetailInfoBean.isPopup) {
-            btn_right.setVisibility(View.VISIBLE);
-        } else {
-            btn_right.setVisibility(View.INVISIBLE);
+        LogUtil.i(TAG, "isVipRefresh = " + isHotelVipRefresh);
+        if (isHotelVipRefresh) {
+            refreshScreenInfoVipPrice();
         }
+    }
+
+    @Override
+    public void refreshScreenInfoVipPrice() {
+        super.refreshScreenInfoVipPrice();
+        LogUtil.i(TAG, "refreshScreenInfoVipPrice()");
+        isHotelVipRefresh = false;
+        btn_right.setVisibility(View.INVISIBLE);
+        requestHotelDetailInfo();
     }
 
     @Override

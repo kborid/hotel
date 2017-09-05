@@ -55,6 +55,8 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
     private TextView tv_center_title;
     private TextView tv_summary;
 
+    private long beginTime, endTime;
+    private String hotelDateStr;
     private EditText et_keyword;
     private ImageView iv_search;
 
@@ -138,6 +140,10 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
         tv_center_title.setText(HotelOrderManager.getInstance().getCityStr() + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
         tv_center_title.getPaint().setFakeBoldText(true);
 
+        beginTime = HotelOrderManager.getInstance().getBeginTime();
+        endTime = HotelOrderManager.getInstance().getEndTime();
+        hotelDateStr = HotelOrderManager.getInstance().getDateStr();
+
         et_keyword.setText(keyword);
 
         setIndicator(tabs, 40, 40);
@@ -165,8 +171,15 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        HotelOrderManager.getInstance().setBeginTime(beginTime);
+        HotelOrderManager.getInstance().setEndTime(endTime);
+        HotelOrderManager.getInstance().setDateStr(hotelDateStr);
+    }
+
     private void dismissConsiderLayout() {
-        LogUtil.d(TAG, "HotelListActivity dismissConsiderLayout()");
         customConsiderLayout.dismiss();
         if (null != listenerList && listenerList.size() > 0) {
             for (OnUpdateHotelInfoListener listener : listenerList) {

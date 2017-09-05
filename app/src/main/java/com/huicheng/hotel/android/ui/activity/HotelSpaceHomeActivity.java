@@ -121,6 +121,11 @@ public class HotelSpaceHomeActivity extends BaseActivity {
         super.initParams();
         tv_center_title.setText("酒店空间");
         btn_right.setImageResource(R.drawable.iv_favorite_gray);
+        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+            btn_right.setVisibility(View.VISIBLE);
+        } else {
+            btn_right.setVisibility(View.INVISIBLE);
+        }
 
         //根据宽高比设置cardview大小，适配不同尺寸的屏幕
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -192,16 +197,16 @@ public class HotelSpaceHomeActivity extends BaseActivity {
             loadImage(iv_hotel_bg, R.drawable.def_hotel_banner, hotelSpaceBasicInfoBean.pic, 1024, 1024);
             tv_tie_count.setText(String.valueOf(hotelSpaceBasicInfoBean.articleCnt));
             tv_fans_count.setText(String.valueOf(hotelSpaceBasicInfoBean.vipCnt));
-
-            if (hotelSpaceBasicInfoBean.isPopup) {
-                btn_right.setVisibility(View.VISIBLE);
-            } else {
-                btn_right.setVisibility(View.INVISIBLE);
-            }
-
         } else {
             root_lay.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void refreshScreenInfoVipPrice() {
+        super.refreshScreenInfoVipPrice();
+        LogUtil.i(TAG, "refreshScreenInfoVipPrice()");
+        btn_right.setVisibility(View.INVISIBLE);
     }
 
     /**

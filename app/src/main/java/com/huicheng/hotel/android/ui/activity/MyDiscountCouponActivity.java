@@ -107,7 +107,7 @@ public class MyDiscountCouponActivity extends BaseActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    private void refreshScreenInfo() {
+    private void refreshCouponInfo() {
         if (couponInfoBean != null) {
             if (couponInfoBean.coupon != null && couponInfoBean.coupon.size() > 0) {
                 noDiscountLayout.setVisibility(View.GONE);
@@ -229,7 +229,7 @@ public class MyDiscountCouponActivity extends BaseActivity {
                 LogUtil.i(TAG, "yhq json = " + response.body.toString());
                 couponInfoBean = JSON.parseObject(response.body.toString(), CouponInfoBean.class);
                 if (null != couponInfoBean) {
-                    refreshScreenInfo();
+                    refreshCouponInfo();
                 }
             }
         }

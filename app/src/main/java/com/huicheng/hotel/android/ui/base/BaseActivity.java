@@ -59,6 +59,8 @@ import java.util.Set;
 public class BaseActivity extends AppCompatActivity implements OnClickListener, DataCallback {
 
     private CustomDialog mDialogVip;
+    protected static boolean isHotelVipRefresh = false;
+
     private ProgressDialog mProgressDialog;
     protected TextView tv_center_title, tv_center_summary;
     protected ImageView btn_back, btn_right;
@@ -119,7 +121,6 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     // 参数设置
     public void initParams() {
         dealIntent();
-
         // 设置title的描述
         if (tv_center_summary != null) {
             if (StringUtil.isEmpty(tv_center_summary.getText())) {
@@ -174,11 +175,6 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
     }
 
     public void loadImage(final View view, String url, int width, int height) {
@@ -406,11 +402,16 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             removeProgressDialog();
             dismissAddVipDialog();
             LogUtil.i("BaseActivity", "Json = " + response.body.toString());
-            CustomToast.show("您已成为该酒店会员", CustomToast.LENGTH_SHORT);
+            isHotelVipRefresh = true;
             HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
             btn_right.setVisibility(View.INVISIBLE);
+            refreshScreenInfoVipPrice();
+            CustomToast.show(getString(R.string.isViped), CustomToast.LENGTH_SHORT);
         }
         onNotifyMessage(request, response);
+    }
+
+    public void refreshScreenInfoVipPrice() {
     }
 
     @Override

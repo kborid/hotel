@@ -345,7 +345,9 @@ public class RoomDetailActivity extends BaseActivity {
             tv_room_name.setText(roomDetailInfoBean.roomName);
             float grade = 0;
             try {
-                grade = Float.parseFloat(roomDetailInfoBean.grade);
+                if (StringUtil.notEmpty(roomDetailInfoBean.grade)) {
+                    grade = Float.parseFloat(roomDetailInfoBean.grade);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -750,11 +752,15 @@ public class RoomDetailActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
-            iv_fans.setVisibility(View.VISIBLE);
-        } else {
-            iv_fans.setVisibility(View.GONE);
-        }
+        LogUtil.i(TAG, "isVipRefresh = " + isHotelVipRefresh);
+    }
+
+    @Override
+    public void refreshScreenInfoVipPrice() {
+        super.refreshScreenInfoVipPrice();
+        LogUtil.i(TAG, "refreshScreenInfoVipPrice()");
+        iv_fans.setVisibility(View.GONE);
+        requestRoomDetailInfo();
     }
 
     @Override
