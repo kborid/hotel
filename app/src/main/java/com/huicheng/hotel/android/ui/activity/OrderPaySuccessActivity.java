@@ -126,6 +126,9 @@ public class OrderPaySuccessActivity extends BaseActivity {
         }
         if (SessionContext.isHasActive && isPrePaySuccess) {
             String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+            System.out.println("SessionContext.isHasActive" + SessionContext.isHasActive);
+            System.out.println("isPrePaySuccess" + isPrePaySuccess);
+            System.out.println("province" + province);
             if ("海南省".contains(province)) {
                 showBookingAirTicketDialog();
             }

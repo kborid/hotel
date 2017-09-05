@@ -32,6 +32,8 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 
 import java.util.HashMap;
@@ -169,7 +171,13 @@ public class RoomOrderConfirmActivity extends BaseActivity {
             room_addsub_lay.setButtonEnable(false);
         }
 
-        ((TextView) custom_lay.getChildAt(0).findViewById(R.id.et_phone)).setText(SessionContext.mUser.user.mobile);
+        String jsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.IN_PERSON_INFO, "", true);
+        if (StringUtil.isEmpty(jsonStr)) {
+            ((EditText) custom_lay.getChildAt(0).findViewById(R.id.et_phone)).setText(SessionContext.mUser.user.mobile);
+        } else {
+            int person = custom_lay.setPersonInfos(jsonStr);
+            System.out.println("person = " + person);
+        }
     }
 
     private void requestAddOrderDetail() {
@@ -260,6 +268,8 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                 }
                 LogUtil.i(TAG, "nameStr = " + custom_lay.getCustomUserNames());
                 LogUtil.i(TAG, "phoneStr = " + custom_lay.getCustomUserPhones());
+                LogUtil.i(TAG, "custom json string = " + custom_lay.getCustomInfoJsonString());
+                SharedPreferenceUtil.getInstance().setString(AppConst.IN_PERSON_INFO, custom_lay.getCustomInfoJsonString(), true);
                 requestAddOrderDetail();
                 break;
             default:

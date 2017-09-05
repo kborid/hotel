@@ -156,7 +156,6 @@ public class FansHotelActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        HotelOrderManager.getInstance().reset();
     }
 
     @Override

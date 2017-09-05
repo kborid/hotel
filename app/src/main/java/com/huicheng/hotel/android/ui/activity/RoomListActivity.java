@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -18,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -43,6 +43,7 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
@@ -79,12 +80,14 @@ public class RoomListActivity extends BaseActivity {
     private boolean isClickYgr = false;
     private HotelDetailInfoBean hotelDetailInfoBean = null;
     private long beginTime, endTime;
-    private boolean isHasShowVipDialog = false;
 
     private int mRoomPriceColorId;
     private Drawable mRoomDetailSpaceId, mRoomDetailSpace2Id;
     private int ygrRoomItemBackgroundId;
     private int indicatorSelId;
+
+    private LinearLayout vip_layout;
+    private ImageView iv_ok;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +133,9 @@ public class RoomListActivity extends BaseActivity {
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tab_day = (LinearLayout) findViewById(R.id.tab_day);
         tab_clock = (LinearLayout) findViewById(R.id.tab_clock);
+
+        vip_layout = (LinearLayout) findViewById(R.id.vip_layout);
+        iv_ok = (ImageView) findViewById(R.id.iv_ok);
     }
 
     @Override
@@ -218,6 +224,7 @@ public class RoomListActivity extends BaseActivity {
         });
         tv_assess_point.setOnClickListener(this);
         tv_comment.setOnClickListener(this);
+        iv_ok.setOnClickListener(this);
     }
 
     private void requestHotelDetailInfo() {
@@ -243,6 +250,11 @@ public class RoomListActivity extends BaseActivity {
         if (null != hotelDetailInfoBean) {
             if (hotelDetailInfoBean.isPopup) {
                 btn_right.setVisibility(View.VISIBLE);
+                if (!SharedPreferenceUtil.getInstance().getBoolean(AppConst.HAS_SHOW_VIP_TIPS, false)) {
+                    vip_layout.setVisibility(View.VISIBLE);
+                } else {
+                    vip_layout.setVisibility(View.GONE);
+                }
             } else {
                 btn_right.setVisibility(View.INVISIBLE);
             }
@@ -294,18 +306,6 @@ public class RoomListActivity extends BaseActivity {
             updateRoomListData();
             //设置酒店服务信息
             refreshHotelServiceInfo();
-
-            if (!isHasShowVipDialog) {
-                if (hotelDetailInfoBean.isPopup) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            isHasShowVipDialog = true;
-                            showAddVipDialog(RoomListActivity.this, hotelDetailInfoBean);
-                        }
-                    }, 500);
-                }
-            }
 
             root_lay.setVisibility(View.VISIBLE);
         }
@@ -608,6 +608,10 @@ public class RoomListActivity extends BaseActivity {
                     intent = new Intent(this, AssessCommendActivity.class);
                     intent.putExtra("hotelId", HotelOrderManager.getInstance().getHotelDetailInfo().id);
                 }
+                break;
+            case R.id.iv_ok:
+                vip_layout.setVisibility(View.GONE);
+                SharedPreferenceUtil.getInstance().setBoolean(AppConst.HAS_SHOW_VIP_TIPS, true);
                 break;
             default:
                 break;

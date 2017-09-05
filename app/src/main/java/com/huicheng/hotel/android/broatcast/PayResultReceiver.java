@@ -136,9 +136,9 @@ public class PayResultReceiver extends BroadcastReceiver {
                     intent1.putExtra("hotelName", orderPayDetailInfoBean.name);
                     intent1.putExtra("roomName", orderPayDetailInfoBean.roomName);
                     intent1.putExtra("checkRoomDate", orderPayDetailInfoBean.checkRoomDate);
-                    intent.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
-                    intent.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
-                    intent.putExtra("isPrePaySuccess", true);
+                    intent1.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
+                    intent1.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
+                    intent1.putExtra("isPrePaySuccess", true);
                     context.startActivity(intent1);
                 } else {
                     CustomToast.show(context.getResources().getString(R.string.pay_error), CustomToast.LENGTH_SHORT);

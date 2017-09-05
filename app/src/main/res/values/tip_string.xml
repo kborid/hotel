@@ -30,4 +30,7 @@
     <string name="pay_fail">支付失败</string>
     <string name="pay_cancel">用户取消支付</string>
     <string name="pay_error">未知异常</string>
+
+    <string name="in_person_title">入住人</string>
+    <string name="in_person_msg">为确保入住，请填入真实姓名</string>
 </resources>

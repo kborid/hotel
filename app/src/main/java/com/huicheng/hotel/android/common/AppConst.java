@@ -17,6 +17,9 @@ public final class AppConst {
 
     public static final String IS_FIRST_LAUNCH = "first_launch"; //是否第一次启动
     public static final String SKIN_INDEX = "skin_index"; //皮肤资源index
+    public static final String HAS_SHOW_VIP_TIPS = "has_show_vip_tips"; //是否已经显示vip提示
+
+    public static final String IN_PERSON_INFO = "in_person_info";
 
     public static final String ACCESS_TICKET = "accessTicket"; // 记录用户登录ticket
     public static final String LAST_LOGIN_DATE = "last_login_time"; // 上次登录时间

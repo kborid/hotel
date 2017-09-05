@@ -7,10 +7,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.net.bean.InPersonalInfoBean;
+import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author kborid
@@ -50,10 +57,37 @@ public class CommonCustomInfoLayout extends LinearLayout {
         custom_info_layout = (LinearLayout) findViewById(R.id.custom_info_layout);
     }
 
+    public int setPersonInfos(String json) {
+        List<InPersonalInfoBean> temp = JSON.parseArray(json, InPersonalInfoBean.class);
+        custom_info_layout.removeAllViews();
+        for (int i = 0; i < temp.size(); i++) {
+            View customChildView = getNewItemView();
+            EditText et_last = (EditText) customChildView.findViewById(R.id.et_last);
+            EditText et_first = (EditText) customChildView.findViewById(R.id.et_first);
+            EditText et_phone = (EditText) customChildView.findViewById(R.id.et_phone);
+            et_last.setText(temp.get(i).lastName);
+            et_first.setText(temp.get(i).firstName);
+            et_phone.setText(temp.get(i).phone);
+            custom_info_layout.addView(customChildView, i);
+        }
+        return temp.size();
+    }
+
     private View getNewItemView() {
         final View view = LayoutInflater.from(context).inflate(R.layout.custom_info_item, null);
+        final TextView tv_person_label = (TextView) view.findViewById(R.id.tv_person_label);
         final ImageView iv_remove = (ImageView) view.findViewById(R.id.iv_remove);
         final ImageView iv_add = (ImageView) view.findViewById(R.id.iv_add);
+        tv_person_label.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomDialog dialog = new CustomDialog(context);
+                dialog.setTitle(context.getResources().getString(R.string.in_person_title));
+                dialog.setMessage(context.getResources().getString(R.string.in_person_msg));
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.show();
+            }
+        });
         iv_add.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,15 +119,31 @@ public class CommonCustomInfoLayout extends LinearLayout {
     }
 
     public boolean isValidPhoneNumber() {
-        for (int i = 0; i<custom_info_layout.getChildCount(); i++) {
-            EditText et_last = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_last);
-            EditText et_first = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_first);
+        for (int i = 0; i < custom_info_layout.getChildCount(); i++) {
+//            EditText et_last = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_last);
+//            EditText et_first = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_first);
             EditText et_phone = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_phone);
             if (!Utils.isMobile(et_phone.getText().toString())) {
                 return true;
             }
         }
         return false;
+    }
+
+    public String getCustomInfoJsonString() {
+        List<InPersonalInfoBean> temp = new ArrayList<>();
+        for (int i = 0; i < custom_info_layout.getChildCount(); i++) {
+            EditText et_last = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_last);
+            EditText et_first = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_first);
+            EditText et_phone = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_phone);
+
+            InPersonalInfoBean bean = new InPersonalInfoBean();
+            bean.lastName = et_last.getText().toString();
+            bean.firstName = et_first.getText().toString();
+            bean.phone = et_phone.getText().toString();
+            temp.add(bean);
+        }
+        return JSON.toJSON(temp).toString();
     }
 
     public String getCustomUserNames() {

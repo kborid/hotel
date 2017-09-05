@@ -317,6 +317,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                     CustomToast.show("定位失败，请打开GPS或手动选择城市", CustomToast.LENGTH_SHORT);
                     return;
                 }
+                HotelOrderManager.getInstance().reset();
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
                 HotelOrderManager.getInstance().setEndTime(endTime);
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
@@ -389,7 +390,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         if (Activity.RESULT_OK != resultCode) {
             return;
         }
-        HotelOrderManager.getInstance().reset();
         String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(tempProvince, tempCity, "-"));
