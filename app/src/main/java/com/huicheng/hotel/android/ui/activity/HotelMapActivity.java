@@ -179,7 +179,12 @@ public class HotelMapActivity extends BaseActivity
         if (StringUtil.isEmpty(hotelCityStr)) {
             hotelCityStr = HotelOrderManager.getInstance().getCityStr();
         }
-        tv_center_title.setText(hotelCityStr + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
+        //hotelCityStr + "(" + HotelOrderManager.getInstance().getDateStr() + ")"
+        tv_center_title.setText(
+                String.format(getString(R.string.titleCityDateStr),
+                        hotelCityStr,
+                        HotelOrderManager.getInstance().getDateStr())
+        );
         tv_center_title.getPaint().setFakeBoldText(true);
 
         if (amap == null) {

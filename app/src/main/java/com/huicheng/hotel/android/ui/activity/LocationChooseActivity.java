@@ -8,14 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.tools.PinyinUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.prj.sdk.util.LogUtil;
@@ -24,9 +26,14 @@ import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kborid
@@ -36,16 +43,16 @@ public class LocationChooseActivity extends BaseActivity {
     private static final String TAG = "LocationChooseActivity";
 
     private TextView tv_search_input;
-    private EditText et_city;
     private TextView tv_history;
     private List<String> mHotCityList = new ArrayList<>();
 
     private ListView listView;
     private MyGridViewWidget gv_hotcity;
     private GridView gv_index;
+    private List<String> cityIndexList = new ArrayList<>();
     private CityIndexAdapter cityIndexAdapter;
-    private CityListAdapter cityListAdapter;
     private List<CityAreaInfoBean> cityList = new ArrayList<>();
+    private CityListAdapter cityListAdapter;
     private TextView tv_city_index;
 
     private String mProvince, mCity, mSiteId;
@@ -63,15 +70,18 @@ public class LocationChooseActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         tv_search_input = (TextView) findViewById(R.id.tv_search_input);
-        et_city = (EditText) findViewById(R.id.et_city);
-        if (et_city != null) {
-            et_city.setEnabled(false);
-        }
         tv_history = (TextView) findViewById(R.id.tv_history);
-        listView = (ListView) findViewById(R.id.listview);
+
         gv_hotcity = (MyGridViewWidget) findViewById(R.id.gv_hotcity);
+
         gv_index = (GridView) findViewById(R.id.gv_index);
+        cityIndexAdapter = new CityIndexAdapter(this, cityIndexList);
+        gv_index.setAdapter(cityIndexAdapter);
+
         tv_city_index = (TextView) findViewById(R.id.tv_city_index);
+        listView = (ListView) findViewById(R.id.listview);
+        cityListAdapter = new CityListAdapter(this, cityList);
+        listView.setAdapter(cityListAdapter);
     }
 
     @Override
@@ -84,9 +94,6 @@ public class LocationChooseActivity extends BaseActivity {
         super.initParams();
 
         String cityStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        if (StringUtil.notEmpty(cityStr)) {
-            et_city.setText(cityStr);
-        }
         String historyCity = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY_CITY, "", false);
         if (StringUtil.notEmpty(historyCity)) {
             tv_history.setText(historyCity);
@@ -99,13 +106,96 @@ public class LocationChooseActivity extends BaseActivity {
         HotCityAdapter hotCityAdapter = new HotCityAdapter(this, mHotCityList);
         gv_hotcity.setAdapter(hotCityAdapter);
 
-        cityIndexAdapter = new CityIndexAdapter(this, SessionContext.getCityIndexList());
-        gv_index.setAdapter(cityIndexAdapter);
+        if (null != SessionContext.getCityIndexList() && SessionContext.getCityIndexList().size() > 0
+                && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
+            initData();
+        } else {
+            showProgressDialog(this);
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    initJsonData();
+                    initData();
+                }
+            }.start();
+        }
 
+    }
+
+    private void initData() {
+        cityIndexList.clear();
+        cityIndexList.addAll(SessionContext.getCityIndexList());
+        cityIndexAdapter.notifyDataSetChanged();
         tv_city_index.setText("A");
+        cityList.clear();
         cityList.addAll(SessionContext.getCityAreaMap().get("A"));
-        cityListAdapter = new CityListAdapter(this, cityList);
-        listView.setAdapter(cityListAdapter);
+        cityListAdapter.notifyDataSetChanged();
+        removeProgressDialog();
+    }
+
+    private void initJsonData() {
+        LogUtil.i(TAG, "initJsonData() begin....");
+        try {
+            InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open("area.json"));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line = "";
+            StringBuilder result = new StringBuilder();
+            while ((line = bufReader.readLine()) != null) {
+                result.append(line);
+            }
+            inputReader.close();
+            bufReader.close();
+            JSONObject mJsonObject = JSONObject.parseObject(result.toString());
+            if (mJsonObject != null) {
+                if (mJsonObject.containsKey("citylist")) {
+                    List<CityAreaInfoBean> temp = JSON.parseArray(mJsonObject.getString("citylist"), CityAreaInfoBean.class);
+                    if (temp != null && temp.size() > 0) {
+                        SessionContext.setCityAreaList(temp);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        List<String> cityIndexList = new ArrayList<>();
+        List<CityAreaInfoBean> cityNameList = new ArrayList<>();
+
+        for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
+            for (int j = 0; j < SessionContext.getCityAreaList().get(i).list.size(); j++) {
+                cityNameList.add(SessionContext.getCityAreaList().get(i).list.get(j));
+                String shortName = SessionContext.getCityAreaList().get(i).list.get(j).shortName;
+                char c = PinyinUtils.getFirstSpell(shortName).charAt(0);
+                String str = String.valueOf(c).toUpperCase();
+                if (!cityIndexList.contains(str)) {
+                    cityIndexList.add(str);
+                }
+            }
+        }
+        Collections.sort(cityIndexList);
+        SessionContext.setCityIndexList(cityIndexList);
+
+        Map<String, List<String>> nameMap = new HashMap<>();
+        Map<String, List<CityAreaInfoBean>> areaMap = new HashMap<>();
+        for (int i = 0; i < cityIndexList.size(); i++) {
+            List<CityAreaInfoBean> tempArea = new ArrayList<>();
+            List<String> tempStr = new ArrayList<>();
+            for (int j = 0; j < cityNameList.size(); j++) {
+                char c = ' ';
+                String shortName = cityNameList.get(j).shortName;
+                String str = SessionContext.getFirstSpellChat(shortName).toUpperCase();
+                if (cityIndexList.get(i).equals(str)) {
+                    tempArea.add(cityNameList.get(j));
+                }
+                tempStr.add(shortName);
+            }
+            areaMap.put(cityIndexList.get(i), tempArea);
+            nameMap.put(cityIndexList.get(i), tempStr);
+        }
+        SessionContext.setCityAreaMap(areaMap);
+        SessionContext.setCityNameMap(nameMap);
+        LogUtil.i(TAG, "initJsonData() end....");
     }
 
     @Override

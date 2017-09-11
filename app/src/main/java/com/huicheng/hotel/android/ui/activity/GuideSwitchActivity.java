@@ -99,7 +99,7 @@ public class GuideSwitchActivity extends BaseActivity {
                 index = 3;
                 break;
         }
-        if (/*!AppConst.ISDEVELOP && */index != 0 && index != 1) {
+        if (index != 0 && index != 1 && index != 3) {
             CustomDialog dialog = new CustomDialog(this);
             dialog.setMessage(tips[index]);
             dialog.setNegativeButton(getString(R.string.iknown), new DialogInterface.OnClickListener() {

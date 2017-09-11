@@ -160,7 +160,6 @@ public class OrderPayActivity extends BaseActivity {
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.PAY;
-//        d.path = "http://222.209.82.135:8881/pay/to_payment.json";
         d.flag = AppConst.PAY;
 
         if (!isProgressShowing()) {
@@ -230,19 +229,23 @@ public class OrderPayActivity extends BaseActivity {
                 TextView tv_title_comm = (TextView) commView.findViewById(R.id.tv_title);
                 TextView tv_price_comm = (TextView) commView.findViewById(R.id.tv_price);
                 tv_price_comm.getPaint().setFakeBoldText(true);
-                tv_title_comm.setText(orderPayDetailInfoBean.roomName + " " + orderPayDetailInfoBean.totalPriceList.size() + "晚");
+                StringBuilder sb = new StringBuilder();
+                sb.append(orderPayDetailInfoBean.roomName).append(" ")
+                        .append(orderPayDetailInfoBean.roomCnt).append("间").append(" ")
+                        .append(orderPayDetailInfoBean.preTotalPriceList.size()).append("晚");
+                tv_title_comm.setText(sb);
                 tv_price_comm.setText(String.format(getString(R.string.rmbStr), String.valueOf(orderPayDetailInfoBean.roomPrice)));
                 room_detail_layout.removeAllViews();
-                for (int i = 0; i < orderPayDetailInfoBean.totalPriceList.size(); i++) {
+                for (int i = 0; i < orderPayDetailInfoBean.preTotalPriceList.size(); i++) {
                     View roomDetailItem = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
                     TextView tv_room_title = (TextView) roomDetailItem.findViewById(R.id.tv_title);
                     TextView tv_room_price = (TextView) roomDetailItem.findViewById(R.id.tv_price);
-                    String startDate = DateUtil.getDay("M月d号", orderPayDetailInfoBean.totalPriceList.get(i).activeTime);
-                    String endDate = String.valueOf(Integer.parseInt(DateUtil.getDay("d", orderPayDetailInfoBean.totalPriceList.get(i).activeTime)) + 1) + "号";
+                    String startDate = DateUtil.getDay("M月d号", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime);
+                    String endDate = String.valueOf(Integer.parseInt(DateUtil.getDay("d", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime)) + 1) + "号";
                     tv_room_title.setText(startDate + "-" + endDate);
                     tv_room_title.setTextSize(10);
                     tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
-                    tv_room_price.setText(String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.totalPriceList.get(i).price))));
+                    tv_room_price.setText(String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.preTotalPriceList.get(i).price))));
                     tv_room_price.setTextSize(10);
                     tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
                     room_detail_layout.addView(roomDetailItem);
@@ -257,7 +260,7 @@ public class OrderPayActivity extends BaseActivity {
                     TextView tv_title = (TextView) item.findViewById(R.id.tv_title);
                     TextView tv_price = (TextView) item.findViewById(R.id.tv_price);
                     tv_price.getPaint().setFakeBoldText(true);
-                    tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).custCount);
+                    tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).serviceCnt);
                     tv_price.setText(String.format(getString(R.string.rmbStr), String.valueOf(orderPayDetailInfoBean.attachInfo.get(i).orderMoney)));
                     service_lay.addView(item);
                 }

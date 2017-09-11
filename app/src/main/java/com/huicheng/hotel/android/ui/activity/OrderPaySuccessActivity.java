@@ -14,7 +14,6 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -45,6 +44,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
     private String checkRoomDate;
     private String hotelId, hotelName, roomName;
     private boolean isPrePaySuccess = false;
+    private boolean showTipsOrNot = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +90,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
             beginTime = bundle.getLong("beginTime");
             endTime = bundle.getLong("endTime");
             isPrePaySuccess = bundle.getBoolean("isPrePaySuccess");
+            showTipsOrNot = bundle.getBoolean("showTipsOrNot");
         }
     }
 
@@ -124,7 +125,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
 
             root_lay.setVisibility(View.VISIBLE);
         }
-        if (SessionContext.isHasActive && isPrePaySuccess) {
+        if (isPrePaySuccess && showTipsOrNot) {
             String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
             if ("海南省".contains(province)) {
                 showBookingAirTicketDialog();

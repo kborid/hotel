@@ -17,6 +17,7 @@ import com.huicheng.hotel.android.ui.JSBridge.functions.openNativeOrderList;
 import com.huicheng.hotel.android.ui.JSBridge.functions.openURL;
 import com.huicheng.hotel.android.ui.JSBridge.functions.payPlaneTicket;
 import com.huicheng.hotel.android.ui.JSBridge.functions.reBookPlane;
+import com.huicheng.hotel.android.ui.JSBridge.functions.shareURL;
 import com.huicheng.hotel.android.ui.JSBridge.functions.showException;
 
 /**
@@ -45,6 +46,7 @@ public class RegisterHandler {
     public void init() {
         // mWVJBWebViewClient.registerHandler("showLoginModule", new showLoginModule());
         // mWVJBWebViewClient.registerHandler("loadRequest", new loadRequest());
+        mWVJBWebViewClient.registerHandler("shareURL", new shareURL(mContext));
         mWVJBWebViewClient.registerHandler("openURL", new openURL(mContext));
         mWVJBWebViewClient.registerHandler("getUserTicket", new getUserTicket());
         mWVJBWebViewClient.registerHandler("getPicturesUpload", new getPicturesUpload(mContext));

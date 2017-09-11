@@ -33,6 +33,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.control.ShareResultListener;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceBasicInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieCommentInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieInfoBean;
@@ -87,6 +88,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
 
     private HotelSpaceBasicInfoBean hotelSpaceBasicInfoBean = null;
     private HotelSpaceTieInfoBean hotelSpaceTieInfoBean = null;
+    private HotelDetailInfoBean hotelDetailInfoBean = null;
     private int hotelId;
     private int articleId;
     private int pageIndex = 0;
@@ -187,7 +189,20 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     public void initParams() {
         super.initParams();
         tv_center_title.setText("帖子详情");
-        btn_right.setImageResource(R.drawable.iv_favorite_gray);
+        btn_right.setImageResource(R.drawable.iv_vippp);
+        hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
+        // 会员按钮显示状态
+        if (hotelDetailInfoBean.isSupportVip) {
+            btn_right.setVisibility(View.VISIBLE);
+            if (hotelDetailInfoBean.isVip) {
+                btn_right.setImageResource(R.drawable.iv_viped);
+            } else {
+                btn_right.setImageResource(R.drawable.iv_vippp);
+            }
+        } else {
+            btn_right.setVisibility(View.INVISIBLE);
+        }
+
         if (!SessionContext.isLogin()) {
             SessionContext.initUserInfo();
         }
@@ -296,7 +311,9 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_right:
-                showAddVipDialog(this, HotelOrderManager.getInstance().getHotelDetailInfo());
+                if (null != hotelDetailInfoBean && !hotelDetailInfoBean.isVip) {
+                    showAddVipDialog(this, hotelDetailInfoBean);
+                }
                 break;
             case R.id.tv_space_share:
                 LogUtil.i(TAG, "share button onclick!!!");
@@ -372,6 +389,12 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         params.alpha = 0.8f;
         getWindow().setAttributes(params);
         mSharePopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+    }
+
+    @Override
+    public void refreshScreenInfoVipPrice() {
+        super.refreshScreenInfoVipPrice();
+        LogUtil.i(TAG, "refreshScreenInfoVipPrice()");
     }
 
     private void requestHotelSpaceBasicInfo() {
@@ -476,13 +499,6 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     @Override
     protected void onResume() {
         super.onResume();
-        if (null != hotelSpaceBasicInfoBean) {
-            if (hotelSpaceBasicInfoBean.isPopup) {
-                btn_right.setVisibility(View.VISIBLE);
-            } else {
-                btn_right.setVisibility(View.INVISIBLE);
-            }
-        }
         try {
             webview.getClass().getMethod("onResume").invoke(webview, (Object[]) null);
         } catch (Exception e) {
@@ -551,11 +567,6 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                 removeProgressDialog();
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 hotelSpaceBasicInfoBean = JSON.parseObject(response.body.toString(), HotelSpaceBasicInfoBean.class);
-                if (hotelSpaceBasicInfoBean.isPopup) {
-                    btn_right.setVisibility(View.VISIBLE);
-                } else {
-                    btn_right.setVisibility(View.INVISIBLE);
-                }
                 replyListView.refreshingHeaderView();
             }
         }

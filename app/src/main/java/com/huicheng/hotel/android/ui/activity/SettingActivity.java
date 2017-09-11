@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,7 +29,7 @@ import java.io.File;
 public class SettingActivity extends BaseActivity {
 
     private final String TAG = getClass().getSimpleName();
-    private TextView tv_notify, tv_cache, tv_about, tv_version, tv_assess, tv_layer, tv_secret;
+    private TextView tv_cache, tv_about, tv_version, tv_assess, tv_layer, tv_secret;
     private TextView tv_cache_size;
 
     private int mCCount = 0;
@@ -48,7 +47,6 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
-        tv_notify = (TextView) findViewById(R.id.tv_notify);
         tv_cache = (TextView) findViewById(R.id.tv_cache);
         tv_cache_size = (TextView) findViewById(R.id.tv_cache_size);
         tv_about = (TextView) findViewById(R.id.tv_about);
@@ -71,7 +69,6 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        tv_notify.setOnClickListener(this);
         tv_cache.setOnClickListener(this);
         tv_about.setOnClickListener(this);
         tv_version.setOnClickListener(this);
@@ -88,9 +85,6 @@ public class SettingActivity extends BaseActivity {
         super.onClick(v);
         Intent intent = null;
         switch (v.getId()) {
-            case R.id.tv_notify:
-                intent = new Intent(Settings.ACTION_SETTINGS);
-                break;
             case R.id.tv_cache:
                 CustomDialog dialog = new CustomDialog(this);
                 dialog.setMessage("是否清除缓存？");

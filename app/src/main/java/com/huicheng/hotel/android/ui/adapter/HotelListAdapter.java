@@ -191,8 +191,10 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         if (StringUtil.notEmpty(bean.hotelGrade)) {
             point = Float.parseFloat(bean.hotelGrade);
             holder.tv_hotel_point.setText(String.valueOf(point));
+            holder.tv_hotel_point.setVisibility(View.VISIBLE);
         } else {
             holder.tv_hotel_point.setText("0.0");
+            holder.tv_hotel_point.setVisibility(View.GONE);
         }
         if (point >= 4) {
             holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_high));

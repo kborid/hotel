@@ -27,14 +27,16 @@ public class OrderPayDetailInfoBean implements Serializable {
     public long timeEnd;
     public long timeStart;
     public String specialComment;
-    public int payWay;  //1、到店付，2、在线付
     public String checkRoomDate;
     public List<RoomDetailInfoBean.TotalPriceList> preTotalPriceList;
     public List<RoomDetailInfoBean.TotalPriceList> totalPriceList;
+    public int roomCnt;
+    public boolean showTipsOrNot;
+
 
 
     public static class AttachInfo implements Serializable {
-        public int custCount;
+        public int serviceCnt;
         public String orderId;
         public int orderMoney;
         public String serviceName;

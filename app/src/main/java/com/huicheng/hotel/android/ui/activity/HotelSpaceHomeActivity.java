@@ -27,6 +27,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceBasicInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieInfoBean;
 import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
@@ -70,6 +71,7 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     private LinearLayout root_lay;
     private RoundedAllImageView iv_hotel_bg;
     private TextView tv_tie_count, tv_fans_count;
+    private HotelDetailInfoBean hotelDetailInfoBean = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +122,16 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText("酒店空间");
-        btn_right.setImageResource(R.drawable.iv_favorite_gray);
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+        btn_right.setImageResource(R.drawable.iv_vippp);
+        hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
+        // 会员按钮显示状态
+        if (hotelDetailInfoBean.isSupportVip) {
             btn_right.setVisibility(View.VISIBLE);
+            if (hotelDetailInfoBean.isVip) {
+                btn_right.setImageResource(R.drawable.iv_viped);
+            } else {
+                btn_right.setImageResource(R.drawable.iv_vippp);
+            }
         } else {
             btn_right.setVisibility(View.INVISIBLE);
         }
@@ -157,7 +166,9 @@ public class HotelSpaceHomeActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_right:
-                showAddVipDialog(this, HotelOrderManager.getInstance().getHotelDetailInfo());
+                if (null != hotelDetailInfoBean && !hotelDetailInfoBean.isVip) {
+                    showAddVipDialog(this, hotelDetailInfoBean);
+                }
                 break;
             default:
                 break;
@@ -206,7 +217,6 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     public void refreshScreenInfoVipPrice() {
         super.refreshScreenInfoVipPrice();
         LogUtil.i(TAG, "refreshScreenInfoVipPrice()");
-        btn_right.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -247,11 +257,11 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (null != hotelSpaceBasicInfoBean) {
-            if (hotelSpaceBasicInfoBean.isPopup) {
-                btn_right.setVisibility(View.VISIBLE);
+        if (null != hotelDetailInfoBean) {
+            if (hotelDetailInfoBean.isVip) {
+                btn_right.setImageResource(R.drawable.iv_viped);
             } else {
-                btn_right.setVisibility(View.INVISIBLE);
+                btn_right.setImageResource(R.drawable.iv_vippp);
             }
         }
     }

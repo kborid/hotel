@@ -29,6 +29,7 @@ public class RoomDetailInfoBean implements Serializable {
     public List<TotalPriceList> totalPriceList;
     public int unitPrice;
     public boolean onlyOnline;
+    public boolean showTipsOrNot;
 
     public static class ChooseService implements Serializable {
         public String editable;

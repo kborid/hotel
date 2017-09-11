@@ -1,6 +1,8 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -48,7 +51,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
     private LinearLayout et_name_line, et_phone_line;
     private TextView tv_invoice_info;
 
-    private Button btn_hhy, btn_pay, btn_cancel, btn_modify, btn_booking_again, btn_assess, btn_confirm;
+    private Button /*btn_hhy, */btn_pay, btn_cancel, btn_modify, btn_booking_again, btn_assess, btn_confirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +84,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
         et_require = (EditText) findViewById(R.id.et_require);
         tv_invoice_info = (TextView) findViewById(R.id.tv_invoice_info);
 
-        btn_hhy = (Button) findViewById(R.id.btn_hhy);
+//        btn_hhy = (Button) findViewById(R.id.btn_hhy);
         btn_pay = (Button) findViewById(R.id.btn_pay);
         btn_assess = (Button) findViewById(R.id.btn_assess);
         btn_booking_again = (Button) findViewById(R.id.btn_booking_again);
@@ -148,7 +151,9 @@ public class HotelOrderDetailActivity extends BaseActivity {
 
             String date = DateUtil.getDay("MM月dd日", orderPayDetailInfoBean.timeStart) + "-" + DateUtil.getDay("dd日", orderPayDetailInfoBean.timeEnd);
             String during = DateUtil.getGapCount(new Date(orderPayDetailInfoBean.timeStart), new Date(orderPayDetailInfoBean.timeEnd)) + "晚";
-            tv_in_date.setText(date + "  " + during);
+            StringBuilder sb = new StringBuilder();
+            sb.append(date).append(" ")/*.append(orderPayDetailInfoBean.roomCnt).append("间").append(" ")*/.append(during);
+            tv_in_date.setText(sb);
             tv_price.setText(orderPayDetailInfoBean.roomPrice + " 元");
 
             service_lay.removeAllViews();
@@ -156,7 +161,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 View view = LayoutInflater.from(this).inflate(R.layout.order_service_item, null);
                 TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
                 TextView tv_price = (TextView) view.findViewById(R.id.tv_price);
-                tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " * " + orderPayDetailInfoBean.attachInfo.get(i).custCount);
+                tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).serviceCnt);
                 tv_price.setText(orderPayDetailInfoBean.attachInfo.get(i).orderMoney + " 元");
                 service_lay.addView(view);
             }
@@ -189,39 +194,39 @@ public class HotelOrderDetailActivity extends BaseActivity {
         switch (status) {
             case HotelCommDef.WaitPay:
                 btn_pay.setVisibility(View.VISIBLE);
-                btn_hhy.setVisibility(View.GONE);
+//                btn_hhy.setVisibility(View.GONE);
                 btn_cancel.setEnabled(true);
                 btn_modify.setEnabled(true);
                 btn_assess.setEnabled(false);
                 break;
             case HotelCommDef.WaitConfirm:
                 btn_pay.setVisibility(View.GONE);
-                btn_hhy.setVisibility(View.GONE);
+//                btn_hhy.setVisibility(View.GONE);
                 btn_cancel.setEnabled(true);
                 btn_modify.setEnabled(true);
                 btn_assess.setEnabled(false);
                 break;
             case HotelCommDef.Confirmed:
                 btn_pay.setVisibility(View.GONE);
-                if (orderPayDetailInfoBean.payWay == 1) {
-                    btn_hhy.setVisibility(View.GONE);
-                } else {
-                    btn_hhy.setVisibility(View.VISIBLE);
-                }
+//                if (orderPayDetailInfoBean.payWay == 1) {
+//                    btn_hhy.setVisibility(View.GONE);
+//                } else {
+//                    btn_hhy.setVisibility(View.VISIBLE);
+//                }
                 btn_cancel.setEnabled(false);
                 btn_modify.setEnabled(false);
                 btn_assess.setEnabled(false);
                 break;
             case HotelCommDef.Finished:
                 btn_pay.setVisibility(View.GONE);
-                btn_hhy.setVisibility(View.GONE);
+//                btn_hhy.setVisibility(View.GONE);
                 btn_cancel.setEnabled(false);
                 btn_modify.setEnabled(false);
                 btn_assess.setEnabled(true);
                 break;
             default:
                 btn_pay.setVisibility(View.GONE);
-                btn_hhy.setVisibility(View.GONE);
+//                btn_hhy.setVisibility(View.GONE);
                 btn_cancel.setEnabled(false);
                 btn_modify.setEnabled(false);
                 btn_assess.setEnabled(false);
@@ -234,7 +239,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
         super.initListeners();
         tv_hotel_name.setOnClickListener(this);
         btn_pay.setOnClickListener(this);
-        btn_hhy.setOnClickListener(this);
+//        btn_hhy.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
         btn_modify.setOnClickListener(this);
         btn_assess.setOnClickListener(this);
@@ -252,12 +257,12 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 intent.putExtra("orderId", orderId);
                 intent.putExtra("orderType", orderType);
                 break;
-            case R.id.btn_hhy:
-                intent = new Intent(this, HouHuiYaoOrderDetailActivity.class);
-                intent.putExtra("regretOrderid", orderPayDetailInfoBean.orderID);
-                String dateStr = DateUtil.getDay("M.dd", orderPayDetailInfoBean.timeStart) + DateUtil.dateToWeek2(new Date(orderPayDetailInfoBean.timeStart)) + " - " + DateUtil.getDay("M.dd", orderPayDetailInfoBean.timeEnd) + DateUtil.dateToWeek2(new Date(orderPayDetailInfoBean.timeEnd));
-                intent.putExtra("date", dateStr);
-                break;
+//            case R.id.btn_hhy:
+//                intent = new Intent(this, HouHuiYaoOrderDetailActivity.class);
+//                intent.putExtra("regretOrderid", orderPayDetailInfoBean.orderID);
+//                String dateStr = DateUtil.getDay("M.dd", orderPayDetailInfoBean.timeStart) + DateUtil.dateToWeek2(new Date(orderPayDetailInfoBean.timeStart)) + " - " + DateUtil.getDay("M.dd", orderPayDetailInfoBean.timeEnd) + DateUtil.dateToWeek2(new Date(orderPayDetailInfoBean.timeEnd));
+//                intent.putExtra("date", dateStr);
+//                break;
             case R.id.btn_cancel:
                 requestCancelOrder();
                 break;
@@ -306,6 +311,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void modifyEnableOrderInfo(boolean flag) {
         if (flag) {
             et_name.setEnabled(true);
@@ -364,13 +370,25 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 HotelOrderManager.getInstance().setOrderPayDetailInfoBean(orderPayDetailInfoBean);
                 refreshOrderDetailInfo();
             } else if (request.flag == AppConst.ORDER_CANCEL) {
-//                requestOrderDetailInfo();
-                CustomToast.show("订单取消成功", CustomToast.LENGTH_SHORT);
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                if (mJson.containsKey("success")) {
+                    String ret = mJson.getString("success");
+                    if ("1".equals(ret)) {
+                        String msg = getString(R.string.order_cancel_success);
+                        if (mJson.containsKey("tips")) {
+                            msg = mJson.getString("tips");
+                        }
+                        CustomToast.show(msg, CustomToast.LENGTH_SHORT);
+                    } else {
+                        CustomToast.show(getString(R.string.order_cancel_fail), CustomToast.LENGTH_SHORT);
+                    }
+                }
                 setResult(RESULT_OK);
                 finish();
             } else if (request.flag == AppConst.ORDER_MODIFY) {
                 removeProgressDialog();
-                CustomToast.show("订单修改成功", CustomToast.LENGTH_SHORT);
+                CustomToast.show(getString(R.string.order_modify_success), CustomToast.LENGTH_SHORT);
                 modifyEnableOrderInfo(false);
             }
         }

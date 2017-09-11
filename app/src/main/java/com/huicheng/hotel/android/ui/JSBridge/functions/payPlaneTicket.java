@@ -14,6 +14,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.pay.alipay.AlipayUtil;
+import com.huicheng.hotel.android.common.pay.unionpay.UnionPayActivity;
 import com.huicheng.hotel.android.common.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.common.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
@@ -171,9 +172,13 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
     }
 
     private void unionPay(String tn) {
-        UnionPayUtil unionpay = new UnionPayUtil(mContext);
-        unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
-        unionpay.unionStartPay(tn);
+//        UnionPayUtil unionpay = new UnionPayUtil(mContext);
+//        unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
+//        unionpay.unionStartPay(tn);
+        Intent intent = new Intent(mContext, UnionPayActivity.class);
+        intent.putExtra("ServerMode", UnionPayUtil.RELEASE_MODE);
+        intent.putExtra("tn", tn);
+        mContext.startActivity(intent);
         registerReceiver();
     }
 

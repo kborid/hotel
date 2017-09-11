@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.custom;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,8 +83,13 @@ public class CommonCustomInfoLayout extends LinearLayout {
             @Override
             public void onClick(View v) {
                 CustomDialog dialog = new CustomDialog(context);
-                dialog.setTitle(context.getResources().getString(R.string.in_person_title));
                 dialog.setMessage(context.getResources().getString(R.string.in_person_msg));
+                dialog.setNegativeButton(context.getResources().getString(R.string.iknown), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }

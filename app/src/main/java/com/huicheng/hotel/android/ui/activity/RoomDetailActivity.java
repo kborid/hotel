@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,19 +32,20 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomConfirmInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomDetailInfoBean;
-import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
+import com.huicheng.hotel.android.ui.custom.CustomNoAutoScrollBannerLayout;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
-import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.image.ImageLoader;
+import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -80,6 +80,7 @@ public class RoomDetailActivity extends BaseActivity {
     private CommonAssessStarsLayout assess_star_lay;
 
     private TabHost tabHost;
+    private View arrTabView, preTabView;
     private TextView tv_date, tv_during, tv_pay_type, tv_price;
 
     private LinearLayout service_lay;
@@ -104,10 +105,13 @@ public class RoomDetailActivity extends BaseActivity {
     private boolean isYgr = false;
     private int hotelId, room_type = -1, roomId;
     private String hotelName;
+    private HotelDetailInfoBean hotelDetailInfoBean = null;
     private RoomDetailInfoBean roomDetailInfoBean = null;
 
     private PopupWindow mSharePopupWindow = null;
     private CustomSharePopup mCustomShareView = null;
+
+    private boolean isSetDefaultPrePay = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,15 +204,14 @@ public class RoomDetailActivity extends BaseActivity {
         super.initParams();
         btn_back.setImageResource(R.drawable.iv_back_white);
 
-        if (SessionContext.isHasActive) {
-            String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-            if ("海南省".contains(province)) {
-                iv_qtips_active.setVisibility(View.VISIBLE);
-            }
-        }
-
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
+        hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
+        if (hotelDetailInfoBean.isSupportVip) {
             iv_fans.setVisibility(View.VISIBLE);
+            if (hotelDetailInfoBean.isVip) {
+                iv_fans.setImageResource(R.drawable.iv_detail_viped);
+            } else {
+                iv_fans.setImageResource(R.drawable.iv_detail_vippp);
+            }
         } else {
             iv_fans.setVisibility(View.GONE);
         }
@@ -218,8 +221,10 @@ public class RoomDetailActivity extends BaseActivity {
             View view = LayoutInflater.from(this).inflate(R.layout.selected_bar_item, null);
             if (i == 1) {
                 tabHost.addTab(tabHost.newTabSpec("tab" + i).setIndicator(view).setContent(R.id.tab_pre));
+                preTabView = tabHost.getTabWidget().getChildAt(i);
             } else {
                 tabHost.addTab(tabHost.newTabSpec("tab" + i).setIndicator(view).setContent(R.id.tab_on));
+                arrTabView = tabHost.getTabWidget().getChildAt(i);
             }
         }
         tabHost.setCurrentTab(0);
@@ -331,6 +336,16 @@ public class RoomDetailActivity extends BaseActivity {
 
     private void refreshRoomDetailInfo() {
         if (null != roomDetailInfoBean) {
+
+            isSetDefaultPrePay = false;
+            if (roomDetailInfoBean.showTipsOrNot) {
+                String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+                if ("海南省".contains(province)) {
+                    isSetDefaultPrePay = true;
+                    iv_qtips_active.setVisibility(View.VISIBLE);
+                }
+            }
+
             root_lay.setVisibility(View.VISIBLE);
             //设置banner
 //            viewPager.setPageMargin(Utils.dip2px(10));
@@ -361,22 +376,41 @@ public class RoomDetailActivity extends BaseActivity {
             }
 
             //设置付款信息
-            if (roomDetailInfoBean.preTotalPriceList != null) {
-                tabHost.getTabWidget().getChildAt(1).setEnabled(true);
-                ((TextView) tabHost.getTabWidget().getChildAt(1).findViewById(R.id.tv_tab)).setText("预付:" + roomDetailInfoBean.preTotalPrice + "元");
-            } else {
-                tabHost.getTabWidget().getChildAt(1).setEnabled(false);
-                ((TextView) tabHost.getTabWidget().getChildAt(1).findViewById(R.id.tv_tab)).setText("预付:不支持");
-            }
+            String arrPayText, prePayText;
+            if (roomDetailInfoBean.preTotalPriceList != null && roomDetailInfoBean.totalPriceList != null) {
+                arrTabView.setEnabled(true);
+                arrPayText = String.format(getString(R.string.arrPayStr), String.valueOf(roomDetailInfoBean.totalPrice));
+                preTabView.setEnabled(true);
+                prePayText = String.format(getString(R.string.prePayStr), String.valueOf(roomDetailInfoBean.preTotalPrice));
+                if (isSetDefaultPrePay) {
+                    tabHost.setCurrentTab(1);
+                }
+                if (roomDetailInfoBean.onlyOnline) {
+                    arrTabView.setEnabled(false);
+                    arrPayText = getString(R.string.arrPayNotSupport);
+                    tabHost.setCurrentTab(1);
+                }
+            } else if (roomDetailInfoBean.preTotalPriceList != null) {
+                arrTabView.setEnabled(false);
+                arrPayText = getString(R.string.arrPayNotSupport);
+                preTabView.setEnabled(true);
+                prePayText = String.format(getString(R.string.prePayStr), String.valueOf(roomDetailInfoBean.preTotalPrice));
 
-            if (roomDetailInfoBean.totalPriceList != null && !roomDetailInfoBean.onlyOnline) {
-                tabHost.getTabWidget().getChildAt(0).setEnabled(true);
-                ((TextView) tabHost.getTabWidget().getChildAt(0).findViewById(R.id.tv_tab)).setText("到店付:" + roomDetailInfoBean.totalPrice + "元");
-            } else {
-                tabHost.getTabWidget().getChildAt(0).setEnabled(false);
-                ((TextView) tabHost.getTabWidget().getChildAt(0).findViewById(R.id.tv_tab)).setText("到店付:不支持");
                 tabHost.setCurrentTab(1);
+            } else if (roomDetailInfoBean.totalPriceList != null) {
+                arrTabView.setEnabled(true);
+                arrPayText = String.format(getString(R.string.arrPayStr), String.valueOf(roomDetailInfoBean.totalPrice));
+                preTabView.setEnabled(false);
+                prePayText = getString(R.string.prePayNotSupport);
+                tabHost.setCurrentTab(0);
+            } else {
+                arrTabView.setEnabled(false);
+                arrPayText = getString(R.string.arrPayNotSupport);
+                preTabView.setEnabled(false);
+                prePayText = getString(R.string.prePayNotSupport);
             }
+            ((TextView) arrTabView.findViewById(R.id.tv_tab)).setText(arrPayText);
+            ((TextView) preTabView.findViewById(R.id.tv_tab)).setText(prePayText);
 
             tv_date.setText(DateUtil.getDay("MM月dd日", HotelOrderManager.getInstance().getBeginTime(isYgr)) + "-" + DateUtil.getDay("dd日", HotelOrderManager.getInstance().getEndTime(isYgr)));
             tv_during.setText(DateUtil.getGapCount(HotelOrderManager.getInstance().getBeginDate(isYgr), HotelOrderManager.getInstance().getEndDate(isYgr)) + "晚");
@@ -513,7 +547,9 @@ public class RoomDetailActivity extends BaseActivity {
                 showSharePopupWindow();
                 break;
             case R.id.iv_fans:
-                showAddVipDialog(this, HotelOrderManager.getInstance().getHotelDetailInfo());
+                if (null != hotelDetailInfoBean && !hotelDetailInfoBean.isVip) {
+                    showAddVipDialog(this, hotelDetailInfoBean);
+                }
                 break;
             case R.id.point_lay: {
                 Intent intent = new Intent(this, AssessCommendActivity.class);
@@ -614,56 +650,41 @@ public class RoomDetailActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         final CustomDialog detailDialog = new CustomDialog(RoomDetailActivity.this);
+                        detailDialog.findViewById(R.id.content_layout).setPadding(0, 0, 0, 0);
                         View view = LayoutInflater.from(RoomDetailActivity.this).inflate(R.layout.dialog_service_detail_item_lay, null);
                         TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
                         tv_title.getPaint().setFakeBoldText(true);
                         TextView tv_content = (TextView) view.findViewById(R.id.tv_content);
-                        tv_content.getPaint().setFakeBoldText(true);
                         ImageView iv_close = (ImageView) view.findViewById(R.id.iv_close);
-                        final NoScrollGridView gridView = (NoScrollGridView) view.findViewById(R.id.gridview);
+                        iv_close.setImageBitmap(BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_detail_close), getResources().getColor(R.color.white)));
+                        CustomNoAutoScrollBannerLayout custom_viewpager = (CustomNoAutoScrollBannerLayout) view.findViewById(R.id.custom_viewpager);
+                        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        llp.width = Utils.dip2px(300);
+                        llp.height = (int) ((float) llp.width / 34 * 25);
+                        custom_viewpager.setLayoutParams(llp);
 
                         tv_title.setText(serviceBean.serviceName);
                         String detail = serviceBean.detail;
                         tv_content.setText(detail);
                         if (StringUtil.isEmpty(detail)) {
                             tv_content.setVisibility(View.GONE);
-                        } else {
-                            tv_content.setVisibility(View.VISIBLE);
                         }
 
                         final ArrayList<String> list = new ArrayList<>();
                         String pics = serviceBean.pics;
                         if (StringUtil.isEmpty(pics)) {
-                            gridView.setVisibility(View.GONE);
+                            custom_viewpager.setVisibility(View.GONE);
                         } else {
                             String[] picArr = pics.split(";");
                             list.addAll(Arrays.asList(picArr));
-
-                            gridView.setAdapter(new CommonGridViewPicsAdapter(RoomDetailActivity.this, list, Utils.dip2px(90), 2 / 3f));
-                            gridView.setVisibility(View.VISIBLE);
+                            custom_viewpager.setVisibility(View.VISIBLE);
+                            custom_viewpager.setImageResourcePaths(list);
                         }
 
                         iv_close.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 detailDialog.dismiss();
-                            }
-                        });
-                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                LogUtil.i(TAG, "position = " + position);
-                                Intent intent = new Intent(RoomDetailActivity.this, ImageScaleActivity.class);
-                                intent.putExtra("url", list.get(position));
-                                ImageView imageView = (ImageView) gridView.getChildAt(position).findViewById(R.id.imageView);
-                                int[] location = new int[2];
-                                imageView.getLocationOnScreen(location);
-                                intent.putExtra("locationX", location[0]);//必须
-                                intent.putExtra("locationY", location[1]);//必须
-                                intent.putExtra("width", imageView.getWidth());//必须
-                                intent.putExtra("height", imageView.getHeight());//必须
-                                startActivity(intent);
-                                overridePendingTransition(0, 0);
                             }
                         });
                         detailDialog.addView(view);
@@ -759,7 +780,8 @@ public class RoomDetailActivity extends BaseActivity {
     public void refreshScreenInfoVipPrice() {
         super.refreshScreenInfoVipPrice();
         LogUtil.i(TAG, "refreshScreenInfoVipPrice()");
-        iv_fans.setVisibility(View.GONE);
+        iv_fans.setVisibility(View.VISIBLE);
+        iv_fans.setImageResource(R.drawable.iv_detail_viped);
         requestRoomDetailInfo();
     }
 
@@ -786,8 +808,6 @@ public class RoomDetailActivity extends BaseActivity {
                 roomDetailInfoBean = JSON.parseObject(response.body.toString(), RoomDetailInfoBean.class);
                 refreshRoomDetailInfo();
             }
-        } else if (request.flag == AppConst.HOTEL_VIP) {
-            iv_fans.setVisibility(View.GONE);
         }
     }
 
@@ -877,7 +897,7 @@ public class RoomDetailActivity extends BaseActivity {
             holder.tv_summary.setText(list.get(position).name);
             loadImage(holder.iv_icon, getResources().getColor(R.color.transparent), list.get(position).iconUrl, 80, 48);
             String count = list.get(position).count;
-            if (StringUtil.isEmpty(count) /*|| "0".equals(count)*/) {
+            if (StringUtil.isEmpty(count) || "0".equals(count)) {
                 holder.tv_count.setVisibility(View.GONE);
             } else {
                 holder.tv_count.setVisibility(View.VISIBLE);

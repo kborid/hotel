@@ -404,7 +404,9 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             LogUtil.i("BaseActivity", "Json = " + response.body.toString());
             isHotelVipRefresh = true;
             HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
-            btn_right.setVisibility(View.INVISIBLE);
+            HotelOrderManager.getInstance().getHotelDetailInfo().isVip = true;
+            btn_right.setVisibility(View.VISIBLE);
+            btn_right.setImageResource(R.drawable.iv_viped);
             refreshScreenInfoVipPrice();
             CustomToast.show(getString(R.string.isViped), CustomToast.LENGTH_SHORT);
         }
@@ -421,6 +423,9 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
+        if (request.flag == AppConst.AD_GDT_IF) {
+            return;
+        }
         String message;
         if (e != null && e instanceof ConnectException) {
             message = getString(R.string.dialog_tip_net_error);

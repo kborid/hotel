@@ -79,7 +79,7 @@
 
     <color name="pinTextColor">#1a1a1a</color>
     <color name="serviceDetailTitle">#1d1d1d</color>
-    <color name="serviceDetailContent">#4c4c4c</color>
+    <color name="serviceDetailContent">@color/calendarTextColor</color>
 
     <color name="searchHintColor">#c8c8c8</color>
     <color name="registerhintColor">#acacac</color>

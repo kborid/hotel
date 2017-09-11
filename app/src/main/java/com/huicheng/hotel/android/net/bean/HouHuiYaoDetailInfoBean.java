@@ -27,9 +27,8 @@ public class HouHuiYaoDetailInfoBean {
     public long starttime;
 
 
-
     public static class Attachs {
-        public int custCount;
+        public int serviceCnt;
         public String orderId;
         public int orderMoney;
         public String serviceName;

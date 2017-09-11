@@ -124,8 +124,8 @@
                         android:layout_height="35dp"
                         android:layout_gravity="center"
                         android:layout_marginRight="15dp"
-                        android:src="@drawable/iv_favorite_white"
-                        android:visibility="gone" />
+                        android:src="@drawable/iv_detail_vippp"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <include layout="@layout/comm_title" />

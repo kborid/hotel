@@ -15,14 +15,12 @@ import com.huicheng.hotel.android.common.CrashHandler;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
-import com.huicheng.hotel.android.control.ShareControl;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.prj.sdk.app.AppContext;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
-//import com.squareup.leakcanary.LeakCanary;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
@@ -30,6 +28,8 @@ import com.umeng.socialize.PlatformConfig;
 import java.util.Collections;
 
 import cn.jpush.android.api.JPushInterface;
+
+//import com.squareup.leakcanary.LeakCanary;
 
 public class PRJApplication extends Application {
     UnLoginBroadcastReceiver mReceiver = new UnLoginBroadcastReceiver();

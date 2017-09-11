@@ -34,7 +34,6 @@ import com.huicheng.hotel.android.ui.custom.CustomConsiderLayout;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabAllDay;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabClock;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabYeGuiRen;
-import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
 
 import java.lang.reflect.Field;
@@ -137,12 +136,17 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
     @Override
     public void initParams() {
         super.initParams();
-        tv_center_title.setText(HotelOrderManager.getInstance().getCityStr() + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
-        tv_center_title.getPaint().setFakeBoldText(true);
-
         beginTime = HotelOrderManager.getInstance().getBeginTime();
         endTime = HotelOrderManager.getInstance().getEndTime();
         hotelDateStr = HotelOrderManager.getInstance().getDateStr();
+
+//        tv_center_title.setText(HotelOrderManager.getInstance().getCityStr() + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
+        tv_center_title.getPaint().setFakeBoldText(true);
+        tv_center_title.setText(
+                String.format(getString(R.string.titleCityDateStr),
+                        HotelOrderManager.getInstance().getCityStr(),
+                        hotelDateStr)
+        );
 
         et_keyword.setText(keyword);
 

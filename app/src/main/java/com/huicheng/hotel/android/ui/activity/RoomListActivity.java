@@ -153,7 +153,7 @@ public class RoomListActivity extends BaseActivity {
     @Override
     public void initParams() {
         tv_center_title.getPaint().setFakeBoldText(true);
-        btn_right.setImageResource(R.drawable.iv_favorite_gray);
+        btn_right.setImageResource(R.drawable.iv_vippp);
         super.initParams();
 
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
@@ -248,19 +248,31 @@ public class RoomListActivity extends BaseActivity {
 
     private void refreshRoomListInfo() {
         if (null != hotelDetailInfoBean) {
-            if (hotelDetailInfoBean.isPopup) {
+            // 会员按钮显示状态
+            if (hotelDetailInfoBean.isSupportVip) {
                 btn_right.setVisibility(View.VISIBLE);
-                if (!SharedPreferenceUtil.getInstance().getBoolean(AppConst.HAS_SHOW_VIP_TIPS, false)) {
-                    vip_layout.setVisibility(View.VISIBLE);
+                if (hotelDetailInfoBean.isVip) {
+                    btn_right.setImageResource(R.drawable.iv_viped);
                 } else {
-                    vip_layout.setVisibility(View.GONE);
+                    btn_right.setImageResource(R.drawable.iv_vippp);
+                    if (!SharedPreferenceUtil.getInstance().getBoolean(AppConst.HAS_SHOW_VIP_TIPS, false)) {
+                        vip_layout.setVisibility(View.VISIBLE);
+                    } else {
+                        vip_layout.setVisibility(View.GONE);
+                    }
                 }
             } else {
                 btn_right.setVisibility(View.INVISIBLE);
             }
+
             //设置 title
             hotelCityStr = CityStringUtils.getProvinceCityString(hotelDetailInfoBean.provinceName, hotelDetailInfoBean.cityName, "-");
-            tv_center_title.setText(hotelCityStr + "(" + hotelDateStr + ")");
+//            tv_center_title.setText(hotelCityStr + "(" + hotelDateStr + ")");
+            tv_center_title.setText(
+                    String.format(getString(R.string.titleCityDateStr),
+                            hotelCityStr,
+                            hotelDateStr)
+            );
 
             //设置banner
             int marginValue = Utils.dip2px(10);
@@ -570,15 +582,17 @@ public class RoomListActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_center_title: {
                 Intent intentRes = new Intent(this, HotelCalendarChooseActivity.class);
-                intentRes.putExtra("beginTime", beginTime);
-                intentRes.putExtra("endTime", endTime);
+//                intentRes.putExtra("beginTime", beginTime);
+//                intentRes.putExtra("endTime", endTime);
                 intentRes.putExtra("isForbidTitleClick", true);
                 startActivityForResult(intentRes, 0x01);
             }
             break;
             case R.id.btn_right:
                 LogUtil.i(TAG, "right button onclick");
-                showAddVipDialog(this, hotelDetailInfoBean);
+                if (hotelDetailInfoBean != null && !hotelDetailInfoBean.isVip) {
+                    showAddVipDialog(this, hotelDetailInfoBean);
+                }
                 break;
             case R.id.tv_map:
                 if (hotelDetailInfoBean != null) {
@@ -654,7 +668,6 @@ public class RoomListActivity extends BaseActivity {
         super.refreshScreenInfoVipPrice();
         LogUtil.i(TAG, "refreshScreenInfoVipPrice()");
         isHotelVipRefresh = false;
-        btn_right.setVisibility(View.INVISIBLE);
         requestHotelDetailInfo();
     }
 

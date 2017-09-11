@@ -13,7 +13,7 @@ public class AppInfoBean {
 	public String	extend1;
 	public String	extend2;
 	public int		id;
-	public int		isforce;			// 是否强制升级 1 是 0 否
+	public int		isforce;			// 是否强制升级  0-是  1-否
 	public String	modifyuser;
 	public String 	remark;
 	public String	tip;				// 升级提示

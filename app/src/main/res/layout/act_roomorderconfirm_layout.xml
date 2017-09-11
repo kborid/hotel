@@ -173,7 +173,7 @@
                         android:layout_height="wrap_content"
                         android:paddingBottom="20dp"
                         android:paddingTop="20dp"
-                        android:text="特别要求"
+                        android:text="发票    "
                         android:textColor="?attr/mainColor"
                         android:textSize="@dimen/common_12sp"
                         android:textStyle="bold" />
@@ -320,8 +320,7 @@
                     android:paddingTop="33dp"
                     android:text="1150元"
                     android:textColor="?attr/indicatorColor"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
+                    android:textSize="30dp" />
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -329,16 +328,15 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_confirm"
+                        android:id="@+id/tv_submit"
                         android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:layout_alignParentRight="true"
                         android:background="?attr/indicatorBgSel"
                         android:gravity="center"
-                        android:text="确定"
+                        android:text="@string/submit_order"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/common_15sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/common_15sp" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>

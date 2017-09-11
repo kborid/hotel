@@ -111,6 +111,7 @@ public class PayResultReceiver extends BroadcastReceiver {
             }
 
 
+            LogUtil.i(TAG, "pay result ret = " + ret);
             switch (ret) {
                 case PayCommDef.err_success:
                     msg = context.getResources().getString(R.string.pay_success);
@@ -126,9 +127,11 @@ public class PayResultReceiver extends BroadcastReceiver {
                     msg = context.getResources().getString(R.string.pay_error);
                     break;
             }
+            LogUtil.i(TAG, "pay result msg = " + msg);
 
             if (PayCommDef.err_success == ret) {
                 OrderPayDetailInfoBean orderPayDetailInfoBean = HotelOrderManager.getInstance().getOrderPayDetailInfoBean();
+                LogUtil.i(TAG, "orderPayDetailInfoBean = " + orderPayDetailInfoBean);
                 if (null != orderPayDetailInfoBean) {
                     Intent intent1 = new Intent(context, OrderPaySuccessActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -139,6 +142,7 @@ public class PayResultReceiver extends BroadcastReceiver {
                     intent1.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
                     intent1.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
                     intent1.putExtra("isPrePaySuccess", true);
+                    intent1.putExtra("showTipsOrNot", orderPayDetailInfoBean.showTipsOrNot);
                     context.startActivity(intent1);
                 } else {
                     CustomToast.show(context.getResources().getString(R.string.pay_error), CustomToast.LENGTH_SHORT);

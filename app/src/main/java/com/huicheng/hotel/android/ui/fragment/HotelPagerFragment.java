@@ -345,8 +345,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
             case R.id.tv_date:
             case R.id.iv_date: {
                 Intent resIntent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
-                resIntent.putExtra("beginTime", beginTime);
-                resIntent.putExtra("endTime", endTime);
+//                resIntent.putExtra("beginTime", beginTime);
+//                resIntent.putExtra("endTime", endTime);
                 startActivityForResult(resIntent, 0x02);
             }
             break;

@@ -126,7 +126,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/hotel_plane_booking"
                         android:textColor="@color/noDiscountColor"
-                        android:textSize="@dimen/common_12sp" />
+                        android:textSize="@dimen/common_12sp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_hotel_phone"

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
@@ -99,7 +98,7 @@ public class CustomBottomNaviBar extends LinearLayout {
             v.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (/*!AppConst.ISDEVELOP && */finalI != 0 && finalI != 1) {
+                    if (finalI != 0 && finalI != 1 && finalI != 3) {
                         CustomDialog dialog = new CustomDialog(context);
                         dialog.setMessage(tips[finalI]);
                         dialog.setNegativeButton(context.getResources().getString(R.string.iknown), new DialogInterface.OnClickListener() {

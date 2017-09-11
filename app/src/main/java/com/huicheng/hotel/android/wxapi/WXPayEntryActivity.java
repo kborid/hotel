@@ -47,8 +47,13 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             mIntent.putExtra("info", String.valueOf(resp.errCode));
             mIntent.putExtra("type", "wechat");
             LocalBroadcastManager.getInstance(this).sendBroadcast(mIntent);
-            api.detach();
-            this.finish();
+            finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        api.detach();
     }
 }

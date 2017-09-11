@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.net.bean.HotelInfoBean;
+import com.prj.sdk.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +57,20 @@ public class SearchResultAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tv_title.setText(list.get(position).hotelName);
+        HotelInfoBean bean = list.get(position);
+        viewHolder.tv_title.setText(bean.hotelName);
         viewHolder.tv_summary.setText(
-                String.format(context.getResources().getString(R.string.rmbStr), String.valueOf(list.get(position).price))
+                String.format(context.getResources().getString(R.string.rmbStr), String.valueOf(bean.price))
                         + ", "
-                        + list.get(position).hotelAddress);
-        viewHolder.tv_point.setText(list.get(position).hotelGrade + "分");
+                        + bean.hotelAddress);
+
+        viewHolder.tv_point.setVisibility(View.GONE);
+        if (StringUtil.notEmpty(bean.hotelGrade)) {
+            if (!"0".equals(bean.hotelGrade) && !"0.0".equals(bean.hotelGrade)) {
+                viewHolder.tv_point.setVisibility(View.VISIBLE);
+                viewHolder.tv_point.setText(bean.hotelGrade + "分");
+            }
+        }
 
         return convertView;
     }

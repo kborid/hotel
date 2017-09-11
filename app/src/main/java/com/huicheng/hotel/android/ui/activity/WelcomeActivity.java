@@ -20,6 +20,7 @@ import com.fm.openinstall.listener.AppInstallListener;
 import com.fm.openinstall.listener.AppWakeUpListener;
 import com.fm.openinstall.model.AppData;
 import com.fm.openinstall.model.Error;
+import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
@@ -30,6 +31,8 @@ import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.tools.PinyinUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.prj.sdk.algo.MD5Tool;
+import com.prj.sdk.constants.InfoType;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
@@ -67,13 +70,18 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         initViews();
         initParams();
         initListeners();
+
+        //用户第一次启动时，调用后台封装的广点通的接口，统计激活量
+        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
+            requestGDTInterface();
+        }
+
         new Thread() {
             @Override
             public void run() {
                 super.run();
                 initJsonData();
                 requestHomeBannerInfo();
-                requestActiveAboutInfo();
                 requestAppVersionInfo();
             }
         }.start();
@@ -187,12 +195,14 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    private void requestActiveAboutInfo() {
-        LogUtil.i(TAG, "requestActiveAboutInfo()");
+    private void requestGDTInterface() {
+        LogUtil.i(TAG, "requestGDTInterface()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        b.addBody("muid", MD5Tool.getMD5(Utils.getIMEI()));
         ResponseData d = b.syncRequest(b);
-        d.path = NetURL.ACTIVE_ABOUT;
-        d.flag = AppConst.ACTIVE_ABOUT;
+        d.path = NetURL.AD_GDT_IF;
+        d.flag = AppConst.AD_GDT_IF;
+        d.type = InfoType.GET_REQUEST.toString();
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -290,16 +300,12 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 if (StringUtil.notEmpty(response.body.toString()) && !response.body.toString().equals("{}")) {
                     AppInfoBean bean = JSON.parseObject(response.body.toString(), AppInfoBean.class);
                     SharedPreferenceUtil.getInstance().setString(AppConst.APPINFO, response.body.toString(), false);
-                    if (bean.isforce == 0) {
+                    String versionSer = bean.upid.split("（")[0];
+                    String versionLoc = BuildConfig.VERSION_NAME.split("（")[0];
+                    if (bean.isforce == 0 && 1 <= SessionContext.VersionComparison(versionSer, versionLoc)) {
                         mTag.remove(AppConst.APP_INFO);
-                        showUpdateDialog(bean);
+                        showFocusUpdateDialog(bean);
                     }
-                }
-            } else if (request.flag == AppConst.ACTIVE_ABOUT) {
-                mTag.put(AppConst.ACTIVE_ABOUT, AppConst.ACTIVE_ABOUT);
-                LogUtil.i(TAG, "json = " + response.body.toString());
-                if (StringUtil.notEmpty(response.body.toString())) {
-                    SessionContext.setHasActive(Boolean.parseBoolean(response.body.toString()));
                 }
             } else if (request.flag == AppConst.HOTEL_BANNER) {
                 mTag.put(AppConst.HOTEL_BANNER, AppConst.HOTEL_BANNER);
@@ -308,7 +314,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 SessionContext.setBannerList(temp);
             }
 
-            if (mTag != null && mTag.size() == 3) {
+            if (mTag != null && mTag.size() == 2) {
                 goToNextActivity();
             }
         }
@@ -317,12 +323,12 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     @Override
     public void onNotifyError(ResponseData request) {
         mTag.put(request.flag, request.flag);
-        if (mTag != null && mTag.size() == 3) {
+        if (mTag != null && mTag.size() == 2) {
             goToNextActivity();
         }
     }
 
-    private void showUpdateDialog(final AppInfoBean bean) {
+    private void showFocusUpdateDialog(final AppInfoBean bean) {
         final CustomDialog dialog = new CustomDialog(this);
         dialog.setTitle(bean.tip);
         dialog.setMessage(bean.updesc);

@@ -1,10 +1,8 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
@@ -123,7 +121,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
         if (SessionContext.isLogin()) {
             requestMessageCount();
         }
-        if (currentIndex == 1 && !SessionContext.isLogin()) {
+        if ((currentIndex == 1 || currentIndex == 2 || currentIndex == 3) && !SessionContext.isLogin()) {
             sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, true));
         } else {
             viewPager.setCurrentItem(currentIndex);
@@ -373,15 +371,5 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        if (1 == currentIndex && data.hasExtra("pay_result")) {
-            Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
-            intent.putExtra("info", data.getExtras().getString("pay_result"));
-            LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
-            intent.putExtra("type", "unionPay");
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        }
     }
 }

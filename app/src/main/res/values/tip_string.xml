@@ -33,4 +33,28 @@
 
     <string name="in_person_title">入住人</string>
     <string name="in_person_msg">为确保入住，请填入真实姓名</string>
+
+    <string name="order_cancel_fail">订单取消失败</string>
+    <string name="order_cancel_success">订单取消成功</string>
+    <string name="order_modify_fail">订单修改失败</string>
+    <string name="order_modify_success">订单修改成功</string>
+
+    <string-array name="MainTabTips">
+        <item>你真棒</item>
+        <item>机票预订正在测试中，即将与您见面</item>
+        <item>火车票预订服务即将开通，敬请期待</item>
+        <item>租车服务即将开通，敬请期待</item>
+    </string-array>
+
+    <string name="footer_loading">正在加载</string>
+    <string name="footer_nomore">没有更多数据</string>
+    <string name="footer_click">点击加载更多</string>
+    <string name="footer_pullup">上滑加载更多</string>
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载…</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+
 </resources>

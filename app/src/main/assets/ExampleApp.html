@@ -96,6 +96,13 @@
                                                    alert(response);
                                                    document.getElementById("returnValue").value = response;
                                                    })
+             }
+
+             function shareURL() {
+               WebViewJavascriptBridge.callHandler('shareURL', {'url':'http://www.baidu.com','title':'测试','description':'描述'}, function(response) {
+                                                   alert(response);
+                                                   document.getElementById("returnValue").value = response;
+                                                   })
             }
             
 
@@ -115,6 +122,7 @@
 <input id='serviceHostBtn' type="button" value="getServiceHost" onclick="getServiceHost()"/>
 <input id='reChangedPlaneBtn' type="button" value="airPlaneChanged" onclick="airPlaneChanged()"/>
 <input id='getUserSexy' type="button" value="getUserSexy" onclick="getUserSexy()"/>
+<input id='shareURL' type="button" value="shareURL" onclick="shareURL()"/>
 
 <h1>这是文件上传</h1>
 

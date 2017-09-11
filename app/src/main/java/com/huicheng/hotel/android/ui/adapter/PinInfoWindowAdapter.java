@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,7 +16,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.Marker;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
+import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.StringUtil;
@@ -81,6 +84,10 @@ public class PinInfoWindowAdapter implements AMap.InfoWindowAdapter {
         infoWindow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!SessionContext.isLogin()) {
+                    context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    return;
+                }
                 if (null != listener) {
                     int hotelId = 0;
                     try {

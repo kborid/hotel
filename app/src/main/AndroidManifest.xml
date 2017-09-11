@@ -176,6 +176,7 @@
         <!--房間選擇畫面-->
         <activity
             android:name=".ui.activity.RoomListActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <!-- 酒店空间主页 -->
@@ -309,6 +310,13 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".common.pay.unionpay.UnionPayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name="com.unionpay.UPPayWapActivity"

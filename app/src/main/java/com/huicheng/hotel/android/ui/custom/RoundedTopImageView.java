@@ -29,11 +29,10 @@ public class RoundedTopImageView extends ImageView {
     public RoundedTopImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.roundedImage);
-        float radius = (int) mTypedArray.getDimension(R.styleable.roundedImage_radius, 0);
+        float radius = (int) mTypedArray.getDimension(R.styleable.roundedImage_radius, 10);
         rids = new float[]{radius, radius, radius, radius, 0, 0, 0, 0};
         mTypedArray.recycle();
     }
-
 
     /**
      * 画图

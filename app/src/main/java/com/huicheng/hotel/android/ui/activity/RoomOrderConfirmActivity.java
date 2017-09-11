@@ -59,8 +59,8 @@ public class RoomOrderConfirmActivity extends BaseActivity {
 
     private TextView tv_invoice_info;
     private ImageView iv_next;
-    private TextView tv_confirm;
-    private String picUrl, roomName;
+    private TextView tv_submit;
+    private String mPicUrl, roomName;
     private boolean isHhy = false;
     private int roomPrice = 0;
     private int allChooseServicePrice = 0;
@@ -91,12 +91,15 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         iv_room_pic = (RoundedAllImageView) findViewById(R.id.iv_room_pic);
         tv_date = (TextView) findViewById(R.id.tv_date);
         tv_total_price = (TextView) findViewById(R.id.tv_total_price);
+        tv_total_price.getPaint().setFakeBoldText(true);
         tv_final_price = (TextView) findViewById(R.id.tv_final_price);
+        tv_final_price.getPaint().setFakeBoldText(true);
         choose_service_lay = (LinearLayout) findViewById(R.id.choose_service_lay);
         room_addsub_lay = (CommonAddSubLayout) findViewById(R.id.room_addsub_lay);
         tv_invoice_info = (TextView) findViewById(R.id.tv_invoice_info);
         iv_next = (ImageView) findViewById(R.id.iv_next);
-        tv_confirm = (TextView) findViewById(R.id.tv_confirm);
+        tv_submit = (TextView) findViewById(R.id.tv_submit);
+        tv_submit.getPaint().setFakeBoldText(true);
         custom_lay = (CommonCustomInfoLayout) findViewById(R.id.custom_lay);
     }
 
@@ -115,7 +118,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                 roomDetailInfoBean = (RoomDetailInfoBean) bundle.getSerializable("roomDetailInfo");
             }
             if (bundle.getString("picUrl") != null && bundle.getString("name") != null) {
-                picUrl = bundle.getString("picUrl");
+                mPicUrl = bundle.getString("picUrl");
                 roomName = bundle.getString("name");
             }
             roomId = bundle.getInt("roomId");
@@ -140,9 +143,13 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
 
+        String picUrl = mPicUrl;
         if (roomDetailInfoBean != null) {
             tv_center_title.setText(roomDetailInfoBean.roomName);
-            loadImage(iv_room_pic, R.drawable.def_order_confirm, roomDetailInfoBean.picList.get(0), 800, 480);
+            if (roomDetailInfoBean.picList != null && roomDetailInfoBean.picList.size() > 0) {
+                picUrl = roomDetailInfoBean.picList.get(0);
+            }
+            loadImage(iv_room_pic, R.drawable.def_order_confirm, picUrl, 800, 480);
         } else {
             tv_center_title.setText(roomName);
             loadImage(iv_room_pic, R.drawable.def_order_confirm, picUrl, 800, 480);
@@ -176,6 +183,12 @@ public class RoomOrderConfirmActivity extends BaseActivity {
             ((EditText) custom_lay.getChildAt(0).findViewById(R.id.et_phone)).setText(SessionContext.mUser.user.mobile);
         } else {
             int person = custom_lay.setPersonInfos(jsonStr);
+        }
+
+        if (HotelCommDef.PAY_ARR.equals(HotelOrderManager.getInstance().getPayType())) {
+            tv_submit.setText("提交订单");
+        } else {
+            tv_submit.setText("去支付");
         }
     }
 
@@ -242,7 +255,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                 }
             }
         });
-        tv_confirm.setOnClickListener(this);
+        tv_submit.setOnClickListener(this);
     }
 
     @Override
@@ -256,7 +269,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                 intent.putExtra("InvoiceDetail", bean);
                 startActivityForResult(intent, 0x01);
                 break;
-            case R.id.tv_confirm:
+            case R.id.tv_submit:
                 if (custom_lay.isEditViewEmpty()) {
                     CustomToast.show("请填写入住人信息", CustomToast.LENGTH_SHORT);
                     return;

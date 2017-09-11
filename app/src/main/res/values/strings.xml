@@ -9,17 +9,7 @@
     <string name="RMB">¥</string>
     <string name="totalRMB">共 ¥</string>
     <string name="rmbStr">¥ %1$s</string>
-
-    <string name="footer_loading">正在加载</string>
-    <string name="footer_nomore">没有更多数据</string>
-    <string name="footer_click">点击加载更多</string>
-    <string name="footer_pullup">上滑加载更多</string>
-
-    <string name="hsqString">惠省钱</string>
-    <string name="hsqNote">0元住：邀请好友注册，立享免费客房\n\n夜归人：晚归旅客的专属优惠空间\n\n后悔药：退不掉的客房，就卖掉吧</string>
-    <string name="hsqNote2">更多优惠活动陆续开通，敬请期待</string>
-    <string name="ygrString">夜归人</string>
-    <string name="hhyString">后悔药</string>
+    <string name="titleCityDateStr">%1$s(%2$s)</string>
 
     <!--登录-->
     <string name="agree_agement">我已阅读并同意</string>
@@ -36,8 +26,12 @@
     <string name="reset_pwd">重置密码</string>
     <string name="get_checknumber">获取验证码</string>
 
-    <!--我的-->
 
+    <string name="prePayStr">预付:%1$s元</string>
+    <string name="prePayNotSupport">预付:不支持</string>
+    <string name="arrPayStr">到店付:%1$s元</string>
+    <string name="arrPayNotSupport">到店付:不支持</string>
+    <!--我的-->
     <!--侧滑-->
     <string name="side_hi">Hi</string>
     <string name="side_tips">还未登陆\nABC旅行预订</string>
@@ -65,8 +59,6 @@
     <string name="uc_phone">手机</string>
     <string name="uc_phoneNum">手机号码</string>
     <string name="uc_birthday">出生日期</string>
-    <string name="uc_fav">出行偏好设置</string>
-
 
     <!--设置-->
     <string name="setting">设置</string>
@@ -141,22 +133,9 @@
         <item>昆明</item>
     </string-array>
 
-    <string-array name="MainTabTips">
-        <item>你真棒</item>
-        <item>机票预订正在测试中，即将与您见面</item>
-        <item>火车票预订服务即将开通，敬请期待</item>
-        <item>租车服务即将开通，敬请期待</item>
-    </string-array>
-
     <string name="iflytek_tips">语音技术由科大讯飞提供</string>
 
-    <string name="xlistview_header_hint_normal">下拉刷新</string>
-    <string name="xlistview_header_hint_ready">松开刷新数据</string>
-    <string name="xlistview_header_hint_loading">正在加载…</string>
-    <string name="xlistview_header_last_time">上次更新时间：</string>
-    <string name="xlistview_footer_hint_normal">查看更多</string>
-    <string name="xlistview_footer_hint_ready">松开载入更多</string>
-    <string name="test">该View是通过ListView实现的，通过实体两个字段内容content和时间time来展示每个ListItem，在ListView中，设置其分割线为空，并且没有点击效果。在ListView中，设置其分割线为空，并且没有点击效果。</string>
+    <string name="test">该View是通过ListView实现的，通过实体两个字段内容content和时间time来展示每个ListItem，在ListView中，设置其分割线为空，并且没有点击效果。</string>
     <string name="freeAct">0元住</string>
     <string name="freeProc">活动流程</string>
     <string name="freeActNote">—注册ABC账号\n—发送活动连接邀请好友\n   一同参与抢房\n—好友注册成功ABC账号后，\n   您的0元抢房权限即刻激活\n—每名注册用户每次活动限\n   抢一张免费房券</string>
@@ -164,6 +143,7 @@
 
     <string name="vip_note">您已成为\n以上酒店的粉丝，点击\n预定即可享受\n该酒店的粉丝价！</string>
 
+    <string name="submit_order">提交订单</string>
     <string name="menu_price0">不限</string>
     <string name="menu_price1">0–300元</string>
     <string name="menu_price2">300–500元</string>

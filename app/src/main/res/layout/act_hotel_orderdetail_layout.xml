@@ -298,7 +298,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:background="@null"
-                            android:inputType="text"
+                            android:gravity="left"
                             android:padding="5dp"
                             android:textColor="@color/white"
                             android:textSize="@dimen/common_15sp"

@@ -4,28 +4,25 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/iv_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/iv_detail_close" />
-    </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingBottom="30dp">
+
+        <com.huicheng.hotel.android.ui.custom.CustomNoAutoScrollBannerLayout
+            android:id="@+id/custom_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="27dp"
+            android:layout_marginRight="27dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
             android:text="服务详情"
             android:textColor="@color/serviceDetailTitle"
             android:textSize="@dimen/common_18sp" />
@@ -34,23 +31,26 @@
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginLeft="27dp"
+            android:layout_marginRight="27dp"
+            android:layout_marginTop="16dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:text="@string/test"
             android:textColor="@color/serviceDetailContent"
-            android:textSize="@dimen/common_13sp" />
-
-        <com.huicheng.hotel.android.ui.custom.NoScrollGridView
-            android:id="@+id/gridview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:cacheColorHint="@color/transparent"
-            android:divider="@color/transparent"
-            android:horizontalSpacing="5dp"
-            android:listSelector="@color/transparent"
-            android:numColumns="3"
-            android:scrollbars="none"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="5dp" />
+            android:textSize="@dimen/common_12sp" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/iv_detail_close" />
+    </RelativeLayout>
 </FrameLayout>

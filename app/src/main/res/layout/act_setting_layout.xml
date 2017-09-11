@@ -13,27 +13,6 @@
         android:orientation="vertical"
         android:paddingLeft="40dp">
 
-        <TextView
-            android:id="@+id/tv_notify"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="通知"
-            android:textColor="@color/sec_color_selector"
-            android:textSize="@dimen/common_15sp" />
-
-        <View
-            android:layout_width="30dp"
-            android:layout_height="0.5dp"
-            android:background="#d7d7d7" />
-
-        <View
-            android:layout_width="30dp"
-            android:layout_height="0.5dp"
-            android:background="#ffffff" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -58,9 +37,9 @@
                 android:layout_marginRight="35dp"
                 android:gravity="center_vertical"
                 android:text="16.88G"
-                android:textStyle="bold"
                 android:textColor="@color/secColor"
-                android:textSize="@dimen/common_15sp" />
+                android:textSize="@dimen/common_15sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <View

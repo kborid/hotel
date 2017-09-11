@@ -107,7 +107,7 @@ public class HouHuiYaoOrderDetailActivity extends BaseActivity {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_hotel_detail:
-                if (houHuiYaoDetailInfoBean!=null) {
+                if (houHuiYaoDetailInfoBean != null) {
                     intent = new Intent(this, RoomListActivity.class);
                     intent.putExtra("date", dateStr);
                     intent.putExtra("hotelId", houHuiYaoDetailInfoBean.hotelId);
@@ -193,15 +193,15 @@ public class HouHuiYaoOrderDetailActivity extends BaseActivity {
             choose_service_lay.removeAllViews();
             chooseServiceInfoMap.clear();
             for (int i = 0; i < houHuiYaoDetailInfoBean.attachs.size(); i++) {
-                if (houHuiYaoDetailInfoBean.attachs.get(i).custCount > 0) {
+                if (houHuiYaoDetailInfoBean.attachs.get(i).serviceCnt > 0) {
                     TextView tv_service = new TextView(this);
                     tv_service.setTextSize(18f);
                     tv_service.setTextColor(getResources().getColor(R.color.unSelectedTextColor));
-                    tv_service.setText(houHuiYaoDetailInfoBean.attachs.get(i).serviceName + " *" + houHuiYaoDetailInfoBean.attachs.get(i).custCount);
+                    tv_service.setText(houHuiYaoDetailInfoBean.attachs.get(i).serviceName + " " + getString(R.string.multipleSign) + " " + houHuiYaoDetailInfoBean.attachs.get(i).serviceCnt);
                     choose_service_lay.addView(tv_service);
 
                     RoomConfirmInfoBean bean = new RoomConfirmInfoBean();
-                    bean.serviceCount = houHuiYaoDetailInfoBean.attachs.get(i).custCount;
+                    bean.serviceCount = houHuiYaoDetailInfoBean.attachs.get(i).serviceCnt;
                     bean.serviceTitle = houHuiYaoDetailInfoBean.attachs.get(i).serviceName;
                     bean.servicePrice = houHuiYaoDetailInfoBean.attachs.get(i).servicePrice;
                     bean.serviceTotalPrice = bean.serviceCount * bean.servicePrice;
