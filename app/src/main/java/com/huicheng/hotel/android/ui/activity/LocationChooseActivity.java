@@ -3,6 +3,9 @@ package com.huicheng.hotel.android.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +44,19 @@ import java.util.Map;
  */
 public class LocationChooseActivity extends BaseActivity {
     private static final String TAG = "LocationChooseActivity";
+
+    private Handler myHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0x01:
+                    initData();
+                    removeProgressDialog();
+                    break;
+            }
+        }
+    };
 
     private TextView tv_search_input;
     private TextView tv_history;
@@ -106,9 +122,11 @@ public class LocationChooseActivity extends BaseActivity {
         HotCityAdapter hotCityAdapter = new HotCityAdapter(this, mHotCityList);
         gv_hotcity.setAdapter(hotCityAdapter);
 
-        if (null != SessionContext.getCityIndexList() && SessionContext.getCityIndexList().size() > 0
+        tv_city_index.setText("A");
+
+        if (false && null != SessionContext.getCityIndexList() && SessionContext.getCityIndexList().size() > 0
                 && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
-            initData();
+            myHandler.sendEmptyMessage(0x01);
         } else {
             showProgressDialog(this);
             new Thread() {
@@ -116,7 +134,7 @@ public class LocationChooseActivity extends BaseActivity {
                 public void run() {
                     super.run();
                     initJsonData();
-                    initData();
+                    myHandler.sendEmptyMessage(0x01);
                 }
             }.start();
         }
@@ -127,11 +145,9 @@ public class LocationChooseActivity extends BaseActivity {
         cityIndexList.clear();
         cityIndexList.addAll(SessionContext.getCityIndexList());
         cityIndexAdapter.notifyDataSetChanged();
-        tv_city_index.setText("A");
         cityList.clear();
-        cityList.addAll(SessionContext.getCityAreaMap().get("A"));
+        cityList.addAll(SessionContext.getCityAreaMap().get(tv_city_index.getText().toString()));
         cityListAdapter.notifyDataSetChanged();
-        removeProgressDialog();
     }
 
     private void initJsonData() {
