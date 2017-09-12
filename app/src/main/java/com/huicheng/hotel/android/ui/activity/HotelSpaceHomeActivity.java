@@ -125,7 +125,7 @@ public class HotelSpaceHomeActivity extends BaseActivity {
         btn_right.setImageResource(R.drawable.iv_vippp);
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         // 会员按钮显示状态
-        if (hotelDetailInfoBean.isSupportVip) {
+        if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
             btn_right.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isVip) {
                 btn_right.setImageResource(R.drawable.iv_viped);

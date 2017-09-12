@@ -347,7 +347,6 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                     if (HotelCommDef.PAY_ARR.equals(HotelOrderManager.getInstance().getPayType())) {
                         Intent intent = new Intent(this, OrderPaySuccessActivity.class);
                         intent.putExtra("hotelId", String.valueOf(hotelId));
-                        intent.putExtra("hotelName", bean.hotelName);
                         intent.putExtra("roomName", bean.roomName);
                         intent.putExtra("checkRoomDate", bean.checkInAndOutDate);
                         intent.putExtra("beginTime", bean.beginDateLong);

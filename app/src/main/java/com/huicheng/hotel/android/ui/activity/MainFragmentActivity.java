@@ -31,7 +31,6 @@ import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
-import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
@@ -39,7 +38,6 @@ import com.prj.sdk.widget.CustomToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainFragmentActivity extends BaseFragmentActivity implements OnPageChangeListener, DataCallback, CustomBottomNaviBar.OnChangeClickListener, View.OnClickListener {
@@ -147,15 +145,12 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
             if (mJson.containsKey("channel")) {
                 String channel = mJson.getString("channel");
                 if (HotelCommDef.SHARE_HOTEL.equals(channel)) {
-                    HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
-                    Intent intent = new Intent(this, RoomListActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     long beginDate = Long.valueOf(mJson.getString("beginDate"));
                     long endDate = Long.valueOf(mJson.getString("endDate"));
                     HotelOrderManager.getInstance().setBeginTime(beginDate);
                     HotelOrderManager.getInstance().setEndTime(endDate);
-                    String dateStr = (DateUtil.getDay("M.dd", beginDate)) + DateUtil.dateToWeek2(new Date(beginDate)) + " - " + DateUtil.getDay("M.dd", endDate) + DateUtil.dateToWeek2(new Date(endDate));
-                    intent.putExtra("date", dateStr);
+                    Intent intent = new Intent(this, RoomListActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     startActivity(intent);
                 } else if (HotelCommDef.SHARE_ROOM.equals(channel)) {
                     long beginDate = Long.valueOf(mJson.getString("beginDate"));
@@ -166,7 +161,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
                     intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
-                    intent.putExtra("hotelName", mJson.getString("hotelName"));
                     startActivity(intent);
                 } else if (HotelCommDef.SHARE_FREE.equals(channel)) {
                     Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);

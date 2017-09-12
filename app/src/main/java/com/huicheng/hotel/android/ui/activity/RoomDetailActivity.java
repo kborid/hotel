@@ -104,7 +104,6 @@ public class RoomDetailActivity extends BaseActivity {
 
     private boolean isYgr = false;
     private int hotelId, room_type = -1, roomId;
-    private String hotelName;
     private HotelDetailInfoBean hotelDetailInfoBean = null;
     private RoomDetailInfoBean roomDetailInfoBean = null;
 
@@ -188,11 +187,6 @@ public class RoomDetailActivity extends BaseActivity {
             hotelId = bundle.getInt("hotelId");
             room_type = bundle.getInt("roomType");
             roomId = bundle.getInt("roomId");
-            if (bundle.getString("hotelName") != null) {
-                hotelName = bundle.getString("hotelName");
-            } else {
-                hotelName = HotelOrderManager.getInstance().getHotelDetailInfo().name;
-            }
             if (bundle.getBoolean("isYgr")) {
                 isYgr = bundle.getBoolean("isYgr");
             }
@@ -205,7 +199,7 @@ public class RoomDetailActivity extends BaseActivity {
         btn_back.setImageResource(R.drawable.iv_back_white);
 
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
-        if (hotelDetailInfoBean.isSupportVip) {
+        if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
             iv_fans.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isVip) {
                 iv_fans.setImageResource(R.drawable.iv_detail_viped);
@@ -517,6 +511,12 @@ public class RoomDetailActivity extends BaseActivity {
                 intent.putExtra("hotelId", hotelId);
                 intent.putExtra("roomId", roomId);
                 intent.putExtra("isYgr", isYgr);
+
+                System.out.println("roomPrice = " + roomPrice);
+                System.out.println("allChooseServicePrice = " + allChooseServicePrice);
+                System.out.println("hotelId = " + hotelId);
+                System.out.println("roomId = " + roomId);
+                System.out.println("isYgr = " + isYgr);
                 startActivity(intent);
                 break;
             }
@@ -725,8 +725,12 @@ public class RoomDetailActivity extends BaseActivity {
 
             for (int i = 0; i < freeChooseList.size(); i++) {
                 tv_content.append(freeChooseList.get(i).serviceName);
-                tv_content.append(" " + getString(R.string.multipleSign) + " ");
-                tv_content.append(String.valueOf(freeChooseList.get(i).limitCnt));
+                int limitCount = freeChooseList.get(i).limitCnt;
+                //大于等于10000，表示不限，次数不显示
+                if (limitCount < 10000) {
+                    tv_content.append(" " + getString(R.string.multipleSign) + " ");
+                    tv_content.append(String.valueOf(freeChooseList.get(i).limitCnt));
+                }
                 if (i != freeChooseList.size() - 1) {
                     tv_content.append("，");
                 }
@@ -821,7 +825,7 @@ public class RoomDetailActivity extends BaseActivity {
         public Object instantiateItem(ViewGroup container, int position) {
             ImageView imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            loadImage(imageView, R.drawable.def_room_banner, list.get(position), 1920, 1080);
+            loadImage(imageView, R.drawable.def_room_banner, list.get(position), 1080, 1080);
             container.addView(imageView, position);
             return imageView;
         }

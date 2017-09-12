@@ -136,7 +136,6 @@ public class PayResultReceiver extends BroadcastReceiver {
                     Intent intent1 = new Intent(context, OrderPaySuccessActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent1.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
-                    intent1.putExtra("hotelName", orderPayDetailInfoBean.name);
                     intent1.putExtra("roomName", orderPayDetailInfoBean.roomName);
                     intent1.putExtra("checkRoomDate", orderPayDetailInfoBean.checkRoomDate);
                     intent1.putExtra("beginTime", orderPayDetailInfoBean.timeStart);

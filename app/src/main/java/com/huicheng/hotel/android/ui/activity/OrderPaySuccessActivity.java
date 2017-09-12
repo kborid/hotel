@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
+import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
@@ -42,7 +43,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
 
     private long beginTime, endTime;
     private String checkRoomDate;
-    private String hotelId, hotelName, roomName;
+    private String hotelId, roomName;
     private boolean isPrePaySuccess = false;
     private boolean showTipsOrNot = false;
 
@@ -78,9 +79,6 @@ public class OrderPaySuccessActivity extends BaseActivity {
             if (bundle.getString("checkRoomDate") != null) {
                 checkRoomDate = bundle.getString("checkRoomDate");
             }
-            if (bundle.getString("hotelName") != null) {
-                hotelName = bundle.getString("hotelName");
-            }
             if (bundle.getString("roomName") != null) {
                 roomName = bundle.getString("roomName");
             }
@@ -98,15 +96,15 @@ public class OrderPaySuccessActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText("订单成功");
-        if (HotelOrderManager.getInstance().getHotelDetailInfo().isPopup) {
-            btn_vip.setVisibility(View.VISIBLE);
-        } else {
-            btn_vip.setVisibility(View.GONE);
-        }
     }
 
     private void refreshHotelInfo() {
         if (null != hotelDetailInfoBean) {
+            if (hotelDetailInfoBean.isPopup) {
+                btn_vip.setVisibility(View.VISIBLE);
+            } else {
+                btn_vip.setVisibility(View.GONE);
+            }
             tv_hotel_name.setText(hotelDetailInfoBean.name);
             tv_room_name.setText(roomName);
             if (StringUtil.notEmpty(checkRoomDate)) {
@@ -159,7 +157,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
         b.addBody("hotelId", hotelId);
         b.addBody("beginDate", String.valueOf(beginTime));
         b.addBody("endDate", String.valueOf(endTime));
-        b.addBody("type", String.valueOf(HotelOrderManager.getInstance().getHotelType()));
+        b.addBody("type", String.valueOf(HotelCommDef.TYPE_ALL));
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.HOTEL_DETAIL;

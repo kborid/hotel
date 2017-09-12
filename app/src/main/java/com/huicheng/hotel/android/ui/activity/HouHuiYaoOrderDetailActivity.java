@@ -127,7 +127,6 @@ public class HouHuiYaoOrderDetailActivity extends BaseActivity {
                     intent.putExtra("hotelId", houHuiYaoDetailInfoBean.hotelId);
                     intent.putExtra("roomId", houHuiYaoDetailInfoBean.roomId);
                     intent.putExtra("room_type", HotelCommDef.TYPE_ALL);
-                    intent.putExtra("hotelName", hotelDetailInfoBean.name);
                 }
                 break;
             case R.id.btn_confirm:
