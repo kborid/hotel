@@ -192,7 +192,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         btn_right.setImageResource(R.drawable.iv_vippp);
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         // 会员按钮显示状态
-        if (hotelDetailInfoBean.isSupportVip) {
+        if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
             btn_right.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isVip) {
                 btn_right.setImageResource(R.drawable.iv_viped);
@@ -450,7 +450,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     private void requestTieCommentInfo(int pageIndex) {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("hotelId", String.valueOf(hotelId));
-        b.addBody("articleId", String.valueOf(hotelSpaceTieInfoBean.id));
+        b.addBody("articleId", String.valueOf(articleId));
         b.addBody("pageIndex", String.valueOf(pageIndex));
         b.addBody("pageSize", String.valueOf(PAGESIZE));
 
