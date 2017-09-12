@@ -124,7 +124,7 @@ public class LocationChooseActivity extends BaseActivity {
 
         tv_city_index.setText("A");
 
-        if (false && null != SessionContext.getCityIndexList() && SessionContext.getCityIndexList().size() > 0
+        if (null != SessionContext.getCityIndexList() && SessionContext.getCityIndexList().size() > 0
                 && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
             myHandler.sendEmptyMessage(0x01);
         } else {

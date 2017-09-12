@@ -43,7 +43,7 @@
                 android:numColumns="4"
                 android:scrollbars="none"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="20dp"
+                android:verticalSpacing="10dp"
                 android:visibility="gone" />
 
             <TextView

@@ -491,8 +491,7 @@ public class RoomDetailActivity extends BaseActivity {
 
                 if (roomDetailInfoBean.serviceList.get(i).capacityVOList != null && roomDetailInfoBean.serviceList.get(i).capacityVOList.size() > 0) {
                     gv_detail_room.setVisibility(View.VISIBLE);
-                    RoomServiceGridViewAdapter adapter = new RoomServiceGridViewAdapter(this, roomDetailInfoBean.serviceList.get(i).capacityVOList);
-                    gv_detail_room.setAdapter(adapter);
+                    gv_detail_room.setAdapter(new RoomServiceGridViewAdapter(this, roomDetailInfoBean.serviceList.get(i).capacityVOList));
                 } else {
                     gv_detail_room.setVisibility(View.GONE);
                 }
@@ -725,25 +724,6 @@ public class RoomDetailActivity extends BaseActivity {
             tv_content.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
             for (int i = 0; i < freeChooseList.size(); i++) {
-//                View view = LayoutInflater.from(this).inflate(R.layout.lv_choose_service_item, null);
-//                TextView tv_choose_service_title = (TextView) view.findViewById(R.id.tv_choose_service_title);
-//                tv_choose_service_title.getPaint().setFakeBoldText(true);
-//                final TextView tv_choose_service_price = (TextView) view.findViewById(R.id.tv_choose_service_price);
-//                final TextView tv_choose_service_total_price = (TextView) view.findViewById(R.id.tv_choose_service_total_price);
-//                tv_choose_service_total_price.getPaint().setFakeBoldText(true);
-//                CommonAddSubLayout addSubLayout = (CommonAddSubLayout) view.findViewById(R.id.addSubLayout);
-//                addSubLayout.setUnit("份");
-//                addSubLayout.setMaxvalue(freeChooseList.get(i).limitCnt);
-//                addSubLayout.setCount(freeChooseList.get(i).limitCnt);
-//                addSubLayout.setButtonEnable(false);
-//                LogUtil.i(TAG, "limit count = " + freeChooseList.get(i).limitCnt);
-//                tv_choose_service_title.setText(freeChooseList.get(i).serviceName);
-//                tv_choose_service_price.setText((HotelOrderManager.getInstance().isVipHotel() ? freeChooseList.get(i).vipPrice : freeChooseList.get(i).price) + "元/份");
-//                tv_choose_service_total_price.setText("0元");
-//                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//                lp.topMargin = Utils.dip2px(17);
-//                free_service_lay.addView(view, lp);
-
                 tv_content.append(freeChooseList.get(i).serviceName);
                 tv_content.append(" " + getString(R.string.multipleSign) + " ");
                 tv_content.append(String.valueOf(freeChooseList.get(i).limitCnt));
@@ -874,9 +854,9 @@ public class RoomDetailActivity extends BaseActivity {
         }
 
         public final class ViewHolder {
-            private TextView tv_summary;
             private ImageView iv_icon;
             private TextView tv_count;
+            private TextView tv_name;
         }
 
         @Override
@@ -885,16 +865,22 @@ public class RoomDetailActivity extends BaseActivity {
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = LayoutInflater.from(context).inflate(R.layout.gv_support_service_item, null);
+                ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                vlp.width = (int) ((float) (Utils.mScreenWidth - Utils.dip2px(50)) / 4);
+                vlp.height = vlp.width;
+                convertView.setLayoutParams(vlp);
+
                 holder.iv_icon = (ImageView) convertView.findViewById(R.id.iv_icon);
-                holder.tv_summary = (TextView) convertView.findViewById(R.id.tv_summary);
                 holder.tv_count = (TextView) convertView.findViewById(R.id.tv_count);
+                holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
 
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.tv_summary.setText(list.get(position).name);
+            String name = list.get(position).name;
+            holder.tv_name.setText(name);
             loadImage(holder.iv_icon, getResources().getColor(R.color.transparent), list.get(position).iconUrl, 80, 48);
             String count = list.get(position).count;
             if (StringUtil.isEmpty(count) || "0".equals(count)) {
