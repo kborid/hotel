@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -35,14 +36,18 @@ import com.prj.sdk.algo.MD5Tool;
 import com.prj.sdk.constants.InfoType;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.down.DownCallback;
+import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
+import com.prj.sdk.widget.CustomToast;
 import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,6 +71,19 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_welcome_layout);
         start = SystemClock.elapsedRealtime();
+
+        // 避免从桌面启动程序后，会重新实例化入口类的activity
+        if (!this.isTaskRoot()) {
+            Intent intent = getIntent();
+            if (intent != null) {
+                String action = intent.getAction();
+                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
+                    finish();
+                    return;
+                }
+            }
+        }
+
         onNewIntent(getIntent());
         initViews();
         initParams();
@@ -330,24 +348,60 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     private void showFocusUpdateDialog(final AppInfoBean bean) {
         final CustomDialog dialog = new CustomDialog(this);
-        dialog.setTitle(bean.tip);
+        String title = getString(R.string.update_tips);
+        if (StringUtil.notEmpty(bean.tip)) {
+            title = bean.tip;
+        }
+        dialog.setTitle(title);
         dialog.setMessage(bean.updesc);
-        dialog.setNegativeButton("退出", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton(getString(R.string.exit), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DataLoader.getInstance().clearRequests();
                 ActivityTack.getInstanse().exit();
             }
         });
-        dialog.setPositiveButton("升级", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(getString(R.string.update), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                intent.setData(Uri.parse(bean.apkurls));
-                startActivity(intent);
+                final ProgressDialog pd = new ProgressDialog(WelcomeActivity.this);
+                pd.setTitle(R.string.download_ing);
+                pd.setCanceledOnTouchOutside(false);
+                pd.setCancelable(false);
+                pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pd.show();
+                final String[] mFilePath = {""};
+                DownLoaderTask task = new DownLoaderTask(bean.apkurls, "update.apk", true, new DownCallback() {
+                    @Override
+                    public void beginDownload(String url, String local, String fileName, int status) {
+                        mFilePath[0] = local;
+                        pd.setProgress(0);
+                        pd.setMax(0);
+                    }
+
+                    @Override
+                    public void downloading(int status, int progress, int maxLength) {
+                        pd.setProgress(progress);
+                        pd.setMax(maxLength);
+                    }
+
+                    @Override
+                    public void finishDownload(int status) {
+                        pd.dismiss();
+                        if (status == DownLoaderTask.DOWNLOAD_SUCCESS) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.fromFile(new File(mFilePath[0])),
+                                    "application/vnd.android.package-archive");
+                            startActivity(intent);
+                        } else {
+                            CustomToast.show(getString(R.string.download_fail_tips), CustomToast.LENGTH_SHORT);
+                        }
+                    }
+                });
+                task.execute();
             }
         });
+        dialog.setDismiss(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();

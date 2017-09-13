@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -177,20 +176,16 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         }
     }
 
-    public void loadImage(final View view, String url, int width, int height) {
+    public void loadImage(final ImageView view, String url, int width, int height) {
         loadImage(view, -1, url, width, height);
     }
 
-    public void loadImage(final View view, int defId, String url, int width, int height) {
+    public void loadImage(final ImageView view, int defId, String url, int width, int height) {
         int resId = R.color.hintColor;
         if (defId != -1) {
             resId = defId;
         }
-        if (view instanceof ImageView) {
-            ((ImageView) view).setImageResource(resId);
-        } else {
-            view.setBackgroundResource(resId);
-        }
+        view.setImageResource(resId);
 
         if (StringUtil.notEmpty(url)) {
             ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
@@ -198,11 +193,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
                 @Override
                 public void imageCallback(Bitmap bm, String url, String imageTag) {
                     if (null != bm) {
-                        if (view instanceof ImageView) {
-                            ((ImageView) view).setImageBitmap(bm);
-                        } else {
-                            view.setBackground(new BitmapDrawable(bm));
-                        }
+                        view.setImageBitmap(bm);
                     }
                 }
             }, url, url, width, height, -1);

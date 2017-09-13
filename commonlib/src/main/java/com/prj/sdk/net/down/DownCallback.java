@@ -3,6 +3,9 @@ package com.prj.sdk.net.down;
 
 public interface DownCallback {
 
-	public void down(String url, String local, int down_status, String fileName);
-	
+    void beginDownload(String url, String local, String fileName, int status);
+
+    void downloading(int status, int progress, int maxLength);
+
+    void finishDownload(int status);
 }

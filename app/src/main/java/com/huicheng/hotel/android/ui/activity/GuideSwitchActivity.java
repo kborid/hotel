@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,11 +18,15 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.prj.sdk.net.down.DownCallback;
+import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.CustomToast;
 import com.umeng.analytics.MobclickAgent;
+
+import java.io.File;
 
 /**
  * @author kborid
@@ -99,7 +104,7 @@ public class GuideSwitchActivity extends BaseActivity {
                 index = 3;
                 break;
         }
-        if (index != 0 && index != 1 && index != 3) {
+        if (index == 2) {
             CustomDialog dialog = new CustomDialog(this);
             dialog.setMessage(tips[index]);
             dialog.setNegativeButton(getString(R.string.iknown), new DialogInterface.OnClickListener() {
@@ -130,21 +135,56 @@ public class GuideSwitchActivity extends BaseActivity {
 
     private void showUpdateDialog(final AppInfoBean bean) {
         final CustomDialog dialog = new CustomDialog(this);
-        dialog.setTitle("更新提示");
+        String title = getString(R.string.update_tips);
+        if (StringUtil.notEmpty(bean.tip)) {
+            title = bean.tip;
+        }
+        dialog.setTitle(title);
         dialog.setMessage(bean.updesc);
-        dialog.setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton(getString(R.string.update_not), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SharedPreferenceUtil.getInstance().setString(AppConst.IGNORE_UPDATE_VERSION, bean.upid, false);
             }
         });
-        dialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(getString(R.string.update_todo), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                intent.setData(Uri.parse(bean.apkurls));
-                startActivity(intent);
+                final ProgressDialog pd = new ProgressDialog(GuideSwitchActivity.this);
+                pd.setTitle(R.string.download_ing);
+                pd.setCanceledOnTouchOutside(false);
+                pd.setCancelable(false);
+                pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pd.show();
+                final String[] mFilePath = {""};
+                DownLoaderTask task = new DownLoaderTask(bean.apkurls, "update.apk", true, new DownCallback() {
+                    @Override
+                    public void beginDownload(String url, String local, String fileName, int status) {
+                        mFilePath[0] = local;
+                        pd.setProgress(0);
+                        pd.setMax(0);
+                    }
+
+                    @Override
+                    public void downloading(int status, int progress, int maxLength) {
+                        pd.setProgress(progress);
+                        pd.setMax(maxLength);
+                    }
+
+                    @Override
+                    public void finishDownload(int status) {
+                        pd.dismiss();
+                        if (status == DownLoaderTask.DOWNLOAD_SUCCESS) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.fromFile(new File(mFilePath[0])),
+                                    "application/vnd.android.package-archive");
+                            startActivity(intent);
+                        } else {
+                            CustomToast.show(getString(R.string.download_fail_tips), CustomToast.LENGTH_SHORT);
+                        }
+                    }
+                });
+                task.execute();
             }
         });
         dialog.setCanceledOnTouchOutside(false);

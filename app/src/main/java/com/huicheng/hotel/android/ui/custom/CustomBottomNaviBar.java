@@ -98,7 +98,7 @@ public class CustomBottomNaviBar extends LinearLayout {
             v.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (finalI != 0 && finalI != 1 && finalI != 3) {
+                    if (finalI == 2) {
                         CustomDialog dialog = new CustomDialog(context);
                         dialog.setMessage(tips[finalI]);
                         dialog.setNegativeButton(context.getResources().getString(R.string.iknown), new DialogInterface.OnClickListener() {

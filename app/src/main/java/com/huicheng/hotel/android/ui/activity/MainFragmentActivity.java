@@ -116,10 +116,13 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
             oldSkinIndex = newSkinIndex;
             recreate();
         }
+
         if (SessionContext.isLogin()) {
             requestMessageCount();
         }
-        if ((currentIndex == 1 || currentIndex == 2 || currentIndex == 3) && !SessionContext.isLogin()) {
+
+
+        if (currentIndex != 0 && !SessionContext.isLogin()) {
             sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, true));
         } else {
             viewPager.setCurrentItem(currentIndex);
@@ -353,7 +356,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                     Intent intent = new Intent(this, MyOrdersActivity.class);
                     startActivity(intent);
                 } else {
-                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, false));
                 }
                 break;
             default:

@@ -2,9 +2,6 @@
 <resources>
     <!--科大讯飞-->
     <string name="iflytek_appid">595f3e12</string>
-    <!--openInstalled-->
-    <string name="openInstallScheme">abcbooking</string>
-    <string name="openInstallKey">xcil0h</string>
     <!--高德地图-->
     <string name="amap_appkey">c9173d3f01c3e3be481c67bcc3396309</string>
     <!-- umeng 分享申请的key -->

@@ -30,7 +30,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/openInstallScheme" />
+                <data android:scheme="abcbooking" />
             </intent-filter>
         </activity>
         <activity
@@ -348,7 +348,7 @@
         <!--open installed-->
         <meta-data
             android:name="com.openinstall.APP_KEY"
-            android:value="@string/openInstallKey" />
+            android:value="xcil0h" />
         <!--高德地图-->
         <meta-data
             android:name="com.amap.api.v2.apikey"

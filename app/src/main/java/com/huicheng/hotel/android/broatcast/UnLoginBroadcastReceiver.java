@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
@@ -28,8 +29,12 @@ public class UnLoginBroadcastReceiver extends BroadcastReceiver {
         if (!BroadCastConst.UNLOGIN_ACTION.equals(action)) {
             return;
         }
+        boolean isShowDialog = false;
+        Bundle bundle = intent.getExtras();
+        if (bundle != null && bundle.getBoolean(BroadCastConst.IS_SHOW_TIP_DIALOG)) {
+            isShowDialog = true;
+        }
 
-        boolean isShowDialog = intent.getBooleanExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, false);
         if (isShowDialog) {
             showLoginDialog();
         } else {

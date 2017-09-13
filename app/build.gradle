@@ -16,9 +16,8 @@ android {
         applicationId "com.huicheng.hotel.android" //JPush上注册的包名.
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 8
-        versionName "2.0.0"
-
+        versionCode 9
+        versionName "2.0.1"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
