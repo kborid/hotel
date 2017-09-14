@@ -110,7 +110,7 @@ public class CustomBottomNaviBar extends LinearLayout {
                         dialog.setCanceledOnTouchOutside(true);
                         dialog.show();
                     } else if (!SessionContext.isLogin() && finalI != 0) {
-                        context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, true));
+                        context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra("is_show_tip_dialog", true));
                     } else {
                         refreshTabLayout(finalI, true);
                         if (null != listener) {

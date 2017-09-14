@@ -1,20 +1,23 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -150,25 +153,35 @@ public class GuideSwitchActivity extends BaseActivity {
         dialog.setPositiveButton(getString(R.string.update_todo), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final ProgressDialog pd = new ProgressDialog(GuideSwitchActivity.this);
+                final CustomDialog pd = new CustomDialog(GuideSwitchActivity.this);
                 pd.setTitle(R.string.download_ing);
-                pd.setCanceledOnTouchOutside(false);
+                View view = LayoutInflater.from(GuideSwitchActivity.this).inflate(R.layout.progress_download_layout, null);
+                final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+                final TextView tv_percent = (TextView) view.findViewById(R.id.tv_percent);
+                final TextView tv_size = (TextView) view.findViewById(R.id.tv_size);
+                pd.addView(view);
                 pd.setCancelable(false);
-                pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pd.setCanceledOnTouchOutside(false);
                 pd.show();
+
                 final String[] mFilePath = {""};
-                DownLoaderTask task = new DownLoaderTask(bean.apkurls, "update.apk", true, new DownCallback() {
+                DownLoaderTask task = new DownLoaderTask("http://118.178.225.32/apks/abc_v2.0.0_20170908_release_200_13_offical_sign.apk", "update.apk", true, new DownCallback() {
                     @Override
                     public void beginDownload(String url, String local, String fileName, int status) {
                         mFilePath[0] = local;
-                        pd.setProgress(0);
-                        pd.setMax(0);
+                        tv_percent.setText(String.format(getString(R.string.download_ing_percent), 0));
+                        tv_size.setText(String.format(getString(R.string.download_ing_size), "0", "0"));
+                        progressBar.setProgress(0);
+                        progressBar.setMax(0);
                     }
 
                     @Override
                     public void downloading(int status, int progress, int maxLength) {
-                        pd.setProgress(progress);
-                        pd.setMax(maxLength);
+                        int percent = (int) ((float) progress * 100 / maxLength);
+                        tv_percent.setText(String.format(getString(R.string.download_ing_percent), percent));
+                        tv_size.setText(String.format(getString(R.string.download_ing_size), DataCleanManager.getFormatSize(progress), DataCleanManager.getFormatSize(maxLength)));
+                        progressBar.setProgress(progress);
+                        progressBar.setMax(maxLength);
                     }
 
                     @Override

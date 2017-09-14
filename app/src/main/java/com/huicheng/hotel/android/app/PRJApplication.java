@@ -2,14 +2,12 @@ package com.huicheng.hotel.android.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.webkit.WebView;
 
 import com.fm.openinstall.OpenInstall;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.broatcast.UnLoginBroadcastReceiver;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.CrashHandler;
 import com.huicheng.hotel.android.common.NetURL;
@@ -18,7 +16,6 @@ import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.prj.sdk.app.AppContext;
-import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.umeng.analytics.MobclickAgent;
@@ -32,7 +29,6 @@ import cn.jpush.android.api.JPushInterface;
 //import com.squareup.leakcanary.LeakCanary;
 
 public class PRJApplication extends Application {
-    UnLoginBroadcastReceiver mReceiver = new UnLoginBroadcastReceiver();
 
     @Override
     public void onCreate() {
@@ -54,11 +50,6 @@ public class PRJApplication extends Application {
         // JPush
         JPushInterface.setDebugMode(AppConst.ISDEVELOP); // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this); // 初始化 JPush
-
-        // 动态注册登录广播
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BroadCastConst.UNLOGIN_ACTION);
-        registerReceiver(mReceiver, intentFilter);
 
         // openInstalled
         OpenInstall.init(this);

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.broatcast.PayResultReceiver;
+import com.huicheng.hotel.android.broadcast.PayResultReceiver;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;

@@ -241,6 +241,14 @@
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait" />
 
+        <receiver
+            android:name=".broadcast.UnLoginBroadcastReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="abc_not_login_broadcast" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name="com.huicheng.hotel.android.common.pay.wxpay.AppRegister">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
@@ -327,7 +335,7 @@
 
         <!-- JPush Receiver -->
         <receiver
-            android:name="com.huicheng.hotel.android.broatcast.JPushReceiver"
+            android:name="com.huicheng.hotel.android.broadcast.JPushReceiver"
             android:enabled="true">
                 
             <intent-filter>

@@ -281,7 +281,7 @@ public class DataLoader {
                                         }
                                         if (code != null && (code.equals("900902") || code.equals("310001"))) {// 900902 票据失效
                                             Intent intent = new Intent(BroadCastConst.UNLOGIN_ACTION);
-                                            intent.putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, true);
+                                            intent.putExtra("is_show_tip_dialog", true);
                                             AppContext.mAppContext.sendBroadcast(intent);// 发送登录广播
                                             response.data = "登录超时,请重新登录";
                                         }

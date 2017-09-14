@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -511,12 +512,6 @@ public class RoomDetailActivity extends BaseActivity {
                 intent.putExtra("hotelId", hotelId);
                 intent.putExtra("roomId", roomId);
                 intent.putExtra("isYgr", isYgr);
-
-                System.out.println("roomPrice = " + roomPrice);
-                System.out.println("allChooseServicePrice = " + allChooseServicePrice);
-                System.out.println("hotelId = " + hotelId);
-                System.out.println("roomId = " + roomId);
-                System.out.println("isYgr = " + isYgr);
                 startActivity(intent);
                 break;
             }
@@ -869,8 +864,8 @@ public class RoomDetailActivity extends BaseActivity {
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = LayoutInflater.from(context).inflate(R.layout.gv_support_service_item, null);
-                ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                vlp.width = (int) ((float) (Utils.mScreenWidth - Utils.dip2px(50)) / 4);
+                GridView.LayoutParams vlp = new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                vlp.width = (int) ((float) (Utils.mScreenWidth - Utils.dip2px(40)) / 4);
                 vlp.height = vlp.width;
                 convertView.setLayoutParams(vlp);
 

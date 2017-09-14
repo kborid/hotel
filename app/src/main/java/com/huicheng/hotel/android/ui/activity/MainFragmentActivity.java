@@ -123,7 +123,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
 
         if (currentIndex != 0 && !SessionContext.isLogin()) {
-            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, true));
+            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra("is_show_tip_dialog", true));
         } else {
             viewPager.setCurrentItem(currentIndex);
         }
@@ -356,7 +356,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                     Intent intent = new Intent(this, MyOrdersActivity.class);
                     startActivity(intent);
                 } else {
-                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra(BroadCastConst.IS_SHOW_TIP_DIALOG, false));
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                 }
                 break;
             default:

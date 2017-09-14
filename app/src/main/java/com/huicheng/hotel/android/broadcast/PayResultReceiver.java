@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.broatcast;
+package com.huicheng.hotel.android.broadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

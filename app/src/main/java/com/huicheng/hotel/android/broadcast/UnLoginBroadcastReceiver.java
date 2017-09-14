@@ -1,22 +1,20 @@
-package com.huicheng.hotel.android.broatcast;
+package com.huicheng.hotel.android.broadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.ui.activity.LoginActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.util.ActivityTack;
 
 /**
  * 未登录广播
- *
- * @author LiaoBo
  */
 public class UnLoginBroadcastReceiver extends BroadcastReceiver {
 
@@ -31,7 +29,7 @@ public class UnLoginBroadcastReceiver extends BroadcastReceiver {
         }
         boolean isShowDialog = false;
         Bundle bundle = intent.getExtras();
-        if (bundle != null && bundle.getBoolean(BroadCastConst.IS_SHOW_TIP_DIALOG)) {
+        if (bundle != null && bundle.getBoolean("is_show_tip_dialog")) {
             isShowDialog = true;
         }
 
@@ -46,16 +44,17 @@ public class UnLoginBroadcastReceiver extends BroadcastReceiver {
 
         String msg;
         if (SessionContext.isLogin()) {
-            msg = "登录信息过期，是否重新登录？";
+            msg = context.getResources().getString(R.string.login_token_daily);
         } else {
-            msg = "您还没有登录，是否立即登录？";
+            msg = context.getResources().getString(R.string.login_not_token);
         }
         // 注销登录状态
         SessionContext.cleanUserInfo();
 
 
         if (!CustomDialog.isDialogShow()) {
-            CustomDialog dialog = new CustomDialog(ActivityTack.getInstanse().getCurrentActivity());
+            CustomDialog dialog = new CustomDialog(context);
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
             dialog.setCancelable(false);
             dialog.setMessage(msg);
             dialog.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
