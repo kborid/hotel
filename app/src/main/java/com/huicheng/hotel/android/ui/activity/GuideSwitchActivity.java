@@ -165,7 +165,7 @@ public class GuideSwitchActivity extends BaseActivity {
                 pd.show();
 
                 final String[] mFilePath = {""};
-                DownLoaderTask task = new DownLoaderTask("http://118.178.225.32/apks/abc_v2.0.0_20170908_release_200_13_offical_sign.apk", "update.apk", true, new DownCallback() {
+                DownLoaderTask task = new DownLoaderTask(bean.apkurls, "update.apk", true, new DownCallback() {
                     @Override
                     public void beginDownload(String url, String local, String fileName, int status) {
                         mFilePath[0] = local;
