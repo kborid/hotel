@@ -34,7 +34,6 @@ public class JSONParserUtil {
 				result = parseJSONObject(jsonObject);
 
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -115,7 +115,7 @@ public class DataLoader {
                 mMemCache.put(mCacheUrl, data);
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
         return data;
     }
@@ -127,7 +127,7 @@ public class DataLoader {
             mMemCache.remove(mCacheUrl);
             mDiskCache.remove(mCacheUrl);
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     }
 

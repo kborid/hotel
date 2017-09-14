@@ -138,10 +138,8 @@ public class ImageLoader {
             }
 
             return bm;
-        } catch (Exception e) {
-            // TODO: handle exception
-        } catch (OutOfMemoryError oom) {
-            // TODO: handle exception
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -150,7 +148,7 @@ public class ImageLoader {
         try {
             mMemCache.put(imageUrl, bm);
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     }
 
@@ -158,7 +156,7 @@ public class ImageLoader {
         try {
             mDiskCache.put(imageUrl, bm);
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     }
 
@@ -307,7 +305,7 @@ public class ImageLoader {
                     if (request.callback != null)
                         request.callback.imageCallback(request.bm, request.url, request.imageTag);
                 } catch (Exception e) {
-                    // TODO: handle exception
+                    e.printStackTrace();
                 }
 
             }

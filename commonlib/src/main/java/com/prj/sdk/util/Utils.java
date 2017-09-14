@@ -281,7 +281,7 @@ public class Utils {
                 return true;
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
             return false;
         }
         return false;

@@ -55,10 +55,8 @@ public class ThumbnailUtil {
         try {
             Bitmap bm = BitmapFactory.decodeFile(filePath);
             return getImageRotation(bm, rotation, null);
-        } catch (Exception e) {
-            // TODO: handle exception
-        } catch (OutOfMemoryError e2) {
-
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -314,9 +312,7 @@ public class ThumbnailUtil {
             paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
             canvas.drawBitmap(bitmap, src, dst, paint);
             return output;
-        } catch (Exception e) {
-            // TODO: handle exception
-        } catch (OutOfMemoryError e) {
+        } catch (Exception |OutOfMemoryError e) {
             e.printStackTrace();
         }
         return bitmap;

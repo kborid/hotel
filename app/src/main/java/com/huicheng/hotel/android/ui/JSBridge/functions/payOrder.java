@@ -177,7 +177,7 @@ public class payOrder implements WVJBWebViewClient.WVJBHandler {
         try {
             LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mBroadcastReceiver);
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     }
 

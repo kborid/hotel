@@ -211,7 +211,6 @@ public class SmoothImageView extends ImageView {
 
         @Override
         public Object clone() throws CloneNotSupportedException {
-            // TODO Auto-generated method stub
             return super.clone();
         }
 
@@ -361,7 +360,6 @@ public class SmoothImageView extends ImageView {
 				 * 如果是进入的话，当然是希望最后停留在center_crop的区域。但是如果是out的话，就不应该是center_crop的位置了
 				 * ， 而应该是最后变化的位置，因为当out的时候结束时，不回复视图是Normal，要不然会有一个突然闪动回去的bug
 				 */
-                // TODO 这个可以根据实际需求来修改
                 if (state == STATE_TRANSFORM_IN) {
                     mState = STATE_NORMAL;
                 }

@@ -283,7 +283,6 @@ public class HotelSpacePublishActivity extends BaseActivity {
         @Override
         public CharSequence filter(CharSequence source, int start, int end,
                                    Spanned dest, int dstart, int dend) {
-            // TODO Auto-generated method stub
             if (source.toString().equalsIgnoreCase("@")
                     || source.toString().equalsIgnoreCase("＠")) {
                 goAt();
@@ -437,7 +436,6 @@ public class HotelSpacePublishActivity extends BaseActivity {
                                     new DynamicDrawableSpan(DynamicDrawableSpan.ALIGN_BASELINE) {
                                         @Override
                                         public Drawable getDrawable() {
-                                            // TODO Auto-generated method stub
                                             BitmapDrawable drawable = new BitmapDrawable(getResources(), bmp);
                                             drawable.setBounds(0, 0, bmp.getWidth(), bmp.getHeight());
                                             return drawable;

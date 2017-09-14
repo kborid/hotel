@@ -63,13 +63,11 @@ public class ZipExtractorTask extends AsyncTask<Void, Integer, Long> {
 
 	@Override
 	protected Long doInBackground(Void... params) {
-		// TODO Auto-generated method stub
 		return unzip();
 	}
 
 	@Override
 	protected void onPostExecute(Long result) {
-		// TODO Auto-generated method stub
 		// super.onPostExecute(result);
 		if (mDialog != null && mDialog.isShowing()) {
 			mDialog.dismiss();
@@ -82,7 +80,6 @@ public class ZipExtractorTask extends AsyncTask<Void, Integer, Long> {
 
 	@Override
 	protected void onPreExecute() {
-		// TODO Auto-generated method stub
 		// super.onPreExecute();
 		if (mDialog != null) {
 			mDialog.setMessage("正在解压，请稍候...");
@@ -206,12 +203,10 @@ public class ZipExtractorTask extends AsyncTask<Void, Integer, Long> {
 	private final class ProgressReportingOutputStream extends FileOutputStream {
 		public ProgressReportingOutputStream(File file) throws FileNotFoundException {
 			super(file);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
 		public void write(byte[] buffer, int byteOffset, int byteCount) throws IOException {
-			// TODO Auto-generated method stub
 			super.write(buffer, byteOffset, byteCount);
 			mProgress += byteCount;
 			publishProgress(mProgress);

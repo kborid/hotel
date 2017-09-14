@@ -66,7 +66,7 @@ public class MD5Tool {
 		try {
 			return getMD5(data.getBytes(CHARSET_NAME), true);
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return "";
 	}
@@ -84,7 +84,7 @@ public class MD5Tool {
 			sb.append(name).append(psw).append(DateUtil.getCurDateStr("yyyyMMdd"));
 			return getMD5(sb.toString().getBytes(CHARSET_NAME), true);
 		} catch (Exception e) {
-			// TODO: handle exception
+            e.printStackTrace();
 		}
 		return "";
 	}

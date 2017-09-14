@@ -102,7 +102,6 @@ public class AttendPersonActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // TODO Auto-generated method stub
                 PersonInfo personInfo = (PersonInfo) parent.getItemAtPosition(position);
                 Intent intent = new Intent();
 //                intent.putExtra(KEY_CID, personInfo.id + " ");

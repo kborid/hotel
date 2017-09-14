@@ -167,7 +167,6 @@ public class DownLoaderTask extends AsyncTask<Void, Integer, Long> {
 
         @Override
         public void write(byte[] buffer, int byteOffset, int byteCount) throws IOException {
-            // TODO Auto-generated method stub
             super.write(buffer, byteOffset, byteCount);
             mProgress += byteCount;
             publishProgress(mProgress);

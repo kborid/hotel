@@ -440,7 +440,7 @@ public class MyOrdersActivity extends BaseActivity {
                 convertView = LayoutInflater.from(context).inflate(R.layout.lv_item_order, null);
                 viewHolder.root_lay = (LinearLayout) convertView.findViewById(R.id.root_lay);
                 viewHolder.iv_order_point = (ImageView) convertView.findViewById(R.id.iv_order_point);
-                //TODO
+                // TODO
 //                viewHolder.shadow_up_view = convertView.findViewById(R.id.shadow_up_view);
 //                viewHolder.shadow_down_view = convertView.findViewById(R.id.shadow_down_view);
                 viewHolder.swipeView = (CustomSwipeView) convertView.findViewById(R.id.swipeview);
