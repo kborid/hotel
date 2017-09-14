@@ -501,7 +501,7 @@ public class RoomDetailActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.more_lay:
-                expendedService(hasShowAll);
+                expendedService(!hasShowAll, true);
                 break;
             case R.id.tv_confirm: {
                 Intent intent = new Intent(this, RoomOrderConfirmActivity.class);
@@ -556,24 +556,28 @@ public class RoomDetailActivity extends BaseActivity {
         }
     }
 
-    private void expendedService(boolean flag) {
-        if (flag) {
-            hasShowAll = false;
-            tv_more.setText("更多");
-            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(iv_more_down, "rotation", 180f, 360f);
-            objectAnimator.setDuration(300);
-            objectAnimator.start();
-            for (int i = 3; i < roomDetailInfoBean.chooseList.size(); i++) {
-                choose_service_lay.getChildAt(i).setVisibility(View.GONE);
-            }
-        } else {
+    private void expendedService(boolean isShow, boolean isAnim) {
+        int during = 0;
+        if (isAnim) {
+            during = 300;
+        }
+        if (isShow) {
             hasShowAll = true;
             tv_more.setText("收起");
             ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(iv_more_down, "rotation", 0f, 180f);
-            objectAnimator.setDuration(300);
+            objectAnimator.setDuration(during);
             objectAnimator.start();
             for (int i = 3; i < roomDetailInfoBean.chooseList.size(); i++) {
                 choose_service_lay.getChildAt(i).setVisibility(View.VISIBLE);
+            }
+        } else {
+            hasShowAll = false;
+            tv_more.setText("更多");
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(iv_more_down, "rotation", 180f, 360f);
+            objectAnimator.setDuration(during);
+            objectAnimator.start();
+            for (int i = 3; i < roomDetailInfoBean.chooseList.size(); i++) {
+                choose_service_lay.getChildAt(i).setVisibility(View.GONE);
             }
         }
     }
@@ -705,6 +709,9 @@ public class RoomDetailActivity extends BaseActivity {
                     }
                 });
                 choose_service_lay.addView(view, lp);
+            }
+            if (isShowMore) {
+                expendedService(hasShowAll, false);
             }
         } else {
             findViewById(R.id.tv_choose_service_note).setVisibility(View.GONE);
