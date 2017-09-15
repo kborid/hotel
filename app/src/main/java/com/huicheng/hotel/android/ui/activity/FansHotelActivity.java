@@ -20,7 +20,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.FansHotelInfoBean;
-import com.huicheng.hotel.android.tools.CityStringUtils;
+import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomCardStackViewPager;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
@@ -220,13 +220,13 @@ public class FansHotelActivity extends BaseActivity {
             tv_order.getPaint().setFakeBoldText(true);
             loadImage(iv_background, R.drawable.def_fans, bean.featurePicPath, 750, 1050);
             tv_name.setText(bean.name);
-            tv_loc.setText(CityStringUtils.getProvinceCityString(bean.provinceName, bean.cityName, " "));
+            tv_loc.setText(CityParseUtils.getProvinceCityString(bean.provinceName, bean.cityName, " "));
             tv_order.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     HotelOrderManager.getInstance().reset();
                     HotelOrderManager.getInstance().setFansHotelInfoBean(bean);
-                    HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(bean.provinceName, bean.cityName, "-"));
+                    HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(bean.provinceName, bean.cityName, "-"));
                     Intent intent = new Intent(context, HotelCalendarChooseActivity.class);
                     intent.putExtra("isForbidTitleClick", true);
                     intent.putExtra("isFansBooking", true);

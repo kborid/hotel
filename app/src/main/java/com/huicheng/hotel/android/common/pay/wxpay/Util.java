@@ -42,6 +42,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.net.ssl.SSLContext;
@@ -339,9 +340,7 @@ public class Util {
 			return null;
 		}
 		final List<String> result = new ArrayList<String>();
-		for (int i = 0; i < src.length; i++) {
-			result.add(src[i]);
-		}
+        Collections.addAll(result, src);
 		return result;
 	}
 }

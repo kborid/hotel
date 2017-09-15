@@ -318,7 +318,7 @@ public class WVJBWebViewClient extends WebViewClient {
                 webView.post(new Runnable() {
                     @Override
                     public void run() {
-                        StringBuffer sb = new StringBuffer();
+                        StringBuilder sb = new StringBuilder();
                         sb.append("javascript:window.").append(kInterface).append(".onResultForScript(").append(uniqueId).append(",").append(script).append(")");
                         webView.loadUrl(sb.toString());
                     }

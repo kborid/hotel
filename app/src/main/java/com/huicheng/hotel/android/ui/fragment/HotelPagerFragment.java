@@ -33,7 +33,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
-import com.huicheng.hotel.android.tools.CityStringUtils;
+import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.HotelListActivity;
 import com.huicheng.hotel.android.ui.activity.LocationChooseActivity;
@@ -198,8 +198,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                                 SharedPreferenceUtil.getInstance().setString(AppConst.CITY, loc_city, false);
                                 SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, String.valueOf(aMapLocation.getAdCode()), false);
 
-                                HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(loc_province, loc_city, "-"));
-                                tv_city.setText(CityStringUtils.getProvinceCityString(loc_province, loc_city, " "));
+                                HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(loc_province, loc_city, "-"));
+                                tv_city.setText(CityParseUtils.getProvinceCityString(loc_province, loc_city, " "));
 
                                 showHaiNanAd(loc_province);
 
@@ -215,8 +215,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 }
             });
         }
-        tv_city.setText(CityStringUtils.getProvinceCityString(province, city, " "));
-        HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(province, city, "-"));
+        tv_city.setText(CityParseUtils.getProvinceCityString(province, city, " "));
+        HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
 
         banner_lay.setImageResource(SessionContext.getBannerList());
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -392,8 +392,8 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         }
         String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        HotelOrderManager.getInstance().setCityStr(CityStringUtils.getProvinceCityString(tempProvince, tempCity, "-"));
-        tv_city.setText(CityStringUtils.getProvinceCityString(tempProvince, tempCity, " "));
+        HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(tempProvince, tempCity, "-"));
+        tv_city.setText(CityParseUtils.getProvinceCityString(tempProvince, tempCity, " "));
         if (requestCode == 0x02) {
             if (null != data) {
                 beginTime = data.getLongExtra("beginTime", beginTime);

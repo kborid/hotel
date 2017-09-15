@@ -35,7 +35,6 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
@@ -293,10 +292,10 @@ public class HotelSpacePublishActivity extends BaseActivity {
     }
 
     private void goAt() {
-        StringBuffer tmp = new StringBuffer();
+        StringBuilder tmp = new StringBuilder();
         // 把选中人的id已空格分隔，拼接成字符串
         for (Map.Entry<String, String> entry : cidNameMap.entrySet()) {
-            tmp.append(entry.getKey() + " ");
+            tmp.append(entry.getKey()).append(" ");
         }
         Intent intent = new Intent(this, AttendPersonActivity.class);
         intent.putExtra(AttendPersonActivity.KEY_SELECTED, tmp.toString());

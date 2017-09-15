@@ -1,14 +1,10 @@
 package com.huicheng.hotel.android.ui.JSBridge.functions;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 
-import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.activity.MainFragmentActivity;
-import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 
 /**
  * @author kborid

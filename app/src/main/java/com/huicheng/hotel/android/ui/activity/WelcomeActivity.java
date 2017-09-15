@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.fm.openinstall.OpenInstall;
 import com.fm.openinstall.listener.AppInstallListener;
 import com.fm.openinstall.listener.AppWakeUpListener;
@@ -32,7 +31,7 @@ import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
-import com.huicheng.hotel.android.tools.PinyinUtils;
+import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.algo.MD5Tool;
@@ -47,13 +46,8 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.CustomToast;
-import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,7 +95,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             @Override
             public void run() {
                 super.run();
-                initJsonData();
+                CityParseUtils.initAreaJsonData(WelcomeActivity.this);
                 requestHomeBannerInfo();
                 requestAppVersionInfo();
             }
@@ -139,71 +133,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         OpenInstall.getInstall(this, this);
         Utils.initScreenSize(this);// 设置手机屏幕大小
         SessionContext.initUserInfo();
-    }
-
-    //启动时解析area.json数据
-    private void initJsonData() {
-        LogUtil.i(TAG, "initJsonData() begin....");
-        try {
-            InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open("area.json"));
-            BufferedReader bufReader = new BufferedReader(inputReader);
-            String line = "";
-            StringBuilder result = new StringBuilder();
-            while ((line = bufReader.readLine()) != null) {
-                result.append(line);
-            }
-            inputReader.close();
-            bufReader.close();
-            JSONObject mJsonObject = JSONObject.parseObject(result.toString());
-            if (mJsonObject != null) {
-                if (mJsonObject.containsKey("citylist")) {
-                    List<CityAreaInfoBean> temp = JSON.parseArray(mJsonObject.getString("citylist"), CityAreaInfoBean.class);
-                    if (temp != null && temp.size() > 0) {
-                        SessionContext.setCityAreaList(temp);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        List<String> cityIndexList = new ArrayList<>();
-        List<CityAreaInfoBean> cityNameList = new ArrayList<>();
-
-        for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
-            for (int j = 0; j < SessionContext.getCityAreaList().get(i).list.size(); j++) {
-                cityNameList.add(SessionContext.getCityAreaList().get(i).list.get(j));
-                String shortName = SessionContext.getCityAreaList().get(i).list.get(j).shortName;
-                char c = PinyinUtils.getFirstSpell(shortName).charAt(0);
-                String str = String.valueOf(c).toUpperCase();
-                if (!cityIndexList.contains(str)) {
-                    cityIndexList.add(str);
-                }
-            }
-        }
-        Collections.sort(cityIndexList);
-        SessionContext.setCityIndexList(cityIndexList);
-
-        Map<String, List<String>> nameMap = new HashMap<>();
-        Map<String, List<CityAreaInfoBean>> areaMap = new HashMap<>();
-        for (int i = 0; i < cityIndexList.size(); i++) {
-            List<CityAreaInfoBean> tempArea = new ArrayList<>();
-            List<String> tempStr = new ArrayList<>();
-            for (int j = 0; j < cityNameList.size(); j++) {
-                char c = ' ';
-                String shortName = cityNameList.get(j).shortName;
-                String str = SessionContext.getFirstSpellChat(shortName).toUpperCase();
-                if (cityIndexList.get(i).equals(str)) {
-                    tempArea.add(cityNameList.get(j));
-                }
-                tempStr.add(shortName);
-            }
-            areaMap.put(cityIndexList.get(i), tempArea);
-            nameMap.put(cityIndexList.get(i), tempStr);
-        }
-        SessionContext.setCityAreaMap(areaMap);
-        SessionContext.setCityNameMap(nameMap);
-        LogUtil.i(TAG, "initJsonData() end....");
     }
 
     private void requestAppVersionInfo() {

@@ -33,7 +33,7 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomDetailCheckResultInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomListInfoBean;
-import com.huicheng.hotel.android.tools.CityStringUtils;
+import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
@@ -266,7 +266,7 @@ public class RoomListActivity extends BaseActivity {
             }
 
             //设置 title
-            hotelCityStr = CityStringUtils.getProvinceCityString(hotelDetailInfoBean.provinceName, hotelDetailInfoBean.cityName, "-");
+            hotelCityStr = CityParseUtils.getProvinceCityString(hotelDetailInfoBean.provinceName, hotelDetailInfoBean.cityName, "-");
 //            tv_center_title.setText(hotelCityStr + "(" + hotelDateStr + ")");
             tv_center_title.setText(
                     String.format(getString(R.string.titleCityDateStr),

@@ -57,11 +57,11 @@ public class JPushReceiver extends BroadcastReceiver {
         StringBuilder sb = new StringBuilder();
         for (String key : bundle.keySet()) {
             if (key.equals(JPushInterface.EXTRA_NOTIFICATION_ID)) {
-                sb.append("\nkey:" + key + ", value:" + bundle.getInt(key));
+                sb.append("\nkey:").append(key).append(", value:").append(bundle.getInt(key));
             } else if (key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)) {
-                sb.append("\nkey:" + key + ", value:" + bundle.getBoolean(key));
+                sb.append("\nkey:").append(key).append(", value:").append(bundle.getBoolean(key));
             } else {
-                sb.append("\nkey:" + key + ", value:" + bundle.getString(key));
+                sb.append("\nkey:").append(key).append(", value:").append(bundle.getString(key));
             }
         }
         return sb.toString();

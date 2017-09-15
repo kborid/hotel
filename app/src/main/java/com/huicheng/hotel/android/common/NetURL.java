@@ -1,7 +1,5 @@
 package com.huicheng.hotel.android.common;
 
-import com.huicheng.hotel.android.R;
-import com.prj.sdk.app.AppContext;
 import com.prj.sdk.util.SharedPreferenceUtil;
 
 public final class NetURL {

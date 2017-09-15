@@ -104,10 +104,9 @@ public class WXPayUtils {
         StringBuilder sb = new StringBuilder();
         sb.append("<xml>");
         for (int i = 0; i < params.size(); i++) {
-            sb.append("<" + params.get(i).getName() + ">");
-
+            sb.append("<").append(params.get(i).getName()).append(">");
             sb.append(params.get(i).getValue());
-            sb.append("</" + params.get(i).getName() + ">");
+            sb.append("</").append(params.get(i).getName()).append(">");
         }
         sb.append("</xml>");
 
@@ -160,7 +159,7 @@ public class WXPayUtils {
         @Override
         protected Map<String, String> doInBackground(Void... params) {
 
-            String url = String.format("https://api.mch.weixin.qq.com/pay/unifiedorder");
+            String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
             String entity = genProductArgs(fee, body, out_trade_no);
 
             LogUtil.e("orion", entity);
@@ -255,7 +254,7 @@ public class WXPayUtils {
 
             String xmlstring = toXml(packageParams);
 
-            return new String(xmlstring.toString().getBytes(), "ISO8859-1");// 把xml转码下，解决 body中文无法支付问题
+            return new String(xmlstring.getBytes(), "ISO8859-1");// 把xml转码下，解决 body中文无法支付问题
 
             // return xmlstring;
 

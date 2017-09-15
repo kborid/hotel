@@ -98,9 +98,7 @@ public class SHA1 {
                     tmpData[i - 16], 1);
         }
         int[] tmpabcde = new int[5];
-        for (int i1 = 0; i1 < tmpabcde.length; i1++) {
-            tmpabcde[i1] = digestInt[i1];
-        }
+        System.arraycopy(digestInt, 0, tmpabcde, 0, tmpabcde.length);
         for (int j = 0; j <= 19; j++) {
             int tmp = f4(tmpabcde[0], 5) +
                 f1(tmpabcde[1], tmpabcde[2], tmpabcde[3]) + tmpabcde[4] +
