@@ -229,6 +229,9 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         beginTime = calendar.getTime().getTime();
         calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
         endTime = calendar.getTime().getTime();
+        HotelOrderManager.getInstance().setBeginTime(beginTime);
+        HotelOrderManager.getInstance().setEndTime(endTime);
+        HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
         tv_date.setText(DateUtil.getDay("M月d日", beginTime) + "-" + DateUtil.getDay("M月d日", endTime));
     }
 

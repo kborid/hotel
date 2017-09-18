@@ -43,7 +43,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/comm_rectangle_btn_transparent_withbound"
-                    android:text="立即预定"
+                    android:text="立即预订"
                     android:textColor="@color/main_white_selector"
                     android:textSize="@dimen/common_15sp" />
             </RelativeLayout>

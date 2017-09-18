@@ -124,6 +124,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
         if (currentIndex != 0 && !SessionContext.isLogin()) {
             sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION).putExtra("is_show_tip_dialog", true));
+            viewPager.setCurrentItem(0);
         } else {
             viewPager.setCurrentItem(currentIndex);
         }

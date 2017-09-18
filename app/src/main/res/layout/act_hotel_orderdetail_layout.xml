@@ -417,7 +417,7 @@
                             android:layout_height="40dp"
                             android:layout_marginTop="20dp"
                             android:background="?attr/indicatorBgSel"
-                            android:text="再次预定"
+                            android:text="再次预订"
                             android:textColor="?attr/mainColor"
                             android:textSize="@dimen/common_15sp" />
                     </LinearLayout>

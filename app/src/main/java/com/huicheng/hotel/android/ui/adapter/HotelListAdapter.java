@@ -187,21 +187,21 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         }
 
         // 评分信息
-        float point = 0;
+        holder.tv_hotel_point.setVisibility(View.GONE);
         if (StringUtil.notEmpty(bean.hotelGrade)) {
-            point = Float.parseFloat(bean.hotelGrade);
-            holder.tv_hotel_point.setText(String.valueOf(point));
-            holder.tv_hotel_point.setVisibility(View.VISIBLE);
-        } else {
-            holder.tv_hotel_point.setText("0.0");
-            holder.tv_hotel_point.setVisibility(View.GONE);
-        }
-        if (point >= 4) {
-            holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_high));
-        } else if (point >= 3) {
-            holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_mid));
-        } else {
-            holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_low));
+            if (!"0".equals(bean.hotelGrade) && !"0.0".equals(bean.hotelGrade)) {
+                float point = Float.parseFloat(bean.hotelGrade);
+                holder.tv_hotel_point.setText(String.valueOf(point));
+                holder.tv_hotel_point.setVisibility(View.VISIBLE);
+
+                if (point >= 4) {
+                    holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_high));
+                } else if (point >= 3) {
+                    holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_mid));
+                } else {
+                    holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_low));
+                }
+            }
         }
 
         //诚信盾牌认证

@@ -141,7 +141,7 @@ public class Hotel0YuanHomeActivity extends BaseActivity {
                 UMWeb web = new UMWeb(url);
                 web.setTitle("邀请您注册" + " " + getResources().getString(R.string.app_name));
                 web.setThumb(new UMImage(this, R.drawable.logo));
-                web.setDescription("开启无中介预定时代！");
+                web.setDescription("开启无中介预订时代！");
 
                 ShareControl.getInstance().setUMWebContent(this, web, null);
                 showSharePopupWindow();

@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @auth kborid
+ * @author kborid
  * @date 2017/8/31.
  */
 
@@ -146,7 +146,7 @@ public class SearchResultActivity extends BaseActivity {
                 HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
                 Intent intent = new Intent(SearchResultActivity.this, RoomListActivity.class);
                 intent.putExtra("key", HotelCommDef.ALLDAY);
-                intent.putExtra("hotelId", list.get(position).hotelId);
+                intent.putExtra("hotelId", bean.hotelId);
                 startActivity(intent);
             }
         });
