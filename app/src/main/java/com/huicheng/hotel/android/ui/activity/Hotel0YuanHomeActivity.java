@@ -27,7 +27,7 @@ import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.BitmapUtils;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 

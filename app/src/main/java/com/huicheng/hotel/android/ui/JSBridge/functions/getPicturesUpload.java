@@ -19,7 +19,7 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.Base64;
 import com.prj.sdk.util.ThumbnailUtil;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.ui.activity.HtmlActivity;

@@ -5,20 +5,20 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 public final class NetURL {
 
     public static String getApi() {
-        final String[] SERVER_USRS = {"http://101.37.32.245/", "http://118.178.225.32/", "https://dev.abcbooking.cn/"};
+        final String[] SERVER_URLS = {"http://uat.abcbooking.cn/", "http://pro.abcbooking.cn/", "https://dev.abcbooking.cn/", "http://show.abcbooking.cn/"};
         if (AppConst.ISDEVELOP) {
             int status = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
-            if (status == 3) {
+            if (status == 4) {
                 return SharedPreferenceUtil.getInstance().getString(AppConst.DEV_URL, "", false);
             } else {
-                return SERVER_USRS[status];
+                return SERVER_URLS[status];
             }
         } else {
-            return SERVER_USRS[1];
+            return SERVER_URLS[1];
         }
     }
 
-    private static final String PORTAL = (SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0) == 3) ? getApi() : getApi() + "hmp_website/"; // PORTAL地址  hmp_website/
+    private static final String PORTAL = (SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0) == 4) ? getApi() : getApi() + "hmp_website/"; // PORTAL地址  hmp_website/
 
     //---------------------------------上传图片------------------------------------------------------
     public static final String UPLOAD = PORTAL + "upload/img.up"; // 上传图片

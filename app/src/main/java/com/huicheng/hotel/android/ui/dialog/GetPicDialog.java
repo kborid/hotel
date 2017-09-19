@@ -9,7 +9,6 @@ import android.provider.MediaStore;
 import com.huicheng.hotel.android.common.AppConst;
 import com.prj.sdk.util.GUIDGenerator;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.CustomToast;
 
 import java.io.File;
 

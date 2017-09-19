@@ -222,7 +222,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:text="搜索酒店"
-            android:textColor="@color/main_white_selector"
+            android:textColor="@color/common_color_selector"
             android:textSize="@dimen/common_15sp" />
 
     </LinearLayout>

@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import com.prj.sdk.app.AppContext;
+import com.prj.sdk.net.data.DataLoader;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -115,7 +116,7 @@ public class ActivityTack {
      * 应用退出时调用
      */
     public final void exit() {
-        AppContext.destory();
+        DataLoader.getInstance().clearRequests();
         clearNotificaction();
         for (Activity activity : mList) {
             if (activity != null) {

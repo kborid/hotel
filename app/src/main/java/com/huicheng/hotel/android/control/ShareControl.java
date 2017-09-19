@@ -3,7 +3,7 @@ package com.huicheng.hotel.android.control;
 import android.app.Activity;
 import android.content.Context;
 
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -16,7 +16,7 @@ public class ShareControl {
     private static ShareControl mInstance = null;
     private Context context;
     private UMWeb mUMWeb = null;
-    private ShareResultListener listener = null;
+    private IShareResultListener listener = null;
 
     private ShareControl() {
     }
@@ -32,7 +32,7 @@ public class ShareControl {
         return mInstance;
     }
 
-    public void setUMWebContent(Context context, UMWeb web, ShareResultListener listener) {
+    public void setUMWebContent(Context context, UMWeb web, IShareResultListener listener) {
         this.context = context;
         this.mUMWeb = web;
         this.listener = listener;

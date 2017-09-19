@@ -49,7 +49,7 @@ import com.huicheng.hotel.android.ui.mapoverlay.DrivingRouteOverlay;
 import com.huicheng.hotel.android.ui.mapoverlay.WalkRouteOverlay;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;

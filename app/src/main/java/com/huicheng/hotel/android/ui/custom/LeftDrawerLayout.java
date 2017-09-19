@@ -37,7 +37,7 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.net.ConnectException;
 

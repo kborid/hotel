@@ -25,7 +25,7 @@ import android.webkit.WebViewClient;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 /**
  * 相关webview 公用页面；如：城市新鲜事、常见问题等

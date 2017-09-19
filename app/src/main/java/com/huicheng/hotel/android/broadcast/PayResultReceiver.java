@@ -14,7 +14,7 @@ import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 /**
  * @auth kborid

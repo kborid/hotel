@@ -23,7 +23,7 @@ import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 /**
  * 找回密码

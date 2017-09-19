@@ -10,7 +10,7 @@
         android:smallScreens="true" />
 
     <application
-        android:name=".app.PRJApplication"
+        android:name=".PRJApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -126,6 +126,9 @@
         <activity
             android:name=".ui.activity.DebugInfoActivity"
             android:screenOrientation="portrait" />
+        <!--环境切换-->
+        <activity android:name=".ui.activity.DebugChangeEnvActivity"
+            android:screenOrientation="portrait"/>
         <!--设置-->
         <activity
             android:name=".ui.activity.SettingActivity"

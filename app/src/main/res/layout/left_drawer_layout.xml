@@ -71,7 +71,7 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/comm_rectangle_btn_transparent_withbound"
                     android:text="@string/side_wait"
-                    android:textColor="@color/main_white_selector"
+                    android:textColor="@color/common_color_selector"
                     android:textSize="@dimen/common_15sp" />
             </LinearLayout>
         </RelativeLayout>
@@ -327,7 +327,7 @@
                 android:layout_marginTop="25dp"
                 android:background="@drawable/comm_rectangle_btn_transparent_withbound"
                 android:text="@string/exit"
-                android:textColor="@color/main_white_selector"
+                android:textColor="@color/common_color_selector"
                 android:textSize="@dimen/common_15sp" />
         </LinearLayout>
     </ScrollView>

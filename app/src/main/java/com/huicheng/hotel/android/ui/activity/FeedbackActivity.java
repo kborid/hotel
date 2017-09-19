@@ -29,7 +29,7 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.ThumbnailUtil;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.io.File;
 import java.io.IOException;

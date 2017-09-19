@@ -1,4 +1,4 @@
-package com.prj.sdk.widget;
+package com.huicheng.hotel.android.ui.dialog;
 
 import android.widget.Toast;
 

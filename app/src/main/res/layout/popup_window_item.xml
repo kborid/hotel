@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textColor="@color/main_white_selector"
+        android:textColor="@color/common_color_selector"
         android:textSize="@dimen/common_12sp" />
 
     <!--<ImageView

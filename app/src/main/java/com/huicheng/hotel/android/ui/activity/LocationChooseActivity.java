@@ -24,7 +24,7 @@ import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
 import java.util.ArrayList;

@@ -14,7 +14,7 @@ import android.webkit.WebViewClient;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 /**
  * @auth kborid

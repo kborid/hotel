@@ -31,7 +31,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.ShareControl;
-import com.huicheng.hotel.android.control.ShareResultListener;
+import com.huicheng.hotel.android.control.IShareResultListener;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceBasicInfoBean;
@@ -52,7 +52,7 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
@@ -336,7 +336,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                 web.setThumb(new UMImage(this, thumbBM));
                 web.setDescription(hotelSpaceTieInfoBean.content);
 
-                ShareControl.getInstance().setUMWebContent(this, web, new ShareResultListener() {
+                ShareControl.getInstance().setUMWebContent(this, web, new IShareResultListener() {
                     @Override
                     public void onShareResult(boolean isSuccess) {
                         if (isSuccess) {

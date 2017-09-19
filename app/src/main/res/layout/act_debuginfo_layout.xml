@@ -4,50 +4,53 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/comm_title" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/comm_title" />
+        android:divider="@drawable/debug_divider_line"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:showDividers="middle|end">
 
         <TextView
             android:id="@+id/tv_debuginfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
-            android:textColor="?attr/mainColor"
+            android:paddingBottom="20dp"
+            android:textColor="@color/secColor"
             android:textSize="@dimen/common_12sp" />
 
-        <Button
-            android:id="@+id/btn_changed"
-            style="@style/blue_button_style"
-            android:layout_width="100dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
+
+        <TextView
+            android:id="@+id/tv_changed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
             android:text="环境切换"
-            android:visibility="visible" />
+            android:textColor="@color/common_color_selector"
+            android:textSize="@dimen/common_15sp" />
 
-        <Button
-            android:id="@+id/btn_JS"
-            style="@style/blue_button_style"
-            android:layout_width="100dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
+
+        <TextView
+            android:id="@+id/tv_js"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
             android:text="JS测试"
-            android:visibility="visible" />
+            android:textColor="@color/common_color_selector"
+            android:textSize="@dimen/common_15sp" />
 
-        <Button
-            android:id="@+id/btn_close"
-            style="@style/blue_button_style"
-            android:layout_width="100dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:text="Debug Off"
-            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="关闭Debug菜单"
+            android:textColor="@color/common_color_selector"
+            android:textSize="@dimen/common_15sp" />
+
     </LinearLayout>
 </LinearLayout>

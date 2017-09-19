@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.app;
+package com.huicheng.hotel.android;
 
 import android.app.Application;
 import android.content.Context;
@@ -7,9 +7,8 @@ import android.support.multidex.MultiDex;
 import android.webkit.WebView;
 
 import com.fm.openinstall.OpenInstall;
-import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.CrashHandler;
+import com.huicheng.hotel.android.common.RCSCrashHandler;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
@@ -29,11 +28,21 @@ import cn.jpush.android.api.JPushInterface;
 
 public class PRJApplication extends Application {
 
+    private static PRJApplication instance;
+
+    public static PRJApplication getInstance() {
+        return instance;
+    }
+
+    public PRJApplication() {
+        instance = this;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         AppContext.init(this);
-        CrashHandler.getInstance().init(this);
+        RCSCrashHandler.getInstance().init();
         Collections.addAll(DataLoader.getInstance().mCacheUrls, NetURL.CACHE_URL);
 
         AMapLocationControl.getInstance().startLocationOnce(this, true);

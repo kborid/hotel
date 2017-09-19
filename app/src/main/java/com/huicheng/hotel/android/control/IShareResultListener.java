@@ -5,6 +5,6 @@ package com.huicheng.hotel.android.control;
  * @date 2017/8/29.
  */
 
-public interface ShareResultListener {
+public interface IShareResultListener {
     void onShareResult(boolean isSuccess);
 }

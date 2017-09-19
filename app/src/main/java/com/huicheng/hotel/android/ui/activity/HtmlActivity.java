@@ -14,27 +14,19 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.activity.LoginActivity.onCancelLoginListener;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
-import com.prj.sdk.app.AppContext;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.util.ActivityTack;
-import com.prj.sdk.util.SharedPreferenceUtil;
-import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.CustomToast;
 import com.prj.sdk.widget.webview.ChooserFileController;
 import com.prj.sdk.widget.webview.WebChromeClientCompat;
 
@@ -73,9 +65,6 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
         // important , so that you can use js to call Uemng APIs
         // new MobclickAgentJSInterface(this, mWebView, new MyWebChromeClient());
         if (AppConst.ISDEVELOP) {
-            if (getIntent().getBooleanExtra("ISDEVELOP", false)) {
-                initDevelop();
-            }
             if (getIntent().getBooleanExtra("ISJS", false)) {
                 mWebView.loadUrl("file:///android_asset/ExampleApp.html");
             }
@@ -84,57 +73,6 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
 
     private void createController() {
         mCtrl = new ChooserFileController(this);
-    }
-
-    /**
-     * 开发者测试
-     */
-    public void initDevelop() {
-        LinearLayout layout_test = (LinearLayout) findViewById(R.id.layout_test);
-        final EditText et_url = (EditText) findViewById(R.id.et_url);
-        Button btn_go = (Button) findViewById(R.id.btn_go);
-        TextView tv_cur = (TextView) findViewById(R.id.tv_cur);
-        StringBuilder sb = new StringBuilder();
-        sb.append("Current Environment（")
-                .append(SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0))
-                .append("：")
-                .append(NetURL.getApi())
-                .append("）");
-        tv_cur.setText(sb);
-        layout_test.setVisibility(View.VISIBLE);
-        btn_go.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                URL = et_url.getText().toString().trim();
-                if (StringUtil.notEmpty(URL)) {
-                    if ("0".equals(URL) || "1".equals(URL) || "2".equals(URL)) {
-                        SharedPreferenceUtil.getInstance().setInt(AppConst.APPTYPE, Integer.parseInt(URL));// 保存切换地址类型
-                    } else {
-                        if (!URL.startsWith("http") && !URL.endsWith("/")) {
-                            URL = "http://" + URL + "/";
-                        } else if (!URL.startsWith("http")) {
-                            URL = "http://" + URL;
-                        } else if (!URL.endsWith("/")) {
-                            URL = URL + "/";
-                        }
-                        SharedPreferenceUtil.getInstance().setInt(AppConst.APPTYPE, 3);// 保存切换地址类型
-                        SharedPreferenceUtil.getInstance().setString(AppConst.DEV_URL, URL, false);
-                    }
-
-                    AppContext.mMainHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            SessionContext.cleanUserInfo();
-                            SessionContext.destroy();
-                            sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
-                            ActivityTack.getInstanse().exit();
-                        }
-                    }, 2000);
-                    CustomToast.show("切换成功，即将退出，请手动重启", CustomToast.LENGTH_SHORT);
-                }
-            }
-        });
     }
 
     @Override
@@ -223,8 +161,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
             StringBuilder sb = new StringBuilder();
             String pkName = this.getPackageName();
             String versionName = this.getPackageManager().getPackageInfo(pkName, 0).versionName;
-//            sb.append(webSetting.getUserAgentString()).append(" Android/").append(pkName).append("/").append(versionName);// 名字+包名+版本号
-            sb.append(webSetting.getUserAgentString()).append(" Android/").append("Hotel").append("/").append(versionName);// 名字+wuhou+版本号
+            sb.append(webSetting.getUserAgentString()).append(" Android/").append("Hotel").append("/").append(versionName); //Android/Hotel/versionName
             webSetting.setUserAgentString(sb.toString());// 追加修改ua特征标识（名字+包名+版本号）使得web端正确判断
         } catch (Exception e) {
             e.printStackTrace();
@@ -234,7 +171,6 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
         } else {
             webSetting.setLoadsImagesAutomatically(false);
         }
-        // URL = "file:///android_asset/index.html";
         mWebView.loadUrl(URL);
     }
 
@@ -413,9 +349,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
         mWebView.clearHistory();
         mWebView.clearMatches();
         mWebView.clearSslPreferences();
-        // mWebView.clearCache(true);
         mWebView.destroy();
-        AppContext.mMemoryMap.clear();// 清空提供给网页的缓存
         mCtrl.onDestroy();
     }
 

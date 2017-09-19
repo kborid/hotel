@@ -10,8 +10,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.webkit.ValueCallback;
 
-import com.prj.sdk.widget.CustomToast;
-
 import java.io.File;
 
 class UploadHandler {
@@ -164,6 +162,7 @@ class UploadHandler {
         try {
             mController.getActivity().startActivityForResult(intent, ChooserFileController.FILE_SELECTED);
         } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
             // No installed app was able to handle the intent that
             // we sent, so fallback to the default file upload control.
             try {
@@ -172,7 +171,7 @@ class UploadHandler {
                         ChooserFileController.FILE_SELECTED);
             } catch (ActivityNotFoundException e2) {
                 // Nothing can return us a file, so file upload is effectively disabled.
-                CustomToast.show("File uploads are disabled.", CustomToast.LENGTH_SHORT);
+                e2.printStackTrace();
             }
         }
     }

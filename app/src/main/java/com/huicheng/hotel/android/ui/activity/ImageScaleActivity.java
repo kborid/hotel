@@ -16,7 +16,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.SmoothImageView;
 import com.prj.sdk.net.image.ImageLoader;
-import com.prj.sdk.widget.CustomToast;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 /**
  * @author kborid
