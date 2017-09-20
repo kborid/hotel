@@ -45,17 +45,16 @@ public class RequestBeanBuilder {
      * 构建请求
      *
      * @param isNeedTicket 是否需要ticket ,如果需要登录就需要ticket
-     * @return
      */
     public static RequestBeanBuilder create(boolean isNeedTicket) {
         return new RequestBeanBuilder(isNeedTicket);
     }
 
-    public RequestBeanBuilder addHeadToken(String token) {
+    private RequestBeanBuilder addHeadToken(String token) {
         return addHead("accessTicket", token);
     }
 
-    public RequestBeanBuilder addHead(String key, Object value) {
+    private RequestBeanBuilder addHead(String key, Object value) {
         head.put(key, value);
         return this;
     }
@@ -85,39 +84,15 @@ public class RequestBeanBuilder {
     }
 
     /**
-     * 获取访问mgr的签名
-     *
-     * @return
-     * @throws Exception
-     */
-    private String signRequestForMgr() {
-        String destText = "";
-        try {
-            String srcText = new Gson().toJson(body);
-            String base64Text = new String(Base64.encodeBase64((AppConst.APPID + srcText + AppConst.APPKEY).getBytes("utf-8"), false));
-            destText = MD5Tool.getMD5(base64Text);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return destText;
-    }
-
-    /**
      * 请求数据的json字符串
-     *
-     * @return
      */
-    public String toJson(boolean isMgr) {
+    private String toJson() {
         HashMap<String, Object> json = new HashMap<>();
         json.put("head", head);
         json.put("body", body);
 
         head.put("appid", AppConst.APPID);
-        if (isMgr) {
-            head.put("sign", signRequestForMgr());
-        } else {
-            head.put("sign", sign());
-        }
+        head.put("sign", sign());
         head.put("version", AppConst.VERSION);
         head.put("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
         head.put("appversion", BuildConfig.VERSION_NAME);
@@ -125,7 +100,7 @@ public class RequestBeanBuilder {
         return new Gson().toJson(json);
     }
 
-    public JSONObject toJsonForForm() {
+    private JSONObject toJsonForForm() {
         HashMap<String, Object> json = new HashMap<>();
         for (String key : body.keySet()) {
             if (StringUtil.isEmpty(key)) {
@@ -137,19 +112,19 @@ public class RequestBeanBuilder {
     }
 
     /**
-     * 请求数据
+     * POST请求数据
      *
      * @return
      */
     public ResponseData syncRequest(RequestBeanBuilder builder) {
         ResponseData data = new ResponseData();
-        data.data = builder.toJson(false);
+        data.data = builder.toJson();
         data.type = InfoType.POST_REQUEST.toString();
         return data;
     }
 
     /**
-     * 请求数据
+     * POST请求数据
      *
      * @return
      */
@@ -159,17 +134,5 @@ public class RequestBeanBuilder {
         data.type = InfoType.POST_REQUEST.toString();
         return data;
     }
-
-	/**
-	 * 请求mgr接口数据
-	 *
-	 * @return
-	 */
-	public ResponseData syncRequestMgr(RequestBeanBuilder builder) {
-		ResponseData data = new ResponseData();
-		data.data = builder.toJson(true);
-		data.type = InfoType.POST_REQUEST.toString();
-		return data;
-	}
 
 }

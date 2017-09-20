@@ -45,11 +45,11 @@ import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.ui.adapter.PinInfoWindowAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.mapoverlay.DrivingRouteOverlay;
 import com.huicheng.hotel.android.ui.mapoverlay.WalkRouteOverlay;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -375,28 +375,27 @@ public class HotelMapActivity extends BaseActivity
                 break;
             case R.id.iv_navi:
                 if (currentMarker != null) {
-                    try {
-                        CustomDialog dialog = new CustomDialog(this);
-                        dialog.setMessage("是否启动本手机的自带导航");
-                        dialog.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Uri mUri = Uri.parse("geo:" + currentMarker.getPosition().latitude + "," + currentMarker.getPosition().longitude + "?q=" + currentMarker.getTitle());
-                                Intent intent = new Intent(Intent.ACTION_VIEW, mUri);
-                                startActivity(intent);
-                            }
-                        });
-                        dialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        dialog.show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    Uri mUri = Uri.parse("geo:" + currentMarker.getPosition().latitude + "," + currentMarker.getPosition().longitude + "?q=" + currentMarker.getTitle());
+                    final Intent intent = new Intent(Intent.ACTION_VIEW, mUri);
+                    if (intent.resolveActivity(getPackageManager()) == null) {
                         CustomToast.show("您的手机中未安装任何地图导航工具", Toast.LENGTH_SHORT);
+                        return;
                     }
+                    CustomDialog dialog = new CustomDialog(this);
+                    dialog.setMessage("是否启动本手机的自带导航");
+                    dialog.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(intent);
+                        }
+                    });
+                    dialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
                 }
                 break;
             default:
