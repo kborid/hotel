@@ -189,10 +189,6 @@ public class RegisterActivity extends BaseActivity {
                 break;
             }
             case R.id.tv_agreement:
-//                Intent mIntent = new Intent(this, WebViewActivity.class);
-//                mIntent.putExtra("title", "注册协议");
-//                mIntent.putExtra("path", NetURL.REGISTER_AGEMENNT);
-//                startActivity(mIntent);
                 break;
             default:
                 break;

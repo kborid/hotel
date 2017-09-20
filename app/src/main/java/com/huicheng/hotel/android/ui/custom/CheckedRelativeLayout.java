@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.custom;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Checkable;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.prj.sdk.util.Utils;
@@ -47,7 +46,7 @@ public class CheckedRelativeLayout extends RelativeLayout implements Checkable {
         setChecked(!mChecked);
     }
 
-    class CheckedImage extends ImageView implements Checkable {
+    class CheckedImage extends android.support.v7.widget.AppCompatImageView implements Checkable {
 
         private boolean mChecked;
         private int normalImageId;

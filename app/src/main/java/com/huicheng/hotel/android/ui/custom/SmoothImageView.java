@@ -14,7 +14,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
 
 /**
  * 2d平滑变化的显示图片的ImageView
@@ -23,7 +22,7 @@ import android.widget.ImageView;
  *
  * @author Dean Tao
  */
-public class SmoothImageView extends ImageView {
+public class SmoothImageView extends android.support.v7.widget.AppCompatImageView {
 
     private static final int STATE_NORMAL = 0;
     private static final int STATE_TRANSFORM_IN = 1;

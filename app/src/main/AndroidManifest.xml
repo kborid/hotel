@@ -236,9 +236,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <!-- 普通html页面 -->
-        <activity
-            android:name=".ui.activity.WebViewActivity"
-            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".broadcast.UnLoginBroadcastReceiver"

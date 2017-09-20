@@ -37,7 +37,6 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TabWidget;
-import android.widget.TextView;
 
 import com.prj.sdk.util.LogUtil;
 
@@ -46,7 +45,7 @@ import com.prj.sdk.util.LogUtil;
  * 
  * @author LiaoBo
  */
-public class BadgeView extends TextView {
+public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 
 	private boolean	mHideOnNull	= true;
 

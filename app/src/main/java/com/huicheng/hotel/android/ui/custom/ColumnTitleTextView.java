@@ -9,7 +9,6 @@ import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.widget.TextView;
 
 /**
  * 栏目标题，可滑动的textview
@@ -17,7 +16,7 @@ import android.widget.TextView;
  * @author LiaoBo
  * 
  */
-public class ColumnTitleTextView extends TextView {
+public class ColumnTitleTextView extends android.support.v7.widget.AppCompatTextView {
 
 	private boolean	isVerticalLine		= false;
 	private boolean	isHorizontaline		= false;

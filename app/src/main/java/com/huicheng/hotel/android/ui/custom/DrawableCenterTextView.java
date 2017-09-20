@@ -4,14 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 /**
  * 自定义TextView，实现textview的drawableLeft属性与文本居中
  * 
  * @author LiaoBo
  */
-public class DrawableCenterTextView extends TextView {
+public class DrawableCenterTextView extends android.support.v7.widget.AppCompatTextView {
 
 	public DrawableCenterTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);

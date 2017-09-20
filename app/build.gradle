@@ -20,7 +20,7 @@ android {
         versionName "2.0.1"
         multiDexEnabled true
         ndk {
-            //选择要添加的对应cpu类型的.so库。
+            //选择要添加的对应cpu类型的.so库
             abiFilters 'armeabi', 'armeabi-v7a'
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64', 'armeabi-v8a'
         }

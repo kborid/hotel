@@ -312,7 +312,7 @@ public class ThumbnailUtil {
             paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
             canvas.drawBitmap(bitmap, src, dst, paint);
             return output;
-        } catch (Exception |OutOfMemoryError e) {
+        } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
         }
         return bitmap;
@@ -448,7 +448,7 @@ public class ThumbnailUtil {
     public static String getPicPath(Context context, Uri selectedImage) {
         String picturePath = "";
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
-        Cursor cursor = context.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+        Cursor cursor = context.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
         if (cursor != null) {
             int column_index = cursor.getColumnIndexOrThrow(filePathColumn[0]);
             cursor.moveToFirst();
@@ -460,13 +460,14 @@ public class ThumbnailUtil {
 
     /**
      * 解决小米手机上获取图片路径为null的情况
+     *
      * @param intent
      * @return
      */
     public static Uri geturi(Context context, Intent intent) {
         Uri uri = intent.getData();
         String type = intent.getType();
-        if (uri.getScheme().equals("file") && (type.contains("image/"))) {
+        if (uri.getScheme().equals("file") && (StringUtil.notEmpty(type) && type.contains("image/"))) {
             String path = uri.getEncodedPath();
             if (path != null) {
                 path = Uri.decode(path);
@@ -475,7 +476,7 @@ public class ThumbnailUtil {
                 buff.append("(").append(MediaStore.Images.ImageColumns.DATA).append("=")
                         .append("'" + path + "'").append(")");
                 Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        new String[] { MediaStore.Images.ImageColumns._ID },
+                        new String[]{MediaStore.Images.ImageColumns._ID},
                         buff.toString(), null, null);
                 int index = 0;
                 for (cur.moveToFirst(); !cur.isAfterLast(); cur.moveToNext()) {

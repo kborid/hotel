@@ -16,7 +16,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.prj.sdk.util.Utils;
 
@@ -25,7 +24,7 @@ import com.prj.sdk.util.Utils;
  *
  * @author caizhiming
  */
-public class CustomRoundRectImageView extends ImageView {
+public class CustomRoundRectImageView extends android.support.v7.widget.AppCompatImageView {
 
     private Paint paint;
 
