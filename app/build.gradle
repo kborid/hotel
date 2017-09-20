@@ -16,8 +16,8 @@ android {
         applicationId "com.huicheng.hotel.android" //JPush上注册的包名.
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 9
-        versionName "2.0.1"
+        versionCode 10
+        versionName "2.0.2"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库
@@ -136,7 +136,10 @@ dependencies {
     compile 'cn.jiguang.sdk:jcore:1.1.1'
     //图片加载库
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    // 内存泄漏检查工具库
+    //微信支付
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.4.0'
+
+    //内存泄漏检查工具库
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
 }
