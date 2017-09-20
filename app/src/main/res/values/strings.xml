@@ -151,6 +151,9 @@
     <string name="menu_price4">1000–2000元</string>
     <string name="menu_price5">2000元以上</string>
 
+    <!--debug info-->
+    <string name="debug_menu">Debug Menu</string>
+    <string name="debug_change">Change Environment</string>
     <string-array name="EnvItem">
         <item>@string/env_uat</item>
         <item>@string/env_release</item>
@@ -163,4 +166,6 @@
     <string name="env_develop">研发环境</string>
     <string name="env_demo">演示环境</string>
     <string name="env_local">本地联调</string>
+    <string name="change_no">no change</string>
+    <string name="change_success">切换成功，即将重启</string>
 </resources>

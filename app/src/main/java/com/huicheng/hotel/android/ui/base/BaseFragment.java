@@ -13,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
+import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -101,6 +103,13 @@ public abstract class BaseFragment extends Fragment {
         if (getUserVisibleHint()) {
             onVisibilityChangedToUser(false, false);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = PRJApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     /**

@@ -5,16 +5,15 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 public final class NetURL {
 
     public static String getApi() {
-        final String[] SERVER_URLS = {"http://uat.abcbooking.cn/", "http://pro.abcbooking.cn/", "https://dev.abcbooking.cn/", "http://show.abcbooking.cn/"};
         if (AppConst.ISDEVELOP) {
-            int status = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
-            if (status == 4) {
+            int type = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
+            if (type == 4) {
                 return SharedPreferenceUtil.getInstance().getString(AppConst.DEV_URL, "", false);
             } else {
-                return SERVER_URLS[status];
+                return ServerDomain.values()[type].getValue();
             }
         } else {
-            return SERVER_URLS[1];
+            return ServerDomain.DOMAIN_RELEASE.getValue();
         }
     }
 

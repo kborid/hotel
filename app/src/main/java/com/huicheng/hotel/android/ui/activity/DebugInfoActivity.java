@@ -43,7 +43,7 @@ public class DebugInfoActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        tv_center_title.setText("Debug Info");
+        tv_center_title.setText(getString(R.string.debug_menu));
 
         StringBuilder sb = new StringBuilder();
         sb.append("PackageName : ").append(BuildConfig.APPLICATION_ID);
@@ -92,5 +92,15 @@ public class DebugInfoActivity extends BaseActivity {
         if (null != mIntent) {
             startActivity(mIntent);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -1,6 +1,5 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.KeyEvent;
@@ -18,17 +17,17 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.pay.wxpay.MD5;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 /**
  * 找回密码
  */
-public class ForgetPwdActivity extends BaseActivity implements DialogInterface.OnCancelListener {
+public class ForgetPwdActivity extends BaseActivity {
     private static final String TAG = "ForgetPwdActivity";
 
     private EditText et_phone, et_yzm, et_password, et_password2;
@@ -254,8 +253,11 @@ public class ForgetPwdActivity extends BaseActivity implements DialogInterface.O
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
-        DataLoader.getInstance().clear(requestID);
-        removeProgressDialog();
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != mCountDownTimer) {
+            mCountDownTimer.cancel();
+            mCountDownTimer = null;
+        }
     }
 }

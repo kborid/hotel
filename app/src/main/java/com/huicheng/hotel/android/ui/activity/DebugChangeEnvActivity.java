@@ -29,6 +29,7 @@ import com.prj.sdk.util.StringUtil;
 public class DebugChangeEnvActivity extends BaseActivity {
 
     private int oldIndex = 0;
+    private String oldUrl = "";
     private int currIndex = 0;
     private String[] envs;
     private LinearLayout env_lay;
@@ -55,8 +56,11 @@ public class DebugChangeEnvActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        tv_center_title.setText("Change Environment");
+        tv_center_title.setText(getString(R.string.debug_change));
         oldIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
+        oldUrl = SharedPreferenceUtil.getInstance().getString(AppConst.DEV_URL, "", false);
+        et_url.setText(oldUrl);
+        et_url.setSelection(oldUrl.length());
         envs = getResources().getStringArray(R.array.EnvItem);
         env_lay.removeAllViews();
         for (int i = 0; i < envs.length; i++) {
@@ -94,13 +98,8 @@ public class DebugChangeEnvActivity extends BaseActivity {
             }
         }
         currIndex = index;
-        if (currIndex == 4 && "本地联调".equals(envs[currIndex])) {
+        if (currIndex == 4 && getString(R.string.env_local).equals(envs[currIndex])) {
             et_url.setVisibility(View.VISIBLE);
-            String url = SharedPreferenceUtil.getInstance().getString(AppConst.DEV_URL, "", false);
-            if (StringUtil.notEmpty(url)) {
-                et_url.setText(url);
-                et_url.setSelection(url.length());
-            }
         } else {
             et_url.setVisibility(View.GONE);
         }
@@ -117,10 +116,10 @@ public class DebugChangeEnvActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_restart:
-                if (currIndex == oldIndex) {
-                    CustomToast.show("no change", CustomToast.LENGTH_SHORT);
-                    return;
-                }
+//                if (currIndex == oldIndex && oldUrl.equals(et_url.getText().toString())) {
+//                    CustomToast.show(getString(R.string.change_no), CustomToast.LENGTH_SHORT);
+//                    return;
+//                }
                 if (currIndex == 4 && et_url.isShown()) {
                     String url = et_url.getText().toString().trim();
                     if (StringUtil.isEmpty(url)) {
@@ -147,8 +146,16 @@ public class DebugChangeEnvActivity extends BaseActivity {
                         ActivityTack.getInstanse().exit();
                     }
                 }, 1500);
-                CustomToast.show("切换成功，即将重启", CustomToast.LENGTH_SHORT);
+                CustomToast.show(getString(R.string.change_success), CustomToast.LENGTH_SHORT);
                 break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (env_lay != null) {
+            env_lay.removeAllViews();
         }
     }
 }

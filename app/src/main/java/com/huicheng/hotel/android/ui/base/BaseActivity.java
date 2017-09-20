@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -28,6 +29,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
+import com.huicheng.hotel.android.tools.FixIMMLeaksTools;
 import com.huicheng.hotel.android.ui.activity.InvoiceDetailActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
@@ -44,6 +46,7 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -98,6 +101,9 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        FixIMMLeaksTools.fixFocusedViewLeak(PRJApplication.getInstance());
+        RefWatcher refWatcher = PRJApplication.getRefWatcher(this);
+        refWatcher.watch(this);
         DataLoader.getInstance().clear(requestID);
         ActivityTack.getInstanse().removeActivity(this);
     }

@@ -1,6 +1,5 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -27,6 +26,7 @@ import com.huicheng.hotel.android.common.pay.wxpay.MD5;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -35,14 +35,13 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-public class RegisterActivity extends BaseActivity implements DialogInterface.OnCancelListener {
+public class RegisterActivity extends BaseActivity {
     private static final String TAG = "RegisterActivity";
     private EditText et_phone, et_yzm, et_pwd;
     private int sex_index = 1; //默认男性
@@ -448,12 +447,6 @@ public class RegisterActivity extends BaseActivity implements DialogInterface.On
         }
     }
 
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        DataLoader.getInstance().clear(requestID);
-        removeProgressDialog();
-    }
-
     /**
      * 设置倒计时
      */
@@ -478,6 +471,7 @@ public class RegisterActivity extends BaseActivity implements DialogInterface.On
         super.onDestroy();
         if (null != mCountDownTimer) {
             mCountDownTimer.cancel();
+            mCountDownTimer = null;
         }
     }
 }

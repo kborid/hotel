@@ -16,6 +16,8 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.prj.sdk.app.AppContext;
 import com.prj.sdk.net.data.DataLoader;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
@@ -23,8 +25,6 @@ import com.umeng.socialize.PlatformConfig;
 import java.util.Collections;
 
 import cn.jpush.android.api.JPushInterface;
-
-//import com.squareup.leakcanary.LeakCanary;
 
 public class PRJApplication extends Application {
 
@@ -38,11 +38,14 @@ public class PRJApplication extends Application {
         instance = this;
     }
 
+    private RefWatcher refWatcher;
+
     @Override
     public void onCreate() {
         super.onCreate();
         AppContext.init(this);
         RCSCrashHandler.getInstance().init();
+        refWatcher = LeakCanary.install(this);
         Collections.addAll(DataLoader.getInstance().mCacheUrls, NetURL.CACHE_URL);
 
         AMapLocationControl.getInstance().startLocationOnce(this, true);
@@ -72,7 +75,6 @@ public class PRJApplication extends Application {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 WebView.setWebContentsDebuggingEnabled(true);
             }
-//            LeakCanary.install(this);
         }
     }
 
@@ -80,5 +82,10 @@ public class PRJApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        PRJApplication application = (PRJApplication) context.getApplicationContext();
+        return application.refWatcher;
     }
 }
