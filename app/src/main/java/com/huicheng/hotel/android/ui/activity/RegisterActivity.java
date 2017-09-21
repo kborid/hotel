@@ -83,7 +83,7 @@ public class RegisterActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        findViewById(R.id.comm_title_rl).setBackgroundResource(R.color.transparent);
+        tv_center_title.setText(R.string.create);
         setCountDownTimer(60 * 1000, 1000);
     }
 

@@ -17,6 +17,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -25,7 +26,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.util.Set;
 
@@ -56,9 +56,6 @@ public class BindPhoneActivity extends BaseActivity implements DialogInterface.O
     @Override
     public void initViews() {
         super.initViews();
-        tv_center_title.setText("手机绑定");
-        findViewById(R.id.comm_title_rl).setBackgroundResource(R.color.transparent);
-        setCountDownTimer(60 * 1000, 1000);
         et_phone = (EditText) findViewById(R.id.et_phone);
         et_yzm = (EditText) findViewById(R.id.et_yzm);
         btn_yzm = (Button) findViewById(R.id.btn_yzm);
@@ -68,7 +65,8 @@ public class BindPhoneActivity extends BaseActivity implements DialogInterface.O
     @Override
     public void initParams() {
         super.initParams();
-        dealIntent();
+        tv_center_title.setText(R.string.bind_phone);
+        setCountDownTimer(60 * 1000, 1000);
     }
 
     @Override

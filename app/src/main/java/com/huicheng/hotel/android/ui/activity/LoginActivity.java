@@ -93,6 +93,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCan
     @Override
     public void initParams() {
         super.initParams();
+        tv_center_title.setText(R.string.login_title);
         SessionContext.cleanUserInfo();
         String name = SharedPreferenceUtil.getInstance().getString(AppConst.USERNAME, "", true);
         if (StringUtil.notEmpty(name)) {

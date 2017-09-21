@@ -4,10 +4,7 @@
     android:background="#fff"
     android:orientation="vertical">
 
-    <!-- <include layout="@layout/comm_title" /> -->
-
     <RelativeLayout
-        android:id="@+id/comm_title_rl"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="?attr/mainColor">

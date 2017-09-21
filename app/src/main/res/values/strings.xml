@@ -16,6 +16,7 @@
     <string name="agement">《注册协议》</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
+    <string name="login_title">登录</string>
     <string name="login">ABC账号登录</string>
     <string name="login_wx">微信登录</string>
     <string name="login_qq">QQ账号登录</string>
@@ -25,6 +26,7 @@
     <string name="login_thrid">使用第三方账号登录</string>
     <string name="reset_pwd">重置密码</string>
     <string name="get_checknumber">获取验证码</string>
+    <string name="bind_phone">手机绑定</string>
 
 
     <string name="prePayStr">预付:%1$s元</string>

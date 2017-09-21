@@ -9,7 +9,7 @@
 
     <!-- title -->
     <LinearLayout
-        android:id="@+id/comm_title_rl"
+        android:id="@+id/title_lay"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center_vertical">
@@ -63,7 +63,7 @@
         android:id="@+id/list_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/comm_title_rl">
+        android:layout_below="@id/title_lay">
 
         <RelativeLayout
             android:id="@+id/search_lay"

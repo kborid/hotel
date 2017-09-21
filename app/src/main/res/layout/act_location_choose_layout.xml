@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/comm_title_rl"
+        android:id="@+id/title_lay"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center_vertical">
