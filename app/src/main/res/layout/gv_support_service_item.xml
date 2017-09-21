@@ -42,7 +42,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:ellipsize="end"
             android:gravity="center"
+            android:lines="1"
             android:text="15平米"
             android:textColor="@color/lableColor"
             android:textSize="@dimen/common_12sp" />

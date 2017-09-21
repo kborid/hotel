@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
@@ -392,14 +393,14 @@ public class RegisterActivity extends BaseActivity {
                 }
             } else if (request.flag == AppConst.CENTER_USERINFO) {
                 if (StringUtil.isEmpty(response.body.toString()) || response.body.toString().equals("{}")) {
-                    CustomToast.show("获取用户信息失败，请重试1", 0);
+                    CustomToast.show("获取用户信息失败，请重试", 0);
                     return;
                 }
                 SessionContext.mUser = JSON.parseObject(response.body.toString(), UserInfo.class);
                 LogUtil.i(TAG, response.body.toString());
 
                 if (SessionContext.mUser == null || StringUtil.isEmpty(SessionContext.mUser)) {
-                    CustomToast.show("获取用户信息失败，请重试2", 0);
+                    CustomToast.show("获取用户信息失败，请重试", 0);
                     return;
                 }
 
@@ -410,7 +411,7 @@ public class RegisterActivity extends BaseActivity {
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
                 // SharedPreferenceUtil.getInstance().setString(AppConst.THIRDPARTYBIND, "", false);//置空第三方绑定信息，需要在详情页面重新获取
                 CustomToast.show("登录成功", 0);
-                JPushInterface.setAliasAndTags(this, SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
+                JPushInterface.setAliasAndTags(PRJApplication.getInstance(), SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
                     @Override
                     public void gotResult(int i, String s, Set<String> set) {
                         String result = (i == 0) ? "设置成功" : "设置失败";

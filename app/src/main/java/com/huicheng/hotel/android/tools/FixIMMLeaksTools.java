@@ -101,7 +101,7 @@ public class FixIMMLeaksTools {
         });
     }
 
-    static class ReferenceCleaner
+    private static class ReferenceCleaner
             implements MessageQueue.IdleHandler, View.OnAttachStateChangeListener,
             ViewTreeObserver.OnGlobalFocusChangeListener {
 

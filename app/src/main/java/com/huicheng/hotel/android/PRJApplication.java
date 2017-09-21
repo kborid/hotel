@@ -8,8 +8,8 @@ import android.webkit.WebView;
 
 import com.fm.openinstall.OpenInstall;
 import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.RCSCrashHandler;
 import com.huicheng.hotel.android.common.NetURL;
+import com.huicheng.hotel.android.common.RCSCrashHandler;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.iflytek.cloud.SpeechConstant;
@@ -60,8 +60,8 @@ public class PRJApplication extends Application {
         MobclickAgent.openActivityDurationTrack(false); // 禁止默认的页面统计方式
 
         // JPush
-        JPushInterface.setDebugMode(AppConst.ISDEVELOP); // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this); // 初始化 JPush
+        JPushInterface.setDebugMode(AppConst.ISDEVELOP); // 设置开启日志,发布时请关闭日志
 
         // openInstall
         OpenInstall.init(this);

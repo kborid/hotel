@@ -17,11 +17,9 @@ public class shareURL implements WVJBWebViewClient.WVJBHandler {
 
     /**
      * 构造函数，获取上下文
-     *
-     * @param context
      */
     public shareURL(Context context) {
-        mContext = context;
+        this.mContext = context;
     }
 
     @Override

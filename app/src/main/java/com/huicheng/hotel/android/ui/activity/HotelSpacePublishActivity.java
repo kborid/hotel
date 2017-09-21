@@ -33,6 +33,7 @@ import com.huicheng.hotel.android.net.bean.HotelSpaceTieInfoBean;
 import com.huicheng.hotel.android.ui.adapter.PersonInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -40,7 +41,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.ThumbnailUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.io.File;
 import java.io.IOException;
@@ -131,7 +131,6 @@ public class HotelSpacePublishActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.tv_right:
-                LogUtil.i(TAG, "public button onClick");
                 LogUtil.i(TAG, et_input.getText().toString());
                 requestPublishComment();
                 break;
@@ -240,10 +239,6 @@ public class HotelSpacePublishActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @Override
-    public void preExecute(ResponseData request) {
-
-    }
 
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
@@ -422,7 +417,7 @@ public class HotelSpacePublishActivity extends BaseActivity {
         SpannableString ss = new SpannableString(tmp);
         if (nameStr != null) {
             String[] names = nameStr.split(" ");
-            if (names != null && names.length > 0) {
+            if (names.length > 0) {
                 for (String name : names) {
                     if (name != null && name.trim().length() > 0) {
                         final Bitmap bmp = getNameBitmap(name);

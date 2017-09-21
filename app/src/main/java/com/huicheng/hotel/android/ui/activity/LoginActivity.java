@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
@@ -27,6 +28,7 @@ import com.huicheng.hotel.android.common.pay.wxpay.MD5;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -34,7 +36,6 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -361,14 +362,14 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCan
         } else if (request.flag == AppConst.CENTER_USERINFO) {
             removeProgressDialog();
             if (StringUtil.isEmpty(response.body.toString()) || response.body.toString().equals("{}")) {
-                CustomToast.show("获取用户信息失败，请重试1", 0);
+                CustomToast.show("获取用户信息失败，请重试", 0);
                 return;
             }
             SessionContext.mUser = JSON.parseObject(response.body.toString(), UserInfo.class);
             LogUtil.i(TAG, response.body.toString());
 
             if (SessionContext.mUser == null || StringUtil.isEmpty(SessionContext.mUser)) {
-                CustomToast.show("获取用户信息失败，请重试2", 0);
+                CustomToast.show("获取用户信息失败，请重试", 0);
                 return;
             }
 
@@ -379,7 +380,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCan
             SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
             // SharedPreferenceUtil.getInstance().setString(AppConst.THIRDPARTYBIND, "", false);//置空第三方绑定信息，需要在详情页面重新获取
             CustomToast.show("登录成功", 0);
-            JPushInterface.setAliasAndTags(this, SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
+            JPushInterface.setAliasAndTags(PRJApplication.getInstance(), SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {
                     String result = (i == 0) ? "设置成功" : "设置失败";
@@ -462,6 +463,11 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCan
         super.onDestroy();
         if (mCancelLogin != null) {
             mCancelLogin = null;
+        }
+
+        if (null != mShareAPI) {
+            mShareAPI.release();
+            mShareAPI = null;
         }
     }
 

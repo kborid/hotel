@@ -31,8 +31,11 @@ import com.amap.api.location.AMapLocationListener;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
+import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
+import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.HotelListActivity;
@@ -44,6 +47,9 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.DataCallback;
+import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -53,11 +59,12 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.lang.reflect.Field;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Fragment home
  */
-public class HotelPagerFragment extends BaseFragment implements View.OnClickListener {
+public class HotelPagerFragment extends BaseFragment implements View.OnClickListener, DataCallback {
 
     private static final String TAG = "HotelPagerFragment";
     private static boolean isFirstLoad = false;
@@ -112,7 +119,11 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         if (isFirstLoad) {
             isFirstLoad = false;
         }
-        banner_lay.startBanner();
+        if (SessionContext.getBannerList() == null || SessionContext.getBannerList().size() == 0) {
+            requestMainBannerInfo();
+        } else {
+            banner_lay.startBanner();
+        }
     }
 
     protected void onInvisible() {
@@ -361,6 +372,15 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         }
     }
 
+    private void requestMainBannerInfo() {
+        LogUtil.i(TAG, "requestHotelBanner()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.HOTEL_BANNER;
+        d.flag = AppConst.HOTEL_BANNER;
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -404,5 +424,29 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 tv_date.setText(DateUtil.getDay("M月d日", beginTime) + "-" + DateUtil.getDay("M月d日", endTime));
             }
         }
+    }
+
+    @Override
+    public void preExecute(ResponseData request) {
+
+    }
+
+    @Override
+    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+        if (response != null && response.body != null) {
+            if (request.flag == AppConst.HOTEL_BANNER) {
+                LogUtil.i(TAG, "Hotel Main json = " + response.body.toString());
+                List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
+                SessionContext.setBannerList(temp);
+                if (null != banner_lay) {
+                    banner_lay.setImageResource(temp);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void notifyError(ResponseData request, ResponseData response, Exception e) {
+
     }
 }

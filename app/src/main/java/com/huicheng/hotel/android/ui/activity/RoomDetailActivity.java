@@ -71,6 +71,7 @@ public class RoomDetailActivity extends BaseActivity {
     private static final int SELECTED_BAR_COUNT = 2;
 
     private LinearLayout root_lay;
+    private RelativeLayout banner_lay;
     private ViewPager viewPager;
     private LinearLayout indicator_lay;
     private int positionIndex = 0;
@@ -129,6 +130,11 @@ public class RoomDetailActivity extends BaseActivity {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
         root_lay.setLayoutAnimation(getAnimationController());
+        banner_lay = (RelativeLayout) findViewById(R.id.banner_lay);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        llp.width = Utils.mScreenWidth;
+        llp.height = (int) ((float) llp.width / 15 * 14);
+        banner_lay.setLayoutParams(llp);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
         iv_qtips_active = (ImageView) findViewById(R.id.iv_qtips_active);
@@ -826,7 +832,7 @@ public class RoomDetailActivity extends BaseActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             ImageView imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             loadImage(imageView, R.drawable.def_room_banner, list.get(position), 1080, 1080);
             container.addView(imageView, position);
             return imageView;

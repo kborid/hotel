@@ -893,13 +893,13 @@ public class UserCenterActivity extends BaseActivity {
             } else if (request.flag == AppConst.CENTER_USERINFO) {
                 removeProgressDialog();
                 if (StringUtil.isEmpty(response.body.toString()) || response.body.toString().equals("{}")) {
-                    CustomToast.show("获取用户信息失败，请重试1", 0);
+                    CustomToast.show("获取用户信息失败，请重试", 0);
                     return;
                 }
                 SessionContext.mUser = JSON.parseObject(response.body.toString(), UserInfo.class);
 
                 if (SessionContext.mUser == null || StringUtil.isEmpty(SessionContext.mUser)) {
-                    CustomToast.show("获取用户信息失败，请重试2", 0);
+                    CustomToast.show("获取用户信息失败，请重试", 0);
                     return;
                 }
 

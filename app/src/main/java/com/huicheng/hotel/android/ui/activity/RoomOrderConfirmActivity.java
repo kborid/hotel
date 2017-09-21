@@ -67,7 +67,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     private int finalPrice = 0;
     private boolean isInvoice = false;
     private int invoiceType = 0;
-    private InvoiceDetailInfoBean bean = new InvoiceDetailInfoBean();
+    private InvoiceDetailInfoBean invoiceDetailInfoBean = new InvoiceDetailInfoBean();
     private int hotelId, roomId = -1;
     private StringBuilder serviceIds = new StringBuilder();
     private StringBuilder serviceCounts = new StringBuilder();
@@ -202,7 +202,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime(isYgr)));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime(isYgr)));
         b.addBody("userId", SessionContext.mUser.user.userid);
-        b.addBody("invoice", bean);
+        b.addBody("invoice", invoiceDetailInfoBean);
         b.addBody("arrivalTag", String.valueOf(arrivedValue));
         b.addBody("specialComment", et_content.getText().toString());
 
@@ -266,7 +266,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                 Intent intent = new Intent(this, InvoiceDetailActivity.class);
                 intent.putExtra("isInvoice", isInvoice);
                 intent.putExtra("InvoiceType", invoiceType);
-                intent.putExtra("InvoiceDetail", bean);
+                intent.putExtra("InvoiceDetail", invoiceDetailInfoBean);
                 startActivityForResult(intent, 0x01);
                 break;
             case R.id.tv_submit:
@@ -302,6 +302,8 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        invoiceDetailInfoBean = null;
+        roomServiceMap.clear();
     }
 
     @Override
@@ -317,20 +319,20 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                 if (isInvoice) {
                     invoiceType = data.getExtras().getInt("InvoiceType");
                     if (data.getExtras().get("InvoiceDetail") != null) {
-                        bean = (InvoiceDetailInfoBean) data.getExtras().get("InvoiceDetail");
+                        invoiceDetailInfoBean = (InvoiceDetailInfoBean) data.getExtras().get("InvoiceDetail");
                         tv_invoice_info.setText(invoiceType == 0 ? "普通发票" : "专用发票");
                     } else {
-                        bean = new InvoiceDetailInfoBean();
+                        invoiceDetailInfoBean = new InvoiceDetailInfoBean();
                         tv_invoice_info.setText("不需要发票");
                         isInvoice = false;
                     }
                 } else {
-                    bean = new InvoiceDetailInfoBean();
+                    invoiceDetailInfoBean = new InvoiceDetailInfoBean();
                     tv_invoice_info.setText("不需要发票");
                 }
-                LogUtil.i(TAG, new Gson().toJson(bean));
-                if (bean != null) {
-                    LogUtil.i(TAG, bean.toString());
+                LogUtil.i(TAG, new Gson().toJson(invoiceDetailInfoBean));
+                if (invoiceDetailInfoBean != null) {
+                    LogUtil.i(TAG, invoiceDetailInfoBean.toString());
                 }
             }
         }

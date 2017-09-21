@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -357,6 +359,13 @@ public class RoomListActivity extends BaseActivity {
         tab_day.removeAllViews();
         for (int i = 0; i < hotelDetailInfoBean.roomList.size(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.lv_room_item, null);
+            CardView cardview = (CardView) view.findViewById(R.id.cardview);
+            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            rlp.width = Utils.mScreenWidth - Utils.dip2px(20);
+            rlp.height = (int) ((float) rlp.width / 7 * 2);
+            rlp.setMargins(Utils.dip2px(10), Utils.dip2px(5), Utils.dip2px(10), Utils.dip2px(5));
+            rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
+            cardview.setLayoutParams(rlp);
             LinearLayout content_layout = (LinearLayout) view.findViewById(R.id.content_layout);
             RoundedLeftImageView iv_icon = (RoundedLeftImageView) view.findViewById(R.id.iv_icon);
             TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
@@ -416,6 +425,13 @@ public class RoomListActivity extends BaseActivity {
         tab_clock.removeAllViews();
         for (int i = 0; i < hotelDetailInfoBean.clockRoomList.size(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.lv_room_item, null);
+            CardView cardview = (CardView) view.findViewById(R.id.cardview);
+            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            rlp.width = Utils.mScreenWidth - Utils.dip2px(20);
+            rlp.height = (int) ((float) rlp.width / 7 * 2);
+            rlp.setMargins(Utils.dip2px(10), Utils.dip2px(5), Utils.dip2px(10), Utils.dip2px(5));
+            rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
+            cardview.setLayoutParams(rlp);
             RoundedLeftImageView iv_icon = (RoundedLeftImageView) view.findViewById(R.id.iv_icon);
             TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
             TextView tv_price_note = (TextView) view.findViewById(R.id.tv_price_note);
