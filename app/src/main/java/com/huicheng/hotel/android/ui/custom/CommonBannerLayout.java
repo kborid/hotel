@@ -24,7 +24,8 @@ import java.util.List;
  */
 public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPageChangeListener {
 
-    private static final String TAG = "CommonBannerLayout";
+    private final String TAG = getClass().getSimpleName();
+
     private static final int DELAY_TIME = 5000;
     private Context context;
     private ViewPager viewpager;

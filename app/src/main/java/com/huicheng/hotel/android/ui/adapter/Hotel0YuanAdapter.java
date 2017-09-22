@@ -28,7 +28,7 @@ import java.util.Random;
  * @date 2017/1/12 0012
  */
 public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Hotel0YuanViewHolder> {
-    private static final String TAG = "Hotel0YuanAdapter";
+    private final String TAG = getClass().getSimpleName();
 
     private Context context;
     private List<CouponDetailInfoBean> list;

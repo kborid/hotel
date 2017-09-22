@@ -1,5 +1,7 @@
 package com.prj.sdk.algo;
 
+import com.prj.sdk.util.Base64;
+
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
@@ -8,9 +10,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.prj.sdk.util.Base64;
-import com.prj.sdk.util.LogUtil;
-
 /**
  * 　密码学中的高级加密标准（Advanced Encryption Standard，AES），又称 高级加密标准Rijndael加密法， 是美国联邦政府采用的一种区块加密标准。这个标准用来替代原先的DES，已经被多方分析且广为全世界所使用。
  * 
@@ -18,8 +17,6 @@ import com.prj.sdk.util.LogUtil;
  * 
  */
 public class Aes {
-
-	private static final String	TAG		= Aes.class.getName();
 
 	// 明文 !@#123&*(789
 	public static final String	AES_KEY	= "tEZy+5kxPwR2dVEGy+64PQ==";
@@ -57,12 +54,10 @@ public class Aes {
 	public static byte[] Encrypt(byte[] bSrc, String sKey) {
 		try {
 			if (sKey == null) {
-				LogUtil.d(TAG, "Key为null 或者 Key的长度不是16");
 				return bSrc;
 			}
 			byte[] raw = Base64.decodeToBytes(sKey);
 			if (raw.length != 16) {
-				LogUtil.d(TAG, "Key为null 或者 Key的长度不是16");
 				return bSrc;
 			}
 			SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
@@ -152,12 +147,10 @@ public class Aes {
 
 		try {
 			if (sKey == null) {
-				LogUtil.d(TAG, "Key为null 或者 Key的长度不是16");
 				return bSrc;
 			}
 			byte[] raw = Base64.decodeToBytes(sKey);
 			if (raw.length != 16) {
-				LogUtil.d(TAG, "Key为null 或者 Key的长度不是16");
 				return bSrc;
 			}
 			SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");

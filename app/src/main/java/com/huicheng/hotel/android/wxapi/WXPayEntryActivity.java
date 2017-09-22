@@ -16,7 +16,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
-    private static final String TAG = "WXPayEntryActivity";
+    private final String TAG = getClass().getSimpleName();
 
     private IWXAPI api;
 

@@ -8,7 +8,6 @@ import android.net.Uri;
 
 import com.prj.sdk.app.AppContext;
 import com.prj.sdk.constants.InfoType;
-import com.prj.sdk.util.LogUtil;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -52,7 +51,6 @@ import java.util.Map;
  * @author Liao
  */
 public class HttpClientExecutor {
-    private static final String TAG = HttpClientExecutor.class.getName();
 
     private static final int TIMEOUT = 10000;
     private static final int TIMEOUT_SOCKET = 1000 * 25;
@@ -111,7 +109,7 @@ public class HttpClientExecutor {
 
         // 双向认证
         /*
-		 * KeyStore keyStore = KeyStore.getInstance("PKCS12"); KeyStore trustStore = KeyStore.getInstance("BKS", "BC"); InputStream ksIn =
+         * KeyStore keyStore = KeyStore.getInstance("PKCS12"); KeyStore trustStore = KeyStore.getInstance("BKS", "BC"); InputStream ksIn =
 		 * AppContext.mMainContext.getAssets().open("ubang_custom.p12"); InputStream tsIn =
 		 * AppContext.mMainContext.getAssets().open("ubang_custom_trust.keystore"); try { keyStore.load(ksIn, "654321".toCharArray()); trustStore.load(tsIn,
 		 * "654321".toCharArray()); } finally { try { ksIn.close(); } catch (Exception ignore) {} try { tsIn.close(); } catch (Exception ignore) {} }
@@ -193,8 +191,6 @@ public class HttpClientExecutor {
                 for (NameValuePair mPair : mList) {
                     url += mPair.getName() + "=" + mPair.getValue() + "&";
                 }
-
-                LogUtil.d(TAG, "start request:" + "new path:" + url);
             }
 
             if (InfoType.POST_REQUEST.toString().equals(httpType)) {

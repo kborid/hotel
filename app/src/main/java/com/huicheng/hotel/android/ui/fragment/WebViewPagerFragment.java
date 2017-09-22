@@ -31,7 +31,6 @@ import java.util.HashMap;
  */
 public class WebViewPagerFragment extends BaseFragment {
 
-    private static final String TAG = "WebViewPagerFragment";
     private static final String URL_BLANK = "about:blank";
     private boolean isFirstLoad = false;
 

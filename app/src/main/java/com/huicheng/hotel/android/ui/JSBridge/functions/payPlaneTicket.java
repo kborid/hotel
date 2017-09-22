@@ -35,7 +35,7 @@ import java.net.ConnectException;
  */
 public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
 
-    private static final String TAG = "payPlaneTicket";
+    private final String TAG = getClass().getSimpleName();
     private Context mContext;
     private ProgressDialog mProgressDialog;
     private WVJBWebViewClient.WVJBResponseCallback mCallback;

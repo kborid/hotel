@@ -66,7 +66,6 @@ import java.util.List;
  */
 public class HotelPagerFragment extends BaseFragment implements View.OnClickListener, DataCallback {
 
-    private static final String TAG = "HotelPagerFragment";
     private static boolean isFirstLoad = false;
 
     private CommonBannerLayout banner_lay;
@@ -105,7 +104,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     }
 
     public static Fragment newInstance(String key) {
-        LogUtil.i(TAG, "newInstance()");
         Fragment fragment = new HotelPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putString("key", key);

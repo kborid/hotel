@@ -15,7 +15,7 @@ import com.prj.sdk.util.LogUtil;
  */
 
 public class UnionPayActivity extends Activity {
-    private static final String TAG = "UnionPayActivity";
+    private final String TAG = getClass().getSimpleName();
 
     private String tn;
     private String mServerMode = UnionPayUtil.RELEASE_MODE;

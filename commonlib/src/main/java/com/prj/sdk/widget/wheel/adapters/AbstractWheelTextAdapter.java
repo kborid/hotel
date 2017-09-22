@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
 
 /**
@@ -269,7 +268,6 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
                 text = (TextView) view.findViewById(textResource);
             }
         } catch (ClassCastException e) {
-            LogUtil.e("AbstractWheelAdapter", "You must supply a resource ID for a TextView");
             throw new IllegalStateException(
                     "AbstractWheelAdapter requires the resource ID to be a TextView", e);
         }

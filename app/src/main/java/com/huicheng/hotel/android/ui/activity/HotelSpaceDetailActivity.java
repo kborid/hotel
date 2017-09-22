@@ -68,7 +68,6 @@ import java.util.List;
  */
 public class HotelSpaceDetailActivity extends BaseActivity implements DataCallback {
 
-    private static final String TAG = "HotelSpaceDetailActivity";
     private static final int PAGESIZE = 10;
     private WebView webview = null;
     protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

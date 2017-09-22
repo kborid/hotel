@@ -36,8 +36,6 @@ import java.util.Date;
  */
 public class HotelOrderDetailActivity extends BaseActivity {
 
-    private static final String TAG = "HotelOrderDetailActivity";
-
     private String orderId, orderType;
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
 

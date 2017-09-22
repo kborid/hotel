@@ -37,7 +37,6 @@ import java.util.List;
  * @date 2017/1/17 0017
  */
 public class LocationActivity extends BaseActivity {
-    private static final String TAG = "LocationActivity";
     private MyAdapter adapter;
     private Gallery gallery;
     private CityAreaWheelView wheelView;

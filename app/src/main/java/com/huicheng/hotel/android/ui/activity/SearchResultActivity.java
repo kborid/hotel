@@ -48,7 +48,6 @@ import java.util.List;
 
 public class SearchResultActivity extends BaseActivity {
 
-    private static final String TAG = "SearchResultActivity";
     private static final int PAGE_SIZE = 20;
 
     private EditText et_input;

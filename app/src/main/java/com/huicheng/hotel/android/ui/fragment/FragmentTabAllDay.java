@@ -44,7 +44,6 @@ import java.util.List;
  */
 public class FragmentTabAllDay extends BaseFragment implements DataCallback, HotelListActivity.OnUpdateHotelInfoListener {
 
-    private static final String TAG = "FragmentTagAllDay";
     public static boolean isFirstLoad = false;
     private String key = null;
     private List<HotelInfoBean> list = new ArrayList<>();

@@ -50,8 +50,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 public class Util {
-	
-	private static final String TAG = "SDK_Sample.Util";
+
+    private static final String TAG = "wxpay.Util";
 	
 	public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();

@@ -26,7 +26,7 @@ import java.util.Locale;
  */
 class SimpleMonthView extends View {
 
-    private static final String TAG = "SimpleMonthView";
+    private final String TAG = getClass().getSimpleName();
 
     public static final String VIEW_PARAMS_HEIGHT = "height";
     public static final String VIEW_PARAMS_MONTH = "month";

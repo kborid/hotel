@@ -24,6 +24,7 @@ import com.huicheng.hotel.android.ui.base.BaseFragmentActivity;
 import com.huicheng.hotel.android.ui.custom.CustomBottomNaviBar;
 import com.huicheng.hotel.android.ui.custom.CustomViewPager;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.fragment.HotelPagerFragment;
 import com.huicheng.hotel.android.ui.fragment.WebViewPagerFragment;
 import com.prj.sdk.constants.BroadCastConst;
@@ -34,7 +35,6 @@ import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -47,7 +47,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     public static final String TAB_TRAIN = "tab_train";
     public static final String TAB_TAXI = "tab_taxi";
 
-    private static final String TAG = "MainFragmentActivity";
     private CustomViewPager viewPager;
     private CustomBottomNaviBar custom_bar;
     private DrawerLayout drawer_layout;

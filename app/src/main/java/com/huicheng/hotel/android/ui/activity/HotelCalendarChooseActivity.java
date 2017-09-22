@@ -30,8 +30,6 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
  */
 public class HotelCalendarChooseActivity extends BaseActivity implements CalendarSelectedListener {
 
-    private static final String TAG = "HotelCalendarChooseActivity";
-
     private LinearLayout week_lay;
     private CustomCalendarView calendar_lay;
     private TextView tv_begin;

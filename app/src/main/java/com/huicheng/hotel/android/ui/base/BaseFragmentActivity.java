@@ -15,6 +15,8 @@ import com.squareup.leakcanary.RefWatcher;
  */
 public abstract class BaseFragmentActivity extends AppCompatActivity {
 
+    protected final String TAG = getClass().getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

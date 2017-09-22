@@ -14,7 +14,7 @@ import com.prj.sdk.util.SharedPreferenceUtil;
  * 高德定位
  */
 public class AMapLocationControl {
-    private static final String TAG = "AMapLocationControl";
+    private final String TAG = getClass().getSimpleName();
 
     private AMapLocationClient mAmapLocationClient = null;
     private static AMapLocationControl instance = null;

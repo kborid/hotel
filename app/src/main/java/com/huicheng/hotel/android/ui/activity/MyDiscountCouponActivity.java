@@ -46,8 +46,6 @@ import java.util.List;
  */
 public class MyDiscountCouponActivity extends BaseActivity {
 
-    private static final String TAG = "MyDiscountCouponActivity";
-
     private LinearLayout noDiscountLayout, hasDiscountLayout, active_lay;
     private TextView tv_no_coupon_note, tv_no_coupon_time;
     private TextView tv_summary;

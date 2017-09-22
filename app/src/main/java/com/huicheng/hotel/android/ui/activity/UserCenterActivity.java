@@ -66,8 +66,6 @@ import java.util.Set;
  */
 public class UserCenterActivity extends BaseActivity {
 
-    private static final String TAG = "UserCenterActivity";
-
     private Calendar calendar = Calendar.getInstance();
     private boolean isEdited = false;
     private ScrollView scroll_view;

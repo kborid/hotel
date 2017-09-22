@@ -36,7 +36,6 @@ import java.util.List;
  * @date 2017/1/17 0017
  */
 public class LocationChooseActivity extends BaseActivity {
-    private static final String TAG = "LocationChooseActivity";
 
     private Handler myHandler = new Handler(Looper.getMainLooper()) {
         @Override

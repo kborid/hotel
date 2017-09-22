@@ -16,37 +16,39 @@ import okhttp3.ResponseBody;
  * http请求封装类 增加代理处理 URL验证 超时控制等
  */
 public class OKHttpHelper {
-    private static final String TAG = OKHttpHelper.class.getName();
-
-    private Request request;
-    private Response response;
+    private final String TAG = getClass().getSimpleName();
 
     public OKHttpHelper() {
     }
 
     public byte[] executeHttpRequest(String url, String httpType, Map<String, Object> header, Object mEntity, boolean isForm) {
+        Response response = null;
         ResponseBody mResponseBody = null;
         try {
-            Response response = getResponse(url, httpType, header, mEntity, isForm);
-            mResponseBody = response.isSuccessful() ? response.body() : null;
+            response = getResponse(url, httpType, header, mEntity, isForm);
+            mResponseBody = response != null && response.isSuccessful() ? response.body() : null;
             return mResponseBody != null ? mResponseBody.bytes() : null;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         } finally {
-            if (mResponseBody != null) {
+            if (null != mResponseBody) {
                 mResponseBody.close();
             }
+            if (null != response) {
+                response.close();
+            }
         }
-        return null;
     }
 
-    public Response getResponse(String url, String httpType, Map<String, Object> header, Object mEntity, boolean isForm) {
+    private Response getResponse(String url, String httpType, Map<String, Object> header, Object mEntity, boolean isForm) {
+        Request request = null;
         try {
             if (InfoType.GET_REQUEST.toString().equals(httpType)) {
                 if (mEntity != null) {
                     if (mEntity instanceof JSONObject) {
                         JSONObject mJson = (JSONObject) mEntity;
-                        StringBuffer params = new StringBuffer();
+                        StringBuilder params = new StringBuilder();
                         for (String key : mJson.keySet()) {
                             params.append(key).append("=").append(mJson.getString(key) != null ? mJson.getString(key) : "").append("&");
                         }
@@ -80,29 +82,19 @@ public class OKHttpHelper {
                         } else if (mEntity instanceof byte[]) {
                             byte[] data = (byte[]) mEntity;
                             request = OkHttpClientControl.getInstance().buildPostRequest(url, header, data);
-                        } else if (mEntity == null) {
-                            request = OkHttpClientControl.getInstance().buildPostRequest(url, header, new byte[]{});
                         }
                     }
+                } else {
+                    request = OkHttpClientControl.getInstance().buildPostRequest(url, header, new byte[]{});
                 }
             } else {
-                LogUtil.d(TAG, "warning!!!!!!" + httpType);
+                LogUtil.d(TAG, "warning: not define " + httpType);
             }
 
-            response = OkHttpClientControl.getInstance().sync(request);
-            return response;
+            return OkHttpClientControl.getInstance().sync(request);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
-
-    public Request getRequest() {
-        return request;
-    }
-
-    public Response getResponse() {
-        return response;
-    }
-
 }

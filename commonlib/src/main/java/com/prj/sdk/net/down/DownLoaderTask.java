@@ -21,15 +21,15 @@ import java.net.URLConnection;
 
 /**
  * AsyncTask异步下载任务
- *
- * @author LiaoBo
  */
 public class DownLoaderTask extends AsyncTask<Void, Integer, Long> {
+
+    private final String TAG = getClass().getSimpleName();
+
     public static final int DOWNLOAD_CANCEL = 0;
     public static final int DOWNLOAD_SUCCESS = 1;
     public static final int DOWNLOAD_FAILED = 2;
 
-    private final String TAG = "DownLoaderTask";
     private URL mUrl;
     private File mFile;
     private int mProgress = 0;

@@ -37,7 +37,7 @@ import java.util.Set;
  */
 public class DataLoader {
 
-    private static final String TAG = DataLoader.class.getName();
+    private final String TAG = getClass().getSimpleName();
 
     private static DataLoader mInstance = null;
     private final int mMaxTaskCount = 3;
@@ -312,16 +312,12 @@ public class DataLoader {
 
         private byte[] getDataFromNet() {
             byte[] data = null;
-            try {
-                if (NetworkUtil.isNetworkAvailable()) {
-                    data = mOKHttpHelper.executeHttpRequest(request.path, request.type, request.header, request.data, request.isForm);
-                    if (data == null && request.retry > count) {
-                        count++;
-                        return getDataFromNet();
-                    }
+            if (NetworkUtil.isNetworkAvailable()) {
+                data = mOKHttpHelper.executeHttpRequest(request.path, request.type, request.header, request.data, request.isForm);
+                if (data == null && request.retry > count) {
+                    count++;
+                    return getDataFromNet();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
             return data;
         }

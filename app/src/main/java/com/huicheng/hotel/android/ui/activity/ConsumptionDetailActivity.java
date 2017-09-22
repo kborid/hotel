@@ -30,8 +30,6 @@ import java.util.Calendar;
  */
 public class ConsumptionDetailActivity extends BaseActivity {
 
-    private final String TAG = getClass().getSimpleName();
-
     private LinearLayout root_lay;
     private LinearLayout chart_lay;
     private CustomCirclePieChart pieChart;

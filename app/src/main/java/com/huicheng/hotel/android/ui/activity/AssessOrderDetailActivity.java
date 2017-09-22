@@ -55,8 +55,6 @@ import java.util.Set;
  */
 public class AssessOrderDetailActivity extends BaseActivity {
 
-    private final String TAG = getClass().getSimpleName();
-
     private LinearLayout root_lay;
     private RoundedAllImageView iv_background;
     private TextView tv_hotel_name, tv_time, tv_point, tv_comment;

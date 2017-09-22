@@ -23,7 +23,7 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 public class PayResultReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "PayResultReceiver";
+    private final String TAG = getClass().getSimpleName();
 
     private Context context;
 

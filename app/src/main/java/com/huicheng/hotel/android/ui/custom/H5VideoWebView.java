@@ -32,7 +32,7 @@ public class H5VideoWebView extends WebView {
     private FrameLayout mContentView;
     private FrameLayout mBrowserFrameLayout;
     private FrameLayout mLayout;
-    static final String TAG = "HTML5WebView";
+    private final String TAG = getClass().getSimpleName();
 
     private void init(Context context) {
         mContext = context;

@@ -73,7 +73,7 @@ public class CustomCardStackViewPager extends ViewGroup {
         VERTICAL, HORIZONTAL
     }
 
-    private static final String TAG = "ViewPager";
+    private final String TAG = getClass().getSimpleName();
     private static final boolean DEBUG = false;
 
     private static final boolean USE_CACHE = false;

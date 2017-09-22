@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 
 public class RefreshListView extends ListView implements AbsListView.OnScrollListener {
 
-    private static final String TAG = "RefreshListView";
+    private final String TAG = getClass().getSimpleName();
     private int firstVisibleItemPosition; // 屏幕显示在第一个的item的索引
     private int downY; // 按下时y轴的偏移量
     private int headerViewHeight; // 头布局的高度

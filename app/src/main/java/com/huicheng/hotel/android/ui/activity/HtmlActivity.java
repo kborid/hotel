@@ -39,7 +39,6 @@ import com.prj.sdk.widget.webview.WebChromeClientCompat;
 @SuppressLint("SetJavaScriptEnabled")
 public class HtmlActivity extends BaseActivity implements onCancelLoginListener {
 
-    private static final String TAG = "HtmlActivity";
     private static final String CSS_STYLE = "<style>* {font-size:40px;padding:10px;}</style>";
     private WebView mWebView;
     private CommonLoadingWidget common_loading_widget;

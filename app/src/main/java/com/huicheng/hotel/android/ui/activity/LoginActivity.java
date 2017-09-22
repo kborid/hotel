@@ -53,7 +53,6 @@ import cn.jpush.android.api.TagAliasCallback;
  */
 public class LoginActivity extends BaseActivity implements DialogInterface.OnCancelListener, OnCheckedChangeListener {
 
-    private static final String TAG = "LoginActivity";
     private EditText et_phone, et_pwd;
     private Button btn_login;
     private TextView tv_forget_pwd, tv_reigster;

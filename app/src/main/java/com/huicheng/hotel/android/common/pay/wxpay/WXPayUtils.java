@@ -30,7 +30,7 @@ import java.util.Random;
  * 2、SendPayReq()服务端生成订单信息，app直接支付
  */
 public class WXPayUtils {
-    private final String TAG = "WXpayUtil";
+    private final String TAG = getClass().getSimpleName();
     private Activity mActivity;
     private IWXAPI msgApi;
     private Map<String, String> resultunifiedorder;

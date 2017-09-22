@@ -42,8 +42,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class AssessCommendActivity extends BaseActivity {
 
-    private static final String TAG = "AssessCommendActivity";
-
     private static final int PAGESIZE = 10;
     private int pageIndex = 0;
     private boolean isLoadMore = false;

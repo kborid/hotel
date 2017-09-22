@@ -58,7 +58,6 @@ import java.util.List;
  */
 public class RoomListActivity extends BaseActivity {
 
-    private static final String TAG = "RoomListActivity";
     private static final int SELECTED_BAR_COUNT = 2;
     private LinearLayout root_lay;
 

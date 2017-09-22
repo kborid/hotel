@@ -35,6 +35,7 @@ import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
@@ -45,7 +46,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -59,6 +59,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity implements OnClickListener, DataCallback {
+
+    protected final String TAG = getClass().getSimpleName();
 
     private CustomDialog mDialogVip;
     protected static boolean isHotelVipRefresh = false;

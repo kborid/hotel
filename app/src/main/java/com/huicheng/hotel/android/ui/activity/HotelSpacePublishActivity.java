@@ -52,7 +52,6 @@ import java.util.Map;
  * @date 2017/3/21 0021
  */
 public class HotelSpacePublishActivity extends BaseActivity {
-    private static final String TAG = "HotelSpacePublishActivity";
 
     private TextView tv_left, tv_right, tv_title;
     private ImageView iv_upload_pic, iv_picture;

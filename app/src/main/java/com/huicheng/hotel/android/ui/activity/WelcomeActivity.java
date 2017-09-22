@@ -57,7 +57,6 @@ import java.util.Map;
  */
 public class WelcomeActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener {
 
-    private final String TAG = getClass().getSimpleName();
     private long start = 0; // 记录启动时间
     private Map<Integer, Integer> mTag = new HashMap<>();
 

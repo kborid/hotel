@@ -45,7 +45,7 @@ import static com.huicheng.hotel.android.ui.base.BaseFragment.loadImage;
  */
 public class MySpaceSubCommentAdapter extends BaseAdapter implements DataCallback {
 
-    private static final String TAG = "MySpaceSubCommentAdapter";
+    private final String TAG = getClass().getSimpleName();
     private Context context;
     private List<HotelSpaceTieCommentInfoBean> list = new ArrayList<>();
     private int selectedPosition = 0;

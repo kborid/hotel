@@ -22,7 +22,6 @@ import com.prj.sdk.util.Utils;
  */
 public class PlaneOrderDetailActivity extends BaseActivity {
 
-    private static final String TAG = "PlaneOrderDetailActivity";
 
     private WebView mWebView;
     private CommonLoadingWidget common_loading_widget;

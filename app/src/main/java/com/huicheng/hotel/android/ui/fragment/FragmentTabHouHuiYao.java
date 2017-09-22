@@ -47,7 +47,6 @@ import java.util.List;
  */
 public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, HotelListActivity.OnUpdateHotelInfoListener {
 
-    private static final String TAG = "FragmentTabHouHuiYao";
     private static boolean isFirstLoad = false;
 
     private LinearLayout recommend_lay, other_lay;

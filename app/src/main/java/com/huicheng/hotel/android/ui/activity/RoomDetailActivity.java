@@ -67,7 +67,7 @@ import java.util.Map;
  * @date 2017/1/3 0003
  */
 public class RoomDetailActivity extends BaseActivity {
-    private static final String TAG = "RoomDetailActivity";
+
     private static final int SELECTED_BAR_COUNT = 2;
 
     private LinearLayout root_lay;

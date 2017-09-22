@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImageLoader {
 
-    private static final String TAG = ImageLoader.class.getName();
+    private final String TAG = getClass().getSimpleName();
 
     private static ImageLoader mInstance = null;
     private final int MAX_TASK_LIMIT = 3;

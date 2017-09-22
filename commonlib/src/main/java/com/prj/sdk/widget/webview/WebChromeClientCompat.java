@@ -14,15 +14,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.prj.sdk.util.LogUtil;
-
 /**
  * 扩展WebChromeClient，使其支持JsAlert、选择文件、定位
  * 
  * @author LiaoBo
  */
 public class WebChromeClientCompat extends WebChromeClient {
-	private static final String TAG = "WebChromeClientCompat";
 	private ChooserFileController	mCtrl;
 	private Context					mContext;
 	private TextView				mTitleView;
@@ -39,14 +36,12 @@ public class WebChromeClientCompat extends WebChromeClient {
 
 	@Override
 	public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
-		LogUtil.i(TAG,"onJsPrompt()");
 		return super.onJsPrompt(view, url, message, defaultValue, result);
 	}
 
 	// 提示对话框
 	@Override
 	public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-        LogUtil.i(TAG,"onJsAlert()");
 		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 		builder.setMessage(message);
 		builder.setPositiveButton("OK", new AlertDialog.OnClickListener() {
@@ -63,7 +58,6 @@ public class WebChromeClientCompat extends WebChromeClient {
 	// 带按钮的对话框
 	@Override
 	public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
-        LogUtil.i(TAG,"onJsConfirm()");
 		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 		builder.setTitle("提示");
 		builder.setMessage(message);

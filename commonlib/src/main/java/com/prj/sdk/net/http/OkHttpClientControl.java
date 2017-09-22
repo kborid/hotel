@@ -1,7 +1,6 @@
 package com.prj.sdk.net.http;
 
 import com.alibaba.fastjson.JSONObject;
-import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 
 import java.io.File;
@@ -11,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -22,14 +22,11 @@ import okhttp3.Response;
 
 /**
  * OkHttp 封装类
- *
- * @author LiaoBo
  */
 public class OkHttpClientControl {
-    private static final String TAG = "OkHttpClientControl";
-    private static final int DEFAULT_READ_TIMEOUT_MILLIS = 10 * 1000; // 10s
-    private static final int DEFAULT_WRITE_TIMEOUT_MILLIS = 10 * 1000; // 10s
-    private static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 10 * 1000; // 10s
+    private static final int DEFAULT_READ_TIMEOUT_MILLIS = 20 * 1000; // 20s
+    private static final int DEFAULT_WRITE_TIMEOUT_MILLIS = 20 * 1000; // 20s
+    private static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 20 * 1000; // 20s
 
     private static OkHttpClientControl mInstance;
     private OkHttpClient mOkHttpClient;
@@ -64,14 +61,10 @@ public class OkHttpClientControl {
 
     /**
      * 同步请求
-     *
-     * @param request
-     * @return
      */
     public Response sync(Request request) {
         try {
-            Response response = mOkHttpClient.newCall(request).execute();
-            return response;
+            return mOkHttpClient.newCall(request).execute();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -81,9 +74,10 @@ public class OkHttpClientControl {
     /**
      * 异步请求
      */
-//    public void async(Request request, Callback responseCallback) {
-//        mOkHttpClient.newCall(request).enqueue(responseCallback);
-//    }
+    public void async(Request request, Callback responseCallback) {
+        mOkHttpClient.newCall(request).enqueue(responseCallback);
+    }
+
     private String guessMimeType(String path) {
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
         String contentTypeFor = fileNameMap.getContentTypeFor(path);
@@ -108,8 +102,7 @@ public class OkHttpClientControl {
 
     // ==== 构建 GET 请求====
     public Request buildGetRequest(String url, Map<String, Object> header) {
-        Request request = new Request.Builder().url(url).headers(dealHeaders(header)).get().build();
-        return request;
+        return new Request.Builder().url(url).headers(dealHeaders(header)).get().build();
     }
 
 //    public Response get(String url, Map<String, Object> header) {
@@ -124,7 +117,6 @@ public class OkHttpClientControl {
 
     // ==== 构建 POST 请求====
     public Request buildPostRequest(String url, Map<String, Object> header, String mJson) {
-        LogUtil.i(TAG, "buildPostRequest() json string");
         final MediaType mMediaType = MediaType.parse("application/json; charset=utf-8");
 //        RequestBody requestBody = RequestBody.create(mMediaType, mJson);
         RequestBody requestBody = new FormBody.Builder().add("data", mJson).build();
@@ -132,14 +124,12 @@ public class OkHttpClientControl {
     }
 
     public Request buildPostRequest(String url, Map<String, Object> header, byte[] data) {
-        LogUtil.i(TAG, "buildPostRequest() data byte");
         MediaType mMediaType = MediaType.parse("application/octet-stream; charset=utf-8");
         RequestBody requestBody = RequestBody.create(mMediaType, data);
         return new Request.Builder().url(url).headers(dealHeaders(header)).post(requestBody).build();
     }
 
     public Request buildPostFormRequest(String url, Map<String, Object> header, JSONObject mJson) {
-        LogUtil.i(TAG, "buildPostFormRequest()");
         FormBody.Builder builder = new FormBody.Builder();
         for (String key : mJson.keySet()) {
             if (StringUtil.isEmpty(key) || StringUtil.isEmpty(mJson.getString(key))) {

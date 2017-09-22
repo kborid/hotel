@@ -42,7 +42,6 @@ import java.util.List;
  */
 public class AssessOrdersActivity extends BaseActivity {
 
-    private final String TAG = getClass().getSimpleName();
     private static final int PAGESIZE = 10;
     private int pageIndex = 0;
     private SimpleRefreshListView listview;

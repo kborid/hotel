@@ -52,7 +52,6 @@ import java.util.List;
  * @date 2017/3/20 0020
  */
 public class HotelSpaceHomeActivity extends BaseActivity {
-    private static final String TAG = "HotelSpaceHomeActivity";
     /**
      * 视频全屏参数
      */

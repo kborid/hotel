@@ -45,7 +45,6 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
  */
 public class OrderPayActivity extends BaseActivity {
 
-    private static final String TAG = "OrderPayActivity";
     private PayResultReceiver mPayReceiver = new PayResultReceiver();
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
     private String orderId, orderType;

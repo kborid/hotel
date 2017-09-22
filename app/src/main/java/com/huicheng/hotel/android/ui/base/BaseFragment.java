@@ -26,6 +26,8 @@ import com.umeng.analytics.MobclickAgent;
  * fragment基类，提供公共属性
  */
 public abstract class BaseFragment extends Fragment {
+    protected final String TAG = getClass().getSimpleName();
+
     private ProgressDialog mProgressDialog;
     protected static String requestID;
     protected int mMainColor = R.color.mainColor;

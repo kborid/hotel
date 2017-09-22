@@ -32,7 +32,6 @@ import com.prj.sdk.util.StringUtil;
  */
 public class OrderPaySuccessActivity extends BaseActivity {
 
-    private static final String TAG = "OrderPaySuccessActivity";
     private HotelDetailInfoBean hotelDetailInfoBean;
 
     private LinearLayout root_lay;

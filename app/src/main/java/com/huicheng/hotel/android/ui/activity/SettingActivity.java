@@ -28,7 +28,6 @@ import java.io.File;
  */
 public class SettingActivity extends BaseActivity {
 
-    private final String TAG = getClass().getSimpleName();
     private TextView tv_cache, tv_about, tv_version, tv_assess, tv_layer, tv_secret;
     private TextView tv_cache_size;
 

@@ -39,7 +39,6 @@ import java.io.IOException;
  */
 public class FeedbackActivity extends BaseActivity {
 
-    private final String TAG = getClass().getSimpleName();
     private EditText et_content;
 
     private ImageView iv_picture, iv_screen;

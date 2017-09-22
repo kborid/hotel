@@ -65,8 +65,6 @@ public class HotelMapActivity extends BaseActivity
         implements AMap.OnMarkerClickListener, RouteSearch.OnRouteSearchListener,
         LocationSource, AMapLocationListener {
 
-    private static final String TAG = "HotelMapActivity";
-
     private ImageView iv_zoom_out;
     private ImageView iv_zoom_in;
     private ImageView iv_loc;

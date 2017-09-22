@@ -50,11 +50,12 @@ import java.util.List;
  * @date 2016/12/19 0019
  */
 public class MessageListActivity extends BaseActivity {
-    private static final String TAG = "MessageListActivity";
+
     private static final String MESSAGE_TYPE_ALL = "";
     private static final String MESSAGE_TYPE_UNREAD = "01";
     private static final String MESSAGE_TYPE_READED = "03";
     private static final int PAGESIZE = 10;
+
     private Handler myHandler = new MyHandler(this);
     private TextView tv_subject, tv_content;
     private Spinner spinner_type;

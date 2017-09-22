@@ -21,7 +21,7 @@ import java.util.HashMap;
  */
 public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.ViewHolder> implements SimpleMonthView.OnDayClickListener {
 
-    private static final String TAG = "SimpleMonthAdapter";
+    private final String TAG = getClass().getSimpleName();
 
     protected static final int MONTHS_IN_YEAR = 12;
     private static final int SHOW_MONTHS = 6;

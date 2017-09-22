@@ -40,7 +40,6 @@ import java.util.TimerTask;
  */
 public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelDialog.AreaWheelCallback {
 
-    private final String TAG = getClass().getSimpleName();
     private static final int ROW = 5;
     private static final int UPDATETIMER = 0x01;
     private static final int GAMEOVER = 0x02;

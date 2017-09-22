@@ -45,7 +45,6 @@ import java.io.IOException;
  * @date 2017/1/7 0007
  */
 public class InvoiceDetailActivity extends BaseActivity {
-    private final String TAG = getClass().getSimpleName();
     private static final int SELECTED_BAR_COUNT = 2;
     private Switch btn_switch;
     private LinearLayout invoice_lay;

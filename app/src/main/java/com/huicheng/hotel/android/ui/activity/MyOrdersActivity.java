@@ -52,7 +52,6 @@ import java.util.List;
  */
 public class MyOrdersActivity extends BaseActivity {
 
-    private static final String TAG = "MyOrdersActivity";
     private static final int PAGESIZE = 10;
 
     private SimpleRefreshListView listview;

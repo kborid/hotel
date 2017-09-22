@@ -31,7 +31,7 @@ import com.prj.sdk.util.SharedPreferenceUtil;
  */
 public class CustomConsiderLayout extends RelativeLayout implements View.OnClickListener, RangeSeekBar.OnRangeChangedListener {
 
-    private static final String TAG = "CustomConsiderLayout";
+    private final String TAG = getClass().getSimpleName();
 
     private Context context;
 

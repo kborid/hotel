@@ -13,7 +13,7 @@ import com.prj.sdk.util.LogUtil;
 import cn.jpush.android.api.JPushInterface;
 
 public class JPushReceiver extends BroadcastReceiver {
-    private static final String TAG = "JPush";
+    private final String TAG = getClass().getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {

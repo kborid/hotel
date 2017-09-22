@@ -28,13 +28,13 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
 import com.huicheng.hotel.android.ui.custom.CommonCustomInfoLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +45,6 @@ import java.util.Map;
  */
 public class RoomOrderConfirmActivity extends BaseActivity {
 
-    private static final String TAG = "RoomOrderConfirmActivity";
     private RoomDetailInfoBean roomDetailInfoBean = null;
     //    private List<RoomConfirmInfoBean> roomConfirmList = new ArrayList<>();
     private Map<String, RoomConfirmInfoBean> roomServiceMap = new HashMap<>();

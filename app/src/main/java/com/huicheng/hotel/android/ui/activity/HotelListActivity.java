@@ -46,8 +46,6 @@ import java.util.List;
  */
 public class HotelListActivity extends BaseFragmentActivity implements View.OnClickListener {
 
-    private static final String TAG = "HotelListActivity";
-
     private int index = 0;
     private ImageView btn_back;
     private ImageView btn_right;

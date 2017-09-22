@@ -43,7 +43,6 @@ import java.util.List;
  * @date 2017/2/23 0023
  */
 public class FragmentTabClock extends BaseFragment implements DataCallback, HotelListActivity.OnUpdateHotelInfoListener {
-    private static final String TAG = "FragmentTagClock";
     public static boolean isFirstLoad = false;
     private String key = null;
     private HotelListAdapter adapter = null;

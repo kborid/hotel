@@ -31,6 +31,7 @@ import java.util.Map;
 public class SessionContext {
 
     private static final String TAG = "SessionContext";
+
     public static UserInfo mUser;                // 用户信息
     private static String mTicket;               // 票据信息
     private static AppData mAppdata;             // 推荐信息

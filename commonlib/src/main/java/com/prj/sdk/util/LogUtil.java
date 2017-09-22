@@ -1,5 +1,7 @@
 package com.prj.sdk.util;
 
+import android.util.Log;
+
 import com.prj.sdk.BuildConfig;
 
 /**
@@ -16,35 +18,35 @@ public class LogUtil {
     // 冗余信息输出
     public static void v(String tag, String msg) {
         if (isDebug()) {
-            android.util.Log.v(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.v(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
     // 调试信息输出
     public static void d(String tag, String msg) {
         if (isDebug()) {
-            android.util.Log.d(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.d(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
     // 提示信息输出
     public static void i(String tag, String msg) {
         if (isDebug()) {
-            android.util.Log.i(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.i(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
     // 警告信息输出
     public static void w(String tag, String msg) {
         if (isDebug()) {
-            android.util.Log.w(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.w(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
     // 错误信息输出
     public static void e(String tag, String msg) {
         if (isDebug()) {
-            android.util.Log.e(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.e(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
