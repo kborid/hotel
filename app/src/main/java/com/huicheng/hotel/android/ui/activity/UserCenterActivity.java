@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
@@ -40,6 +41,8 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomRatingBar;
 import com.huicheng.hotel.android.ui.custom.RangeSeekBar;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -48,7 +51,6 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.ThumbnailUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -196,7 +198,13 @@ public class UserCenterActivity extends BaseActivity {
         photo_lay.setLayoutParams(rl);
 
         if (StringUtil.notEmpty(headUrl)) {
-            loadImage(iv_photo, R.drawable.def_photo_bg, headUrl, 800, 800);
+            Glide.with(this)
+                    .load(new CustomReqURLFormatModelImpl(headUrl))
+                    .placeholder(R.drawable.def_photo_bg)
+                    .crossFade()
+                    .centerCrop()
+                    .override(800, 800)
+                    .into(iv_photo);
         } else {
             iv_photo.setBackgroundResource(R.drawable.def_photo_bg);
         }

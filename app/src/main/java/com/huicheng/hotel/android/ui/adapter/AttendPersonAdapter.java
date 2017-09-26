@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.huicheng.hotel.android.ui.base.BaseFragment.loadImage;
 
 
 public class AttendPersonAdapter extends BaseAdapter {
@@ -56,7 +56,13 @@ public class AttendPersonAdapter extends BaseAdapter {
 
         viewHolder.tv_name.setText(mList.get(position).attentusername);
         String url = mList.get(position).attentuserheadphoto;
-        loadImage(viewHolder.iv_photo, R.drawable.def_photo, url, 0, 0);
+        Glide.with(mContext)
+                .load(new CustomReqURLFormatModelImpl(url))
+                .placeholder(R.drawable.def_photo)
+                .crossFade()
+                .centerCrop()
+                .override(150, 150)
+                .into(viewHolder.iv_photo);
 
         return convertView;
     }

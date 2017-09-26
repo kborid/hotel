@@ -101,7 +101,9 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
         super.initParams();
         if (SessionContext.isLogin()) {
             String lastLoginTime = SharedPreferenceUtil.getInstance().getString(AppConst.LAST_LOGIN_DATE, "", false);
+            LogUtil.i(TAG, "lastLoginTime = " + lastLoginTime);
         }
+        left_layout.updateUserInfo();
         oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
         initFragmentView();
     }
@@ -329,8 +331,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                 if (mJson.containsKey("count")) {
                     custom_bar.updateUserMsgBtnStatus(!"0".equals(mJson.getString("count")));
                 }
-                left_layout.updateUserInfo();
-
                 left_layout.updateMsgCount(mJson.getString("count"));
             }
         }

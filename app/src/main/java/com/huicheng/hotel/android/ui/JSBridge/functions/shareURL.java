@@ -5,6 +5,7 @@ import android.content.Context;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.control.IShareResultListener;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient.WVJBResponseCallback;
@@ -31,7 +32,12 @@ public class shareURL implements WVJBWebViewClient.WVJBHandler {
                 web.setTitle(mJson.getString("title"));
                 web.setThumb(new UMImage(mContext, R.drawable.logo));
                 web.setDescription(mJson.getString("description"));
-                ShareControl.getInstance().setUMWebContent(mContext, web, null);
+                ShareControl.getInstance().setUMWebContent(mContext, web, new IShareResultListener() {
+                    @Override
+                    public void onShareResult(boolean isSuccess) {
+                        ShareControl.getInstance().destroy();
+                    }
+                });
                 SHARE_MEDIA media = SHARE_MEDIA.QQ;
                 if (mJson.containsKey("channel")) {
                     switch (mJson.getString("channel")) {

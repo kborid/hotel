@@ -26,6 +26,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -41,6 +42,7 @@ import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
@@ -375,7 +377,13 @@ public class RoomListActivity extends BaseActivity {
             LinearLayout time_lay = (LinearLayout) view.findViewById(R.id.time_lay);
             LinearLayout durning_lay = (LinearLayout) view.findViewById(R.id.durning_lay);
             durning_lay.setVisibility(View.GONE);
-            loadImage(iv_icon, R.drawable.def_room_list, hotelDetailInfoBean.roomList.get(i).picPath, 800, 480);
+            Glide.with(this)
+                    .load(new CustomReqURLFormatModelImpl(hotelDetailInfoBean.roomList.get(i).picPath))
+                    .placeholder(R.drawable.def_room_list)
+                    .crossFade()
+                    .centerCrop()
+                    .override(350, 200)
+                    .into(iv_icon);
             tv_title.setText(hotelDetailInfoBean.roomList.get(i).name);
 
             if (HotelCommDef.YEGUIREN.equals(key)) {
@@ -440,7 +448,13 @@ public class RoomListActivity extends BaseActivity {
             clock_lay.setVisibility(View.VISIBLE);
             TextView tv_time = (TextView) view.findViewById(R.id.tv_time);
             TextView tv_during = (TextView) view.findViewById(R.id.tv_during);
-            loadImage(iv_icon, R.drawable.def_room_list, hotelDetailInfoBean.clockRoomList.get(i).picPath, 800, 480);
+            Glide.with(this)
+                    .load(new CustomReqURLFormatModelImpl(hotelDetailInfoBean.clockRoomList.get(i).picPath))
+                    .placeholder(R.drawable.def_room_list)
+                    .crossFade()
+                    .centerCrop()
+                    .override(350, 200)
+                    .into(iv_icon);
             tv_title.setText(hotelDetailInfoBean.clockRoomList.get(i).name);
             tv_price_note.setText(hotelDetailInfoBean.clockRoomList.get(i).priceType + "：");
             tv_price.setText(hotelDetailInfoBean.clockRoomList.get(i).clockPrice + "元");
@@ -742,7 +756,13 @@ public class RoomListActivity extends BaseActivity {
             }
             final View view = LayoutInflater.from(context).inflate(R.layout.room_banner_item, null);
             final RoundedAllImageView iv_background = (RoundedAllImageView) view.findViewById(R.id.iv_background);
-            loadImage(iv_background, R.drawable.def_hotel_banner, list.get(position), 800, 800);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(list.get(position)))
+                    .placeholder(R.drawable.def_hotel_banner)
+                    .crossFade()
+                    .centerCrop()
+                    .override(650, 400)
+                    .into(iv_background);
             //如果View已经在之前添加到了一个父组件，则必须先remove，否则会抛出IllegalStateException。
             ViewParent vp = view.getParent();
             if (vp != null) {
@@ -830,7 +850,13 @@ public class RoomListActivity extends BaseActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            loadImage(viewHolder.iv_icon, R.drawable.def_room_list, list.get(position).picPath, 800, 480);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(list.get(position).picPath))
+                    .placeholder(R.drawable.def_room_list)
+                    .crossFade()
+                    .centerCrop()
+                    .override(350, 200)
+                    .into(viewHolder.iv_icon);
             viewHolder.tv_title.setText(list.get(position).name);
             viewHolder.tv_price_note.setText(list.get(position).priceType + "：");
             viewHolder.tv_price.setText(list.get(position).price + "元");

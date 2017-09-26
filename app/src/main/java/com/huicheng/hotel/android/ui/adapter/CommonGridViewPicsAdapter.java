@@ -1,17 +1,15 @@
 package com.huicheng.hotel.android.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
-import com.prj.sdk.net.image.ImageLoader;
-import com.prj.sdk.net.image.ImageLoader.ImageCallback;
-import com.prj.sdk.util.StringUtil;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.util.Utils;
 
 import java.util.List;
@@ -72,24 +70,14 @@ public class CommonGridViewPicsAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        setImgView(viewHolder.imageView, tempUrl);
+        Glide.with(mContext)
+                .load(new CustomReqURLFormatModelImpl(tempUrl))
+                .placeholder(R.color.hintColor)
+                .crossFade()
+                .centerCrop()
+                .override(500, 500)
+                .into(viewHolder.imageView);
 
         return convertView;
-    }
-
-    private void setImgView(final ImageView view, String url) {
-        if (StringUtil.isEmpty(url)) {
-            return;
-        }
-        view.setImageResource(R.color.hintColor);
-        ImageLoader.getInstance().loadBitmap(new ImageCallback() {
-            @Override
-            public void imageCallback(Bitmap bm, String url, String imageTag) {
-                if (bm != null) {
-                    view.setImageBitmap(bm);
-                }
-            }
-
-        }, url, url, 1000, 1000, -1);
     }
 }

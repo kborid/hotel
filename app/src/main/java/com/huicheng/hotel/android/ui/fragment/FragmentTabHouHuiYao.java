@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -28,6 +29,8 @@ import com.huicheng.hotel.android.ui.activity.HouHuiYaoOrderDetailActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
@@ -35,7 +38,6 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -315,7 +317,13 @@ public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, 
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            loadImage(viewHolder.iv_hotel_icon, R.drawable.def_hhy, list.get(position).picpath, 690, 500);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(list.get(position).picpath))
+                    .placeholder(R.drawable.def_hhy)
+                    .crossFade()
+                    .centerCrop()
+                    .override(350, 200)
+                    .into(viewHolder.iv_hotel_icon);
             viewHolder.tv_hotel_name.setText(list.get(position).hotelname);
             float point = 0;
             if (StringUtil.notEmpty(list.get(position).grade)) {

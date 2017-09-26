@@ -305,6 +305,17 @@ public class Utils {
     }
 
     /*
+     * 将URL地址中的协议转小写
+     */
+    public static String covertProtocol2Lower(String url) {
+        if (StringUtil.notEmpty(url) && !url.startsWith("http")) {
+            String tmp = url.substring(0, url.indexOf("://"));
+            url = url.replace(tmp, tmp.toLowerCase());
+        }
+        return url;
+    }
+
+    /*
      * 提取url中的参数
      */
     public static String getParameter(String url, String name) {

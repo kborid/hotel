@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.ui.activity.HtmlActivity;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.util.StringUtil;
 
 import java.util.List;
-
-import static com.huicheng.hotel.android.ui.base.BaseFragment.loadImage;
 
 public class BannerImageAdapter extends PagerAdapter {
 
@@ -47,7 +47,11 @@ public class BannerImageAdapter extends PagerAdapter {
         ImageView view = new ImageView(context);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         view.setScaleType(ImageView.ScaleType.FIT_XY);
-        loadImage(view, bean.url, 1024, 768);
+        Glide.with(context)
+                .load(new CustomReqURLFormatModelImpl(bean.url))
+                .crossFade()
+                .override(750, 480)
+                .into(view);
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override

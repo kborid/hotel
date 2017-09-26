@@ -32,7 +32,7 @@
                 android:id="@+id/tv_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/searchHintColor"
+                android:textColor="@color/secColor"
                 android:textSize="@dimen/common_12sp" />
         </LinearLayout>
 
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lines="5"
-                android:textColor="@color/searchHintColor"
+                android:textColor="@color/secColor"
                 android:textSize="@dimen/common_12sp" />
         </LinearLayout>
     </LinearLayout>

@@ -11,12 +11,12 @@ import android.view.ViewParent;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.util.Utils;
 
 import java.util.List;
-
-import static com.huicheng.hotel.android.ui.base.BaseFragment.loadImage;
 
 /**
  * @author kborid
@@ -127,7 +127,12 @@ public class CustomNoAutoScrollBannerLayout extends RelativeLayout implements Vi
 
             View view = LayoutInflater.from(context).inflate(R.layout.vp_custom_banner_item, null);
             RoundedTopImageView iv_bg = (RoundedTopImageView) view.findViewById(R.id.iv_bg);
-            loadImage(iv_bg, list.get(position), 800, 400);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(list.get(position)))
+                    .crossFade()
+                    .centerCrop()
+                    .override(680, 500)
+                    .into(iv_bg);
 
             //如果View已经在之前添加到了一个父组件，则必须先remove，否则会抛出IllegalStateException。
             ViewParent vp = view.getParent();

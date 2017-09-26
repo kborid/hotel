@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -20,6 +21,7 @@ import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
@@ -99,6 +101,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
 
     private void refreshHotelInfo() {
         if (null != hotelDetailInfoBean) {
+            root_lay.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isPopup) {
                 btn_vip.setVisibility(View.VISIBLE);
             } else {
@@ -113,14 +116,17 @@ public class OrderPaySuccessActivity extends BaseActivity {
                 tv_in_date.setVisibility(View.GONE);
             }
             tv_hotel_name_big.setText(hotelDetailInfoBean.name);
-            String pic0Url = "";
             if (hotelDetailInfoBean.picPath != null
                     && hotelDetailInfoBean.picPath.size() > 0) {
-                pic0Url = hotelDetailInfoBean.picPath.get(0);
+                String pic = hotelDetailInfoBean.picPath.get(0);
+                Glide.with(this)
+                        .load(new CustomReqURLFormatModelImpl(pic))
+                        .placeholder(R.drawable.def_hotel_banner)
+                        .crossFade()
+                        .centerCrop()
+                        .override(650, 480)
+                        .into(iv_hotel_icon);
             }
-            loadImage(iv_hotel_icon, pic0Url, 800, 800);
-
-            root_lay.setVisibility(View.VISIBLE);
         }
         if (isPrePaySuccess && showTipsOrNot) {
             String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
@@ -214,11 +220,6 @@ public class OrderPaySuccessActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void preExecute(ResponseData request) {
-
     }
 
     @Override

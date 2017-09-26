@@ -20,6 +20,7 @@ import android.widget.Switch;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
@@ -28,6 +29,8 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.InvoiceDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -35,7 +38,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.ThumbnailUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.io.File;
 import java.io.IOException;
@@ -169,12 +171,36 @@ public class InvoiceDetailActivity extends BaseActivity {
                     et_bank_access.setText(bean.bankAccount);
                     if (StringUtil.notEmpty(bean.thirdCommonPicPath)) {
                         rg_lay.check(R.id.rb_one);
-                        loadImage(iv_thirdCommon, R.drawable.def_invoice, bean.thirdCommonPicPath, 200, 120);
+                        Glide.with(this)
+                                .load(new CustomReqURLFormatModelImpl(bean.thirdCommonPicPath))
+                                .placeholder(R.drawable.def_invoice)
+                                .crossFade()
+                                .fitCenter()
+                                .override(200, 200)
+                                .into(iv_thirdCommon);
                     } else {
                         rg_lay.check(R.id.rb_three);
-                        loadImage(iv_businessLicense, R.drawable.def_invoice, bean.businessLicensePicPath, 200, 120);
-                        loadImage(iv_taxpayerIdentify, R.drawable.def_invoice, bean.taxpayerIdentifyPicPath, 200, 120);
-                        loadImage(iv_taxRegistration, R.drawable.def_invoice, bean.taxRegistrationPicPath, 200, 120);
+                        Glide.with(this)
+                                .load(new CustomReqURLFormatModelImpl(bean.businessLicensePicPath))
+                                .placeholder(R.drawable.def_invoice)
+                                .crossFade()
+                                .fitCenter()
+                                .override(200, 200)
+                                .into(iv_businessLicense);
+                        Glide.with(this)
+                                .load(new CustomReqURLFormatModelImpl(bean.taxpayerIdentifyPicPath))
+                                .placeholder(R.drawable.def_invoice)
+                                .crossFade()
+                                .fitCenter()
+                                .override(200, 200)
+                                .into(iv_taxpayerIdentify);
+                        Glide.with(this)
+                                .load(new CustomReqURLFormatModelImpl(bean.taxRegistrationPicPath))
+                                .placeholder(R.drawable.def_invoice)
+                                .crossFade()
+                                .fitCenter()
+                                .override(200, 200)
+                                .into(iv_taxRegistration);
                     }
                 }
             }

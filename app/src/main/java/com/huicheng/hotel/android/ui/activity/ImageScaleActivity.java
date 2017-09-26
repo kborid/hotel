@@ -12,11 +12,14 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.SmoothImageView;
-import com.prj.sdk.net.image.ImageLoader;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 
 /**
  * @author kborid
@@ -77,18 +80,28 @@ public class ImageScaleActivity extends BaseActivity {
         isTransating = true;
         iv_picture.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         iv_picture.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        iv_picture.setImageResource(R.color.transparent);
+        Glide.with(this)
+                .load(new CustomReqURLFormatModelImpl(mUrl))
+                .asBitmap()
+                .thumbnail(0.1f)
+                .fitCenter()
+                .listener(new RequestListener<CustomReqURLFormatModelImpl, Bitmap>() {
+                    @Override
+                    public boolean onException(Exception e, CustomReqURLFormatModelImpl model, Target<Bitmap> target, boolean isFirstResource) {
+                        isError = true;
+                        CustomToast.show("图片获取失败", CustomToast.LENGTH_SHORT);
+                        return false;
+                    }
 
-        ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
-            @Override
-            public void imageCallback(Bitmap bm, String url, String imageTag) {
-                if (null != bm) {
-                    iv_picture.setImageBitmap(bm);
-                } else {
-                    isError = true;
-                    CustomToast.show("图片获取失败", CustomToast.LENGTH_SHORT);
-                }
-            }
-        }, mUrl);
+                    @Override
+                    public boolean onResourceReady(Bitmap bm, CustomReqURLFormatModelImpl model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        iv_picture.setImageBitmap(bm);
+                        return false;
+                    }
+                })
+                .override(1080, 1920)
+                .into(iv_picture);
     }
 
     @Override

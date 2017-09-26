@@ -24,14 +24,17 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.control.IShareResultListener;
+import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceBasicInfoBean;
@@ -44,15 +47,15 @@ import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.FullscreenHolder;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
@@ -324,15 +327,22 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                 params.put("channel", HotelCommDef.SHARE_TIE);
                 String url = SessionContext.getUrl(NetURL.SHARE, params);
 
-                UMWeb web = new UMWeb(url);
+                final UMWeb web = new UMWeb(url);
                 web.setTitle(hotelSpaceTieInfoBean.hotelName + "的空间");
-                Bitmap thumbBM;
-                if (ImageLoader.getInstance().getCacheBitmap(hotelSpaceBasicInfoBean.pic) != null) {
-                    thumbBM = ImageLoader.getInstance().getCacheBitmap(hotelSpaceBasicInfoBean.pic);
-                } else {
-                    thumbBM = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
-                }
-                web.setThumb(new UMImage(this, thumbBM));
+                Glide.with(this)
+                        .load(new CustomReqURLFormatModelImpl(hotelSpaceBasicInfoBean.pic))
+                        .asBitmap()
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                if (null != resource) {
+                                    web.setThumb(new UMImage(HotelSpaceDetailActivity.this, resource));
+                                } else {
+                                    web.setThumb(new UMImage(HotelSpaceDetailActivity.this, BitmapFactory.decodeResource(getResources(), R.drawable.logo)));
+                                }
+                            }
+                        });
+
                 web.setDescription(hotelSpaceTieInfoBean.content);
 
                 ShareControl.getInstance().setUMWebContent(this, web, new IShareResultListener() {
@@ -517,11 +527,12 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (webview != null) {
             webview.stopLoading();
             webview = null;
         }
-        super.onDestroy();
+        ShareControl.getInstance().destroy();
     }
 
     @Override

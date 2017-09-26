@@ -25,6 +25,9 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -43,9 +46,9 @@ import com.huicheng.hotel.android.ui.custom.CustomNoAutoScrollBannerLayout;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -533,15 +536,21 @@ public class RoomDetailActivity extends BaseActivity {
                 params.put("channel", HotelCommDef.SHARE_ROOM);
                 String url = SessionContext.getUrl(NetURL.SHARE, params);
 
-                UMWeb web = new UMWeb(url);
+                final UMWeb web = new UMWeb(url);
                 web.setTitle(roomDetailInfoBean.hotelName + " " + roomDetailInfoBean.roomName);
-                Bitmap thumbBM;
-                if (ImageLoader.getInstance().getCacheBitmap(roomDetailInfoBean.picList.get(0)) != null) {
-                    thumbBM = ImageLoader.getInstance().getCacheBitmap(roomDetailInfoBean.picList.get(0));
-                } else {
-                    thumbBM = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
-                }
-                web.setThumb(new UMImage(this, thumbBM));
+                Glide.with(this)
+                        .load(new CustomReqURLFormatModelImpl(roomDetailInfoBean.picList.get(0)))
+                        .asBitmap()
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                if (null != resource) {
+                                    web.setThumb(new UMImage(RoomDetailActivity.this, resource));
+                                } else {
+                                    web.setThumb(new UMImage(RoomDetailActivity.this, BitmapFactory.decodeResource(getResources(), R.drawable.logo)));
+                                }
+                            }
+                        });
                 web.setDescription(tv_date.getText().toString() + " " + tv_during.getText().toString() + "\n共计：" + tv_price.getText().toString());
                 ShareControl.getInstance().setUMWebContent(this, web, null);
                 showSharePopupWindow();
@@ -784,6 +793,7 @@ public class RoomDetailActivity extends BaseActivity {
             tabHost.clearAllTabs();
             tabHost = null;
         }
+        ShareControl.getInstance().destroy();
     }
 
     @Override
@@ -832,8 +842,13 @@ public class RoomDetailActivity extends BaseActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             ImageView imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            loadImage(imageView, R.drawable.def_room_banner, list.get(position), 1080, 1080);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(list.get(position)))
+                    .placeholder(R.drawable.def_room_banner)
+                    .crossFade()
+                    .centerCrop()
+                    .override(750, 700)
+                    .into(imageView);
             container.addView(imageView, position);
             return imageView;
         }
@@ -893,7 +908,11 @@ public class RoomDetailActivity extends BaseActivity {
 
             String name = list.get(position).name;
             holder.tv_name.setText(name);
-            loadImage(holder.iv_icon, getResources().getColor(R.color.transparent), list.get(position).iconUrl, 80, 48);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(list.get(position).iconUrl))
+                    .asBitmap()
+                    .override(60, 60)
+                    .into(holder.iv_icon);
             String count = list.get(position).count;
             if (StringUtil.isEmpty(count) || "0".equals(count)) {
                 holder.tv_count.setVisibility(View.GONE);

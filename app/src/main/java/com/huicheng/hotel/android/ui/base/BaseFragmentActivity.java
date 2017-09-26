@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
+import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.squareup.leakcanary.RefWatcher;
@@ -33,6 +34,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
         super.onDestroy();
         RefWatcher refWatcher = PRJApplication.getRefWatcher(this);
         refWatcher.watch(this);
+        DataLoader.getInstance().clearRequests();
         ActivityTack.getInstanse().removeActivity(this);
     }
 

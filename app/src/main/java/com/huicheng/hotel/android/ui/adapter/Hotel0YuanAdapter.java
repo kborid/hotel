@@ -1,8 +1,9 @@
 package com.huicheng.hotel.android.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseArray;
@@ -12,11 +13,12 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.net.bean.CouponDetailInfoBean;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
-import com.prj.sdk.net.image.ImageLoader;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
         return hotel0YuanViewHolder;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final Hotel0YuanViewHolder holder, final int position) {
         // 随机left margin, 模拟瀑布效果.
@@ -70,14 +73,13 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
         holder.root_view.setLayoutParams(lp);
 
         String url = list.get(position).picPath;
-        ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
-            @Override
-            public void imageCallback(Bitmap bm, String url, String imageTag) {
-                if (null != bm) {
-                    holder.iv_hotel_bg.setImageBitmap(bm);
-                }
-            }
-        }, url, url, 400, 240, -1);
+        Glide.with(context)
+                .load(new CustomReqURLFormatModelImpl(url))
+                .placeholder(R.drawable.def_photo)
+                .crossFade()
+                .centerCrop()
+                .override(400, 240)
+                .into(holder.iv_hotel_bg);
 
         GradientDrawable gd = null;
         if (HotelCommDef.COUPON_HAVE.equals(list.get(position).emptyMark)) {
@@ -128,9 +130,11 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
     }
 
     private OnItemClickListeners listener = null;
+
     public interface OnItemClickListeners {
         void OnItemClick(View v, int index);
     }
+
     public void setOnItemClickListener(OnItemClickListeners listener) {
         this.listener = listener;
     }

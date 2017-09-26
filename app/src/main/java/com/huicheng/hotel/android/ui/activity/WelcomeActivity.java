@@ -34,6 +34,7 @@ import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.algo.MD5Tool;
 import com.prj.sdk.constants.InfoType;
 import com.prj.sdk.net.bean.ResponseData;
@@ -45,7 +46,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.io.File;
 import java.util.HashMap;
@@ -89,6 +89,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             requestGDTInterface();
         }
+//        requestGDTIFTest();
 
         new Thread() {
             @Override
@@ -141,6 +142,16 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.APP_INFO;
         d.flag = AppConst.APP_INFO;
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
+    private void requestGDTIFTest() {
+        LogUtil.i(TAG, "requestGDTIFTest()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        ResponseData d = b.syncRequest(b);
+        d.path = "http://dev.abcbooking.cn:8081/hmp-website/widePointAd/conversion.json?muid=8dbc9132874f22049976252bf08b8da9";
+        d.flag = 0x01;
+        d.type = InfoType.GET_REQUEST.toString();
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -261,6 +272,8 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 LogUtil.i(TAG, "Hotel Main json = " + response.body.toString());
                 List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
                 SessionContext.setBannerList(temp);
+            } else if (request.flag == 0x01) {
+                System.out.println("json = " + response.body.toString());
             }
 
             if (mTag != null && mTag.size() == 2) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -38,9 +39,8 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_vertical"
-                    android:scaleType="fitXY"
                     android:src="@drawable/def_order_confirm"
-                    roundImage:radius="10dp" />
+                    roundImage:radius="5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -53,9 +53,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical|right"
-                        android:text="8月26日-27日 2晚"
                         android:textColor="#666666"
-                        android:textSize="@dimen/common_18sp" />
+                        android:textSize="@dimen/common_18sp"
+                        tools:text="8月26日-27日 2晚" />
 
                     <LinearLayout
                         android:id="@+id/choose_service_lay"
@@ -69,9 +69,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center_vertical|right"
-                        android:text="1150元"
                         android:textColor="?attr/indicatorColor"
-                        android:textSize="30sp" />
+                        android:textSize="30sp"
+                        tools:text="1150元" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -318,9 +318,9 @@
                     android:layout_marginLeft="15dp"
                     android:paddingBottom="33dp"
                     android:paddingTop="33dp"
-                    android:text="1150元"
                     android:textColor="?attr/indicatorColor"
-                    android:textSize="30dp" />
+                    android:textSize="30dp"
+                    tools:text="1150元" />
 
                 <RelativeLayout
                     android:layout_width="0dp"

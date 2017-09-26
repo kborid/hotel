@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -28,6 +29,8 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomRatingBar;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -36,7 +39,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.ThumbnailUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -171,7 +173,13 @@ public class AssessOrderDetailActivity extends BaseActivity {
         if (orderDetailBean != null && hotelDetailBean != null) {
             if (hotelDetailBean.picPath != null) {
                 iv_background.setVisibility(View.VISIBLE);
-                loadImage(iv_background, R.drawable.def_hotel_banner, hotelDetailBean.picPath.get(0), 1920, 1080);
+                Glide.with(this)
+                        .load(new CustomReqURLFormatModelImpl(hotelDetailBean.picPath.get(0)))
+                        .placeholder(R.drawable.def_hotel_banner)
+                        .crossFade()
+                        .centerCrop()
+                        .override(650, 480)
+                        .into(iv_background);
             } else {
                 iv_background.setVisibility(View.GONE);
             }
@@ -188,7 +196,13 @@ public class AssessOrderDetailActivity extends BaseActivity {
                 et_content.setEnabled(false);
                 if (StringUtil.notEmpty(orderDetailBean.imgUrl)) {
                     iv_picture.setVisibility(View.VISIBLE);
-                    loadImage(iv_picture, orderDetailBean.imgUrl, 800, 600);
+                    Glide.with(this)
+                            .load(new CustomReqURLFormatModelImpl(orderDetailBean.imgUrl))
+                            .placeholder(R.color.hintColor)
+                            .crossFade()
+                            .fitCenter()
+                            .override(800, 800)
+                            .into(iv_picture);
                 } else {
                     iv_picture.setVisibility(View.GONE);
                 }

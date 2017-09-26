@@ -25,6 +25,7 @@ import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.bean.HotelInfoBean;
 import com.huicheng.hotel.android.ui.custom.RoundedTopImageView;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.huicheng.hotel.android.ui.mapoverlay.AMapUtil;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -75,12 +76,11 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
         HotelInfoBean bean = list.get(position);
         holder.tv_hotel_name.setText(bean.hotelName);
-//        loadImage(holder.iv_hotel_icon, R.drawable.def_hotel_list, bean.hotelFeaturePic, 690, 500);
         Glide.with(context)
-                .load(bean.hotelFeaturePic)
+                .load(new CustomReqURLFormatModelImpl(bean.hotelFeaturePic))
                 .placeholder(R.drawable.def_hotel_list)
-                .error(R.drawable.def_hotel_list)
                 .crossFade()
+                .centerCrop()
                 .into(holder.iv_hotel_icon);
 
         // 是否显示vip价格

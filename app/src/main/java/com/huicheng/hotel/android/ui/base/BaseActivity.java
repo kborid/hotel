@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.base;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
@@ -37,10 +37,10 @@ import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -106,7 +106,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         FixIMMLeaksTools.fixFocusedViewLeak(PRJApplication.getInstance());
         RefWatcher refWatcher = PRJApplication.getRefWatcher(this);
         refWatcher.watch(this);
-        DataLoader.getInstance().clear(requestID);
+        DataLoader.getInstance().clearRequests();
         ActivityTack.getInstanse().removeActivity(this);
     }
 
@@ -184,30 +184,6 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         }
     }
 
-    public void loadImage(final ImageView view, String url, int width, int height) {
-        loadImage(view, -1, url, width, height);
-    }
-
-    public void loadImage(final ImageView view, int defId, String url, int width, int height) {
-        int resId = R.color.hintColor;
-        if (defId != -1) {
-            resId = defId;
-        }
-        view.setImageResource(resId);
-
-        if (StringUtil.notEmpty(url)) {
-            ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
-                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                @Override
-                public void imageCallback(Bitmap bm, String url, String imageTag) {
-                    if (null != bm) {
-                        view.setImageBitmap(bm);
-                    }
-                }
-            }, url, url, width, height, -1);
-        }
-    }
-
     /**
      * 隐藏虚拟按键，并且全屏
      */
@@ -261,7 +237,13 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         {
             //VIP Home Layout
             ImageView iv_hotel_bg = (ImageView) viewHome.findViewById(R.id.iv_hotel_bg);
-            loadImage(iv_hotel_bg, R.drawable.def_hotel_banner, hotelDetailInfoBean.picPath.get(0), 800, 800);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(hotelDetailInfoBean.picPath.get(0)))
+                    .placeholder(R.drawable.def_hotel_banner)
+                    .crossFade()
+                    .centerCrop()
+                    .override(500, 700)
+                    .into(iv_hotel_bg);
 
             TextView tv_vip_name = (TextView) viewHome.findViewById(R.id.tv_vip_name);
             tv_vip_name.getPaint().setFakeBoldText(true);

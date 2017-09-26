@@ -127,8 +127,9 @@
             android:name=".ui.activity.DebugInfoActivity"
             android:screenOrientation="portrait" />
         <!--环境切换-->
-        <activity android:name=".ui.activity.DebugChangeEnvActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.DebugChangeEnvActivity"
+            android:screenOrientation="portrait" />
         <!--设置-->
         <activity
             android:name=".ui.activity.SettingActivity"
@@ -349,6 +350,10 @@
             </intent-filter>
         </receiver>
 
+        <meta-data
+            android:name="com.huicheng.hotel.android.ui.glide.GlideModuleConfig"
+            android:value="GlideModule" />
+
         <!--open installed-->
         <meta-data
             android:name="com.openinstall.APP_KEY"
@@ -368,7 +373,6 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Develop_Test" />
-
 
     </application>
     <!--地图包、搜索包需要的基础权限-->

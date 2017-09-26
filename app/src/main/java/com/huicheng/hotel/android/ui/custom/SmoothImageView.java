@@ -40,18 +40,23 @@ public class SmoothImageView extends android.support.v7.widget.AppCompatImageVie
     private int mBgAlpha = 0;
     private Paint mPaint;
 
+    private Context mContext;
+
     public SmoothImageView(Context context) {
         super(context);
+        mContext = context;
         init();
     }
 
     public SmoothImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
         init();
     }
 
     public SmoothImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        mContext = context;
         init();
     }
 
@@ -69,7 +74,7 @@ public class SmoothImageView extends android.support.v7.widget.AppCompatImageVie
         mOriginalLocationX = locationX;
         mOriginalLocationY = locationY;
         // 因为是屏幕坐标，所以要转换为该视图内的坐标，因为我所用的该视图是MATCH_PARENT，所以不用定位该视图的位置,如果不是的话，还需要定位视图的位置，然后计算mOriginalLocationX和mOriginalLocationY
-        mOriginalLocationY = mOriginalLocationY - getStatusBarHeight(getContext());
+        mOriginalLocationY = mOriginalLocationY - getStatusBarHeight(mContext);
     }
 
     /**
@@ -339,7 +344,7 @@ public class SmoothImageView extends android.support.v7.widget.AppCompatImageVie
                 mTransfrom.rect.height = (Float) animation.getAnimatedValue("height");
                 mBgAlpha = (Integer) animation.getAnimatedValue("alpha");
                 invalidate();
-                ((Activity) getContext()).getWindow().getDecorView().invalidate();
+                ((Activity) mContext).getWindow().getDecorView().invalidate();
             }
         });
         valueAnimator.addListener(new ValueAnimator.AnimatorListener() {

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
@@ -25,6 +26,7 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomCardStackViewPager;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.VerticalStackTransformer;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.Utils;
@@ -218,7 +220,12 @@ public class FansHotelActivity extends BaseActivity {
             final TextView tv_loc = (TextView) view.findViewById(R.id.tv_loc);
             final TextView tv_order = (TextView) view.findViewById(R.id.tv_order);
             tv_order.getPaint().setFakeBoldText(true);
-            loadImage(iv_background, R.drawable.def_fans, bean.featurePicPath, 750, 1050);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(bean.featurePicPath))
+                    .placeholder(R.drawable.def_fans)
+                    .crossFade()
+                    .override(500, 700)
+                    .into(iv_background);
             tv_name.setText(bean.name);
             tv_loc.setText(CityParseUtils.getProvinceCityString(bean.provinceName, bean.cityName, " "));
             tv_order.setOnClickListener(new View.OnClickListener() {

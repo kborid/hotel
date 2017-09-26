@@ -22,6 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
@@ -36,6 +37,7 @@ import com.huicheng.hotel.android.ui.custom.FullscreenHolder;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
@@ -204,7 +206,13 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     private void refreshHotelSpaceBasicInfo() {
         if (hotelSpaceBasicInfoBean != null) {
             root_lay.setVisibility(View.VISIBLE);
-            loadImage(iv_hotel_bg, R.drawable.def_hotel_banner, hotelSpaceBasicInfoBean.pic, 1024, 1024);
+            Glide.with(this)
+                    .load(new CustomReqURLFormatModelImpl(hotelSpaceBasicInfoBean.pic))
+                    .placeholder(R.drawable.def_hotel_banner)
+                    .crossFade()
+                    .centerCrop()
+                    .override(650, 400)
+                    .into(iv_hotel_bg);
             tv_tie_count.setText(String.valueOf(hotelSpaceBasicInfoBean.articleCnt));
             tv_fans_count.setText(String.valueOf(hotelSpaceBasicInfoBean.vipCnt));
         } else {

@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
@@ -29,15 +32,15 @@ import com.huicheng.hotel.android.ui.activity.MyDiscountCouponActivity;
 import com.huicheng.hotel.android.ui.activity.MyOrdersActivity;
 import com.huicheng.hotel.android.ui.activity.SettingActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
-import com.prj.sdk.app.AppContext;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.net.image.ImageLoader;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.net.ConnectException;
 
@@ -48,6 +51,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * @date 2016/7/7
  */
 public class LeftDrawerLayout extends RelativeLayout implements View.OnClickListener, DataCallback {
+
+    private static final String TAG = "LeftDrawerLayout";
+
     private Context context;
     private ProgressDialog mProgressDialog;
     private RelativeLayout unlogin_lay;
@@ -173,23 +179,30 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
             } else {
                 tv_userid.setVisibility(GONE);
             }
-            final String url = SessionContext.mUser.user.headphotourl;
-            iv_photo.setImageResource(R.drawable.def_photo);
-            AppContext.mMainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (!StringUtil.isEmpty(url)) {
-                        ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
-                            @Override
-                            public void imageCallback(Bitmap bm, String url, String imageTag) {
-                                if (null != bm) {
-                                    iv_photo.setImageBitmap(bm);
-                                }
-                            }
-                        }, url);
-                    }
-                }
-            });
+
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(SessionContext.mUser.user.headphotourl))
+                    .listener(new RequestListener<CustomReqURLFormatModelImpl, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, CustomReqURLFormatModelImpl model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            e.printStackTrace();
+                            LogUtil.d(TAG, "onException(): model = " + model + ", isFirstResource = " + isFirstResource);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, CustomReqURLFormatModelImpl model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            LogUtil.d(TAG, "onResourceReady(): model = " + model + ", isFirstResource = " + isFirstResource);
+                            iv_photo.setImageDrawable(resource);
+                            return false;
+                        }
+                    })
+                    .placeholder(R.drawable.def_photo)
+                    .crossFade()
+                    .centerCrop()
+                    .override(150, 150)
+                    .into(iv_photo);
+
         } else {
             unlogin_lay.setVisibility(VISIBLE);
             login_lay.setVisibility(GONE);

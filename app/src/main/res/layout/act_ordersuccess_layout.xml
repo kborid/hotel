@@ -94,10 +94,12 @@
 
             <com.huicheng.hotel.android.ui.custom.RoundedAllImageView xmlns:roundImage="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/iv_hotel_icon"
-                android:layout_width="match_parent"
+                android:layout_width="315dp"
                 android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:scaleType="fitXY"
+                android:src="@drawable/def_hotel_banner"
                 roundImage:radius="10dp" />
 
             <LinearLayout

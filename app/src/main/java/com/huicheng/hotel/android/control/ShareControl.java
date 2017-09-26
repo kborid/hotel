@@ -9,12 +9,14 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMWeb;
 
+import java.lang.ref.WeakReference;
+
 /**
  * 分享操作
  */
 public class ShareControl {
     private static ShareControl mInstance = null;
-    private Context context;
+    private Activity activity;
     private UMWeb mUMWeb = null;
     private IShareResultListener listener = null;
 
@@ -33,16 +35,28 @@ public class ShareControl {
     }
 
     public void setUMWebContent(Context context, UMWeb web, IShareResultListener listener) {
-        this.context = context;
+        this.activity = (Activity) (new WeakReference<>(context).get());
         this.mUMWeb = web;
         this.listener = listener;
+    }
+
+    public void destroy() {
+        if (null != listener) {
+            listener = null;
+        }
+        if (null != mUMWeb) {
+            mUMWeb = null;
+        }
+        if (null != activity) {
+            activity = null;
+        }
     }
 
     public void shareUMWeb(SHARE_MEDIA platform) {
         if (null == mUMWeb) {
             return;
         }
-        new ShareAction((Activity) context).withMedia(mUMWeb).setPlatform(platform).setCallback(new UMShareListener() {
+        new ShareAction(activity).withMedia(mUMWeb).setPlatform(platform).setCallback(new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
                 CustomToast.show("开始分享", CustomToast.LENGTH_SHORT);

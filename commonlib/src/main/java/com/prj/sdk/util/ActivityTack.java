@@ -22,7 +22,6 @@ public class ActivityTack {
     private static ActivityTack ActivityTack = new ActivityTack();
 
     private ActivityTack() {
-
     }
 
     /**
@@ -105,7 +104,7 @@ public class ActivityTack {
      */
     public Activity getActivityByClassName(String name) {
         for (Activity ac : mList) {
-            if (ac.getClass().getName().indexOf(name) >= 0) {
+            if (ac.getClass().getName().contains(name)) {
                 return ac;
             }
         }

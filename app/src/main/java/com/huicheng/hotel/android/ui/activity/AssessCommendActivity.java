@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
@@ -22,13 +23,14 @@ import com.huicheng.hotel.android.net.bean.AssessOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -245,7 +247,13 @@ public class AssessCommendActivity extends BaseActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            loadImage(viewHolder.iv_photo, R.drawable.def_photo, list.get(position).headphotourl, 0, 0);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(list.get(position).headphotourl))
+                    .placeholder(R.drawable.def_photo)
+                    .crossFade()
+                    .centerCrop()
+                    .override(150, 150)
+                    .into(viewHolder.iv_photo);
             viewHolder.tv_name.setText(list.get(position).username);
             viewHolder.tv_name.getPaint().setFakeBoldText(true);
             viewHolder.tv_date.setText(DateUtil.getDay("MM月 yyyy", list.get(position).createTime));
@@ -261,7 +269,13 @@ public class AssessCommendActivity extends BaseActivity {
 
             if (StringUtil.notEmpty(list.get(position).imgUrl)) {
                 viewHolder.iv_picture.setVisibility(View.VISIBLE);
-                loadImage(viewHolder.iv_picture, list.get(position).imgUrl, 1000, 1000);
+                Glide.with(context)
+                        .load(new CustomReqURLFormatModelImpl(list.get(position).imgUrl))
+                        .placeholder(R.color.hintColor)
+                        .crossFade()
+                        .fitCenter()
+                        .override(500, 500)
+                        .into(viewHolder.iv_picture);
             } else {
                 viewHolder.iv_picture.setVisibility(View.GONE);
             }

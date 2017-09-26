@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,11 +17,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.Marker;
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.image.ImageLoader;
 import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.StringUtil;
 
@@ -39,6 +42,7 @@ public class PinInfoWindowAdapter implements AMap.InfoWindowAdapter {
         ta.recycle();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public View getInfoWindow(final Marker marker) {
         marker.isInfoWindowEnable();
@@ -55,14 +59,13 @@ public class PinInfoWindowAdapter implements AMap.InfoWindowAdapter {
         final JSONObject mJson = JSON.parseObject(json);
 
         if (StringUtil.notEmpty(mJson.getString("icon"))) {
-            ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
-                @Override
-                public void imageCallback(Bitmap bm, String url, String imageTag) {
-                    if (null != bm) {
-                        iv_hotel_icon.setImageBitmap(bm);
-                    }
-                }
-            }, mJson.getString("icon"), mJson.getString("icon"), 140, 100, -1);
+            Glide.with(context)
+                    .load(new CustomReqURLFormatModelImpl(mJson.getString("icon")))
+                    .placeholder(R.drawable.def_hotel_banner)
+                    .crossFade()
+                    .centerCrop()
+                    .override(280, 200)
+                    .into(iv_hotel_icon);
         }
         tv_title.setText(mJson.getString("name"));
         if (StringUtil.isEmpty(mJson.getString("address"))) {

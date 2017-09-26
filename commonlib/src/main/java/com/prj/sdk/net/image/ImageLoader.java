@@ -281,11 +281,13 @@ public class ImageLoader {
      * 清除请求队列中的任务
      */
     public void clearImageRequests() {
+        mImageHandler.removeCallbacksAndMessages(null);
         mPoolExecutor.getQueue().clear();
         mMemCache.clear();
     }
 
     public void shutDown() {
+        mImageHandler.removeCallbacksAndMessages(null);
         mMemCache.clear();
         mPoolExecutor.shutdown();
     }

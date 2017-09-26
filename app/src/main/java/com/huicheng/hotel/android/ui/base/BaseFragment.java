@@ -1,24 +1,18 @@
 package com.huicheng.hotel.android.ui.base;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
-import com.prj.sdk.net.image.ImageLoader;
+import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.StringUtil;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
@@ -112,6 +106,7 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroy();
         RefWatcher refWatcher = PRJApplication.getRefWatcher(getActivity());
         refWatcher.watch(this);
+        DataLoader.getInstance().clearRequests();
     }
 
     /**
@@ -160,38 +155,6 @@ public abstract class BaseFragment extends Fragment {
     public final void removeProgressDialog() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
-        }
-    }
-
-    public static void loadImage(final View view, String url, int width, int height) {
-        loadImage(view, -1, url, width, height);
-    }
-
-    public static void loadImage(final View view, int defId, String url, int width, int height) {
-        int resId = R.color.hintColor;
-        if (defId != -1) {
-            resId = defId;
-        }
-        if (view instanceof ImageView) {
-            ((ImageView) view).setImageResource(resId);
-        } else {
-            view.setBackgroundResource(resId);
-        }
-
-        if (StringUtil.notEmpty(url)) {
-            ImageLoader.getInstance().loadBitmap(new ImageLoader.ImageCallback() {
-                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                @Override
-                public void imageCallback(Bitmap bm, String url, String imageTag) {
-                    if (null != bm) {
-                        if (view instanceof ImageView) {
-                            ((ImageView) view).setImageBitmap(bm);
-                        } else {
-                            view.setBackground(new BitmapDrawable(bm));
-                        }
-                    }
-                }
-            }, url, url, width, height, -1);
         }
     }
 }
