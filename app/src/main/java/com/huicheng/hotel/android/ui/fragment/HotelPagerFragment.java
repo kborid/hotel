@@ -42,6 +42,7 @@ import com.huicheng.hotel.android.ui.activity.HotelListActivity;
 import com.huicheng.hotel.android.ui.activity.LocationChooseActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -55,7 +56,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.lang.reflect.Field;
 import java.util.Calendar;
@@ -117,7 +117,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         if (isFirstLoad) {
             isFirstLoad = false;
         }
-        if (SessionContext.getBannerList() == null || SessionContext.getBannerList().size() == 0) {
+        if (SessionContext.getBannerList().size() == 0) {
             requestMainBannerInfo();
         } else {
             banner_lay.startBanner();
@@ -227,11 +227,13 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         tv_city.setText(CityParseUtils.getProvinceCityString(province, city, " "));
         HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
 
-        banner_lay.setImageResource(SessionContext.getBannerList());
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         llp.width = Utils.mScreenWidth;
         llp.height = (int) ((float) llp.width / 25 * 14);
         banner_lay.setLayoutParams(llp);
+        if (SessionContext.getBannerList().size() > 0) {
+            banner_lay.setImageResource(SessionContext.getBannerList());
+        }
 
         // 初始化时间，今天到明天 1晚
         Calendar calendar = Calendar.getInstance();

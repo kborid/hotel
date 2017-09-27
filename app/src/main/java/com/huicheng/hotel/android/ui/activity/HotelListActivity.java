@@ -321,7 +321,7 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
     }
 
     private class myPagerAdapter extends FragmentPagerAdapter {
-        String[] title = {"全日", "钟点", "夜归人"/*, "后悔药"*/};
+        private String[] title = getResources().getStringArray(R.array.HotelListTab);
 
         myPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -336,7 +336,7 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
                     return FragmentTabClock.newInstance(HotelCommDef.CLOCK, keyword, mPriceIndex);
                 case 2:
                     return FragmentTabYeGuiRen.newInstance(HotelCommDef.YEGUIREN, keyword, mPriceIndex);
-//                case 3:
+//                case 3:`
 //                    return FragmentTabHouHuiYao.newInstance(HotelCommDef.HOUHUIYAO, dateStr);
                 default:
                     return null;

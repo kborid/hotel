@@ -91,6 +91,13 @@
         <item>已完成</item>
     </string-array>
 
+    <string-array name="HotelListTab">
+        <item>全日房</item>
+        <item>钟点房</item>
+        <item>夜归人</item>
+        <!--<item>后悔药</item>-->
+    </string-array>
+
     <string-array name="sex">
         <item>男</item>
         <item>女</item>

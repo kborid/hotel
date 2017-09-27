@@ -61,9 +61,7 @@ public class CustomNoAutoScrollBannerLayout extends RelativeLayout implements Vi
     public void setImageResourcePaths(List<String> list) {
         if (list != null && list.size() > 0) {
             viewpager.setAdapter(new CustomPagerAdapter(context, list));
-            if (list.size() > 0) {
-                viewpager.setOffscreenPageLimit(list.size());
-            }
+            viewpager.setOffscreenPageLimit(list.size());
             initIndicatorLay(list.size());
         }
     }

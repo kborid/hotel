@@ -28,7 +28,10 @@ public class BannerImageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return Integer.MAX_VALUE;
+        if (list.size() > 1) {
+            return Integer.MAX_VALUE;
+        }
+        return list.size();
     }
 
     @Override

@@ -354,10 +354,7 @@ public class RoomDetailActivity extends BaseActivity {
             //设置banner
 //            viewPager.setPageMargin(Utils.dip2px(10));
             viewPager.setAdapter(new MyPagerAdapter(this, roomDetailInfoBean.picList));
-            // to cache all page, or we will see the right item delayed
-            if (roomDetailInfoBean.picList.size() > 0) {
-                viewPager.setOffscreenPageLimit(roomDetailInfoBean.picList.size());
-            }
+            viewPager.setOffscreenPageLimit(roomDetailInfoBean.picList.size());
             initIndicatorLay(roomDetailInfoBean.picList.size());
 
             //设置title、评分信息

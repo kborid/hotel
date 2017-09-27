@@ -77,11 +77,12 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
         if (list != null && list.size() > 0) {
             mList.clear();
             mList.addAll(list);
-            viewpager.setAdapter(new BannerImageAdapter(context, list));
-            initIndicatorLay(list.size());
+            viewpager.setAdapter(new BannerImageAdapter(context, mList));
+            initIndicatorLay(mList.size());
             //viewPager一个假的无限循环，初始位置是viewPager count的100倍
-            viewpager.setCurrentItem(list.size() * 100);
-            viewpager.setOffscreenPageLimit(list.size());
+            viewpager.setCurrentItem(mList.size() * 100);
+            viewpager.setOffscreenPageLimit(mList.size());
+            startBanner();
         }
     }
 
@@ -99,7 +100,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
 
     public void startBanner() {
         myHandler.removeCallbacks(runnable);
-        if (mList != null && mList.size() > 1) {
+        if (mList.size() > 1) {
             myHandler.postDelayed(runnable, DELAY_TIME);
         }
     }
@@ -110,7 +111,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
 
     private void initIndicatorLay(int count) {
         indicator_lay.removeAllViews();
-        if (count >= 1) {
+        if (count > 1) {
             for (int i = 0; i < count; i++) {
                 View view = new View(context);
                 view.setBackgroundResource(mIndicatorResId);
@@ -124,7 +125,6 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
             }
             indicator_lay.getChildAt(positionIndex).setEnabled(true);
         }
-        startBanner();
     }
 
     @Override
@@ -138,10 +138,12 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
     @Override
     public void onPageSelected(int position) {
         int newPosition = position % mList.size();
-        indicator_lay.getChildAt(newPosition).setEnabled(true);
-        if (positionIndex != newPosition) {
-            indicator_lay.getChildAt(positionIndex).setEnabled(false);
-            positionIndex = newPosition;
+        if (null != indicator_lay && indicator_lay.getChildCount() > 1) {
+            indicator_lay.getChildAt(newPosition).setEnabled(true);
+            if (positionIndex != newPosition) {
+                indicator_lay.getChildAt(positionIndex).setEnabled(false);
+                positionIndex = newPosition;
+            }
         }
     }
 }

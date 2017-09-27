@@ -202,10 +202,12 @@ public class RoomListActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 int newPosition = position % hotelDetailInfoBean.picPath.size();
-                indicator_lay.getChildAt(newPosition).setEnabled(true);
-                if (positionIndex != newPosition) {
-                    indicator_lay.getChildAt(positionIndex).setEnabled(false);
-                    positionIndex = newPosition;
+                if (null != indicator_lay && indicator_lay.getChildCount() > 1) {
+                    indicator_lay.getChildAt(newPosition).setEnabled(true);
+                    if (positionIndex != newPosition) {
+                        indicator_lay.getChildAt(positionIndex).setEnabled(false);
+                        positionIndex = newPosition;
+                    }
                 }
             }
 
@@ -288,13 +290,7 @@ public class RoomListActivity extends BaseActivity {
 
             //viewPager一个假的无限循环，初始位置是viewPager count的100倍
             viewPager.setCurrentItem(hotelDetailInfoBean.picPath.size() * 100);
-            if (hotelDetailInfoBean.picPath.size() > 0) {
-                int offset = 0;
-                if (hotelDetailInfoBean.picPath.size() == 1) {
-                    offset = 1;
-                }
-                viewPager.setOffscreenPageLimit(hotelDetailInfoBean.picPath.size() + offset);
-            }
+            viewPager.setOffscreenPageLimit(hotelDetailInfoBean.picPath.size());
             //设置评分、等级、评论
             float grade = 0;
             try {
@@ -667,7 +663,7 @@ public class RoomListActivity extends BaseActivity {
     private void initIndicatorLay(int count) {
         indicator_lay.removeAllViews();
         LogUtil.i(TAG, "count = " + count);
-        if (count >= 1) {
+        if (count > 1) {
             for (int i = 0; i < count; i++) {
                 View view = new View(this);
                 view.setBackgroundResource(indicatorSelId);
@@ -739,8 +735,10 @@ public class RoomListActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-//            return list.size();
-            return Integer.MAX_VALUE;
+            if (list.size() > 1) {
+                return Integer.MAX_VALUE;
+            }
+            return list.size();
         }
 
         @Override

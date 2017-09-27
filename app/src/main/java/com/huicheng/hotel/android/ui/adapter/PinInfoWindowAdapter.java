@@ -55,6 +55,7 @@ public class PinInfoWindowAdapter implements AMap.InfoWindowAdapter {
         TextView tv_address = (TextView) infoWindow.findViewById(R.id.tv_address);
         ImageView iv_navi = (ImageView) infoWindow.findViewById(R.id.iv_route);
 
+        // 通过snippet传递包含其他信息的json格式字符串
         String json = marker.getSnippet();
         final JSONObject mJson = JSON.parseObject(json);
 
