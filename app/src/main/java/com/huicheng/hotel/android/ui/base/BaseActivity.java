@@ -75,6 +75,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogUtil.d(TAG, "onCreate()");
         if (null != savedInstanceState && PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.ALL_PERMISSION)) {
             Intent intent = new Intent(this, WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -94,11 +95,13 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LogUtil.d(TAG, "onNewIntent()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.d(TAG, "onResume()");
         MobclickAgent.onPageStart(this.getClass().getName()); // 统计页面(仅有Activity的应用中SDK自动调用，不需要单独写。"SplashScreen"为页面名称，可自定义)
         MobclickAgent.onResume(this); // 统计时长
     }
@@ -106,7 +109,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onPause() {
         super.onPause();
-
+        LogUtil.d(TAG, "onPause()");
         MobclickAgent.onPageEnd(this.getClass().getName());
         MobclickAgent.onPause(this);
     }
@@ -114,6 +117,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogUtil.d(TAG, "onDestroy()");
         FixIMMLeaksTools.fixFocusedViewLeak(PRJApplication.getInstance());
         RefWatcher refWatcher = PRJApplication.getRefWatcher(this);
         refWatcher.watch(this);
@@ -429,8 +433,10 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     public void onNotifyMessage(ResponseData request, ResponseData response) {
+        LogUtil.d(TAG, "onNotifyMessage()");
     }
 
     public void onNotifyError(ResponseData request) {
+        LogUtil.d(TAG, "onNotifyError()");
     }
 }

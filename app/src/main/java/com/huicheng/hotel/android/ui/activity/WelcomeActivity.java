@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -62,7 +61,6 @@ import java.util.Map;
 public class WelcomeActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener {
 
     private long start = 0; // 记录启动时间
-    private static Handler myHandler = new Handler(Looper.getMainLooper());
     private Map<Integer, Integer> mTag = new HashMap<>();
 
     @Override
@@ -158,6 +156,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     }
 
     public void intentActivity() {
+        LogUtil.i(TAG, "intentActivity()");
         Intent intent;
         boolean isFirstLaunch = false;
         isFirstLaunch = SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true);
@@ -226,14 +225,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             requestGDTInterface();
         }
 
-        myHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                CityParseUtils.initAreaJsonData(WelcomeActivity.this);
-                requestHomeBannerInfo();
-                requestAppVersionInfo();
-            }
-        });
+        new MyThread().start();
     }
 
     @Override
@@ -349,13 +341,26 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         dialog.show();
     }
 
+    private class MyThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+            CityParseUtils.initAreaJsonData(WelcomeActivity.this);
+            requestHomeBannerInfo();
+            requestAppVersionInfo();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        start = SystemClock.elapsedRealtime();
+        LogUtil.i(TAG, "onActivityResult()");
         // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-            finish();
+        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            start = SystemClock.elapsedRealtime();
+            if (resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+                finish();
+            }
         }
     }
 }
