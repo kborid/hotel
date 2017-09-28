@@ -29,11 +29,13 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
+import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.FixIMMLeaksTools;
 import com.huicheng.hotel.android.ui.activity.InvoiceDetailActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
+import com.huicheng.hotel.android.ui.activity.WelcomeActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
@@ -73,12 +75,20 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
-            setTheme(R.style.femaleTheme);
+        if (null != savedInstanceState && PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.ALL_PERMISSION)) {
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
         } else {
-            setTheme(R.style.defaultTheme);
+            if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
+                setTheme(R.style.femaleTheme);
+            } else {
+                setTheme(R.style.defaultTheme);
+            }
+            ActivityTack.getInstanse().addActivity(this);
         }
-        ActivityTack.getInstanse().addActivity(this);
     }
 
     @Override
@@ -96,6 +106,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     protected void onPause() {
         super.onPause();
+
         MobclickAgent.onPageEnd(this.getClass().getName());
         MobclickAgent.onPause(this);
     }

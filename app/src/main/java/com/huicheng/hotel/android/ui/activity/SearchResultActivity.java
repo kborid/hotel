@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -25,6 +26,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelInfoBean;
+import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.ui.adapter.SearchResultAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.iflytek.cloud.RecognizerResult;
@@ -156,6 +158,10 @@ public class SearchResultActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.iv_all_rec:
+                if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.MIC_PERMISSION)) {
+                    PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
+                    return;
+                }
                 RecognizerDialog mDialog = new RecognizerDialog(this, null);
                 mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
                 mDialog.setParameter(SpeechConstant.ASR_SCH, "1");

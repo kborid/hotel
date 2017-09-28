@@ -8,21 +8,17 @@ import android.webkit.WebView;
 
 import com.fm.openinstall.OpenInstall;
 import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.RCSCrashHandler;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.control.AMapLocationControl;
+import com.huicheng.hotel.android.permission.PermissionsChecker;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.prj.sdk.app.AppContext;
-import com.prj.sdk.net.data.DataLoader;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
-
-import java.util.Collections;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -39,6 +35,7 @@ public class PRJApplication extends Application {
     }
 
     private RefWatcher refWatcher;
+    private PermissionsChecker mPermissionsChecker;
 
     @Override
     public void onCreate() {
@@ -46,9 +43,7 @@ public class PRJApplication extends Application {
         AppContext.init(this);
         RCSCrashHandler.getInstance().init();
         refWatcher = LeakCanary.install(this);
-        Collections.addAll(DataLoader.getInstance().mCacheUrls, NetURL.CACHE_URL);
-
-        AMapLocationControl.getInstance().startLocationOnce(this, true);
+        mPermissionsChecker = new PermissionsChecker(this);
 
         //友盟统计、分享、第三方登录
         PlatformConfig.setWeixin(getResources().getString(R.string.wx_appid), getResources().getString(R.string.wx_appsecret));
@@ -87,5 +82,10 @@ public class PRJApplication extends Application {
     public static RefWatcher getRefWatcher(Context context) {
         PRJApplication application = (PRJApplication) context.getApplicationContext();
         return application.refWatcher;
+    }
+
+    public static PermissionsChecker getPermissionsChecker(Context context) {
+        PRJApplication app = (PRJApplication) context.getApplicationContext();
+        return app.mPermissionsChecker;
     }
 }

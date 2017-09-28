@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,14 +24,17 @@ import com.fm.openinstall.listener.AppWakeUpListener;
 import com.fm.openinstall.model.AppData;
 import com.fm.openinstall.model.Error;
 import com.huicheng.hotel.android.BuildConfig;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
+import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -48,6 +52,7 @@ import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,11 +63,11 @@ import java.util.Map;
 public class WelcomeActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener {
 
     private long start = 0; // 记录启动时间
+    private static Handler myHandler = new Handler(Looper.getMainLooper());
     private Map<Integer, Integer> mTag = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        getWindow().setBackgroundDrawable(null);
         initStatus();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_welcome_layout);
@@ -84,22 +89,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         initViews();
         initParams();
         initListeners();
-
-        //用户第一次启动时，调用后台封装的广点通的接口，统计激活量
-        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
-            requestGDTInterface();
-        }
-//        requestGDTIFTest();
-
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                CityParseUtils.initAreaJsonData(WelcomeActivity.this);
-                requestHomeBannerInfo();
-                requestAppVersionInfo();
-            }
-        }.start();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -142,16 +131,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.APP_INFO;
         d.flag = AppConst.APP_INFO;
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    private void requestGDTIFTest() {
-        LogUtil.i(TAG, "requestGDTIFTest()");
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        ResponseData d = b.syncRequest(b);
-        d.path = "http://dev.abcbooking.cn:8081/hmp-website/widePointAd/conversion.json?muid=8dbc9132874f22049976252bf08b8da9";
-        d.flag = 0x01;
-        d.type = InfoType.GET_REQUEST.toString();
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -221,30 +200,37 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     @Override
     public void onInstallFinish(AppData appData, com.fm.openinstall.model.Error error) {
-        LogUtil.i(TAG, "onInstallFinish()");
-        if (error == null) {
-            LogUtil.i(TAG, "OpenInstall install-data : " + appData.toString());
-            SessionContext.setRecommandAppData(appData);
-        } else {
-            LogUtil.i(TAG, "error : " + error.toString());
-        }
+        SessionContext.setRecommandAppData(appData);
     }
 
     @Override
     public void onWakeUpFinish(AppData appData, Error error) {
-        LogUtil.i(TAG, "onWakeUpFinish()");
-        if (error == null) {
-            SessionContext.setWakeUpAppData(appData);
-            LogUtil.i(TAG, "OpenInstall wakeup-data : " + appData.toString());
-        } else {
-            LogUtil.i(TAG, "error : " + error.toString());
-        }
+        SessionContext.setWakeUpAppData(appData);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtil.i(TAG, "onResume()");
+        // 缺少权限时, 进入权限配置页面
+        if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.LAUNCH_REQUIRE_PERMISSIONS)) {
+            PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LAUNCH_REQUIRE_PERMISSIONS);
+            return;
+        }
+        Collections.addAll(DataLoader.getInstance().mCacheUrls, NetURL.CACHE_URL);
+        AMapLocationControl.getInstance().startLocationOnce(this, true);
+        //用户第一次启动时，调用后台封装的广点通的接口，统计激活量
+        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
+            requestGDTInterface();
+        }
+
+        myHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                CityParseUtils.initAreaJsonData(WelcomeActivity.this);
+                requestHomeBannerInfo();
+                requestAppVersionInfo();
+            }
+        });
     }
 
     @Override
@@ -269,11 +255,10 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 }
             } else if (request.flag == AppConst.HOTEL_BANNER) {
                 mTag.put(AppConst.HOTEL_BANNER, AppConst.HOTEL_BANNER);
-                LogUtil.i(TAG, "Hotel Main json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
                 SessionContext.setBannerList(temp);
             } else if (request.flag == 0x01) {
-                System.out.println("json = " + response.body.toString());
             }
 
             if (mTag != null && mTag.size() == 2) {
@@ -358,5 +343,15 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        start = SystemClock.elapsedRealtime();
+        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
+        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+            finish();
+        }
     }
 }

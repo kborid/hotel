@@ -19,10 +19,11 @@
 
     <style name="ImageTransparent" parent="AppTheme">
         <item name="android:windowBackground">@color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
         <item name="android:background">@color/black</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
 
     <style name="MyToolbarStyle" parent="Widget.AppCompat.Toolbar">
         <item name="contentInsetStart">0dp</item><!-- 设置该属性解决空白部分-->
@@ -68,7 +69,6 @@
         <item name="roomDetailSpace2">@drawable/iv_message_yellow2</item>
         <item name="settingButton">@drawable/iv_setting</item>
         <item name="settingOKButton">@drawable/iv_setting_ok</item>
-        <item name="leftImage">@drawable/iv_left</item>
         <item name="userCenterThumb">@drawable/iv_thumb</item>
         <item name="userCenterThumbDisable">@drawable/iv_thumb_yello</item>
         <item name="userCenterThumbText">@color/mainColor</item>
@@ -147,7 +147,6 @@
         <item name="roomDetailSpace2">@drawable/iv_message_yellow2_female</item>
         <item name="settingButton">@drawable/iv_setting_female</item>
         <item name="settingOKButton">@drawable/iv_setting_ok_female</item>
-        <item name="leftImage">@drawable/iv_left_female</item>
         <item name="userCenterThumb">@drawable/iv_thumb_consider_female</item>
         <item name="userCenterThumbDisable">@drawable/iv_thumb_yello_female</item>
         <item name="userCenterThumbText">@color/female_indicatorColor</item>

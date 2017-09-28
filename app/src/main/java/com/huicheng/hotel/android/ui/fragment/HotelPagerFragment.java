@@ -28,6 +28,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
@@ -36,10 +37,12 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
+import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.HotelListActivity;
 import com.huicheng.hotel.android.ui.activity.LocationChooseActivity;
+import com.huicheng.hotel.android.ui.activity.PermissionsActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -303,6 +306,10 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 et_keyword.setText("");
                 break;
             case R.id.iv_voice:
+                if (PRJApplication.getPermissionsChecker(getActivity()).lacksPermissions(PermissionsDef.MIC_PERMISSION)) {
+                    PermissionsActivity.startActivityForResult(getActivity(), PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
+                    return;
+                }
                 RecognizerDialog mDialog = new RecognizerDialog(getActivity(), null);
                 mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
                 mDialog.setParameter(SpeechConstant.ASR_SCH, "1");
@@ -409,7 +416,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (Activity.RESULT_OK != resultCode) {
             return;
         }

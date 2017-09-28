@@ -1,11 +1,14 @@
 package com.huicheng.hotel.android.ui.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
+import com.huicheng.hotel.android.permission.PermissionsDef;
+import com.huicheng.hotel.android.ui.activity.WelcomeActivity;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -21,12 +24,20 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
-            setTheme(R.style.femaleTheme);
+        if (null != savedInstanceState && PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.ALL_PERMISSION)) {
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
         } else {
-            setTheme(R.style.defaultTheme);
+            if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
+                setTheme(R.style.femaleTheme);
+            } else {
+                setTheme(R.style.defaultTheme);
+            }
+            ActivityTack.getInstanse().addActivity(this);
         }
-        ActivityTack.getInstanse().addActivity(this);
     }
 
     @Override
