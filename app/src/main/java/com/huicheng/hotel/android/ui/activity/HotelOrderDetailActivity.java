@@ -22,11 +22,11 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.util.Date;
 
@@ -41,7 +41,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
 
     private LinearLayout root_lay;
     private TextView tv_order_num, tv_order_date;
-    private TextView tv_hotel_city, tv_hotel_name;
+    private TextView tv_hotel_city, tv_hotel_name, tv_room_name;
     private TextView tv_in_date, tv_price;
     private LinearLayout service_lay;
     private TextView tv_total_price;
@@ -71,6 +71,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
 
         tv_hotel_city = (TextView) findViewById(R.id.tv_hotel_city);
         tv_hotel_name = (TextView) findViewById(R.id.tv_hotel_name);
+        tv_room_name = (TextView) findViewById(R.id.tv_room_name);
         tv_in_date = (TextView) findViewById(R.id.tv_in_date);
         tv_price = (TextView) findViewById(R.id.tv_price);
         service_lay = (LinearLayout) findViewById(R.id.service_lay);
@@ -146,6 +147,9 @@ public class HotelOrderDetailActivity extends BaseActivity {
             tv_order_date.setText(DateUtil.getDay("yyyy年MM月dd日", orderPayDetailInfoBean.timeStart) + "-" + DateUtil.getDay("dd日", orderPayDetailInfoBean.timeEnd));
             tv_hotel_city.setText(orderPayDetailInfoBean.location);
             tv_hotel_name.setText(orderPayDetailInfoBean.name);
+            tv_room_name.setText(orderPayDetailInfoBean.roomName);
+//            tv_room_name.append(" " + getString(R.string.multipleSign) + " ");
+//            tv_room_name.append(String.valueOf(orderPayDetailInfoBean.roomCnt));
 
             String date = DateUtil.getDay("MM月dd日", orderPayDetailInfoBean.timeStart) + "-" + DateUtil.getDay("dd日", orderPayDetailInfoBean.timeEnd);
             String during = DateUtil.getGapCount(new Date(orderPayDetailInfoBean.timeStart), new Date(orderPayDetailInfoBean.timeEnd)) + "晚";

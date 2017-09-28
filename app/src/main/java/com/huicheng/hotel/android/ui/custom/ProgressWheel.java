@@ -41,8 +41,8 @@ public class ProgressWheel extends View {
    */
   //Sizes (with defaults in DP)
   private int circleRadius = 28;
-  private int barWidth = 2;
-  private int rimWidth = 2;
+  private int barWidth = 3;
+  private int rimWidth = 3;
   private boolean fillRadius = false;
   private double timeStartGrowing = 0;
   private double barSpinCycleTime = 460;
@@ -62,7 +62,7 @@ public class ProgressWheel extends View {
 
   //Animation
   //The amount of degrees per second
-  private float spinSpeed = 230.0f;
+  private float spinSpeed = 150.0f;
   //private float spinSpeed = 120.0f;
   // The last time the spinner was animated
   private long lastTimeAnimated = 0;

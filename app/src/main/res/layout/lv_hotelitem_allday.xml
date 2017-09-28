@@ -40,22 +40,13 @@
 
                 <TextView
                     android:id="@+id/tv_vip_note"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="粉丝价"
+                    android:gravity="center"
+                    android:text="@string/vip_price_tips"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/common_12sp" />
+                    android:textSize="@dimen/common_14sp" />
 
-                <TextView
-                    android:id="@+id/tv_vip_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="100元"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/common_15sp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -70,8 +61,7 @@
                     android:layout_height="wrap_content"
                     android:text="桔子水晶酒店(杭州火车东站店)"
                     android:textColor="@color/secColor"
-                    android:textSize="@dimen/common_12sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/common_12sp" />
 
                 <TextView
                     android:id="@+id/tv_hotel_dis"
@@ -117,8 +107,7 @@
                             android:layout_height="wrap_content"
                             android:text="特价："
                             android:textColor="?attr/hotelItemPrice"
-                            android:textSize="@dimen/common_9sp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/common_9sp" />
 
                         <TextView
                             android:id="@+id/tv_hotel_special_price"
@@ -126,8 +115,7 @@
                             android:layout_height="wrap_content"
                             android:text="420 元"
                             android:textColor="?attr/hotelItemPrice"
-                            android:textSize="@dimen/common_18sp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/common_18sp"/>
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

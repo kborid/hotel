@@ -106,7 +106,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             }
             if (bean.vipPrice < minPrice) {
                 holder.vip_layout.setVisibility(View.VISIBLE);
-                holder.tv_vip_price.setText(String.valueOf(bean.vipPrice) + "元");
             }
         }
 
@@ -240,7 +239,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
         CardView cardview;
         RelativeLayout vip_layout;
-        TextView tv_vip_price;
         RoundedTopImageView iv_hotel_icon;
         LinearLayout detail_lay;
         TextView tv_hotel_point;
@@ -256,8 +254,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             cardview = (CardView) itemView.findViewById(R.id.cardview);
             vip_layout = (RelativeLayout) itemView.findViewById(R.id.vip_layout);
             ((TextView) itemView.findViewById(R.id.tv_vip_note)).getPaint().setFakeBoldText(true);
-            tv_vip_price = (TextView) itemView.findViewById(R.id.tv_vip_price);
-            tv_vip_price.getPaint().setFakeBoldText(true);
             iv_hotel_icon = (RoundedTopImageView) itemView.findViewById(R.id.iv_hotel_icon);
             detail_lay = (LinearLayout) itemView.findViewById(R.id.detail_lay);
             tv_hotel_point = (TextView) itemView.findViewById(R.id.tv_point);
