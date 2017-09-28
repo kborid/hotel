@@ -304,3 +304,7 @@ public <fields>;
   **[] $VALUES;
   public *;
 }
+
+#全民付
+-dontwarn com.chinaums.pppay.**
+-keep public class com.chinaums.pppay.*{*;}

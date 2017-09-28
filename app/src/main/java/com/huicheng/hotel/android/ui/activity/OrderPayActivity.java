@@ -29,6 +29,7 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -37,7 +38,6 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 /**
  * @author kborid
@@ -159,6 +159,7 @@ public class OrderPayActivity extends BaseActivity {
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.PAY;
+//        d.path = "http://192.168.0.208:83/pay/toPayment.json";
         d.flag = AppConst.PAY;
 
         if (!isProgressShowing()) {
@@ -389,6 +390,10 @@ public class OrderPayActivity extends BaseActivity {
                 removeProgressDialog();
                 if (mJson.containsKey(HotelCommDef.ALIPAY)) {
                     alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
+                    //全民付
+//                    String data = mJson.getString(HotelCommDef.ALIPAY);
+//                    System.out.println("alipay data = " + data);
+//                    QMFPayUtil.getInstance().pay(this, QMFPayUtil.CHANNEL_ALIPAY, data);
                 } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
                     JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
                     wxpay.sendPayReq(
@@ -399,10 +404,18 @@ public class OrderPayActivity extends BaseActivity {
                             mmJson.getString("prepayid"),
                             mmJson.getString("noncestr"),
                             mmJson.getString("timestamp"));
+                    //全民付
+//                    String data = mJson.getString(HotelCommDef.WXPAY);
+//                    System.out.println("wxpay data = " + data);
+//                    QMFPayUtil.getInstance().pay(this, QMFPayUtil.CHANNEL_WXPAY, data);
                 } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
                     JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
                     unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
                     unionpay.unionStartPay(mmJson.getString("tn"));
+                    //全民付
+//                    String data = mJson.getString(HotelCommDef.UNIONPAY);
+//                    System.out.println("unionpay data = " + data);
+//                    QMFPayUtil.getInstance().pay(this, QMFPayUtil.CHANNEL_UNIONPAY, data);
                 } else {
                     CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
                 }
