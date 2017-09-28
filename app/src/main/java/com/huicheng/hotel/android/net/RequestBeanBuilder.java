@@ -112,6 +112,16 @@ public class RequestBeanBuilder {
     }
 
     /**
+     * GET请求数据
+     */
+    public ResponseData syncRequestGET(RequestBeanBuilder builder) {
+        ResponseData data = new ResponseData();
+        data.data = new Gson().toJson(builder.body);
+        data.type = InfoType.GET_REQUEST.toString();
+        return data;
+    }
+
+    /**
      * POST请求数据
      *
      * @return

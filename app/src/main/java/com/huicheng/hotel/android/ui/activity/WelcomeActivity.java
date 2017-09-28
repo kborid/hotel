@@ -40,7 +40,6 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.algo.MD5Tool;
-import com.prj.sdk.constants.InfoType;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.down.DownCallback;
@@ -124,6 +123,11 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         SessionContext.initUserInfo();
     }
 
+    @Override
+    public void initListeners() {
+        super.initListeners();
+    }
+
     private void requestAppVersionInfo() {
         LogUtil.i(TAG, "requestAppVersionInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
@@ -138,10 +142,9 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         LogUtil.i(TAG, "requestGDTInterface()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("muid", MD5Tool.getMD5(Utils.getIMEI()));
-        ResponseData d = b.syncRequest(b);
+        ResponseData d = b.syncRequestGET(b);
         d.path = NetURL.AD_GDT_IF;
         d.flag = AppConst.AD_GDT_IF;
-        d.type = InfoType.GET_REQUEST.toString();
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -258,7 +261,8 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
                 SessionContext.setBannerList(temp);
-            } else if (request.flag == 0x01) {
+            } else if (request.flag == 0x01 || request.flag == AppConst.AD_GDT_IF) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
             }
 
             if (mTag != null && mTag.size() == 2) {

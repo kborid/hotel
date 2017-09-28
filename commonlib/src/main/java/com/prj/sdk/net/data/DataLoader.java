@@ -225,7 +225,7 @@ public class DataLoader {
 
                 byte[] data = getDataFromNet();
 
-                if (data != null) {
+                if (data != null && data.length > 0) {
                     if (request.isLocal) {
                         response = new ResponseData();
                         response.data = new String(data, "UTF-8");

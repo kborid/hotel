@@ -1,5 +1,6 @@
 package com.prj.sdk.net.http;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.prj.sdk.constants.InfoType;
 import com.prj.sdk.util.LogUtil;
@@ -46,8 +47,14 @@ public class OKHttpHelper {
         try {
             if (InfoType.GET_REQUEST.toString().equals(httpType)) {
                 if (mEntity != null) {
-                    if (mEntity instanceof JSONObject) {
-                        JSONObject mJson = (JSONObject) mEntity;
+                    JSONObject mJson = null;
+                    if (mEntity instanceof String) {
+                        String mJsonString = (String) mEntity;
+                        mJson = JSON.parseObject(mJsonString);
+                    } else if (mEntity instanceof JSONObject) {
+                        mJson = (JSONObject) mEntity;
+                    }
+                    if (null != mJson) {
                         StringBuilder params = new StringBuilder();
                         for (String key : mJson.keySet()) {
                             params.append(key).append("=").append(mJson.getString(key) != null ? mJson.getString(key) : "").append("&");
@@ -65,6 +72,7 @@ public class OKHttpHelper {
                         }
                     }
                 }
+                LogUtil.d(TAG, "url = " + url);
                 request = OkHttpClientControl.getInstance().buildGetRequest(url, header);
             } else if (InfoType.POST_REQUEST.toString().equals(httpType)) {
                 if (mEntity != null) {
