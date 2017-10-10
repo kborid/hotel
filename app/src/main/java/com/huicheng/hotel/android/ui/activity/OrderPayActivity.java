@@ -202,6 +202,7 @@ public class OrderPayActivity extends BaseActivity {
             }
             tv_total_price.setText((int) totalPrice + "");
             tv_comment.setText(orderPayDetailInfoBean.requirement);
+            tv_comment.append(getString(R.string.pay_order_tips));
             root_lay.setVisibility(View.VISIBLE);
         } else {
             root_lay.setVisibility(View.GONE);

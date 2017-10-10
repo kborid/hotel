@@ -133,6 +133,51 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
             isNeedCloseLeftDrawer = false;
             drawer_layout.closeDrawers();
         }
+        //OpenInstall Event 分发
+        dispatchOpenInstallEvent();
+    }
+
+    private void dispatchOpenInstallEvent() {
+        LogUtil.i(TAG, "dispatchOpenInstallEvent()");
+        if (SessionContext.getOpenInstallAppData() != null) {
+            JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
+            if (null != mJson && mJson.containsKey("channel")) {
+                String channel = mJson.getString("channel");
+                if (HotelCommDef.SHARE_HOTEL.equals(channel)) {
+                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
+                    long endDate = Long.valueOf(mJson.getString("endDate"));
+                    HotelOrderManager.getInstance().setBeginTime(beginDate);
+                    HotelOrderManager.getInstance().setEndTime(endDate);
+                    Intent intent = new Intent(this, RoomListActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                    startActivity(intent);
+                    SessionContext.setOnenInstallAppData(null);
+                } else if (HotelCommDef.SHARE_ROOM.equals(channel)) {
+                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
+                    long endDate = Long.valueOf(mJson.getString("endDate"));
+                    HotelOrderManager.getInstance().setBeginTime(beginDate);
+                    HotelOrderManager.getInstance().setEndTime(endDate);
+                    Intent intent = new Intent(this, RoomDetailActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                    intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
+                    intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
+                    startActivity(intent);
+                    SessionContext.setOnenInstallAppData(null);
+                } else if (HotelCommDef.SHARE_FREE.equals(channel)) {
+                    Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
+                    startActivity(intent);
+                    SessionContext.setOnenInstallAppData(null);
+                } else if (HotelCommDef.SHARE_TIE.equals(channel)) {
+                    Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                    intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
+                    startActivity(intent);
+                    SessionContext.setOnenInstallAppData(null);
+                } else {
+                    LogUtil.d("MainFragmentActivity", "warning~~~");
+                }
+            }
+        }
     }
 
     @Override
@@ -144,42 +189,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
             isNeedCloseLeftDrawer = bundle.getBoolean("isClosed");
             isReload = bundle.getBoolean("isReload");
             planeOrderId = bundle.getString("orderId");
-        }
-        if (SessionContext.getWakeUpAppData() != null) {
-            JSONObject mJson = JSON.parseObject(SessionContext.getWakeUpAppData().getData());
-            if (mJson.containsKey("channel")) {
-                String channel = mJson.getString("channel");
-                if (HotelCommDef.SHARE_HOTEL.equals(channel)) {
-                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
-                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    HotelOrderManager.getInstance().setBeginTime(beginDate);
-                    HotelOrderManager.getInstance().setEndTime(endDate);
-                    Intent intent = new Intent(this, RoomListActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                    startActivity(intent);
-                } else if (HotelCommDef.SHARE_ROOM.equals(channel)) {
-                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
-                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    HotelOrderManager.getInstance().setBeginTime(beginDate);
-                    HotelOrderManager.getInstance().setEndTime(endDate);
-                    Intent intent = new Intent(this, RoomDetailActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                    intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
-                    intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
-                    startActivity(intent);
-                } else if (HotelCommDef.SHARE_FREE.equals(channel)) {
-                    Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
-                    startActivity(intent);
-                } else if (HotelCommDef.SHARE_TIE.equals(channel)) {
-                    Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                    intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
-                    startActivity(intent);
-                } else {
-                    LogUtil.d("MainFragmentActivity", "warning~~~");
-                }
-            }
-            SessionContext.setWakeUpAppData(null);
         }
     }
 
@@ -211,6 +220,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
 
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LogUtil.i(TAG, "onNewIntent()");
         // Note that getIntent() still returns the original Intent. You can use setIntent(Intent) to update it to this new Intent.
         setIntent(intent);
         dealIntent();

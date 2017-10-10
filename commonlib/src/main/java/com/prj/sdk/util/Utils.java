@@ -128,24 +128,15 @@ public class Utils {
             subFolder = "";
         }
         if (isSDCardEnable()) {
-            // SD-card available
-            rootDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + AppContext.mAppContext.getPackageName() + File.separator + subFolder
-                    + File.separator;
-
-            // 创建文件目录
-            File file = new File(rootDir);
-            if (!file.exists()) // 创建目录
-            {
-                file.mkdirs();
-            }
+            rootDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + AppContext.mAppContext.getPackageName() + File.separator + subFolder + File.separator;
         } else {
             rootDir = AppContext.mAppContext.getCacheDir() + File.separator + subFolder + File.separator;
-            // 创建文件目录
-            File file = new File(rootDir);
-            if (!file.exists()) // 创建目录
-            {
-                file.mkdirs();
-            }
+        }
+        // 创建文件目录
+        File file = new File(rootDir);
+        if (!file.exists()) // 创建目录
+        {
+            file.mkdirs();
         }
 
         return rootDir;

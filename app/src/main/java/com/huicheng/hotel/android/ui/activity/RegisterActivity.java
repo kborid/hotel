@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fm.openinstall.OpenInstall;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
@@ -306,11 +307,11 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private void requestSaveRecommandData() {
-        JSONObject mJson = JSON.parseObject(SessionContext.getRecommandAppData().getData());
+        JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("recommanduserid", mJson.getString("userID"));
+        b.addBody("recommanduserid", mJson.containsKey("userID") ? mJson.getString("userID") : "");
         b.addBody("userid", SessionContext.mUser.user.userid);
-        b.addBody("channel", mJson.getString("channel"));
+        b.addBody("channel", mJson.containsKey("channel") ? mJson.getString("channel") : "");
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.SAVE_RECOMMAND;
@@ -424,13 +425,15 @@ public class RegisterActivity extends BaseActivity {
                 int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
                 SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
 
-                if (SessionContext.getRecommandAppData() != null) {
+                if (SessionContext.getOpenInstallAppData() != null) {
+                    OpenInstall.reportRegister();
                     requestSaveRecommandData();
                 } else {
                     removeProgressDialog();
                     this.finish();
                 }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
+                SessionContext.setOnenInstallAppData(null);
                 removeProgressDialog();
                 this.finish();
             }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class GuideSwitchActivity extends BaseActivity {
     private long exitTime = 0;
     private LinearLayout hotel_lay, plane_lay, train_lay, taxi_lay;
     private String[] tips = new String[4];
+    private static Handler myHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class GuideSwitchActivity extends BaseActivity {
         String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
         if (StringUtil.notEmpty(appInfo)) {
             mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
-            new Handler().postDelayed(new Runnable() {
+            myHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     String ignoreVersion = SharedPreferenceUtil.getInstance().getString(AppConst.IGNORE_UPDATE_VERSION, "", false);
@@ -128,7 +130,8 @@ public class GuideSwitchActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (SessionContext.getWakeUpAppData() != null) {
+        if (SessionContext.getOpenInstallAppData() != null) {
+            myHandler.removeCallbacksAndMessages(null);
             Intent intent = new Intent(this, MainFragmentActivity.class);
             intent.putExtra("index", 0);
             startActivity(intent);

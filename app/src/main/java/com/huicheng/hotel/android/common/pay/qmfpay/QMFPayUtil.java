@@ -31,7 +31,7 @@ public class QMFPayUtil {
         payPlugin.setListener(new UnifyPayListener() {
             @Override
             public void onResult(int i, String s, String s1) {
-                System.out.println("onResult() i = " + i + ", s = " + s + ", s1 = " + s1);
+//                System.out.println("onResult() i = " + i + ", s = " + s + ", s1 = " + s1);
             }
         });
     }

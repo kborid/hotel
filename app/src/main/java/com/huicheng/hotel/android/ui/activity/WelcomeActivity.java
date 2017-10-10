@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -62,6 +63,8 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     private long start = 0; // 记录启动时间
     private Map<Integer, Integer> mTag = new HashMap<>();
+    private static HandlerThread mHandlerThread = new HandlerThread("dealJsonReqThread");
+    private static Handler mHandler = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,7 +109,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        OpenInstall.getWakeUp(this, this);
+        OpenInstall.getWakeUp(intent, this);
     }
 
     @Override
@@ -116,9 +119,11 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     public void initParams() {
         super.initParams();
-        OpenInstall.getInstall(this, this);
+        OpenInstall.getInstall(this);
         Utils.initScreenSize(this);// 设置手机屏幕大小
         SessionContext.initUserInfo();
+        mHandlerThread.start();
+        mHandler = new Handler(mHandlerThread.getLooper());
     }
 
     @Override
@@ -201,13 +206,21 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     }
 
     @Override
-    public void onInstallFinish(AppData appData, com.fm.openinstall.model.Error error) {
-        SessionContext.setRecommandAppData(appData);
+    public void onInstallFinish(AppData appData, Error error) {
+        LogUtil.i(TAG, "onInstallFinish() " + appData);
+        if (null != appData) {
+            LogUtil.i(TAG, "appdata = " + appData.toString());
+        }
+        SessionContext.setOnenInstallAppData(appData);
     }
 
     @Override
     public void onWakeUpFinish(AppData appData, Error error) {
-        SessionContext.setWakeUpAppData(appData);
+        LogUtil.i(TAG, "onWakeUpFinish() " + appData);
+        if (null != appData) {
+            LogUtil.i(TAG, "appdata = " + appData.toString());
+        }
+        SessionContext.setOnenInstallAppData(appData);
     }
 
     @Override
@@ -225,11 +238,21 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             requestGDTInterface();
         }
 
-        new MyThread().start();
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                CityParseUtils.initAreaJsonData(WelcomeActivity.this);
+                requestHomeBannerInfo();
+                requestAppVersionInfo();
+            }
+        });
     }
 
     @Override
-    public void preExecute(ResponseData request) {
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandlerThread.quit();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -339,16 +362,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
-    }
-
-    private class MyThread extends Thread {
-        @Override
-        public void run() {
-            super.run();
-            CityParseUtils.initAreaJsonData(WelcomeActivity.this);
-            requestHomeBannerInfo();
-            requestAppVersionInfo();
-        }
     }
 
     @Override

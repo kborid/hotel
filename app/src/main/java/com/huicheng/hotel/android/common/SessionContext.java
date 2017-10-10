@@ -34,8 +34,7 @@ public class SessionContext {
 
     public static UserInfo mUser;                // 用户信息
     private static String mTicket;               // 票据信息
-    private static AppData mAppdata;             // 推荐信息
-    private static AppData mWakeupData;          // 唤醒数据
+    private static AppData mAppData;          // OpenInstall数据
 
     private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
 
@@ -71,20 +70,12 @@ public class SessionContext {
         mTicket = ticket;
     }
 
-    public static AppData getRecommandAppData() {
-        return mAppdata;
+    public static AppData getOpenInstallAppData() {
+        return mAppData;
     }
 
-    public static void setRecommandAppData(AppData appData) {
-        mAppdata = appData;
-    }
-
-    public static AppData getWakeUpAppData() {
-        return mWakeupData;
-    }
-
-    public static void setWakeUpAppData(AppData appData) {
-        mWakeupData = appData;
+    public static void setOnenInstallAppData(AppData appData) {
+        mAppData = appData;
     }
 
     /**

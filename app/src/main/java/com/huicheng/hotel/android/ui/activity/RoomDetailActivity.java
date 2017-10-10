@@ -800,6 +800,7 @@ public class RoomDetailActivity extends BaseActivity {
 
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ROOM_DETAIL) {
                 removeProgressDialog();
@@ -812,6 +813,7 @@ public class RoomDetailActivity extends BaseActivity {
 
     @Override
     public void onNotifyError(ResponseData request) {
+        super.onNotifyError(request);
         if (request.flag == AppConst.ROOM_DETAIL) {
             this.finish();
         }

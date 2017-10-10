@@ -428,7 +428,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         } else {
             message = response != null && response.data != null ? response.data.toString() : getString(R.string.dialog_tip_null_error);
         }
-        CustomToast.show(message, CustomToast.LENGTH_SHORT);
+        CustomToast.show(message, CustomToast.LENGTH_LONG);
         onNotifyError(request);
     }
 

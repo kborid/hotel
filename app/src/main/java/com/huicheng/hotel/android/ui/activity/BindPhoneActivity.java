@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fm.openinstall.OpenInstall;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
@@ -119,6 +121,20 @@ public class BindPhoneActivity extends BaseActivity implements DialogInterface.O
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestSaveRecommandData() {
+        JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("recommanduserid", mJson.containsKey("userID") ? mJson.getString("userID") : "");
+        b.addBody("userid", SessionContext.mUser.user.userid);
+        b.addBody("channel", mJson.containsKey("channel") ? mJson.getString("channel") : "");
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.SAVE_RECOMMAND;
+        d.flag = AppConst.SAVE_RECOMMAND;
+
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     private void requestUserInfo(String ticket) {
         LogUtil.i(TAG, "requestUserInfo() ticket = " + ticket);
         RequestBeanBuilder builder = RequestBeanBuilder.create(true);
@@ -203,8 +219,18 @@ public class BindPhoneActivity extends BaseActivity implements DialogInterface.O
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
 
                 //绑定成功，根据性别设置主题
-                int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
-                SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
+//                int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
+                SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 0);
+                if (SessionContext.getOpenInstallAppData() != null) {
+                    OpenInstall.reportRegister();
+                    requestSaveRecommandData();
+                } else {
+                    removeProgressDialog();
+                    this.finish();
+                }
+            } else if (request.flag == AppConst.SAVE_RECOMMAND) {
+                SessionContext.setOnenInstallAppData(null);
+                removeProgressDialog();
                 this.finish();
             }
         }

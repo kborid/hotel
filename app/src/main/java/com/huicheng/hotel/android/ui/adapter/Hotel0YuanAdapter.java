@@ -2,8 +2,6 @@ package com.huicheng.hotel.android.ui.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseArray;
@@ -51,7 +49,6 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
         return hotel0YuanViewHolder;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final Hotel0YuanViewHolder holder, final int position) {
         // 随机left margin, 模拟瀑布效果.

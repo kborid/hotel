@@ -777,12 +777,8 @@ public class RoomListActivity extends BaseActivity {
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_DETAIL) {
                 removeProgressDialog();

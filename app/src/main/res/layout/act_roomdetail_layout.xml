@@ -97,6 +97,8 @@
                             android:id="@+id/tv_room_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:lines="1"
                             android:text="高级玫瑰大床房"
                             android:textColor="@color/white"
                             android:textSize="@dimen/common_18sp"

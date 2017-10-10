@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,7 +40,6 @@ public class PinInfoWindowAdapter implements AMap.InfoWindowAdapter {
         ta.recycle();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public View getInfoWindow(final Marker marker) {
         marker.isInfoWindowEnable();

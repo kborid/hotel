@@ -433,9 +433,9 @@ public class HotelSpaceHomeActivity extends BaseActivity {
             if (StringUtil.notEmpty(bean.videoUrl)) {
                 viewHolder.webview.setVisibility(View.VISIBLE);
                 String url = bean.videoUrl;
-                if (!bean.videoUrl.contains(NetURL.SPACE_VIDEO)) {
-                    url = NetURL.SPACE_VIDEO + url;
-                }
+//                if (!bean.videoUrl.contains(NetURL.SPACE_VIDEO)) {
+//                    url = NetURL.SPACE_VIDEO + url;
+//                }
                 viewHolder.webview.loadUrl(url);
             } else {
                 viewHolder.webview.setVisibility(View.GONE);
