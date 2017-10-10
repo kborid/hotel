@@ -3,6 +3,7 @@
     <!--欢迎界面theme-->
     <style name="WelTheme" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
         <!-- 启动背景图片 -->
         <item name="android:windowBackground">@drawable/bg_welcome</item>
     </style>
