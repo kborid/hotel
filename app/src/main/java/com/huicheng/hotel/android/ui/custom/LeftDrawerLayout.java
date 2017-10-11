@@ -180,29 +180,30 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                 tv_userid.setVisibility(GONE);
             }
 
-            Glide.with(context)
-                    .load(new CustomReqURLFormatModelImpl(SessionContext.mUser.user.headphotourl))
-                    .listener(new RequestListener<CustomReqURLFormatModelImpl, GlideDrawable>() {
-                        @Override
-                        public boolean onException(Exception e, CustomReqURLFormatModelImpl model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            e.printStackTrace();
-                            LogUtil.d(TAG, "onException(): model = " + model + ", isFirstResource = " + isFirstResource);
-                            return false;
-                        }
+            if (StringUtil.notEmpty(SessionContext.mUser.user.headphotourl)) {
+                Glide.with(context)
+                        .load(new CustomReqURLFormatModelImpl(SessionContext.mUser.user.headphotourl))
+                        .listener(new RequestListener<CustomReqURLFormatModelImpl, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, CustomReqURLFormatModelImpl model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                e.printStackTrace();
+                                LogUtil.d(TAG, "onException(): model = " + model + ", isFirstResource = " + isFirstResource);
+                                return false;
+                            }
 
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, CustomReqURLFormatModelImpl model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            LogUtil.d(TAG, "onResourceReady(): model = " + model + ", isFirstResource = " + isFirstResource);
-                            iv_photo.setImageDrawable(resource);
-                            return false;
-                        }
-                    })
-                    .placeholder(R.drawable.def_photo)
-                    .crossFade()
-                    .centerCrop()
-                    .override(150, 150)
-                    .into(iv_photo);
-
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, CustomReqURLFormatModelImpl model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                LogUtil.d(TAG, "onResourceReady(): model = " + model + ", isFirstResource = " + isFirstResource);
+                                iv_photo.setImageDrawable(resource);
+                                return false;
+                            }
+                        })
+                        .placeholder(R.drawable.def_photo)
+                        .crossFade()
+                        .centerCrop()
+                        .override(150, 150)
+                        .into(iv_photo);
+            }
         } else {
             unlogin_lay.setVisibility(VISIBLE);
             login_lay.setVisibility(GONE);
