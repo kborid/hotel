@@ -433,7 +433,7 @@ public class RegisterActivity extends BaseActivity {
                     this.finish();
                 }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
-                SessionContext.setOnenInstallAppData(null);
+                SessionContext.setOpenInstallAppData(null);
                 removeProgressDialog();
                 this.finish();
             }

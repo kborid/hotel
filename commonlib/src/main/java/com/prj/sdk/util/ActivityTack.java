@@ -119,14 +119,9 @@ public class ActivityTack {
         clearNotificaction();
         for (Activity activity : mList) {
             if (activity != null) {
-                try {
-                    activity.finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                activity.finish();
             }
         }
-        System.exit(0);
     }
 
     public final void clearNotificaction() {

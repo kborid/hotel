@@ -151,7 +151,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                     Intent intent = new Intent(this, RoomListActivity.class);
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     startActivity(intent);
-                    SessionContext.setOnenInstallAppData(null);
+                    SessionContext.setOpenInstallAppData(null);
                 } else if (HotelCommDef.SHARE_ROOM.equals(channel)) {
                     long beginDate = Long.valueOf(mJson.getString("beginDate"));
                     long endDate = Long.valueOf(mJson.getString("endDate"));
@@ -162,17 +162,17 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                     intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
                     intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
                     startActivity(intent);
-                    SessionContext.setOnenInstallAppData(null);
+                    SessionContext.setOpenInstallAppData(null);
                 } else if (HotelCommDef.SHARE_FREE.equals(channel)) {
                     Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
                     startActivity(intent);
-                    SessionContext.setOnenInstallAppData(null);
+                    SessionContext.setOpenInstallAppData(null);
                 } else if (HotelCommDef.SHARE_TIE.equals(channel)) {
                     Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
                     startActivity(intent);
-                    SessionContext.setOnenInstallAppData(null);
+                    SessionContext.setOpenInstallAppData(null);
                 } else {
                     LogUtil.d("MainFragmentActivity", "warning~~~");
                 }
@@ -295,7 +295,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                 exitTime = System.currentTimeMillis();
             } else {
                 SessionContext.destroy();
-                MobclickAgent.onKillProcess(this);// 调用Process.kill或者System.exit之类的方法杀死进程前保存统计数据
+                MobclickAgent.onKillProcess(this);
                 DataLoader.getInstance().clearRequests();
                 ActivityTack.getInstanse().exit();
             }

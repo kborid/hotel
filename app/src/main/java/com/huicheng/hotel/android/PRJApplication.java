@@ -14,6 +14,7 @@ import com.huicheng.hotel.android.permission.PermissionsChecker;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.prj.sdk.app.AppContext;
+import com.prj.sdk.util.LogUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
@@ -24,6 +25,7 @@ import cn.jpush.android.api.JPushInterface;
 
 public class PRJApplication extends Application {
 
+    private final static String TAG = "PRJApplication";
     private static PRJApplication instance;
 
     public static PRJApplication getInstance() {
@@ -40,6 +42,7 @@ public class PRJApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LogUtil.i(TAG, "The App Start--->>> onCreate()");
         AppContext.init(this);
         RCSCrashHandler.getInstance().init();
         refWatcher = LeakCanary.install(this);
@@ -76,6 +79,7 @@ public class PRJApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        LogUtil.i(TAG, "The App attach base context--->>> attachBaseContext()");
         MultiDex.install(this);
     }
 

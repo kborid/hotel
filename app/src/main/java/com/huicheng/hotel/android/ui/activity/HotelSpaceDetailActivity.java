@@ -243,9 +243,9 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
             if (StringUtil.notEmpty(hotelSpaceTieInfoBean.videoUrl)) {
                 webview.setVisibility(View.VISIBLE);
                 String url = hotelSpaceTieInfoBean.videoUrl;
-                if (!hotelSpaceTieInfoBean.videoUrl.contains(NetURL.SPACE_VIDEO)) {
-                    url = NetURL.SPACE_VIDEO + url;
-                }
+//                if (!hotelSpaceTieInfoBean.videoUrl.contains(NetURL.SPACE_VIDEO)) {
+//                    url = NetURL.SPACE_VIDEO + url;
+//                }
                 webview.loadUrl(url);
             } else {
                 webview.setVisibility(View.GONE);

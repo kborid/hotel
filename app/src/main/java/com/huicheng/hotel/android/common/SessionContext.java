@@ -13,13 +13,11 @@ import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.tools.PinyinUtils;
-import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +72,7 @@ public class SessionContext {
         return mAppData;
     }
 
-    public static void setOnenInstallAppData(AppData appData) {
+    public static void setOpenInstallAppData(AppData appData) {
         mAppData = appData;
     }
 
@@ -312,17 +310,11 @@ public class SessionContext {
         int index2 = 0;
         while (index1 < versionServer.length() && index2 < versionLocal.length()) {
             int[] number1 = getValue(versionServer, index1);
-            LogUtil.i(TAG, " ===== number1 ====" + Arrays.toString(number1));
             int[] number2 = getValue(versionLocal, index2);
-            LogUtil.i(TAG, " ===== number2 ====" + Arrays.toString(number2));
 
             if (number1[0] < number2[0]) {
-                LogUtil.i(TAG, " ===== number1[0] ====" + number1[0]);
-                LogUtil.i(TAG, " ===== number2[0] ====" + number2[0]);
                 return -1;
             } else if (number1[0] > number2[0]) {
-                LogUtil.i(TAG, " ===== number1[0] ====" + number1[0]);
-                LogUtil.i(TAG, " ===== number2[0] ====" + number2[0]);
                 return 1;
             } else {
                 index1 = number1[1] + 1;

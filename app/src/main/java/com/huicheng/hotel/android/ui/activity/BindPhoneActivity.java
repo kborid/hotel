@@ -229,7 +229,7 @@ public class BindPhoneActivity extends BaseActivity implements DialogInterface.O
                     this.finish();
                 }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
-                SessionContext.setOnenInstallAppData(null);
+                SessionContext.setOpenInstallAppData(null);
                 removeProgressDialog();
                 this.finish();
             }

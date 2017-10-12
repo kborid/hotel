@@ -94,7 +94,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        LogUtil.i(TAG, "onCreateView()");
         isFirstLoad = true;
         getArguments().getString("key");
         setHasOptionsMenu(true);
@@ -116,7 +115,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
     protected void onVisible() {
         super.onVisible();
-        LogUtil.i(TAG, "onVisible()");
         if (isFirstLoad) {
             isFirstLoad = false;
         }
@@ -129,14 +127,12 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
     protected void onInvisible() {
         super.onInvisible();
-        LogUtil.i(TAG, "onInvisible()");
         banner_lay.stopBanner();
     }
 
     @Override
     protected void initViews(View view) {
         super.initViews(view);
-        LogUtil.i(TAG, "initViews()");
         banner_lay = (CommonBannerLayout) view.findViewById(R.id.banner_lay);
 
         ((TextView) view.findViewById(R.id.tv_city_label)).getPaint().setFakeBoldText(true);
@@ -185,7 +181,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     protected void initParams() {
         super.initParams();
-        LogUtil.i(TAG, "initParams()");
         String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         if (StringUtil.isEmpty(province) || StringUtil.isEmpty(city)) {
@@ -441,7 +436,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.HOTEL_BANNER) {
-                LogUtil.i(TAG, "Hotel Main json = " + response.body.toString());
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
                 SessionContext.setBannerList(temp);
                 if (null != banner_lay) {

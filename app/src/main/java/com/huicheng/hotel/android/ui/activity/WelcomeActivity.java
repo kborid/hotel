@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,9 +60,8 @@ import java.util.Map;
  */
 public class WelcomeActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener {
 
-    private long start = 0; // 记录启动时间
     private Map<Integer, Integer> mTag = new HashMap<>();
-    private static HandlerThread mHandlerThread = new HandlerThread("dealJsonReqThread");
+    private static HandlerThread mHandlerThread = null;
     private static Handler mHandler = null;
 
     @Override
@@ -71,7 +69,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         initStatus();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_welcome_layout);
-        start = SystemClock.elapsedRealtime();
 
         // 避免从桌面启动程序后，会重新实例化入口类的activity
         if (!this.isTaskRoot()) {
@@ -122,13 +119,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         OpenInstall.getInstall(this);
         Utils.initScreenSize(this);// 设置手机屏幕大小
         SessionContext.initUserInfo();
-        mHandlerThread.start();
-        mHandler = new Handler(mHandlerThread.getLooper());
-    }
-
-    @Override
-    public void initListeners() {
-        super.initListeners();
     }
 
     private void requestAppVersionInfo() {
@@ -160,36 +150,23 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    public void intentActivity() {
-        LogUtil.i(TAG, "intentActivity()");
-        Intent intent;
-        boolean isFirstLaunch = false;
-        isFirstLaunch = SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true);
-        if (!isFirstLaunch) {
-            intent = new Intent(this, GuideSwitchActivity.class);
-        } else {
-            intent = new Intent(this, GuideLauncherActivity.class);
-        }
-        startActivity(intent);
-        finish();
-    }
-
-    private void goToNextActivity() {
+    public void goToNextActivity() {
         LogUtil.i(TAG, "goToNextActivity()");
-        long end = SystemClock.elapsedRealtime();
-
-        long LOADING_TIME = 1500;
-        if (end - start < LOADING_TIME) {
-            // 延迟加载
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    intentActivity();
-                }
-            }, LOADING_TIME - (end - start));
-
-        } else {
-            intentActivity();
+        boolean isGoTo = false;
+        if (mTag != null && mTag.size() == 2) {
+            isGoTo = true;
+        }
+        LogUtil.i(TAG, "      --->>> isGoTo = " + isGoTo);
+        if (isGoTo) {
+            Intent intent;
+            boolean isFirstLaunch = SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true);
+            if (!isFirstLaunch) {
+                intent = new Intent(this, GuideSwitchActivity.class);
+            } else {
+                intent = new Intent(this, GuideLauncherActivity.class);
+            }
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -207,20 +184,27 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     @Override
     public void onInstallFinish(AppData appData, Error error) {
-        LogUtil.i(TAG, "onInstallFinish() " + appData);
-        if (null != appData) {
-            LogUtil.i(TAG, "appdata = " + appData.toString());
-        }
-        SessionContext.setOnenInstallAppData(appData);
+        LogUtil.i(TAG, "onInstallFinish() appData = " + appData + ", error = " + error + ", do nothing!!!");
+//        AppData tmp = null;
+//        if (null != appData) {
+//            LogUtil.i(TAG, "appData = " + appData.toString());
+//            if (StringUtil.notEmpty(appData.getChannel()) || StringUtil.notEmpty(appData.getData())) {
+//                tmp = appData;
+//            }
+//        }
     }
 
     @Override
     public void onWakeUpFinish(AppData appData, Error error) {
-        LogUtil.i(TAG, "onWakeUpFinish() " + appData);
+        LogUtil.i(TAG, "onWakeUpFinish() appData = " + appData + ", error = " + error);
+        AppData tmp = null;
         if (null != appData) {
-            LogUtil.i(TAG, "appdata = " + appData.toString());
+            LogUtil.i(TAG, "appData = " + appData.toString());
+            if (StringUtil.notEmpty(appData.getChannel()) || StringUtil.notEmpty(appData.getData())) {
+                tmp = appData;
+            }
         }
-        SessionContext.setOnenInstallAppData(appData);
+        SessionContext.setOpenInstallAppData(tmp);
     }
 
     @Override
@@ -238,21 +222,32 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             requestGDTInterface();
         }
 
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                CityParseUtils.initAreaJsonData(WelcomeActivity.this);
-                requestHomeBannerInfo();
-                requestAppVersionInfo();
-            }
-        });
+        if (null == mHandlerThread) {
+            mHandlerThread = new HandlerThread("dealJsonReqThread");
+            mHandlerThread.start();
+            mHandler = new Handler(mHandlerThread.getLooper());
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    CityParseUtils.initAreaJsonData(WelcomeActivity.this);
+                    requestHomeBannerInfo();
+                    requestAppVersionInfo();
+                }
+            });
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mHandlerThread.quit();
-        mHandler.removeCallbacksAndMessages(null);
+        if (null != mHandlerThread) {
+            mHandlerThread.quit();
+            mHandlerThread = null;
+        }
+
+        if (null != mHandler) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     @Override
@@ -280,18 +275,14 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 LogUtil.i(TAG, "json = " + response.body.toString());
             }
 
-            if (mTag != null && mTag.size() == 2) {
-                goToNextActivity();
-            }
+            goToNextActivity();
         }
     }
 
     @Override
     public void onNotifyError(ResponseData request) {
         mTag.put(request.flag, request.flag);
-        if (mTag != null && mTag.size() == 2) {
-            goToNextActivity();
-        }
+        goToNextActivity();
     }
 
     private void showFocusUpdateDialog(final AppInfoBean bean) {
@@ -370,9 +361,9 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         LogUtil.i(TAG, "onActivityResult()");
         // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
         if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
-            start = SystemClock.elapsedRealtime();
             if (resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-                finish();
+                ActivityTack.getInstanse().exit();
+                SessionContext.destroy();
             }
         }
     }

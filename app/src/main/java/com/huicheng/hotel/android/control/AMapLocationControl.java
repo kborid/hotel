@@ -84,34 +84,22 @@ public class AMapLocationControl {
     private AMapLocationListener listener = new AMapLocationListener() {
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {
-            LogUtil.i(TAG, "AMapLocationControl onLocationChanged()");
+            LogUtil.i(TAG, "onLocationChanged()");
             stopLocation();
             if (null != aMapLocation) {
                 if (aMapLocation.getErrorCode() == 0) {
                     //定位成功回调信息，设置相关消息
-                    LogUtil.i(TAG, "=======location info======");
-                    LogUtil.i(TAG, aMapLocation.toString().replace("#", "\n"));
-                    try {
-                        SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
-                        SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-                        String loc_province = aMapLocation.getProvince().replace("省", "");
-                        String loc_city = aMapLocation.getCity().replace("市", "");
-                        SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_PROVINCE, loc_province, false);
-                        SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_CITY, loc_city, false);
-                        SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_SITEID, String.valueOf(aMapLocation.getAdCode()), false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
 
-//                        String last_province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-//                        String last_city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-//                        String last_siteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
-//                        if (StringUtil.isEmpty(last_province) || StringUtil.isEmpty(last_city) || StringUtil.isEmpty(last_siteId)) {
-//
-                        SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, loc_province, false);
-                        SharedPreferenceUtil.getInstance().setString(AppConst.CITY, loc_city, false);
-                        SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, String.valueOf(aMapLocation.getAdCode()), false);
-//                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    String loc_province = aMapLocation.getProvince().replace("省", "");
+                    String loc_city = aMapLocation.getCity().replace("市", "");
+                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_PROVINCE, loc_province, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_CITY, loc_city, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_SITEID, String.valueOf(aMapLocation.getAdCode()), false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, loc_province, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, loc_city, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, String.valueOf(aMapLocation.getAdCode()), false);
                     if (null != myLocationListener) {
                         myLocationListener.onLocation(aMapLocation);
                     }
