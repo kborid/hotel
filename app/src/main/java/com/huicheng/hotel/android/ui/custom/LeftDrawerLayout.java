@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -69,6 +70,8 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     private TextView tv_usage, tv_private;
     private Button btn_logout;
 
+    private int mMsgId, mBtnLoginId;
+
     public LeftDrawerLayout(Context context) {
         this(context, null);
     }
@@ -80,6 +83,12 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     public LeftDrawerLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
+
+        TypedArray ta = context.obtainStyledAttributes(R.styleable.MyTheme);
+        mMsgId = ta.getResourceId(R.styleable.MyTheme_indicatorBgSel, R.drawable.indicator_btn_sel);
+        mBtnLoginId = ta.getResourceId(R.styleable.MyTheme_mainColorBtnSel, R.drawable.maincolor_btn_sel);
+        ta.recycle();
+
         init();
     }
 
@@ -102,6 +111,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         login_lay = (LinearLayout) findViewById(R.id.login_lay);
 
         btn_login = (Button) findViewById(R.id.btn_login);
+        btn_login.setBackgroundResource(mBtnLoginId);
         btn_cancel = (Button) findViewById(R.id.btn_cancel);
 
         iv_photo = (CircleImageView) findViewById(R.id.iv_photo);
@@ -118,6 +128,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         tv_feedback = (TextView) findViewById(R.id.tv_feedback);
 
         tv_msg_count = (TextView) findViewById(R.id.tv_msg_count);
+        tv_msg_count.setBackgroundResource(mMsgId);
 
         btn_logout = (Button) findViewById(R.id.btn_logout);
 

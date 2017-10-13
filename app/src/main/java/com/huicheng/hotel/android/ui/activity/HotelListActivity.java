@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
-import com.huicheng.hotel.android.ui.base.BaseFragmentActivity;
+import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayout;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabAllDay;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabClock;
@@ -44,14 +44,9 @@ import java.util.List;
  * @author kborid
  * @date 2016/11/1 0001
  */
-public class HotelListActivity extends BaseFragmentActivity implements View.OnClickListener {
+public class HotelListActivity extends BaseActivity {
 
     private int index = 0;
-    private ImageView btn_back;
-    private ImageView btn_right;
-    private TextView tv_center_title;
-    private TextView tv_summary;
-
     private long beginTime, endTime;
     private String hotelDateStr;
     private EditText et_keyword;
@@ -80,10 +75,6 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
     @Override
     public void initViews() {
         super.initViews();
-        btn_back = (ImageView) findViewById(R.id.btn_back);
-        btn_right = (ImageView) findViewById(R.id.btn_right);
-        tv_center_title = (TextView) findViewById(R.id.tv_center_title);
-        tv_summary = (TextView) findViewById(R.id.tv_center_summary);
         et_keyword = (EditText) findViewById(R.id.et_keyword);
         iv_search = (ImageView) findViewById(R.id.iv_search);
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -138,13 +129,13 @@ public class HotelListActivity extends BaseFragmentActivity implements View.OnCl
         endTime = HotelOrderManager.getInstance().getEndTime();
         hotelDateStr = HotelOrderManager.getInstance().getDateStr();
 
-//        tv_center_title.setText(HotelOrderManager.getInstance().getCityStr() + "(" + HotelOrderManager.getInstance().getDateStr() + ")");
-        tv_center_title.getPaint().setFakeBoldText(true);
         tv_center_title.setText(
                 String.format(getString(R.string.titleCityDateStr),
                         HotelOrderManager.getInstance().getCityStr(),
                         hotelDateStr)
         );
+        btn_right.setVisibility(View.VISIBLE);
+        btn_right.setImageResource(R.drawable.iv_map);
 
         et_keyword.setText(keyword);
 

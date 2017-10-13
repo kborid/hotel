@@ -1,8 +1,12 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Process;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.SessionContext;
@@ -144,9 +149,21 @@ public class DebugChangeEnvActivity extends BaseActivity {
                         SessionContext.destroy();
                         sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
                         ActivityTack.getInstanse().exit();
+                        Process.killProcess(Process.myPid());
                     }
-                }, 1500);
+                }, 1000);
                 CustomToast.show(getString(R.string.change_success), CustomToast.LENGTH_SHORT);
+
+                Intent intent = new Intent(PRJApplication.getInstance(), WelcomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                PendingIntent restartIntent = PendingIntent.getActivity(
+                        PRJApplication.getInstance(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                //退出并重启程序
+                AlarmManager mgr = (AlarmManager) PRJApplication.getInstance().getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1500, restartIntent);
+
                 break;
         }
     }

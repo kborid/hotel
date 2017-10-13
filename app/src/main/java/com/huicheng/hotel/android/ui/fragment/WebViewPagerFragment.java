@@ -16,7 +16,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.bean.ShenZhouConfigBean;
-import com.huicheng.hotel.android.ui.activity.MainFragmentActivity;
+import com.huicheng.hotel.android.ui.activity.MainActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.MyCommWebViewClient;
 import com.prj.sdk.util.LogUtil;
@@ -121,20 +121,20 @@ public class WebViewPagerFragment extends BaseFragment {
 
     private void dealUrlParams() {
         switch (keyIndex) {
-            case MainFragmentActivity.TAB_PLANE:
+            case MainActivity.TAB_PLANE:
                 mURL = NetURL.PLANE_HOME;
 
-                mIsReLoad = MainFragmentActivity.getIsNeedReload();
-                String orderId = MainFragmentActivity.getPlaneOrderId();
+                mIsReLoad = MainActivity.getIsNeedReload();
+                String orderId = MainActivity.getPlaneOrderId();
                 if (StringUtil.notEmpty(orderId)) {
                     mURL = mURL + "?yiorderid=" + orderId;
                 }
                 break;
-            case MainFragmentActivity.TAB_TRAIN:
+            case MainActivity.TAB_TRAIN:
                 mURL = NetURL.TRAIN_HOME;
 
                 break;
-            case MainFragmentActivity.TAB_TAXI:
+            case MainActivity.TAB_TAXI:
                 mURL = AppConst.ISDEVELOP ? NetURL.SZ_TAXI_HOME_DEBUG : NetURL.SZ_TAXI_HOME_RELEASE;
 
                 String mainColorStr = Integer.toHexString(getResources().getColor(mMainColor));

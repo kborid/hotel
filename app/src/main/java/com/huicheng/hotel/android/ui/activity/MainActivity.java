@@ -20,7 +20,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.adapter.MainFragmentAdapter;
-import com.huicheng.hotel.android.ui.base.BaseFragmentActivity;
+import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomBottomNaviBar;
 import com.huicheng.hotel.android.ui.custom.CustomViewPager;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
@@ -29,7 +29,6 @@ import com.huicheng.hotel.android.ui.fragment.HotelPagerFragment;
 import com.huicheng.hotel.android.ui.fragment.WebViewPagerFragment;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
-import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
@@ -40,7 +39,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFragmentActivity extends BaseFragmentActivity implements OnPageChangeListener, DataCallback, CustomBottomNaviBar.OnChangeClickListener, View.OnClickListener {
+public class MainActivity extends BaseActivity implements OnPageChangeListener, CustomBottomNaviBar.OnChangeClickListener {
 
     public static final String TAB_HOTEL = "tab_hotel";
     public static final String TAB_PLANE = "tab_plane";
@@ -70,9 +69,8 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ui_main_tab);
+        setContentView(R.layout.act_main);
         initViews();
-        dealIntent();
         initParams();
         initListeners();
     }
@@ -174,7 +172,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                     startActivity(intent);
                     SessionContext.setOpenInstallAppData(null);
                 } else {
-                    LogUtil.d("MainFragmentActivity", "warning~~~");
+                    LogUtil.d("MainActivity", "warning~~~");
                 }
             }
         }
@@ -329,12 +327,10 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
         custom_bar.refreshTabLayout(arg0, true);
     }
 
-    @Override
-    public void preExecute(ResponseData request) {
-    }
 
     @Override
-    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
         if (response != null && response.body != null) {
             if (request.flag == AppConst.MESSAGE_COUNT) {
                 JSONObject mJson = JSON.parseObject(response.body.toString());
@@ -344,10 +340,6 @@ public class MainFragmentActivity extends BaseFragmentActivity implements OnPage
                 left_layout.updateMsgCount(mJson.getString("count"));
             }
         }
-    }
-
-    @Override
-    public void notifyError(ResponseData request, ResponseData response, Exception e) {
     }
 
     @Override

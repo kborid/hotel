@@ -113,7 +113,7 @@ public class FansHotelActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_booking:
                 HotelOrderManager.getInstance().reset();
-                Intent intent = new Intent(FansHotelActivity.this, MainFragmentActivity.class);
+                Intent intent = new Intent(FansHotelActivity.this, MainActivity.class);
                 intent.putExtra("isClosed", true);
                 intent.putExtra("index", 0);
                 startActivity(intent);

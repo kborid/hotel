@@ -312,7 +312,7 @@ public class OrderPayActivity extends BaseActivity {
                         if (ActivityTack.getInstanse().isExitActivity(HotelListActivity.class)) {
                             startActivity(new Intent(OrderPayActivity.this, HotelListActivity.class));
                         } else if (ActivityTack.getInstanse().isExitActivity(RoomOrderConfirmActivity.class)) {
-                            Intent intent = new Intent(OrderPayActivity.this, MainFragmentActivity.class);
+                            Intent intent = new Intent(OrderPayActivity.this, MainActivity.class);
                             intent.putExtra("isClosed", true);
                             intent.putExtra("index", 0);
                             startActivity(intent);

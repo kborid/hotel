@@ -121,7 +121,7 @@ public class GuideSwitchActivity extends BaseActivity {
             dialog.setCanceledOnTouchOutside(true);
             dialog.show();
         } else {
-            Intent intent = new Intent(this, MainFragmentActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("index", index);
             startActivity(intent);
         }
@@ -132,7 +132,7 @@ public class GuideSwitchActivity extends BaseActivity {
         super.onResume();
         if (SessionContext.getOpenInstallAppData() != null) {
             myHandler.removeCallbacksAndMessages(null);
-            Intent intent = new Intent(this, MainFragmentActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("index", 0);
             startActivity(intent);
             finish();

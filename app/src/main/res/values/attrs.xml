@@ -57,7 +57,6 @@
         <!--selector-->
         <attr name="mainColorBtnSel" format="reference" />
         <attr name="indicatorBgSel" format="reference" />
-        <attr name="ygrBtnSel" format="reference" />
         <attr name="bottomBtnSel" format="reference" />
         <attr name="tagFlowBgSel" format="reference" />
         <attr name="orderSpinnerSel" format="reference" />

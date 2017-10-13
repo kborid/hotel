@@ -50,7 +50,6 @@ import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -171,27 +170,13 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            DataLoader.getInstance().clearRequests();
-            ActivityTack.getInstanse().exit();
-            SessionContext.destroy();
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        return event.getKeyCode() == KeyEvent.KEYCODE_BACK || super.dispatchKeyEvent(event);
     }
 
     @Override
     public void onInstallFinish(AppData appData, Error error) {
         LogUtil.i(TAG, "onInstallFinish() appData = " + appData + ", error = " + error + ", do nothing!!!");
-//        AppData tmp = null;
-//        if (null != appData) {
-//            LogUtil.i(TAG, "appData = " + appData.toString());
-//            if (StringUtil.notEmpty(appData.getChannel()) || StringUtil.notEmpty(appData.getData())) {
-//                tmp = appData;
-//            }
-//        }
     }
 
     @Override
@@ -215,7 +200,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LAUNCH_REQUIRE_PERMISSIONS);
             return;
         }
-        Collections.addAll(DataLoader.getInstance().mCacheUrls, NetURL.CACHE_URL);
         AMapLocationControl.getInstance().startLocationOnce(this, true);
         //用户第一次启动时，调用后台封装的广点通的接口，统计激活量
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
@@ -271,7 +255,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
                 SessionContext.setBannerList(temp);
-            } else if (request.flag == 0x01 || request.flag == AppConst.AD_GDT_IF) {
+            } else if (request.flag == AppConst.AD_GDT_IF) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
             }
 
@@ -353,18 +337,5 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        LogUtil.i(TAG, "onActivityResult()");
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
-            if (resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-                ActivityTack.getInstanse().exit();
-                SessionContext.destroy();
-            }
-        }
     }
 }

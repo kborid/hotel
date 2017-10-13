@@ -462,7 +462,7 @@ public class UserCenterActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_back:
-                startActivity(new Intent(this, MainFragmentActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
 //                finish();
                 break;
             case R.id.camer_lay:

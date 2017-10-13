@@ -142,7 +142,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
         dialog.setNegativeButton(getString(R.string.active_go), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(OrderPaySuccessActivity.this, MainFragmentActivity.class);
+                Intent intent = new Intent(OrderPaySuccessActivity.this, MainActivity.class);
                 intent.putExtra("index", 1);
                 startActivity(intent);
             }
@@ -186,7 +186,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
 //        super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_back:
-                startActivity(new Intent(this, MainFragmentActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.btn_vip:
                 if (hotelDetailInfoBean != null) {

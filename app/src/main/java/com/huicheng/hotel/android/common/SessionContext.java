@@ -36,8 +36,6 @@ public class SessionContext {
 
     private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
 
-    private static List<String> cityIndexList = new ArrayList<>();
-    private static Map<String, List<String>> cityNameMap = new HashMap<>();
     private static List<CityAreaInfoBean> cityAreaList = new ArrayList<>();
     private static Map<String, List<CityAreaInfoBean>> cityAreaMap = new HashMap<>();
 
@@ -97,30 +95,6 @@ public class SessionContext {
             bannerList = list;
         } else {
             bannerList = new ArrayList<>();
-        }
-    }
-
-    public static List<String> getCityIndexList() {
-        return cityIndexList;
-    }
-
-    public static void setCityIndexList(List<String> list) {
-        if (null != list) {
-            cityIndexList = list;
-        } else {
-            cityIndexList = new ArrayList<>();
-        }
-    }
-
-    public static Map<String, List<String>> getCityNameMap() {
-        return cityNameMap;
-    }
-
-    public static void setCityNameMap(Map<String, List<String>> map) {
-        if (null != map) {
-            cityNameMap = map;
-        } else {
-            cityNameMap = new HashMap<>();
         }
     }
 
@@ -258,7 +232,9 @@ public class SessionContext {
                 sb.append("=");
                 sb.append(value);
             }
-            url += sb.toString();
+            if (sb != null) {
+                url += sb.toString();
+            }
         }
         return url;
     }

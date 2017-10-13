@@ -87,7 +87,6 @@
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/maincolor_btn_sel</item>
         <item name="indicatorBgSel">@drawable/indicator_btn_sel</item>
-        <item name="ygrBtnSel">@drawable/ygr_home_btn_sel</item>
         <item name="bottomBtnSel">@drawable/comm_rect_bottombtn_sel</item>
         <item name="tagFlowBgSel">@drawable/tf_item_sel</item>
         <item name="orderSpinnerSel">@drawable/order_spinner_sel</item>
@@ -165,7 +164,6 @@
         <!--selector-->
         <item name="mainColorBtnSel">@drawable/female_maincolor_btn_sel</item>
         <item name="indicatorBgSel">@drawable/female_indicator_btn_sel</item>
-        <item name="ygrBtnSel">@drawable/female_ygr_home_btn_sel</item>
         <item name="bottomBtnSel">@drawable/female_comm_rect_bottombtn_sel</item>
         <item name="tagFlowBgSel">@drawable/female_tf_item_sel</item>
         <item name="orderSpinnerSel">@drawable/female_order_spinner_sel</item>

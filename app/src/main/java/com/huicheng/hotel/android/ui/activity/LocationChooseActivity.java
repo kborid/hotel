@@ -21,14 +21,15 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -116,7 +117,7 @@ public class LocationChooseActivity extends BaseActivity {
 
         tv_city_index.setText("A");
 
-        if (null != SessionContext.getCityIndexList() && SessionContext.getCityIndexList().size() > 0
+        if (null != SessionContext.getCityAreaList() && SessionContext.getCityAreaList().size() > 0
                 && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
             myHandler.sendEmptyMessage(0x01);
         } else {
@@ -135,7 +136,12 @@ public class LocationChooseActivity extends BaseActivity {
 
     private void initData() {
         cityIndexList.clear();
-        cityIndexList.addAll(SessionContext.getCityIndexList());
+        List<String> tmp = new ArrayList<>();
+        for (String key : SessionContext.getCityAreaMap().keySet()) {
+            tmp.add(key);
+        }
+        Collections.sort(tmp);
+        cityIndexList.addAll(tmp);
         cityIndexAdapter.notifyDataSetChanged();
         cityList.clear();
         cityList.addAll(SessionContext.getCityAreaMap().get(tv_city_index.getText().toString()));
@@ -150,7 +156,7 @@ public class LocationChooseActivity extends BaseActivity {
         gv_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedChar = SessionContext.getCityIndexList().get(position);
+                String selectedChar = cityIndexList.get(position);
                 tv_city_index.setText(selectedChar);
                 cityList.clear();
                 cityList.addAll(SessionContext.getCityAreaMap().get(selectedChar));

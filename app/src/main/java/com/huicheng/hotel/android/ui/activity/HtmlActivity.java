@@ -186,7 +186,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
      */
     public void goBack() {
         if (getIntent().getExtras() != null && getIntent().getExtras().getString("goBack") != null) {
-            Intent intent = new Intent(this, MainFragmentActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else {
             this.finish();

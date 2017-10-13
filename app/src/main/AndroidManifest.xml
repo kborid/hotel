@@ -81,7 +81,7 @@
             android:name=".ui.activity.GuideSwitchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.MainFragmentActivity"
+            android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />

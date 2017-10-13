@@ -121,7 +121,7 @@ public class PermissionsActivity extends AppCompatActivity {
         builder.setMessage("\n当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"打开所需权限。");
 
         // 拒绝, 退出应用
-        builder.setNegativeButton("退出", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 setResult(PERMISSIONS_DENIED);

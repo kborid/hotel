@@ -23,6 +23,7 @@ public class PermissionsChecker {
         for (String permission : permissions) {
             if (lacksPermission(permission)) {
                 hasLack = true;
+                break;
             }
         }
         return hasLack;

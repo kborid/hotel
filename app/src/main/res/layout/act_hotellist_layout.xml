@@ -1,69 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gray"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
-    <!-- title -->
-    <LinearLayout
-        android:id="@+id/title_lay"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:scaleType="center"
-            android:src="@drawable/iv_back" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_center_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/titleColor"
-                android:text="四川-成都"
-                android:textSize="@dimen/common_18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_center_summary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/titleSummaryColor"
-                android:textSize="@dimen/common_10sp"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/btn_right"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:scaleType="center"
-            android:src="@drawable/iv_map" />
-
-    </LinearLayout>
+    <include layout="@layout/comm_title" />
 
     <RelativeLayout
         android:id="@+id/list_lay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/title_lay">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/search_lay"
@@ -163,4 +113,4 @@
         app:backgroundTint="?attr/considerFab"
         app:elevation="15dp"
         app:rippleColor="?attr/considerFab" />
-</RelativeLayout>
+</LinearLayout>
