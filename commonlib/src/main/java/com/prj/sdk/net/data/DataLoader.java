@@ -329,8 +329,10 @@ public class DataLoader {
     public void clearRequests() {
         try {
             Set<String> mRunningIds = mRunningRequests.keySet();
-            for (String id : mRunningIds) {
-                clear(id);
+            if (mRunningIds.size() > 0) {
+                for (String id : mRunningIds) {
+                    clear(id);
+                }
             }
             ids.clear();
             mRequests.clear();

@@ -80,7 +80,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 }
             }
         }
-
         onNewIntent(getIntent());
         initViews();
         initParams();
@@ -106,11 +105,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         super.onNewIntent(intent);
         setIntent(intent);
         OpenInstall.getWakeUp(intent, this);
-    }
-
-    @Override
-    public void initViews() {
-        super.initViews();
     }
 
     public void initParams() {
@@ -337,5 +331,17 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
+        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            if (resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+                ActivityTack.getInstanse().exit();
+                SessionContext.destroy();
+            }
+        }
     }
 }

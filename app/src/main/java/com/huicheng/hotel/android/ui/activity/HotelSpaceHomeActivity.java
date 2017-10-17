@@ -81,7 +81,9 @@ public class HotelSpaceHomeActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-        requestHotelSpaceBasicInfo();
+        if (null == savedInstanceState) {
+            requestHotelSpaceBasicInfo();
+        }
     }
 
     @Override
@@ -112,11 +114,6 @@ public class HotelSpaceHomeActivity extends BaseActivity {
         if (scrollview != null) {
             scrollview.smoothScrollTo(0, 0);
         }
-    }
-
-    @Override
-    public void dealIntent() {
-        super.dealIntent();
     }
 
     @Override

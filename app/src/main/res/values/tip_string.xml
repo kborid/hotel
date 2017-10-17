@@ -71,4 +71,6 @@
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
 
+    <string name="empty_hotel_list">未找到与之匹配的酒店</string>
+
 </resources>

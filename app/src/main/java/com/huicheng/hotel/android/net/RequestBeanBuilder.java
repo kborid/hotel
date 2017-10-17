@@ -34,7 +34,7 @@ public class RequestBeanBuilder {
         head = new HashMap<>();
         body = new HashMap<>();
         if (isNeedTicket) {
-            if (StringUtil.isEmpty(SessionContext.getTicket())) {// 如果ticket为空则发送登录广播
+            if (StringUtil.isEmpty(SessionContext.getTicket())) {
                 AppContext.mAppContext.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
             }
             addHeadToken(SessionContext.getTicket());

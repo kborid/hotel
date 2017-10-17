@@ -59,8 +59,8 @@ public class AboutActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText(title);
-        tv_content.setText(content);
 
+        tv_content.setText(content);
         WebSettings webSetting = wv_content.getSettings();
         webSetting.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSetting.setSupportZoom(false);
@@ -87,20 +87,4 @@ public class AboutActivity extends BaseActivity {
             wv_content.setVisibility(View.GONE);
         }
     }
-
-    @Override
-    public void initListeners() {
-        super.initListeners();
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
 }

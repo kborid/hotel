@@ -4,31 +4,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_note"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/comm_rectangle_ygrnote_bg"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="@string/ygrNote"
-            android:textColor="?attr/mainColor"
-            android:textSize="@dimen/common_10sp"
-            android:visibility="gone" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/tv_note" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/comm_rectangle_ygrnote_bg"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/ygrNote"
+                android:textColor="?attr/mainColor"
+                android:textSize="@dimen/common_10sp"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_note" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/empty_lay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/empty_hotel_list"
+                android:textColor="@color/secColorShadow"
+                android:textSize="@dimen/common_18sp" />
+        </RelativeLayout>
+    </FrameLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

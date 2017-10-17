@@ -53,7 +53,9 @@ public class HouHuiYaoOrderDetailActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-        requestHouHuiYaoDetail();
+        if (null == savedInstanceState) {
+            requestHouHuiYaoDetail();
+        }
     }
 
     @Override

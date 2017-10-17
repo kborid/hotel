@@ -107,7 +107,9 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
         initParams();
         initListeners();
         if (null == hotelSpaceBasicInfoBean) {
-            requestHotelSpaceBasicInfo();
+            if (null == savedInstanceState) {
+                requestHotelSpaceBasicInfo();
+            }
         } else {
             replyListView.refreshingHeaderView();
         }

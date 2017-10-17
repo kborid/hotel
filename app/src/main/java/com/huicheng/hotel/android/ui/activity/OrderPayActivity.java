@@ -73,8 +73,9 @@ public class OrderPayActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-
-        requestOrderDetailInfo();
+        if (null == savedInstanceState) {
+            requestOrderDetailInfo();
+        }
     }
 
     @Override

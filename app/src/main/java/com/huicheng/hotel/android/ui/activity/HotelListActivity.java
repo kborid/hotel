@@ -66,7 +66,6 @@ public class HotelListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_hotellist_layout);
-        dealIntent();
         initViews();
         initParams();
         initListeners();
@@ -181,9 +180,8 @@ public class HotelListActivity extends BaseActivity {
         }
     }
 
-    private void openMenu(View view) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0, -155, -135);
-
+    private void openMenu() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(fab, "rotation", 0, -155, -135);
         ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(customConsiderLayout, "alpha", 0.5f, 1f);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) customConsiderLayout.getLayoutParams();
         lp.bottomMargin = fab.getHeight() / 2 + (int) getResources().getDimension(R.dimen.fab_margin) - Utils.dip2px(20);
@@ -224,8 +222,8 @@ public class HotelListActivity extends BaseActivity {
         fabOpened = true;
     }
 
-    private void closeMenu(View view) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", -135, 20, 0);
+    private void closeMenu() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(fab, "rotation", -135, 20, 0);
         ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(customConsiderLayout, "alpha", 1f, 0.5f);
         customConsiderLayout.setPivotX(mWidth / 2);
         customConsiderLayout.setPivotY(mHeight);
@@ -277,14 +275,14 @@ public class HotelListActivity extends BaseActivity {
                 break;
             case R.id.fab:
                 if (fabOpened) {
-                    closeMenu(v);
+                    closeMenu();
                 } else {
-                    openMenu(v);
+                    openMenu();
                 }
                 break;
             case R.id.shadow_lay:
                 if (fabOpened) {
-                    closeMenu(fab);
+                    closeMenu();
                 }
                 break;
             case R.id.iv_search:
@@ -349,7 +347,7 @@ public class HotelListActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (fabOpened) {
-                closeMenu(fab);
+                closeMenu();
                 return true;
             }
         }

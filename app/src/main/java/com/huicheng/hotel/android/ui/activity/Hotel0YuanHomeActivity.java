@@ -53,7 +53,9 @@ public class Hotel0YuanHomeActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-        requestCurrentHasFreeActive();
+        if (null == savedInstanceState) {
+            requestCurrentHasFreeActive();
+        }
     }
 
     @Override

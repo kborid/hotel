@@ -56,7 +56,9 @@ public class OrderPaySuccessActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-        requestHotelDetailInfo();
+        if (null == savedInstanceState) {
+            requestHotelDetailInfo();
+        }
     }
 
     @Override

@@ -19,10 +19,10 @@ import com.huicheng.hotel.android.ui.custom.calendar.CalendarSelectedListener;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarUtils;
 import com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarView;
 import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 /**
  * @author kborid
@@ -47,7 +47,6 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_datechoose_layout);
-
         initViews();
         initParams();
         initListeners();

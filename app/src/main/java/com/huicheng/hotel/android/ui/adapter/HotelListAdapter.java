@@ -1,11 +1,10 @@
 package com.huicheng.hotel.android.ui.adapter;
 
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
-import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,7 +54,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
     @Override
     public HotelListAdapter.HotelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        HotelListAdapter.HotelViewHolder hotelViewHolder = null;
+        HotelListAdapter.HotelViewHolder hotelViewHolder;
         switch (type) {
             case HotelCommDef.TYPE_YEGUIREN:
                 hotelViewHolder = new HotelListAdapter.HotelViewHolder(LayoutInflater.from(context).inflate(R.layout.lv_hotelitem_ygr, parent, false));
@@ -70,9 +69,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         return hotelViewHolder;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onBindViewHolder(final HotelListAdapter.HotelViewHolder holder, final int position) {
+    public void onBindViewHolder(final HotelListAdapter.HotelViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
         HotelInfoBean bean = list.get(position);
         holder.tv_hotel_name.setText(bean.hotelName);

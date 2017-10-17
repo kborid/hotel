@@ -46,7 +46,9 @@ public class AttendPersonActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-        requestAttendPersonList(pageIndex);
+        if (null == savedInstanceState) {
+            requestAttendPersonList(pageIndex);
+        }
     }
 
     @Override

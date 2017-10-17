@@ -58,7 +58,9 @@ public class HotelOrderDetailActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-        requestOrderDetailInfo();
+        if (null == savedInstanceState) {
+            requestOrderDetailInfo();
+        }
     }
 
     @Override

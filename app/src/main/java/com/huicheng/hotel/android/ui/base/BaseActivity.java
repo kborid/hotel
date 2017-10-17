@@ -1,6 +1,5 @@
 package com.huicheng.hotel.android.ui.base;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -30,13 +29,12 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
-import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.FixIMMLeaksTools;
 import com.huicheng.hotel.android.ui.activity.InvoiceDetailActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
-import com.huicheng.hotel.android.ui.activity.PermissionsActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
+import com.huicheng.hotel.android.ui.activity.WelcomeActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
@@ -73,77 +71,37 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     protected ImageView btn_back, btn_right;
     protected static String requestID;
 
+    protected static boolean isReStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtil.d(TAG, "onCreate()");
-//        if (null != savedInstanceState && PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.ALL_PERMISSION)) {
-//            Intent intent = new Intent(this, WelcomeActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(intent);
-//            finish();
-//            overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
-//        } else {
         if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
             setTheme(R.style.femaleTheme);
         } else {
             setTheme(R.style.defaultTheme);
         }
-        ActivityTack.getInstanse().addActivity(this);
-//        }
-    }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        LogUtil.d(TAG, "onNewIntent()");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LogUtil.d(TAG, "onResume()");
-        MobclickAgent.onPageStart(this.getClass().getName()); // 统计页面(仅有Activity的应用中SDK自动调用，不需要单独写。"SplashScreen"为页面名称，可自定义)
-        MobclickAgent.onResume(this); // 统计时长
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LogUtil.d(TAG, "onPause()");
-        MobclickAgent.onPageEnd(this.getClass().getName());
-        MobclickAgent.onPause(this);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        LogUtil.d(TAG, "onRestoreInstanceState()");
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        LogUtil.d(TAG, "onSaveInstanceState()");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        LogUtil.d(TAG, "onDestroy()");
-        FixIMMLeaksTools.fixFocusedViewLeak(PRJApplication.getInstance());
-        RefWatcher refWatcher = PRJApplication.getRefWatcher(this);
-        refWatcher.watch(this);
-        DataLoader.getInstance().clearRequests();
-        ActivityTack.getInstanse().removeActivity(this);
+        if (null != savedInstanceState && !isReStarted) {
+            if (!SessionContext.isLogin()) {
+                SessionContext.initUserInfo();
+            }
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
+        } else {
+            isReStarted = false;
+            ActivityTack.getInstanse().addActivity(this);
+        }
     }
 
     // 初始化组件
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void initViews() {
         tv_center_title = (TextView) findViewById(R.id.tv_center_title);
-        if (tv_center_title != null) {
+        if (null != tv_center_title) {
             tv_center_title.setTypeface(Typeface.DEFAULT_BOLD);
         }
         tv_center_summary = (TextView) findViewById(R.id.tv_center_summary);
@@ -154,12 +112,17 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     public void dealIntent() {
     }
 
-    // 参数设置
     public void initParams() {
         dealIntent();
-        // 设置title的描述
-        if (tv_center_summary != null) {
-            if (StringUtil.isEmpty(tv_center_summary.getText())) {
+    }
+
+    //设置title的描述
+    public void setTitleSummaryString(String summary) {
+        if (null != tv_center_summary) {
+            if (StringUtil.notEmpty(summary)) {
+                tv_center_summary.setText(summary);
+                tv_center_summary.setVisibility(View.VISIBLE);
+            } else {
                 tv_center_summary.setVisibility(View.GONE);
             }
         }
@@ -181,6 +144,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
                         || getClass().equals(OrderPaySuccessActivity.class)
                         || getClass().equals(UserCenterActivity.class)) {
                     //do nothing
+                    LogUtil.i(TAG, "do nothing~~~");
                 } else {
                     finish();
                 }
@@ -188,6 +152,33 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.d(TAG, "onResume()");
+        MobclickAgent.onPageStart(this.getClass().getName()); //统计页面(仅有Activity的应用中SDK自动调用，不需要单独写。"SplashScreen"为页面名称，可自定义)
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LogUtil.d(TAG, "onPause()");
+        MobclickAgent.onPageEnd(this.getClass().getName());
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtil.d(TAG, "onDestroy()");
+        FixIMMLeaksTools.fixFocusedViewLeak(PRJApplication.getInstance());
+        RefWatcher refWatcher = PRJApplication.getRefWatcher(this);
+        refWatcher.watch(this);
+        DataLoader.getInstance().clearRequests();
+        ActivityTack.getInstanse().removeActivity(this);
     }
 
     /**
@@ -271,7 +262,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
                     .placeholder(R.drawable.def_hotel_banner)
                     .crossFade()
                     .centerCrop()
-                    .override(500, 700)
+                    .override(700, 400)
                     .into(iv_hotel_bg);
 
             TextView tv_vip_name = (TextView) viewHome.findViewById(R.id.tv_vip_name);
@@ -368,12 +359,6 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         mDialogVip.show();
     }
 
-    private void dismissAddVipDialog() {
-        if (mDialogVip != null) {
-            mDialogVip.dismiss();
-        }
-    }
-
     protected LayoutAnimationController getAnimationController() {
         LayoutAnimationController controller;
         Animation alphaAnim = new AlphaAnimation(0f, 1f);
@@ -406,11 +391,20 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    public void refreshScreenInfoVipPrice() {
+    }
+
+    @Override
+    public void preExecute(ResponseData request) {
+    }
+
     @Override
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
         if (request.flag == AppConst.HOTEL_VIP) {
             removeProgressDialog();
-            dismissAddVipDialog();
+            if (mDialogVip != null) {
+                mDialogVip.dismiss();
+            }
             LogUtil.i("BaseActivity", "Json = " + response.body.toString());
             isHotelVipRefresh = true;
             HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
@@ -421,13 +415,6 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             CustomToast.show(getString(R.string.isViped), CustomToast.LENGTH_SHORT);
         }
         onNotifyMessage(request, response);
-    }
-
-    public void refreshScreenInfoVipPrice() {
-    }
-
-    @Override
-    public void preExecute(ResponseData request) {
     }
 
     @Override
@@ -452,18 +439,5 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
 
     public void onNotifyError(ResponseData request) {
         LogUtil.d(TAG, "onNotifyError()");
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        LogUtil.i(TAG, "onActivityResult()");
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
-            if (resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-                ActivityTack.getInstanse().exit();
-                SessionContext.destroy();
-            }
-        }
     }
 }

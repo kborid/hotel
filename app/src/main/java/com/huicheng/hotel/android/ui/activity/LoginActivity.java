@@ -396,7 +396,6 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCan
             int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
             SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
             this.finish();
-
         } else if (request.flag == AppConst.BIND_CHECK) {// 如果绑定，直接获取用户信息，没有绑定到绑定页面
             removeProgressDialog();
             JSONObject mJson = JSON.parseObject(response.body.toString());

@@ -83,11 +83,6 @@ public class SearchResultActivity extends BaseActivity {
     }
 
     @Override
-    public void dealIntent() {
-        super.dealIntent();
-    }
-
-    @Override
     public void initParams() {
         super.initParams();
         adapter = new SearchResultAdapter(this, list);

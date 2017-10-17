@@ -62,11 +62,12 @@ public class MyDiscountCouponActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_mydiscount_layout);
-
         initViews();
         initParams();
         initListeners();
-        requestCouponInfo();
+        if (null == savedInstanceState) {
+            requestCouponInfo();
+        }
     }
 
     @Override

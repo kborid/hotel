@@ -107,6 +107,9 @@ public class RoomListActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
+        if (null == savedInstanceState) {
+            requestHotelDetailInfo();
+        }
     }
 
     @Override
@@ -155,9 +158,8 @@ public class RoomListActivity extends BaseActivity {
 
     @Override
     public void initParams() {
-        tv_center_title.getPaint().setFakeBoldText(true);
-        btn_right.setImageResource(R.drawable.iv_vippp);
         super.initParams();
+        btn_right.setImageResource(R.drawable.iv_vippp);
 
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         beginTime = HotelOrderManager.getInstance().getBeginTime();
@@ -186,8 +188,6 @@ public class RoomListActivity extends BaseActivity {
             tabHost.setCurrentTab(0);
         }
         updateTab(tabHost);
-
-        requestHotelDetailInfo();
     }
 
     @Override

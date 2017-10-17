@@ -11,6 +11,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
@@ -26,13 +27,13 @@ import com.huicheng.hotel.android.ui.activity.HotelListActivity;
 import com.huicheng.hotel.android.ui.activity.RoomListActivity;
 import com.huicheng.hotel.android.ui.adapter.HotelListAdapter;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -52,7 +53,9 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int lastVisibleItem = 0;
+
     private boolean isNoMore = false;
+    private RelativeLayout empty_lay;
 
     private int refreshType = 0;
     private static final int PAGESIZE = 10;
@@ -116,6 +119,7 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         adapter = new HotelListAdapter(getActivity(), list, HotelCommDef.TYPE_ALL);
         recyclerView.setAdapter(adapter);
+        empty_lay = (RelativeLayout) view.findViewById(R.id.empty_lay);
     }
 
     @Override
@@ -266,6 +270,11 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         CustomToast.show(message, CustomToast.LENGTH_SHORT);
         SessionContext.setAllDayList(null);
         swipeRefreshLayout.setRefreshing(false);
+        if (list.size() <= 0) {
+            empty_lay.setVisibility(View.VISIBLE);
+        } else {
+            empty_lay.setVisibility(View.GONE);
+        }
     }
 
     private class MyAsyncTask extends AsyncTask<Integer, Void, Void> {
@@ -316,8 +325,10 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
                 }
             }, 300);
             adapter.notifyDataSetChanged();
-            if (isNoMore) {
-                CustomToast.show("没有更多数据", CustomToast.LENGTH_SHORT);
+            if (list.size() <= 0) {
+                empty_lay.setVisibility(View.VISIBLE);
+            } else {
+                empty_lay.setVisibility(View.GONE);
             }
         }
     }

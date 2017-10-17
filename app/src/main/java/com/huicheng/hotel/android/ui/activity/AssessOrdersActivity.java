@@ -24,13 +24,13 @@ import com.huicheng.hotel.android.net.bean.AssessOrderInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,12 +61,14 @@ public class AssessOrdersActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                listview.refreshingHeaderView();
-            }
-        }, 350);
+        if (null == savedInstanceState) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    listview.refreshingHeaderView();
+                }
+            }, 350);
+        }
     }
 
     @Override

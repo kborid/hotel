@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId "com.huicheng.hotel.android" //JPush上注册的包名.
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 12
         versionName "2.0.4"
         multiDexEnabled true

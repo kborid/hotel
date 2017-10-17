@@ -21,11 +21,11 @@ import com.huicheng.hotel.android.net.bean.FreeOneNightBean;
 import com.huicheng.hotel.android.ui.adapter.Hotel0YuanAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.AreaWheelDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.lang.ref.WeakReference;
 import java.net.ConnectException;
@@ -69,7 +69,9 @@ public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelD
         initViews();
         initParams();
         initListeners();
-        requestFreeActiveDetail(0);
+        if (null == savedInstanceState) {
+            requestFreeActiveDetail(0);
+        }
     }
 
     @Override

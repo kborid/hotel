@@ -94,11 +94,6 @@ public class LocationChooseActivity extends BaseActivity {
     }
 
     @Override
-    public void dealIntent() {
-        super.dealIntent();
-    }
-
-    @Override
     public void initParams() {
         super.initParams();
 

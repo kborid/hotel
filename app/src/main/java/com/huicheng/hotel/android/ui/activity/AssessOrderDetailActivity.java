@@ -20,7 +20,6 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.NetURL;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AssessOrderDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.AssessOrderInfoBean;
@@ -31,7 +30,6 @@ import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
@@ -82,17 +80,19 @@ public class AssessOrderDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_assessorderdetail_layout);
-        getWindow().getDecorView().setVisibility(View.GONE);
         initViews();
         initParams();
         initListeners();
-        requestHotelDetailInfo();
+        if (null == savedInstanceState) {
+            requestHotelDetailInfo();
+        }
     }
 
     @Override
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setVisibility(View.GONE);
         root_lay.setLayoutAnimation(getAnimationController());
         iv_background = (RoundedAllImageView) findViewById(R.id.iv_background);
         tv_hotel_name = (TextView) findViewById(R.id.tv_hotel_name);
@@ -126,6 +126,7 @@ public class AssessOrderDetailActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText(orderBean.hotelName);
+
         tv_hotel_name.setText(orderBean.hotelName + "(" + orderBean.cityName + ")");
         String start = DateUtil.getDay("yyyy年MM月dd日", orderBean.startTime);
         String end = DateUtil.getDay("dd日", orderBean.endTime);
@@ -307,10 +308,6 @@ public class AssessOrderDetailActivity extends BaseActivity {
     }
 
     private void choosePictureDialog() {
-        if (!SessionContext.isLogin()) {
-            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-            return;
-        }
         CustomDialog mDialog = new CustomDialog(this);
         mDialog.setMessage("请选择图片获取方式");
         mDialog.setPositiveButton("图库", new DialogInterface.OnClickListener() {

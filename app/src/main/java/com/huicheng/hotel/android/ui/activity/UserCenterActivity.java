@@ -417,10 +417,6 @@ public class UserCenterActivity extends BaseActivity {
     }
 
     public void chooseImage() {
-        if (!SessionContext.isLogin()) {
-            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-            return;
-        }
         CustomDialog dialog = new CustomDialog(this);
         dialog.setMessage("请选择图片获取方式");
         dialog.setPositiveButton("图库", new DialogInterface.OnClickListener() {
@@ -462,8 +458,8 @@ public class UserCenterActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_back:
-                startActivity(new Intent(this, MainActivity.class));
-//                finish();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 break;
             case R.id.camer_lay:
                 if (!isEdited) {

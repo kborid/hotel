@@ -51,6 +51,13 @@ public class ConsumptionDetailActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
+        if (null == ordersSpendInfoBean) {
+            if (null == savedInstanceState) {
+                requestSpendRecorded();
+            }
+        } else {
+            updateOrdersSpendInfo();
+        }
     }
 
     @Override
@@ -115,11 +122,6 @@ public class ConsumptionDetailActivity extends BaseActivity {
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_dialog_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(selectorIndex);
-        if (null == ordersSpendInfoBean) {
-            requestSpendRecorded();
-        } else {
-            updateOrdersSpendInfo();
-        }
     }
 
     @Override

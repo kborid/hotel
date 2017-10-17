@@ -121,11 +121,12 @@ public class RoomDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_roomdetail_layout);
-
         initViews();
         initParams();
         initListeners();
-        requestRoomDetailInfo();
+        if (null == savedInstanceState) {
+            requestRoomDetailInfo();
+        }
     }
 
     @Override

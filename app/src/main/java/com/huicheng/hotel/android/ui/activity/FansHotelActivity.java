@@ -51,11 +51,12 @@ public class FansHotelActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_fanshotel_layout);
-
         initViews();
         initParams();
         initListeners();
-        requestVipHotelInfo();
+        if (null == savedInstanceState) {
+            requestVipHotelInfo();
+        }
     }
 
     @Override

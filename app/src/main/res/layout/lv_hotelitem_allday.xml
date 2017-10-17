@@ -115,7 +115,7 @@
                             android:layout_height="wrap_content"
                             android:text="420 元"
                             android:textColor="?attr/hotelItemPrice"
-                            android:textSize="@dimen/common_18sp"/>
+                            android:textSize="@dimen/common_18sp" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

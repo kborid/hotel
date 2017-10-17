@@ -113,6 +113,7 @@ public class MainActivity extends BaseActivity implements OnPageChangeListener, 
         int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
         if (oldSkinIndex != newSkinIndex) {
             oldSkinIndex = newSkinIndex;
+            isReStarted = true;
             recreate();
         }
 
@@ -222,6 +223,7 @@ public class MainActivity extends BaseActivity implements OnPageChangeListener, 
         // Note that getIntent() still returns the original Intent. You can use setIntent(Intent) to update it to this new Intent.
         setIntent(intent);
         dealIntent();
+        isReStarted = true;
     }
 
     /**
@@ -354,12 +356,12 @@ public class MainActivity extends BaseActivity implements OnPageChangeListener, 
                 drawer_layout.openDrawer(left_layout);
                 break;
             case R.id.order_lay:
-                if (SessionContext.isLogin()) {
-                    Intent intent = new Intent(this, MyOrdersActivity.class);
-                    startActivity(intent);
-                } else {
+                if (!SessionContext.isLogin()) {
                     sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    return;
                 }
+                Intent intent = new Intent(this, MyOrdersActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

@@ -64,7 +64,9 @@ public class AssessCommendActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-        listview.refreshingHeaderView();
+        if (null == savedInstanceState) {
+            listview.refreshingHeaderView();
+        }
     }
 
     @Override

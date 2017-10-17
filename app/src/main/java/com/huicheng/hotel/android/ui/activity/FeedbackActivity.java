@@ -18,18 +18,16 @@ import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
-import com.prj.sdk.constants.BroadCastConst;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.ThumbnailUtil;
 import com.prj.sdk.util.Utils;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.io.File;
 import java.io.IOException;
@@ -149,10 +147,6 @@ public class FeedbackActivity extends BaseActivity {
     }
 
     private void choosePictureDialog() {
-        if (!SessionContext.isLogin()) {
-            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-            return;
-        }
         CustomDialog dialog = new CustomDialog(this);
         dialog.setMessage("请选择图片获取方式");
         dialog.setPositiveButton("图库", new DialogInterface.OnClickListener() {
