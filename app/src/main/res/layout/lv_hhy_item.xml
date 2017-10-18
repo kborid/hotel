@@ -65,7 +65,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="桔子水晶酒店(杭州火车东站店)"
-                    android:textColor="@color/registerhintColor"
+                    android:textColor="@color/lableColor"
                     android:textSize="@dimen/common_12sp"
                     android:textStyle="bold" />
 

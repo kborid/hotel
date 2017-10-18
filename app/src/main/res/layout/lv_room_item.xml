@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="高级大床房"
-                        android:textColor="@color/registerhintColor"
+                        android:textColor="@color/lableColor"
                         android:textSize="@dimen/common_12sp" />
 
                     <LinearLayout
@@ -133,7 +133,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="特价："
-                            android:textColor="@color/registerhintColor"
+                            android:textColor="@color/lableColor"
                             android:textSize="@dimen/common_12sp" />
 
                         <TextView

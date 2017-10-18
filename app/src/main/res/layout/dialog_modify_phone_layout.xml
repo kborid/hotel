@@ -15,7 +15,7 @@
         android:inputType="phone"
         android:lines="1"
         android:maxLength="11"
-        android:textColorHint="@color/registerhintColor"
+        android:textColorHint="@color/commonHintColor"
         android:textSize="@dimen/common_text_size" />
 
     <View
@@ -39,7 +39,7 @@
             android:inputType="number"
             android:lines="1"
             android:maxLength="6"
-            android:textColorHint="@color/registerhintColor"
+            android:textColorHint="@color/commonHintColor"
             android:textSize="@dimen/common_text_size" />
 
         <Button

@@ -84,7 +84,6 @@
     <color name="serviceDetailContent">@color/calendarTextColor</color>
 
     <color name="searchHintColor">#c8c8c8</color>
-    <color name="registerhintColor">#acacac</color>
     <color name="deleteColor">#ef5669</color>
 
     <color name="saveColor">#8bc349</color>

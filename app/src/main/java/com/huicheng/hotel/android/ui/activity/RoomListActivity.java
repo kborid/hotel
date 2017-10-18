@@ -402,8 +402,8 @@ public class RoomListActivity extends BaseActivity {
                 } else {
                     clock_lay.setVisibility(View.GONE);
                     content_layout.setBackgroundResource(0);
-                    tv_title.setTextColor(getResources().getColor(R.color.registerhintColor));
-                    tv_price_note.setTextColor(getResources().getColor(R.color.registerhintColor));
+                    tv_title.setTextColor(getResources().getColor(R.color.lableColor));
+                    tv_price_note.setTextColor(getResources().getColor(R.color.lableColor));
                     tv_price.setTextColor(mRoomPriceColorId);
                 }
             } else {

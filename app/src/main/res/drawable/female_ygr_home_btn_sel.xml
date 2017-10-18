@@ -8,7 +8,7 @@
     </item>
     <item android:state_enabled="false">
         <shape>
-            <gradient android:angle="0" android:endColor="@color/registerhintColor" android:startColor="@color/searchHintColor" />
+            <gradient android:angle="0" android:endColor="@color/lableColor" android:startColor="@color/searchHintColor" />
             <corners android:radius="25dp" />
         </shape>
     </item>
