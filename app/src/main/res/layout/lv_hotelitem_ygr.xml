@@ -61,13 +61,13 @@
                     android:layout_height="wrap_content"
                     android:text="桔子水晶酒店(杭州火车东站店)"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/common_12sp" />
+                    android:textSize="@dimen/common_14sp" />
 
                 <TextView
                     android:id="@+id/tv_hotel_dis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="6dp"
                     android:text="500米"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_12sp" />
@@ -76,7 +76,7 @@
                     android:id="@+id/tv_hotel_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="6dp"
                     android:gravity="right"
                     android:text="480元起"
                     android:textColor="?attr/hotelItemDelPrice"
@@ -86,7 +86,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp">
+                    android:layout_marginTop="8dp">
 
                     <ImageView
                         android:id="@+id/iv_cert_icon"

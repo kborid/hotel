@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.ui.animation;
+package com.huicheng.hotel.android.control;
 
 import android.view.View;
 import android.view.animation.Animation;

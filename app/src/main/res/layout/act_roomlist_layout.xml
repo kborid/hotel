@@ -21,8 +21,7 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:focusableInTouchMode="true"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -76,7 +75,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:gravity="center"
-                            android:padding="5dp"
                             android:text="4.5"
                             android:textColor="@color/assessPointColorHigh"
                             android:textSize="20sp"
@@ -93,12 +91,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="桔子水晶酒店（杭州火車東站店）"
-                                android:textColor="@color/lableColor"
+                                android:textColor="@color/roomHotelNameColor"
                                 android:textSize="@dimen/common_18sp" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -114,7 +113,7 @@
                                     android:layout_marginLeft="7dp"
                                     android:text="201条评论"
                                     android:textColor="?attr/roomMainText"
-                                    android:textSize="9sp"
+                                    android:textSize="@dimen/common_12sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
@@ -123,7 +122,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:orientation="horizontal"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp">
@@ -150,6 +149,7 @@
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal"
                         android:paddingLeft="10dp"
+                        android:visibility="gone"
                         android:paddingRight="10dp">
 
                         <TextView
@@ -171,7 +171,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/comm_line2" />
 
                     <LinearLayout
@@ -291,7 +291,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:text="桔子水晶酒店(三星)"
-                        android:textColor="@color/secColor"
+                        android:textColor="?attr/roomMainText"
                         android:textSize="@dimen/common_12sp"
                         android:textStyle="bold" />
 

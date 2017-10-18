@@ -116,6 +116,7 @@ public class RoomListActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setVisibility(View.GONE);
         root_lay.setLayoutAnimation(getAnimationController());
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);

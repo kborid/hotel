@@ -134,6 +134,7 @@ public class RoomDetailActivity extends BaseActivity {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
         root_lay.setLayoutAnimation(getAnimationController());
+        root_lay.setVisibility(View.GONE);
         banner_lay = (RelativeLayout) findViewById(R.id.banner_lay);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         llp.width = Utils.mScreenWidth;
@@ -424,8 +425,6 @@ public class RoomDetailActivity extends BaseActivity {
 
             //设置房间所提供的服务
             refreshRoomDetailService();
-        } else {
-            root_lay.setVisibility(View.GONE);
         }
     }
 
