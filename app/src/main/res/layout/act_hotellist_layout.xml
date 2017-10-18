@@ -110,9 +110,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/fab_margin"
-        android:scaleType="center"
+        android:scaleType="centerInside"
         android:src="@drawable/iv_input_add"
         app:backgroundTint="?attr/considerFab"
-        app:elevation="15dp"
         app:rippleColor="?attr/considerFab" />
+
 </RelativeLayout>
