@@ -36,7 +36,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
     private TextView tv_end;
     private Button btn_next;
 
-    private boolean isForbidTitleClick = false;
+    private boolean isTitleCanClick = false;
     private boolean isReBooking = false;
     private boolean isFansBooking = false;
     private boolean isCouponBooking = false;
@@ -67,7 +67,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            isForbidTitleClick = bundle.getBoolean("isForbidTitleClick");
+            isTitleCanClick = bundle.getBoolean("isTitleCanClick");
             isReBooking = bundle.getBoolean("isReBooking");
             isFansBooking = bundle.getBoolean("isFansBooking");
             isCouponBooking = bundle.getBoolean("isCouponBooking");
@@ -82,10 +82,10 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
         tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
         tv_center_title.getPaint().setFakeBoldText(true);
         initWeekLayout();
-        if (isForbidTitleClick) {
-            tv_center_title.setEnabled(false);
-        } else {
+        if (isTitleCanClick) {
             tv_center_title.setEnabled(true);
+        } else {
+            tv_center_title.setEnabled(false);
         }
         if (0 != beginTime && 0 != endTime) {
             tv_begin.setText(DateUtil.getDay("M月d日", beginTime));

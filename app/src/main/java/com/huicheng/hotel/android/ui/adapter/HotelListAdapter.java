@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,6 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.bean.HotelInfoBean;
-import com.huicheng.hotel.android.ui.custom.RoundedTopImageView;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.huicheng.hotel.android.ui.mapoverlay.AMapUtil;
 import com.prj.sdk.constants.BroadCastConst;
@@ -82,7 +83,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 .into(holder.iv_hotel_icon);
 
         // 是否显示vip价格
-        holder.vip_layout.setVisibility(View.GONE);
+        holder.tv_vip.setVisibility(View.GONE);
         if (HotelCommDef.VIP_SUPPORT.equals(bean.vipEnable) && bean.vipPrice > 0) {
             int minPrice = 0;
             switch (type) {
@@ -103,68 +104,62 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 minPrice = 0 != minPrice ? minPrice : bean.speciallyPrice;
             }
             if (bean.vipPrice < minPrice) {
-                holder.vip_layout.setVisibility(View.VISIBLE);
+                holder.tv_vip.setVisibility(View.VISIBLE);
             }
         }
 
         // 下方显示价格逻辑
-        String note = "价格：", price = "暂无";
+        String price = "暂无";
         switch (type) {
             case HotelCommDef.TYPE_ALL:
 //                holder.detail_lay.setBackgroundResource(R.drawable.lv_hotel_item_bg);
                 if (bean.price > 0) {
                     if (bean.speciallyPrice > bean.price || bean.speciallyPrice <= 0) {
-                        holder.tv_hotel_price.setVisibility(View.GONE);
-                        price = bean.price + " 元起";
+                        holder.tv_platform_price.setVisibility(View.GONE);
+                        price = String.valueOf(bean.price);
                     } else {
                         // 判断是否显示带删除线的平台价
                         if (bean.speciallyPrice == bean.price) {
-                            holder.tv_hotel_price.setVisibility(View.GONE);
+                            holder.tv_platform_price.setVisibility(View.GONE);
                         } else {
-                            holder.tv_hotel_price.setVisibility(View.VISIBLE);
-                            holder.tv_hotel_price.setText(" " + bean.price + "元 ");
+                            holder.tv_platform_price.setVisibility(View.VISIBLE);
+                            holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(bean.price)));
                         }
 
-                        note = "特价：";
-                        price = bean.speciallyPrice + " 元起";
+                        price = String.valueOf(bean.speciallyPrice);
                     }
                 } else {
-                    holder.tv_hotel_price.setVisibility(View.GONE);
+                    holder.tv_platform_price.setVisibility(View.GONE);
                 }
-                holder.tv_hotel_special_price_note.setText(note);
-                holder.tv_hotel_special_price.setText(price);
+                holder.tv_real_price.setText(price);
                 break;
             case HotelCommDef.TYPE_CLOCK:
 //                holder.detail_lay.setBackgroundResource(R.drawable.lv_hotel_item_bg);
-                holder.tv_hotel_price.setVisibility(View.GONE);
-                note = "价格：";
-                price = bean.clockPrice != 0 ? bean.clockPrice + " 元起" : price; //价格为0时判断处理
-                holder.tv_hotel_special_price_note.setText(note);
-                holder.tv_hotel_special_price.setText(price);
+                holder.tv_platform_price.setVisibility(View.GONE);
+                price = bean.clockPrice != 0 ? String.valueOf(bean.clockPrice) : price; //价格为0时判断处理
+                holder.tv_real_price.setText(price);
                 break;
             case HotelCommDef.TYPE_YEGUIREN:
 //                holder.detail_lay.setBackgroundResource(ygrRoomItemBackgroundId);
                 if (bean.yeguirenPrice > 0) {
                     if (bean.speciallyPrice > bean.yeguirenPrice || bean.speciallyPrice <= 0) {
-                        holder.tv_hotel_price.setVisibility(View.GONE);
-                        price = bean.yeguirenPrice + " 元起";
+                        holder.tv_platform_price.setVisibility(View.GONE);
+                        price = String.valueOf(bean.yeguirenPrice);
                     } else {
                         // 判断是否显示带删除线的平台价
                         if (bean.speciallyPrice == bean.yeguirenPrice) {
-                            holder.tv_hotel_price.setVisibility(View.GONE);
+                            holder.tv_platform_price.setVisibility(View.GONE);
                         } else {
-                            holder.tv_hotel_price.setVisibility(View.VISIBLE);
-                            holder.tv_hotel_price.setText(" " + bean.yeguirenPrice + "元 ");
+                            holder.tv_platform_price.setVisibility(View.VISIBLE);
+                            holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(bean.yeguirenPrice)));
                         }
 
-                        note = "特价：";
-                        price = bean.speciallyPrice + " 元起";
+                        price = String.valueOf(bean.speciallyPrice);
                     }
                 } else {
-                    holder.tv_hotel_price.setVisibility(View.GONE);
+                    holder.tv_platform_price.setVisibility(View.GONE);
                 }
-                holder.tv_hotel_special_price_note.setText(note);
-                holder.tv_hotel_special_price.setText(price);
+                holder.tv_real_price.setText(price);
                 break;
         }
 
@@ -183,20 +178,23 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             holder.tv_hotel_dis.setVisibility(View.GONE);
         }
 
+        holder.tv_track.setText(String.format(context.getString(R.string.track_str), position + "小时"));
+
         // 评分信息
-        holder.tv_hotel_point.setVisibility(View.GONE);
         if (StringUtil.notEmpty(bean.hotelGrade)) {
             if (!"0".equals(bean.hotelGrade) && !"0.0".equals(bean.hotelGrade)) {
                 float point = Float.parseFloat(bean.hotelGrade);
-                holder.tv_hotel_point.setText(String.valueOf(point));
-                holder.tv_hotel_point.setVisibility(View.VISIBLE);
+                String tmp = String.format(context.getString(R.string.pointStr), String.valueOf(point));
+                SpannableString ss = new SpannableString(tmp);
+                ss.setSpan(/*new AbsoluteSizeSpan(11, true)*/new RelativeSizeSpan(0.78f), tmp.length() - 1, tmp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                holder.tv_point.setText(ss);
 
-                if (point >= 4) {
-                    holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_high));
-                } else if (point >= 3) {
-                    holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_mid));
+                if (point >= 4.8) {
+                    holder.tv_point_tips.setText(context.getString(R.string.point_level_1));
+                } else if (point >= 4.5) {
+                    holder.tv_point_tips.setText(context.getString(R.string.point_level_2));
                 } else {
-                    holder.tv_hotel_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_low));
+                    holder.tv_point_tips.setText(context.getString(R.string.point_level_3));
                 }
             }
         }
@@ -214,7 +212,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         }
 
         // 点击事件
-        holder.cardview.setOnClickListener(new View.OnClickListener() {
+        holder.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!SessionContext.isLogin()) {
@@ -235,36 +233,40 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
     class HotelViewHolder extends RecyclerView.ViewHolder {
 
-        CardView cardview;
-        RelativeLayout vip_layout;
-        RoundedTopImageView iv_hotel_icon;
-        LinearLayout detail_lay;
-        TextView tv_hotel_point;
+        LinearLayout root;
+        RelativeLayout hotel_bg_lay;
+        ImageView iv_hotel_icon;
+        LinearLayout off_lay;
+        TextView tv_off_percent;
+        TextView tv_off_info;
+        TextView tv_vip;
         TextView tv_hotel_name;
-        TextView tv_hotel_dis;
-        TextView tv_hotel_price;
-        TextView tv_hotel_special_price_note;
-        TextView tv_hotel_special_price;
         ImageView iv_cert_icon;
+        TextView tv_point;
+        TextView tv_point_tips;
+        TextView tv_hotel_dis;
+        TextView tv_track;
+        TextView tv_platform_price;
+        TextView tv_real_price;
 
         HotelViewHolder(View itemView) {
             super(itemView);
-            cardview = (CardView) itemView.findViewById(R.id.cardview);
-            vip_layout = (RelativeLayout) itemView.findViewById(R.id.vip_layout);
-            ((TextView) itemView.findViewById(R.id.tv_vip_note)).getPaint().setFakeBoldText(true);
-            iv_hotel_icon = (RoundedTopImageView) itemView.findViewById(R.id.iv_hotel_icon);
-            detail_lay = (LinearLayout) itemView.findViewById(R.id.detail_lay);
-            tv_hotel_point = (TextView) itemView.findViewById(R.id.tv_point);
+            root = (LinearLayout) itemView.findViewById(R.id.root);
+            hotel_bg_lay = (RelativeLayout) itemView.findViewById(R.id.hotel_bg_lay);
+            iv_hotel_icon = (ImageView) itemView.findViewById(R.id.iv_hotel_icon);
+            off_lay = (LinearLayout) itemView.findViewById(R.id.off_lay);
+            tv_off_percent = (TextView) itemView.findViewById(R.id.tv_off_percent);
+            tv_off_info = (TextView) itemView.findViewById(R.id.tv_off_info);
+            tv_vip = (TextView) itemView.findViewById(R.id.tv_vip);
             tv_hotel_name = (TextView) itemView.findViewById(R.id.tv_hotel_name);
-            tv_hotel_name.getPaint().setFakeBoldText(true);
-            tv_hotel_dis = (TextView) itemView.findViewById(R.id.tv_hotel_dis);
-            tv_hotel_price = (TextView) itemView.findViewById(R.id.tv_hotel_price);
-            tv_hotel_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
-            tv_hotel_special_price_note = (TextView) itemView.findViewById(R.id.tv_hotel_special_price_note);
-            tv_hotel_special_price_note.getPaint().setFakeBoldText(true);
-            tv_hotel_special_price = (TextView) itemView.findViewById(R.id.tv_hotel_special_price);
-            tv_hotel_special_price.getPaint().setFakeBoldText(true);
             iv_cert_icon = (ImageView) itemView.findViewById(R.id.iv_cert_icon);
+            tv_point = (TextView) itemView.findViewById(R.id.tv_point);
+            tv_point_tips = (TextView) itemView.findViewById(R.id.tv_point_tips);
+            tv_hotel_dis = (TextView) itemView.findViewById(R.id.tv_hotel_dis);
+            tv_track = (TextView) itemView.findViewById(R.id.tv_track);
+            tv_platform_price = (TextView) itemView.findViewById(R.id.tv_platform_price);
+            tv_platform_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
+            tv_real_price = (TextView) itemView.findViewById(R.id.tv_real_price);
         }
     }
 

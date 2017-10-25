@@ -39,6 +39,7 @@
     <color name="tabDefaultColor">@color/secColorShadow</color>
 
     <color name="guideLauncherColor">#565656</color>
+    <color name="citySelColor">#f3f3f3</color>
 
     <color name="hintColor">#e6e6e6</color>
     <color name="lineColor">#646260</color>
@@ -106,7 +107,6 @@
     <color name="hhyMainTextColor">#3d82cf</color>
     <color name="indicatorColor">#fec31e</color>
     <color name="indicatorDisColor">#40fcb819</color>
-    <color name="citySelColor">#f5f5f5</color>
     <color name="cityIndexSelColor">@color/mainColorAccent</color>
     <color name="commBottom">#e6e6e6</color>
     <color name="commBottomPress">#c8c8c8</color>
@@ -137,7 +137,6 @@
     <color name="female_hhyMainTextColor">@color/female_indicatorColor</color>
     <color name="female_indicatorColor">#a78757</color>
     <color name="female_indicatorDisColor">#40a78757</color>
-    <color name="female_citySelColor">#fcf3f3</color>
     <color name="female_cityIndexSelColor">@color/female_mainColor</color>
     <color name="female_commBottom">#efd1cf</color>
     <color name="female_commBottomPress">#EAB8B5</color>
@@ -149,7 +148,7 @@
     <color name="female_selDayBackground">@color/female_hotelItemPrice</color>
     <color name="female_considerText">@color/female_indicatorColor</color>
     <color name="female_considerFab">@color/female_considerText</color>
-    <color name="female_considerBackground">@color/female_citySelColor</color>
+    <color name="female_considerBackground">#fcf3f3</color>
     <color name="female_considerShadow">#efd1cf</color>
     <color name="female_roomMainText">@color/female_mainColor</color>
 

@@ -191,7 +191,6 @@ public class MyDiscountCouponActivity extends BaseActivity {
                 HotelOrderManager.getInstance().reset();
                 HotelOrderManager.getInstance().setCouponInfoBean(couponInfoBean.coupon.get(positionIndex));
                 Intent intent = new Intent(this, HotelCalendarChooseActivity.class);
-                intent.putExtra("isForbidTitleClick", true);
                 intent.putExtra("isCouponBooking", true);
                 startActivity(intent);
                 break;

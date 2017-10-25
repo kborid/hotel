@@ -16,7 +16,6 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.bean.ShenZhouConfigBean;
-import com.huicheng.hotel.android.ui.activity.MainActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.MyCommWebViewClient;
 import com.prj.sdk.util.LogUtil;
@@ -30,6 +29,9 @@ import java.util.HashMap;
  * Fragment webView
  */
 public class WebViewPagerFragment extends BaseFragment {
+    public static final String TAB_PLANE = "tab_plane";
+    public static final String TAB_TRAIN = "tab_train";
+    public static final String TAB_TAXI = "tab_taxi";
 
     private static final String URL_BLANK = "about:blank";
     private boolean isFirstLoad = false;
@@ -121,20 +123,20 @@ public class WebViewPagerFragment extends BaseFragment {
 
     private void dealUrlParams() {
         switch (keyIndex) {
-            case MainActivity.TAB_PLANE:
+            case TAB_PLANE:
                 mURL = NetURL.PLANE_HOME;
 
-                mIsReLoad = MainActivity.getIsNeedReload();
-                String orderId = MainActivity.getPlaneOrderId();
-                if (StringUtil.notEmpty(orderId)) {
-                    mURL = mURL + "?yiorderid=" + orderId;
-                }
+//                mIsReLoad = MainActivity.getIsNeedReload();
+//                String orderId = MainActivity.getPlaneOrderId();
+//                if (StringUtil.notEmpty(orderId)) {
+//                    mURL = mURL + "?yiorderid=" + orderId;
+//                }
                 break;
-            case MainActivity.TAB_TRAIN:
+            case TAB_TRAIN:
                 mURL = NetURL.TRAIN_HOME;
 
                 break;
-            case MainActivity.TAB_TAXI:
+            case TAB_TAXI:
                 mURL = AppConst.ISDEVELOP ? NetURL.SZ_TAXI_HOME_DEBUG : NetURL.SZ_TAXI_HOME_RELEASE;
 
                 String mainColorStr = Integer.toHexString(getResources().getColor(mMainColor));

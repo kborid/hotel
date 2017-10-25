@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@drawable/consider_price_bg_sel"
+        android:gravity="center"
+        android:text="不限"
+        android:textColor="@color/consider_price_text_sel"
+        android:textSize="@dimen/common_14sp" />
+</LinearLayout>

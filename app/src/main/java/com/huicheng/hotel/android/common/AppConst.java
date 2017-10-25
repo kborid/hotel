@@ -33,9 +33,7 @@ public final class AppConst {
     public static final String CITY = "city";
     public static final String SITEID = "siteid"; // site id
 
-    public static final String HISTORY_PROVINCE = "history_province";
-    public static final String HISTORY_CITY = "history_city";
-    public static final String HISTORY_SITEID = "history_siteid";
+    public static final String HISTORY = "history";
 
     public static final String LOCATION_PROVINCE = "location_province";
     public static final String LOCATION_CITY = "location_city";
@@ -52,11 +50,9 @@ public final class AppConst {
     public static final String CITYNAME = "测试";
 
     public static final String CONSIDER_POINT = "consider_point";
-    public static final String CONSIDER_DIS = "consider_dis";
+    public static final String CONSIDER_PRICE = "consider_price";
     public static final String CONSIDER_GRADE = "consider_grade";
     public static final String CONSIDER_TYPE = "consider_type";
-    public static final String RANGE_MIN = "range_min";
-    public static final String RANGE_MAX = "range_max";
 
     public static final int ACTIVITY_IMAGE_CAPTURE = 0x01;
     public static final int ACTIVITY_GET_IMAGE = 0x02;

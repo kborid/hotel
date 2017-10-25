@@ -1,18 +1,14 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -65,7 +61,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        initStatus();
+        initLaunchWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_welcome_layout);
 
@@ -86,20 +82,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         initListeners();
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void initStatus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            View decoderView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-            decoderView.setSystemUiVisibility(option);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        } else {
-            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -109,7 +91,10 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
 
     public void initParams() {
         super.initParams();
-        OpenInstall.getInstall(this);
+        //自OpenInstall SDK 2.0.0开始，SDK内部将会一直保存安装数据，每次调用getInstall方法都会返回值
+        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
+            OpenInstall.getInstall(this);
+        }
         Utils.initScreenSize(this);// 设置手机屏幕大小
         SessionContext.initUserInfo();
     }
@@ -149,12 +134,12 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         if (mTag != null && mTag.size() == 2) {
             isGoTo = true;
         }
-        LogUtil.i(TAG, "      --->>> isGoTo = " + isGoTo);
+        LogUtil.i(TAG, "goToNextActivity() --->>> isGoTo = " + isGoTo);
         if (isGoTo) {
             Intent intent;
-            boolean isFirstLaunch = SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true);
-            if (!isFirstLaunch) {
-                intent = new Intent(this, GuideSwitchActivity.class);
+            if (!SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
+//                intent = new Intent(this, GuideSwitchActivity.class);
+                intent = new Intent(this, MainActivity.class);
             } else {
                 intent = new Intent(this, GuideLauncherActivity.class);
             }
@@ -171,6 +156,14 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     @Override
     public void onInstallFinish(AppData appData, Error error) {
         LogUtil.i(TAG, "onInstallFinish() appData = " + appData + ", error = " + error + ", do nothing!!!");
+        AppData tmp = null;
+        if (null != appData) {
+            LogUtil.i(TAG, "appData = " + appData.toString());
+            if (StringUtil.notEmpty(appData.getChannel()) || StringUtil.notEmpty(appData.getData())) {
+                tmp = appData;
+            }
+        }
+        SessionContext.setOpenInstallAppData(tmp);
     }
 
     @Override

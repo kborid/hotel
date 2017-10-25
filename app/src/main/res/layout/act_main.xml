@@ -5,23 +5,259 @@
     android:layout_height="match_parent">
 
     <!--正文内容-->
-    <LinearLayout
-        android:id="@+id/content_layout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
-        <com.huicheng.hotel.android.ui.custom.CustomViewPager
-            android:id="@+id/viewPager"
+        <LinearLayout
+            android:id="@+id/content_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-        <!-- 底部导航栏 -->
-        <com.huicheng.hotel.android.ui.custom.CustomBottomNaviBar
-            android:id="@+id/custom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="60dp" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--天气预报-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+
+                <include layout="@layout/layout_weather_banner" />
+
+                <ImageView
+                    android:id="@+id/iv_uc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="center"
+                    android:src="@drawable/iv_tab_user" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="城市"
+                        android:textColor="#9b9b9b"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingBottom="13dp"
+                        android:paddingTop="15dp"
+                        android:text="绍兴"
+                        android:textColor="#3c3c3c"
+                        android:textSize="@dimen/common_24sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#dedede" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="9dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="入住"
+                            android:textColor="#9b9b9b"
+                            android:textSize="@dimen/common_12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_in_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingTop="14dp"
+                            android:text="9月21日"
+                            android:textColor="#3f3f3f"
+                            android:textSize="@dimen/common_14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:text="8晚"
+                        android:textColor="#9b9b9b"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="离店"
+                            android:textColor="#9b9b9b"
+                            android:textSize="@dimen/common_12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_out_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingTop="14dp"
+                            android:text="9月28日"
+                            android:textColor="#3f3f3f"
+                            android:textSize="@dimen/common_14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#dedede" />
+
+                <!--关键词-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_keyword"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="80dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:hint="酒店名 / 关键字 / 位置"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="18dp"
+                        android:textColor="#3f3f3f"
+                        android:textColorHint="#9b9b9b"
+                        android:textSize="@dimen/common_16sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_reset"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/delete_btn_selector"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/iv_voice"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="50dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/iv_home_voice" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#dedede" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_consider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:hint="价格 / 星级 / 类型"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="18dp"
+                        android:textColor="#3f3f3f"
+                        android:textColorHint="#9b9b9b"
+                        android:textSize="@dimen/common_16sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#dedede" />
+
+                <!--搜索酒店-->
+                <TextView
+                    android:id="@+id/tv_next_search"
+                    android:layout_width="323dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/main_hotel_btn_sel"
+                    android:gravity="center"
+                    android:text="搜索酒店"
+                    android:textColor="#3f3f3f"
+                    android:textSize="@dimen/common_15sp" />
+
+            </LinearLayout>
+
+            <!--我的行程-->
+            <LinearLayout
+                android:id="@+id/order_lay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/iv_hotel_info" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    android:text="我的行程"
+                    android:textColor="#3f3f3f"
+                    android:textSize="@dimen/common_12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <!--毛玻璃背景-->
     <RelativeLayout

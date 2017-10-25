@@ -152,4 +152,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     //银联全民付
     compile(name: 'qmf-ppplugin-android-2.1.0', ext: 'aar')
+    //添加阴影工具类
+    compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.2'
 }

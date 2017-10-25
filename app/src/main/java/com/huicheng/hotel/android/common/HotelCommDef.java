@@ -88,13 +88,10 @@ public class HotelCommDef {
         return payChannel;
     }
 
-    // Hotel Point
-    public static String[] convertHotelPoint(int index) {
+    //酒店评分
+    public static String[] convertConsiderPoint(int index) {
         String[] point;
         switch (index) {
-            case -1:
-                point = new String[]{"", ""};
-                break;
             case 0:
                 point = new String[]{"4.5", ""};
                 break;
@@ -102,7 +99,7 @@ public class HotelCommDef {
                 point = new String[]{"3.5", "4.5"};
                 break;
             case 2:
-                point = new String[]{"0", "3.5"};
+                point = new String[]{"", "3.5"};
                 break;
             default:
                 point = new String[]{"", ""};
@@ -111,45 +108,39 @@ public class HotelCommDef {
         return point;
     }
 
-    // Hotel Price
-    public static String convertHotelPrice(int index) {
-        String price = null;
+    //酒店价格
+    public static String[] convertConsiderPrice(int index) {
+        String[] price;
         switch (index) {
             case 0:
-                price = "";
+                price = new String[]{"", "300"};
                 break;
             case 1:
-                price = "100";
+                price = new String[]{"300", "400"};
                 break;
             case 2:
-                price = "300";
+                price = new String[]{"400", "500"};
                 break;
             case 3:
-                price = "500";
+                price = new String[]{"500", "800"};
                 break;
             case 4:
-                price = "1000";
+                price = new String[]{"800", "1200"};
                 break;
             case 5:
-                price = "2000";
-                break;
-            case 6:
-                price = "";
+                price = new String[]{"1200", ""};
                 break;
             default:
-                price = "";
+                price = new String[]{"", ""};
                 break;
         }
         return price;
     }
 
-    // Hotel Grade
-    public static String convertHotelGrade(int index) {
-        String grade = null;
+    //酒店星级
+    public static String convertConsiderGrade(int index) {
+        String grade;
         switch (index) {
-            case -1:
-                grade = "";
-                break;
             case 0:
                 grade = "3";
                 break;
@@ -160,19 +151,16 @@ public class HotelCommDef {
                 grade = "5";
                 break;
             default:
-                grade = "3";
+                grade = "";
                 break;
         }
         return grade;
     }
 
-    // Hotel Type
-    public static String convertHotelType(int index) {
-        String type = "";
+    //酒店类型
+    public static String convertConsiderType(int index) {
+        String type;
         switch (index) {
-            case -1:
-                type = "";
-                break;
             case 0:
                 type = "01";
                 break;
@@ -192,6 +180,7 @@ public class HotelCommDef {
         return type;
     }
 
+    //酒店星级
     public static String convertHotelStar(int star) {
         String starStr = "";
         switch (star) {
@@ -217,7 +206,7 @@ public class HotelCommDef {
         return starStr;
     }
 
-    //TravelType
+    //出行类型
     public static String convertTravelType(int index) {
         String travel = "00";
         switch (index) {

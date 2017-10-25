@@ -134,7 +134,7 @@ public class GuideLauncherActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_open:
                 SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
-                Intent intent = new Intent(this, GuideSwitchActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;

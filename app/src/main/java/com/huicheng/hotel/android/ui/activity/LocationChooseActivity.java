@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.SessionContext;
@@ -52,11 +53,12 @@ public class LocationChooseActivity extends BaseActivity {
     };
 
     private TextView tv_search_input;
-    private TextView tv_history;
+    private List<String> mHistoryList = new ArrayList<>();
     private List<String> mHotCityList = new ArrayList<>();
 
+    private MyGridViewWidget gv_history;
+    private MyGridViewWidget gv_hot;
     private ListView listView;
-    private MyGridViewWidget gv_hotcity;
     private GridView gv_index;
     private List<String> cityIndexList = new ArrayList<>();
     private CityIndexAdapter cityIndexAdapter;
@@ -73,15 +75,31 @@ public class LocationChooseActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
+        if (null == savedInstanceState) {
+            if (null != SessionContext.getCityAreaList() && SessionContext.getCityAreaList().size() > 0
+                    && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
+                myHandler.sendEmptyMessage(0x01);
+            } else {
+                showProgressDialog(this);
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        CityParseUtils.initAreaJsonData(LocationChooseActivity.this);
+                        myHandler.sendEmptyMessage(0x01);
+                    }
+                }.start();
+            }
+        }
     }
 
     @Override
     public void initViews() {
         super.initViews();
         tv_search_input = (TextView) findViewById(R.id.tv_search_input);
-        tv_history = (TextView) findViewById(R.id.tv_history);
 
-        gv_hotcity = (MyGridViewWidget) findViewById(R.id.gv_hotcity);
+        gv_history = (MyGridViewWidget) findViewById(R.id.gv_history);
+        gv_hot = (MyGridViewWidget) findViewById(R.id.gv_hot);
 
         gv_index = (GridView) findViewById(R.id.gv_index);
         cityIndexAdapter = new CityIndexAdapter(this, cityIndexList);
@@ -96,41 +114,27 @@ public class LocationChooseActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-
+        tv_center_title.setText("选择目的地");
         String cityStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        String historyCity = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY_CITY, "", false);
+        //历史记录
+        String historyCity = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY, "", false);
         if (StringUtil.notEmpty(historyCity)) {
-            tv_history.setText(historyCity);
-        } else {
-            tv_history.setText(cityStr);
+            mHistoryList = JSON.parseArray(historyCity, String.class);
         }
+        QuickSelCityAdapter historyAdapter = new QuickSelCityAdapter(this, mHistoryList);
+        gv_history.setAdapter(historyAdapter);
 
         // 热门城市
         mHotCityList = Arrays.asList(getResources().getStringArray(R.array.HotCity));
-        HotCityAdapter hotCityAdapter = new HotCityAdapter(this, mHotCityList);
-        gv_hotcity.setAdapter(hotCityAdapter);
+        QuickSelCityAdapter hotCityAdapter = new QuickSelCityAdapter(this, mHotCityList);
+        gv_hot.setAdapter(hotCityAdapter);
 
         tv_city_index.setText("A");
-
-        if (null != SessionContext.getCityAreaList() && SessionContext.getCityAreaList().size() > 0
-                && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
-            myHandler.sendEmptyMessage(0x01);
-        } else {
-            showProgressDialog(this);
-            new Thread() {
-                @Override
-                public void run() {
-                    super.run();
-                    CityParseUtils.initAreaJsonData(LocationChooseActivity.this);
-                    myHandler.sendEmptyMessage(0x01);
-                }
-            }.start();
-        }
-
     }
 
     private void initData() {
         cityIndexList.clear();
+
         List<String> tmp = new ArrayList<>();
         for (String key : SessionContext.getCityAreaMap().keySet()) {
             tmp.add(key);
@@ -147,7 +151,6 @@ public class LocationChooseActivity extends BaseActivity {
     public void initListeners() {
         super.initListeners();
         tv_search_input.setOnClickListener(this);
-        tv_history.setOnClickListener(this);
         gv_index.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -167,10 +170,6 @@ public class LocationChooseActivity extends BaseActivity {
                 String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
                 String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
                 String siteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
-
-                SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_PROVINCE, province, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_CITY, city, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_SITEID, siteId, false);
 
                 CityAreaInfoBean item = cityList.get(position);
                 mCity = item.shortName;
@@ -196,21 +195,60 @@ public class LocationChooseActivity extends BaseActivity {
                 SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
                 SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
 
+                addHistory(city);
+
                 setResult(RESULT_OK, new Intent());
                 finish();
             }
         });
 
-        gv_hotcity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gv_history.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
                 String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
                 String siteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
 
-                SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_PROVINCE, province, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_CITY, city, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_SITEID, siteId, false);
+                mCity = mHistoryList.get(position);
+                CityAreaInfoBean item = null;
+                for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
+                    for (int j = 0; j < SessionContext.getCityAreaList().get(i).list.size(); j++) {
+                        if (SessionContext.getCityAreaList().get(i).list.get(j).shortName.equals(mCity)) {
+                            item = SessionContext.getCityAreaList().get(i).list.get(j);
+
+                            mProvince = SessionContext.getCityAreaList().get(i).shortName;
+                            if (mProvince.equals(item.shortName)) {
+                                mSiteId = SessionContext.getCityAreaList().get(i).id;
+                            } else {
+                                mSiteId = item.id;
+                            }
+
+                            break;
+                        }
+                    }
+                }
+
+                addHistory(city);
+
+                if (item != null) {
+                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
+
+                    setResult(RESULT_OK, new Intent());
+                    finish();
+                } else {
+                    CustomToast.show("暂未收录该城市", CustomToast.LENGTH_SHORT);
+                }
+            }
+        });
+
+        gv_hot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+                String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+                String siteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
 
                 mCity = mHotCityList.get(position);
                 CityAreaInfoBean item = null;
@@ -231,6 +269,8 @@ public class LocationChooseActivity extends BaseActivity {
                     }
                 }
 
+                addHistory(city);
+
                 if (item != null) {
                     SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
@@ -245,6 +285,24 @@ public class LocationChooseActivity extends BaseActivity {
         });
     }
 
+
+    //更新历史记录，最大显示5条，超过替换最早一条，去重处理
+    private void addHistory(String city) {
+        int index = 0;
+        if (mHistoryList.contains(city)) {
+            index = mHistoryList.indexOf(city);
+            mHistoryList.remove(index);
+        } else {
+            if (mHistoryList.size() == 5) {
+                index = mHistoryList.size() - 1;
+                mHistoryList.remove(index);
+            }
+        }
+        mHistoryList.add(0, city);
+        String jsonStr = JSON.toJSONString(mHistoryList);
+        SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY, jsonStr, false);
+    }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -252,29 +310,8 @@ public class LocationChooseActivity extends BaseActivity {
             case R.id.tv_search_input:
                 Intent intent = new Intent(this, SearchResultActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
+//                overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
                 break;
-            case R.id.tv_history: {
-                mProvince = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY_PROVINCE, "", false);
-                mCity = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY_CITY, "", false);
-                mSiteId = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY_SITEID, "", false);
-
-                String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-                String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-                String siteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
-
-                SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_PROVINCE, province, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_CITY, city, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY_SITEID, siteId, false);
-
-                SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
-
-                setResult(RESULT_OK, new Intent());
-                finish();
-                break;
-            }
             default:
                 break;
         }
@@ -290,11 +327,11 @@ public class LocationChooseActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    private class HotCityAdapter extends BaseAdapter {
+    private class QuickSelCityAdapter extends BaseAdapter {
         private Context context;
         private List<String> hotList = new ArrayList<>();
 
-        HotCityAdapter(Context context, List<String> hotList) {
+        QuickSelCityAdapter(Context context, List<String> hotList) {
             this.context = context;
             this.hotList = hotList;
         }

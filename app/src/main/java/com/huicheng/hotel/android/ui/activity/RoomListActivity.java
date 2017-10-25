@@ -610,7 +610,6 @@ public class RoomListActivity extends BaseActivity {
                 Intent intentRes = new Intent(this, HotelCalendarChooseActivity.class);
 //                intentRes.putExtra("beginTime", beginTime);
 //                intentRes.putExtra("endTime", endTime);
-                intentRes.putExtra("isForbidTitleClick", true);
                 startActivityForResult(intentRes, 0x01);
             }
             break;

@@ -12,7 +12,6 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -20,7 +19,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -344,23 +342,24 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 intent.putExtra("keyword", et_keyword.getText().toString());
                 intent.putExtra("priceIndex", mPriceIndex);
                 break;
-            case R.id.tv_price:
-            case R.id.iv_pull:
-                PopupMenu popup = new PopupMenu(getActivity(), tv_price, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
-                getActivity().getMenuInflater().inflate(R.menu.hotel_home_menu, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        mPriceIndex = item.getOrder();
-                        tv_price.setText(item.getTitle());
-                        return false;
-                    }
-                });
-                popup.show();
-                break;
+//            case R.id.tv_price:
+//            case R.id.iv_pull:
+//                PopupMenu popup = new PopupMenu(getActivity(), tv_price, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+//                getActivity().getMenuInflater().inflate(R.menu.hotel_home_menu, popup.getMenu());
+//                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        mPriceIndex = item.getOrder();
+//                        tv_price.setText(item.getTitle());
+//                        return false;
+//                    }
+//                });
+//                popup.show();
+//                break;
             case R.id.tv_date:
             case R.id.iv_date: {
                 Intent resIntent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
+                resIntent.putExtra("isTitleCanClick", true);
 //                resIntent.putExtra("beginTime", beginTime);
 //                resIntent.putExtra("endTime", endTime);
                 startActivityForResult(resIntent, 0x02);

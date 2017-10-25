@@ -61,18 +61,17 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
     private RelativeLayout empty_lay;
 
     private static final int PAGESIZE = 10;
-    private int pageIndex = 0, priceIndex = 0;
-    private String keyword = "";
-    private String star, priceStart, priceEnd, type;
-    private String[] point = new String[]{"", ""};
+    private int pageIndex = 0;
     private int refreshType = 0;
+
+    private String keyword = "";
+    private int pointIndex, gradeIndex, priceIndex, typeIndex;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isFirstLoad = true;
         key = getArguments().getString("key");
         keyword = getArguments().getString("keyword");
-        priceIndex = getArguments().getInt("priceIndex");
         View view = inflater.inflate(R.layout.fragment_tab_ygr, container, false);
         initTypedArrayValue();
         initViews(view);
@@ -81,12 +80,11 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         return view;
     }
 
-    public static Fragment newInstance(String key, String keyword, int priceIndex) {
+    public static Fragment newInstance(String key, String keyword) {
         Fragment fragment = new FragmentTabYeGuiRen();
         Bundle bundle = new Bundle();
         bundle.putString("key", key);
         bundle.putString("keyword", keyword);
-        bundle.putInt("priceIndex", priceIndex);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -139,12 +137,11 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dip2px(20));
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 
-        if (priceIndex != 0) {
-            float priceMin = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MIN, 0f);
-            float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 6f);
-            priceStart = HotelCommDef.convertHotelPrice((int) priceMin);
-            priceEnd = HotelCommDef.convertHotelPrice((int) priceMax);
-        }
+        //初始化筛选条件
+        pointIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_POINT, -1);
+        gradeIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_GRADE, -1);
+        priceIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_PRICE, -1);
+        typeIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_TYPE, -1);
     }
 
     @Override
@@ -214,29 +211,39 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
     }
 
     private void requestHotelYGRList(int pageIndex) {
-        LogUtil.i(TAG, "requestHotelYGRList() pageIndex = " + pageIndex);
+        LogUtil.i(TAG, "requestHotelYGRList()");
+        LogUtil.i(TAG, "pageIndex = " + pageIndex);
+        LogUtil.i(TAG, "keyword = " + keyword);
+        String star = HotelCommDef.convertConsiderGrade(gradeIndex);
+        LogUtil.i(TAG, "star = " + star);
+        String[] point = HotelCommDef.convertConsiderPoint(pointIndex);
+        LogUtil.i(TAG, "point = " + point[0] + " " + point[1]);
+        String[] price = HotelCommDef.convertConsiderPrice(priceIndex);
+        LogUtil.i(TAG, "price = " + price[0] + " " + price[1]);
+        String type = HotelCommDef.convertConsiderType(typeIndex);
+        LogUtil.i(TAG, "type = " + type);
+
 
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("cityCode", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
+        //关键字
+        b.addBody("keyword", keyword);
         //星级
         b.addBody("star", star);
-        //日期
-        b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime(true)));
-        b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime(true)));
         //评分
         b.addBody("gradeStart", point[0]);
         b.addBody("gradeEnd", point[1]);
         //价钱范围
-        b.addBody("priceStart", priceStart);
-        b.addBody("priceEnd", priceEnd);
-
-        b.addBody("category", String.valueOf(HotelCommDef.TYPE_YEGUIREN));
+        b.addBody("priceStart", price[0]);
+        b.addBody("priceEnd", price[1]);
+        //酒店类型
         b.addBody("type", type);
-        b.addBody("keyword", keyword);
 
+        b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime(true)));
+        b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime(true)));
+        b.addBody("cityCode", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
+        b.addBody("category", String.valueOf(HotelCommDef.TYPE_CLOCK));
         b.addBody("pageIndex", String.valueOf(pageIndex));
         b.addBody("pageSize", String.valueOf(PAGESIZE));
-
         b.addBody("longitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "", false));
         b.addBody("latitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "", false));
 
@@ -342,13 +349,10 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
     @Override
     public void onUpdate(String keyword) {
         LogUtil.i(TAG, "YeGuiRen onUpdate() keyword = " + keyword);
-        star = HotelCommDef.convertHotelGrade(SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_GRADE, -1));
-        point = HotelCommDef.convertHotelPoint(SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_POINT, -1));
-        float priceMin = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MIN, 0f);
-        float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 6f);
-        priceStart = HotelCommDef.convertHotelPrice((int) priceMin);
-        priceEnd = HotelCommDef.convertHotelPrice((int) priceMax);
-        type = HotelCommDef.convertHotelType(SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_TYPE, -1));
+        pointIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_POINT, -1);
+        gradeIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_GRADE, -1);
+        priceIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_PRICE, -1);
+        typeIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_TYPE, -1);
         isFirstLoad = false;
         this.keyword = keyword;
         refreshType = 0;

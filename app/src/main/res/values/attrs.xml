@@ -11,7 +11,6 @@
         <attr name="tabPlaneColor" format="color" />
         <attr name="tabTrainColor" format="color" />
         <attr name="tabTaxiColor" format="color" />
-        <attr name="citySelColor" format="color" />
         <attr name="commBottomText" format="color" />
         <attr name="hotelListTab" format="color" />
         <attr name="hotelRefreshColor" format="color" />

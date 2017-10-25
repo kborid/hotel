@@ -286,7 +286,6 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(orderPayDetailInfoBean.province, orderPayDetailInfoBean.location, "-"));
                 intent = new Intent(this, HotelCalendarChooseActivity.class);
                 intent.putExtra("isReBooking", true);
-                intent.putExtra("isForbidTitleClick", true);
                 break;
             default:
                 break;

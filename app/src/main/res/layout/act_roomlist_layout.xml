@@ -112,6 +112,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="7dp"
                                     android:text="201条评论"
+                                    android:layout_gravity="center_vertical"
                                     android:textColor="?attr/roomMainText"
                                     android:textSize="@dimen/common_12sp"
                                     android:textStyle="bold" />

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:singleSelLay="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--星级-->
+    <LinearLayout
+        android:id="@+id/grade_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_grade_lable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="星级："
+            android:textColor="#777777"
+            android:textSize="@dimen/common_12sp" />
+
+        <com.huicheng.hotel.android.ui.custom.CommonSingleSelLayout
+            android:id="@+id/gradeLay"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            singleSelLay:textColor="@color/consider_new_text_sel" />
+    </LinearLayout>
+
+    <!--价格-->
+    <LinearLayout
+        android:id="@+id/price_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f3f3f3"
+        android:orientation="vertical"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_price_lable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="价格：(单位：元)"
+            android:textColor="#777777"
+            android:textSize="@dimen/common_12sp" />
+
+        <com.huicheng.hotel.android.ui.custom.CustomConsiderPriceLayout
+            android:id="@+id/priceLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!--类型-->
+    <LinearLayout
+        android:id="@+id/type_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_type_lable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="类型："
+            android:textColor="#777777"
+            android:textSize="@dimen/common_12sp" />
+
+        <com.huicheng.hotel.android.ui.custom.CommonSingleSelLayout
+            android:id="@+id/typeLay"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            singleSelLay:textColor="@color/consider_new_text_sel" />
+    </LinearLayout>
+</LinearLayout>

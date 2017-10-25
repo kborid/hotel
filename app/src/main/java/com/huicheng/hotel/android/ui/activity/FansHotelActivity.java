@@ -236,7 +236,6 @@ public class FansHotelActivity extends BaseActivity {
                     HotelOrderManager.getInstance().setFansHotelInfoBean(bean);
                     HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(bean.provinceName, bean.cityName, "-"));
                     Intent intent = new Intent(context, HotelCalendarChooseActivity.class);
-                    intent.putExtra("isForbidTitleClick", true);
                     intent.putExtra("isFansBooking", true);
                     startActivity(intent);
                 }

@@ -3,11 +3,10 @@ package com.huicheng.hotel.android.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,10 +17,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,11 +25,12 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.huicheng.hotel.android.ui.custom.CustomConsiderLayout;
+import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForList;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabAllDay;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabClock;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabYeGuiRen;
-import com.prj.sdk.util.Utils;
+import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -49,18 +45,19 @@ public class HotelListActivity extends BaseActivity {
     private int index = 0;
     private long beginTime, endTime;
     private String hotelDateStr;
-    private EditText et_keyword;
-    private ImageView iv_search;
 
+    private LinearLayout date_lay;
+    private TextView tv_in_date, tv_out_date;
+    private RelativeLayout search_lay;
     private TabLayout tabs;
-    private FloatingActionButton fab;
-    private TextView shadow_lay;
-    private boolean fabOpened = false;
 
-    private CustomConsiderLayout customConsiderLayout;
-    private float mWidth, mHeight;
+    private LinearLayout consider_btn_lay;
+    private LinearLayout sort_lay, select_lay;
+    private TextView shadow_lay;
+    private boolean isConsiderOpened = false;
+
+    private CustomConsiderLayoutForList consider_lay;
     private String keyword = "";
-    private int mPriceIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +71,16 @@ public class HotelListActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
-        et_keyword = (EditText) findViewById(R.id.et_keyword);
-        iv_search = (ImageView) findViewById(R.id.iv_search);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        date_lay = (LinearLayout) findViewById(R.id.date_lay);
+        tv_in_date = (TextView) findViewById(R.id.tv_in_date);
+        tv_out_date = (TextView) findViewById(R.id.tv_out_date);
+        search_lay = (RelativeLayout) findViewById(R.id.search_lay);
+        consider_btn_lay = (LinearLayout) findViewById(R.id.consider_btn_lay);
+        sort_lay = (LinearLayout) findViewById(R.id.sort_lay);
+        select_lay = (LinearLayout) findViewById(R.id.select_lay);
+
         shadow_lay = (TextView) findViewById(R.id.shadow_lay);
-        customConsiderLayout = (CustomConsiderLayout) findViewById(R.id.customConsiderLayout);
+        consider_lay = (CustomConsiderLayoutForList) findViewById(R.id.consider_lay);
         ViewPager pager = (ViewPager) findViewById(R.id.viewpager);
         if (null != pager) {
             pager.setOffscreenPageLimit(3);
@@ -117,7 +119,6 @@ public class HotelListActivity extends BaseActivity {
             if (bundle.getString("keyword") != null) {
                 keyword = bundle.getString("keyword");
             }
-            mPriceIndex = bundle.getInt("priceIndex");
         }
     }
 
@@ -128,19 +129,10 @@ public class HotelListActivity extends BaseActivity {
         endTime = HotelOrderManager.getInstance().getEndTime();
         hotelDateStr = HotelOrderManager.getInstance().getDateStr();
 
-        tv_center_title.setText(
-                String.format(getString(R.string.titleCityDateStr),
-                        HotelOrderManager.getInstance().getCityStr(),
-                        hotelDateStr)
-        );
-        btn_right.setVisibility(View.VISIBLE);
-        btn_right.setImageResource(R.drawable.iv_map);
-
-        et_keyword.setText(keyword);
-
-        setIndicator(tabs, 40, 40);
-        customConsiderLayout.initAndRestoreConfig();
-        customConsiderLayout.setPriceRange(mPriceIndex);
+        tv_in_date.setText(DateUtil.getDay("住MM-dd", beginTime));
+        tv_out_date.setText(DateUtil.getDay("离MM-dd", endTime));
+        setIndicator(tabs, 30, 30);
+        consider_lay.restoreConsiderConfig();
     }
 
     @Override
@@ -148,17 +140,22 @@ public class HotelListActivity extends BaseActivity {
         super.initListeners();
         btn_back.setOnClickListener(this);
         btn_right.setOnClickListener(this);
-        iv_search.setOnClickListener(this);
-        fab.setOnClickListener(this);
         shadow_lay.setOnClickListener(this);
-        et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        date_lay.setOnClickListener(this);
+        search_lay.setOnClickListener(this);
+        sort_lay.setOnClickListener(this);
+        select_lay.setOnClickListener(this);
+        consider_lay.setOnConsiderLayoutListenre(new CustomConsiderLayoutForList.OnConsiderLayoutListenre() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    iv_search.performClick();
-                    return true;
+            public void onDismiss() {
+                if (isConsiderOpened){
+                    closeConsiderAnim();
+                    refreshHotelList();
                 }
-                return false;
+            }
+
+            @Override
+            public void onResult(String str) {
             }
         });
     }
@@ -171,34 +168,25 @@ public class HotelListActivity extends BaseActivity {
         HotelOrderManager.getInstance().setDateStr(hotelDateStr);
     }
 
-    private void dismissConsiderLayout() {
-        customConsiderLayout.dismiss();
+    private void refreshHotelList() {
         if (null != listenerList && listenerList.size() > 0) {
             for (OnUpdateHotelInfoListener listener : listenerList) {
-                listener.onUpdate(et_keyword.getText().toString());
+                listener.onUpdate(keyword);
             }
         }
     }
 
-    private void openMenu() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(fab, "rotation", 0, -155, -135);
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(customConsiderLayout, "alpha", 0.5f, 1f);
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) customConsiderLayout.getLayoutParams();
-        lp.bottomMargin = fab.getHeight() / 2 + (int) getResources().getDimension(R.dimen.fab_margin) - Utils.dip2px(20);
-        customConsiderLayout.setLayoutParams(lp);
-        customConsiderLayout.setPivotX(mWidth / 2);
-        customConsiderLayout.setPivotY(mHeight);
-        ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(customConsiderLayout, "scaleX", 0.97f, 1.02f, 1.00f);
-        ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(customConsiderLayout, "scaleY", 0.97f, 1.02f, 1.00f);
-        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(shadow_lay, "alpha", 0f, 0.2f);
+    private void openConsiderAnim() {
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(consider_lay, "alpha", 0f, 1f);
+        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(shadow_lay, "alpha", 0f, 1f);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(animator).with(alphaAnimator).with(animatorScaleX).with(animatorScaleY).with(alphaAnimator2);
-        animatorSet.setDuration(500);
+        animatorSet.play(alphaAnimator).with(alphaAnimator2);
+        animatorSet.setDuration(300);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                customConsiderLayout.setVisibility(View.VISIBLE);
+                consider_lay.setVisibility(View.VISIBLE);
                 shadow_lay.setVisibility(View.VISIBLE);
             }
 
@@ -219,21 +207,16 @@ public class HotelListActivity extends BaseActivity {
         });
         animatorSet.start();
 
-        fabOpened = true;
+        isConsiderOpened = true;
     }
 
-    private void closeMenu() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(fab, "rotation", -135, 20, 0);
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(customConsiderLayout, "alpha", 1f, 0.5f);
-        customConsiderLayout.setPivotX(mWidth / 2);
-        customConsiderLayout.setPivotY(mHeight);
-        ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(customConsiderLayout, "scaleX", 1.00f, 1.01f, 0.9f);
-        ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(customConsiderLayout, "scaleY", 1.00f, 1.01f, 0.9f);
-        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(shadow_lay, "alpha", 0.2f, 0f);
+    private void closeConsiderAnim() {
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(consider_lay, "alpha", 1f, 0f);
+        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(shadow_lay, "alpha", 1f, 0f);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(animator).with(alphaAnimator).with(animatorScaleX).with(animatorScaleY).with(alphaAnimator2);
-        animatorSet.setDuration(500);
+        animatorSet.play(alphaAnimator).with(alphaAnimator2);
+        animatorSet.setDuration(300);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -242,9 +225,8 @@ public class HotelListActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                customConsiderLayout.setVisibility(View.GONE);
+                consider_lay.setVisibility(View.GONE);
                 shadow_lay.setVisibility(View.GONE);
-                dismissConsiderLayout();
             }
 
             @Override
@@ -259,7 +241,7 @@ public class HotelListActivity extends BaseActivity {
         });
         animatorSet.start();
 
-        fabOpened = false;
+        isConsiderOpened = false;
     }
 
     @Override
@@ -273,40 +255,27 @@ public class HotelListActivity extends BaseActivity {
                 intent.putExtra("index", index);
                 startActivity(intent);
                 break;
-            case R.id.fab:
-                if (fabOpened) {
-                    closeMenu();
-                } else {
-                    openMenu();
-                }
-                break;
             case R.id.shadow_lay:
-                if (fabOpened) {
-                    closeMenu();
+                if (isConsiderOpened) {
+                    closeConsiderAnim();
                 }
                 break;
-            case R.id.iv_search:
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                if (listenerList != null && listenerList.size() > 0) {
-                    if (!keyword.equals(et_keyword.getText().toString())) {
-                        keyword = et_keyword.getText().toString();
-                        for (OnUpdateHotelInfoListener listener : listenerList) {
-                            listener.onUpdate(keyword);
-                        }
-                    }
-                }
+            case R.id.search_lay:
+                Intent intentSearch = new Intent(this, SearchResultActivity.class);
+                startActivity(intentSearch);
                 break;
-            default:
+            case R.id.date_lay:
+                Intent resIntent = new Intent(this, HotelCalendarChooseActivity.class);
+//                resIntent.putExtra("beginTime", beginTime);
+//                resIntent.putExtra("endTime", endTime);
+                startActivityForResult(resIntent, 0x02);
+                break;
+            case R.id.sort_lay:
+                break;
+            case R.id.select_lay:
+                openConsiderAnim();
                 break;
         }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        mWidth = customConsiderLayout.getWidth();
-        mHeight = customConsiderLayout.getHeight();
-        super.onWindowFocusChanged(hasFocus);
     }
 
     private class myPagerAdapter extends FragmentPagerAdapter {
@@ -320,13 +289,11 @@ public class HotelListActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return FragmentTabAllDay.newInstance(HotelCommDef.ALLDAY, keyword, mPriceIndex);
+                    return FragmentTabAllDay.newInstance(HotelCommDef.ALLDAY, keyword);
                 case 1:
-                    return FragmentTabClock.newInstance(HotelCommDef.CLOCK, keyword, mPriceIndex);
+                    return FragmentTabClock.newInstance(HotelCommDef.CLOCK, keyword);
                 case 2:
-                    return FragmentTabYeGuiRen.newInstance(HotelCommDef.YEGUIREN, keyword, mPriceIndex);
-//                case 3:`
-//                    return FragmentTabHouHuiYao.newInstance(HotelCommDef.HOUHUIYAO, dateStr);
+                    return FragmentTabYeGuiRen.newInstance(HotelCommDef.YEGUIREN, keyword);
                 default:
                     return null;
             }
@@ -346,8 +313,8 @@ public class HotelListActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (fabOpened) {
-                closeMenu();
+            if (isConsiderOpened) {
+                closeConsiderAnim();
                 return true;
             }
         }
@@ -373,7 +340,7 @@ public class HotelListActivity extends BaseActivity {
     }
 
     //通过反射设置TabLayout的Indicator的宽度
-    public void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
+    private void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
         Class<?> tabLayout = tabs.getClass();
         Field tabStrip = null;
         try {
@@ -403,6 +370,27 @@ public class HotelListActivity extends BaseActivity {
             child.setLayoutParams(params);
             child.setBackgroundResource(0);
             child.invalidate();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
+        if (Activity.RESULT_OK != resultCode) {
+            return;
+        }
+        if (requestCode == 0x02) {
+            if (null != data) {
+                beginTime = data.getLongExtra("beginTime", beginTime);
+                endTime = data.getLongExtra("endTime", endTime);
+                HotelOrderManager.getInstance().setBeginTime(beginTime);
+                HotelOrderManager.getInstance().setEndTime(endTime);
+                HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
+                tv_in_date.setText(DateUtil.getDay("住MM-dd", beginTime));
+                tv_out_date.setText(DateUtil.getDay("离MM-dd", endTime));
+                refreshHotelList();
+            }
         }
     }
 }

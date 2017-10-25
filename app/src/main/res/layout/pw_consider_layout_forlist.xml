@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:singleSelLay="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:clickable="true"
+    android:clipChildren="false"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/consider_bg"
+        android:orientation="vertical"
+        android:paddingBottom="21dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="筛选项"
+            android:textColor="#606060"
+            android:textSize="@dimen/common_18sp"
+            android:textStyle="bold" />
+
+        <!--评分-->
+        <LinearLayout
+            android:id="@+id/point_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f3f3f3"
+            android:orientation="vertical"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/tv_point_lable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="评分："
+                android:textColor="#777777"
+                android:textSize="@dimen/common_12sp" />
+
+            <com.huicheng.hotel.android.ui.custom.CommonSingleSelLayout
+                android:id="@+id/pointLay"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                singleSelLay:textColor="@color/consider_new_text_sel" />
+        </LinearLayout>
+
+        <include layout="@layout/layout_consider_home" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_select"
+        style="@style/blue_button_style"
+        android:layout_width="140dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-21dp"
+        android:text="筛选"
+        android:textSize="@dimen/common_18sp" />
+
+</LinearLayout>

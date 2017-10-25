@@ -49,6 +49,19 @@ public class CityParseUtils {
         return tempStr;
     }
 
+    public static String getCityString(String city) {
+        String tempStr = "";
+        if (StringUtil.notEmpty(city)) {
+            if (city.endsWith("市")) {
+                city = city.replace("市", "");
+            } else if (city.endsWith("区")) {
+                city = city.replace("区", "");
+            }
+            tempStr += city;
+        }
+        return tempStr;
+    }
+
     public static void initAreaJsonData(Context context) {
         LogUtil.i(TAG, "initJsonData() begin....");
         try {

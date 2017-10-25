@@ -42,7 +42,6 @@
         <item name="ygrStartColor">@color/ygrStartColor</item>
         <item name="ygrEndColor">@color/ygrEndColor</item>
         <item name="hhyMainTextColor">@color/hhyMainTextColor</item>
-        <item name="citySelColor">@color/citySelColor</item>
         <item name="commBottomText">@color/commBottomText</item>
         <item name="hotelListTab">@color/hotelListTab</item>
         <item name="hotelRefreshColor">@color/mainColorAccent</item>
@@ -119,7 +118,6 @@
         <item name="ygrStartColor">@color/female_ygrStartColor</item>
         <item name="ygrEndColor">@color/female_ygrEndColor</item>
         <item name="hhyMainTextColor">@color/female_hhyMainTextColor</item>
-        <item name="citySelColor">@color/female_citySelColor</item>
         <item name="commBottomText">@color/female_commBottomText</item>
         <item name="hotelListTab">@color/female_hotelListTab</item>
         <item name="hotelRefreshColor">@color/female_mainColorAccent</item>
@@ -269,10 +267,10 @@
         <item name="android:windowExitAnimation">@anim/push_up_out</item>
     </style>
 
-    <style name="tabTextAppearance">
-        <item name="android:textSize">@dimen/common_15sp</item>
+    <style name="tabTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">@dimen/common_16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/searchHintColor</item>
+        <item name="android:textColor">#ada9a4</item>
     </style>
 
     <style name="MyProgressBar" parent="Base.Widget.AppCompat.ProgressBar" />

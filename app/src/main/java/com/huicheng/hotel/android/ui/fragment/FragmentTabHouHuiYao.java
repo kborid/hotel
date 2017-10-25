@@ -18,7 +18,6 @@ import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
@@ -58,8 +57,7 @@ public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, 
     private List<HouHuiYaoInfoBean.HouHuiYaoBean> recommendList = new ArrayList<>();
     private List<HouHuiYaoInfoBean.HouHuiYaoBean> otherList = new ArrayList<>();
     private MyHouHuiYaoAdapter recommendAdapter, otherAdapter;
-    private String star, priceStart, priceEnd, type;
-    private String[] point = new String[]{"", ""};
+
     private int pageIndex = 0;
     private static final int PAGESIZE = 10;
 
@@ -253,18 +251,6 @@ public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, 
     @Override
     public void onUpdate(String keyword) {
         LogUtil.i(TAG, "houhuiyao onUpdate() keyword = " + keyword);
-        star = HotelCommDef.convertHotelGrade(SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_GRADE, -1));
-        LogUtil.i(TAG, "star = " + star);
-        point = HotelCommDef.convertHotelPoint(SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_POINT, -1));
-        LogUtil.i(TAG, "pointStart = " + point[0] + "\npointEnd = " + point[1]);
-        float priceMin = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MIN, 0f);
-        float priceMax = SharedPreferenceUtil.getInstance().getFloat(AppConst.RANGE_MAX, 5f);
-        LogUtil.i(TAG, "priceMin = " + priceMin + ", priceMax = " + priceMax);
-        priceStart = HotelCommDef.convertHotelPrice((int) priceMin);
-        priceEnd = HotelCommDef.convertHotelPrice((int) priceMax);
-        LogUtil.i(TAG, "priceStart = " + priceStart + "\npriceEnd = " + priceEnd);
-        type = HotelCommDef.convertHotelType(SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_TYPE, -1));
-        LogUtil.i(TAG, "type = " + type);
         isFirstLoad = false;
         requestHouHuiYaoOrderList(keyword);
     }

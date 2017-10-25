@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class ResponseData {
 	public int					flag;
-	public int					retry		= 1;	// 失败后尝试加载次数
+	public int					retry		= 0;	// 失败后尝试加载次数
 	public boolean				isForm;				// 是否是form表单数据提交
 	public String				path;
 	public String				key;

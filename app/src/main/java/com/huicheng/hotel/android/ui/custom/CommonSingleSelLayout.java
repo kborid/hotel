@@ -56,7 +56,6 @@ public class CommonSingleSelLayout extends LinearLayout {
                 TextView tv = new TextView(context);
                 tv.setGravity(Gravity.CENTER);
                 tv.setTextSize(textSize);
-                tv.getPaint().setFakeBoldText(true);
                 tv.setTextColor(context.getResources().getColorStateList(textColor));
                 tv.setText(list.get(i));
                 final int finalI = i;
@@ -78,7 +77,7 @@ public class CommonSingleSelLayout extends LinearLayout {
 
     }
 
-    private void setSelected(int index) {
+    public void setSelected(int index) {
         for (int i = 0; i < getChildCount(); i++) {
             if (index == i) {
                 getChildAt(i).setSelected(true);
@@ -97,6 +96,17 @@ public class CommonSingleSelLayout extends LinearLayout {
             }
         }
         return index;
+    }
+
+    public String getSelectedItem() {
+        String str = "";
+        for (int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i).isSelected()) {
+                str = ((TextView) getChildAt(i)).getText().toString();
+                break;
+            }
+        }
+        return str;
     }
 
     public int resetSelectedIndex() {
