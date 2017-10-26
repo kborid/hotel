@@ -452,7 +452,7 @@ public class MainActivity extends BaseActivity {
 
     private void showConsiderPopupWindow() {
         if (null != mConsiderLayout) {
-            mConsiderLayout.restoreConsiderConfig();
+            mConsiderLayout.reloadConsiderConfig();
         }
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getWindow().getAttributes();

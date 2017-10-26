@@ -34,8 +34,8 @@
     <color name="black">#000000</color>
 
     <!--common-->
-    <color name="secColor">#646464</color>
-    <color name="secColorShadow">#33646464</color>
+    <color name="secColor">#4a4a4a</color>
+    <color name="secColorShadow">#334a4a4a</color>
     <color name="tabDefaultColor">@color/secColorShadow</color>
 
     <color name="guideLauncherColor">#565656</color>

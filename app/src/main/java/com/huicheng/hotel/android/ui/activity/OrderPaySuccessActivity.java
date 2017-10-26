@@ -52,7 +52,6 @@ public class OrderPaySuccessActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_ordersuccess_layout);
-        getWindow().getDecorView().setVisibility(View.GONE);
         initViews();
         initParams();
         initListeners();
@@ -65,6 +64,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setVisibility(View.GONE);
         root_lay.setLayoutAnimation(getAnimationController());
         btn_vip = (Button) findViewById(R.id.btn_vip);
         tv_hotel_name = (TextView) findViewById(R.id.tv_hotel_name);

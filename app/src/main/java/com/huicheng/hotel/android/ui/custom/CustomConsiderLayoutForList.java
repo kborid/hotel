@@ -77,8 +77,8 @@ public class CustomConsiderLayoutForList extends RelativeLayout implements View.
         saveConsiderConfig();
     }
 
-    public void restoreConsiderConfig() {
-        LogUtil.i(TAG, "initAndRestoreConfig()");
+    public void reloadConsiderConfig() {
+        LogUtil.i(TAG, "reloadConsiderConfig()");
         pointIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_POINT, -1);
         pointLay.setSelected(pointIndex);
         gradeIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_GRADE, -1);

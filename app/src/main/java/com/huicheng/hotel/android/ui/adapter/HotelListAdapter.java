@@ -31,7 +31,9 @@ import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @auth kborid
@@ -43,6 +45,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     private List<HotelInfoBean> list;
     private int type = 0;
     private int ygrRoomItemBackgroundId;
+
+    private Map<Integer, String> trackMap = new HashMap<>();
 
     public HotelListAdapter(Context context, List<HotelInfoBean> list, int type) {
         this.context = context;
@@ -178,7 +182,19 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             holder.tv_hotel_dis.setVisibility(View.GONE);
         }
 
-        holder.tv_track.setText(String.format(context.getString(R.string.track_str), position + "小时"));
+        //浏览痕迹：随机1分钟~12小时
+        if (!trackMap.containsKey(position)) {
+            int min = ((int) (Math.random() * (60 * 12)) + 1);
+            String trackStr;
+            if (min >= 60) {
+                trackStr = String.valueOf(min / 60 + "小时");
+            } else {
+                trackStr = String.valueOf(min + "分钟");
+            }
+            trackMap.put(position, trackStr);
+        }
+
+        holder.tv_track.setText(String.format(context.getString(R.string.track_str), trackMap.get(position)));
 
         // 评分信息
         if (StringUtil.notEmpty(bean.hotelGrade)) {

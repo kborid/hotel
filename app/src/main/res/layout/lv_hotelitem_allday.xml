@@ -3,9 +3,9 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginTop="6dp"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -90,7 +90,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp">
+            android:layout_marginTop="2dp">
 
             <ImageView
                 android:id="@+id/iv_cert_icon"
@@ -128,7 +128,7 @@
             android:id="@+id/tv_hotel_dis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:text="500米"
             android:textColor="#7b7b7b"
             android:textSize="@dimen/common_12sp" />
@@ -136,7 +136,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="2dp">
 
             <ImageView
                 android:id="@+id/iv_track_icon"
@@ -170,7 +170,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp">
+            android:layout_marginTop="2dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"

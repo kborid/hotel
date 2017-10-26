@@ -131,6 +131,13 @@
         <item>3.5分以下</item>
     </string-array>
 
+    <string-array name="SortString">
+        <item>距离优先</item>
+        <item>低价优先</item>
+        <item>高价优先</item>
+        <item>评分优先</item>
+    </string-array>
+
     <string-array name="TravelType">
         <item>商务</item>
         <!--<item>休闲</item>-->

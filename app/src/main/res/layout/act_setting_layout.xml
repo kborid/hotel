@@ -19,27 +19,27 @@
 
             <TextView
                 android:id="@+id/tv_cache"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:paddingBottom="20dp"
                 android:paddingTop="20dp"
                 android:text="清除缓存"
                 android:textColor="@color/sec_color_selector"
-                android:textSize="@dimen/common_15sp" />
+                android:textSize="@dimen/common_16sp" />
 
             <TextView
                 android:id="@+id/tv_cache_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/tv_cache"
                 android:gravity="center_vertical"
                 android:text="16.88G"
                 android:textColor="@color/secColor"
-                android:textSize="@dimen/common_15sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/common_16sp" />
         </RelativeLayout>
 
         <View
@@ -61,7 +61,7 @@
             android:paddingTop="20dp"
             android:text="关于我们"
             android:textColor="@color/sec_color_selector"
-            android:textSize="@dimen/common_15sp" />
+            android:textSize="@dimen/common_16sp" />
 
         <View
             android:layout_width="30dp"
@@ -82,7 +82,7 @@
             android:paddingTop="20dp"
             android:text="版本介绍"
             android:textColor="@color/sec_color_selector"
-            android:textSize="@dimen/common_15sp" />
+            android:textSize="@dimen/common_16sp" />
 
         <View
             android:layout_width="30dp"
@@ -104,7 +104,7 @@
             android:paddingTop="20dp"
             android:text="在App Store评分"
             android:textColor="@color/sec_color_selector"
-            android:textSize="@dimen/common_15sp" />
+            android:textSize="@dimen/common_16sp" />
 
         <View
             android:layout_width="30dp"
@@ -125,7 +125,7 @@
             android:paddingTop="20dp"
             android:text="相关条款"
             android:textColor="@color/sec_color_selector"
-            android:textSize="@dimen/common_15sp" />
+            android:textSize="@dimen/common_16sp" />
 
         <View
             android:layout_width="30dp"
@@ -146,7 +146,7 @@
             android:paddingTop="20dp"
             android:text="隐私声明"
             android:textColor="@color/sec_color_selector"
-            android:textSize="@dimen/common_15sp" />
+            android:textSize="@dimen/common_16sp" />
 
         <View
             android:layout_width="30dp"
@@ -173,7 +173,7 @@
                 android:paddingTop="20dp"
                 android:text="@string/debug_menu"
                 android:textColor="@color/sec_color_selector"
-                android:textSize="@dimen/common_15sp" />
+                android:textSize="@dimen/common_16sp" />
 
             <View
                 android:layout_width="30dp"

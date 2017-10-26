@@ -49,6 +49,7 @@ public final class AppConst {
     public static final String VERSION = "2.0"; // version
     public static final String CITYNAME = "测试";
 
+    public static final String SORT_INDEX = "sort_index";
     public static final String CONSIDER_POINT = "consider_point";
     public static final String CONSIDER_PRICE = "consider_price";
     public static final String CONSIDER_GRADE = "consider_grade";

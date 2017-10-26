@@ -42,7 +42,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/side_tips"
                     android:textColor="@color/secColor"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -61,7 +61,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/side_login"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
 
                 <Button
                     android:id="@+id/btn_cancel"
@@ -71,7 +71,7 @@
                     android:background="@drawable/comm_rectangle_btn_transparent_withbound"
                     android:text="@string/side_wait"
                     android:textColor="@color/common_color_selector"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -143,7 +143,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:textColor="@color/secColor"
+                        android:textColor="#4a4a4a"
                         android:textSize="@dimen/common_15sp"
                         android:textStyle="bold" />
 
@@ -176,7 +176,7 @@
                     android:paddingTop="20dp"
                     android:text="@string/side_uc"
                     android:textColor="@color/sec_color_selector"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="30dp"
@@ -192,7 +192,7 @@
                     android:paddingTop="20dp"
                     android:text="@string/side_order"
                     android:textColor="@color/sec_color_selector"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="30dp"
@@ -212,7 +212,7 @@
                         android:paddingTop="20dp"
                         android:text="@string/side_msg"
                         android:textColor="@color/sec_color_selector"
-                        android:textSize="@dimen/common_15sp" />
+                        android:textSize="@dimen/common_16sp" />
 
                     <TextView
                         android:id="@+id/tv_msg_count"
@@ -224,7 +224,7 @@
                         android:layout_marginRight="50dp"
                         android:gravity="center"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/common_15sp"
+                        android:textSize="@dimen/common_16sp"
                         android:textStyle="bold"
                         android:visibility="gone" />
                 </RelativeLayout>
@@ -243,7 +243,7 @@
                     android:paddingTop="20dp"
                     android:text="@string/side_yhq"
                     android:textColor="@color/sec_color_selector"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="30dp"
@@ -260,7 +260,7 @@
                     android:paddingTop="20dp"
                     android:text="@string/side_assess"
                     android:textColor="@color/sec_color_selector"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="30dp"
@@ -276,7 +276,7 @@
                     android:paddingTop="20dp"
                     android:text="@string/side_fans"
                     android:textColor="@color/sec_color_selector"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="30dp"
@@ -292,7 +292,7 @@
                     android:paddingTop="20dp"
                     android:text="@string/side_setting"
                     android:textColor="@color/sec_color_selector"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="30dp"
@@ -308,7 +308,7 @@
                     android:paddingTop="20dp"
                     android:text="@string/side_fd"
                     android:textColor="@color/sec_color_selector"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="30dp"
@@ -326,7 +326,7 @@
                 android:background="@drawable/comm_rectangle_btn_transparent_withbound"
                 android:text="@string/exit"
                 android:textColor="@color/common_color_selector"
-                android:textSize="@dimen/common_15sp" />
+                android:textSize="@dimen/common_16sp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

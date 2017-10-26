@@ -62,7 +62,7 @@ public class SettingActivity extends BaseActivity {
         super.initParams();
         tv_center_title.setText(R.string.setting);
         tv_version.setText(BuildConfig.VERSION_NAME + getString(R.string.setting_version));
-        tv_cache_size.setText(calculateCacheSize());
+        tv_cache_size.setText("(" + calculateCacheSize() + ")");
     }
 
     @Override
