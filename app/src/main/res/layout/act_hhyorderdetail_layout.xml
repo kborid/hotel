@@ -323,10 +323,10 @@
             android:layout_height="45dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="确定"
             android:background="?attr/bottomBtnSel"
-            android:textColor="@color/bottom_btn_text_selector"
-            android:textSize="@dimen/common_15sp"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_18sp"
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

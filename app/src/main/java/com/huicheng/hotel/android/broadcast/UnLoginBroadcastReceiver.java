@@ -9,7 +9,7 @@ import android.view.WindowManager;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.ui.activity.LoginActivity;
+import com.huicheng.hotel.android.ui.activity.UserLoginActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.constants.BroadCastConst;
 
@@ -77,7 +77,7 @@ public class UnLoginBroadcastReceiver extends BroadcastReceiver {
      * 跳转登录页面
      */
     private void intentLogin() {
-        Intent mIntent = new Intent(context, LoginActivity.class);
+        Intent mIntent = new Intent(context, UserLoginActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(mIntent);

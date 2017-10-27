@@ -83,6 +83,7 @@ public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawer_layout;
     private LeftDrawerLayout left_layout;
+    private LinearLayout weather_lay;
 
     private RelativeLayout blur_lay;
     private ImageView iv_blur;
@@ -128,6 +129,7 @@ public class MainActivity extends BaseActivity {
             drawer_layout.setScrimColor(getResources().getColor(R.color.transparent50));
         }
         left_layout = (LeftDrawerLayout) findViewById(R.id.left_layout);
+        weather_lay = (LinearLayout) findViewById(R.id.weather_lay);
 
         blur_lay = (RelativeLayout) findViewById(R.id.blur_lay);
         iv_blur = (ImageView) findViewById(R.id.iv_blur);
@@ -214,6 +216,11 @@ public class MainActivity extends BaseActivity {
         ucRlp.setMargins(0, Utils.mStatusBarHeight, Utils.dip2px(20), 0);
         iv_uc.setLayoutParams(ucRlp);
 
+        RelativeLayout.LayoutParams weatherRlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        weatherRlp.width = Utils.mScreenWidth;
+        weatherRlp.height = (int) ((float) weatherRlp.width / 75 * 36);
+        weather_lay.setLayoutParams(weatherRlp);
+
         String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         if (StringUtil.isEmpty(province) || StringUtil.isEmpty(city)) {
@@ -268,7 +275,7 @@ public class MainActivity extends BaseActivity {
         HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
         tv_in_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", beginTime)));
         tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
-        tv_days.setText(String.format(getString(R.string.durning), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
+        tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
 
         //更新用户中心
         left_layout.updateUserInfo();
@@ -607,7 +614,7 @@ public class MainActivity extends BaseActivity {
                     sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                     return;
                 }
-                intent = new Intent(this, MyOrdersActivity.class);
+                intent = new Intent(this, OrderListActivity.class);
                 break;
             case R.id.tv_next_search:
                 if (StringUtil.isEmpty(tv_city.getText().toString())) {
@@ -695,7 +702,7 @@ public class MainActivity extends BaseActivity {
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
                 tv_in_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", beginTime)));
                 tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
-                tv_days.setText(String.format(getString(R.string.durning), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
+                tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
             }
         }
     }

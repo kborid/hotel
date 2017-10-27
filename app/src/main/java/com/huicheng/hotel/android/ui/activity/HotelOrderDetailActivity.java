@@ -40,14 +40,18 @@ public class HotelOrderDetailActivity extends BaseActivity {
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
 
     private LinearLayout root_lay;
-    private TextView tv_order_num, tv_order_date;
-    private TextView tv_hotel_city, tv_hotel_name, tv_room_name;
-    private TextView tv_in_date, tv_price;
+    private TextView tv_in_date, tv_during_days, tv_out_date;
+    private TextView tv_hotel_position, tv_hotel_phone;
+
+    private TextView tv_room_name;
+    private TextView tv_price;
     private LinearLayout service_lay;
     private TextView tv_total_price;
+
     private EditText et_name, et_phone, et_require;
-    private LinearLayout et_name_line, et_phone_line;
     private TextView tv_invoice_info;
+    private TextView tv_order_num;
+    private View name_line, phone_line;
 
     private Button /*btn_hhy, */btn_pay, btn_cancel, btn_modify, btn_booking_again, btn_assess, btn_confirm;
 
@@ -67,21 +71,24 @@ public class HotelOrderDetailActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setVisibility(View.GONE);
         root_lay.setLayoutAnimation(getAnimationController());
-        tv_order_num = (TextView) findViewById(R.id.tv_order_num);
-        tv_order_date = (TextView) findViewById(R.id.tv_order_date);
-
-        tv_hotel_city = (TextView) findViewById(R.id.tv_hotel_city);
-        tv_hotel_name = (TextView) findViewById(R.id.tv_hotel_name);
-        tv_room_name = (TextView) findViewById(R.id.tv_room_name);
         tv_in_date = (TextView) findViewById(R.id.tv_in_date);
+        tv_during_days = (TextView) findViewById(R.id.tv_during_days);
+        tv_out_date = (TextView) findViewById(R.id.tv_out_date);
+
+        tv_hotel_position = (TextView) findViewById(R.id.tv_hotel_position);
+        tv_hotel_phone = (TextView) findViewById(R.id.tv_hotel_phone);
+
+        tv_order_num = (TextView) findViewById(R.id.tv_order_num);
+        tv_room_name = (TextView) findViewById(R.id.tv_room_name);
         tv_price = (TextView) findViewById(R.id.tv_price);
         service_lay = (LinearLayout) findViewById(R.id.service_lay);
         tv_total_price = (TextView) findViewById(R.id.tv_total_price);
         et_name = (EditText) findViewById(R.id.et_name);
-        et_name_line = (LinearLayout) findViewById(R.id.et_name_line);
+        name_line = findViewById(R.id.name_line);
         et_phone = (EditText) findViewById(R.id.et_phone);
-        et_phone_line = (LinearLayout) findViewById(R.id.et_phone_line);
+        phone_line = findViewById(R.id.phone_line);
         et_require = (EditText) findViewById(R.id.et_require);
         tv_invoice_info = (TextView) findViewById(R.id.tv_invoice_info);
 
@@ -109,7 +116,6 @@ public class HotelOrderDetailActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_back.setImageResource(R.drawable.iv_back_white);
     }
 
     private void requestOrderDetailInfo() {
@@ -145,19 +151,18 @@ public class HotelOrderDetailActivity extends BaseActivity {
     private void refreshOrderDetailInfo() {
         if (null != orderPayDetailInfoBean) {
             root_lay.setVisibility(View.VISIBLE);
-            tv_order_num.setText(orderPayDetailInfoBean.orderNO);
-            tv_order_date.setText(DateUtil.getDay("yyyy年MM月dd日", orderPayDetailInfoBean.timeStart) + "-" + DateUtil.getDay("dd日", orderPayDetailInfoBean.timeEnd));
-            tv_hotel_city.setText(orderPayDetailInfoBean.location);
-            tv_hotel_name.setText(orderPayDetailInfoBean.name);
-            tv_room_name.setText(orderPayDetailInfoBean.roomName);
-//            tv_room_name.append(" " + getString(R.string.multipleSign) + " ");
-//            tv_room_name.append(String.valueOf(orderPayDetailInfoBean.roomCnt));
-
-            String date = DateUtil.getDay("MM月dd日", orderPayDetailInfoBean.timeStart) + "-" + DateUtil.getDay("dd日", orderPayDetailInfoBean.timeEnd);
-            String during = DateUtil.getGapCount(new Date(orderPayDetailInfoBean.timeStart), new Date(orderPayDetailInfoBean.timeEnd)) + "晚";
+            tv_center_title.setText(orderPayDetailInfoBean.name);
+            int days = DateUtil.getGapCount(new Date(orderPayDetailInfoBean.timeStart), new Date(orderPayDetailInfoBean.timeEnd));
+            tv_during_days.setText(String.format(getString(R.string.duringDayStr), days));
+            tv_in_date.setText(DateUtil.getDay("MM / dd", orderPayDetailInfoBean.timeStart));
+            tv_out_date.setText(DateUtil.getDay("MM / dd", orderPayDetailInfoBean.timeEnd));
             StringBuilder sb = new StringBuilder();
-            sb.append(date).append(" ")/*.append(orderPayDetailInfoBean.roomCnt).append("间").append(" ")*/.append(during);
-            tv_in_date.setText(sb);
+            sb.append(orderPayDetailInfoBean.roomName).append(" ").append(getString(R.string.multipleSign)).append(" ")
+                    .append(String.format(getString(R.string.duringNightStr), days));
+            if (orderPayDetailInfoBean.roomCnt > 0) {
+                sb.append(" ").append(getString(R.string.multipleSign)).append(" ").append(orderPayDetailInfoBean.roomCnt).append("间");
+            }
+            tv_room_name.setText(sb);
             tv_price.setText(orderPayDetailInfoBean.roomPrice + " 元");
 
             service_lay.removeAllViews();
@@ -169,13 +174,18 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 tv_price.setText(orderPayDetailInfoBean.attachInfo.get(i).orderMoney + " 元");
                 service_lay.addView(view);
             }
+
             float price = 0;
             try {
                 price = Float.parseFloat(orderPayDetailInfoBean.amount);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            tv_total_price.setText((int) price + "");
+            tv_total_price.setText(String.valueOf((int) price));
+
+            tv_hotel_position.setText(orderPayDetailInfoBean.location);
+            tv_hotel_phone.setText(orderPayDetailInfoBean.location);
+
 
             String name = orderPayDetailInfoBean.checkInName;
             name = name.replace("|", "，");
@@ -185,12 +195,10 @@ public class HotelOrderDetailActivity extends BaseActivity {
             et_phone.setText(phone);
             et_require.setText(orderPayDetailInfoBean.specialComment);
             tv_invoice_info.setText(orderPayDetailInfoBean.invoice);
-
+            tv_order_num.setText(orderPayDetailInfoBean.orderNO);
             int status = Integer.parseInt(orderPayDetailInfoBean.status);
             modifyEnableOrderInfo(false);
             updateButtonStatus(status);
-        } else {
-            root_lay.setVisibility(View.GONE);
         }
     }
 
@@ -241,7 +249,6 @@ public class HotelOrderDetailActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        tv_hotel_name.setOnClickListener(this);
         btn_pay.setOnClickListener(this);
 //        btn_hhy.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
@@ -318,15 +325,11 @@ public class HotelOrderDetailActivity extends BaseActivity {
     private void modifyEnableOrderInfo(boolean flag) {
         if (flag) {
             et_name.setEnabled(true);
-            et_name_line.setVisibility(View.VISIBLE);
+            name_line.setVisibility(View.VISIBLE);
             et_phone.setEnabled(true);
-            et_phone_line.setVisibility(View.VISIBLE);
+            phone_line.setVisibility(View.VISIBLE);
             et_require.setEnabled(true);
-            et_require.setBackground(getResources().getDrawable(R.drawable.comm_rectangle_transparent_withbound_white));
-
-            tv_order_date.setTextColor(getResources().getColor(R.color.transparent40_));
-            tv_invoice_info.setTextColor(getResources().getColor(R.color.transparent40_));
-            tv_hotel_name.setTextColor(getResources().getColor(R.color.transparent40_));
+            et_require.setBackground(getResources().getDrawable(R.drawable.orderdetail_edit_require_bg));
 
             btn_confirm.setVisibility(View.VISIBLE);
             btn_confirm.setEnabled(true);
@@ -335,15 +338,11 @@ public class HotelOrderDetailActivity extends BaseActivity {
             btn_booking_again.setEnabled(false);
         } else {
             et_name.setEnabled(false);
-            et_name_line.setVisibility(View.INVISIBLE);
+            name_line.setVisibility(View.INVISIBLE);
             et_phone.setEnabled(false);
-            et_phone_line.setVisibility(View.INVISIBLE);
+            phone_line.setVisibility(View.INVISIBLE);
             et_require.setEnabled(false);
             et_require.setBackground(null);
-
-            tv_order_date.setTextColor(getResources().getColor(R.color.white));
-            tv_invoice_info.setTextColor(getResources().getColor(R.color.white));
-            tv_hotel_name.setTextColor(getResources().getColor(R.color.white));
 
             btn_modify.setVisibility(View.VISIBLE);
             btn_confirm.setVisibility(View.GONE);

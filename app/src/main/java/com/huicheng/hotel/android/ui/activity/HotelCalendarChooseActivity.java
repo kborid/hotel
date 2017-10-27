@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -17,7 +18,7 @@ import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarSelectedListener;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarUtils;
-import com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarView;
+import com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarRecyclerView;
 import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.DateUtil;
@@ -31,7 +32,7 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 public class HotelCalendarChooseActivity extends BaseActivity implements CalendarSelectedListener {
 
     private LinearLayout week_lay;
-    private CustomCalendarView calendar_lay;
+    private CustomCalendarRecyclerView calendar_lay;
     private TextView tv_begin;
     private TextView tv_end;
     private Button btn_next;
@@ -56,7 +57,7 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
     public void initViews() {
         super.initViews();
         week_lay = (LinearLayout) findViewById(R.id.week_lay);
-        calendar_lay = (CustomCalendarView) findViewById(R.id.calendar_lay);
+        calendar_lay = (CustomCalendarRecyclerView) findViewById(R.id.calendar_lay);
         btn_next = (Button) findViewById(R.id.btn_next);
         tv_begin = (TextView) findViewById(R.id.tv_begin);
         tv_end = (TextView) findViewById(R.id.tv_end);
@@ -174,8 +175,8 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
             TextView tv_week = new TextView(this);
             tv_week.setText(CalendarUtils.getWeekStringByNum(i));
             tv_week.setGravity(Gravity.CENTER);
-            tv_week.setTextColor(getResources().getColor(R.color.lableColor));
-            tv_week.setTextSize(12);
+            tv_week.setTextColor(Color.parseColor("#3c3c3c"));
+            tv_week.setTextSize(14);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             lp.weight = 1;
             week_lay.addView(tv_week, lp);

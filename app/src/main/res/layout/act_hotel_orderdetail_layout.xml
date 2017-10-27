@@ -1,438 +1,451 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/mainColor"
-    android:baselineAligned="false"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+    <include layout="@layout/comm_title" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/iv_orderdetail_hotel_logo" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#999999" />
 
-        <LinearLayout
-            android:id="@+id/root_lay"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:fillViewport="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollbars="none">
 
-            <include layout="@layout/comm_title" />
-
-            <ScrollView
-                android:id="@+id/scroll_view"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:scrollbarThumbVertical="@drawable/p3016_scrollbar"
-                android:scrollbarTrackVertical="@color/transparent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="20dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_order_id"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/tv_in_date"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:text="订单编号："
-                            android:textColor="@color/transparent40_"
-                            android:textSize="@dimen/common_12sp" />
+                            android:gravity="center"
+                            android:text="09/20"
+                            android:textColor="#333333"
+                            android:textSize="@dimen/common_30sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_order_num"
-                            android:layout_width="wrap_content"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/tv_order_id"
-                            android:text="191919191919"
-                            android:textColor="@color/transparent40_"
+                            android:gravity="center"
+                            android:text="入住"
+                            android:textColor="#333333"
                             android:textSize="@dimen/common_12sp" />
-                    </RelativeLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_during_days"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal|bottom"
+                        android:text="1天"
+                        android:textColor="@color/mainColor"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_out_date"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="09/21"
+                            android:textColor="#333333"
+                            android:textSize="@dimen/common_30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="离店"
+                            android:textColor="#333333"
+                            android:textSize="@dimen/common_12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_room_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="房间名称"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/common_15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="共"
+                        android:textColor="@color/mainColor"
+                        android:textSize="@dimen/common_15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="1000元"
+                        android:textColor="@color/mainColor"
+                        android:textSize="@dimen/common_15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/service_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_total_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/mainColor"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="元"
+                        android:textColor="@color/mainColor"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/orderdetail_line_bg"
+                    android:layerType="software" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/od_position"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_hotel_position"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/od_hotel_tel"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_hotel_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/orderdetail_line_bg"
+                    android:layerType="software" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/od_resident"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@null"
+                        android:inputType="text"
+                        android:padding="5dp"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/name_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#333333"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/od_contact"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <EditText
+                        android:id="@+id/et_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@null"
+                        android:inputType="phone"
+                        android:padding="5dp"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/phone_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#333333"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/od_special_require"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <EditText
+                        android:id="@+id/et_require"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@null"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/od_invoice"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_invoice_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/od_order_num"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_order_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/comm_line_tran" />
+                        android:layout_height="1dp"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/orderdetail_line_bg"
+                        android:layerType="software" />
+
+                    <!--button-->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp">
+
+                        <Button
+                            android:id="@+id/btn_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/orderdetail_btn_sel"
+                            android:text="@string/od_btn_pay"
+                            android:textColor="@color/orderdetail_text_sel"
+                            android:textSize="@dimen/common_18sp"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/btn_hhy"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/orderdetail_btn_sel"
+                            android:text="@string/od_btn_houhuiyao"
+                            android:textColor="@color/orderdetail_text_sel"
+                            android:textSize="@dimen/common_18sp"
+                            android:visibility="gone" />
+                    </FrameLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:focusable="false"
-                        android:focusableInTouchMode="true"
-                        android:orientation="vertical">
+                        android:layout_marginTop="6dp"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="订单时间"
-                            android:textColor="@color/transparent40_"
-                            android:textSize="@dimen/common_12sp" />
+                        <Button
+                            android:id="@+id/btn_cancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/orderdetail_btn_sel"
+                            android:enabled="false"
+                            android:text="@string/od_btn_order_cancel"
+                            android:textColor="@color/orderdetail_text_sel"
+                            android:textSize="@dimen/common_18sp" />
 
-                        <TextView
-                            android:id="@+id/tv_order_date"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:textColor="@color/white"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/comm_line_tran" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:orientation="vertical"
-                            android:visibility="visible">
-
-                            <TextView
-                                android:id="@+id/tv_hotel_city"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="成都"
-                                android:textColor="@color/transparent40_"
-                                android:textSize="@dimen/common_12sp" />
-
-                            <TextView
-                                android:id="@+id/tv_hotel_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:drawableRight="@drawable/iv_accessory_white"
-                                android:text="酒店名字"
-                                android:textColor="@color/white"
-                                android:textSize="24dp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="30dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/tv_room_name"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:padding="5dp"
-                                    android:text="房间名称"
-                                    android:textColor="?attr/indicatorColor"
-                                    android:textSize="@dimen/common_15sp" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:padding="5dp">
-
-                                    <TextView
-                                        android:id="@+id/tv_in_date"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="服务项目"
-                                        android:textColor="?attr/indicatorColor"
-                                        android:textSize="@dimen/common_15sp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="共"
-                                        android:textColor="?attr/indicatorColor"
-                                        android:textSize="@dimen/common_15sp" />
-
-                                    <TextView
-                                        android:id="@+id/tv_price"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="10dp"
-                                        android:text="1000元"
-                                        android:textColor="?attr/indicatorColor"
-                                        android:textSize="@dimen/common_15sp" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/service_lay"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:gravity="right"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/tv_total_price"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0"
-                                    android:textColor="?attr/indicatorColor"
-                                    android:textSize="30sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:text="元"
-                                    android:textColor="?attr/indicatorColor"
-                                    android:textSize="30sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/comm_line_tran" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:text="入住人"
-                            android:textColor="@color/transparent40_"
-                            android:textSize="@dimen/common_12sp" />
-
-                        <EditText
-                            android:id="@+id/et_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:background="@null"
-                            android:inputType="text"
-                            android:padding="5dp"
-                            android:text="入住人姓名"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/common_15sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:id="@+id/et_name_line"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="invisible">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/transparent50_" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/transparent60_" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="25dp"
-                            android:text="联系方式"
-                            android:textColor="@color/transparent40_"
-                            android:textSize="@dimen/common_12sp" />
-
-                        <EditText
-                            android:id="@+id/et_phone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:background="@null"
-                            android:inputType="phone"
-                            android:padding="5dp"
-                            android:text="入住人电话"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/common_15sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:id="@+id/et_phone_line"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="invisible">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/transparent50_" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/transparent60_" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="25dp"
-                            android:text="特别要求"
-                            android:textColor="@color/transparent40_"
-                            android:textSize="@dimen/common_12sp" />
-
-                        <EditText
-                            android:id="@+id/et_require"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:background="@null"
-                            android:gravity="left"
-                            android:padding="5dp"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/common_15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="25dp"
-                            android:text="发票信息"
-                            android:textColor="@color/transparent40_"
-                            android:textSize="@dimen/common_12sp" />
-
-                        <TextView
-                            android:id="@+id/tv_invoice_info"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/common_15sp"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/comm_line_tran" />
-
-                        <!--button-->
                         <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_weight="1">
 
                             <Button
-                                android:id="@+id/btn_pay"
+                                android:id="@+id/btn_modify"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
-                                android:text="去支付"
-                                android:textColor="?attr/orderDetailTextSel"
-                                android:textSize="@dimen/common_15sp"
-                                android:visibility="gone" />
+                                android:background="@drawable/orderdetail_btn_sel"
+                                android:enabled="false"
+                                android:text="@string/od_btn_order_modify"
+                                android:textColor="@color/orderdetail_text_sel"
+                                android:textSize="@dimen/common_18sp" />
 
                             <Button
-                                android:id="@+id/btn_hhy"
+                                android:id="@+id/btn_confirm"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
-                                android:text="后悔药"
-                                android:textColor="?attr/orderDetailTextSel"
-                                android:textSize="@dimen/common_15sp"
+                                android:background="@drawable/orderdetail_book_btn_sel"
+                                android:enabled="false"
+                                android:text="@string/od_btn_order_confirm"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/common_18sp"
                                 android:visibility="gone" />
                         </FrameLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/btn_cancel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
-                                android:enabled="false"
-                                android:text="取消订单"
-                                android:textColor="?attr/orderDetailTextSel"
-                                android:textSize="@dimen/common_15sp" />
-
-                            <FrameLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:layout_marginLeft="20dp"
-                                android:layout_weight="1">
-
-                                <Button
-                                    android:id="@+id/btn_modify"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
-                                    android:enabled="false"
-                                    android:text="修改订单"
-                                    android:textColor="?attr/orderDetailTextSel"
-                                    android:textSize="@dimen/common_15sp" />
-
-                                <Button
-                                    android:id="@+id/btn_confirm"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:background="?attr/indicatorBgSel"
-                                    android:enabled="false"
-                                    android:text="确认修改"
-                                    android:textColor="?attr/mainColor"
-                                    android:textSize="@dimen/common_15sp"
-                                    android:visibility="gone" />
-                            </FrameLayout>
-                        </LinearLayout>
-
-                        <Button
-                            android:id="@+id/btn_assess"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/comm_rectangle_btn_transparent_withbound_selector"
-                            android:text="去评论"
-                            android:textColor="?attr/orderDetailTextSel"
-                            android:textSize="@dimen/common_15sp" />
-
-                        <Button
-                            android:id="@+id/btn_booking_again"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="20dp"
-                            android:background="?attr/indicatorBgSel"
-                            android:text="再次预订"
-                            android:textColor="?attr/mainColor"
-                            android:textSize="@dimen/common_15sp" />
                     </LinearLayout>
-                </LinearLayout>
-            </ScrollView>
 
-        </LinearLayout>
-    </RelativeLayout>
+                    <Button
+                        android:id="@+id/btn_assess"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/orderdetail_btn_sel"
+                        android:text="@string/od_btn_assess"
+                        android:textColor="@color/orderdetail_text_sel"
+                        android:textSize="@dimen/common_18sp" />
+
+                    <Button
+                        android:id="@+id/btn_booking_again"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/orderdetail_book_btn_sel"
+                        android:text="@string/od_btn_rebook"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/common_18sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/iv_hotel_logo_large" />
+        </RelativeLayout>
+    </FrameLayout>
 </LinearLayout>

@@ -131,7 +131,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="售出价："
-                            android:textColor="@color/mainColorAccent"
+                            android:textColor="@color/mainColor"
                             android:textSize="@dimen/common_9sp"
                             android:textStyle="bold" />
 
@@ -141,7 +141,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="360"
-                            android:textColor="@color/mainColorAccent"
+                            android:textColor="@color/mainColor"
                             android:textSize="@dimen/common_18sp"
                             android:textStyle="bold" />
 
@@ -149,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="元"
-                            android:textColor="@color/mainColorAccent"
+                            android:textColor="@color/mainColor"
                             android:textSize="@dimen/common_18sp"
                             android:textStyle="bold" />
                     </LinearLayout>

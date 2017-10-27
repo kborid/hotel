@@ -88,22 +88,22 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 登录 -->
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name=".ui.activity.UserLoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 注册 -->
         <activity
-            android:name=".ui.activity.RegisterActivity"
+            android:name=".ui.activity.UserRegisterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 忘记密码 -->
         <activity
-            android:name=".ui.activity.ForgetPwdActivity"
+            android:name=".ui.activity.UserForgetPwdActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 三方登录 的绑定 -->
         <activity
-            android:name=".ui.activity.BindPhoneActivity"
+            android:name=".ui.activity.UserBindPhoneActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--个人中心-->
@@ -118,7 +118,7 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--我的订单-->
         <activity
-            android:name=".ui.activity.MyOrdersActivity"
+            android:name=".ui.activity.OrderListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!--我的优惠券-->

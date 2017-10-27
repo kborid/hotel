@@ -44,7 +44,6 @@
         <attr name="userCenterThumbTextDisable" format="color" />
         <attr name="zeroButtonBg" format="reference" />
         <attr name="mainColor" format="color" />
-        <attr name="mainColorAccent" format="color" />
         <attr name="messageHasImage" format="reference" />
         <attr name="addButton" format="reference" />
         <attr name="subButton" format="reference" />
@@ -67,7 +66,6 @@
         <attr name="considerTextSel" format="color|reference" />
         <attr name="moreServiceSel" format="reference" />
         <attr name="msgItemTextSel" format="reference|color" />
-        <attr name="orderDetailTextSel" format="color|reference"/>
         <attr name="assessesItemBg" format="reference"/>
         <attr name="orderHotelItemBg" format="reference"/>
         <attr name="orderPlaneItemBg" format="reference"/>
@@ -132,7 +130,7 @@
         <attr name="seekBarResId" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="CustomCalendarView">
+    <declare-styleable name="CustomCalendarRecyclerView">
         <attr name="colorCurrentDayCircle" format="color" />
         <attr name="colorCurrentDay" format="color" />
         <attr name="colorSelectedDayBackground" format="color" />

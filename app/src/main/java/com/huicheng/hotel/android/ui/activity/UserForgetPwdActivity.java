@@ -27,7 +27,7 @@ import com.prj.sdk.util.Utils;
 /**
  * 找回密码
  */
-public class ForgetPwdActivity extends BaseActivity {
+public class UserForgetPwdActivity extends BaseActivity {
 
     private EditText et_phone, et_yzm, et_password, et_password2;
     private Button btn_reset, btn_getYZM;

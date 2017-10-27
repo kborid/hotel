@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape>
-            <gradient android:angle="270" android:endColor="?attr/defaultBg" android:startColor="@color/transparent" />
+        <shape android:shape="line">
+            <stroke android:width="0.5dp" android:color="#999999" android:dashGap="2dp" android:dashWidth="8dp" />
         </shape>
     </item>
 </selector>

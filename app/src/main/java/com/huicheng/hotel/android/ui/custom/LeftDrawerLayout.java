@@ -30,7 +30,7 @@ import com.huicheng.hotel.android.ui.activity.FansHotelActivity;
 import com.huicheng.hotel.android.ui.activity.FeedbackActivity;
 import com.huicheng.hotel.android.ui.activity.MessageListActivity;
 import com.huicheng.hotel.android.ui.activity.MyDiscountCouponActivity;
-import com.huicheng.hotel.android.ui.activity.MyOrdersActivity;
+import com.huicheng.hotel.android.ui.activity.OrderListActivity;
 import com.huicheng.hotel.android.ui.activity.SettingActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -198,13 +198,13 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                             @Override
                             public boolean onException(Exception e, CustomReqURLFormatModelImpl model, Target<GlideDrawable> target, boolean isFirstResource) {
                                 e.printStackTrace();
-                                LogUtil.d(TAG, "onException(): model = " + model + ", isFirstResource = " + isFirstResource);
+                                LogUtil.d(TAG, "onException(): model = " + model.requestReqFormatUrl() + ", isFirstResource = " + isFirstResource);
                                 return false;
                             }
 
                             @Override
                             public boolean onResourceReady(GlideDrawable resource, CustomReqURLFormatModelImpl model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                LogUtil.d(TAG, "onResourceReady(): model = " + model + ", isFirstResource = " + isFirstResource);
+                                LogUtil.d(TAG, "onResourceReady(): model = " + model.requestReqFormatUrl() + ", isFirstResource = " + isFirstResource);
                                 iv_photo.setImageDrawable(resource);
                                 return false;
                             }
@@ -246,7 +246,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                 doActionIntent = new Intent(context, UserCenterActivity.class);
                 break;
             case R.id.tv_myorder:
-                doActionIntent = new Intent(context, MyOrdersActivity.class);
+                doActionIntent = new Intent(context, OrderListActivity.class);
                 break;
             case R.id.tv_msg:
                 doActionIntent = new Intent(context, MessageListActivity.class);

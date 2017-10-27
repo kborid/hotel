@@ -25,8 +25,7 @@ public abstract class BaseFragment extends Fragment {
     private ProgressDialog mProgressDialog;
     protected static String requestID;
     protected int mMainColor = R.color.mainColor;
-    protected int mMainColorAccent = R.color.mainColorAccent;
-    protected int mSwipeRefreshColor = mMainColorAccent;
+    protected int mSwipeRefreshColor = mMainColor;
     /**
      * Fragment当前状态是否可见
      */
@@ -56,8 +55,7 @@ public abstract class BaseFragment extends Fragment {
     protected void initTypedArrayValue() {
         TypedArray ta = getActivity().obtainStyledAttributes(R.styleable.MyTheme);
         mMainColor = ta.getResourceId(R.styleable.MyTheme_mainColor, R.color.mainColor);
-        mMainColorAccent = ta.getResourceId(R.styleable.MyTheme_mainColorAccent, R.color.mainColorAccent);
-        mSwipeRefreshColor = ta.getResourceId(R.styleable.MyTheme_hotelRefreshColor, mMainColorAccent);
+        mSwipeRefreshColor = ta.getResourceId(R.styleable.MyTheme_hotelRefreshColor, mMainColor);
         ta.recycle();
     }
 

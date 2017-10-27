@@ -21,7 +21,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
-import com.huicheng.hotel.android.ui.activity.LoginActivity.onCancelLoginListener;
+import com.huicheng.hotel.android.ui.activity.UserLoginActivity.onCancelLoginListener;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -133,7 +133,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
     public void initParams() {
         super.initParams();
         tv_center_title.setText(mTitle);
-        LoginActivity.setCancelLogin(this);
+        UserLoginActivity.setCancelLogin(this);
 
         WebSettings webSetting = mWebView.getSettings();
         webSetting.setJavaScriptEnabled(true);
@@ -333,7 +333,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
     public void onDestroy() {
         super.onDestroy();
         destroyView();
-        LoginActivity.setCancelLogin(null);
+        UserLoginActivity.setCancelLogin(null);
         common_loading_widget.closeLoading();
     }
 

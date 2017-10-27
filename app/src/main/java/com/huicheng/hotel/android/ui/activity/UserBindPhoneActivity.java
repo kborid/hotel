@@ -39,7 +39,7 @@ import cn.jpush.android.api.TagAliasCallback;
  *
  * @author LiaoBo
  */
-public class BindPhoneActivity extends BaseActivity implements DialogInterface.OnCancelListener {
+public class UserBindPhoneActivity extends BaseActivity implements DialogInterface.OnCancelListener {
     private EditText et_phone, et_yzm;
     private Button btn_yzm, btn_bind;
     private String thirdpartusername, thirdpartuserheadphotourl, openid, mPlatform, usertoken;

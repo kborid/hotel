@@ -51,7 +51,7 @@ import cn.jpush.android.api.TagAliasCallback;
 /**
  * 登录
  */
-public class LoginActivity extends BaseActivity implements DialogInterface.OnCancelListener, OnCheckedChangeListener {
+public class UserLoginActivity extends BaseActivity implements DialogInterface.OnCancelListener, OnCheckedChangeListener {
 
     private EditText et_phone, et_pwd;
     private Button btn_login;
@@ -140,12 +140,12 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCan
                 break;
             case R.id.tv_reigster:
                 Intent intent = new Intent();
-                intent.setClass(this, RegisterActivity.class);
+                intent.setClass(this, UserRegisterActivity.class);
                 startActivity(intent);
                 break;
             case R.id.tv_forget_pwd:
                 Intent intent2 = new Intent();
-                intent2.setClass(this, ForgetPwdActivity.class);
+                intent2.setClass(this, UserForgetPwdActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.btn_cancel:// 置空
@@ -406,7 +406,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCan
                 SessionContext.setTicket(accessTicket);
                 getUserInfo(accessTicket);
             } else {
-                Intent intent = new Intent(this, BindPhoneActivity.class);
+                Intent intent = new Intent(this, UserBindPhoneActivity.class);
                 intent.putExtra("thirdpartusername", thirdpartusername);
                 intent.putExtra("thirdpartuserheadphotourl", thirdpartuserheadphotourl);
                 intent.putExtra("openid", openid);

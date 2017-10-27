@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="SUNNY"
         android:textColor="@color/white"
-        android:textSize="@dimen/common_20sp"
-        android:text="SUNNY" />
+        android:textSize="@dimen/common_20sp" />
 
     <TextView
         android:id="@+id/tv_loc"
@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:gravity="center"
+        android:text="BeiJing"
         android:textColor="@color/white"
-        android:textSize="@dimen/common_12sp"
-        android:text="BeiJing" />
+        android:textSize="@dimen/common_12sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,9 +37,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center"
+            android:text="28"
             android:textColor="@color/white"
-            android:textSize="60sp"
-            android:text="28" />
+            android:textSize="60sp" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -33,7 +33,7 @@
     <!--男性界面主题-->
     <style name="defaultTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/defaultBG</item>
-        <item name="colorAccent">@color/mainColorAccent</item>
+        <item name="colorAccent">@color/mainColor</item>
         <item name="tabHotelColor">@color/tabHotelColor</item>
         <item name="tabPlaneColor">@color/tabPlaneColor</item>
         <item name="tabTrainColor">@color/tabTrainColor</item>
@@ -44,7 +44,7 @@
         <item name="hhyMainTextColor">@color/hhyMainTextColor</item>
         <item name="commBottomText">@color/commBottomText</item>
         <item name="hotelListTab">@color/hotelListTab</item>
-        <item name="hotelRefreshColor">@color/mainColorAccent</item>
+        <item name="hotelRefreshColor">@color/mainColor</item>
         <item name="hotelItemDelPrice">@color/hotelItemDelPrice</item>
         <item name="hotelItemPrice">@color/hotelItemPrice</item>
         <item name="currentDayCircle">@color/currentDayCircle</item>
@@ -74,7 +74,6 @@
         <item name="userCenterThumbTextDisable">@color/indicatorColor</item>
         <item name="zeroButtonBg">@drawable/iv_free_bg</item>
         <item name="mainColor">@color/mainColor</item>
-        <item name="mainColorAccent">@color/mainColorAccent</item>
         <item name="messageHasImage">@drawable/iv_tab_msg2</item>
         <item name="addButton">@drawable/iv_add</item>
         <item name="subButton">@drawable/iv_sub</item>
@@ -99,7 +98,6 @@
         <item name="msgGradientShadow">@drawable/msg_gradient_shadow</item>
         <item name="msgSpinnerBg">@drawable/msg_spinner_mainwhite_withbound_bg</item>
         <item name="msgItemTextSel">@color/msg_item_selector</item>
-        <item name="orderDetailTextSel">@color/orderdetail_text_selector</item>
         <item name="orderAssessPublishBtnSel">@drawable/publish_btn_selector</item>
         <item name="vipHomeButtonBg">@drawable/vip_home_btn_bg</item>
         <item name="vipDetailTagSel">@drawable/vip_detail_tag_selector</item>
@@ -109,7 +107,7 @@
     <!--女性界面主题-->
     <style name="femaleTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/female_defaultBG</item>
-        <item name="colorAccent">@color/female_mainColorAccent</item>
+        <item name="colorAccent">@color/female_mainColor</item>
         <item name="tabHotelColor">@color/female_tabHotelColor</item>
         <item name="tabPlaneColor">@color/female_tabPlaneColor</item>
         <item name="tabTrainColor">@color/female_tabTrainColor</item>
@@ -120,7 +118,7 @@
         <item name="hhyMainTextColor">@color/female_hhyMainTextColor</item>
         <item name="commBottomText">@color/female_commBottomText</item>
         <item name="hotelListTab">@color/female_hotelListTab</item>
-        <item name="hotelRefreshColor">@color/female_mainColorAccent</item>
+        <item name="hotelRefreshColor">@color/female_mainColor</item>
         <item name="hotelItemDelPrice">@color/female_hotelItemDelPrice</item>
         <item name="hotelItemPrice">@color/female_hotelItemPrice</item>
         <item name="currentDayCircle">@color/female_currentDayCircle</item>
@@ -150,7 +148,6 @@
         <item name="userCenterThumbTextDisable">@color/female_mainColor</item>
         <item name="zeroButtonBg">@drawable/iv_free_bg_female</item>
         <item name="mainColor">@color/female_mainColor</item>
-        <item name="mainColorAccent">@color/female_mainColorAccent</item>
         <item name="messageHasImage">@drawable/iv_tab_msg2_female</item>
         <item name="addButton">@drawable/iv_add_female</item>
         <item name="subButton">@drawable/iv_sub_female</item>
@@ -175,7 +172,6 @@
         <item name="msgGradientShadow">@drawable/female_msg_gradient_shadow</item>
         <item name="msgSpinnerBg">@drawable/female_msg_spinner_mainwhite_withbound_bg</item>
         <item name="msgItemTextSel">@color/female_msg_item_selector</item>
-        <item name="orderDetailTextSel">@color/female_orderdetail_text_selector</item>
         <item name="orderAssessPublishBtnSel">@drawable/female_publish_btn_selector</item>
         <item name="vipHomeButtonBg">@drawable/female_vip_home_btn_bg</item>
         <item name="vipDetailTagSel">@drawable/female_vip_detail_tag_selector</item>

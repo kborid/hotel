@@ -12,7 +12,7 @@ import com.huicheng.hotel.android.R;
  * @author kborid
  * @date 2016/11/18 0018
  */
-public class CustomCalendarView extends RecyclerView {
+public class CustomCalendarRecyclerView extends RecyclerView {
     protected Context mContext;
     protected SimpleMonthAdapter mAdapter;
     private CalendarSelectedListener mController;
@@ -22,18 +22,18 @@ public class CustomCalendarView extends RecyclerView {
     private TypedArray typedArray;
     private OnScrollListener onScrollListener;
 
-    public CustomCalendarView(Context context) {
+    public CustomCalendarRecyclerView(Context context) {
         this(context, null);
     }
 
-    public CustomCalendarView(Context context, AttributeSet attrs) {
+    public CustomCalendarRecyclerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CustomCalendarView(Context context, AttributeSet attrs, int defStyle) {
+    public CustomCalendarRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         if (!isInEditMode()) {
-            typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomCalendarView);
+            typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomCalendarRecyclerView);
             setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             init(context);
         }

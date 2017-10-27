@@ -4,15 +4,34 @@
     <!-- common string -->
     <string name="app_name">ABC旅行预订</string>
     <string name="stringApp">开启旅程</string>
+    <string name="about_us">关于我们</string>
+    <string name="about_us_content">ABC旅行预订是中国最具颠覆性的无中介旅行预订平台，由杭州惠程信息技术有限公司于2016年创立。ABC旅行预订致力于建立一个优先为酒店业创造价值的预订平台，并帮助客人实现最好的预订体验、最高的预订效率以及最低的旅行成本。\n\nABC旅行预订通过在线平台为酒店提供独一无二的技术基础设施；通过移动客户端，随时随地的为旅行者提供性价比最高、最放心、最真实的旅行产品和最便捷的预订方式。</string>
+    <string name="company">杭州惠程信息技术有限公司</string>
+    <string name="copyright">Copyright © 2016–2018</string>
+    <string name="version">版本介绍</string>
+    <string name="versionIntroduce">最具颠覆性的无中介旅行预订平台\n\n－ 没有佣金，价格更低\n－ 优惠直给，拒绝套路\n－ 直接联系酒店，预订更放心\n－ 无竞价排名，还原真实搜索结果\n－ “房型＋服务”订房模式，效率倍增</string>
+
 
     <string name="multipleSign">×</string>
     <string name="RMB">¥</string>
     <string name="totalRMB">共 ¥</string>
     <string name="rmbStr"> ¥ %1$s </string>
     <string name="titleCityDateStr">%1$s(%2$s)</string>
-    <string name="durning">%1$d晚</string>
+    <string name="duringDayStr">%1$d天</string>
+    <string name="duringNightStr">%1$d晚</string>
     <string name="pointStr">%1$s分</string>
     <string name="track_str">%1$s前有人浏览过</string>
+    <string name="prePayStr">预付:%1$s元</string>
+    <string name="prePayNotSupport">预付:不支持</string>
+    <string name="arrPayStr">到店付:%1$s元</string>
+    <string name="arrPayNotSupport">到店付:不支持</string>
+    <string name="moreReply"><b>%1$s</b>…等人<b>共%2$d条</b>回复</string>
+    <string name="ygrRoomCount">剩余%1$d间</string>
+    <string name="ygrNote">只能预订当日夜归人\n已为您推荐 %1$s 夜归人</string>
+    <string name="no_coupon_note">最近一次0元住，开放房量%1$d间。</string>
+    <string name="coupon_note">— 本券仅限在“<font color="#001a58">%1$s</font>”使用\n\n— 本房券可抵扣1间夜房费（具体详见免费房券使用规则）\n\n— 不可用于店内mini bar、餐饮、小商品等非房费消费\n\n— 不可与其他优惠同时使用、不得兑换现金\n\n— 用房券结算的房费部分，不开具发票\n\n— 点击“立即使用”，选择规定时间内的入住及退房日期，验证成功后提交订单，酒店确认订单后即可生效\n\n— 本券有效期至：<font color="#001a58">%2$s</font></string>
+    <string name="orderListItemDateStr">入住时间：%1$s-%2$s (%3$d晚)</string>
+
 
     <!--登录-->
     <string name="agree_agement">我已阅读并同意</string>
@@ -31,11 +50,6 @@
     <string name="get_checknumber">获取验证码</string>
     <string name="bind_phone">手机绑定</string>
 
-
-    <string name="prePayStr">预付:%1$s元</string>
-    <string name="prePayNotSupport">预付:不支持</string>
-    <string name="arrPayStr">到店付:%1$s元</string>
-    <string name="arrPayNotSupport">到店付:不支持</string>
     <!--我的-->
     <!--侧滑-->
     <string name="side_hi">Hi</string>
@@ -71,19 +85,6 @@
     <string name="setting_private">隐私声明</string>
     <string name="setting_condition">相关条款</string>
     <string name="setting_usage_condition">使用条款</string>
-
-    <string name="moreReply"><b>%1$s</b>…等人<b>共%2$d条</b>回复</string>
-    <string name="ygrRoomCount">剩余%1$d间</string>
-    <string name="ygrNote">只能预订当日夜归人\n已为您推荐 %1$s 夜归人</string>
-
-    <string name="no_coupon_note">最近一次0元住，开放房量%1$d间。</string>
-    <string name="coupon_note">— 本券仅限在“<font color="#001a58">%1$s</font>”使用\n\n— 本房券可抵扣1间夜房费（具体详见免费房券使用规则）\n\n— 不可用于店内mini bar、餐饮、小商品等非房费消费\n\n— 不可与其他优惠同时使用、不得兑换现金\n\n— 用房券结算的房费部分，不开具发票\n\n— 点击“立即使用”，选择规定时间内的入住及退房日期，验证成功后提交订单，酒店确认订单后即可生效\n\n— 本券有效期至：<font color="#001a58">%2$s</font></string>
-    <string name="about_us">关于我们</string>
-    <string name="about_us_content">ABC旅行预订是中国最具颠覆性的无中介旅行预订平台，由杭州惠程信息技术有限公司于2016年创立。ABC旅行预订致力于建立一个优先为酒店业创造价值的预订平台，并帮助客人实现最好的预订体验、最高的预订效率以及最低的旅行成本。\n\nABC旅行预订通过在线平台为酒店提供独一无二的技术基础设施；通过移动客户端，随时随地的为旅行者提供性价比最高、最放心、最真实的旅行产品和最便捷的预订方式。</string>
-    <string name="company">杭州惠程信息技术有限公司</string>
-    <string name="copyright">Copyright © 2016–2018</string>
-    <string name="version">版本介绍</string>
-    <string name="versionIntroduce">最具颠覆性的无中介旅行预订平台\n\n－ 没有佣金，价格更低\n－ 优惠直给，拒绝套路\n－ 直接联系酒店，预订更放心\n－ 无竞价排名，还原真实搜索结果\n－ “房型＋服务”订房模式，效率倍增</string>
 
     <string-array name="order_status">
         <item>所有订单</item>
@@ -175,8 +176,22 @@
     <string name="point_level_2">非常棒</string><!-->=4.5-->
     <string name="point_level_3">不错哦</string><!-->=4.0-->
 
-
     <string name="submit_order">提交订单</string>
+
+    <string name="od_position">位置 / POSITION</string>
+    <string name="od_hotel_tel">酒店电话 / HOTEL TEL</string>
+    <string name="od_resident">入住人 / RESIDENT</string>
+    <string name="od_contact">联系方式 / CONTACT</string>
+    <string name="od_special_require">特别要求 / SPECIAL REQUIREMENTS</string>
+    <string name="od_invoice">发票信息 / INVOICE INFORMATION</string>
+    <string name="od_order_num">订单编号 / ORDER NUMBER</string>
+    <string name="od_btn_pay">去支付</string>
+    <string name="od_btn_houhuiyao">后悔药</string>
+    <string name="od_btn_order_cancel">取消订单</string>
+    <string name="od_btn_order_modify">修改订单</string>
+    <string name="od_btn_order_confirm">确认修改</string>
+    <string name="od_btn_assess">去评论</string>
+    <string name="od_btn_rebook">再次预订</string>
 
     <!--debug info-->
     <string name="debug_menu">Debug Menu</string>

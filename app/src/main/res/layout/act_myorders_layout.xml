@@ -1,129 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white"
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_title" />
 
     <LinearLayout
+        android:id="@+id/consumption_lay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/comm_title" />
-
-        <LinearLayout
-            android:id="@+id/consumption_lay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="年度消费（元）"
-                    android:textColor="?attr/mainColor"
-                    android:textSize="@dimen/common_12sp" />
-
-                <TextView
-                    android:id="@+id/tv_spend_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="0"
-                    android:textColor="?attr/mainColor"
-                    android:textSize="40sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="已为您节省（元）"
-                    android:textColor="?attr/mainColor"
-                    android:textSize="@dimen/common_12sp" />
-
-                <TextView
-                    android:id="@+id/tv_save_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="0"
-                    android:textColor="?attr/mainColor"
-                    android:textSize="40sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/iv_accessory"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/iv_accessory_blue"
-                android:visibility="visible" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/comm_line2" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="20dp">
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/spinner_type"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="?attr/indicatorBgSel"
-                android:popupBackground="?attr/indicatorBgSel" />
-
-            <Spinner
-                android:id="@+id/spinner_status"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="?attr/orderSpinnerSel" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="年度消费（元）"
+                android:textColor="?attr/mainColor"
+                android:textSize="@dimen/common_12sp" />
 
-
-            <Spinner
-                android:id="@+id/spinner_date"
+            <TextView
+                android:id="@+id/tv_spend_year"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="?attr/orderSpinnerSel" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="?attr/mainColor"
+                android:textSize="40sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <com.huicheng.hotel.android.ui.custom.SimpleRefreshListView
-            android:id="@+id/listview"
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="已为您节省（元）"
+                android:textColor="?attr/mainColor"
+                android:textSize="@dimen/common_12sp" />
+
+            <TextView
+                android:id="@+id/tv_save_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="?attr/mainColor"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_accessory"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
-            android:divider="@color/transparent"
-            android:listSelector="@color/transparent"
-            android:overScrollMode="never"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:scrollbarThumbVertical="@drawable/p3016_scrollbar"
-            android:scrollbarTrackVertical="@color/transparent" />
+            android:src="@drawable/iv_accessory_blue"
+            android:visibility="visible" />
     </LinearLayout>
 
-</RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#cfcfcf" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffffff" />
+
+    <com.huicheng.hotel.android.ui.custom.SimpleRefreshListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="#f5f5f5"
+        android:divider="@color/transparent"
+        android:listSelector="@color/transparent"
+        android:overScrollMode="never"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:scrollbars="none" />
+
+</LinearLayout>

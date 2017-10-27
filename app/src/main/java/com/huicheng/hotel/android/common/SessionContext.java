@@ -317,7 +317,12 @@ public class SessionContext {
             sb.append(version.charAt(index));
             index++;
         }
-        value_index[0] = Integer.parseInt(sb.toString());
+        try {
+            value_index[0] = Integer.parseInt(sb.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            value_index[0] = 0;
+        }
         value_index[1] = index;
 
         return value_index;

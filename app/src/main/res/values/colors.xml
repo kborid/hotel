@@ -94,10 +94,9 @@
 
     <!--default color-->
     <color name="defaultBG">#f5f5f5</color>
-    <color name="mainColor">#001a58</color>
-    <color name="mainColorDark">#042456</color>
-    <color name="mainColorAccent">#0d47a1</color>
-    <color name="mainColorShadow">#88001a58</color>
+    <color name="mainColor">#00276a</color>
+    <color name="mainColorDark">#0f3c75</color>
+    <color name="mainColorShadow">#8800276a</color>
     <color name="tabHotelColor">#9aca40</color>
     <color name="tabTrainColor">#0d47a1</color>
     <color name="tabPlaneColor">#42a5f5</color>
@@ -107,15 +106,15 @@
     <color name="hhyMainTextColor">#3d82cf</color>
     <color name="indicatorColor">#fec31e</color>
     <color name="indicatorDisColor">#40fcb819</color>
-    <color name="cityIndexSelColor">@color/mainColorAccent</color>
-    <color name="commBottom">#e6e6e6</color>
+    <color name="cityIndexSelColor">@color/mainColor</color>
+    <color name="commBottom">#e9e9e9</color>
     <color name="commBottomPress">#c8c8c8</color>
     <color name="commBottomText">@color/secColor</color>
-    <color name="hotelListTab">@color/mainColorAccent</color>
-    <color name="hotelItemDelPrice">@color/mainColorAccent</color>
-    <color name="hotelItemPrice">@color/mainColorAccent</color>
+    <color name="hotelListTab">@color/mainColor</color>
+    <color name="hotelItemDelPrice">@color/mainColor</color>
+    <color name="hotelItemPrice">@color/mainColor</color>
     <color name="currentDayCircle">@color/indicatorColor</color>
-    <color name="selDayBackground">@color/mainColorAccent</color>
+    <color name="selDayBackground">@color/mainColor</color>
     <color name="considerText">@color/indicatorColor</color>
     <color name="considerFab">@color/indicatorColor</color>
     <color name="considerBackground">@color/transparent5</color>
@@ -126,7 +125,6 @@
     <color name="female_defaultBG">#fbf3f2</color>
     <color name="female_mainColor">#671c0b</color>
     <color name="female_mainColorDark">#561809</color>
-    <color name="female_mainColorAccent">#9A2A0A</color>
     <color name="female_mainColorShadow">#88671c0b</color>
     <color name="female_tabHotelColor">#eed0ce</color>
     <color name="female_tabTrainColor">#eed0ce</color>

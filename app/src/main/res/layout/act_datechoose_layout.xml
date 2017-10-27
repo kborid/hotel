@@ -2,89 +2,86 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gray"
+    android:background="@drawable/bg_white"
     android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/comm_line2" />
+        android:layout_height="1dp"
+        android:background="#e0e0e0" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tv_begin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="center_vertical|right"
             android:hint="入住日期"
-            android:textColor="@color/calendarTextColor"
-            android:textColorHint="@color/lableColor"
-            android:textSize="@dimen/common_32sp" />
+            android:textColor="#3c3c3c"
+            android:textColorHint="#bfbfbf"
+            android:textSize="@dimen/common_24sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="-"
-            android:textColor="@color/lableColor"
-            android:textSize="@dimen/common_30sp" />
+        <View
+            android:layout_width="30dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#969696" />
 
         <TextView
             android:id="@+id/tv_end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:hint="退房日期"
-            android:textColor="@color/calendarTextColor"
-            android:textColorHint="@color/lableColor"
-            android:textSize="@dimen/common_32sp" />
+            android:gravity="center_vertical"
+            android:hint="离店日期"
+            android:textColor="#3c3c3c"
+            android:textColorHint="#bfbfbf"
+            android:textSize="@dimen/common_24sp" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/comm_line2" />
 
     <LinearLayout
         android:id="@+id/week_lay"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/comm_line2" />
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#e0e0e0" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarView xmlns:calendar="http://schemas.android.com/apk/res-auto"
+        <com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarRecyclerView xmlns:calendar="http://schemas.android.com/apk/res-auto"
             android:id="@+id/calendar_lay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             calendar:calendarHeight="400dp"
-            calendar:colorCurrentDay="?attr/calendarNormalDayColor"
-            calendar:colorCurrentDayCircle="?attr/currentDayCircle"
-            calendar:colorDayName="?attr/calendarNormalDayColor"
-            calendar:colorMonthName="?attr/calendarNormalDayColor"
-            calendar:colorNormalDay="?attr/calendarNormalDayColor"
+            calendar:colorCurrentDay="#3c3c3c"
+            calendar:colorCurrentDayCircle="#9b9b9b"
+            calendar:colorMonthName="#757575"
+            calendar:colorNormalDay="#3c3c3c"
             calendar:colorSelectedDayBackground="?attr/selDayBackground"
+            calendar:colorSelectedDayText="@color/white"
             calendar:enablePreviousDay="false" />
 
     </RelativeLayout>
@@ -92,7 +89,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/bg_white"
+        android:background="@drawable/bottom_btn_bg"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -102,11 +99,11 @@
             android:layout_height="45dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:background="?attr/bottomBtnSel"
             android:enabled="false"
             android:text="确定"
-            android:background="?attr/bottomBtnSel"
-            android:textColor="@color/bottom_btn_text_selector"
-            android:textSize="@dimen/common_15sp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_18sp"
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

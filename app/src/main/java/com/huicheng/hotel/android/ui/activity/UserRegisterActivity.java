@@ -43,7 +43,7 @@ import java.util.Set;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-public class RegisterActivity extends BaseActivity {
+public class UserRegisterActivity extends BaseActivity {
 
     private EditText et_phone, et_yzm, et_pwd;
     private int sex_index = 1; //默认男性

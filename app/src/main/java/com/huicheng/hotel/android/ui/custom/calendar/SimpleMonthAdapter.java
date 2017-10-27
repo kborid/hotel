@@ -113,7 +113,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     }
 
     protected void init() {
-        if (typedArray.getBoolean(R.styleable.CustomCalendarView_currentDaySelected, false))
+        if (typedArray.getBoolean(R.styleable.CustomCalendarRecyclerView_currentDaySelected, false))
             onDayTapped(new CalendarDay(Calendar.getInstance()));
     }
 
