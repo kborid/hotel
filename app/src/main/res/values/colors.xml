@@ -54,9 +54,9 @@
     <color name="wxColor">#2dc100</color>
     <color name="qqColor">#0896ff</color>
 
-    <color name="assessPointColorHigh">#b7cd66</color>
-    <color name="assessPointColorMid">#ffa046</color>
-    <color name="assessPointColorLow">#ef5669</color>
+    <color name="offInfoColor1">#9aca40</color>
+    <color name="offInfoColor2">@color/indicatorColor</color>
+    <color name="offInfoColor3">#ef5669</color>
 
     <color name="commonHintColor">#cccccc</color>
     <color name="vipAddressColor">#a7a7a7</color>
@@ -79,15 +79,10 @@
 
     <color name="payLableColor">#DCDCDC</color>
     <color name="payPriceColor">#9aca40</color>
-
     <color name="pinTextColor">#1a1a1a</color>
     <color name="serviceDetailTitle">#1d1d1d</color>
     <color name="serviceDetailContent">@color/calendarTextColor</color>
-
     <color name="searchHintColor">#c8c8c8</color>
-    <color name="deleteColor">#ef5669</color>
-
-    <color name="saveColor">#8bc349</color>
     <color name="airTicketColor">#1565b0</color>
     <color name="hotelColor">#009fda</color>
 

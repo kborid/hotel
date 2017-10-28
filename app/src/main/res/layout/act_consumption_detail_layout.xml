@@ -170,7 +170,7 @@
                             android:layout_marginLeft="17dp"
                             android:gravity="right"
                             android:text="省￥657"
-                            android:textColor="@color/saveColor"
+                            android:textColor="@color/offInfoColor1"
                             android:textSize="@dimen/common_12sp"
                             android:textStyle="bold"
                             android:visibility="gone" />

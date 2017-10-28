@@ -31,6 +31,8 @@ import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,29 +88,36 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 .centerCrop()
                 .into(holder.iv_hotel_icon);
 
+        //平台价
+        int mPrice = bean.price;
+        switch (type) {
+            case HotelCommDef.TYPE_ALL:
+                mPrice = bean.price;
+                break;
+            case HotelCommDef.TYPE_CLOCK:
+                mPrice = bean.clockPrice;
+                break;
+            case HotelCommDef.TYPE_YEGUIREN:
+                mPrice = bean.yeguirenPrice;
+                break;
+        }
+
         // 是否显示vip价格
         holder.tv_vip.setVisibility(View.GONE);
+        boolean isShowVip = false;
         if (HotelCommDef.VIP_SUPPORT.equals(bean.vipEnable) && bean.vipPrice > 0) {
-            int minPrice = 0;
-            switch (type) {
-                case HotelCommDef.TYPE_ALL:
-                    minPrice = bean.price;
-                    break;
-                case HotelCommDef.TYPE_CLOCK:
-                    minPrice = bean.clockPrice;
-                    break;
-                case HotelCommDef.TYPE_YEGUIREN:
-                    minPrice = bean.yeguirenPrice;
-                    break;
-            }
-
-            if (minPrice != 0 && bean.speciallyPrice != 0) {
-                minPrice = Math.min(minPrice, bean.speciallyPrice);
+            int minPrice;
+            if (mPrice != 0 && bean.speciallyPrice != 0) {
+                minPrice = Math.min(mPrice, bean.speciallyPrice);
             } else {
-                minPrice = 0 != minPrice ? minPrice : bean.speciallyPrice;
+                minPrice = 0 != mPrice ? mPrice : bean.speciallyPrice;
             }
             if (bean.vipPrice < minPrice) {
                 holder.tv_vip.setVisibility(View.VISIBLE);
+                isShowVip = true;
+                DecimalFormat decimalFormat = new DecimalFormat("0.0");
+                float vipPercent = (float) bean.vipPrice / mPrice * 10;
+                holder.tv_vip.setText(String.format(context.getString(R.string.vip_price_tips), decimalFormat.format(vipPercent)));
             }
         }
 
@@ -117,20 +126,31 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         switch (type) {
             case HotelCommDef.TYPE_ALL:
 //                holder.detail_lay.setBackgroundResource(R.drawable.lv_hotel_item_bg);
-                if (bean.price > 0) {
-                    if (bean.speciallyPrice > bean.price || bean.speciallyPrice <= 0) {
+                if (mPrice > 0) {
+                    if (bean.speciallyPrice > mPrice || bean.speciallyPrice <= 0) {
                         holder.tv_platform_price.setVisibility(View.GONE);
-                        price = String.valueOf(bean.price);
+                        price = String.valueOf(mPrice);
+                        holder.off_lay.setVisibility(View.GONE);
                     } else {
                         // 判断是否显示带删除线的平台价
-                        if (bean.speciallyPrice == bean.price) {
+                        if (bean.speciallyPrice == mPrice) {
                             holder.tv_platform_price.setVisibility(View.GONE);
                         } else {
                             holder.tv_platform_price.setVisibility(View.VISIBLE);
-                            holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(bean.price)));
+                            holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(mPrice)));
                         }
-
                         price = String.valueOf(bean.speciallyPrice);
+
+                        //显示折扣信息
+                        holder.off_lay.setVisibility(View.VISIBLE);
+                        DecimalFormat df = (DecimalFormat) NumberFormat.getPercentInstance();
+                        float specialPercent = (float) (bean.speciallyPrice - mPrice) / mPrice;
+                        holder.tv_off_percent.setText(df.format(specialPercent));
+                        if (isShowVip) {
+                            holder.off_lay.setBackgroundColor(context.getResources().getColor(R.color.offInfoColor2));
+                        } else {
+                            holder.off_lay.setBackgroundColor(context.getResources().getColor(R.color.offInfoColor1));
+                        }
                     }
                 } else {
                     holder.tv_platform_price.setVisibility(View.GONE);
@@ -142,28 +162,29 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 holder.tv_platform_price.setVisibility(View.GONE);
                 price = bean.clockPrice != 0 ? String.valueOf(bean.clockPrice) : price; //价格为0时判断处理
                 holder.tv_real_price.setText(price);
+                holder.off_lay.setVisibility(View.GONE);
                 break;
             case HotelCommDef.TYPE_YEGUIREN:
 //                holder.detail_lay.setBackgroundResource(ygrRoomItemBackgroundId);
-                if (bean.yeguirenPrice > 0) {
-                    if (bean.speciallyPrice > bean.yeguirenPrice || bean.speciallyPrice <= 0) {
+                if (mPrice > 0) {
+                    if (bean.speciallyPrice > mPrice || bean.speciallyPrice <= 0) {
                         holder.tv_platform_price.setVisibility(View.GONE);
-                        price = String.valueOf(bean.yeguirenPrice);
+                        price = String.valueOf(mPrice);
                     } else {
                         // 判断是否显示带删除线的平台价
-                        if (bean.speciallyPrice == bean.yeguirenPrice) {
+                        if (bean.speciallyPrice == mPrice) {
                             holder.tv_platform_price.setVisibility(View.GONE);
                         } else {
                             holder.tv_platform_price.setVisibility(View.VISIBLE);
-                            holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(bean.yeguirenPrice)));
+                            holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(mPrice)));
                         }
-
                         price = String.valueOf(bean.speciallyPrice);
                     }
                 } else {
                     holder.tv_platform_price.setVisibility(View.GONE);
                 }
                 holder.tv_real_price.setText(price);
+                holder.off_lay.setVisibility(View.GONE);
                 break;
         }
 

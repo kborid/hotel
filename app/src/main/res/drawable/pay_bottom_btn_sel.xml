@@ -8,7 +8,7 @@
     </item>
     <item android:state_enabled="true" android:state_pressed="true">
         <shape>
-            <solid android:color="@color/saveColor" />
+            <solid android:color="@color/payPriceColor" />
             <corners android:radius="10dp" />
         </shape>
     </item>

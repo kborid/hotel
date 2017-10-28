@@ -108,10 +108,10 @@ public class CustomCirclePieChart extends View {
         }
 
         if (saveAngle > 0) {
-            circlePaint.setColor(context.getResources().getColor(R.color.saveColor));
+            circlePaint.setColor(context.getResources().getColor(R.color.offInfoColor1));
             canvas.drawArc(mRectF, airAngle + hotelAngle, saveAngle + 2, false, circlePaint);  //根据进度画圆弧
-            pointPaint.setColor(context.getResources().getColor(R.color.saveColor));
-            linePaint.setColor(context.getResources().getColor(R.color.saveColor));
+            pointPaint.setColor(context.getResources().getColor(R.color.offInfoColor1));
+            linePaint.setColor(context.getResources().getColor(R.color.offInfoColor1));
             drawLabelPoint(canvas, airAngle + hotelAngle, saveAngle, 100, saveCost, "节省");
         }
 

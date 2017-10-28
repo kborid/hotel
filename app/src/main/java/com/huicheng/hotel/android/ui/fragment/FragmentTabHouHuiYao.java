@@ -322,13 +322,6 @@ public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, 
             } else {
                 viewHolder.tv_point.setText("0.0");
             }
-            if (point >= 4) {
-                viewHolder.tv_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_high));
-            } else if (point >= 3) {
-                viewHolder.tv_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_mid));
-            } else {
-                viewHolder.tv_point.setBackground(context.getResources().getDrawable(R.drawable.comm_rectangle_btn_assess_low));
-            }
 
             viewHolder.tv_buy_price.setText(list.get(position).buyprice + "");
             viewHolder.tv_sale_price.setText(list.get(position).sellprice + "");

@@ -21,7 +21,7 @@ public class CustomWeatherLayout extends RelativeLayout {
     private RelativeLayout weather_lay;
     private TextView tv_temp;
     private TextView tv_weather;
-    private TextView tv_city;
+    private TextView tv_loc;
     private ImageView iv_weather;
     private TextView tv_date;
 
@@ -44,7 +44,7 @@ public class CustomWeatherLayout extends RelativeLayout {
         weather_lay = (RelativeLayout) findViewById(R.id.weather_lay);
         tv_temp = (TextView) findViewById(R.id.tv_temp);
         tv_weather = (TextView) findViewById(R.id.tv_weather);
-        tv_city = (TextView) findViewById(R.id.tv_city);
+        tv_loc = (TextView) findViewById(R.id.tv_loc);
         iv_weather = (ImageView) findViewById(R.id.iv_weather);
         tv_date = (TextView) findViewById(R.id.tv_date);
     }

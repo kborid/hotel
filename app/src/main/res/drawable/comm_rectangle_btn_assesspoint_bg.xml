@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <solid android:color="@color/assessPointColorHigh" />
+            <solid android:color="@color/payPriceColor" />
             <corners android:radius="25dp" />
         </shape>
     </item>

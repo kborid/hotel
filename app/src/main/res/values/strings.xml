@@ -171,7 +171,7 @@
 
     <string name="vip_note">您已成为\n以上酒店的粉丝，点击\n预订即可享受\n该酒店的粉丝价！</string>
     <!--酒店列表-->
-    <string name="vip_price_tips">神秘粉丝价  低至7.5折</string>
+    <string name="vip_price_tips">神秘粉丝价  低至%1$s折</string>
     <string name="point_level_1">超级赞</string><!-->=4.8-->
     <string name="point_level_2">非常棒</string><!-->=4.5-->
     <string name="point_level_3">不错哦</string><!-->=4.0-->
