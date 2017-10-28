@@ -8,439 +8,171 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/comm_line2"
+        android:layout_height="0.5dp"
+        android:background="#e1e1e1"
         android:focusable="true" />
 
-    <ScrollView
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="需要发票"
+            android:textColor="?attr/mainColor"
+            android:textSize="@dimen/common_12sp"
+            android:textStyle="bold" />
+
+        <Switch
+            android:id="@+id/btn_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/invoice_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarThumbVertical="@drawable/p3016_scrollbar">
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#e1e1e1"
+            android:focusable="true" />
 
         <LinearLayout
+            android:id="@+id/detail_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
+            <!--发票抬头-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:focusableInTouchMode="true"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="20dp">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="需要发票"
+                    android:text="发票抬头"
                     android:textColor="?attr/mainColor"
                     android:textSize="@dimen/common_12sp"
                     android:textStyle="bold" />
 
-                <Switch
-                    android:id="@+id/btn_switch"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/et_company_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true" />
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:hint="请输入发票抬头"
+                    android:textColor="?attr/indicatorColor"
+                    android:textColorHint="#e1e1e1"
+                    android:textSize="@dimen/common_18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/invoice_lay"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:layout_height="0.5dp"
+                android:background="#e1e1e1"
+                android:focusable="true" />
 
-                <View
+            <!--纳税人识别号-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@drawable/comm_line2" />
+                    android:layout_height="wrap_content"
+                    android:text="纳税人识别号"
+                    android:textColor="?attr/mainColor"
+                    android:textSize="@dimen/common_12sp"
+                    android:textStyle="bold" />
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/et_id"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TabHost
-                        android:id="@+id/tabHost"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TabWidget
-                                android:id="@android:id/tabs"
-                                android:layout_width="match_parent"
-                                android:layout_height="35dp"
-                                android:layout_marginLeft="12dp"
-                                android:layout_marginRight="12dp" />
-
-                            <FrameLayout
-                                android:id="@android:id/tabcontent"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <!--tab0 页-->
-                                <LinearLayout
-                                    android:id="@+id/tab_common"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical" />
-
-                                <!--tab1 页-->
-                                <LinearLayout
-                                    android:id="@+id/tab_special"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical" />
-                            </FrameLayout>
-                        </LinearLayout>
-                    </TabHost>
-
-                    <LinearLayout
-                        android:id="@+id/detail_lay"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:focusable="false"
-                        android:focusableInTouchMode="true"
-                        android:orientation="vertical">
-                        <!-- line -->
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="@drawable/comm_line2" />
-
-                        <!--发票抬头-->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="15dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="发票抬头"
-                                android:textColor="?attr/mainColor"
-                                android:textSize="@dimen/common_12sp"
-                                android:textStyle="bold" />
-
-                            <EditText
-                                android:id="@+id/et_company_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@null"
-                                android:hint="公司名称"
-                                android:textColor="?attr/indicatorColor"
-                                android:textColorHint="@color/lableColor"
-                                android:textSize="@dimen/common_18sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="@drawable/comm_line2" />
-
-                        <!--纳税人识别号-->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="15dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="纳税人识别号"
-                                android:textColor="?attr/mainColor"
-                                android:textSize="@dimen/common_12sp"
-                                android:textStyle="bold" />
-
-                            <EditText
-                                android:id="@+id/et_id"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@null"
-                                android:hint="纳税人识别号"
-                                android:textColor="?attr/indicatorColor"
-                                android:textColorHint="@color/lableColor"
-                                android:textSize="@dimen/common_18sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="@drawable/comm_line2" />
-
-                        <LinearLayout
-                            android:id="@+id/special_lay"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <!--公司地址-->
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="15dp">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="公司地址"
-                                    android:textColor="?attr/mainColor"
-                                    android:textSize="@dimen/common_12sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:id="@+id/et_company_addr"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@null"
-                                    android:hint="公司地址"
-                                    android:textColor="?attr/indicatorColor"
-                                    android:textColorHint="@color/lableColor"
-                                    android:textSize="@dimen/common_18sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@drawable/comm_line2" />
-                            <!--公司电话-->
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="15dp">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="公司电话"
-                                    android:textColor="?attr/mainColor"
-                                    android:textSize="@dimen/common_12sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:id="@+id/et_company_phone"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@null"
-                                    android:hint="公司电话"
-                                    android:inputType="phone"
-                                    android:textColor="?attr/indicatorColor"
-                                    android:textColorHint="@color/lableColor"
-                                    android:textSize="@dimen/common_18sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@drawable/comm_line2" />
-                            <!--开户行-->
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="15dp">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="开户行"
-                                    android:textColor="?attr/mainColor"
-                                    android:textSize="@dimen/common_12sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:id="@+id/et_bank"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@null"
-                                    android:hint="开户行"
-                                    android:textColor="?attr/indicatorColor"
-                                    android:textColorHint="@color/lableColor"
-                                    android:textSize="@dimen/common_18sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@drawable/comm_line2" />
-                            <!--银行账户-->
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="15dp">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="银行帐户"
-                                    android:textColor="?attr/mainColor"
-                                    android:textSize="@dimen/common_12sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:id="@+id/et_bank_access"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@null"
-                                    android:hint="银行帐户"
-                                    android:inputType="number"
-                                    android:textColor="?attr/indicatorColor"
-                                    android:textColorHint="@color/lableColor"
-                                    android:textSize="@dimen/common_18sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@drawable/comm_line2" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <RadioGroup
-                                    android:id="@+id/rg_lay"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:checkedButton="@+id/rb_three"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal"
-                                    android:padding="15dp">
-
-                                    <RadioButton
-                                        android:id="@+id/rb_three"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:drawablePadding="10dp"
-                                        android:text="三证照片"
-                                        android:textColor="?attr/mainColor"
-                                        android:textSize="@dimen/common_12sp"
-                                        android:textStyle="bold" />
-
-                                    <RadioButton
-                                        android:id="@+id/rb_one"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="20dp"
-                                        android:drawablePadding="10dp"
-                                        android:text="三证合一照片"
-                                        android:textColor="?attr/mainColor"
-                                        android:textSize="@dimen/common_12sp"
-                                        android:textStyle="bold" />
-                                </RadioGroup>
-
-                                <LinearLayout
-                                    android:id="@+id/thrid_lay"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:orientation="horizontal"
-                                    android:visibility="gone">
-
-                                    <ImageView
-                                        android:id="@+id/iv_taxRegistration"
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/def_invoice" />
-
-                                    <ImageView
-                                        android:id="@+id/iv_businessLicense"
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/def_invoice" />
-
-                                    <ImageView
-                                        android:id="@+id/iv_taxpayerIdentify"
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/def_invoice" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/one_lay"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:orientation="horizontal"
-                                    android:visibility="gone">
-
-                                    <ImageView
-                                        android:id="@+id/iv_thirdCommon"
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/def_invoice" />
-
-                                    <View
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:visibility="invisible" />
-
-                                    <View
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:visibility="invisible" />
-                                </LinearLayout>
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/comm_line2" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/tv_confirm"
-                            android:layout_width="100dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="right"
-                            android:layout_margin="15dp"
-                            android:background="?attr/indicatorBgSel"
-                            android:gravity="center"
-                            android:text="确定信息"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/common_15sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:hint="请输入纳税人识别号"
+                    android:textColor="?attr/indicatorColor"
+                    android:textColorHint="#e1e1e1"
+                    android:textSize="@dimen/common_18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#e1e1e1"
+                android:focusable="true" />
+
+            <!--邮箱地址-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="电子邮件"
+                    android:textColor="?attr/mainColor"
+                    android:textSize="@dimen/common_12sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:hint="请输入电子邮件地址"
+                    android:textColor="?attr/indicatorColor"
+                    android:textColorHint="#e1e1e1"
+                    android:textSize="@dimen/common_18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#e1e1e1"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/tv_confirm"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:layout_margin="15dp"
+                android:background="?attr/indicatorBgSel"
+                android:gravity="center"
+                android:text="确定信息"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_15sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>

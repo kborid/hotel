@@ -187,6 +187,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:drawableLeft="@drawable/iv_order_position"
+                        android:drawablePadding="10dp"
                         android:textColor="#333333"
                         android:textSize="@dimen/common_15sp"
                         android:textStyle="bold" />
@@ -204,6 +206,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:drawableLeft="@drawable/iv_order_phone"
+                        android:drawablePadding="10dp"
                         android:textColor="#333333"
                         android:textSize="@dimen/common_15sp"
                         android:textStyle="bold" />

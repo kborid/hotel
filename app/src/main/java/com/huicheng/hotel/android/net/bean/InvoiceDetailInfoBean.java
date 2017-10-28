@@ -18,4 +18,5 @@ public class InvoiceDetailInfoBean implements Serializable {
     public String companyAddr;
     public String bankAccount;
     public String type;
+    public String email;
 }

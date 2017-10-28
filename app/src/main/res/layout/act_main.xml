@@ -8,7 +8,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/content_layout"
@@ -16,14 +17,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--天气预报-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <include
+                <!--天气预报-->
+                <com.huicheng.hotel.android.ui.custom.CustomWeatherLayout
                     android:id="@+id/weather_lay"
-                    layout="@layout/layout_weather_banner" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <ImageView
                     android:id="@+id/iv_uc"

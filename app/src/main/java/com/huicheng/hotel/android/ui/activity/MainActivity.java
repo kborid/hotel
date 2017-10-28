@@ -50,6 +50,7 @@ import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
+import com.huicheng.hotel.android.ui.custom.CustomWeatherLayout;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -83,7 +84,7 @@ public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawer_layout;
     private LeftDrawerLayout left_layout;
-    private LinearLayout weather_lay;
+    private CustomWeatherLayout weather_lay;
 
     private RelativeLayout blur_lay;
     private ImageView iv_blur;
@@ -129,7 +130,7 @@ public class MainActivity extends BaseActivity {
             drawer_layout.setScrimColor(getResources().getColor(R.color.transparent50));
         }
         left_layout = (LeftDrawerLayout) findViewById(R.id.left_layout);
-        weather_lay = (LinearLayout) findViewById(R.id.weather_lay);
+        weather_lay = (CustomWeatherLayout) findViewById(R.id.weather_lay);
 
         blur_lay = (RelativeLayout) findViewById(R.id.blur_lay);
         iv_blur = (ImageView) findViewById(R.id.iv_blur);
@@ -213,12 +214,12 @@ public class MainActivity extends BaseActivity {
         ucRlp.height = Utils.dip2px(20);
         ucRlp.width = Utils.dip2px(20);
         ucRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        ucRlp.setMargins(0, Utils.mStatusBarHeight, Utils.dip2px(20), 0);
+        ucRlp.setMargins(0, Utils.dip2px(28), Utils.dip2px(20), 0);
         iv_uc.setLayoutParams(ucRlp);
 
         RelativeLayout.LayoutParams weatherRlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         weatherRlp.width = Utils.mScreenWidth;
-        weatherRlp.height = (int) ((float) weatherRlp.width / 75 * 36);
+        weatherRlp.height = (int) ((float) weatherRlp.width / 750 * 400);
         weather_lay.setLayoutParams(weatherRlp);
 
         String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);

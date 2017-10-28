@@ -67,7 +67,6 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     private int allChooseServicePrice = 0;
     private int finalPrice = 0;
     private boolean isInvoice = false;
-    private int invoiceType = 0;
     private InvoiceDetailInfoBean invoiceDetailInfoBean = new InvoiceDetailInfoBean();
     private int hotelId, roomId = -1;
     private StringBuilder serviceIds = new StringBuilder();
@@ -272,7 +271,6 @@ public class RoomOrderConfirmActivity extends BaseActivity {
             case R.id.iv_next:
                 Intent intent = new Intent(this, InvoiceDetailActivity.class);
                 intent.putExtra("isInvoice", isInvoice);
-                intent.putExtra("InvoiceType", invoiceType);
                 intent.putExtra("InvoiceDetail", invoiceDetailInfoBean);
                 startActivityForResult(intent, 0x01);
                 break;
@@ -324,10 +322,9 @@ public class RoomOrderConfirmActivity extends BaseActivity {
             if (null != data) {
                 isInvoice = data.getExtras().getBoolean("isInvoice");
                 if (isInvoice) {
-                    invoiceType = data.getExtras().getInt("InvoiceType");
                     if (data.getExtras().get("InvoiceDetail") != null) {
                         invoiceDetailInfoBean = (InvoiceDetailInfoBean) data.getExtras().get("InvoiceDetail");
-                        tv_invoice_info.setText(invoiceType == 0 ? "普通发票" : "专用发票");
+                        tv_invoice_info.setText("需要发票");
                     } else {
                         invoiceDetailInfoBean = new InvoiceDetailInfoBean();
                         tv_invoice_info.setText("不需要发票");

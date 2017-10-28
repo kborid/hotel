@@ -153,7 +153,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/comm_rectangle_btn_white"
+        android:gravity="center"
+        android:background="@drawable/iv_consider_shadow_bg"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -183,8 +184,8 @@
         <View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
             android:background="#7b7b7b" />
 
         <LinearLayout

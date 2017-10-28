@@ -298,12 +298,15 @@ public class OrderListActivity extends BaseActivity {
 
             if (0 == position) {
                 viewHolder.flag_date_lay.setVisibility(View.VISIBLE);
+                viewHolder.item_lay.setBackground(context.getResources().getDrawable(R.drawable.iv_order_item_arrow_bg));
             } else {
                 String lastBeginDateStr = DateUtil.getDay("yyyyMMdd", list.get(position - 1).beginDate);
                 if (lastBeginDateStr.equals(currBeginDateStr)) {
                     viewHolder.flag_date_lay.setVisibility(View.GONE);
+                    viewHolder.item_lay.setBackground(context.getResources().getDrawable(R.drawable.iv_order_item_normal_bg));
                 } else {
                     viewHolder.flag_date_lay.setVisibility(View.VISIBLE);
+                    viewHolder.item_lay.setBackground(context.getResources().getDrawable(R.drawable.iv_order_item_arrow_bg));
                 }
             }
 
