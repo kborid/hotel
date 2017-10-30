@@ -125,11 +125,12 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         String price = "暂无";
         switch (type) {
             case HotelCommDef.TYPE_ALL:
-//                holder.detail_lay.setBackgroundResource(R.drawable.lv_hotel_item_bg);
                 if (mPrice > 0) {
                     if (bean.speciallyPrice > mPrice || bean.speciallyPrice <= 0) {
                         holder.tv_platform_price.setVisibility(View.GONE);
                         price = String.valueOf(mPrice);
+                        holder.tv_price_unit.setVisibility(View.VISIBLE);
+
                         holder.off_lay.setVisibility(View.GONE);
                     } else {
                         // 判断是否显示带删除线的平台价
@@ -140,6 +141,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                             holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(mPrice)));
                         }
                         price = String.valueOf(bean.speciallyPrice);
+                        holder.tv_price_unit.setVisibility(View.VISIBLE);
 
                         //显示折扣信息
                         holder.off_lay.setVisibility(View.VISIBLE);
@@ -158,18 +160,20 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 holder.tv_real_price.setText(price);
                 break;
             case HotelCommDef.TYPE_CLOCK:
-//                holder.detail_lay.setBackgroundResource(R.drawable.lv_hotel_item_bg);
                 holder.tv_platform_price.setVisibility(View.GONE);
-                price = bean.clockPrice != 0 ? String.valueOf(bean.clockPrice) : price; //价格为0时判断处理
+                if (bean.clockPrice != 0) { //价格为0时判断处理
+                    price = String.valueOf(bean.clockPrice);
+                    holder.tv_price_unit.setVisibility(View.VISIBLE);
+                }
                 holder.tv_real_price.setText(price);
                 holder.off_lay.setVisibility(View.GONE);
                 break;
             case HotelCommDef.TYPE_YEGUIREN:
-//                holder.detail_lay.setBackgroundResource(ygrRoomItemBackgroundId);
                 if (mPrice > 0) {
                     if (bean.speciallyPrice > mPrice || bean.speciallyPrice <= 0) {
                         holder.tv_platform_price.setVisibility(View.GONE);
                         price = String.valueOf(mPrice);
+                        holder.tv_price_unit.setVisibility(View.VISIBLE);
                     } else {
                         // 判断是否显示带删除线的平台价
                         if (bean.speciallyPrice == mPrice) {
@@ -179,6 +183,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                             holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(mPrice)));
                         }
                         price = String.valueOf(bean.speciallyPrice);
+                        holder.tv_price_unit.setVisibility(View.VISIBLE);
                     }
                 } else {
                     holder.tv_platform_price.setVisibility(View.GONE);
@@ -214,7 +219,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             }
             trackMap.put(position, trackStr);
         }
-
         holder.tv_track.setText(String.format(context.getString(R.string.track_str), trackMap.get(position)));
 
         // 评分信息
@@ -285,6 +289,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         TextView tv_track;
         TextView tv_platform_price;
         TextView tv_real_price;
+        TextView tv_price_unit;
 
         HotelViewHolder(View itemView) {
             super(itemView);
@@ -304,6 +309,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             tv_platform_price = (TextView) itemView.findViewById(R.id.tv_platform_price);
             tv_platform_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
             tv_real_price = (TextView) itemView.findViewById(R.id.tv_real_price);
+            tv_price_unit = (TextView) itemView.findViewById(R.id.tv_price_unit);
         }
     }
 

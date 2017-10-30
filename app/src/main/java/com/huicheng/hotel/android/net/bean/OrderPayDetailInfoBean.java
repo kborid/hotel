@@ -32,6 +32,8 @@ public class OrderPayDetailInfoBean implements Serializable {
     public List<RoomDetailInfoBean.TotalPriceList> totalPriceList;
     public int roomCnt;
     public boolean showTipsOrNot;
+    public String hotelAddress;
+    public String hotelPhone;
 
 
 

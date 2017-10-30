@@ -183,8 +183,8 @@ public class HotelOrderDetailActivity extends BaseActivity {
             }
             tv_total_price.setText(String.valueOf((int) price));
 
-            tv_hotel_position.setText(orderPayDetailInfoBean.location);
-            tv_hotel_phone.setText(orderPayDetailInfoBean.location);
+            tv_hotel_position.setText(orderPayDetailInfoBean.hotelAddress);
+            tv_hotel_phone.setText(orderPayDetailInfoBean.hotelPhone);
 
 
             String name = orderPayDetailInfoBean.checkInName;

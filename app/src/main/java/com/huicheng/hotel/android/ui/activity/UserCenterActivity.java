@@ -908,14 +908,14 @@ public class UserCenterActivity extends BaseActivity {
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
-                int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
-                if (oldSkinIndex != newSkinIndex) {
-                    Intent intent = new Intent(this, UserCenterActivity.class);
-                    intent.putExtra("scrollY", scroll_view.getScrollY());
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.act_restart, R.anim.act_restop);
-                    finish();
-                }
+//                int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
+//                if (oldSkinIndex != newSkinIndex) {
+//                    Intent intent = new Intent(this, UserCenterActivity.class);
+//                    intent.putExtra("scrollY", scroll_view.getScrollY());
+//                    startActivity(intent);
+//                    overridePendingTransition(R.anim.act_restart, R.anim.act_restop);
+//                    finish();
+//                }
             }
         }
     }

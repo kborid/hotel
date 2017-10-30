@@ -46,6 +46,7 @@ import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
+import com.huicheng.hotel.android.net.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -121,6 +122,9 @@ public class MainActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
+        if (StringUtil.notEmpty(tv_city.getText().toString())) {
+            requestWeatherInfo(beginTime);
+        }
     }
 
     public void initViews() {
@@ -222,6 +226,19 @@ public class MainActivity extends BaseActivity {
         weatherRlp.height = (int) ((float) weatherRlp.width / 750 * 400);
         weather_lay.setLayoutParams(weatherRlp);
 
+        //初始化时间，今天到明天 1晚
+        Calendar calendar = Calendar.getInstance();
+        beginTime = calendar.getTime().getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
+        endTime = calendar.getTime().getTime();
+        HotelOrderManager.getInstance().setBeginTime(beginTime);
+        HotelOrderManager.getInstance().setEndTime(endTime);
+        HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
+        tv_in_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", beginTime)));
+        tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
+        tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
+
+        //地点信息
         String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         if (StringUtil.isEmpty(province) || StringUtil.isEmpty(city)) {
@@ -236,8 +253,9 @@ public class MainActivity extends BaseActivity {
                             try {
                                 SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
                                 SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-                                String loc_province = aMapLocation.getProvince().replace("省", "");
-                                String loc_city = aMapLocation.getCity().replace("市", "");
+
+                                String loc_province = aMapLocation.getProvince();
+                                String loc_city = aMapLocation.getCity();
                                 SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_PROVINCE, loc_province, false);
                                 SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_CITY, loc_city, false);
                                 SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_SITEID, String.valueOf(aMapLocation.getAdCode()), false);
@@ -248,6 +266,8 @@ public class MainActivity extends BaseActivity {
 
                                 HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(loc_province, loc_city, "-"));
                                 tv_city.setText(CityParseUtils.getCityString(loc_city));
+
+                                requestWeatherInfo(beginTime);
 
                                 showHaiNanAd(loc_province);
 
@@ -265,18 +285,6 @@ public class MainActivity extends BaseActivity {
         }
         tv_city.setText(CityParseUtils.getCityString(city));
         HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
-
-        //初始化时间，今天到明天 1晚
-        Calendar calendar = Calendar.getInstance();
-        beginTime = calendar.getTime().getTime();
-        calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
-        endTime = calendar.getTime().getTime();
-        HotelOrderManager.getInstance().setBeginTime(beginTime);
-        HotelOrderManager.getInstance().setEndTime(endTime);
-        HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
-        tv_in_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", beginTime)));
-        tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
-        tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
 
         //更新用户中心
         left_layout.updateUserInfo();
@@ -300,6 +308,22 @@ public class MainActivity extends BaseActivity {
                 }
             }, 500);
         }
+    }
+
+    private void requestWeatherInfo(long timeStamp) {
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        b.addBody("cityname", SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+        b.addBody("date", DateUtil.getDay("yyyyMMdd", timeStamp));
+        b.addBody("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.WEATHER;
+        d.flag = AppConst.WEATHER;
+
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     private void showUpdateDialog(final AppInfoBean bean) {
@@ -375,12 +399,13 @@ public class MainActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
 
-        int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
-        if (oldSkinIndex != newSkinIndex) {
-            oldSkinIndex = newSkinIndex;
-            isReStarted = true;
-            recreate();
-        }
+        //男性女性界面初始化
+//        int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
+//        if (oldSkinIndex != newSkinIndex) {
+//            oldSkinIndex = newSkinIndex;
+//            isReStarted = true;
+//            recreate();
+//        }
 
         if (SessionContext.isLogin()) {
             requestMessageCount();
@@ -629,7 +654,6 @@ public class MainActivity extends BaseActivity {
                 intent = new Intent(this, HotelListActivity.class);
                 intent.putExtra("index", 0);
                 intent.putExtra("keyword", et_keyword.getText().toString());
-//                intent.putExtra("priceIndex", mPriceIndex);
                 break;
             case R.id.tv_in_date:
             case R.id.tv_out_date: {
@@ -706,6 +730,7 @@ public class MainActivity extends BaseActivity {
                 tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
             }
         }
+        requestWeatherInfo(beginTime);
     }
 
     private SpannableString formatDateForBigDay(String date) {
@@ -723,10 +748,18 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         super.onNotifyMessage(request, response);
+        removeProgressDialog();
         if (response != null && response.body != null) {
             if (request.flag == AppConst.MESSAGE_COUNT) {
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 left_layout.updateMsgCount(mJson.getString("count"));
+            } else if (request.flag == AppConst.WEATHER) {
+                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
+                    WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
+                    weather_lay.refreshWeatherInfo(beginTime, bean);
+                } else {
+                    weather_lay.showDefaultWeather(beginTime);
+                }
             }
         }
     }

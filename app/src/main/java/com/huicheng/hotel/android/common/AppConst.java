@@ -153,4 +153,6 @@ public final class AppConst {
     public static final int ALL_SEARCH_HOTEL = CONST_HANDLE_FLAG + 63;
 
     public static final int AD_GDT_IF = CONST_HANDLE_FLAG + 64;
+
+    public static final int WEATHER = CONST_HANDLE_FLAG + 65;
 }

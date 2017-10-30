@@ -205,7 +205,8 @@
                     android:layout_marginLeft="3dp"
                     android:text="起"
                     android:textColor="#7b7b7b"
-                    android:textSize="@dimen/common_10sp" />
+                    android:textSize="@dimen/common_10sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

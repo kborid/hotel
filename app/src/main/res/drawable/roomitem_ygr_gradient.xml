@@ -3,7 +3,6 @@
     <item>
         <shape>
             <gradient android:angle="0" android:endColor="@color/ygrEndColor" android:startColor="@color/ygrStartColor" />
-            <corners android:bottomLeftRadius="5dp" android:bottomRightRadius="5dp" />
         </shape>
     </item>
 </selector>

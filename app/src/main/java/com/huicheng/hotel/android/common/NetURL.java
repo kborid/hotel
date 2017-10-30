@@ -19,8 +19,9 @@ public final class NetURL {
 
     private static final String PORTAL = (SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0) == 4) ? getApi() : getApi() + "hmp_website/"; // PORTAL地址  hmp_website/
 
-    //---------------------------------上传图片------------------------------------------------------
+    //---------------------------------common------------------------------------------------------
     public static final String UPLOAD = PORTAL + "upload/img.up"; // 上传图片
+    public static final String WEATHER = PORTAL + "weather/getWeatherInfo.json";
 
     //---------------------------------用户信息、ticket相关------------------------------------------
     public static final String REGISTER = PORTAL + "user/regist.json"; // 注册

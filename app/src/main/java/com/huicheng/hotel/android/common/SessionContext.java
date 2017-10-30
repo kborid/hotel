@@ -12,6 +12,7 @@ import com.fm.openinstall.model.AppData;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.net.bean.UserInfo;
+import com.huicheng.hotel.android.net.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.tools.PinyinUtils;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
@@ -33,6 +34,7 @@ public class SessionContext {
     public static UserInfo mUser;                // 用户信息
     private static String mTicket;               // 票据信息
     private static AppData mAppData;          // OpenInstall数据
+    private static WeatherInfoBean mWeatherInfo; //天气预报信息
 
     private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
 
@@ -167,6 +169,17 @@ public class SessionContext {
             hhyList = list;
         } else {
             hhyList = new ArrayList<>();
+        }
+    }
+
+    public static WeatherInfoBean getWeatherInfo() {
+        return mWeatherInfo;
+    }
+    public static void setWeatherInfo(WeatherInfoBean bean) {
+        if (null != bean) {
+            mWeatherInfo = bean;
+        } else {
+            mWeatherInfo = new WeatherInfoBean();
         }
     }
 

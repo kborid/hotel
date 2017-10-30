@@ -366,6 +366,7 @@ public class RoomListActivity extends BaseActivity {
             cardview.setLayoutParams(rlp);
             LinearLayout content_layout = (LinearLayout) view.findViewById(R.id.content_layout);
             RoundedLeftImageView iv_icon = (RoundedLeftImageView) view.findViewById(R.id.iv_icon);
+            ImageView iv_accessory = (ImageView) view.findViewById(R.id.iv_accessory);
             TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
             TextView tv_price_note = (TextView) view.findViewById(R.id.tv_price_note);
             TextView tv_price = (TextView) view.findViewById(R.id.tv_price);
@@ -392,6 +393,7 @@ public class RoomListActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                     tv_title.append(" " + String.format(getResources().getString(R.string.ygrRoomCount), ygrRoomCount));
+                    iv_accessory.setImageResource(R.drawable.iv_accessory_white);
                     clock_lay.setVisibility(View.VISIBLE);
                     ((TextView) time_lay.findViewById(R.id.tv_time_label)).setText("入住时段：");
                     ((TextView) time_lay.findViewById(R.id.tv_time)).setText(hotelDetailInfoBean.roomList.get(i).yeguirenRoomTime);
@@ -401,6 +403,7 @@ public class RoomListActivity extends BaseActivity {
                     tv_price.setTextColor(getResources().getColor(R.color.white));
                 } else {
                     clock_lay.setVisibility(View.GONE);
+                    iv_accessory.setImageResource(R.drawable.iv_accessory_black_alpha3);
                     content_layout.setBackgroundResource(0);
                     tv_title.setTextColor(getResources().getColor(R.color.lableColor));
                     tv_price_note.setTextColor(getResources().getColor(R.color.lableColor));
@@ -437,6 +440,8 @@ public class RoomListActivity extends BaseActivity {
             rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
             cardview.setLayoutParams(rlp);
             RoundedLeftImageView iv_icon = (RoundedLeftImageView) view.findViewById(R.id.iv_icon);
+            ImageView iv_accessory = (ImageView) view.findViewById(R.id.iv_accessory);
+            iv_accessory.setImageResource(R.drawable.iv_accessory_black_alpha3);
             TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
             TextView tv_price_note = (TextView) view.findViewById(R.id.tv_price_note);
             TextView tv_price = (TextView) view.findViewById(R.id.tv_price);

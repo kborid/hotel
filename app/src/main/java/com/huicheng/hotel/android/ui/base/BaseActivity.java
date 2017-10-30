@@ -80,11 +80,11 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtil.d(TAG, "onCreate()");
-        if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
-            setTheme(R.style.femaleTheme);
-        } else {
+//        if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
+//            setTheme(R.style.femaleTheme);
+//        } else {
             setTheme(R.style.defaultTheme);
-        }
+//        }
 
         if (null != savedInstanceState && !isReStarted) {
             if (!SessionContext.isLogin()) {

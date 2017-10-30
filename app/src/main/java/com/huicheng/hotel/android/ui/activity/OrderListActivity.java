@@ -24,7 +24,6 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.OrdersSpendInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.huicheng.hotel.android.ui.custom.CustomSwipeView;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
@@ -52,8 +51,6 @@ public class OrderListActivity extends BaseActivity {
     private MyOrderAdapter adapter;
     private OrdersSpendInfoBean ordersSpendInfoBean = null;
     private List<OrderDetailInfoBean> list = new ArrayList<>();
-    // 继续有多少个条目的delete被展示出来的集合
-    private List<CustomSwipeView> slideDeleteArrayList = new ArrayList<>();
     private LinearLayout consumption_lay;
     private ImageView iv_accessory;
     private TextView tv_spend_year, tv_save_year;
@@ -317,8 +314,8 @@ public class OrderListActivity extends BaseActivity {
                     DateUtil.getDay("MM月dd日", item.beginDate),
                     DateUtil.getDay("MM月dd日", item.endDate),
                     DateUtil.getGapCount(new Date(item.beginDate), new Date(item.endDate))));
-            viewHolder.tv_item_position.setText(item.cityName);
-            viewHolder.tv_item_phone.setText(item.cityName);
+            viewHolder.tv_item_position.setText(item.hotelAddress);
+            viewHolder.tv_item_phone.setText(item.hotelPhone);
             viewHolder.tv_item_status.setText(item.orderStatusName);
 
             convertView.setOnClickListener(new View.OnClickListener() {

@@ -28,6 +28,7 @@
     <string name="active_go">这就去</string>
     <string name="active_cancel">不了，我游泳过去</string>
 
+    <string name="search_home_tips">酒店名 / 关键字 / 位置</string>
     <string name="search_tips">城市 / 区域 / 位置 / 酒店</string>
 
     <string name="pay_success">支付成功</string>

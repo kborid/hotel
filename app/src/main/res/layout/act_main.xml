@@ -163,7 +163,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="center"
-                        android:hint="酒店名 / 关键字 / 位置"
+                        android:hint="@string/search_home_tips"
                         android:imeOptions="actionSearch"
                         android:inputType="text"
                         android:lines="1"

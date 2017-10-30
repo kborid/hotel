@@ -81,16 +81,23 @@
             <RelativeLayout
                 android:id="@+id/search_lay"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:focusableInTouchMode="true">
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_search"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
+                    android:background="@null"
                     android:drawableLeft="@drawable/iv_all_search"
                     android:drawablePadding="6dp"
                     android:gravity="center"
-                    android:text="酒店 / 地名 / 关键字"
+                    android:hint="@string/search_home_tips"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:lines="1"
                     android:textColor="#696969"
                     android:textSize="@dimen/common_14sp" />
             </RelativeLayout>
@@ -153,8 +160,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:gravity="center"
         android:background="@drawable/iv_consider_shadow_bg"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout

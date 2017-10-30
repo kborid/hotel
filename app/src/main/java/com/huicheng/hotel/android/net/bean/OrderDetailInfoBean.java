@@ -32,4 +32,6 @@ public class OrderDetailInfoBean implements Serializable {
     public int totalPrice;
     public int type;
     public String checkInAndOutDate;
+    public String hotelAddress;
+    public String hotelPhone;
 }

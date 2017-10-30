@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
@@ -13,12 +14,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -53,6 +59,7 @@ public class HotelListActivity extends BaseActivity {
     private LinearLayout date_lay;
     private TextView tv_in_date, tv_out_date;
     private RelativeLayout search_lay;
+    private EditText et_search;
     private TabLayout tabs;
 
     private LinearLayout consider_btn_lay;
@@ -83,6 +90,7 @@ public class HotelListActivity extends BaseActivity {
         tv_in_date = (TextView) findViewById(R.id.tv_in_date);
         tv_out_date = (TextView) findViewById(R.id.tv_out_date);
         search_lay = (RelativeLayout) findViewById(R.id.search_lay);
+        et_search = (EditText) findViewById(R.id.et_search);
         consider_btn_lay = (LinearLayout) findViewById(R.id.consider_btn_lay);
         sort_lay = (LinearLayout) findViewById(R.id.sort_lay);
         select_lay = (LinearLayout) findViewById(R.id.select_lay);
@@ -161,6 +169,7 @@ public class HotelListActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+        et_search.setText(keyword);
         beginTime = HotelOrderManager.getInstance().getBeginTime();
         endTime = HotelOrderManager.getInstance().getEndTime();
         hotelDateStr = HotelOrderManager.getInstance().getDateStr();
@@ -191,6 +200,36 @@ public class HotelListActivity extends BaseActivity {
 
             @Override
             public void onResult(String str) {
+            }
+        });
+
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    et_search.setFocusable(false);
+                    et_search.setFocusableInTouchMode(true);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    refreshHotelList();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        et_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                keyword = s.toString();
             }
         });
     }
@@ -303,10 +342,6 @@ public class HotelListActivity extends BaseActivity {
                 if (isConsiderOpened) {
                     closeConsiderAnim();
                 }
-                break;
-            case R.id.search_lay:
-                Intent intentSearch = new Intent(this, SearchResultActivity.class);
-                startActivity(intentSearch);
                 break;
             case R.id.date_lay:
                 Intent resIntent = new Intent(this, HotelCalendarChooseActivity.class);
