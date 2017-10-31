@@ -32,6 +32,7 @@
     <string name="coupon_note">— 本券仅限在“<font color="#001a58">%1$s</font>”使用\n\n— 本房券可抵扣1间夜房费（具体详见免费房券使用规则）\n\n— 不可用于店内mini bar、餐饮、小商品等非房费消费\n\n— 不可与其他优惠同时使用、不得兑换现金\n\n— 用房券结算的房费部分，不开具发票\n\n— 点击“立即使用”，选择规定时间内的入住及退房日期，验证成功后提交订单，酒店确认订单后即可生效\n\n— 本券有效期至：<font color="#001a58">%2$s</font></string>
     <string name="orderListItemDateStr">入住时间：%1$s-%2$s (%3$d晚)</string>
     <string name="homeTemperatureStr">%1$s°</string>
+    <string name="roomCountStr">%1$d间</string>
 
 
     <!--登录-->

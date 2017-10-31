@@ -36,8 +36,9 @@ import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
+
+import java.util.Date;
 
 /**
  * @author kborid
@@ -51,6 +52,7 @@ public class OrderPayActivity extends BaseActivity {
 
     private LinearLayout root_lay;
     private TextView tv_address, tv_date, tv_room_name, tv_total_price, tv_detail, tv_comment;
+    private TextView tv_room_count, tv_during;
     private Button btn_pay;
 
     private AlipayUtil alipay = null;
@@ -82,6 +84,7 @@ public class OrderPayActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setVisibility(View.GONE);
         root_lay.setLayoutAnimation(getAnimationController());
         tv_address = (TextView) findViewById(R.id.tv_address);
         tv_room_name = (TextView) findViewById(R.id.tv_room_name);
@@ -90,6 +93,8 @@ public class OrderPayActivity extends BaseActivity {
         tv_detail = (TextView) findViewById(R.id.tv_detail);
         btn_pay = (Button) findViewById(R.id.btn_pay);
         tv_comment = (TextView) findViewById(R.id.tv_comment);
+        tv_room_count = (TextView) findViewById(R.id.tv_room_count);
+        tv_during = (TextView) findViewById(R.id.tv_during);
 
         payListLay = (LinearLayout) findViewById(R.id.payListLay);
     }
@@ -189,21 +194,17 @@ public class OrderPayActivity extends BaseActivity {
         if (null != orderPayDetailInfoBean) {
             tv_address.setText(orderPayDetailInfoBean.name);
             tv_room_name.setText(orderPayDetailInfoBean.roomName);
-            if (StringUtil.notEmpty(orderPayDetailInfoBean.checkRoomDate)) {
-                tv_date.setVisibility(View.VISIBLE);
-                tv_date.setText(orderPayDetailInfoBean.checkRoomDate);
-            } else {
-                tv_date.setVisibility(View.GONE);
-            }
+            tv_room_count.setText(String.format(getString(R.string.roomCountStr), orderPayDetailInfoBean.roomCnt));
+            tv_date.setText(DateUtil.getDay("MM月dd日", orderPayDetailInfoBean.timeStart) + "-" + DateUtil.getDay("dd日", orderPayDetailInfoBean.timeEnd));
+            tv_during.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(orderPayDetailInfoBean.timeStart), new Date(orderPayDetailInfoBean.timeEnd))));
             float totalPrice = 0;
             try {
                 totalPrice = Float.parseFloat(orderPayDetailInfoBean.amount);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            tv_total_price.setText((int) totalPrice + "");
+            tv_total_price.setText(String.valueOf((int) totalPrice));
             tv_comment.setText(orderPayDetailInfoBean.requirement);
-            tv_comment.append(getString(R.string.pay_order_tips));
             root_lay.setVisibility(View.VISIBLE);
         } else {
             root_lay.setVisibility(View.GONE);
@@ -362,12 +363,18 @@ public class OrderPayActivity extends BaseActivity {
         if (data == null) {
             return;
         }
-        if (data.hasExtra("pay_result")) {
-            Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
-            intent.putExtra("info", data.getExtras().getString("pay_result"));
-            LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
-            intent.putExtra("type", "unionPay");
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        if (requestCode == 0x999) {
+            String errCode = data.getExtras().getString("errCode");
+            String errInfo = data.getExtras().getString("errInfo");
+            System.out.println("errCode = " + errCode + ", errInfo = " + errInfo);
+        } else {
+            if (data.hasExtra("pay_result")) {
+                Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
+                intent.putExtra("info", data.getExtras().getString("pay_result"));
+                LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
+                intent.putExtra("type", "unionPay");
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            }
         }
     }
 
@@ -391,6 +398,12 @@ public class OrderPayActivity extends BaseActivity {
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 removeProgressDialog();
                 if (mJson.containsKey(HotelCommDef.ALIPAY)) {
+//                    Intent intent = new Intent(this, IOUAppVerifyActivity.class);
+//                    intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
+//                    intent.putExtra("token", SessionContext.getTicket());
+//                    intent.putExtra("platCode", "8000");
+//                    intent.putExtra("isShowGuide", "false");
+//                    startActivityForResult(intent, 0x999);
                     alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
                     //全民付
 //                    String data = mJson.getString(HotelCommDef.ALIPAY);
@@ -414,10 +427,29 @@ public class OrderPayActivity extends BaseActivity {
                     JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
                     unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
                     unionpay.unionStartPay(mmJson.getString("tn"));
+//                    LimitRequestUtils.init(this, SessionContext.mUser.user.mobile, SessionContext.getTicket(), "8000", new OnLimitRequestResultListener() {
+//                        @Override
+//                        public void onSuccess(org.json.JSONObject jsonObject) {
+//                            System.out.println("onSuccess() json = " + jsonObject.toString());
+//                        }
+//
+//                        @Override
+//                        public void onFail(String s, String s1) {
+//                            System.out.println("onFail() s = " + s + ", s1 = " + s1);
+//                        }
+//                    });
                     //全民付
 //                    String data = mJson.getString(HotelCommDef.UNIONPAY);
 //                    System.out.println("unionpay data = " + data);
 //                    QMFPayUtil.getInstance().pay(this, QMFPayUtil.CHANNEL_UNIONPAY, data);
+//                } else if (mJson.containsKey(HotelCommDef.UNION_QMHUA)) {
+//                    JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNION_QMHUA);
+//                    Intent intent = new Intent(this, IOUAppVerifyActivity.class);
+//                    intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
+//                    intent.putExtra("token", SessionContext.getTicket());
+//                    intent.putExtra("platCode", "8000");
+//                    intent.putExtra("isShowGuide", "false");
+//                    startActivityForResult(intent, 0x999);
                 } else {
                     CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
                 }

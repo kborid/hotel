@@ -152,6 +152,12 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     //银联全民付
     compile(name: 'qmf-ppplugin-android-2.1.0', ext: 'aar')
+    //银联全民花
+    compile(name:'cfp-common-T-1013-1553',ext:'aar')
+    compile'com.github.DgonLam:SelectAddress:v1.1.7'
+    compile'com.github.DgonLam:PhotoActivity:1.0.2'
+    compile'com.github.DgonLam:RollViewPager:1.0.0'
+    compile'com.github.DgonLam:RefreshLayout:1.0.3'
     //添加阴影工具类
     compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.2'
 }

@@ -19,4 +19,6 @@ public class HotelInfoBean {
     public int clockPrice;
     public int yeguirenPrice;
     public String level;
+    public String comment;
+    public int ad;
 }

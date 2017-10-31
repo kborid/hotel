@@ -37,7 +37,7 @@ public class ImageScaleActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initStatus();
-        setTheme(R.style.ImageTransparent);
+        setTheme(R.style.AppTheme_ImageTransparent);
         overridePendingTransition(0, 0);
         iv_picture = new SmoothImageView(this);
         setContentView(iv_picture);

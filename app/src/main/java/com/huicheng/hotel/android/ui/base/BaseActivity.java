@@ -81,9 +81,9 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         super.onCreate(savedInstanceState);
         LogUtil.d(TAG, "onCreate()");
 //        if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
-//            setTheme(R.style.femaleTheme);
+//            setTheme(R.style.AppTheme_femaleTheme);
 //        } else {
-            setTheme(R.style.defaultTheme);
+        setTheme(R.style.AppTheme_defaultTheme);
 //        }
 
         if (null != savedInstanceState && !isReStarted) {
@@ -105,20 +105,14 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     public void initLaunchWindow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             View decoderView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-            decoderView.setSystemUiVisibility(option);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        } else {
-            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void initTranslucentStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            View decoderView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            int option =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_IMMERSIVE
+//                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    ;
             decoderView.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         } else {

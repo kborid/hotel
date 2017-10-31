@@ -1,7 +1,7 @@
 <resources>
 
     <!--欢迎界面theme-->
-    <style name="WelTheme" parent="AppTheme">
+    <style name="AppTheme.WelTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <!-- 启动背景图片 -->
@@ -9,7 +9,7 @@
     </style>
 
     <!--权限设定Theme-->
-    <style name="PermissionTheme" parent="AppTheme">
+    <style name="AppTheme.PermissionTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/transparent</item>

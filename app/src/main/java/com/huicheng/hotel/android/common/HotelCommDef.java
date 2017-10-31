@@ -71,6 +71,7 @@ public class HotelCommDef {
     public static final String ALIPAY = "01";
     public static final String WXPAY = "02";
     public static final String UNIONPAY = "03";
+    public static final String UNION_QMHUA = "04";
 
     public static String getPayChannel(int index) {
         String payChannel = ALIPAY;
@@ -83,6 +84,9 @@ public class HotelCommDef {
                 break;
             case 2:
                 payChannel = UNIONPAY;
+                break;
+            case 3:
+                payChannel = UNION_QMHUA;
                 break;
         }
         return payChannel;

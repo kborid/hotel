@@ -57,7 +57,7 @@
             android:name=".ui.activity.WelcomeActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            android:theme="@style/WelTheme">
+            android:theme="@style/AppTheme.WelTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -74,7 +74,7 @@
         <activity
             android:name=".ui.activity.PermissionsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/PermissionTheme" />
+            android:theme="@style/AppTheme.PermissionTheme" />
         <activity
             android:name=".ui.activity.GuideLauncherActivity"
             android:screenOrientation="portrait" />
@@ -243,7 +243,7 @@
         <activity
             android:name=".ui.activity.ImageScaleActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ImageTransparent" />
+            android:theme="@style/AppTheme.ImageTransparent" />
 
         <!-- 关注好友列表画面 -->
         <activity

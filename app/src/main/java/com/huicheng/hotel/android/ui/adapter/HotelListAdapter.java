@@ -112,7 +112,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             } else {
                 minPrice = 0 != mPrice ? mPrice : bean.speciallyPrice;
             }
-            if (bean.vipPrice < minPrice) {
+            if (bean.vipPrice < minPrice && mPrice > 0) {
                 holder.tv_vip.setVisibility(View.VISIBLE);
                 isShowVip = true;
                 DecimalFormat decimalFormat = new DecimalFormat("0.0");
@@ -148,6 +148,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                         DecimalFormat df = (DecimalFormat) NumberFormat.getPercentInstance();
                         float specialPercent = (float) (bean.speciallyPrice - mPrice) / mPrice;
                         holder.tv_off_percent.setText(df.format(specialPercent));
+                        holder.tv_off_info.setText(bean.comment);
                         if (isShowVip) {
                             holder.off_lay.setBackgroundColor(context.getResources().getColor(R.color.offInfoColor2));
                         } else {
@@ -156,6 +157,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                     }
                 } else {
                     holder.tv_platform_price.setVisibility(View.GONE);
+                    holder.off_lay.setVisibility(View.GONE);
                 }
                 holder.tv_real_price.setText(price);
                 break;

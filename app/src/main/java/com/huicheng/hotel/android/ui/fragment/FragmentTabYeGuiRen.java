@@ -98,11 +98,6 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (DateUtil.getGapCount(HotelOrderManager.getInstance().getBeginDate(), HotelOrderManager.getInstance().getEndDate()) != 1
-                            || DateUtil.getGapCount(new Date(System.currentTimeMillis()), HotelOrderManager.getInstance().getBeginDate()) != 0) {
-                        tv_note.setVisibility(View.VISIBLE);
-                        tv_note.setText(getResources().getString(R.string.ygrNote, DateUtil.getDay("M.d", System.currentTimeMillis()) + DateUtil.dateToWeek2(new Date(System.currentTimeMillis()))));
-                    }
                     requestHotelYGRList(pageIndex);
                 }
             }, 500);
@@ -222,7 +217,9 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         LogUtil.i(TAG, "price = " + price[0] + " " + price[1]);
         String type = HotelCommDef.convertConsiderType(typeIndex);
         LogUtil.i(TAG, "type = " + type);
-
+        int orderType = SharedPreferenceUtil.getInstance().getInt(AppConst.SORT_INDEX, 0);
+        orderType = orderType == 0 ? orderType : 2;
+        LogUtil.i(TAG, "orderType = " + orderType);
 
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         //关键字
@@ -237,6 +234,8 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         b.addBody("priceEnd", price[1]);
         //酒店类型
         b.addBody("type", type);
+        //排序类型
+        b.addBody("orderType", String.valueOf(orderType));
 
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime(true)));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime(true)));
@@ -331,6 +330,14 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if (DateUtil.getGapCount(HotelOrderManager.getInstance().getBeginDate(), HotelOrderManager.getInstance().getEndDate()) != 1
+                    || DateUtil.getGapCount(new Date(System.currentTimeMillis()), HotelOrderManager.getInstance().getBeginDate()) != 0) {
+                tv_note.setVisibility(View.VISIBLE);
+                tv_note.setText(getResources().getString(R.string.ygrNote, DateUtil.getDay("M.d", System.currentTimeMillis()) + DateUtil.dateToWeek2(new Date(System.currentTimeMillis()))));
+            } else {
+                tv_note.setVisibility(View.GONE);
+            }
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

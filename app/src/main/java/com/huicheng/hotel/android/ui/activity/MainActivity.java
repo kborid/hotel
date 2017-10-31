@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initTranslucentStatusBar();
+        initLaunchWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
         initViews();
@@ -754,6 +754,7 @@ public class MainActivity extends BaseActivity {
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 left_layout.updateMsgCount(mJson.getString("count"));
             } else if (request.flag == AppConst.WEATHER) {
+                System.out.println("json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
                     weather_lay.refreshWeatherInfo(beginTime, bean);
@@ -761,6 +762,15 @@ public class MainActivity extends BaseActivity {
                     weather_lay.showDefaultWeather(beginTime);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onNotifyError(ResponseData request) {
+        super.onNotifyError(request);
+        removeProgressDialog();
+        if (request.flag == AppConst.WEATHER) {
+            weather_lay.showDefaultWeather(beginTime);
         }
     }
 }

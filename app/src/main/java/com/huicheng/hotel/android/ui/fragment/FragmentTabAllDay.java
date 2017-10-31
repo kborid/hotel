@@ -213,6 +213,9 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         LogUtil.i(TAG, "price = " + price[0] + " " + price[1]);
         String type = HotelCommDef.convertConsiderType(typeIndex);
         LogUtil.i(TAG, "type = " + type);
+        int orderType = SharedPreferenceUtil.getInstance().getInt(AppConst.SORT_INDEX, 0);
+        orderType = orderType == 0 ? orderType : 2;
+        LogUtil.i(TAG, "orderType = " + orderType);
 
 
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
@@ -228,6 +231,8 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         b.addBody("priceEnd", price[1]);
         //酒店类型
         b.addBody("type", type);
+        //排序类型
+        b.addBody("orderType", String.valueOf(orderType));
 
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));

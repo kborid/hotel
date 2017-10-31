@@ -144,6 +144,7 @@ public class CustomSortLayout extends LinearLayout {
 
     public interface OnSortResultListener {
         void dismiss();
+
         void doAction();
     }
 }

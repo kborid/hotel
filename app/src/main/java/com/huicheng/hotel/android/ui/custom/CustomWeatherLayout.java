@@ -99,9 +99,9 @@ public class CustomWeatherLayout extends RelativeLayout {
 
     public void refreshWeatherInfo(long timeStamp, WeatherInfoBean bean) {
         if (null != bean) {
-            tv_temp.setText(String.format(context.getString(R.string.homeTemperatureStr), bean.day_air_temperature));
-            tv_weather.setText(bean.day_weather);
-            tv_loc.setText(bean.area);
+            tv_temp.setText(String.format(context.getString(R.string.homeTemperatureStr), bean.day_air_temperature) + "-" + String.format(context.getString(R.string.homeTemperatureStr), bean.night_air_temperature));
+            tv_weather.setText(bean.day_weather + "-" + bean.night_weather);
+            tv_loc.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
             tv_date.setText(DateUtil.getDay("MM月dd日", timeStamp));
             iv_weather.setImageResource(convertWeatherImage(bean.day_weather_code));
             iv_weather_bg.setImageResource(convertWeatherBg(bean.day_weather_code));
