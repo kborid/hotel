@@ -46,6 +46,7 @@ public class GuideLauncherActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initLaunchWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_guidelauncher_layout);
         initViews();

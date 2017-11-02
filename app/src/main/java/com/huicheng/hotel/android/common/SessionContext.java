@@ -175,6 +175,7 @@ public class SessionContext {
     public static WeatherInfoBean getWeatherInfo() {
         return mWeatherInfo;
     }
+
     public static void setWeatherInfo(WeatherInfoBean bean) {
         if (null != bean) {
             mWeatherInfo = bean;
@@ -193,13 +194,16 @@ public class SessionContext {
         SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, "", true);
         SharedPreferenceUtil.getInstance().setString(AppConst.ACCESS_TICKET, "", true);
 //        SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 0);
+        SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, "", false);
+        SharedPreferenceUtil.getInstance().setString(AppConst.CITY, "", false);
+        SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, "", false);
     }
 
     /**
      * 销毁数据
      */
     public static void destroy() {
-        mUser = null;
+        cleanUserInfo();
     }
 
     /**

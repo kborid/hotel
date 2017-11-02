@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.base;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -108,16 +108,18 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             int option =
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 //                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 //                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 //                    | View.SYSTEM_UI_FLAG_IMMERSIVE
 //                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                     ;
             decoderView.setSystemUiVisibility(option);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.transparent20));
         } else {
-            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+            Window win = getWindow();
+            WindowManager.LayoutParams winParams = win.getAttributes();
+            winParams.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            win.setAttributes(winParams);
         }
     }
 
@@ -200,7 +202,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         FixIMMLeaksTools.fixFocusedViewLeak(PRJApplication.getInstance());
         RefWatcher refWatcher = PRJApplication.getRefWatcher(this);
         refWatcher.watch(this);
-        DataLoader.getInstance().clearRequests();
+//        DataLoader.getInstance().clearRequests();
         ActivityTack.getInstanse().removeActivity(this);
     }
 

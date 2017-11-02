@@ -49,6 +49,19 @@ public class CityParseUtils {
         return tempStr;
     }
 
+    public static String getProvinceString(String province) {
+        String tempStr = "";
+        if (StringUtil.notEmpty(province)) {
+            if (province.endsWith("省")) {
+                province = province.replace("省", "");
+            } else if (province.endsWith("市")) {
+                province = province.replace("市", "");
+            }
+            tempStr += province;
+        }
+        return tempStr;
+    }
+
     public static String getCityString(String city) {
         String tempStr = "";
         if (StringUtil.notEmpty(city)) {

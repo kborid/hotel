@@ -1,216 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="3dp"
     android:layout_marginRight="3dp"
-    android:layout_marginTop="6dp"
-    android:background="@drawable/roomitem_ygr_gradient"
-    android:orientation="vertical">
+    android:layout_marginTop="6dp">
 
-    <RelativeLayout
-        android:id="@+id/hotel_bg_lay"
-        android:layout_width="match_parent"
-        android:layout_height="150dp">
-
-        <ImageView
-            android:id="@+id/iv_hotel_icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/def_hotel_list" />
-
-        <LinearLayout
-            android:id="@+id/off_lay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:background="@color/offInfoColor3"
-            android:orientation="vertical"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:id="@+id/tv_off_percent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="-20%"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_off_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="仅限今天"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_10sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/tv_vip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="?attr/indicatorColor"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="@string/vip_price_tips"
-            android:textColor="@color/white"
-            android:textSize="@dimen/common_12sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
-
-    </RelativeLayout>
-
+    <!--正常酒店Layout-->
     <LinearLayout
+        android:id="@+id/hotel_item_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/tv_hotel_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="1"
-            android:text="桔子水晶酒店(杭州火车东站店)桔子水晶酒店(杭州火车东站店)桔子水晶酒店(杭州火车东站店)"
-            android:textColor="@color/white"
-            android:textSize="@dimen/common_15sp" />
+        android:background="@drawable/roomitem_ygr_gradient"
+        android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/hotel_bg_lay"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp">
+            android:layout_height="150dp">
 
             <ImageView
-                android:id="@+id/iv_cert_icon"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/iv_cert_gold" />
-
-            <TextView
-                android:id="@+id/tv_point"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="6dp"
-                android:layout_toRightOf="@id/iv_cert_icon"
-                android:text="4.8分"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_point_tips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/tv_point"
-                android:text="非常棒"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_14sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tv_hotel_dis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="500米"
-            android:textColor="@color/white"
-            android:textSize="@dimen/common_12sp" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp">
-
-            <ImageView
-                android:id="@+id/iv_track_icon"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/iv_track"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tv_track"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/iv_track_icon"
-                android:text="12小时前有人浏览过"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_10sp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tv_platform_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="¥1000"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_12sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp">
+                android:id="@+id/iv_hotel_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/def_hotel_list" />
 
             <LinearLayout
+                android:id="@+id/off_lay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
+                android:layout_marginTop="9dp"
+                android:background="@color/offInfoColor3"
+                android:orientation="vertical"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp">
 
                 <TextView
-                    android:id="@+id/tv_price_label"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_off_percent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/RMB"
+                    android:gravity="center"
+                    android:text="-20%"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/common_20sp"
+                    android:textSize="@dimen/common_18sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_real_price"
+                    android:id="@+id/tv_off_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="仅限今天"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_vip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="?attr/indicatorColor"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/vip_price_tips"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tv_hotel_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="桔子水晶酒店(杭州火车东站店)桔子水晶酒店(杭州火车东站店)桔子水晶酒店(杭州火车东站店)"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_15sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
+
+                <ImageView
+                    android:id="@+id/iv_cert_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/iv_cert_gold" />
+
+                <TextView
+                    android:id="@+id/tv_point"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:padding="1dp"
-                    android:text="420"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_toRightOf="@id/iv_cert_icon"
+                    android:text="4.8分"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/common_20sp"
+                    android:textSize="@dimen/common_14sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_price_unit"
+                    android:id="@+id/tv_point_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:text="起"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_point"
+                    android:text="非常棒"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_14sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_hotel_dis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="500米"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_12sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
+
+                <ImageView
+                    android:id="@+id/iv_track_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/iv_track"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_track"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/iv_track_icon"
+                    android:text="12小时前有人浏览过"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_10sp"
                     android:visibility="gone" />
-            </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_platform_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="¥1000"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_price_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/RMB"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/common_20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_real_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:padding="1dp"
+                        android:text="420"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/common_20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_price_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text="起"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/common_10sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <!--广告Layout-->
+    <ImageView
+        android:id="@+id/iv_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:visibility="gone" />
+</FrameLayout>

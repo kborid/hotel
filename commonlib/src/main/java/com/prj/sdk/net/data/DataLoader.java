@@ -257,54 +257,55 @@ public class DataLoader {
                 @Override
                 public void run() {
                     try {
+                        LogUtil.i(TAG, "notify callback = " + callback);
                         if (callback != null) {
+                            LogUtil.i(TAG, "notify request.isLocal = " + request.isLocal);
                             if (request.isLocal) {
                                 if (response != null) {// 本地html数据请求直接返回结果
                                     callback.notifyMessage(request, response);
                                 } else {
-                                    callback.notifyError(request, response, mException);
+                                    callback.notifyError(request, null, mException);
                                 }
                             } else {
+                                LogUtil.i(TAG, "notify response = " + response);
                                 if (response != null && response.head != null) {
                                     JSONObject mJson = new JSONObject(response.head.toString());
-                                    String code = "";
-                                    if (mJson.has("rtnCode") && mJson.getString("rtnCode") != null) {
-                                        code = mJson.getString("rtnCode");
+                                    // 将错误code赋值给code，方便使用
+                                    if (mJson.has("rtnCode")) {
+                                        response.code = mJson.getString("rtnCode");
                                     }
-                                    if (code != null && code.equals("000000")) {
-                                        LogUtil.i(TAG, "notifyMessage 000000");
+                                    // 将错误描述赋值给data，方便调用
+                                    if (mJson.has("rtnMsg")) {
+                                        response.data = mJson.getString("rtnMsg");
+                                    }
+                                    LogUtil.i(TAG, "notify response.code = " + response.code);
+                                    LogUtil.i(TAG, "notify response.data = " + response.data);
+
+                                    if ("000000".equals(response.code)) {
                                         callback.notifyMessage(request, response);
+                                        LogUtil.i(TAG, "callback.notify message " + response.code);
                                     } else {
-                                        response.code = code;// 将错误code赋值给code，方便使用
-                                        if (mJson.has("rtnMsg")) {
-                                            response.data = mJson.getString("rtnMsg");// 将错误描述赋值给data，方便调用
-                                        }
-                                        if (code != null && (code.equals("900902") || code.equals("310001"))) {// 900902 票据失效
+                                        if ("900902".equals(response.code) || "310001".equals(response.code)) {// 900902 票据失效
                                             Intent intent = new Intent(BroadCastConst.UNLOGIN_ACTION);
                                             intent.putExtra("is_show_tip_dialog", true);
                                             AppContext.mAppContext.sendBroadcast(intent);// 发送登录广播
                                             response.data = "登录超时,请重新登录";
                                         }
-                                        LogUtil.i(TAG, "notifyError !900902 !310001");
                                         callback.notifyError(request, response, mException);
+                                        LogUtil.i(TAG, "callback.notify error " + response.code);
                                     }
                                 } else {
-                                    LogUtil.i(TAG, "notifyError response == null");
                                     callback.notifyError(request, response, mException);
+                                    LogUtil.i(TAG, "callback.notify error else...");
                                 }
                             }
                         }
-                    } catch (final Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        mException = e;
-                        try {
-                            if (callback != null) {
-                                callback.notifyError(request, response, mException);
-                            }
-                        } catch (Exception e2) {
-                            e2.printStackTrace();
+                        if (callback != null) {
+                            callback.notifyError(request, response, e);
+                            LogUtil.i(TAG, "callback.notify error Exception...");
                         }
-
                     }
                 }
             });

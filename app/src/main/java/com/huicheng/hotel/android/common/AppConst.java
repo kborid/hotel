@@ -29,15 +29,10 @@ public final class AppConst {
     public static final String LOCATION_LON = "location_lon";
     public static final String LOCATION_LAT = "location_lat";
 
+    public static final String HISTORY = "history";
     public static final String PROVINCE = "province";
     public static final String CITY = "city";
     public static final String SITEID = "siteid"; // site id
-
-    public static final String HISTORY = "history";
-
-    public static final String LOCATION_PROVINCE = "location_province";
-    public static final String LOCATION_CITY = "location_city";
-    public static final String LOCATION_SITEID = "location_siteid";
 
     //粉丝申请用户信息缓存
     public static final String FANS_NAME = "fans_name";

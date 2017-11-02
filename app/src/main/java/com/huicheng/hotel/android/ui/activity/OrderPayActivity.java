@@ -366,7 +366,6 @@ public class OrderPayActivity extends BaseActivity {
         if (requestCode == 0x999) {
             String errCode = data.getExtras().getString("errCode");
             String errInfo = data.getExtras().getString("errInfo");
-            System.out.println("errCode = " + errCode + ", errInfo = " + errInfo);
         } else {
             if (data.hasExtra("pay_result")) {
                 Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);

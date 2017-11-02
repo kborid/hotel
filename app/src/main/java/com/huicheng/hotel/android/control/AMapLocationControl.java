@@ -7,6 +7,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.huicheng.hotel.android.common.AppConst;
+import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 
@@ -91,15 +92,12 @@ public class AMapLocationControl {
                     //定位成功回调信息，设置相关消息
                     SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-
-                    String loc_province = aMapLocation.getProvince().replace("省", "");
-                    String loc_city = aMapLocation.getCity().replace("市", "");
-                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_PROVINCE, loc_province, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_CITY, loc_city, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_SITEID, String.valueOf(aMapLocation.getAdCode()), false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, loc_province, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, loc_city, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, String.valueOf(aMapLocation.getAdCode()), false);
+                    String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
+                    String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
+                    String siteId = String.valueOf(aMapLocation.getAdCode());
+                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
                     if (null != myLocationListener) {
                         myLocationListener.onLocation(aMapLocation);
                     }

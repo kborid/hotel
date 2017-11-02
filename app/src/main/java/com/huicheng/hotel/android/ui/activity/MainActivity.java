@@ -122,9 +122,6 @@ public class MainActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
-        if (StringUtil.notEmpty(tv_city.getText().toString())) {
-            requestWeatherInfo(beginTime);
-        }
     }
 
     public void initViews() {
@@ -218,7 +215,7 @@ public class MainActivity extends BaseActivity {
         ucRlp.height = Utils.dip2px(20);
         ucRlp.width = Utils.dip2px(20);
         ucRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        ucRlp.setMargins(0, Utils.dip2px(28), Utils.dip2px(20), 0);
+        ucRlp.setMargins(Utils.dip2px(20), Utils.dip2px(38), Utils.dip2px(20), Utils.dip2px(10));
         iv_uc.setLayoutParams(ucRlp);
 
         RelativeLayout.LayoutParams weatherRlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -239,52 +236,42 @@ public class MainActivity extends BaseActivity {
         tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
 
         //地点信息
-        String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-        String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        if (StringUtil.isEmpty(province) || StringUtil.isEmpty(city)) {
-            AMapLocationControl.getInstance().startLocationAlways(this, new AMapLocationListener() {
+        AMapLocationControl.getInstance().startLocationAlways(this, new AMapLocationListener() {
 
-                @Override
-                public void onLocationChanged(AMapLocation aMapLocation) {
-                    if (null != aMapLocation) {
-                        if (aMapLocation.getErrorCode() == 0) {
-                            //定位成功回调信息，设置相关消息
-                            AMapLocationControl.getInstance().stopLocation();
-                            try {
-                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
-                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (null != aMapLocation) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        //定位成功回调信息，设置相关消息
+                        AMapLocationControl.getInstance().stopLocation();
+                        try {
+                            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
+                            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
+                            String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
+                            String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
+                            String siteId = String.valueOf(aMapLocation.getAdCode());
+                            SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
+                            SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
+                            SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
 
-                                String loc_province = aMapLocation.getProvince();
-                                String loc_city = aMapLocation.getCity();
-                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_PROVINCE, loc_province, false);
-                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_CITY, loc_city, false);
-                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_SITEID, String.valueOf(aMapLocation.getAdCode()), false);
+                            tv_city.setText(CityParseUtils.getCityString(city));
+                            HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
 
-                                SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, loc_province, false);
-                                SharedPreferenceUtil.getInstance().setString(AppConst.CITY, loc_city, false);
-                                SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, String.valueOf(aMapLocation.getAdCode()), false);
+                            requestWeatherInfo(beginTime);
 
-                                HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(loc_province, loc_city, "-"));
-                                tv_city.setText(CityParseUtils.getCityString(loc_city));
+                            showHaiNanAd(province);
 
-                                requestWeatherInfo(beginTime);
-
-                                showHaiNanAd(loc_province);
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            LogUtil.e(TAG, "location Error, ErrCode:"
-                                    + aMapLocation.getErrorCode() + ", errInfo:"
-                                    + aMapLocation.getErrorInfo());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+                    } else {
+                        LogUtil.e(TAG, "location Error, ErrCode:"
+                                + aMapLocation.getErrorCode() + ", errInfo:"
+                                + aMapLocation.getErrorInfo());
                     }
                 }
-            });
-        }
-        tv_city.setText(CityParseUtils.getCityString(city));
-        HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
+            }
+        });
 
         //更新用户中心
         left_layout.updateUserInfo();
@@ -759,7 +746,7 @@ public class MainActivity extends BaseActivity {
                     WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
                     weather_lay.refreshWeatherInfo(beginTime, bean);
                 } else {
-                    weather_lay.showDefaultWeather(beginTime);
+                    weather_lay.refreshWeatherInfo(beginTime, null);
                 }
             }
         }
@@ -770,7 +757,7 @@ public class MainActivity extends BaseActivity {
         super.onNotifyError(request);
         removeProgressDialog();
         if (request.flag == AppConst.WEATHER) {
-            weather_lay.showDefaultWeather(beginTime);
+            weather_lay.refreshWeatherInfo(beginTime, null);
         }
     }
 }

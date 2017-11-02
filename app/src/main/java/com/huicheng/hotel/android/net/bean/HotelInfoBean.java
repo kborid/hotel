@@ -21,4 +21,7 @@ public class HotelInfoBean {
     public String level;
     public String comment;
     public int ad;
+    public String text;
+    public String picPath;
+    public String link;
 }

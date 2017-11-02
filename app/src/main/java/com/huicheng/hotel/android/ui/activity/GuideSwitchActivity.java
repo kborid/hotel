@@ -45,6 +45,7 @@ public class GuideSwitchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initLaunchWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_guideswitch_layout);
         initViews();

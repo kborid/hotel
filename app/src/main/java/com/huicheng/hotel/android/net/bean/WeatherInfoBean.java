@@ -21,4 +21,5 @@ public class WeatherInfoBean {
     public String night_weather_pic;
     public String night_wind_direction;
     public String night_wind_power;
+    public long systemTime;
 }

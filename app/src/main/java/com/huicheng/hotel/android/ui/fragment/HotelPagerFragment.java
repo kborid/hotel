@@ -193,20 +193,17 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                             try {
                                 SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
                                 SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-                                String loc_province = aMapLocation.getProvince().replace("省", "");
-                                String loc_city = aMapLocation.getCity().replace("市", "");
-                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_PROVINCE, loc_province, false);
-                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_CITY, loc_city, false);
-                                SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_SITEID, String.valueOf(aMapLocation.getAdCode()), false);
+                                String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
+                                String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
+                                String siteId = String.valueOf(aMapLocation.getAdCode());
+                                SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
+                                SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
+                                SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
 
-                                SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, loc_province, false);
-                                SharedPreferenceUtil.getInstance().setString(AppConst.CITY, loc_city, false);
-                                SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, String.valueOf(aMapLocation.getAdCode()), false);
+                                HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
+                                tv_city.setText(CityParseUtils.getProvinceCityString(province, city, " "));
 
-                                HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(loc_province, loc_city, "-"));
-                                tv_city.setText(CityParseUtils.getProvinceCityString(loc_province, loc_city, " "));
-
-                                showHaiNanAd(loc_province);
+                                showHaiNanAd(province);
 
                             } catch (Exception e) {
                                 e.printStackTrace();

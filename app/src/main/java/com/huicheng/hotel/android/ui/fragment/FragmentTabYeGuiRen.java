@@ -237,6 +237,7 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         //排序类型
         b.addBody("orderType", String.valueOf(orderType));
 
+        b.addBody("showAd", "1");//用于后台区分旧版本不支持广告模块的flag
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime(true)));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime(true)));
         b.addBody("cityCode", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
