@@ -237,11 +237,11 @@ public class CustomWeatherLayout extends RelativeLayout {
             tv_loc.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
             tv_date.setText(DateUtil.getDay("MM月dd日", timeStamp));
             iv_weather.setImageResource(weatherIconId);
-            showWeatherInfoLayout(weather_info_lay, true);
             iv_weather_bg.setImageResource(weatherBgId);
+            showWeatherInfoLayout(weather_info_lay, true);
         } else {
-            hideWeatherInfoLayout(weather_info_lay, true);
             iv_weather_bg.setImageResource(R.drawable.test);
+            hideWeatherInfoLayout(weather_info_lay, true);
         }
     }
 }

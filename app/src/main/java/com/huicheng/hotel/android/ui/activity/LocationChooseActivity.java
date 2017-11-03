@@ -298,9 +298,11 @@ public class LocationChooseActivity extends BaseActivity {
                 mHistoryList.remove(index);
             }
         }
-        mHistoryList.add(0, city);
-        String jsonStr = JSON.toJSONString(mHistoryList);
-        SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY, jsonStr, false);
+        if (StringUtil.notEmpty(city)) {
+            mHistoryList.add(0, city);
+            String jsonStr = JSON.toJSONString(mHistoryList);
+            SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY, jsonStr, false);
+        }
     }
 
     @Override
