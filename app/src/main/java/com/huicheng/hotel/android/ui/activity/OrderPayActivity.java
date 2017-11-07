@@ -23,6 +23,7 @@ import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.pay.alipay.AlipayUtil;
+import com.huicheng.hotel.android.common.pay.qmf.QmfPayHelper;
 import com.huicheng.hotel.android.common.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.common.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
@@ -58,6 +59,8 @@ public class OrderPayActivity extends BaseActivity {
     private AlipayUtil alipay = null;
     private WXPayUtils wxpay = null;
     private UnionPayUtil unionpay = null;
+    //qmf pay
+    private QmfPayHelper qmfPayHelper = null;
     private int payIndex = 0;
 
     private int[] payIcon = new int[]{
@@ -150,6 +153,7 @@ public class OrderPayActivity extends BaseActivity {
         unionpay = new UnionPayUtil(this);
         alipay = new AlipayUtil(this);
         wxpay = new WXPayUtils(this);
+        qmfPayHelper = new QmfPayHelper();
 
         // 动态注册支付广播
         IntentFilter intentFilter = new IntentFilter();
@@ -165,7 +169,7 @@ public class OrderPayActivity extends BaseActivity {
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.PAY;
-//        d.path = "http://192.168.0.208:83/pay/toPayment.json";
+//        d.path = "http://116.62.62.2:8000/hmp-transapi/pay/toPayment.json";
         d.flag = AppConst.PAY;
 
         if (!isProgressShowing()) {
@@ -332,6 +336,44 @@ public class OrderPayActivity extends BaseActivity {
         }
     }
 
+    private void startPay(String str) {
+        JSONObject mJson = JSON.parseObject(str);
+//        String data;
+        if (mJson.containsKey(HotelCommDef.ALIPAY)) {
+            //支付宝第三方支付
+            alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
+            //全民付
+//            data = mJson.getString(HotelCommDef.ALIPAY);
+//            qmfPayHelper.setPayStragety(new QmfAliPay());
+        } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
+            //微信第三方支付
+            JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
+            wxpay.sendPayReq(
+                    mmJson.getString("package"),
+                    mmJson.getString("appid"),
+                    mmJson.getString("sign"),
+                    mmJson.getString("partnerid"),
+                    mmJson.getString("prepayid"),
+                    mmJson.getString("noncestr"),
+                    mmJson.getString("timestamp"));
+            //全民付
+//            data = mJson.getString(HotelCommDef.WXPAY);
+//            qmfPayHelper.setPayStragety(new QmfWxPay());
+        } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
+            //银联第三方支付
+            JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
+            unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
+            unionpay.unionStartPay(mmJson.getString("tn"));
+            //全民付
+//            data = mJson.getString(HotelCommDef.UNIONPAY);
+//            qmfPayHelper.setPayStragety(new QmfPosterPay(this));
+        } else {
+            CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
+//            return;
+        }
+//        qmfPayHelper.startPay(data);
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
@@ -342,16 +384,12 @@ public class OrderPayActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         wxpay = null;
         alipay = null;
         unionpay = null;
+        qmfPayHelper = null;
         if (null != mPayReceiver) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mPayReceiver);
         }
@@ -363,24 +401,13 @@ public class OrderPayActivity extends BaseActivity {
         if (data == null) {
             return;
         }
-        if (requestCode == 0x999) {
-            String errCode = data.getExtras().getString("errCode");
-            String errInfo = data.getExtras().getString("errInfo");
-        } else {
-            if (data.hasExtra("pay_result")) {
-                Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
-                intent.putExtra("info", data.getExtras().getString("pay_result"));
-                LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
-                intent.putExtra("type", "unionPay");
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-            }
+        if (data.hasExtra("pay_result")) {
+            Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
+            intent.putExtra("info", data.getExtras().getString("pay_result"));
+            LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
+            intent.putExtra("type", "unionPay");
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
-    }
-
-
-    @Override
-    public void preExecute(ResponseData request) {
-
     }
 
     @Override
@@ -394,64 +421,8 @@ public class OrderPayActivity extends BaseActivity {
                 refreshOrderDetailInfo();
             } else if (request.flag == AppConst.PAY) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
-                JSONObject mJson = JSON.parseObject(response.body.toString());
                 removeProgressDialog();
-                if (mJson.containsKey(HotelCommDef.ALIPAY)) {
-//                    Intent intent = new Intent(this, IOUAppVerifyActivity.class);
-//                    intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
-//                    intent.putExtra("token", SessionContext.getTicket());
-//                    intent.putExtra("platCode", "8000");
-//                    intent.putExtra("isShowGuide", "false");
-//                    startActivityForResult(intent, 0x999);
-                    alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
-                    //全民付
-//                    String data = mJson.getString(HotelCommDef.ALIPAY);
-//                    System.out.println("alipay data = " + data);
-//                    QMFPayUtil.getInstance().pay(this, QMFPayUtil.CHANNEL_ALIPAY, data);
-                } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
-                    JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
-                    wxpay.sendPayReq(
-                            mmJson.getString("package"),
-                            mmJson.getString("appid"),
-                            mmJson.getString("sign"),
-                            mmJson.getString("partnerid"),
-                            mmJson.getString("prepayid"),
-                            mmJson.getString("noncestr"),
-                            mmJson.getString("timestamp"));
-                    //全民付
-//                    String data = mJson.getString(HotelCommDef.WXPAY);
-//                    System.out.println("wxpay data = " + data);
-//                    QMFPayUtil.getInstance().pay(this, QMFPayUtil.CHANNEL_WXPAY, data);
-                } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
-                    JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
-                    unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
-                    unionpay.unionStartPay(mmJson.getString("tn"));
-//                    LimitRequestUtils.init(this, SessionContext.mUser.user.mobile, SessionContext.getTicket(), "8000", new OnLimitRequestResultListener() {
-//                        @Override
-//                        public void onSuccess(org.json.JSONObject jsonObject) {
-//                            System.out.println("onSuccess() json = " + jsonObject.toString());
-//                        }
-//
-//                        @Override
-//                        public void onFail(String s, String s1) {
-//                            System.out.println("onFail() s = " + s + ", s1 = " + s1);
-//                        }
-//                    });
-                    //全民付
-//                    String data = mJson.getString(HotelCommDef.UNIONPAY);
-//                    System.out.println("unionpay data = " + data);
-//                    QMFPayUtil.getInstance().pay(this, QMFPayUtil.CHANNEL_UNIONPAY, data);
-//                } else if (mJson.containsKey(HotelCommDef.UNION_QMHUA)) {
-//                    JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNION_QMHUA);
-//                    Intent intent = new Intent(this, IOUAppVerifyActivity.class);
-//                    intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
-//                    intent.putExtra("token", SessionContext.getTicket());
-//                    intent.putExtra("platCode", "8000");
-//                    intent.putExtra("isShowGuide", "false");
-//                    startActivityForResult(intent, 0x999);
-                } else {
-                    CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
-                }
+                startPay(response.body.toString());
             }
         }
     }

@@ -4,6 +4,8 @@
     <string name="iflytek_appid">595f3e12</string>
     <!--高德地图-->
     <string name="amap_appkey">c9173d3f01c3e3be481c67bcc3396309</string>
+    <!--百度地图-->
+    <string name="baidu_appkey">QI8XiYfwxTD2E2WhfUdVvqehNkxQVa1S</string>
     <!-- umeng 分享申请的key -->
     <string name="umeng_appkey">58b66b7704e2055838000ddc</string>
     <!-- 微信平台id -->

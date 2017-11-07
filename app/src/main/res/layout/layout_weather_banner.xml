@@ -53,7 +53,8 @@
                     android:gravity="center_vertical"
                     android:text="-28°"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/common_16sp" />
+                    android:textSize="@dimen/common_16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_weather"
@@ -62,7 +63,8 @@
                     android:gravity="center_vertical"
                     android:text="晴"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/common_16sp" />
+                    android:textSize="@dimen/common_16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
@@ -84,7 +86,7 @@
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="9dp"
                 android:text="10月19日"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_20sp"

@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ellipsize="end"
+            android:textStyle="bold"
             android:gravity="center"
             android:lines="1"
             android:textColor="@color/titleColor"

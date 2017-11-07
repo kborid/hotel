@@ -45,6 +45,7 @@ public class PRJApplication extends Application {
         LogUtil.i(TAG, "The App Start--->>> onCreate()");
         AppContext.init(this);
 //        Collections.addAll(DataLoader.getInstance().mCacheUrls, NetURL.CACHE_URL);
+//        BDLocationControl.getInstance().startLocationOnce();
         CrashHandler.getInstance().init();
         refWatcher = LeakCanary.install(this);
         mPermissionsChecker = new PermissionsChecker(this);

@@ -33,7 +33,6 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
@@ -78,7 +77,7 @@ import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements AMapLocationControl.MyLocationListener {
 
     private AppInfoBean mAppInfoBean = null;
     private static Handler myHandler = new Handler(Looper.getMainLooper());
@@ -236,42 +235,8 @@ public class MainActivity extends BaseActivity {
         tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
 
         //地点信息
-        AMapLocationControl.getInstance().startLocationAlways(this, new AMapLocationListener() {
-
-            @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (null != aMapLocation) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        //定位成功回调信息，设置相关消息
-                        AMapLocationControl.getInstance().stopLocation();
-                        try {
-                            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
-                            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-                            String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
-                            String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
-                            String siteId = String.valueOf(aMapLocation.getAdCode());
-                            SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
-                            SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
-                            SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
-
-                            tv_city.setText(CityParseUtils.getCityString(city));
-                            HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
-
-                            requestWeatherInfo(beginTime);
-
-                            showHaiNanAd(province);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        LogUtil.e(TAG, "location Error, ErrCode:"
-                                + aMapLocation.getErrorCode() + ", errInfo:"
-                                + aMapLocation.getErrorInfo());
-                    }
-                }
-            }
-        });
+        AMapLocationControl.getInstance().startLocation();
+        AMapLocationControl.getInstance().registerLocationListener(this);
 
         //更新用户中心
         left_layout.updateUserInfo();
@@ -608,6 +573,7 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         left_layout.unregisterBroadReceiver();
+        AMapLocationControl.getInstance().unRegisterLocationListener(this);
     }
 
     @Override
@@ -652,6 +618,15 @@ public class MainActivity extends BaseActivity {
                 break;
             }
             case R.id.iv_voice:
+//                String testStr = "{\"mode\":\"1\",\"amount\":\"111\",\"merchantId\":\"898310048164164\",\"agentMerchantId\":\"111\",\"mobile\":\"18829292929\",\"sign\":\"rsq6ad7h/EWJnt8Wj2FRSJXw1vonmZq/SY0mcbK6O90e3nfO0vEIE3lT7OFz8ro/RdJHEnDhd2oaeg+tUPu2aBJp9NzDi3mzJFcDRqbR1OyzQpFtWvZMJA0ZdGL1Q/EjmFxtczSNvL7zVqy54W9i/Q8TLR70awKHSUqtsZf8VSg=\",\"notifyUrl\":\"www.baidu.com\",\"signType\":\"RSA\",\"merchantUserId\":\"15097837768111182568523779846186\",\"merOrderId\":\"orderNo1311\"}";
+//                QmfPayHelper qmfPayHelper = new QmfPayHelper();
+//                qmfPayHelper.setPayStragety(new QmfAliPay());
+//                qmfPayHelper.setPayStragety(new QmfWxPay());
+//                qmfPayHelper.setPayStragety(new QmfPosterPay(this));
+//                qmfPayHelper.startPay(testStr);
+//                QmfQuickPayControl.getInstance().bindQuickPayService();
+//                QmfQuickPayControl.getInstance().startQuickPay("");
+
                 if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.MIC_PERMISSION)) {
                     PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
                     return;
@@ -741,7 +716,6 @@ public class MainActivity extends BaseActivity {
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 left_layout.updateMsgCount(mJson.getString("count"));
             } else if (request.flag == AppConst.WEATHER) {
-                System.out.println("json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
                     weather_lay.refreshWeatherInfo(beginTime, bean);
@@ -758,6 +732,39 @@ public class MainActivity extends BaseActivity {
         removeProgressDialog();
         if (request.flag == AppConst.WEATHER) {
             weather_lay.refreshWeatherInfo(beginTime, null);
+        }
+    }
+
+    @Override
+    public void onLocation(AMapLocation aMapLocation) {
+        if (null != aMapLocation) {
+            if (aMapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                try {
+                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
+                    String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
+                    String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
+                    String siteId = String.valueOf(aMapLocation.getAdCode());
+                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
+
+                    tv_city.setText(CityParseUtils.getCityString(city));
+                    HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
+
+                    requestWeatherInfo(beginTime);
+
+                    showHaiNanAd(province);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                LogUtil.e(TAG, "location Error, ErrCode:"
+                        + aMapLocation.getErrorCode() + ", errInfo:"
+                        + aMapLocation.getErrorInfo());
+            }
         }
     }
 }

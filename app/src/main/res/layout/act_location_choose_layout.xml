@@ -122,8 +122,7 @@
                     android:paddingLeft="20dp"
                     android:text="S"
                     android:textColor="#9b9b9b"
-                    android:textSize="@dimen/common_20sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/common_20sp" />
 
                 <View
                     android:layout_width="match_parent"

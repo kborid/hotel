@@ -1,23 +1,24 @@
 package com.huicheng.hotel.android.control;
 
-import android.content.Context;
-
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 
-/**
- * 高德定位
- */
+import java.util.ArrayList;
+
 public class AMapLocationControl {
     private final String TAG = getClass().getSimpleName();
 
+    private AMapLocationClientOption option = null;
     private AMapLocationClient mAmapLocationClient = null;
+    private boolean isAlways = false;
+
     private static AMapLocationControl instance = null;
 
     public static AMapLocationControl getInstance() {
@@ -31,47 +32,33 @@ public class AMapLocationControl {
         return instance;
     }
 
-    private void initLocation(Context context, boolean isOnce) {
-        if (mAmapLocationClient == null) {
-            mAmapLocationClient = new AMapLocationClient(context);
-        }
-        AMapLocationClientOption option = new AMapLocationClientOption();
+    private AMapLocationControl() {
+        mAmapLocationClient = new AMapLocationClient(PRJApplication.getInstance());
+        option = new AMapLocationClientOption();
+        initLocation();
+    }
+
+    private void initLocation() {
         option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        if (isOnce) {
-            option.setOnceLocation(true);
-        } else {
-            option.setInterval(2000);
-        }
+        option.setInterval(2000);
         option.setNeedAddress(true);
         option.setMockEnable(true);
+        mAmapLocationClient.setLocationListener(listener);
         mAmapLocationClient.setLocationOption(option);
     }
 
-    public synchronized void startLocationOnce(Context context, boolean isOnce) {
-        initLocation(context, isOnce);
-        mAmapLocationClient.setLocationListener(listener);
-        mAmapLocationClient.startLocation();
+    public void startLocation() {
+        startLocation(false);
     }
 
-    public synchronized void startLocationOnce(Context context, MyLocationListener myLocationListener, boolean isOnce) {
-        initLocation(context, isOnce);
-        mAmapLocationClient.setLocationListener(listener);
-        this.myLocationListener = myLocationListener;
-        mAmapLocationClient.startLocation();
-    }
-
-    public synchronized void startLocationAlways(Context context, AMapLocationListener listener) {
-        initLocation(context, false);
-        mAmapLocationClient.setLocationListener(listener);
+    public void startLocation(boolean isAlways) {
+        this.isAlways = isAlways;
         mAmapLocationClient.startLocation();
     }
 
     public void stopLocation() {
-        if (mAmapLocationClient != null) {
-            mAmapLocationClient.stopLocation();
-            mAmapLocationClient.onDestroy();
-            mAmapLocationClient = null;
-        }
+        mAmapLocationClient.stopLocation();
+        listeners.clear();
     }
 
     public boolean isStart() {
@@ -86,7 +73,6 @@ public class AMapLocationControl {
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {
             LogUtil.i(TAG, "onLocationChanged()");
-            stopLocation();
             if (null != aMapLocation) {
                 if (aMapLocation.getErrorCode() == 0) {
                     //定位成功回调信息，设置相关消息
@@ -98,9 +84,11 @@ public class AMapLocationControl {
                     SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
-                    if (null != myLocationListener) {
-                        myLocationListener.onLocation(aMapLocation);
+                    notifyLocationChanged(aMapLocation);
+                    if (!isAlways) {
+                        stopLocation();
                     }
+
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                     LogUtil.e(TAG, "location Error, ErrCode:"
@@ -115,5 +103,23 @@ public class AMapLocationControl {
         void onLocation(AMapLocation aMapLocation);
     }
 
-    private MyLocationListener myLocationListener = null;
+    private ArrayList<MyLocationListener> listeners = new ArrayList<>();
+
+    public void registerLocationListener(MyLocationListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public void unRegisterLocationListener(MyLocationListener listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
+    }
+
+    private void notifyLocationChanged(AMapLocation aMapLocation) {
+        for (MyLocationListener listener : listeners) {
+            listener.onLocation(aMapLocation);
+        }
+    }
 }

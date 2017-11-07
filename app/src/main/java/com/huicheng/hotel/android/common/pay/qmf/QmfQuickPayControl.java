@@ -21,10 +21,19 @@ import com.huicheng.hotel.android.PRJApplication;
 public class QmfQuickPayControl {
 
     private QuickPayService.LocalBinder mUmsQuickPayService = null;
+    private static final String FLAG_QUICK_PAY = "quick_pay";
+    private static final String FLAG_SCAN_PAY = "scan_pay";
+    private String flag = "";
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mUmsQuickPayService = (QuickPayService.LocalBinder) (service);
+            if (FLAG_QUICK_PAY.equals(flag)) {
+                startQuickPay("");
+            } else if (FLAG_SCAN_PAY.equals(flag)) {
+                startScanPay("");
+            } else {
+            }
         }
 
         @Override
@@ -61,6 +70,7 @@ public class QmfQuickPayControl {
     }
 
     public void startQuickPay(String str) {
+        flag = FLAG_QUICK_PAY;
         JSONObject json = JSON.parseObject(str);
         JSONObject payRequest = json.getJSONObject("appPayRequest");
         Bundle args = new Bundle();
@@ -75,15 +85,21 @@ public class QmfQuickPayControl {
         args.putBoolean("isProductEnv", false);
 //        args.putBoolean(HomeActivity.ENV_KEY, isProEnv);
 
+
         try {
-            bindQuickPayService();
-            mUmsQuickPayService.getService().payOrder(args, new QmfQuickPayOrderResultListener());
+            if (null != mUmsQuickPayService) {
+                flag = "";
+                mUmsQuickPayService.getService().payOrder(args, new QmfQuickPayOrderResultListener());
+            } else {
+                bindQuickPayService();
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
     public void startScanPay(String str) {
+        flag = FLAG_SCAN_PAY;
         JSONObject json = JSON.parseObject(str);
         JSONObject payRequest = json.getJSONObject("appPayRequest");
         Bundle args = new Bundle();
@@ -92,8 +108,12 @@ public class QmfQuickPayControl {
         args.putString("mobile", payRequest.getString("mobile"));
         args.putString("mode", "4");
         try {
-            bindQuickPayService();
-            mUmsQuickPayService.getService().scanCodePay(args, new QmfQuickPayOrderResultListener());
+            if (null != mUmsQuickPayService) {
+                flag = "";
+                mUmsQuickPayService.getService().scanCodePay(args, new QmfQuickPayOrderResultListener());
+            } else {
+                bindQuickPayService();
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }

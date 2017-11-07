@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
@@ -63,7 +62,7 @@ import java.util.Map;
  */
 public class HotelMapActivity extends BaseActivity
         implements AMap.OnMarkerClickListener, RouteSearch.OnRouteSearchListener,
-        LocationSource, AMapLocationListener {
+        LocationSource, AMapLocationControl.MyLocationListener {
 
     private ImageView iv_zoom_out;
     private ImageView iv_zoom_in;
@@ -343,7 +342,6 @@ public class HotelMapActivity extends BaseActivity
                     amap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), amap.getCameraPosition().zoom));
                 } else {
                     isToMyLoc = true;
-                    AMapLocationControl.getInstance().startLocationAlways(this, this);
                 }
                 break;
             case R.id.iv_search:
@@ -453,6 +451,7 @@ public class HotelMapActivity extends BaseActivity
         }
         mapview.onDestroy();
         AMapLocationControl.getInstance().stopLocation();
+        AMapLocationControl.getInstance().unRegisterLocationListener(this);
     }
 
     private void refreshMapOverLayout(boolean hasRoute) {
@@ -566,17 +565,31 @@ public class HotelMapActivity extends BaseActivity
     @Override
     public void activate(OnLocationChangedListener listener) {
         mListener = listener;
-        AMapLocationControl.getInstance().startLocationAlways(this, this);
+        AMapLocationControl.getInstance().startLocation(true);
+        AMapLocationControl.getInstance().registerLocationListener(this);
     }
 
     @Override
     public void deactivate() {
         mListener = null;
-        AMapLocationControl.getInstance().stopLocation();
+        AMapLocationControl.getInstance().startLocation();
+        AMapLocationControl.getInstance().unRegisterLocationListener(this);
     }
 
     @Override
-    public void onLocationChanged(AMapLocation aMapLocation) {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == keyCode) {
+            if (driveRouteResult != null || walkRouteResult != null) {
+                clearRoute();
+                showSearchResultToMap();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onLocation(AMapLocation aMapLocation) {
         LogUtil.i(TAG, "onLocationChanged()");
         if (null != aMapLocation) {
             if (aMapLocation.getErrorCode() == 0) {
@@ -592,17 +605,5 @@ public class HotelMapActivity extends BaseActivity
                 LogUtil.e(TAG, "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo());
             }
         }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            if (driveRouteResult != null || walkRouteResult != null) {
-                clearRoute();
-                showSearchResultToMap();
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

@@ -13,12 +13,12 @@ import java.util.Date;
  * @date 2017/2/9 0009
  */
 public class HotelOrderManager {
-    private static HotelOrderManager instance = null;
+
     private Date beginDate, endDate;
     private long beginTime, endTime;
     private Date ygrBeginDate, ygrEndDate;
     private long ygrBeginTime, ygrEndTime;
-    private int hotelType = 1;
+    private int hotelType = HotelCommDef.TYPE_ALL;
     private String payType;
     private String cityStr = null;
     private String dateStr = null;
@@ -27,6 +27,7 @@ public class HotelOrderManager {
     private CouponInfoBean.CouponInfo couponInfoBean = null;
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
 
+    private static HotelOrderManager instance = null;
     private HotelOrderManager() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(System.currentTimeMillis()));
@@ -172,7 +173,7 @@ public class HotelOrderManager {
     }
 
     public void reset() {
-        hotelType = 1;
+        hotelType = HotelCommDef.TYPE_ALL;
         payType = "";
         hotelDetailInfoBean = null;
         fansHotelInfoBean = null;

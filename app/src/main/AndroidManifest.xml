@@ -55,8 +55,8 @@
         tools:replace="android:theme,android:allowBackup,android:name">
         <activity
             android:name=".ui.activity.WelcomeActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.WelTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -405,7 +405,14 @@
             android:name="com.amap.api.v2.apikey"
             android:value="@string/amap_appkey" />
         <service android:name="com.amap.api.location.APSService" />
-
+        <!--百度地图-->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="@string/baidu_appkey" />
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
         <!-- ###################添加UmengAppkey###################### -->
         <meta-data
             android:name="UMENG_APPKEY"

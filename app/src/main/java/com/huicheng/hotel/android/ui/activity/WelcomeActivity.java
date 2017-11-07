@@ -24,7 +24,6 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
@@ -187,7 +186,6 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LAUNCH_REQUIRE_PERMISSIONS);
             return;
         }
-        AMapLocationControl.getInstance().startLocationOnce(this, true);
         //用户第一次启动时，调用后台封装的广点通的接口，统计激活量
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             requestGDTInterface();

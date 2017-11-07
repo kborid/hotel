@@ -26,6 +26,7 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.webview.ChooserFileController;
 import com.prj.sdk.widget.webview.WebChromeClientCompat;
@@ -228,7 +229,9 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
             }
 
             tv_center_title.setPadding(paddingValue, 0, paddingValue, 0);
-            tv_center_title.setText(mTitle);
+            if (StringUtil.notEmpty(mTitle)) {
+                tv_center_title.setText(mTitle);
+            }
 
             mWebView.setEnabled(false);
         }
@@ -246,7 +249,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
             }
             tv_center_title.setPadding(paddingValue, 0, paddingValue, 0);
             String title = view.getTitle();
-            if (title != null
+            if (StringUtil.notEmpty(title)
                     && !title.startsWith(NetURL.getApi().replace("http://", ""))
                     && !title.contains(".html")
                     && !title.contains(".htm")
@@ -295,14 +298,6 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
     @Override
     protected void onResume() {
         super.onResume();
-//        if (mWebView.canGoBack()) {
-//            tv_left_title_close.setVisibility(View.VISIBLE);
-//            paddingValue = BACKWIDTH + CLOSEWIDTH;
-//        } else {
-//            tv_left_title_close.setVisibility(View.GONE);
-//            paddingValue = BACKWIDTH;
-//        }
-//        tv_center_title.setPadding(paddingValue, 0, paddingValue, 0);
     }
 
     @Override

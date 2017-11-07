@@ -8,10 +8,9 @@
         android:id="@+id/tv_city"
         android:layout_width="62dp"
         android:layout_height="42dp"
+        android:background="?attr/locationChooseSel"
         android:gravity="center"
         android:text="A"
-        android:background="?attr/locationChooseSel"
         android:textColor="@color/cityindex_text_selector"
-        android:textSize="@dimen/common_18sp"
-        android:textStyle="bold" />
+        android:textSize="@dimen/common_18sp" />
 </LinearLayout>

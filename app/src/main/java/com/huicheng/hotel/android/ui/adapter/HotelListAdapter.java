@@ -124,17 +124,20 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             boolean isShowVip = false;
             if (HotelCommDef.VIP_SUPPORT.equals(bean.vipEnable) && bean.vipPrice > 0) {
                 int minPrice;
+                //获取特价，平台价不为0且最小的价格
                 if (mPrice != 0 && bean.speciallyPrice != 0) {
                     minPrice = Math.min(mPrice, bean.speciallyPrice);
                 } else {
                     minPrice = 0 != mPrice ? mPrice : bean.speciallyPrice;
                 }
+                //会员价与最小价格比较
                 if (bean.vipPrice < minPrice && mPrice > 0) {
                     holder.tv_vip.setVisibility(View.VISIBLE);
                     isShowVip = true;
-                    DecimalFormat decimalFormat = new DecimalFormat("0.0");
-                    float vipPercent = (float) bean.vipPrice / mPrice * 10;
-                    holder.tv_vip.setText(String.format(context.getString(R.string.vip_price_tips), decimalFormat.format(vipPercent)));
+//                    DecimalFormat decimalFormat = new DecimalFormat("0.0");
+//                    float vipPercent = (float) bean.vipPrice / mPrice * 10;
+//                    holder.tv_vip.setText(String.format(context.getString(R.string.vip_price_tips), decimalFormat.format(vipPercent)));
+                    holder.tv_vip.setText(context.getString(R.string.vip_price_tips2));
                 }
             }
 
@@ -222,9 +225,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 des = new LatLng(Float.valueOf(pos[0]), Float.valueOf(pos[1]));
                 float dis = AMapUtils.calculateLineDistance(start, des);
                 holder.tv_hotel_dis.setText(AMapUtil.getFriendlyLength((int) dis));
-                holder.tv_hotel_dis.setVisibility(View.VISIBLE);
             } else {
-                holder.tv_hotel_dis.setVisibility(View.GONE);
+                holder.tv_hotel_dis.setText("暂无距离信息");
             }
 
             //浏览痕迹：随机1分钟~12小时
@@ -241,26 +243,25 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             holder.tv_track.setText(String.format(context.getString(R.string.track_str), trackMap.get(position)));
 
             // 评分信息
-            holder.tv_point.setVisibility(View.GONE);
-            holder.tv_point_tips.setVisibility(View.GONE);
-            if (StringUtil.notEmpty(bean.hotelGrade)) {
-                if (!"0".equals(bean.hotelGrade) && !"0.0".equals(bean.hotelGrade)) {
-                    float point = Float.parseFloat(bean.hotelGrade);
-                    String tmp = String.format(context.getString(R.string.pointStr), String.valueOf(point));
-                    SpannableString ss = new SpannableString(tmp);
-                    ss.setSpan(/*new AbsoluteSizeSpan(11, true)*/new RelativeSizeSpan(0.78f), tmp.length() - 1, tmp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                    holder.tv_point.setText(ss);
+            float point;
+            if (StringUtil.isEmpty(bean.hotelGrade)) {
+                point = 0;
+            } else {
+                point = Float.parseFloat(bean.hotelGrade);
+            }
+            String tmp = String.format(context.getString(R.string.pointStr), String.valueOf(point));
+            SpannableString ss = new SpannableString(tmp);
+            ss.setSpan(/*new AbsoluteSizeSpan(11, true)*/new RelativeSizeSpan(0.78f), tmp.length() - 1, tmp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            holder.tv_point.setText(ss);
 
-                    if (point >= 4.8) {
-                        holder.tv_point_tips.setText(context.getString(R.string.point_level_1));
-                    } else if (point >= 4.5) {
-                        holder.tv_point_tips.setText(context.getString(R.string.point_level_2));
-                    } else {
-                        holder.tv_point_tips.setText(context.getString(R.string.point_level_3));
-                    }
-                    holder.tv_point.setVisibility(View.VISIBLE);
-                    holder.tv_point_tips.setVisibility(View.VISIBLE);
-                }
+            if (point >= 4.8) {
+                holder.tv_point_tips.setText(context.getString(R.string.point_level_1));
+            } else if (point >= 4.5) {
+                holder.tv_point_tips.setText(context.getString(R.string.point_level_2));
+            } else if (point >= 4.0) {
+                holder.tv_point_tips.setText(context.getString(R.string.point_level_3));
+            } else {
+                holder.tv_point_tips.setText("");
             }
 
             //诚信盾牌认证
