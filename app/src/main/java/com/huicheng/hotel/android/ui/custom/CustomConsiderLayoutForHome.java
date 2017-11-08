@@ -72,7 +72,7 @@ public class CustomConsiderLayoutForHome extends RelativeLayout implements View.
         tv_confirm.setOnClickListener(this);
     }
 
-    public void initConsiderConfig(){
+    public void initConsiderConfig() {
         resetConsiderConfig();
         saveConsiderConfig();
     }
@@ -84,6 +84,17 @@ public class CustomConsiderLayoutForHome extends RelativeLayout implements View.
         gradeIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_GRADE, -1);
         gradeLay.setSelected(gradeIndex);
         priceIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_PRICE, -1);
+        priceLay.setSelected(priceIndex);
+        LogUtil.i(TAG, "typeIndex = " + typeIndex + ", gradeIndex = " + gradeIndex + ", priceIndex = " + priceIndex);
+    }
+
+    public void reloadConsiderConfig(int typeIndex, int gradeIndex, int priceIndex) {
+        LogUtil.i(TAG, "setConsiderConfig()");
+        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_TYPE, typeIndex);
+        typeLay.setSelected(typeIndex);
+        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_GRADE, gradeIndex);
+        gradeLay.setSelected(gradeIndex);
+        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_PRICE, priceIndex);
         priceLay.setSelected(priceIndex);
         LogUtil.i(TAG, "typeIndex = " + typeIndex + ", gradeIndex = " + gradeIndex + ", priceIndex = " + priceIndex);
     }
@@ -138,23 +149,23 @@ public class CustomConsiderLayoutForHome extends RelativeLayout implements View.
                 break;
             case R.id.tv_confirm:
                 saveConsiderConfig();
-                if (null != listenre) {
-                    listenre.onResult(getConsiderString());
-                    listenre.onDismiss();
+                if (null != listener) {
+                    listener.onResult(getConsiderString(), typeIndex, gradeIndex, priceIndex);
+                    listener.onDismiss();
                 }
                 break;
         }
     }
 
-    private OnConsiderLayoutListenre listenre = null;
+    private OnConsiderLayoutListener listener = null;
 
-    public void setOnConsiderLayoutListenre(OnConsiderLayoutListenre listenre) {
-        this.listenre = listenre;
+    public void setOnConsiderLayoutListener(OnConsiderLayoutListener listener) {
+        this.listener = listener;
     }
 
-    public interface OnConsiderLayoutListenre {
+    public interface OnConsiderLayoutListener {
         void onDismiss();
 
-        void onResult(String str);
+        void onResult(String str, int type, int grade, int price);
     }
 }

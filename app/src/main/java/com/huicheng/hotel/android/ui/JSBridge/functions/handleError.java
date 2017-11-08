@@ -36,7 +36,7 @@ public class handleError implements WVJBWebViewClient.WVJBHandler {
             JSONObject mJson = JSON.parseObject(data.toString());
             String rtnCode = mJson.getString("rtnCode");
             String rtnMsg = mJson.getString("rtnMsg");
-            if (rtnCode != null && (rtnCode.equals("900902") || rtnCode.equals("310001"))) {// 900902，310001//登陆过期
+            if (rtnCode != null && (rtnCode.equals("900902") || rtnCode.equals("310001"))) {// 900902，310001//登录过期
                 AppContext.mAppContext.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
             }
         } catch (Exception e) {

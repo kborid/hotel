@@ -13,8 +13,7 @@
         android:padding="15dp"
         android:text="距离优先"
         android:textColor="#666666"
-        android:textSize="@dimen/common_16sp"
-        android:textStyle="bold" />
+        android:textSize="@dimen/common_16sp" />
 
     <ImageView
         android:id="@+id/iv_flag"

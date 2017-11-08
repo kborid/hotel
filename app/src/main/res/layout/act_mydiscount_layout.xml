@@ -46,20 +46,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:visibility="gone"
             android:background="?attr/yhqActiveBg"
             android:orientation="vertical"
             android:paddingBottom="12dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:paddingTop="12dp">
+            android:paddingTop="12dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tv_no_coupon_note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="@dimen/common_12sp"
+                android:textSize="@dimen/common_14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -69,7 +69,7 @@
                 android:layout_marginTop="5dp"
                 android:text="2016/11/30"
                 android:textColor="@color/white"
-                android:textSize="@dimen/common_12sp" />
+                android:textSize="@dimen/common_14sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -119,7 +119,7 @@
                 android:gravity="center"
                 android:text="免费房券说明"
                 android:textColor="@color/mainColor"
-                android:textSize="@dimen/common_12sp"
+                android:textSize="@dimen/common_14sp"
                 android:textStyle="bold" />
 
             <ScrollView
@@ -133,7 +133,8 @@
                     android:id="@+id/tv_summary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/common_10sp" />
+                    android:textColor="#666666"
+                    android:textSize="@dimen/common_12sp" />
             </ScrollView>
 
             <Button
@@ -145,18 +146,6 @@
                 android:text="立即使用"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_15sp" />
-
-            <Button
-                android:id="@+id/btn_rule"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/comm_rectangle_btn_transparent_withbound"
-                android:text="使用规则"
-                android:textColor="@color/common_color_selector"
-                android:textSize="@dimen/common_15sp"
-                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

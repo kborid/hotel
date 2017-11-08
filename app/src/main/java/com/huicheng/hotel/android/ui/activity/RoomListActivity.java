@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -91,6 +92,7 @@ public class RoomListActivity extends BaseActivity {
 
     private LinearLayout vip_layout;
     private ImageView iv_ok;
+    private CheckBox cb_check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +145,7 @@ public class RoomListActivity extends BaseActivity {
 
         vip_layout = (LinearLayout) findViewById(R.id.vip_layout);
         iv_ok = (ImageView) findViewById(R.id.iv_ok);
+        cb_check = (CheckBox) findViewById(R.id.cb_check);
     }
 
     @Override
@@ -655,7 +658,9 @@ public class RoomListActivity extends BaseActivity {
                 break;
             case R.id.iv_ok:
                 vip_layout.setVisibility(View.GONE);
-                SharedPreferenceUtil.getInstance().setBoolean(AppConst.HAS_SHOW_VIP_TIPS, true);
+                if (cb_check.isChecked()) {
+                    SharedPreferenceUtil.getInstance().setBoolean(AppConst.HAS_SHOW_VIP_TIPS, true);
+                }
                 break;
             default:
                 break;

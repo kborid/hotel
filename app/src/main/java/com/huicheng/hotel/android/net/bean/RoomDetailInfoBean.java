@@ -47,6 +47,8 @@ public class RoomDetailInfoBean implements Serializable {
         public long activeTime;
         public long activeTimeStamp;
         public String price;
+        public String type;
+        public String name;
     }
 
     public static class ServiceList implements Serializable {

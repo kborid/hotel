@@ -241,7 +241,7 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime(true)));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime(true)));
         b.addBody("cityCode", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
-        b.addBody("category", String.valueOf(HotelCommDef.TYPE_CLOCK));
+        b.addBody("category", String.valueOf(HotelCommDef.TYPE_YEGUIREN));
         b.addBody("pageIndex", String.valueOf(pageIndex));
         b.addBody("pageSize", String.valueOf(PAGESIZE));
         b.addBody("longitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "", false));

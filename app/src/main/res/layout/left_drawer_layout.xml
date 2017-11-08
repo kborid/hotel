@@ -103,7 +103,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <!--登陆layout-->
+    <!--登录layout-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

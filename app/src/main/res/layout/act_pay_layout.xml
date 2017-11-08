@@ -53,8 +53,7 @@
                         android:layout_height="wrap_content"
                         android:text="地址"
                         android:textColor="@color/secColor"
-                        android:textSize="@dimen/common_14sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/common_14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -70,8 +69,7 @@
                             android:lines="1"
                             android:text="高级大床房"
                             android:textColor="@color/secColor"
-                            android:textSize="@dimen/common_14sp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/common_14sp" />
 
                         <TextView
                             android:id="@+id/tv_room_count"
@@ -80,8 +78,7 @@
                             android:layout_alignParentRight="true"
                             android:text="1间"
                             android:textColor="@color/secColor"
-                            android:textSize="@dimen/common_14sp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/common_14sp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -96,8 +93,7 @@
                             android:layout_height="wrap_content"
                             android:text="8月25日-27日"
                             android:textColor="@color/secColor"
-                            android:textSize="@dimen/common_14sp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/common_14sp" />
 
                         <TextView
                             android:id="@+id/tv_during"
@@ -106,8 +102,7 @@
                             android:layout_alignParentRight="true"
                             android:text="1晚"
                             android:textColor="@color/secColor"
-                            android:textSize="@dimen/common_14sp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/common_14sp" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -154,8 +149,7 @@
                     android:gravity="center"
                     android:text="明细"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/common_10sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/common_10sp" />
             </LinearLayout>
 
             <View
@@ -216,8 +210,7 @@
                 android:gravity="center"
                 android:text="@string/pay_order_tips"
                 android:textColor="@color/payPriceColor"
-                android:textSize="@dimen/common_18sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/common_18sp" />
         </LinearLayout>
     </ScrollView>
 

@@ -14,8 +14,7 @@
         android:padding="14dp"
         android:text="排序项"
         android:textColor="#666666"
-        android:textSize="@dimen/common_18sp"
-        android:textStyle="bold" />
+        android:textSize="@dimen/common_18sp"/>
 
     <View
         android:layout_width="match_parent"

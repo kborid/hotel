@@ -233,7 +233,8 @@
                     android:gravity="center"
                     android:text="搜索酒店"
                     android:textColor="#3f3f3f"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_15sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

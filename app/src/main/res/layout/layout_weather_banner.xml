@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/test" />
+        android:src="@drawable/bg_weather_sun" />
 
     <RelativeLayout
         android:id="@+id/weather_info_lay"
@@ -94,5 +94,18 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/logo_xc_lay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="28dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iv_white_xc_logo" />
+    </LinearLayout>
 
 </RelativeLayout>

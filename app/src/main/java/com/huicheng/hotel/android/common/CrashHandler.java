@@ -44,7 +44,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
     }
 
     /**
-     * 在这个方法中增加对发生异常时的处理工作，比如清除内存，注销登陆。
+     * 在这个方法中增加对发生异常时的处理工作，比如清除内存，注销登录。
      */
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {

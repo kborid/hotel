@@ -146,21 +146,21 @@ public class CustomConsiderLayoutForList extends RelativeLayout implements View.
         switch (v.getId()) {
             case R.id.btn_select:
                 saveConsiderConfig();
-                if (null != listenre) {
-                    listenre.onResult(getConsiderString());
-                    listenre.onDismiss();
+                if (null != listener) {
+                    listener.onResult(getConsiderString());
+                    listener.onDismiss();
                 }
                 break;
         }
     }
 
-    private OnConsiderLayoutListenre listenre = null;
+    private OnConsiderLayoutListener listener = null;
 
-    public void setOnConsiderLayoutListenre(OnConsiderLayoutListenre listenre) {
-        this.listenre = listenre;
+    public void setOnConsiderLayoutListener(OnConsiderLayoutListener listener) {
+        this.listener = listener;
     }
 
-    public interface OnConsiderLayoutListenre {
+    public interface OnConsiderLayoutListener {
         void onDismiss();
 
         void onResult(String str);

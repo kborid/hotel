@@ -28,7 +28,6 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.CouponInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
@@ -45,7 +44,7 @@ import java.util.List;
  * @date 2016/12/8 0008
  * @modify 2017/02/20
  */
-public class MyDiscountCouponActivity extends BaseActivity {
+public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     private LinearLayout noDiscountLayout, hasDiscountLayout, active_lay;
     private TextView tv_no_coupon_note, tv_no_coupon_time;
@@ -58,6 +57,8 @@ public class MyDiscountCouponActivity extends BaseActivity {
     private CouponInfoBean couponInfoBean = null;
     private Button btn_use;
 
+    private boolean isShowAll = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +67,11 @@ public class MyDiscountCouponActivity extends BaseActivity {
         initParams();
         initListeners();
         if (null == savedInstanceState) {
-            requestCouponInfo();
+            if (isShowAll) {
+                requestAllCoupons();
+            } else {
+                requestUsefulCoupons();
+            }
         }
     }
 
@@ -83,7 +88,7 @@ public class MyDiscountCouponActivity extends BaseActivity {
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPagerContainer = (RelativeLayout) findViewById(R.id.pager_layout);
         viewPager.setPageMargin(Utils.dip2px(10));
-        viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
+        viewPager.addOnPageChangeListener(this);
 
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
 
@@ -96,11 +101,36 @@ public class MyDiscountCouponActivity extends BaseActivity {
         tv_center_title.setText("我的优惠券");
     }
 
-    private void requestCouponInfo() {
+    @Override
+    public void dealIntent() {
+        super.dealIntent();
+        Bundle bundle = getIntent().getExtras();
+        if (null != bundle) {
+            boolean showUsefulCoupon = bundle.getBoolean("showUsefulCoupon");
+            isShowAll = !showUsefulCoupon;
+        }
+    }
+
+    private void requestAllCoupons() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         ResponseData d = b.syncRequest(b);
-        d.path = NetURL.YHQ_COUPON;
-        d.flag = AppConst.YHQ_COUPON;
+        d.path = NetURL.COUPON_ALL;
+        d.flag = AppConst.COUPON_ALL;
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
+    private void requestUsefulCoupons() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
+        b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
+        b.addBody("hotelid", String.valueOf(HotelOrderManager.getInstance().getHotelDetailInfo().id));
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.COUPON_USEFUL_LIST;
+        d.flag = AppConst.COUPON_USEFUL_LIST;
         if (!isProgressShowing()) {
             showProgressDialog(this);
         }
@@ -120,20 +150,7 @@ public class MyDiscountCouponActivity extends BaseActivity {
                     viewPager.setOffscreenPageLimit(count);
                 }
                 initIndicatorLay(count);
-                String hotelName = couponInfoBean.coupon.get(0).cityName + couponInfoBean.coupon.get(0).hotelName;
-                String date = DateUtil.getDay("yyyy/MM/dd", couponInfoBean.coupon.get(0).activeTime);
-                String note = String.format(getString(R.string.coupon_note), hotelName, date);
-
-                int index[] = new int[2];
-                index[0] = note.indexOf(hotelName);
-                index[1] = note.indexOf(date);
-
-                SpannableStringBuilder style = new SpannableStringBuilder(note);
-                style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[0], index[0] + hotelName.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                style.setSpan(new StyleSpan(Typeface.BOLD), index[0], index[0] + hotelName.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                style.setSpan(new StyleSpan(Typeface.BOLD), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                tv_summary.setText(style);
+                refreshCouponInfoAndStatus(0);
             } else {
                 noDiscountLayout.setVisibility(View.VISIBLE);
                 hasDiscountLayout.setVisibility(View.GONE);
@@ -188,11 +205,19 @@ public class MyDiscountCouponActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_use:
-                HotelOrderManager.getInstance().reset();
-                HotelOrderManager.getInstance().setCouponInfoBean(couponInfoBean.coupon.get(positionIndex));
-                Intent intent = new Intent(this, HotelCalendarChooseActivity.class);
-                intent.putExtra("isCouponBooking", true);
-                startActivity(intent);
+                CouponInfoBean.CouponInfo info = couponInfoBean.coupon.get(positionIndex);
+                if (info.type == 2) {
+                    Intent data = new Intent();
+                    data.putExtra("coupon", info);
+                    setResult(RESULT_OK, data);
+                    finish();
+                } else {
+                    HotelOrderManager.getInstance().reset();
+                    HotelOrderManager.getInstance().setCouponInfoBean(info);
+                    Intent intent = new Intent(this, HotelCalendarChooseActivity.class);
+                    intent.putExtra("isCouponBooking", true);
+                    startActivity(intent);
+                }
                 break;
             case R.id.active_lay:
                 Intent intent1 = new Intent(this, Hotel0YuanHomeActivity.class);
@@ -222,9 +247,10 @@ public class MyDiscountCouponActivity extends BaseActivity {
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
-            if (request.flag == AppConst.YHQ_COUPON) {
+            if (request.flag == AppConst.COUPON_ALL
+                    || request.flag == AppConst.COUPON_USEFUL_LIST) {
                 removeProgressDialog();
-                LogUtil.i(TAG, "yhq json = " + response.body.toString());
+                LogUtil.i(TAG, "show coupon json = " + response.body.toString());
                 couponInfoBean = JSON.parseObject(response.body.toString(), CouponInfoBean.class);
                 if (null != couponInfoBean) {
                     refreshCouponInfo();
@@ -233,16 +259,65 @@ public class MyDiscountCouponActivity extends BaseActivity {
         }
     }
 
+    private void refreshCouponInfoAndStatus(int position) {
+        CouponInfoBean.CouponInfo info = couponInfoBean.coupon.get(position);
+        String name = info.name;
+        String date = DateUtil.getDay("yyyy/MM/dd", couponInfoBean.coupon.get(position).activeTime);
+        String note = String.format(getString(R.string.coupon_note), name, date);
+        if (isShowAll) {
+            btn_use.setVisibility(View.GONE);
+        } else {
+            btn_use.setVisibility(View.VISIBLE);
+            if (info.type == 1) {
+                btn_use.setEnabled(false);
+            } else if (info.type == 2) {
+                btn_use.setEnabled(true);
+            } else {
+                btn_use.setEnabled(false);
+            }
+        }
+
+        int index[] = new int[2];
+        index[0] = note.indexOf(name);
+        index[1] = note.indexOf(date);
+
+        SpannableStringBuilder style = new SpannableStringBuilder(note);
+        style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[0], index[0] + name.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        style.setSpan(new StyleSpan(Typeface.BOLD), index[0], index[0] + name.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        style.setSpan(new StyleSpan(Typeface.BOLD), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        tv_summary.setText(style);
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        indicator_lay.getChildAt(position).setEnabled(true);
+        indicator_lay.getChildAt(positionIndex).setEnabled(false);
+        positionIndex = position;
+        refreshCouponInfoAndStatus(position);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if (viewPagerContainer != null) {
+            viewPagerContainer.invalidate();
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int arg0) {
+    }
+
     /**
      * this is a example fragment, just a imageview, u can replace it with your needs
      *
      * @author Trinea 2013-04-03
      */
-    class MyPagerAdapter extends PagerAdapter {
+    private class MyPagerAdapter extends PagerAdapter {
         private Context context;
         private List<CouponInfoBean.CouponInfo> list = new ArrayList<>();
 
-        public MyPagerAdapter(Context context, List<CouponInfoBean.CouponInfo> list) {
+        MyPagerAdapter(Context context, List<CouponInfoBean.CouponInfo> list) {
             this.context = context;
             this.list = list;
         }
@@ -269,60 +344,19 @@ public class MyDiscountCouponActivity extends BaseActivity {
                     .centerCrop()
                     .override(800, 480)
                     .into(iv_background);
-            CommonAssessStarsLayout start_lay = (CommonAssessStarsLayout) view.findViewById(R.id.start_lay);
-            int grade = 0;
-            try {
-                grade = (int) Float.parseFloat(list.get(position).grade);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            start_lay.setColorStars(grade);
             TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
-            tv_name.setText(list.get(position).hotelName);
+            tv_name.setText(list.get(position).name);
             TextView tv_valid_time = (TextView) view.findViewById(R.id.tv_valid_time);
-            tv_valid_time.setText("有效期：" + DateUtil.getDay("yyyy/MM/dd", list.get(position).activeTime));
+            tv_valid_time.setText("有效期：" + DateUtil.getDay("yyyy/MM/dd", list.get(position).createTime) + "-" + DateUtil.getDay("yyyy/MM/dd", list.get(position).activeTime));
             container.addView(view, position);
+            TextView tv_id_num = (TextView) view.findViewById(R.id.tv_id_num);
+            tv_id_num.setText("凭证号：" + list.get(position).code);
             return view;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
-        }
-    }
-
-    public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
-
-        @Override
-        public void onPageSelected(int position) {
-            indicator_lay.getChildAt(position).setEnabled(true);
-            indicator_lay.getChildAt(positionIndex).setEnabled(false);
-            positionIndex = position;
-            String hotelName = couponInfoBean.coupon.get(position).cityName + couponInfoBean.coupon.get(position).hotelName;
-            String date = DateUtil.getDay("yyyy/MM/dd", couponInfoBean.coupon.get(position).activeTime);
-            String note = String.format(getString(R.string.coupon_note), hotelName, date);
-
-            int index[] = new int[2];
-            index[0] = note.indexOf(hotelName);
-            index[1] = note.indexOf(date);
-
-            SpannableStringBuilder style = new SpannableStringBuilder(note);
-            style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[0], index[0] + hotelName.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            style.setSpan(new StyleSpan(Typeface.BOLD), index[0], index[0] + hotelName.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            style.setSpan(new StyleSpan(Typeface.BOLD), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            tv_summary.setText(style);
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (viewPagerContainer != null) {
-                viewPagerContainer.invalidate();
-            }
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
         }
     }
 }

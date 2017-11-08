@@ -108,6 +108,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
 
     private CustomConsiderLayoutForHome mConsiderLayout = null;
     private PopupWindow mConsiderPopupWindow = null;
+    private int typeIndex, gradeIndex, priceIndex;
 
     // 海南诚信广告Popup
     private boolean isAdShowed = false;
@@ -115,7 +116,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initLaunchWindow();
+        initMainWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
         initViews();
@@ -157,7 +158,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
         mConsiderLayout.initConsiderConfig();
         //评分筛选条件初始化
         SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_POINT, -1);
-        mConsiderLayout.setOnConsiderLayoutListenre(new CustomConsiderLayoutForHome.OnConsiderLayoutListenre() {
+        mConsiderLayout.setOnConsiderLayoutListener(new CustomConsiderLayoutForHome.OnConsiderLayoutListener() {
             @Override
             public void onDismiss() {
                 if (null != mConsiderPopupWindow) {
@@ -166,8 +167,11 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
             }
 
             @Override
-            public void onResult(String str) {
+            public void onResult(String str, int type, int grade, int price) {
                 tv_consider.setText(str);
+                typeIndex = type;
+                gradeIndex = grade;
+                priceIndex = price;
             }
         });
         mConsiderPopupWindow = new PopupWindow(mConsiderLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
@@ -437,7 +441,11 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
 
     private void showConsiderPopupWindow() {
         if (null != mConsiderLayout) {
-            mConsiderLayout.reloadConsiderConfig();
+            if (StringUtil.isEmpty(tv_consider.getText())) {
+                mConsiderLayout.resetConsiderConfig();
+            } else {
+                mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
+            }
         }
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getWindow().getAttributes();
@@ -555,7 +563,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                 CustomToast.show(getString(R.string.exit_tip), CustomToast.LENGTH_SHORT);
                 exitTime = System.currentTimeMillis();
             } else {
-                SessionContext.destroy();
+//                SessionContext.destroy();
                 MobclickAgent.onKillProcess(this);
                 ActivityTack.getInstanse().exit();
             }
@@ -716,6 +724,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 left_layout.updateMsgCount(mJson.getString("count"));
             } else if (request.flag == AppConst.WEATHER) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
                     weather_lay.refreshWeatherInfo(beginTime, bean);

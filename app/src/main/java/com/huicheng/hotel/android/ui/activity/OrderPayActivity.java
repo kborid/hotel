@@ -247,14 +247,23 @@ public class OrderPayActivity extends BaseActivity {
                     View roomDetailItem = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
                     TextView tv_room_title = (TextView) roomDetailItem.findViewById(R.id.tv_title);
                     TextView tv_room_price = (TextView) roomDetailItem.findViewById(R.id.tv_price);
-                    String startDate = DateUtil.getDay("M月d号", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime);
-                    String endDate = String.valueOf(Integer.parseInt(DateUtil.getDay("d", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime)) + 1) + "号";
-                    tv_room_title.setText(startDate + "-" + endDate);
-                    tv_room_title.setTextSize(10);
-                    tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
-                    tv_room_price.setText(String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.preTotalPriceList.get(i).price))));
-                    tv_room_price.setTextSize(10);
-                    tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                    if (!"2".equals(orderPayDetailInfoBean.preTotalPriceList.get(i).type)) {
+                        String startDate = DateUtil.getDay("M月d号", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime);
+                        String endDate = String.valueOf(Integer.parseInt(DateUtil.getDay("d", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime)) + 1) + "号";
+                        tv_room_title.setText(startDate + "-" + endDate);
+                        tv_room_title.setTextSize(10);
+                        tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                        tv_room_price.setText(String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.preTotalPriceList.get(i).price))));
+                        tv_room_price.setTextSize(10);
+                        tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                    } else {
+                        tv_room_title.setText(orderPayDetailInfoBean.preTotalPriceList.get(i).name);
+                        tv_room_title.setTextSize(10);
+                        tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                        tv_room_price.setText("-" + String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.preTotalPriceList.get(i).price))));
+                        tv_room_price.setTextSize(10);
+                        tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                    }
                     room_detail_layout.addView(roomDetailItem);
                 }
                 LinearLayout.LayoutParams roomDetailLlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

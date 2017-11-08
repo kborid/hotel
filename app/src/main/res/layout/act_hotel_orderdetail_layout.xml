@@ -16,6 +16,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/iv_hotel_logo_large" />
+        </RelativeLayout>
+
         <ScrollView
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
@@ -51,8 +63,7 @@
                             android:gravity="center"
                             android:text="09/20"
                             android:textColor="#333333"
-                            android:textSize="@dimen/common_30sp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/common_30sp" />
 
                         <TextView
                             android:layout_width="120dp"
@@ -84,8 +95,7 @@
                             android:gravity="center"
                             android:text="09/21"
                             android:textColor="#333333"
-                            android:textSize="@dimen/common_30sp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/common_30sp" />
 
                         <TextView
                             android:layout_width="120dp"
@@ -118,7 +128,8 @@
                         android:layout_height="wrap_content"
                         android:text="共"
                         android:textColor="@color/mainColor"
-                        android:textSize="@dimen/common_15sp" />
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_price"
@@ -127,7 +138,8 @@
                         android:layout_marginLeft="10dp"
                         android:text="1000元"
                         android:textColor="@color/mainColor"
-                        android:textSize="@dimen/common_15sp" />
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -190,8 +202,7 @@
                         android:drawableLeft="@drawable/iv_order_position"
                         android:drawablePadding="10dp"
                         android:textColor="#333333"
-                        android:textSize="@dimen/common_15sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/common_15sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -209,8 +220,7 @@
                         android:drawableLeft="@drawable/iv_order_phone"
                         android:drawablePadding="10dp"
                         android:textColor="#333333"
-                        android:textSize="@dimen/common_15sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/common_15sp" />
                 </LinearLayout>
 
                 <View
@@ -245,8 +255,7 @@
                         android:inputType="text"
                         android:padding="5dp"
                         android:textColor="#333333"
-                        android:textSize="@dimen/common_15sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/common_15sp" />
 
                     <View
                         android:id="@+id/name_line"
@@ -272,8 +281,7 @@
                         android:inputType="phone"
                         android:padding="5dp"
                         android:textColor="#333333"
-                        android:textSize="@dimen/common_15sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/common_15sp" />
 
                     <View
                         android:id="@+id/phone_line"
@@ -299,8 +307,7 @@
                         android:gravity="left"
                         android:padding="5dp"
                         android:textColor="#333333"
-                        android:textSize="@dimen/common_15sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/common_15sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -316,8 +323,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:textColor="#333333"
-                        android:textSize="@dimen/common_15sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/common_15sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -333,8 +339,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:textColor="#333333"
-                        android:textSize="@dimen/common_15sp"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/common_15sp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -440,16 +445,5 @@
             </LinearLayout>
         </ScrollView>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/iv_hotel_logo_large" />
-        </RelativeLayout>
     </FrameLayout>
 </LinearLayout>

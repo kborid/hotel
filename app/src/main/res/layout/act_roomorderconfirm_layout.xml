@@ -161,6 +161,7 @@
                     android:background="@drawable/comm_line2" />
 
                 <LinearLayout
+                    android:id="@+id/invoice_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -191,7 +192,6 @@
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:id="@+id/iv_next"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:scaleType="fitCenter"
@@ -202,6 +202,55 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="@drawable/comm_line2" />
+
+                <LinearLayout
+                    android:id="@+id/coupon_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="20dp"
+                            android:paddingTop="20dp"
+                            android:text="优惠券"
+                            android:textColor="?attr/mainColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_coupon_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:hint="请选择优惠券"
+                            android:textColor="@color/noDiscountColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:scaleType="fitCenter"
+                            android:src="?attr/nextButton" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/comm_line2" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

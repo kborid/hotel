@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -123,6 +124,7 @@ public class CustomWeatherLayout extends RelativeLayout {
 
     private ImageView iv_weather_bg;
     private RelativeLayout weather_info_lay;
+    private LinearLayout logo_xc_lay;
     private TextView tv_temp;
     private TextView tv_weather;
     private TextView tv_loc;
@@ -144,7 +146,7 @@ public class CustomWeatherLayout extends RelativeLayout {
         init();
     }
 
-    private void showWeatherInfoLayout(final View v, boolean showAnim) {
+    private void showLayoutAnim(final View v, boolean showAnim) {
         ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(v, "alpha", 0f, 1f);
         alphaAnim.setDuration(1000);
         alphaAnim.addListener(new Animator.AnimatorListener() {
@@ -175,7 +177,7 @@ public class CustomWeatherLayout extends RelativeLayout {
         }
     }
 
-    private void hideWeatherInfoLayout(final View v, boolean showAnim) {
+    private void hideLayoutAnim(final View v, boolean showAnim) {
         ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(v, "alpha", 1f, 0f);
         alphaAnim.setDuration(500);
         alphaAnim.addListener(new Animator.AnimatorListener() {
@@ -190,12 +192,10 @@ public class CustomWeatherLayout extends RelativeLayout {
 
             @Override
             public void onAnimationCancel(Animator animation) {
-
             }
 
             @Override
             public void onAnimationRepeat(Animator animation) {
-
             }
         });
         if (showAnim) {
@@ -209,6 +209,7 @@ public class CustomWeatherLayout extends RelativeLayout {
     private void init() {
         LayoutInflater.from(context).inflate(R.layout.layout_weather_banner, this);
         iv_weather_bg = (ImageView) findViewById(R.id.iv_weather_bg);
+        logo_xc_lay = (LinearLayout) findViewById(R.id.logo_xc_lay);
         weather_info_lay = (RelativeLayout) findViewById(R.id.weather_info_lay);
         tv_temp = (TextView) findViewById(R.id.tv_temp);
         tv_weather = (TextView) findViewById(R.id.tv_weather);
@@ -219,7 +220,8 @@ public class CustomWeatherLayout extends RelativeLayout {
 
     public void refreshWeatherInfo(long timeStamp, WeatherInfoBean bean) {
         if (null != bean) {
-            hideWeatherInfoLayout(weather_info_lay, false);
+            hideLayoutAnim(weather_info_lay, false);
+            hideLayoutAnim(logo_xc_lay, false);
             tv_temp.setText(String.format(context.getString(R.string.homeTemperatureStr), bean.day_air_temperature) + "~" + String.format(context.getString(R.string.homeTemperatureStr), bean.night_air_temperature));
             int weatherBgId, weatherIconId;
             String weather;
@@ -238,10 +240,13 @@ public class CustomWeatherLayout extends RelativeLayout {
             tv_date.setText(DateUtil.getDay("MM月dd日", timeStamp));
             iv_weather.setImageResource(weatherIconId);
             iv_weather_bg.setImageResource(weatherBgId);
-            showWeatherInfoLayout(weather_info_lay, true);
+            showLayoutAnim(weather_info_lay, true);
         } else {
-            iv_weather_bg.setImageResource(R.drawable.test);
-            hideWeatherInfoLayout(weather_info_lay, true);
+            iv_weather_bg.setImageResource(R.drawable.bg_weather_sun);
+            hideLayoutAnim(weather_info_lay, false);
+            if (!logo_xc_lay.isShown()) {
+                showLayoutAnim(logo_xc_lay, true);
+            }
         }
     }
 }

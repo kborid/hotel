@@ -58,12 +58,15 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     private static HandlerThread mHandlerThread = null;
     private static Handler mHandler = null;
 
+    private static long mStartTime = 0;
+    private static final long AD_SHOWTIME = 2500;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         initLaunchWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_welcome_layout);
-
+        mStartTime = System.currentTimeMillis();
         // 避免从桌面启动程序后，会重新实例化入口类的activity
         if (!this.isTaskRoot()) {
             Intent intent = getIntent();
@@ -86,6 +89,11 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         super.onNewIntent(intent);
         setIntent(intent);
         OpenInstall.getWakeUp(intent, this);
+    }
+
+    @Override
+    public void initViews() {
+        super.initViews();
     }
 
     public void initParams() {
@@ -127,24 +135,35 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    public void goToNextActivity() {
-        LogUtil.i(TAG, "goToNextActivity()");
-        boolean isGoTo = false;
-        if (mTag != null && mTag.size() == 2) {
-            isGoTo = true;
+    public void doLastAction() {
+        LogUtil.i(TAG, "doLastAction()");
+        long exitTime = System.currentTimeMillis();
+        if (exitTime - mStartTime < AD_SHOWTIME) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    goToNext();
+                }
+            }, AD_SHOWTIME - (exitTime - mStartTime));
+        } else {
+            goToNext();
         }
-        LogUtil.i(TAG, "goToNextActivity() --->>> isGoTo = " + isGoTo);
-        if (isGoTo) {
-            Intent intent;
-            if (!SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
+    }
+
+    private void goToNext() {
+        LogUtil.i(TAG, "goToNext()");
+        Intent intent;
+        if (!SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
+            SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
 //                intent = new Intent(this, GuideSwitchActivity.class);
-                intent = new Intent(this, MainActivity.class);
-            } else {
-                intent = new Intent(this, GuideLauncherActivity.class);
-            }
-            startActivity(intent);
-            finish();
+//                intent = new Intent(this, MainActivity.class);
+//            } else {
+//                intent = new Intent(this, GuideLauncherActivity.class);
         }
+        intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.launch_in, R.anim.launch_out);
     }
 
     @Override
@@ -244,14 +263,18 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 LogUtil.i(TAG, "json = " + response.body.toString());
             }
 
-            goToNextActivity();
+            if (mTag.size() == 2) {
+                doLastAction();
+            }
         }
     }
 
     @Override
     public void onNotifyError(ResponseData request) {
         mTag.put(request.flag, request.flag);
-        goToNextActivity();
+        if (mTag.size() == 2) {
+            doLastAction();
+        }
     }
 
     private void showFocusUpdateDialog(final AppInfoBean bean) {
@@ -333,6 +356,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
                 ActivityTack.getInstanse().exit();
                 SessionContext.destroy();
             }
+            mStartTime = System.currentTimeMillis();
         }
     }
 }

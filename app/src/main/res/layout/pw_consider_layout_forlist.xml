@@ -45,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:text="评分："
                 android:textColor="#777777"
-                android:textSize="@dimen/common_12sp" />
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
 
             <com.huicheng.hotel.android.ui.custom.CommonSingleSelLayout
                 android:id="@+id/pointLay"

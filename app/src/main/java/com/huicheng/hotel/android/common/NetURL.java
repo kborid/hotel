@@ -45,7 +45,10 @@ public final class NetURL {
     public static final String ASSESS_PUBLIC = PORTAL + "user_center/evaluate/add.json";
     public static final String FEEDBACK = PORTAL + "user_center/opinion/add.json"; //意見反饋
     public static final String VIP_HOTEL = PORTAL + "vip/queryMyHotels.json"; //会员酒店
-    public static final String YHQ_COUPON = PORTAL + "user/getUserCouponList.json"; //优惠券
+
+    public static final String COUPON_ALL = PORTAL + "user/getUserCouponList.json"; //优惠券
+    public static final String COUPON_USEFUL_CHECK = PORTAL + "order/checkCoupons.json";//检查是否有可用优惠券
+    public static final String COUPON_USEFUL_LIST = PORTAL + "order/getCoupons.json"; //获取可用优惠券列表
 
     public static final String ATTEND_USER = PORTAL + "user_center/saveUserAttent.json"; //关注某用户
     public static final String DELETE_ATTEND_USER = PORTAL + "user_center/deleteUserAttent.json"; //取消关注某用户

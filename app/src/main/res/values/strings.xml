@@ -55,8 +55,8 @@
     <!--我的-->
     <!--侧滑-->
     <string name="side_hi">Hi</string>
-    <string name="side_tips">还未登陆\nABC旅行预订</string>
-    <string name="side_login">立即登陆</string>
+    <string name="side_tips">还未登录\nABC旅行预订</string>
+    <string name="side_login">立即登录</string>
     <string name="side_wait">再转转</string>
     <string name="side_sytk">使用条款</string>
     <string name="side_yssm">隐私声明</string>

@@ -92,7 +92,7 @@ public final class AppConst {
     public static final int ASSESS_ORDER = CONST_HANDLE_FLAG + 22;
     public static final int ASSESS_DETAIL = CONST_HANDLE_FLAG + 23;
     public static final int VIP_HOTEL = CONST_HANDLE_FLAG + 24;
-    public static final int YHQ_COUPON = CONST_HANDLE_FLAG + 25;
+    public static final int COUPON_ALL = CONST_HANDLE_FLAG + 25;
     public static final int ROOM_DETAIL = CONST_HANDLE_FLAG + 26;
 
     public static final int HOTEL_LIST = CONST_HANDLE_FLAG + 27;
@@ -150,4 +150,7 @@ public final class AppConst {
     public static final int AD_GDT_IF = CONST_HANDLE_FLAG + 64;
 
     public static final int WEATHER = CONST_HANDLE_FLAG + 65;
+
+    public static final int COUPON_USEFUL_CHECK = CONST_HANDLE_FLAG + 66;
+    public static final int COUPON_USEFUL_LIST = CONST_HANDLE_FLAG + 67;
 }

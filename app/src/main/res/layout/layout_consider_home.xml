@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="星级："
+            android:textStyle="bold"
             android:textColor="#777777"
             android:textSize="@dimen/common_12sp" />
 
@@ -45,6 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="价格：(单位：元)"
+            android:textStyle="bold"
             android:textColor="#777777"
             android:textSize="@dimen/common_12sp" />
 
@@ -71,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="类型："
+            android:textStyle="bold"
             android:textColor="#777777"
             android:textSize="@dimen/common_12sp" />
 

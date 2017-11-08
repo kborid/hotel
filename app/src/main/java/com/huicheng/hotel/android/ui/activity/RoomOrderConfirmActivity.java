@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -21,6 +20,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.net.bean.CouponInfoBean;
 import com.huicheng.hotel.android.net.bean.InvoiceDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.OrderDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomConfirmInfoBean;
@@ -58,8 +58,11 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     private LinearLayout choose_service_lay;
     private CommonAddSubLayout room_addsub_lay;
 
+    private LinearLayout invoice_lay;
     private TextView tv_invoice_info;
-    private ImageView iv_next;
+    private LinearLayout coupon_lay;
+    private TextView tv_coupon_info;
+
     private TextView tv_submit;
     private String mPicUrl, roomName;
     private boolean isHhy = false;
@@ -68,11 +71,14 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     private int finalPrice = 0;
     private boolean isInvoice = false;
     private InvoiceDetailInfoBean invoiceDetailInfoBean = new InvoiceDetailInfoBean();
+    private CouponInfoBean.CouponInfo couponInfo = null;
     private int hotelId, roomId = -1;
     private StringBuilder serviceIds = new StringBuilder();
     private StringBuilder serviceCounts = new StringBuilder();
     private CommonCustomInfoLayout custom_lay;
     private boolean isYgr = false;
+
+    private boolean hasValidCoupon = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +87,9 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
+        if (null == savedInstanceState) {
+            requestCheckValidCoupon();
+        }
     }
 
     @Override
@@ -96,8 +105,11 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         tv_final_price.getPaint().setFakeBoldText(true);
         choose_service_lay = (LinearLayout) findViewById(R.id.choose_service_lay);
         room_addsub_lay = (CommonAddSubLayout) findViewById(R.id.room_addsub_lay);
+        invoice_lay = (LinearLayout) findViewById(R.id.invoice_lay);
         tv_invoice_info = (TextView) findViewById(R.id.tv_invoice_info);
-        iv_next = (ImageView) findViewById(R.id.iv_next);
+        coupon_lay = (LinearLayout) findViewById(R.id.coupon_lay);
+        coupon_lay.setVisibility(View.GONE);
+        tv_coupon_info = (TextView) findViewById(R.id.tv_coupon_info);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
         tv_submit.getPaint().setFakeBoldText(true);
         custom_lay = (CommonCustomInfoLayout) findViewById(R.id.custom_lay);
@@ -198,6 +210,21 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         }
     }
 
+    private void requestCheckValidCoupon() {
+        LogUtil.i(TAG, "requestCheckValidCoupon()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
+        b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
+        b.addBody("hotelid", String.valueOf(hotelId));
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.COUPON_USEFUL_CHECK;
+        d.flag = AppConst.COUPON_USEFUL_CHECK;
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     private void requestAddOrderDetail() {
         LogUtil.i(TAG, "requestAddOrderDetail() arrivedValue = " + arrivedValue);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
@@ -210,6 +237,9 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         b.addBody("userId", SessionContext.mUser.user.userid);
         b.addBody("invoice", invoiceDetailInfoBean);
         b.addBody("arrivalTag", String.valueOf(arrivedValue));
+        if (coupon_lay.isShown()) {
+            b.addBody("couponid", String.valueOf(couponInfo.id));
+        }
         b.addBody("specialComment", et_content.getText().toString());
 
         b.addBody("useMobiles", custom_lay.getCustomUserPhones());
@@ -234,12 +264,14 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        iv_next.setOnClickListener(this);
+        invoice_lay.setOnClickListener(this);
+        coupon_lay.setOnClickListener(this);
         room_addsub_lay.setOnCountChangedListener(new CommonAddSubLayout.OnCountChangedListener() {
             @Override
             public void onCountChanged(int count) {
                 finalPrice = roomPrice * count + allChooseServicePrice;
                 tv_final_price.setText(finalPrice + "元");
+                refreshCouponStatus();
             }
         });
         rg_arrived.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -268,11 +300,16 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.iv_next:
+            case R.id.invoice_lay:
                 Intent intent = new Intent(this, InvoiceDetailActivity.class);
                 intent.putExtra("isInvoice", isInvoice);
                 intent.putExtra("InvoiceDetail", invoiceDetailInfoBean);
                 startActivityForResult(intent, 0x01);
+                break;
+            case R.id.coupon_lay:
+                Intent intent1 = new Intent(this, MyDiscountCouponActivity.class);
+                intent1.putExtra("showUsefulCoupon", true);
+                startActivityForResult(intent1, 0x02);
                 break;
             case R.id.tv_submit:
                 if (custom_lay.isEditViewEmpty()) {
@@ -339,6 +376,15 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                     LogUtil.i(TAG, invoiceDetailInfoBean.toString());
                 }
             }
+        } else if (requestCode == 0x02) {
+            if (null != data) {
+                if (data.getExtras().get("coupon") != null) {
+                    couponInfo = (CouponInfoBean.CouponInfo) data.getExtras().get("coupon");
+                    if (null != couponInfo) {
+                        tv_coupon_info.setText(couponInfo.name);
+                    }
+                }
+            }
         }
     }
 
@@ -365,7 +411,26 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                         startActivity(intent);
                     }
                 }
+            } else if (request.flag == AppConst.COUPON_USEFUL_CHECK) {
+                removeProgressDialog();
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                hasValidCoupon = (Boolean) response.body;
+                refreshCouponStatus();
             }
+        }
+    }
+
+    private void refreshCouponStatus() {
+        if (!hasValidCoupon) {
+            return;
+        }
+        if (finalPrice >= 500
+                && HotelCommDef.PAY_PRE.equals(HotelOrderManager.getInstance().getPayType())) {
+            coupon_lay.setVisibility(View.VISIBLE);
+        } else {
+            couponInfo = null;
+            tv_coupon_info.setText("");
+            coupon_lay.setVisibility(View.GONE);
         }
     }
 }

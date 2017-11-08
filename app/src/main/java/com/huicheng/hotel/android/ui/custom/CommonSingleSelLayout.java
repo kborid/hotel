@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.ui.custom;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -56,6 +57,7 @@ public class CommonSingleSelLayout extends LinearLayout {
                 TextView tv = new TextView(context);
                 tv.setGravity(Gravity.CENTER);
                 tv.setTextSize(textSize);
+                tv.setTypeface(Typeface.DEFAULT_BOLD);
                 tv.setTextColor(context.getResources().getColorStateList(textColor));
                 tv.setText(list.get(i));
                 final int finalI = i;

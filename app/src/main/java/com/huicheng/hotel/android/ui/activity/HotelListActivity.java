@@ -189,7 +189,7 @@ public class HotelListActivity extends BaseActivity {
         search_lay.setOnClickListener(this);
         sort_lay.setOnClickListener(this);
         select_lay.setOnClickListener(this);
-        customConsiderLayoutForList.setOnConsiderLayoutListenre(new CustomConsiderLayoutForList.OnConsiderLayoutListenre() {
+        customConsiderLayoutForList.setOnConsiderLayoutListener(new CustomConsiderLayoutForList.OnConsiderLayoutListener() {
             @Override
             public void onDismiss() {
                 if (isConsiderOpened) {

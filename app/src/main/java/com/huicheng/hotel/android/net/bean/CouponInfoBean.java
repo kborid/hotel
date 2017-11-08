@@ -1,16 +1,17 @@
 package com.huicheng.hotel.android.net.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author kborid
  * @date 2017/2/20 0020
  */
-public class CouponInfoBean {
+public class CouponInfoBean implements Serializable {
     public ActivityInfo activity;
     public List<CouponInfo> coupon;
 
-    public static class ActivityInfo {
+    public static class ActivityInfo implements Serializable {
         public long createTime;
         public boolean deleted;
         public int during;
@@ -26,9 +27,9 @@ public class CouponInfoBean {
         public String statusName;
     }
 
-    public static class CouponInfo {
+    public static class CouponInfo implements Serializable {
         public long activeTime;
-        public int activityId;
+        public String activityId;
         public String activityName;
         public String cityName;
         public int cnt;

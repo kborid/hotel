@@ -15,6 +15,7 @@
     <style name="AppTheme.WelTheme">
         <!-- 启动背景图片 -->
         <item name="android:windowBackground">@drawable/bg_welcome</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="AppTheme.ImageTransparent">
