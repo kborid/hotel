@@ -109,7 +109,7 @@
                 android:layout_marginLeft="35dp"
                 android:text="@string/create"
                 android:textColor="@color/white"
-                android:textSize="@dimen/common_description_size" />
+                android:textSize="@dimen/common_12sp" />
 
             <TextView
                 android:id="@+id/tv_forget_pwd"
@@ -119,7 +119,7 @@
                 android:layout_marginRight="35dp"
                 android:text="@string/forget_pwd"
                 android:textColor="@color/white"
-                android:textSize="@dimen/common_description_size" />
+                android:textSize="@dimen/common_12sp" />
         </RelativeLayout>
 
         <Button
@@ -130,7 +130,7 @@
             android:background="@drawable/comm_rectangle_btn_wx"
             android:text="@string/login_wx"
             android:textColor="@color/white"
-            android:textSize="@dimen/common_description_size" />
+            android:textSize="@dimen/common_12sp" />
 
         <Button
             android:id="@+id/btn_qq"
@@ -140,7 +140,7 @@
             android:background="@drawable/comm_rectangle_btn_qq"
             android:text="@string/login_qq"
             android:textColor="@color/white"
-            android:textSize="@dimen/common_description_size" />
+            android:textSize="@dimen/common_12sp" />
     </LinearLayout>
 
 </LinearLayout>

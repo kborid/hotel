@@ -183,8 +183,8 @@
                 android:layout_toRightOf="@id/cb_check"
                 android:paddingLeft="5dp"
                 android:text="@string/agree_agement"
-                android:textColor="?attr/mainColor"
-                android:textSize="@dimen/common_10sp" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_12sp" />
 
             <TextView
                 android:id="@+id/tv_agreement"
@@ -194,7 +194,7 @@
                 android:layout_toRightOf="@id/tv_agree"
                 android:text="@string/agement"
                 android:textColor="?attr/mainColor"
-                android:textSize="@dimen/common_10sp" />
+                android:textSize="@dimen/common_12sp" />
         </RelativeLayout>
 
         <Button

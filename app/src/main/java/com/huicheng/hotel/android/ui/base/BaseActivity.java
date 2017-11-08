@@ -112,14 +112,14 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                    | View.SYSTEM_UI_FLAG_IMMERSIVE
 //                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                     ;
             window.getDecorView().setSystemUiVisibility(option);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 //            window.setStatusBarColor(getResources().getColor(R.color.transparent20));
-            window.setNavigationBarColor(getResources().getColor(R.color.transparent));
+//            window.setNavigationBarColor(getResources().getColor(R.color.transparent));
         } else {
             Window win = getWindow();
             WindowManager.LayoutParams winParams = win.getAttributes();

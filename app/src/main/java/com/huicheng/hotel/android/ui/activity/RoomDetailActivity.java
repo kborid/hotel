@@ -480,7 +480,7 @@ public class RoomDetailActivity extends BaseActivity {
                 tv_detail_title.setText(roomDetailInfoBean.serviceList.get(i).title);
                 if (StringUtil.notEmpty(roomDetailInfoBean.serviceList.get(i).remarks)) {
                     tv_detail_remark.setVisibility(View.VISIBLE);
-                    tv_detail_remark.setText(roomDetailInfoBean.serviceList.get(i).remarks);
+                    tv_detail_remark.setText("备注：" + roomDetailInfoBean.serviceList.get(i).remarks);
                 } else {
                     if (roomDetailInfoBean.serviceList.get(i).capacityVOList != null && roomDetailInfoBean.serviceList.get(i).capacityVOList.size() > 0) {
                         tv_detail_remark.setVisibility(View.GONE);

@@ -14,6 +14,6 @@
         android:ellipsize="end"
         android:textColor="@color/black"
         android:singleLine="true"
-        android:textSize="@dimen/common_description_size" />
+        android:textSize="@dimen/common_12sp" />
 
 </com.huicheng.hotel.android.ui.custom.MultiChoiceLayout>
