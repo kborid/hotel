@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -49,7 +51,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     private HotelListAdapter adapter = null;
     private List<HotelInfoBean> list = new ArrayList<>();
     private RecyclerView recyclerView;
-    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int lastVisibleItem = 0;
 
@@ -111,9 +113,9 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         super.initViews(view);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        ((StaggeredGridLayoutManager) layoutManager).setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        recyclerView.setLayoutManager(layoutManager);
         adapter = new HotelListAdapter(getActivity(), list, HotelCommDef.TYPE_CLOCK);
         recyclerView.setAdapter(adapter);
         empty_lay = (RelativeLayout) view.findViewById(R.id.empty_lay);
@@ -152,7 +154,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                staggeredGridLayoutManager.invalidateSpanAssignments();
+                ((StaggeredGridLayoutManager) layoutManager).invalidateSpanAssignments();
                 if (!isNoMore) {
                     if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
                         swipeRefreshLayout.setRefreshing(true);
@@ -187,8 +189,17 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     }
 
     private int getLastVisibleItem() {
-        int[] lastPositions = staggeredGridLayoutManager.findLastVisibleItemPositions(new int[staggeredGridLayoutManager.getSpanCount()]);
-        return getMaxPosition(lastPositions);
+        int lastPosition = 0;
+        if (layoutManager instanceof GridLayoutManager) {
+            lastPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+        } else if (layoutManager instanceof LinearLayoutManager) {
+            lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+            int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+            ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(lastPositions);
+            lastPosition = getMaxPosition(lastPositions);
+        }
+        return lastPosition;
     }
 
     private int getMaxPosition(int[] positions) {
@@ -216,7 +227,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         orderType = orderType == 0 ? orderType : 2;
         LogUtil.i(TAG, "orderType = " + orderType);
 
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        RequestBeanBuilder b = RequestBeanBuilder.create(SessionContext.isLogin());
         //关键字
         b.addBody("keyword", keyword);
         //星级

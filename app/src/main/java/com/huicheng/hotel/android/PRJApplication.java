@@ -2,11 +2,13 @@ package com.huicheng.hotel.android;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.webkit.WebView;
 
 import com.fm.openinstall.OpenInstall;
+import com.huicheng.hotel.android.broadcast.UnLoginBroadcastReceiver;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.CrashHandler;
 import com.huicheng.hotel.android.common.SessionContext;
@@ -14,6 +16,7 @@ import com.huicheng.hotel.android.permission.PermissionsChecker;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.prj.sdk.app.AppContext;
+import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.LogUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -69,6 +72,12 @@ public class PRJApplication extends Application {
 
         //科大讯飞语音识别初始化
         SpeechUtility.createUtility(this, SpeechConstant.APPID + "=" + getResources().getString(R.string.iflytek_appid));
+
+        //动态注册未登录广播
+        UnLoginBroadcastReceiver unLoginBroadcastReceiver = new UnLoginBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BroadCastConst.UNLOGIN_ACTION);
+        registerReceiver(unLoginBroadcastReceiver, intentFilter);
 
         // Debug模式下打开webView debug开关
         if (AppConst.ISDEVELOP) {

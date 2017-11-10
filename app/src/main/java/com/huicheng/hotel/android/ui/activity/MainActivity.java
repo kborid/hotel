@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
 
     private CustomConsiderLayoutForHome mConsiderLayout = null;
     private PopupWindow mConsiderPopupWindow = null;
-    private int typeIndex, gradeIndex, priceIndex;
+    private int typeIndex = -1, gradeIndex = -1, priceIndex = -1;
 
     // 海南诚信广告Popup
     private boolean isAdShowed = false;
@@ -183,6 +183,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
 
             @Override
             public void onDismiss() {
+                //重置consider
                 WindowManager.LayoutParams lp = getWindow().getAttributes();
                 lp.alpha = 1f;
                 getWindow().setAttributes(lp);
@@ -239,6 +240,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
         tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
 
         //地点信息
+        tv_city.setHint("正在定位当前城市");
         AMapLocationControl.getInstance().startLocation();
         AMapLocationControl.getInstance().registerLocationListener(this);
 
@@ -355,6 +357,8 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
     public void onResume() {
         super.onResume();
 
+        //重置consider
+        mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
         //男性女性界面初始化
 //        int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
 //        if (oldSkinIndex != newSkinIndex) {
@@ -373,16 +377,6 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
         }
         //OpenInstall Event 分发
         dispatchOpenInstallEvent();
-
-        if (!isAdShowed) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    String provinice = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-                    showHaiNanAd(provinice);
-                }
-            }, 300);
-        }
     }
 
     private void dispatchOpenInstallEvent() {
@@ -434,19 +428,18 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
 
     private void showHaiNanAd(String province) {
         if (province.contains("海南")) {
-            isAdShowed = true;
-            showHaiNanAdPopupWindow();
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isAdShowed = true;
+                    showHaiNanAdPopupWindow();
+                }
+            }, 500);
         }
     }
 
     private void showConsiderPopupWindow() {
-        if (null != mConsiderLayout) {
-            if (StringUtil.isEmpty(tv_consider.getText())) {
-                mConsiderLayout.resetConsiderConfig();
-            } else {
-                mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
-            }
-        }
+        mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = 0.5f;
@@ -605,7 +598,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                 break;
             case R.id.tv_next_search:
                 if (StringUtil.isEmpty(tv_city.getText().toString())) {
-                    CustomToast.show("定位失败，请打开GPS或手动选择城市", CustomToast.LENGTH_SHORT);
+                    CustomToast.show("城市定位失败，请打开GPS或手动选择城市", CustomToast.LENGTH_SHORT);
                     return;
                 }
                 HotelOrderManager.getInstance().reset();
@@ -626,15 +619,6 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                 break;
             }
             case R.id.iv_voice:
-//                String testStr = "{\"mode\":\"1\",\"amount\":\"111\",\"merchantId\":\"898310048164164\",\"agentMerchantId\":\"111\",\"mobile\":\"18829292929\",\"sign\":\"rsq6ad7h/EWJnt8Wj2FRSJXw1vonmZq/SY0mcbK6O90e3nfO0vEIE3lT7OFz8ro/RdJHEnDhd2oaeg+tUPu2aBJp9NzDi3mzJFcDRqbR1OyzQpFtWvZMJA0ZdGL1Q/EjmFxtczSNvL7zVqy54W9i/Q8TLR70awKHSUqtsZf8VSg=\",\"notifyUrl\":\"www.baidu.com\",\"signType\":\"RSA\",\"merchantUserId\":\"15097837768111182568523779846186\",\"merOrderId\":\"orderNo1311\"}";
-//                QmfPayHelper qmfPayHelper = new QmfPayHelper();
-//                qmfPayHelper.setPayStragety(new QmfAliPay());
-//                qmfPayHelper.setPayStragety(new QmfWxPay());
-//                qmfPayHelper.setPayStragety(new QmfPosterPay(this));
-//                qmfPayHelper.startPay(testStr);
-//                QmfQuickPayControl.getInstance().bindQuickPayService();
-//                QmfQuickPayControl.getInstance().startQuickPay("");
-
                 if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.MIC_PERMISSION)) {
                     PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
                     return;
@@ -684,10 +668,14 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
         if (Activity.RESULT_OK != resultCode) {
             return;
         }
-        String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+        final String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(tempProvince, tempCity, "-"));
         tv_city.setText(CityParseUtils.getCityString(tempCity));
+        if (!isAdShowed) {
+            showHaiNanAd(tempProvince);
+        }
+
         if (requestCode == 0x02) {
             if (null != data) {
                 beginTime = data.getLongExtra("beginTime", beginTime);
@@ -770,6 +758,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                     e.printStackTrace();
                 }
             } else {
+                tv_city.setHint("城市定位失败");
                 LogUtil.e(TAG, "location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
                         + aMapLocation.getErrorInfo());

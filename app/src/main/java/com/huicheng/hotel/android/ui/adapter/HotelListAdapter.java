@@ -35,9 +35,7 @@ import com.prj.sdk.util.StringUtil;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @auth kborid
@@ -49,8 +47,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     private List<HotelInfoBean> list;
     private int type = 0;
     private int ygrRoomItemBackgroundId;
-
-    private Map<Integer, String> trackMap = new HashMap<>();
 
     public HotelListAdapter(Context context, List<HotelInfoBean> list, int type) {
         this.context = context;
@@ -85,18 +81,16 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
         //是否显示广告
         if (bean.ad == 1) {
-            holder.hotel_item_lay.setVisibility(View.GONE);
+            holder.hotel_item_lay.setVisibility(View.INVISIBLE);
             holder.iv_ad.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(new CustomReqURLFormatModelImpl(bean.picPath))
-//                    .placeholder(R.drawable.def_hotel_list)
                     .crossFade()
-//                    .fitCenter()
+                    .centerCrop()
                     .into(holder.iv_ad);
         } else {
             holder.iv_ad.setVisibility(View.GONE);
             holder.hotel_item_lay.setVisibility(View.VISIBLE);
-
             holder.tv_hotel_name.setText(bean.hotelName);
             Glide.with(context)
                     .load(new CustomReqURLFormatModelImpl(bean.hotelFeaturePic))
@@ -119,9 +113,11 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                     break;
             }
 
-            // 是否显示vip价格
+            //用户是否是该酒店会员
+            boolean isVip = bean.vip == 1; //1是会员，0不是会员
+            // 是否显示vip Flag
             holder.tv_vip.setVisibility(View.GONE);
-            boolean isShowVip = false;
+            boolean isShowVipFlag = false;
             if (HotelCommDef.VIP_SUPPORT.equals(bean.vipEnable) && bean.vipPrice > 0) {
                 int minPrice;
                 //获取特价，平台价不为0且最小的价格
@@ -133,46 +129,60 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 //会员价与最小价格比较
                 if (bean.vipPrice < minPrice && mPrice > 0) {
                     holder.tv_vip.setVisibility(View.VISIBLE);
-                    isShowVip = true;
-//                    DecimalFormat decimalFormat = new DecimalFormat("0.0");
-//                    float vipPercent = (float) bean.vipPrice / mPrice * 10;
-//                    holder.tv_vip.setText(String.format(context.getString(R.string.vip_price_tips), decimalFormat.format(vipPercent)));
+                    isShowVipFlag = true;
                     holder.tv_vip.setText(context.getString(R.string.vip_price_tips2));
                 }
             }
 
-            // 下方显示价格逻辑
+            // 下方价格显示逻辑
             String price = "暂无";
             switch (type) {
                 case HotelCommDef.TYPE_ALL:
+                case HotelCommDef.TYPE_YEGUIREN:
                     if (mPrice > 0) {
-                        if (bean.speciallyPrice > mPrice || bean.speciallyPrice <= 0) {
+                        //判断是否显示特价
+                        if (bean.speciallyPrice >= mPrice || bean.speciallyPrice <= 0) {
                             holder.tv_platform_price.setVisibility(View.GONE);
                             price = String.valueOf(mPrice);
                             holder.tv_price_unit.setVisibility(View.VISIBLE);
 
                             holder.off_lay.setVisibility(View.GONE);
                         } else {
-                            // 判断是否显示带删除线的平台价
-                            if (bean.speciallyPrice == mPrice) {
-                                holder.tv_platform_price.setVisibility(View.GONE);
-                            } else {
-                                holder.tv_platform_price.setVisibility(View.VISIBLE);
-                                holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(mPrice)));
-                            }
+                            holder.tv_platform_price.setVisibility(View.VISIBLE);
+                            holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(mPrice)));
                             price = String.valueOf(bean.speciallyPrice);
                             holder.tv_price_unit.setVisibility(View.VISIBLE);
 
-                            //显示折扣信息
+                            //显示特价OFF_SALE信息，特价/平台价
                             holder.off_lay.setVisibility(View.VISIBLE);
                             DecimalFormat df = (DecimalFormat) NumberFormat.getPercentInstance();
                             float specialPercent = (float) (bean.speciallyPrice - mPrice) / mPrice;
                             holder.tv_off_percent.setText(df.format(specialPercent));
                             holder.tv_off_info.setText(bean.comment);
-                            if (isShowVip) {
-                                holder.off_lay.setBackgroundColor(context.getResources().getColor(R.color.offInfoColor2));
+                            holder.off_lay.setBackgroundColor(context.getResources().getColor(R.color.offInfoColor1));
+                        }
+
+                        //判断是否显示VIP价
+                        if (isShowVipFlag) {
+                            if (isVip) {
+                                holder.tv_platform_price.setVisibility(View.VISIBLE);
+                                holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(mPrice)));
+                                price = String.valueOf(bean.vipPrice);
+                                holder.tv_price_unit.setVisibility(View.VISIBLE);
+
+                                //显示VIP价OFF_SALE信息，VIP价格/平台价
+                                holder.tv_vip.setVisibility(View.GONE); //如果用户是酒店会员，则不显示VIP条
+                                holder.off_lay.setVisibility(View.VISIBLE);
+                                DecimalFormat df = (DecimalFormat) NumberFormat.getPercentInstance();
+                                float specialPercent = (float) (bean.vipPrice - mPrice) / mPrice;
+                                holder.tv_off_percent.setText(df.format(specialPercent));
+                                holder.tv_off_info.setText("粉丝价");
+                                holder.off_lay.setBackgroundColor(context.getResources().getColor(R.color.offInfoColor3));
                             } else {
-                                holder.off_lay.setBackgroundColor(context.getResources().getColor(R.color.offInfoColor1));
+                                //显示特价OFF_SALE信息，特价/平台价
+                                holder.tv_vip.setVisibility(View.VISIBLE); //如果用户不是酒店会员，则显示VIP条
+                                holder.off_lay.setVisibility(View.VISIBLE);
+                                holder.off_lay.setBackgroundColor(context.getResources().getColor(R.color.offInfoColor2));
                             }
                         }
                     } else {
@@ -190,30 +200,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                     holder.tv_real_price.setText(price);
                     holder.off_lay.setVisibility(View.GONE);
                     break;
-                case HotelCommDef.TYPE_YEGUIREN:
-                    if (mPrice > 0) {
-                        if (bean.speciallyPrice > mPrice || bean.speciallyPrice <= 0) {
-                            holder.tv_platform_price.setVisibility(View.GONE);
-                            price = String.valueOf(mPrice);
-                            holder.tv_price_unit.setVisibility(View.VISIBLE);
-                        } else {
-                            // 判断是否显示带删除线的平台价
-                            if (bean.speciallyPrice == mPrice) {
-                                holder.tv_platform_price.setVisibility(View.GONE);
-                            } else {
-                                holder.tv_platform_price.setVisibility(View.VISIBLE);
-                                holder.tv_platform_price.setText(String.format(context.getString(R.string.rmbStr), String.valueOf(mPrice)));
-                            }
-                            price = String.valueOf(bean.speciallyPrice);
-                            holder.tv_price_unit.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        holder.tv_platform_price.setVisibility(View.GONE);
-                    }
-                    holder.tv_real_price.setText(price);
-                    holder.off_lay.setVisibility(View.GONE);
-                    break;
             }
+
 
             // 距离信息
             LatLng start = null, des = null;
@@ -229,18 +217,12 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 holder.tv_hotel_dis.setText("暂无距离信息");
             }
 
-            //浏览痕迹：随机1分钟~12小时
-            if (!trackMap.containsKey(position)) {
-                int min = ((int) (Math.random() * (60 * 12)) + 1);
-                String trackStr;
-                if (min >= 60) {
-                    trackStr = String.valueOf(min / 60 + "小时");
-                } else {
-                    trackStr = String.valueOf(min + "分钟");
-                }
-                trackMap.put(position, trackStr);
+            //用户浏览痕迹
+            String trackStr = "暂无人浏览过";
+            if (StringUtil.notEmpty(bean.lastVisit)) {
+                trackStr = String.format(context.getString(R.string.track_str), bean.lastVisit);
             }
-            holder.tv_track.setText(String.format(context.getString(R.string.track_str), trackMap.get(position)));
+            holder.tv_track.setText(trackStr);
 
             // 评分信息
             float point;
@@ -306,8 +288,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     class HotelViewHolder extends RecyclerView.ViewHolder {
 
         FrameLayout root;
-        LinearLayout hotel_item_lay;
         ImageView iv_ad;
+        LinearLayout hotel_item_lay;
         RelativeLayout hotel_bg_lay;
         ImageView iv_hotel_icon;
         LinearLayout off_lay;
@@ -327,9 +309,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         HotelViewHolder(View itemView) {
             super(itemView);
             root = (FrameLayout) itemView.findViewById(R.id.root);
-            hotel_item_lay = (LinearLayout) itemView.findViewById(R.id.hotel_item_lay);
             iv_ad = (ImageView) itemView.findViewById(R.id.iv_ad);
-            iv_ad.setVisibility(View.GONE);
+            hotel_item_lay = (LinearLayout) itemView.findViewById(R.id.hotel_item_lay);
             hotel_bg_lay = (RelativeLayout) itemView.findViewById(R.id.hotel_bg_lay);
             iv_hotel_icon = (ImageView) itemView.findViewById(R.id.iv_hotel_icon);
             off_lay = (LinearLayout) itemView.findViewById(R.id.off_lay);

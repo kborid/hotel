@@ -24,4 +24,6 @@ public class HotelInfoBean {
     public String text;
     public String picPath;
     public String link;
+    public int vip;
+    public String lastVisit;
 }

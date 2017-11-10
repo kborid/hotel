@@ -59,7 +59,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     private static Handler mHandler = null;
 
     private static long mStartTime = 0;
-    private static final long AD_SHOWTIME = 2500;
+    private static final long AD_SHOWTIME = 2000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

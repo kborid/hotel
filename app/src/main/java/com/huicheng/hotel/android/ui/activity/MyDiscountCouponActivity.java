@@ -11,12 +11,10 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -46,11 +44,13 @@ import java.util.List;
  */
 public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
+    private static final int FREE_COUPON = 1;
+    private static final int UNION_COUPON = 2;
+
     private LinearLayout noDiscountLayout, hasDiscountLayout, active_lay;
     private TextView tv_no_coupon_note, tv_no_coupon_time;
     private TextView tv_summary;
 
-    private RelativeLayout viewPagerContainer;
     private ViewPager viewPager;
     private LinearLayout indicator_lay;
     private int positionIndex = 0;
@@ -84,14 +84,9 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
         tv_no_coupon_time = (TextView) findViewById(R.id.tv_no_coupon_time);
         hasDiscountLayout = (LinearLayout) findViewById(R.id.has_discount_lay);
         tv_summary = (TextView) findViewById(R.id.tv_summary);
-
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPagerContainer = (RelativeLayout) findViewById(R.id.pager_layout);
-        viewPager.setPageMargin(Utils.dip2px(10));
         viewPager.addOnPageChangeListener(this);
-
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
-
         btn_use = (Button) findViewById(R.id.btn_use);
     }
 
@@ -143,13 +138,10 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
                 noDiscountLayout.setVisibility(View.GONE);
                 hasDiscountLayout.setVisibility(View.VISIBLE);
 
+                viewPager.setPageMargin(Utils.dip2px(10));
                 viewPager.setAdapter(new MyPagerAdapter(this, couponInfoBean.coupon));
-                // to cache all page, or we will see the right item delayed
-                int count = couponInfoBean.coupon.size();
-                if (count > 0) {
-                    viewPager.setOffscreenPageLimit(count);
-                }
-                initIndicatorLay(count);
+                initIndicatorLay(couponInfoBean.coupon.size());
+                viewPager.setOffscreenPageLimit(couponInfoBean.coupon.size());
                 refreshCouponInfoAndStatus(0);
             } else {
                 noDiscountLayout.setVisibility(View.VISIBLE);
@@ -188,14 +180,6 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
     @Override
     public void initListeners() {
         super.initListeners();
-        viewPagerContainer.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // dispatch the events to the ViewPager, to solve the problem that we can swipe only the middle view.
-                return viewPager.dispatchTouchEvent(event);
-            }
-        });
         btn_use.setOnClickListener(this);
         active_lay.setOnClickListener(this);
     }
@@ -235,16 +219,6 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.COUPON_ALL
@@ -261,32 +235,42 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
 
     private void refreshCouponInfoAndStatus(int position) {
         CouponInfoBean.CouponInfo info = couponInfoBean.coupon.get(position);
-        String name = info.name;
-        String date = DateUtil.getDay("yyyy/MM/dd", couponInfoBean.coupon.get(position).activeTime);
-        String note = String.format(getString(R.string.coupon_note), name, date);
         if (isShowAll) {
             btn_use.setVisibility(View.GONE);
         } else {
             btn_use.setVisibility(View.VISIBLE);
-            if (info.type == 1) {
-                btn_use.setEnabled(false);
-            } else if (info.type == 2) {
-                btn_use.setEnabled(true);
-            } else {
-                btn_use.setEnabled(false);
-            }
         }
 
-        int index[] = new int[2];
-        index[0] = note.indexOf(name);
-        index[1] = note.indexOf(date);
+        if (info.type == UNION_COUPON) {
+            btn_use.setEnabled(true);
+            tv_summary.setText(getString(R.string.coupon_tips2));
+            tv_summary.append("\n\n目录酒店：");
+            if (info.eventHotel != null && info.eventHotel.size() > 0) {
+                for (int i = 0; i < info.eventHotel.size(); i++) {
+                    tv_summary.append(info.eventHotel.get(i));
+                    if (i != info.eventHotel.size() - 1) {
+                        tv_summary.append("，");
+                    }
+                }
+            } else {
+                tv_summary.append("无");
+            }
+        } else {
+            btn_use.setEnabled(false);
+            String name = info.hotelName;
+            String date = DateUtil.getDay("yyyy/MM/dd", couponInfoBean.coupon.get(position).activeTime);
+            String note = String.format(getString(R.string.coupon_tips1), name, date);
+            int index[] = new int[2];
+            index[0] = note.indexOf(name);
+            index[1] = note.indexOf(date);
 
-        SpannableStringBuilder style = new SpannableStringBuilder(note);
-        style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[0], index[0] + name.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        style.setSpan(new StyleSpan(Typeface.BOLD), index[0], index[0] + name.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        style.setSpan(new StyleSpan(Typeface.BOLD), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        tv_summary.setText(style);
+            SpannableStringBuilder style = new SpannableStringBuilder(note);
+            style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[0], index[0] + name.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            style.setSpan(new StyleSpan(Typeface.BOLD), index[0], index[0] + name.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            style.setSpan(new StyleSpan(Typeface.BOLD), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            tv_summary.setText(style);
+        }
     }
 
     @Override
@@ -299,9 +283,6 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (viewPagerContainer != null) {
-            viewPagerContainer.invalidate();
-        }
     }
 
     @Override
@@ -335,8 +316,14 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View view = LayoutInflater.from(context).inflate(R.layout.vp_mydiscount_item, null);
-            final RoundedAllImageView iv_background = (RoundedAllImageView) view.findViewById(R.id.iv_background);
-            String url = list.get(position).featurePicPath;
+            RoundedAllImageView iv_background = (RoundedAllImageView) view.findViewById(R.id.iv_background);
+            TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
+            TextView tv_limit = (TextView) view.findViewById(R.id.tv_limit);
+            TextView tv_id_num = (TextView) view.findViewById(R.id.tv_id_num);
+            TextView tv_valid_time = (TextView) view.findViewById(R.id.tv_valid_time);
+
+            CouponInfoBean.CouponInfo info = list.get(position);
+            String url = info.featurePicPath;
             Glide.with(context)
                     .load(new CustomReqURLFormatModelImpl(url))
                     .placeholder(R.drawable.def_coupon)
@@ -344,13 +331,21 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
                     .centerCrop()
                     .override(800, 480)
                     .into(iv_background);
-            TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
-            tv_name.setText(list.get(position).name);
-            TextView tv_valid_time = (TextView) view.findViewById(R.id.tv_valid_time);
-            tv_valid_time.setText("有效期：" + DateUtil.getDay("yyyy/MM/dd", list.get(position).createTime) + "-" + DateUtil.getDay("yyyy/MM/dd", list.get(position).activeTime));
+
+            String name;
+            if (info.type == UNION_COUPON) {
+                name = info.name;
+                tv_limit.setVisibility(View.VISIBLE);
+            } else {
+                name = info.hotelName;
+                tv_limit.setVisibility(View.GONE);
+            }
+            tv_name.setText(name);
+            tv_id_num.setText("凭证号：" + info.code);
+            tv_valid_time.setText("有效期：" + DateUtil.getDay("yyyy/MM/dd", info.createTime) + "-" + DateUtil.getDay("yyyy/MM/dd", info.activeTime));
+
             container.addView(view, position);
-            TextView tv_id_num = (TextView) view.findViewById(R.id.tv_id_num);
-            tv_id_num.setText("凭证号：" + list.get(position).code);
+
             return view;
         }
 

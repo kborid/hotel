@@ -280,14 +280,6 @@
             android:screenOrientation="portrait" />
         <!-- 普通html页面 -->
 
-        <receiver
-            android:name=".broadcast.UnLoginBroadcastReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="abc_not_login_broadcast" />
-            </intent-filter>
-        </receiver>
-
         <receiver android:name="com.huicheng.hotel.android.common.pay.wxpay.AppRegister">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />

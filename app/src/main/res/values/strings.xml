@@ -9,7 +9,13 @@
     <string name="company">杭州惠程信息技术有限公司</string>
     <string name="copyright">Copyright © 2016–2018</string>
     <string name="version">版本介绍</string>
-    <string name="versionIntroduce">最具颠覆性的无中介旅行预订平台\n\n－ 没有佣金，价格更低\n－ 优惠直给，拒绝套路\n－ 直接联系酒店，预订更放心\n－ 无竞价排名，还原真实搜索结果\n－ “房型＋服务”订房模式，效率倍增</string>
+    <string name="versionIntroduce">最具颠覆性的无中介旅行预订平台
+                                \n\n－ 没有佣金，价格更低
+                                  \n－ 优惠直给，拒绝套路
+                                  \n－ 直接联系酒店，预订更放心
+                                  \n－ 无竞价排名，还原真实搜索结果
+                                  \n－ “房型＋服务”订房模式，效率倍增
+    </string>
 
 
     <string name="multipleSign">×</string>
@@ -29,7 +35,19 @@
     <string name="ygrRoomCount">剩余%1$d间</string>
     <string name="ygrNote">只能预订当日夜归人\n已为您推荐 %1$s 夜归人</string>
     <string name="no_coupon_note">最近一次0元住，开放房量%1$d间。</string>
-    <string name="coupon_note">— 本券仅限在“<font color="#001a58">%1$s</font>”使用\n\n— 本房券可抵扣1间夜房费（具体详见免费房券使用规则）\n\n— 不可用于店内mini bar、餐饮、小商品等非房费消费\n\n— 不可与其他优惠同时使用、不得兑换现金\n\n— 用房券结算的房费部分，不开具发票\n\n— 点击“立即使用”，选择规定时间内的入住及退房日期，验证成功后提交订单，酒店确认订单后即可生效\n\n— 本券有效期至：<font color="#001a58">%2$s</font></string>
+    <string name="coupon_tips1">— 本券仅限在“<font color="#001a58">%1$s</font>”使用
+                              \n— 本房券可抵扣1间夜房费（具体详见免费房券使用规则）
+                              \n— 不可用于店内mini bar、餐饮、小商品等非房费消费
+                              \n— 不可与其他优惠同时使用、不得兑换现金
+                              \n— 用房券结算的房费部分，不开具发票
+                              \n— 点击“立即使用”，选择规定时间内的入住及退房日期，验证成功后提交订单，酒店确认订单后即可生效
+                              \n— 本券有效期至：<font color="#001a58">%2$s</font>
+    </string>
+    <string name="coupon_tips2">1.本券每消费满500元可减免消费款50元，在线支付可立减，酒店现付请出示优惠券凭证号（保存在“ABC旅行预订”APP“我的优惠券”中）；
+                              \n2.此券不设找零，不兑换现金，不开发票，不可重复使用；
+                              \n3.本券有效期自2017年11月17日至2018年6月30日，过期作废，遗失不补；
+                              \n4.本券只限于使用说明中目录酒店使用，解释权归“海南省旅游饭店业协会”所有。
+    </string>
     <string name="orderListItemDateStr">入住时间：%1$s-%2$s (%3$d晚)</string>
     <string name="homeTemperatureStr">%1$s°</string>
     <string name="roomCountStr">%1$d间</string>
