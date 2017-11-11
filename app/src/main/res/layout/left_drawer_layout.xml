@@ -12,7 +12,7 @@
         android:id="@+id/unlogin_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -307,6 +307,22 @@
                     android:paddingBottom="20dp"
                     android:paddingTop="20dp"
                     android:text="@string/side_fd"
+                    android:textColor="@color/sec_color_selector"
+                    android:textSize="@dimen/common_16sp" />
+
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
+
+                <TextView
+                    android:id="@+id/tv_qmh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="20dp"
+                    android:paddingTop="20dp"
+                    android:text="@string/side_qmh"
                     android:textColor="@color/sec_color_selector"
                     android:textSize="@dimen/common_16sp" />
 

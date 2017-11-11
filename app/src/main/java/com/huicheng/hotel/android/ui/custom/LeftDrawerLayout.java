@@ -34,7 +34,6 @@ import com.huicheng.hotel.android.ui.activity.OrderListActivity;
 import com.huicheng.hotel.android.ui.activity.SettingActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
@@ -56,7 +55,6 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     private static final String TAG = "LeftDrawerLayout";
 
     private Context context;
-    private ProgressDialog mProgressDialog;
     private RelativeLayout unlogin_lay;
     private LinearLayout login_lay;
 
@@ -67,6 +65,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     private TextView tv_username, tv_userid;
     private TextView tv_usercenter, tv_myorder, tv_msg, tv_yhq, tv_assess, tv_vip, tv_setting, tv_feedback;
     private TextView tv_msg_count;
+    private TextView tv_qmh;
     private TextView tv_usage, tv_private;
     private Button btn_logout;
 
@@ -127,6 +126,8 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         tv_setting = (TextView) findViewById(R.id.tv_setting);
         tv_feedback = (TextView) findViewById(R.id.tv_feedback);
 
+        tv_qmh = (TextView) findViewById(R.id.tv_qmh);
+
         tv_msg_count = (TextView) findViewById(R.id.tv_msg_count);
         tv_msg_count.setBackgroundResource(mMsgId);
 
@@ -148,6 +149,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         tv_vip.setOnClickListener(this);
         tv_setting.setOnClickListener(this);
         tv_feedback.setOnClickListener(this);
+        tv_qmh.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
 
         tv_usage.setOnClickListener(this);
@@ -266,6 +268,11 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
             case R.id.tv_feedback:
                 doActionIntent = new Intent(context, FeedbackActivity.class);
                 break;
+            case R.id.tv_qmh:
+                if (null != listener) {
+                    listener.doQmhAction();
+                }
+                break;
             case R.id.btn_logout:
                 clearTicket();
                 break;
@@ -296,7 +303,9 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         ResponseData data = builder.syncRequest(builder);
         data.path = NetURL.REMOVE_TICKET;
         data.flag = AppConst.REMOVE_TICKET;
-        showProgressDialog();
+        if (null != listener) {
+            listener.showProgressDialog(context);
+        }
         DataLoader.getInstance().loadData(this, data);
     }
 
@@ -318,8 +327,8 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     @Override
     public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
         if (request.flag == AppConst.REMOVE_TICKET) {
-            if (mProgressDialog.isShowing()) {
-                mProgressDialog.dismiss();
+            if (null != listener) {
+                listener.removeProgressDialog();
             }
             logout();
             context.sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
@@ -328,7 +337,9 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
-        mProgressDialog.dismiss();
+        if (null != listener) {
+            listener.removeProgressDialog();
+        }
         String message;
         if (e != null && e instanceof ConnectException) {
             message = context.getResources().getString(R.string.dialog_tip_net_error);
@@ -356,20 +367,17 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
     public interface OnLeftDrawerListener {
         void closeDrawer();
+
+        void showProgressDialog(Context context);
+
+        void removeProgressDialog();
+
+        void doQmhAction();
     }
 
     private OnLeftDrawerListener listener = null;
 
     public void setOnLeftDrawerListener(OnLeftDrawerListener listener) {
         this.listener = listener;
-    }
-
-    private void showProgressDialog() {
-        if (null == mProgressDialog) {
-            mProgressDialog = new ProgressDialog(context);
-        }
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.show();
     }
 }

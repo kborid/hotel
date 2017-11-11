@@ -71,16 +71,21 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.umeng.analytics.MobclickAgent;
+import com.ums.iou.activity.IOUAppVerifyActivity;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends BaseActivity implements AMapLocationControl.MyLocationListener {
+public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLeftDrawerListener, AMapLocationControl.MyLocationListener {
 
-    private AppInfoBean mAppInfoBean = null;
+    private static final int REQUEST_CODE_CITY = 0x01;
+    private static final int REQUEST_CODE_DATE = 0x02;
+    private static final int REQUEST_CODE_QMH = 0x03;
+
     private static Handler myHandler = new Handler(Looper.getMainLooper());
+    private AppInfoBean mAppInfoBean = null;
 
     private DrawerLayout drawer_layout;
     private LeftDrawerLayout left_layout;
@@ -178,7 +183,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
         mConsiderPopupWindow.setAnimationStyle(R.style.share_anmi);
         mConsiderPopupWindow.setFocusable(true);
         mConsiderPopupWindow.setOutsideTouchable(true);
-        mConsiderPopupWindow.setBackgroundDrawable(new ColorDrawable(0xb0000000));
+        mConsiderPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mConsiderPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
             @Override
@@ -278,9 +283,6 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
         d.path = NetURL.WEATHER;
         d.flag = AppConst.WEATHER;
 
-        if (!isProgressShowing()) {
-            showProgressDialog(this);
-        }
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -476,12 +478,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
     @Override
     public void initListeners() {
         super.initListeners();
-        left_layout.setOnLeftDrawerListener(new LeftDrawerLayout.OnLeftDrawerListener() {
-            @Override
-            public void closeDrawer() {
-                drawer_layout.closeDrawers();
-            }
-        });
+        left_layout.setOnLeftDrawerListener(this);
         drawer_layout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -556,7 +553,6 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                 CustomToast.show(getString(R.string.exit_tip), CustomToast.LENGTH_SHORT);
                 exitTime = System.currentTimeMillis();
             } else {
-//                SessionContext.destroy();
                 MobclickAgent.onKillProcess(this);
                 ActivityTack.getInstanse().exit();
             }
@@ -586,7 +582,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                 break;
             case R.id.tv_city: {
                 Intent resIntent = new Intent(this, LocationChooseActivity.class);
-                startActivityForResult(resIntent, 0x01);
+                startActivityForResult(resIntent, REQUEST_CODE_CITY);
                 break;
             }
             case R.id.order_lay:
@@ -615,7 +611,7 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                 resIntent.putExtra("isTitleCanClick", true);
 //                resIntent.putExtra("beginTime", beginTime);
 //                resIntent.putExtra("endTime", endTime);
-                startActivityForResult(resIntent, 0x02);
+                startActivityForResult(resIntent, REQUEST_CODE_DATE);
                 break;
             }
             case R.id.iv_voice:
@@ -668,15 +664,16 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
         if (Activity.RESULT_OK != resultCode) {
             return;
         }
-        final String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-        String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(tempProvince, tempCity, "-"));
-        tv_city.setText(CityParseUtils.getCityString(tempCity));
-        if (!isAdShowed) {
-            showHaiNanAd(tempProvince);
-        }
 
-        if (requestCode == 0x02) {
+        if (requestCode == REQUEST_CODE_CITY) {
+            final String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+            String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+            HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(tempProvince, tempCity, "-"));
+            tv_city.setText(CityParseUtils.getCityString(tempCity));
+            if (!isAdShowed) {
+                showHaiNanAd(tempProvince);
+            }
+        } else if (requestCode == REQUEST_CODE_DATE) {
             if (null != data) {
                 beginTime = data.getLongExtra("beginTime", beginTime);
                 endTime = data.getLongExtra("endTime", endTime);
@@ -687,6 +684,8 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                 tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
                 tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
             }
+        } else if (requestCode == REQUEST_CODE_QMH) {
+            System.out.println("");
         }
         requestWeatherInfo(beginTime);
     }
@@ -764,5 +763,23 @@ public class MainActivity extends BaseActivity implements AMapLocationControl.My
                         + aMapLocation.getErrorInfo());
             }
         }
+    }
+
+    @Override
+    public void closeDrawer() {
+        if (null != drawer_layout) {
+            drawer_layout.closeDrawers();
+        }
+    }
+
+    @Override
+    public void doQmhAction() {
+        //全民化测试插件
+        Intent intent = new Intent(MainActivity.this, IOUAppVerifyActivity.class);
+        intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
+        intent.putExtra("token", SessionContext.getTicket());
+        intent.putExtra("platCode", "8000");
+        intent.putExtra("isShowGuide", "true");
+        startActivityForResult(intent, REQUEST_CODE_QMH);
     }
 }

@@ -1,8 +1,5 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -62,12 +59,10 @@ public class HotelListActivity extends BaseActivity {
     private EditText et_search;
     private TabLayout tabs;
 
-    private LinearLayout consider_btn_lay;
-    private LinearLayout sort_lay, select_lay;
-    private TextView shadow_lay;
-    private boolean isConsiderOpened = false;
+    private LinearLayout sort_lay, consider_lay;
 
     private CustomConsiderLayoutForList customConsiderLayoutForList;
+    private PopupWindow mConsiderWindow;
     private CustomSortLayout customSortLayout;
     private PopupWindow mSortPopupWindow;
 
@@ -91,12 +86,9 @@ public class HotelListActivity extends BaseActivity {
         tv_out_date = (TextView) findViewById(R.id.tv_out_date);
         search_lay = (RelativeLayout) findViewById(R.id.search_lay);
         et_search = (EditText) findViewById(R.id.et_search);
-        consider_btn_lay = (LinearLayout) findViewById(R.id.consider_btn_lay);
         sort_lay = (LinearLayout) findViewById(R.id.sort_lay);
-        select_lay = (LinearLayout) findViewById(R.id.select_lay);
+        consider_lay = (LinearLayout) findViewById(R.id.consider_lay);
 
-        shadow_lay = (TextView) findViewById(R.id.shadow_lay);
-        customConsiderLayoutForList = (CustomConsiderLayoutForList) findViewById(R.id.consider_lay);
         ViewPager pager = (ViewPager) findViewById(R.id.viewpager);
         if (null != pager) {
             pager.setOffscreenPageLimit(3);
@@ -125,6 +117,36 @@ public class HotelListActivity extends BaseActivity {
             }
         }
 
+        //筛选框Popup Window
+        customConsiderLayoutForList = new CustomConsiderLayoutForList(this);
+        customConsiderLayoutForList.setOnConsiderLayoutListener(new CustomConsiderLayoutForList.OnConsiderLayoutListener() {
+            @Override
+            public void onDismiss() {
+                mConsiderWindow.dismiss();
+                refreshHotelList();
+            }
+
+            @Override
+            public void onResult(String str) {
+            }
+        });
+
+        mConsiderWindow = new PopupWindow(customConsiderLayoutForList, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        mConsiderWindow.setAnimationStyle(R.style.MyMaterialDialog);
+        mConsiderWindow.setFocusable(true);
+        mConsiderWindow.setOutsideTouchable(true);
+        mConsiderWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        mConsiderWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1f;
+                getWindow().setAttributes(lp);
+            }
+        });
+
+
         //排序popup window
         customSortLayout = new CustomSortLayout(this);
         customSortLayout.setOnSortResultListener(new CustomSortLayout.OnSortResultListener() {
@@ -139,10 +161,10 @@ public class HotelListActivity extends BaseActivity {
             }
         });
         mSortPopupWindow = new PopupWindow(customSortLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mSortPopupWindow.setAnimationStyle(R.style.share_anmi);
+        mSortPopupWindow.setAnimationStyle(R.style.MyMaterialDialog);
         mSortPopupWindow.setFocusable(true);
         mSortPopupWindow.setOutsideTouchable(true);
-        mSortPopupWindow.setBackgroundDrawable(new ColorDrawable(0xb0000000));
+        mSortPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mSortPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
             @Override
@@ -184,24 +206,10 @@ public class HotelListActivity extends BaseActivity {
         super.initListeners();
         btn_back.setOnClickListener(this);
         btn_right.setOnClickListener(this);
-        shadow_lay.setOnClickListener(this);
         date_lay.setOnClickListener(this);
         search_lay.setOnClickListener(this);
         sort_lay.setOnClickListener(this);
-        select_lay.setOnClickListener(this);
-        customConsiderLayoutForList.setOnConsiderLayoutListener(new CustomConsiderLayoutForList.OnConsiderLayoutListener() {
-            @Override
-            public void onDismiss() {
-                if (isConsiderOpened) {
-                    closeConsiderAnim();
-                    refreshHotelList();
-                }
-            }
-
-            @Override
-            public void onResult(String str) {
-            }
-        });
+        consider_lay.setOnClickListener(this);
 
         et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -247,7 +255,16 @@ public class HotelListActivity extends BaseActivity {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = 0.5f;
         getWindow().setAttributes(lp);
-        mSortPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        mSortPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+    }
+
+    private void showConsiderPopupWindow() {
+        customConsiderLayoutForList.reloadConsiderConfig();
+        // 设置背景颜色变暗
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.5f;
+        getWindow().setAttributes(lp);
+        mConsiderWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
     }
 
     private void refreshHotelList() {
@@ -256,75 +273,6 @@ public class HotelListActivity extends BaseActivity {
                 listener.onUpdate(keyword);
             }
         }
-    }
-
-    private void openConsiderAnim() {
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(customConsiderLayoutForList, "alpha", 0f, 1f);
-        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(shadow_lay, "alpha", 0f, 1f);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(alphaAnimator).with(alphaAnimator2);
-        animatorSet.setDuration(300);
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                customConsiderLayoutForList.reloadConsiderConfig();
-                customConsiderLayoutForList.setVisibility(View.VISIBLE);
-                shadow_lay.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        animatorSet.start();
-
-        isConsiderOpened = true;
-    }
-
-    private void closeConsiderAnim() {
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(customConsiderLayoutForList, "alpha", 1f, 0f);
-        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(shadow_lay, "alpha", 1f, 0f);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(alphaAnimator).with(alphaAnimator2);
-        animatorSet.setDuration(300);
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                customConsiderLayoutForList.setVisibility(View.GONE);
-                shadow_lay.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        animatorSet.start();
-
-        isConsiderOpened = false;
     }
 
     @Override
@@ -338,11 +286,6 @@ public class HotelListActivity extends BaseActivity {
                 intent.putExtra("index", index);
                 startActivity(intent);
                 break;
-            case R.id.shadow_lay:
-                if (isConsiderOpened) {
-                    closeConsiderAnim();
-                }
-                break;
             case R.id.date_lay:
                 Intent resIntent = new Intent(this, HotelCalendarChooseActivity.class);
 //                resIntent.putExtra("beginTime", beginTime);
@@ -352,8 +295,8 @@ public class HotelListActivity extends BaseActivity {
             case R.id.sort_lay:
                 showSortPopupWindow();
                 break;
-            case R.id.select_lay:
-                openConsiderAnim();
+            case R.id.consider_lay:
+                showConsiderPopupWindow();
                 break;
         }
     }
@@ -388,17 +331,6 @@ public class HotelListActivity extends BaseActivity {
         public CharSequence getPageTitle(int position) {
             return title[position];
         }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (isConsiderOpened) {
-                closeConsiderAnim();
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     public interface OnUpdateHotelInfoListener {

@@ -64,6 +64,7 @@ public class ConsumptionDetailActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
+        root_lay.setVisibility(View.GONE);
         root_lay.setLayoutAnimation(getAnimationController());
         chart_lay = (LinearLayout) findViewById(R.id.chart_lay);
         spinner = (Spinner) findViewById(R.id.spinner);
@@ -204,8 +205,6 @@ public class ConsumptionDetailActivity extends BaseActivity {
             tv_month_count.setText(String.valueOf((int) ordersSpendInfoBean.thismonth));
             tv_week_count.setText(String.valueOf((int) ordersSpendInfoBean.thisweek));
             root_lay.setVisibility(View.VISIBLE);
-        } else {
-            root_lay.setVisibility(View.GONE);
         }
     }
 
