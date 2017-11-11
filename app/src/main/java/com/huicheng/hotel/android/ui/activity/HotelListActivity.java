@@ -132,7 +132,7 @@ public class HotelListActivity extends BaseActivity {
         });
 
         mConsiderWindow = new PopupWindow(customConsiderLayoutForList, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mConsiderWindow.setAnimationStyle(R.style.MyMaterialDialog);
+        mConsiderWindow.setAnimationStyle(R.style.consider_anmi);
         mConsiderWindow.setFocusable(true);
         mConsiderWindow.setOutsideTouchable(true);
         mConsiderWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
@@ -161,7 +161,7 @@ public class HotelListActivity extends BaseActivity {
             }
         });
         mSortPopupWindow = new PopupWindow(customSortLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mSortPopupWindow.setAnimationStyle(R.style.MyMaterialDialog);
+        mSortPopupWindow.setAnimationStyle(R.style.consider_anmi);
         mSortPopupWindow.setFocusable(true);
         mSortPopupWindow.setOutsideTouchable(true);
         mSortPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));

@@ -71,7 +71,6 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.umeng.analytics.MobclickAgent;
-import com.ums.iou.activity.IOUAppVerifyActivity;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -682,8 +681,6 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
                 tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
                 tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
             }
-        } else if (requestCode == REQUEST_CODE_QMH) {
-            System.out.println("");
         }
         requestWeatherInfo(beginTime);
     }
@@ -772,12 +769,12 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
 
     @Override
     public void doQmhAction() {
-        //全民化测试插件
-        Intent intent = new Intent(MainActivity.this, IOUAppVerifyActivity.class);
-        intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
-        intent.putExtra("token", SessionContext.getTicket());
-        intent.putExtra("platCode", "2003");
-        intent.putExtra("isShowGuide", "true");
-        startActivityForResult(intent, REQUEST_CODE_QMH);
+        //全民化插件
+//        Intent intent = new Intent(MainActivity.this, IOUAppVerifyActivity.class);
+//        intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
+//        intent.putExtra("token", SessionContext.getTicket());
+//        intent.putExtra("platCode", "2003");
+//        intent.putExtra("isShowGuide", "true");
+//        startActivityForResult(intent, REQUEST_CODE_QMH);
     }
 }

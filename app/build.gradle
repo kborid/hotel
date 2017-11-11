@@ -11,6 +11,7 @@ static def getCurrentDate() {
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.huicheng.hotel.android" //JPush上注册的包名.
@@ -153,11 +154,11 @@ dependencies {
     //银联全民付
     compile(name: 'qmf-ppplugin-2.1.1', ext: 'aar')
     //银联全民花
-    compile(name: 'cfp-common-R-1101-1051', ext: 'aar')
-    compile 'com.github.DgonLam:SelectAddress:v1.1.7'
-    compile 'com.github.DgonLam:PhotoActivity:1.0.2'
-    compile 'com.github.DgonLam:RollViewPager:1.0.0'
-    compile 'com.github.DgonLam:RefreshLayout:1.0.3'
+//    compile(name: 'cfp-common-R-1101-1051', ext: 'aar')
+//    compile 'com.github.DgonLam:SelectAddress:v1.1.7'
+//    compile 'com.github.DgonLam:PhotoActivity:1.0.2'
+//    compile 'com.github.DgonLam:RollViewPager:1.0.0'
+//    compile 'com.github.DgonLam:RefreshLayout:1.0.3'
     //添加阴影工具类
     compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.2'
 }

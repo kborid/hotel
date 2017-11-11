@@ -71,6 +71,8 @@ public class OrderPayActivity extends BaseActivity {
     private String[] payChannel = new String[]{"支付宝支付", "微信支付", "银联支付"};
     private LinearLayout payListLay;
 
+    private int during = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,7 +202,8 @@ public class OrderPayActivity extends BaseActivity {
             tv_room_name.setText(orderPayDetailInfoBean.roomName);
             tv_room_count.setText(String.format(getString(R.string.roomCountStr), orderPayDetailInfoBean.roomCnt));
             tv_date.setText(DateUtil.getDay("MM月dd日", orderPayDetailInfoBean.timeStart) + "-" + DateUtil.getDay("dd日", orderPayDetailInfoBean.timeEnd));
-            tv_during.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(orderPayDetailInfoBean.timeStart), new Date(orderPayDetailInfoBean.timeEnd))));
+            during = DateUtil.getGapCount(new Date(orderPayDetailInfoBean.timeStart), new Date(orderPayDetailInfoBean.timeEnd));
+            tv_during.setText(String.format(getString(R.string.duringNightStr), during));
             float totalPrice = 0;
             try {
                 totalPrice = Float.parseFloat(orderPayDetailInfoBean.amount);
@@ -239,7 +242,7 @@ public class OrderPayActivity extends BaseActivity {
                 StringBuilder sb = new StringBuilder();
                 sb.append(orderPayDetailInfoBean.roomName).append(" ")
                         .append(orderPayDetailInfoBean.roomCnt).append("间").append(" ")
-                        .append(orderPayDetailInfoBean.preTotalPriceList.size()).append("晚");
+                        .append(during).append("晚");
                 tv_title_comm.setText(sb);
                 tv_price_comm.setText(String.format(getString(R.string.rmbStr), String.valueOf(orderPayDetailInfoBean.roomPrice)));
                 room_detail_layout.removeAllViews();

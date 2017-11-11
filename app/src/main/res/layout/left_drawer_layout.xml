@@ -322,12 +322,14 @@
                     android:gravity="center_vertical"
                     android:paddingBottom="20dp"
                     android:paddingTop="20dp"
+                    android:visibility="gone"
                     android:text="@string/side_qmh"
                     android:textColor="@color/sec_color_selector"
                     android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="30dp"
+                    android:visibility="gone"
                     android:layout_height="2dp"
                     android:background="@drawable/comm_line2" />
             </LinearLayout>
