@@ -13,6 +13,7 @@ import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.tools.PinyinUtils;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
@@ -279,14 +280,17 @@ public class SessionContext {
      * @return if versionServer > versionLocal, return 1, if equal, return 0, else return -1
      */
     public static int VersionComparison(String versionServer, String versionLocal) {
+        LogUtil.i(TAG, "VersionComparison():\nserVersion " + versionServer + "\nlocVersion " + versionLocal);
         if (versionServer == null || versionServer.length() == 0 || versionLocal == null || versionLocal.length() == 0)
             throw new IllegalArgumentException("Invalid parameter!");
 
         int index1 = 0;
         int index2 = 0;
         while (index1 < versionServer.length() && index2 < versionLocal.length()) {
+            LogUtil.i(TAG, "VersionComparison() :index======" + index1 + "====" + index2 + "=====");
             int[] number1 = getValue(versionServer, index1);
             int[] number2 = getValue(versionLocal, index2);
+            LogUtil.i(TAG, "VersionComparison() :number=====" + number1[0] + "====" + number2[0] + "=====");
 
             if (number1[0] < number2[0]) {
                 return -1;
@@ -297,6 +301,7 @@ public class SessionContext {
                 index2 = number2[1] + 1;
             }
         }
+
         if (index1 == versionServer.length() && index2 == versionLocal.length())
             return 0;
         if (index1 < versionServer.length())

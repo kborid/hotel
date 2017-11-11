@@ -181,7 +181,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                             } else {
                                 //显示特价OFF_SALE信息，特价/平台价
                                 holder.tv_vip.setVisibility(View.VISIBLE); //如果用户不是酒店会员，则显示VIP条
-                                holder.off_lay.setVisibility(View.VISIBLE);
+//                                holder.off_lay.setVisibility(View.VISIBLE);
                                 holder.off_lay.setBackgroundColor(context.getResources().getColor(R.color.offInfoColor2));
                             }
                         }

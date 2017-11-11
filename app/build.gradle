@@ -16,8 +16,8 @@ android {
         applicationId "com.huicheng.hotel.android" //JPush上注册的包名.
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 15
-        versionName "2.0.4.0003"
+        versionCode 16
+        versionName "2.0.4.0004"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库
@@ -153,7 +153,7 @@ dependencies {
     //银联全民付
     compile(name: 'qmf-ppplugin-2.1.1', ext: 'aar')
     //银联全民花
-    compile(name: 'cfp-common-T-1013-1553', ext: 'aar')
+    compile(name: 'cfp-common-R-1101-1051', ext: 'aar')
     compile 'com.github.DgonLam:SelectAddress:v1.1.7'
     compile 'com.github.DgonLam:PhotoActivity:1.0.2'
     compile 'com.github.DgonLam:RollViewPager:1.0.0'

@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     private ImageView iv_logo_vertical;
     private ImageView iv_left;
 
-    private ImageView iv_uc;
+    private RelativeLayout user_lay;
     private LinearLayout order_lay;
     private TextView tv_city;
     private TextView tv_next_search;
@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         iv_logo_vertical = (ImageView) findViewById(R.id.iv_logo_vertical);
         iv_left = (ImageView) findViewById(R.id.iv_left);
 
-        iv_uc = (ImageView) findViewById(R.id.iv_uc);
+        user_lay = (RelativeLayout) findViewById(R.id.user_lay);
         tv_city = (TextView) findViewById(R.id.tv_city);
         tv_next_search = (TextView) findViewById(R.id.tv_next_search);
         order_lay = (LinearLayout) findViewById(R.id.order_lay);
@@ -221,11 +221,9 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     public void initParams() {
         super.initParams();
         RelativeLayout.LayoutParams ucRlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ucRlp.height = Utils.dip2px(20);
-        ucRlp.width = Utils.dip2px(20);
         ucRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        ucRlp.setMargins(Utils.dip2px(20), Utils.dip2px(38), Utils.dip2px(20), Utils.dip2px(10));
-        iv_uc.setLayoutParams(ucRlp);
+        user_lay.setPadding(Utils.dip2px(20), Utils.mStatusBarHeight + Utils.dip2px(10), Utils.dip2px(20), Utils.dip2px(10));
+        user_lay.setLayoutParams(ucRlp);
 
         RelativeLayout.LayoutParams weatherRlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         weatherRlp.width = Utils.mScreenWidth;
@@ -504,7 +502,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
             public void onDrawerStateChanged(int newState) {
             }
         });
-        iv_uc.setOnClickListener(this);
+        user_lay.setOnClickListener(this);
         tv_city.setOnClickListener(this);
         tv_in_date.setOnClickListener(this);
         tv_out_date.setOnClickListener(this);
@@ -577,7 +575,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
-            case R.id.iv_uc:
+            case R.id.user_lay:
                 drawer_layout.openDrawer(left_layout);
                 break;
             case R.id.tv_city: {
@@ -778,7 +776,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         Intent intent = new Intent(MainActivity.this, IOUAppVerifyActivity.class);
         intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
         intent.putExtra("token", SessionContext.getTicket());
-        intent.putExtra("platCode", "8000");
+        intent.putExtra("platCode", "2003");
         intent.putExtra("isShowGuide", "true");
         startActivityForResult(intent, REQUEST_CODE_QMH);
     }
