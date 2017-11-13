@@ -186,11 +186,11 @@ public class AssessOrdersActivity extends BaseActivity {
         }
     }
 
-    class MyAssessOrdersAdapter extends BaseAdapter {
+    private class MyAssessOrdersAdapter extends BaseAdapter {
         private List<AssessOrderInfoBean> list;
         private Context context;
 
-        public MyAssessOrdersAdapter(Context context, List<AssessOrderInfoBean> list) {
+        MyAssessOrdersAdapter(Context context, List<AssessOrderInfoBean> list) {
             this.context = context;
             this.list = list;
         }

@@ -99,6 +99,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     public void initParams() {
         super.initParams();
         //自OpenInstall SDK 2.0.0开始，SDK内部将会一直保存安装数据，每次调用getInstall方法都会返回值
+        LogUtil.i(TAG, "IS_FIRST_LAUNCH = " + SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true));
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             OpenInstall.getInstall(this);
         }
@@ -153,7 +154,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     private void goToNext() {
         LogUtil.i(TAG, "goToNext()");
         Intent intent;
-        if (!SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
+        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
 //                intent = new Intent(this, GuideSwitchActivity.class);
 //                intent = new Intent(this, MainActivity.class);

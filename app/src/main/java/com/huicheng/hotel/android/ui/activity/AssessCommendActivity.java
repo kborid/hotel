@@ -249,30 +249,31 @@ public class AssessCommendActivity extends BaseActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
+            final AssessOrderDetailInfoBean bean = list.get(position);
             Glide.with(context)
-                    .load(new CustomReqURLFormatModelImpl(list.get(position).headphotourl))
+                    .load(new CustomReqURLFormatModelImpl(bean.headphotourl))
                     .placeholder(R.drawable.def_photo)
                     .crossFade()
                     .centerCrop()
                     .override(150, 150)
                     .into(viewHolder.iv_photo);
-            viewHolder.tv_name.setText(list.get(position).username);
+            viewHolder.tv_name.setText(bean.username);
             viewHolder.tv_name.getPaint().setFakeBoldText(true);
-            viewHolder.tv_date.setText(DateUtil.getDay("MM月 yyyy", list.get(position).createTime));
+            viewHolder.tv_date.setText(DateUtil.getDay("MM月 yyyy", bean.createTime));
 
             float grade = 0;
             try {
-                grade = Float.parseFloat(String.valueOf(list.get(position).grade));
+                grade = Float.parseFloat(String.valueOf(bean.grade));
             } catch (Exception e) {
                 e.printStackTrace();
             }
             viewHolder.tv_point.setText(grade + "分");
-            viewHolder.assess_layout.setColorStars(list.get(position).grade);
+            viewHolder.assess_layout.setColorStars(bean.grade);
 
-            if (StringUtil.notEmpty(list.get(position).imgUrl)) {
+            if (StringUtil.notEmpty(bean.imgUrl)) {
                 viewHolder.iv_picture.setVisibility(View.VISIBLE);
                 Glide.with(context)
-                        .load(new CustomReqURLFormatModelImpl(list.get(position).imgUrl))
+                        .load(new CustomReqURLFormatModelImpl(bean.imgUrl))
                         .placeholder(R.color.hintColor)
                         .crossFade()
                         .fitCenter()
@@ -285,7 +286,7 @@ public class AssessCommendActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ImageScaleActivity.class);
-                    intent.putExtra("url", list.get(position).imgUrl);
+                    intent.putExtra("url", bean.imgUrl);
                     int[] location = new int[2];
                     viewHolder.iv_picture.getLocationOnScreen(location);
                     intent.putExtra("locationX", location[0]);//必须
@@ -296,7 +297,7 @@ public class AssessCommendActivity extends BaseActivity {
                     overridePendingTransition(0, 0);
                 }
             });
-            viewHolder.tv_content.setText(list.get(position).cotent);
+            viewHolder.tv_content.setText(bean.cotent);
             return convertView;
         }
 

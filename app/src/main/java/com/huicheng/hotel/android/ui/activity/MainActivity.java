@@ -96,6 +96,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     private ImageView iv_left;
 
     private RelativeLayout user_lay;
+    private ImageView iv_user;
     private LinearLayout order_lay;
     private TextView tv_city;
     private TextView tv_next_search;
@@ -143,6 +144,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         iv_left = (ImageView) findViewById(R.id.iv_left);
 
         user_lay = (RelativeLayout) findViewById(R.id.user_lay);
+        iv_user = (ImageView) findViewById(R.id.iv_user);
         tv_city = (TextView) findViewById(R.id.tv_city);
         tv_next_search = (TextView) findViewById(R.id.tv_next_search);
         order_lay = (LinearLayout) findViewById(R.id.order_lay);
@@ -196,11 +198,21 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
 
         //海南诚信认证广告
         View adView = LayoutInflater.from(this).inflate(R.layout.pw_ad_hainan_layout, null);
-        mAdHaiNanPopupWindow = new PopupWindow(adView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        mAdHaiNanPopupWindow = new PopupWindow(adView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         mAdHaiNanPopupWindow.getContentView().findViewById(R.id.iv_ad_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAdHaiNanPopupWindow.dismiss();
+            }
+        });
+        mAdHaiNanPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                //重置consider
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1f;
+                getWindow().setAttributes(lp);
             }
         });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -422,6 +434,10 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     }
 
     private void showHaiNanAdPopupWindow() {
+        // 设置背景颜色变暗
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.35f;
+        getWindow().setAttributes(lp);
         mAdHaiNanPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
     }
 
@@ -704,7 +720,12 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         if (response != null && response.body != null) {
             if (request.flag == AppConst.MESSAGE_COUNT) {
                 JSONObject mJson = JSON.parseObject(response.body.toString());
-                left_layout.updateMsgCount(mJson.getString("count"));
+                boolean hasMsg = left_layout.updateMsgCount(mJson.getString("count"));
+                if (hasMsg) {
+                    iv_user.setImageResource(R.drawable.iv_home_user2);
+                } else {
+                    iv_user.setImageResource(R.drawable.iv_home_user);
+                }
             } else if (request.flag == AppConst.WEATHER) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {

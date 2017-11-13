@@ -130,7 +130,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 if (bean.vipPrice < minPrice && mPrice > 0) {
                     holder.tv_vip.setVisibility(View.VISIBLE);
                     isShowVipFlag = true;
-                    holder.tv_vip.setText(context.getString(R.string.vip_price_tips2));
+                    holder.tv_vip.setText(context.getString(R.string.vip_price_tips));
                 }
             }
 

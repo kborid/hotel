@@ -311,6 +311,7 @@ public class UserRegisterActivity extends BaseActivity {
     }
 
     private void requestSaveRecommandData() {
+        LogUtil.i(TAG, "requestSaveRecommandData()");
         JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("recommanduserid", mJson.containsKey("userID") ? mJson.getString("userID") : "");

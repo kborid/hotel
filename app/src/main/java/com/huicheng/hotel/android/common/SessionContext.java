@@ -72,6 +72,7 @@ public class SessionContext {
     }
 
     public static void setOpenInstallAppData(AppData appData) {
+        LogUtil.i(TAG, "setOpenInstallAppData() " + appData);
         mAppData = appData;
     }
 

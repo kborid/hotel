@@ -154,11 +154,8 @@ public class RoomDetailActivity extends BaseActivity {
 
         point_lay = (RelativeLayout) findViewById(R.id.point_lay);
         tv_point = (TextView) findViewById(R.id.tv_point);
-        tv_point.getPaint().setFakeBoldText(true);
         tv_comment = (TextView) findViewById(R.id.tv_comment);
-        tv_comment.getPaint().setFakeBoldText(true);
         tv_room_name = (TextView) findViewById(R.id.tv_room_name);
-        tv_room_name.getPaint().setFakeBoldText(true);
         assess_star_lay = (CommonAssessStarsLayout) findViewById(R.id.assess_star_lay);
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
@@ -372,11 +369,11 @@ public class RoomDetailActivity extends BaseActivity {
             tv_point.setText(String.valueOf(grade));
             assess_star_lay.setColorStars((int) grade);
 
-            if ("0".equals(roomDetailInfoBean.evaluateCount)) {
-                tv_comment.setText("没有评论");
-            } else {
-                tv_comment.setText(roomDetailInfoBean.evaluateCount + "条");
-            }
+//            if ("0".equals(roomDetailInfoBean.evaluateCount)) {
+//                tv_comment.setText("没有评论");
+//            } else {
+//                tv_comment.setText(roomDetailInfoBean.evaluateCount + "条");
+//            }
 
             //设置付款信息
             String arrPayText, prePayText;

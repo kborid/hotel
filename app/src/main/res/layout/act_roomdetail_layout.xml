@@ -78,7 +78,7 @@
                             android:layout_below="@id/tv_point"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
-                            android:text="201条"
+                            android:text="评论"
                             android:textColor="@color/white"
                             android:textSize="9sp"
                             android:textStyle="bold" />

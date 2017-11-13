@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:hint="离店日期"
+            android:hint="退房日期"
             android:textColor="#3c3c3c"
             android:textColorHint="#bfbfbf"
             android:textSize="@dimen/common_24sp" />
@@ -101,7 +101,7 @@
             android:layout_marginRight="20dp"
             android:background="?attr/bottomBtnSel"
             android:enabled="false"
-            android:text="确定"
+            android:text="保存"
             android:textColor="@color/white"
             android:textSize="@dimen/common_18sp"
             android:textStyle="bold" />

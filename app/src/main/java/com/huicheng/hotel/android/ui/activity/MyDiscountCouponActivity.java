@@ -244,7 +244,7 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
         if (info.type == UNION_COUPON) {
             btn_use.setEnabled(true);
             tv_summary.setText(getString(R.string.coupon_tips2));
-            tv_summary.append("\n\n目录酒店：");
+            tv_summary.append(getString(R.string.coupon_tips_support));
             if (info.eventHotel != null && info.eventHotel.size() > 0) {
                 for (int i = 0; i < info.eventHotel.size(); i++) {
                     tv_summary.append(info.eventHotel.get(i));

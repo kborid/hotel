@@ -123,10 +123,8 @@ public class RoomListActivity extends BaseActivity {
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
         tv_assess_point = (TextView) findViewById(R.id.tv_assess_point);
-        tv_assess_point.getPaint().setFakeBoldText(true);
         assess_star_lay = (CommonAssessStarsLayout) findViewById(R.id.assess_star_lay);
         tv_comment = (TextView) findViewById(R.id.tv_comment);
-        tv_comment.getPaint().setFakeBoldText(true);
         tv_hotel_name = (TextView) findViewById(R.id.tv_hotel_name);
         tv_hotel_add = (TextView) findViewById(R.id.tv_hotel_add);
         tv_hotel_phone = (TextView) findViewById(R.id.tv_hotel_phone);
@@ -307,11 +305,11 @@ public class RoomListActivity extends BaseActivity {
             tv_assess_point.setText(String.valueOf(grade));
             assess_star_lay.setColorStars((int) grade);
 
-            if ("0".equals(hotelDetailInfoBean.evaluateCount)) {
-                tv_comment.setText("没有评论");
-            } else {
-                tv_comment.setText(hotelDetailInfoBean.evaluateCount + "条评论");
-            }
+//            if ("0".equals(hotelDetailInfoBean.evaluateCount)) {
+//                tv_comment.setText("没有评论");
+//            } else {
+//                tv_comment.setText(hotelDetailInfoBean.evaluateCount + "条评论");
+//            }
             //设置酒店基本信息
             tv_hotel_name.setText(hotelDetailInfoBean.name);
             tv_hotel_add.setText(hotelDetailInfoBean.address);

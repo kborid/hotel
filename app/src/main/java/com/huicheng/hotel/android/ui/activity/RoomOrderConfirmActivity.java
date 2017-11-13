@@ -237,7 +237,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         b.addBody("userId", SessionContext.mUser.user.userid);
         b.addBody("invoice", invoiceDetailInfoBean);
         b.addBody("arrivalTag", String.valueOf(arrivedValue));
-        if (coupon_lay.isShown()) {
+        if (coupon_lay.isShown() && couponInfo != null) {
             b.addBody("couponid", String.valueOf(couponInfo.id));
         }
         b.addBody("specialComment", et_content.getText().toString());

@@ -224,12 +224,14 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         }
     }
 
-    public void updateMsgCount(String count) {
+    public boolean updateMsgCount(String count) {
         if (!"0".equals(count)) {
             tv_msg_count.setVisibility(VISIBLE);
             tv_msg_count.setText(String.valueOf(count));
+            return true;
         } else {
             tv_msg_count.setVisibility(GONE);
+            return false;
         }
     }
 
