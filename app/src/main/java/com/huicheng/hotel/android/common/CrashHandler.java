@@ -8,7 +8,7 @@ import android.os.Looper;
 import android.os.Process;
 
 import com.huicheng.hotel.android.PRJApplication;
-import com.huicheng.hotel.android.ui.activity.WelcomeActivity;
+import com.huicheng.hotel.android.ui.activity.MainActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
@@ -53,7 +53,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             //系统默认异常处理
             mDefaultUEHandler.uncaughtException(thread, ex);
         } else {
-            Intent intent = new Intent(PRJApplication.getInstance(), WelcomeActivity.class);
+            Intent intent = new Intent(PRJApplication.getInstance(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent restartIntent = PendingIntent.getActivity(

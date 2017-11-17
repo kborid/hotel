@@ -20,6 +20,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -122,7 +123,7 @@ public class GuideSwitchActivity extends BaseActivity {
             dialog.setCanceledOnTouchOutside(true);
             dialog.show();
         } else {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, HotelMainActivity.class);
             intent.putExtra("index", index);
             startActivity(intent);
         }
@@ -133,7 +134,7 @@ public class GuideSwitchActivity extends BaseActivity {
         super.onResume();
         if (SessionContext.getOpenInstallAppData() != null) {
             myHandler.removeCallbacksAndMessages(null);
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, HotelMainActivity.class);
             intent.putExtra("index", 0);
             startActivity(intent);
         }

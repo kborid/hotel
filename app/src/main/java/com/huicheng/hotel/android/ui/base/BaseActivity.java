@@ -33,11 +33,11 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.tools.FixIMMLeaksTools;
-import com.huicheng.hotel.android.ui.activity.InvoiceDetailActivity;
+import com.huicheng.hotel.android.ui.activity.MainActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
-import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
-import com.huicheng.hotel.android.ui.activity.WelcomeActivity;
+import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelInvoiceActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
@@ -90,7 +90,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             if (!SessionContext.isLogin()) {
                 SessionContext.initUserInfo();
             }
-            Intent intent = new Intent(this, WelcomeActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -190,10 +190,10 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_back:
-                if (getClass().equals(InvoiceDetailActivity.class)
+                if (getClass().equals(HotelInvoiceActivity.class)
                         || getClass().equals(OrderPayActivity.class)
                         || getClass().equals(OrderPaySuccessActivity.class)
-                        || getClass().equals(UserCenterActivity.class)) {
+                        || getClass().equals(UcPersonalInfoActivity.class)) {
                     //do nothing
                     LogUtil.i(TAG, "do nothing~~~");
                 } else {

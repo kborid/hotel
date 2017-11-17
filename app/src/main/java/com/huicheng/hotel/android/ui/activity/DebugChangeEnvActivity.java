@@ -154,7 +154,7 @@ public class DebugChangeEnvActivity extends BaseActivity {
                 }, 1000);
                 CustomToast.show(getString(R.string.change_success), CustomToast.LENGTH_SHORT);
 
-                Intent intent = new Intent(PRJApplication.getInstance(), WelcomeActivity.class);
+                Intent intent = new Intent(PRJApplication.getInstance(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 PendingIntent restartIntent = PendingIntent.getActivity(

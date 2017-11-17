@@ -73,7 +73,7 @@ public class PRJApplication extends Application {
         //科大讯飞语音识别初始化
         SpeechUtility.createUtility(this, SpeechConstant.APPID + "=" + getResources().getString(R.string.iflytek_appid));
 
-        //动态注册未登录广播
+        //动态注册未登录广播(静态注册，部分OPPO手机无法接收广播)
         UnLoginBroadcastReceiver unLoginBroadcastReceiver = new UnLoginBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BroadCastConst.UNLOGIN_ACTION);

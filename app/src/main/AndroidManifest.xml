@@ -54,7 +54,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:theme,android:allowBackup,android:name">
         <activity
-            android:name=".ui.activity.WelcomeActivity"
+            android:name=".ui.activity.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.WelTheme">
@@ -81,11 +81,6 @@
         <activity
             android:name=".ui.activity.GuideSwitchActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.MainActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 登录 -->
         <activity
             android:name=".ui.activity.UserLoginActivity"
@@ -108,61 +103,35 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--个人中心-->
         <activity
-            android:name=".ui.activity.UserCenterActivity"
+            android:name=".ui.activity.UcPersonalInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--消息-->
         <activity
-            android:name=".ui.activity.MessageListActivity"
+            android:name=".ui.activity.UcMessagesActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--我的订单-->
         <activity
-            android:name=".ui.activity.OrderListActivity"
+            android:name=".ui.activity.UcOrdersActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!--我的优惠券-->
         <activity
-            android:name=".ui.activity.MyDiscountCouponActivity"
-            android:screenOrientation="portrait" />
-        <!--酒店订单详情-->
-        <activity
-            android:name=".ui.activity.HotelOrderDetailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <!--机票订单详情-->
-        <activity
-            android:name=".ui.activity.PlaneOrderDetailActivity"
-            android:screenOrientation="portrait" />
-        <!--消费详情-->
-        <activity
-            android:name=".ui.activity.ConsumptionDetailActivity"
-            android:screenOrientation="portrait" />
-        <!--订单评价-->
-        <activity
-            android:name=".ui.activity.AssessOrdersActivity"
-            android:screenOrientation="portrait" />
-        <!--评价详情-->
-        <activity
-            android:name=".ui.activity.AssessOrderDetailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <!--评论列表画面-->
-        <activity
-            android:name=".ui.activity.AssessCommendActivity"
+            android:name=".ui.activity.UcCouponsActivity"
             android:screenOrientation="portrait" />
         <!--粉絲酒店-->
         <activity
-            android:name=".ui.activity.FansHotelActivity"
+            android:name=".ui.activity.UcFansHotelActivity"
             android:screenOrientation="portrait" />
         <!-- 意见反馈 -->
         <activity
-            android:name=".ui.activity.FeedbackActivity"
+            android:name=".ui.activity.UcFeedbackActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <!-- 关于 -->
         <activity
-            android:name=".ui.activity.AboutActivity"
+            android:name=".ui.activity.UcAboutActivity"
             android:screenOrientation="portrait" />
         <!--debugInfo-->
         <activity
@@ -174,91 +143,25 @@
             android:screenOrientation="portrait" />
         <!--设置-->
         <activity
-            android:name=".ui.activity.SettingActivity"
+            android:name=".ui.activity.UcSettingActivity"
             android:screenOrientation="portrait" />
-        <!--城市选择画面-->
+        <!--消费详情-->
         <activity
-            android:name=".ui.activity.LocationChooseActivity"
+            android:name=".ui.activity.UcCostDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.SearchResultActivity"
+            android:name=".ui.activity.HotelAllSearchActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <!--酒店日期选择画面-->
+        <!--日期选择画面-->
         <activity
-            android:name=".ui.activity.HotelCalendarChooseActivity"
+            android:name=".ui.activity.CalendarChooseActivity"
             android:screenOrientation="portrait" />
-        <!--0元住首页画面-->
-        <activity
-            android:name=".ui.activity.Hotel0YuanHomeActivity"
-            android:screenOrientation="portrait" />
-        <!--0元住酒店选择画面-->
-        <activity
-            android:name=".ui.activity.Hotel0YuanChooseActivity"
-            android:screenOrientation="portrait" />
-        <!--酒店列表搜索画面-->
-        <activity
-            android:name=".ui.activity.HotelListActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <!--后悔药出售画面-->
-        <activity
-            android:name=".ui.activity.HouHuiYaoSalingActivity"
-            android:screenOrientation="portrait" />
-        <!--后悔药订单详情-->
-        <activity
-            android:name=".ui.activity.HouHuiYaoOrderDetailActivity"
-            android:screenOrientation="portrait" />
-        <!--酒店地图搜索画面-->
-        <activity
-            android:name=".ui.activity.HotelMapActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <!--房間選擇畫面-->
-        <activity
-            android:name=".ui.activity.RoomListActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-
-        <!-- 酒店空间主页 -->
-        <activity
-            android:name=".ui.activity.HotelSpaceHomeActivity"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
-
-        <!-- 酒店空间详情 -->
-        <activity
-            android:name=".ui.activity.HotelSpaceDetailActivity"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-
-        <!-- 酒店空间发表评论 -->
-        <activity
-            android:name=".ui.activity.HotelSpacePublishActivity"
-            android:screenOrientation="portrait" />
-
         <!-- 图片放大显示画面 -->
         <activity
             android:name=".ui.activity.ImageScaleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ImageTransparent" />
-
-        <!-- 关注好友列表画面 -->
-        <activity
-            android:name=".ui.activity.AttendPersonActivity"
-            android:screenOrientation="portrait" />
-        <!--服務附加頁面-->
-        <activity
-            android:name=".ui.activity.RoomDetailActivity"
-            android:screenOrientation="portrait" />
-
-        <!--订单确认画面-->
-        <activity
-            android:name=".ui.activity.RoomOrderConfirmActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--支付方式画面-->
         <activity
             android:name=".ui.activity.OrderPayActivity"
@@ -266,19 +169,111 @@
         <!--支付结果画面-->
         <activity
             android:name=".ui.activity.OrderPaySuccessActivity"
-
             android:screenOrientation="portrait" />
-        <!--发票页面-->
-        <activity
-            android:name=".ui.activity.InvoiceDetailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- h5应用页面 -->
         <activity
             android:name=".ui.activity.HtmlActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-        <!-- 普通html页面 -->
+
+
+        <activity
+            android:name=".ui.activity.hotel.HotelMainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--酒店订单详情-->
+        <activity
+            android:name=".ui.activity.hotel.HotelOrderDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--机票订单详情-->
+        <activity
+            android:name=".ui.activity.PlaneOrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--订单评价-->
+        <activity
+            android:name=".ui.activity.hotel.HotelOrdersAssessActivity"
+            android:screenOrientation="portrait" />
+        <!--评价详情-->
+        <activity
+            android:name=".ui.activity.hotel.HotelAssessDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--评论列表画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelAssessesActivity"
+            android:screenOrientation="portrait" />
+        <!--城市选择画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelCityChooseActivity"
+            android:screenOrientation="portrait" />
+        <!--0元住首页画面-->
+        <activity
+            android:name=".ui.activity.hotel.Hotel0YuanHomeActivity"
+            android:screenOrientation="portrait" />
+        <!--0元住酒店选择画面-->
+        <activity
+            android:name=".ui.activity.hotel.Hotel0YuanChooseActivity"
+            android:screenOrientation="portrait" />
+        <!--酒店列表搜索画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--后悔药出售画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelHhySaleActivity"
+            android:screenOrientation="portrait" />
+        <!--后悔药订单详情-->
+        <activity
+            android:name=".ui.activity.hotel.HotelHhyOrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--酒店地图搜索画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelMapActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!--房間選擇畫面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 酒店空间主页 -->
+        <activity
+            android:name=".ui.activity.hotel.HotelSpaceHomeActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+        <!-- 酒店空间详情 -->
+        <activity
+            android:name=".ui.activity.hotel.HotelSpaceDetailActivity"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 酒店空间发表评论 -->
+        <activity
+            android:name=".ui.activity.hotel.HotelSpacePublishActivity"
+            android:screenOrientation="portrait" />
+        <!-- 关注好友列表画面 -->
+        <activity
+            android:name=".ui.activity.hotel.HotelAttendPersonActivity"
+            android:screenOrientation="portrait" />
+        <!--服務附加頁面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelRoomDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--订单确认画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelRoomOrderActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--发票页面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelInvoiceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
 
         <receiver android:name="com.huicheng.hotel.android.common.pay.wxpay.AppRegister">
             <intent-filter>

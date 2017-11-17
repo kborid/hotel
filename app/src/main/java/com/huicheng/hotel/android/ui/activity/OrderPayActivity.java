@@ -28,6 +28,9 @@ import com.huicheng.hotel.android.common.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.common.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelRoomOrderActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -329,8 +332,8 @@ public class OrderPayActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if (ActivityTack.getInstanse().isExitActivity(HotelListActivity.class)) {
                             startActivity(new Intent(OrderPayActivity.this, HotelListActivity.class));
-                        } else if (ActivityTack.getInstanse().isExitActivity(RoomOrderConfirmActivity.class)) {
-                            Intent intent = new Intent(OrderPayActivity.this, MainActivity.class);
+                        } else if (ActivityTack.getInstanse().isExitActivity(HotelRoomOrderActivity.class)) {
+                            Intent intent = new Intent(OrderPayActivity.this, HotelMainActivity.class);
                             intent.putExtra("isClosed", true);
                             intent.putExtra("index", 0);
                             startActivity(intent);

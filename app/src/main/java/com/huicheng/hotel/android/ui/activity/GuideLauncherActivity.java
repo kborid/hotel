@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.Utils;
@@ -135,7 +136,7 @@ public class GuideLauncherActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_open:
                 SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, HotelMainActivity.class);
                 startActivity(intent);
                 finish();
                 break;

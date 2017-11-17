@@ -25,8 +25,8 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
-import com.huicheng.hotel.android.ui.activity.HotelListActivity;
-import com.huicheng.hotel.android.ui.activity.RoomListActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelDetailActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
 import com.huicheng.hotel.android.ui.adapter.HotelListAdapter;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -181,7 +181,7 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
             @Override
             public void OnItemClick(View view, int position) {
                 HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_ALL);
-                Intent intent = new Intent(getActivity(), RoomListActivity.class);
+                Intent intent = new Intent(getActivity(), HotelDetailActivity.class);
                 intent.putExtra("key", key);
                 intent.putExtra("hotelId", list.get(position).hotelId);
                 startActivity(intent);

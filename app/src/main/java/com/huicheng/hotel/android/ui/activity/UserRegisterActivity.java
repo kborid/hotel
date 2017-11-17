@@ -191,9 +191,9 @@ public class UserRegisterActivity extends BaseActivity {
                 break;
             }
             case R.id.tv_agreement:
-                Intent intent = new Intent(this, AboutActivity.class);
+                Intent intent = new Intent(this, UcAboutActivity.class);
                 intent.putExtra("title", getResources().getString(R.string.setting_usage_condition));
-                intent.putExtra("index", AboutActivity.WORK_CONDITION);
+                intent.putExtra("index", UcAboutActivity.WORK_CONDITION);
                 startActivity(intent);
                 break;
             default:

@@ -44,7 +44,7 @@ public class PermissionsActivity extends AppCompatActivity {
             throw new RuntimeException("PermissionsActivity需要使用静态startActivityForResult方法启动!");
         }
         if (null != savedInstanceState) {
-            Intent intent = new Intent(this, WelcomeActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();

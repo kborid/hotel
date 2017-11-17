@@ -36,10 +36,10 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.HotelCalendarChooseActivity;
-import com.huicheng.hotel.android.ui.activity.HotelListActivity;
-import com.huicheng.hotel.android.ui.activity.LocationChooseActivity;
+import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.PermissionsActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelCityChooseActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -255,7 +255,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.tv_city:
             case R.id.iv_location: {
-                Intent resIntent = new Intent(getActivity(), LocationChooseActivity.class);
+                Intent resIntent = new Intent(getActivity(), HotelCityChooseActivity.class);
                 startActivityForResult(resIntent, 0x01);
             }
             break;
@@ -300,7 +300,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
                 HotelOrderManager.getInstance().setEndTime(endTime);
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
 
-//                intent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
+//                intent = new Intent(getActivity(), CalendarChooseActivity.class);
                 intent = new Intent(getActivity(), HotelListActivity.class);
                 intent.putExtra("index", 0);
                 intent.putExtra("keyword", et_keyword.getText().toString());
@@ -322,7 +322,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 //                break;
             case R.id.tv_date:
             case R.id.iv_date: {
-                Intent resIntent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
+                Intent resIntent = new Intent(getActivity(), CalendarChooseActivity.class);
                 resIntent.putExtra("isTitleCanClick", true);
 //                resIntent.putExtra("beginTime", beginTime);
 //                resIntent.putExtra("endTime", endTime);
