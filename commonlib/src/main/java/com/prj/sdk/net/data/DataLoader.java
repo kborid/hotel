@@ -257,7 +257,6 @@ public class DataLoader {
                 @Override
                 public void run() {
                     try {
-                        LogUtil.i(TAG, "notify callback = " + callback);
                         if (callback != null) {
                             LogUtil.i(TAG, "notify request.isLocal = " + request.isLocal);
                             if (request.isLocal) {
@@ -267,7 +266,6 @@ public class DataLoader {
                                     callback.notifyError(request, null, mException);
                                 }
                             } else {
-                                LogUtil.i(TAG, "notify response = " + response);
                                 if (response != null && response.head != null) {
                                     JSONObject mJson = new JSONObject(response.head.toString());
                                     // 将错误code赋值给code，方便使用
@@ -278,12 +276,10 @@ public class DataLoader {
                                     if (mJson.has("rtnMsg")) {
                                         response.data = mJson.getString("rtnMsg");
                                     }
-                                    LogUtil.i(TAG, "notify response.code = " + response.code);
-                                    LogUtil.i(TAG, "notify response.data = " + response.data);
+                                    LogUtil.i(TAG, "notify response = " + response.code + ", " + response.data);
 
                                     if ("000000".equals(response.code)) {
                                         callback.notifyMessage(request, response);
-                                        LogUtil.i(TAG, "callback.notify message " + response.code);
                                     } else {
                                         if ("900902".equals(response.code) || "310001".equals(response.code)) {// 900902 票据失效
                                             Intent intent = new Intent(BroadCastConst.UNLOGIN_ACTION);
@@ -292,7 +288,7 @@ public class DataLoader {
                                             response.data = "登录超时,请重新登录";
                                         }
                                         callback.notifyError(request, response, mException);
-                                        LogUtil.i(TAG, "callback.notify error " + response.code);
+                                        LogUtil.i(TAG, "notify response = " + response.code + ", " + response.data);
                                     }
                                 } else {
                                     callback.notifyError(request, response, mException);

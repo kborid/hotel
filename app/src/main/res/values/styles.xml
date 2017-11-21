@@ -267,7 +267,7 @@
     <style name="tabTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">@dimen/common_16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#ada9a4</item>
+        <item name="android:textColor">#9b9b9b</item>
     </style>
 
     <style name="MyProgressBar" parent="Base.Widget.AppCompat.ProgressBar" />

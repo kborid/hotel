@@ -45,7 +45,7 @@ public class PRJApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LogUtil.i(TAG, "The App Start--->>> onCreate()");
+        LogUtil.i(TAG, "Application Start--->>> onCreate()");
         AppContext.init(this);
 //        Collections.addAll(DataLoader.getInstance().mCacheUrls, NetURL.CACHE_URL);
 //        BDLocationControl.getInstance().startLocationOnce();
@@ -80,17 +80,15 @@ public class PRJApplication extends Application {
         registerReceiver(unLoginBroadcastReceiver, intentFilter);
 
         // Debug模式下打开webView debug开关
-        if (AppConst.ISDEVELOP) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                WebView.setWebContentsDebuggingEnabled(true);
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(AppConst.ISDEVELOP);
         }
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        LogUtil.i(TAG, "The App attach base context--->>> attachBaseContext()");
+        LogUtil.i(TAG, "Application attach base context--->>> attachBaseContext()");
         MultiDex.install(this);
     }
 

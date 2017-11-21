@@ -5,21 +5,20 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
+import android.os.Looper;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.fm.openinstall.OpenInstall;
-import com.fm.openinstall.listener.AppInstallListener;
-import com.fm.openinstall.listener.AppWakeUpListener;
-import com.fm.openinstall.model.AppData;
-import com.fm.openinstall.model.Error;
+import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.BuildConfig;
-import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
@@ -27,259 +26,213 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
-import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
-import com.huicheng.hotel.android.permission.PermissionsDef;
-import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
+import com.huicheng.hotel.android.ui.activity.plane.PlaneMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.algo.MD5Tool;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
-import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
- * 欢迎页面
+ * @author kborid
+ * @date 2017/5/24 0024
  */
-public class MainActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener {
+public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLeftDrawerListener {
+    private AppInfoBean mAppInfoBean = null;
+    private long exitTime = 0;
+    private LinearLayout hotel_lay, plane_lay, train_lay, taxi_lay;
+    private String[] tips = new String[4];
+    private static Handler myHandler = new Handler(Looper.getMainLooper());
+    private boolean isNeedCloseLeftDrawer = false;
 
-    private Map<Integer, Integer> mTag = new HashMap<>();
-    private static HandlerThread mHandlerThread = null;
-    private static Handler mHandler = null;
+    private DrawerLayout drawer_layout;
+    private LeftDrawerLayout left_layout;
 
-    private static long mStartTime = 0;
-    private static final long AD_SHOWTIME = 2000;
+    private RelativeLayout blur_lay;
+    private ImageView iv_blur;
+    private ImageView iv_logo_vertical;
+    private ImageView iv_left;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        initLaunchWindow();
+    protected void onCreate(Bundle savedInstanceState) {
+        initMainWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main_layout);
-        mStartTime = System.currentTimeMillis();
-        // 避免从桌面启动程序后，会重新实例化入口类的activity
-        if (!this.isTaskRoot()) {
-            Intent intent = getIntent();
-            if (intent != null) {
-                String action = intent.getAction();
-                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
-                    finish();
-                    return;
-                }
-            }
-        }
-        onNewIntent(getIntent());
         initViews();
         initParams();
         initListeners();
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-        OpenInstall.getWakeUp(intent, this);
-    }
-
-    @Override
     public void initViews() {
         super.initViews();
+        hotel_lay = (LinearLayout) findViewById(R.id.hotel_lay);
+        plane_lay = (LinearLayout) findViewById(R.id.plane_lay);
+        train_lay = (LinearLayout) findViewById(R.id.train_lay);
+        taxi_lay = (LinearLayout) findViewById(R.id.taxi_lay);
+
+        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (null != drawer_layout) {
+            drawer_layout.setScrimColor(getResources().getColor(R.color.transparent50));
+        }
+        left_layout = (LeftDrawerLayout) findViewById(R.id.left_layout);
+
+        blur_lay = (RelativeLayout) findViewById(R.id.blur_lay);
+        iv_blur = (ImageView) findViewById(R.id.iv_blur);
+        iv_logo_vertical = (ImageView) findViewById(R.id.iv_logo_vertical);
+        iv_left = (ImageView) findViewById(R.id.iv_left);
     }
 
+    @Override
+    public void dealIntent() {
+        super.dealIntent();
+        Bundle bundle = getIntent().getExtras();
+        if (null != bundle) {
+            isNeedCloseLeftDrawer = bundle.getBoolean("isClosed");
+        }
+    }
+
+    @Override
     public void initParams() {
         super.initParams();
-        //自OpenInstall SDK 2.0.0开始，SDK内部将会一直保存安装数据，每次调用getInstall方法都会返回值
-        LogUtil.i(TAG, "IS_FIRST_LAUNCH = " + SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true));
-        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
-            OpenInstall.getInstall(this);
-        }
-        Utils.initScreenSize(this);// 设置手机屏幕大小
-        SessionContext.initUserInfo();
-    }
-
-    private void requestAppVersionInfo() {
-        LogUtil.i(TAG, "requestAppVersionInfo()");
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("contype", "0"); // 0:android, 1:ios
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.APP_INFO;
-        d.flag = AppConst.APP_INFO;
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    private void requestGDTInterface() {
-        LogUtil.i(TAG, "requestGDTInterface()");
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("muid", MD5Tool.getMD5(Utils.getIMEI()));
-        ResponseData d = b.syncRequestGET(b);
-        d.path = NetURL.AD_GDT_IF;
-        d.flag = AppConst.AD_GDT_IF;
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    private void requestHomeBannerInfo() {
-        LogUtil.i(TAG, "requestHotelBanner()");
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.HOTEL_BANNER;
-        d.flag = AppConst.HOTEL_BANNER;
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    public void doLastAction() {
-        LogUtil.i(TAG, "doLastAction()");
-        long exitTime = System.currentTimeMillis();
-        if (exitTime - mStartTime < AD_SHOWTIME) {
-            new Handler().postDelayed(new Runnable() {
+        tips = getResources().getStringArray(R.array.MainTabTips);
+        //app更新提示
+        String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
+        if (StringUtil.notEmpty(appInfo)) {
+            mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
+            myHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    goToNext();
+                    String ignoreVersion = SharedPreferenceUtil.getInstance().getString(AppConst.IGNORE_UPDATE_VERSION, "", false);
+                    String versionSer = mAppInfoBean.upid.split("（")[0];
+                    String versionLoc = BuildConfig.VERSION_NAME.split("（")[0];
+                    if ((1 <= SessionContext.VersionComparison(versionSer, versionLoc)) && !mAppInfoBean.upid.equals(ignoreVersion)) {
+                        showUpdateDialog(mAppInfoBean);
+                    }
                 }
-            }, AD_SHOWTIME - (exitTime - mStartTime));
+            }, 1000);
+        }
+
+        //更新用户中心
+        left_layout.updateUserInfo();
+    }
+
+    @Override
+    public void initListeners() {
+        super.initListeners();
+        hotel_lay.setOnClickListener(this);
+        plane_lay.setOnClickListener(this);
+        train_lay.setOnClickListener(this);
+        taxi_lay.setOnClickListener(this);
+
+        left_layout.setOnLeftDrawerListener(this);
+        drawer_layout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                iv_blur.setAlpha(slideOffset * 1f);
+                iv_logo_vertical.setAlpha(slideOffset);
+                iv_left.setAlpha(slideOffset);
+                if (slideOffset > 0) {
+                    blur_lay.setVisibility(View.VISIBLE);
+                } else {
+                    blur_lay.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        int index = 0;
+        Intent intent = null;
+        switch (v.getId()) {
+            case R.id.hotel_lay:
+                index = 0;
+                intent = new Intent(this, HotelMainActivity.class);
+                intent.putExtra("index", index);
+                break;
+            case R.id.plane_lay:
+                index = 1;
+                intent = new Intent(this, PlaneMainActivity.class);
+                intent.putExtra("index", index);
+                break;
+            case R.id.train_lay:
+                index = 2;
+                break;
+            case R.id.taxi_lay:
+                index = 3;
+                break;
+        }
+        if (index == 2 || index == 3) {
+            CustomDialog dialog = new CustomDialog(this);
+            dialog.setMessage(tips[index]);
+            dialog.setNegativeButton(getString(R.string.iknown), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.show();
         } else {
-            goToNext();
-        }
-    }
-
-    private void goToNext() {
-        LogUtil.i(TAG, "goToNext()");
-        Intent intent;
-        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
-            SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
-//                intent = new Intent(this, GuideSwitchActivity.class);
-//                intent = new Intent(this, HotelMainActivity.class);
-//            } else {
-//                intent = new Intent(this, GuideLauncherActivity.class);
-        }
-        intent = new Intent(this, HotelMainActivity.class);
-        startActivity(intent);
-        finish();
-        overridePendingTransition(R.anim.launch_in, R.anim.launch_out);
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        return event.getKeyCode() == KeyEvent.KEYCODE_BACK || super.dispatchKeyEvent(event);
-    }
-
-    @Override
-    public void onInstallFinish(AppData appData, Error error) {
-        LogUtil.i(TAG, "onInstallFinish() appData = " + appData + ", error = " + error + ", do nothing!!!");
-        AppData tmp = null;
-        if (null != appData) {
-            LogUtil.i(TAG, "appData = " + appData.toString());
-            if (StringUtil.notEmpty(appData.getChannel()) || StringUtil.notEmpty(appData.getData())) {
-                tmp = appData;
+            if (null != intent) {
+                startActivity(intent);
             }
         }
-        SessionContext.setOpenInstallAppData(tmp);
     }
 
-    @Override
-    public void onWakeUpFinish(AppData appData, Error error) {
-        LogUtil.i(TAG, "onWakeUpFinish() appData = " + appData + ", error = " + error);
-        AppData tmp = null;
-        if (null != appData) {
-            LogUtil.i(TAG, "appData = " + appData.toString());
-            if (StringUtil.notEmpty(appData.getChannel()) || StringUtil.notEmpty(appData.getData())) {
-                tmp = appData;
-            }
-        }
-        SessionContext.setOpenInstallAppData(tmp);
+    private void requestMessageCount() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.MESSAGE_COUNT;
+        d.flag = AppConst.MESSAGE_COUNT;
+        DataLoader.getInstance().loadData(this, d);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // 缺少权限时, 进入权限配置页面
-        if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.LAUNCH_REQUIRE_PERMISSIONS)) {
-            PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LAUNCH_REQUIRE_PERMISSIONS);
-            return;
-        }
-        //用户第一次启动时，调用后台封装的广点通的接口，统计激活量
-        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
-            requestGDTInterface();
+        if (SessionContext.getOpenInstallAppData() != null) {
+            myHandler.removeCallbacksAndMessages(null);
+            Intent intent = new Intent(this, HotelMainActivity.class);
+            intent.putExtra("index", 0);
+            startActivity(intent);
         }
 
-        if (null == mHandlerThread) {
-            mHandlerThread = new HandlerThread("dealJsonReqThread");
-            mHandlerThread.start();
-            mHandler = new Handler(mHandlerThread.getLooper());
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    CityParseUtils.initAreaJsonData(MainActivity.this);
-                    requestHomeBannerInfo();
-                    requestAppVersionInfo();
-                }
-            });
+        if (SessionContext.isLogin()) {
+            requestMessageCount();
+        }
+
+        if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
+            isNeedCloseLeftDrawer = false;
+            drawer_layout.closeDrawers();
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (null != mHandlerThread) {
-            mHandlerThread.quit();
-            mHandlerThread = null;
-        }
-
-        if (null != mHandler) {
-            mHandler.removeCallbacksAndMessages(null);
-        }
-    }
-
-    @Override
-    public void onNotifyMessage(ResponseData request, ResponseData response) {
-        if (response != null && response.body != null) {
-            if (request.flag == AppConst.APP_INFO) {
-                mTag.put(AppConst.APP_INFO, AppConst.APP_INFO);
-                LogUtil.i(TAG, "json = " + response.body.toString());
-                if (StringUtil.notEmpty(response.body.toString()) && !response.body.toString().equals("{}")) {
-                    AppInfoBean bean = JSON.parseObject(response.body.toString(), AppInfoBean.class);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.APPINFO, response.body.toString(), false);
-                    String versionSer = bean.upid.split("（")[0];
-                    String versionLoc = BuildConfig.VERSION_NAME.split("（")[0];
-                    if (bean.isforce == 0 && 1 <= SessionContext.VersionComparison(versionSer, versionLoc)) {
-                        mTag.remove(AppConst.APP_INFO);
-                        showFocusUpdateDialog(bean);
-                    }
-                }
-            } else if (request.flag == AppConst.HOTEL_BANNER) {
-                mTag.put(AppConst.HOTEL_BANNER, AppConst.HOTEL_BANNER);
-                LogUtil.i(TAG, "json = " + response.body.toString());
-                List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
-                SessionContext.setBannerList(temp);
-            } else if (request.flag == AppConst.AD_GDT_IF) {
-                LogUtil.i(TAG, "json = " + response.body.toString());
-            }
-
-            if (mTag.size() == 2) {
-                doLastAction();
-            }
-        }
-    }
-
-    @Override
-    public void onNotifyError(ResponseData request) {
-        mTag.put(request.flag, request.flag);
-        if (mTag.size() == 2) {
-            doLastAction();
-        }
-    }
-
-    private void showFocusUpdateDialog(final AppInfoBean bean) {
+    private void showUpdateDialog(final AppInfoBean bean) {
         final CustomDialog dialog = new CustomDialog(this);
         String title = getString(R.string.update_tips);
         if (StringUtil.notEmpty(bean.tip)) {
@@ -287,14 +240,13 @@ public class MainActivity extends BaseActivity implements AppInstallListener, Ap
         }
         dialog.setTitle(title);
         dialog.setMessage(bean.updesc);
-        dialog.setNegativeButton(getString(R.string.exit), new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton(getString(R.string.update_not), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DataLoader.getInstance().clearRequests();
-                ActivityTack.getInstanse().exit();
+                SharedPreferenceUtil.getInstance().setString(AppConst.IGNORE_UPDATE_VERSION, bean.upid, false);
             }
         });
-        dialog.setPositiveButton(getString(R.string.update), new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(getString(R.string.update_todo), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final CustomDialog pd = new CustomDialog(MainActivity.this);
@@ -350,15 +302,61 @@ public class MainActivity extends BaseActivity implements AppInstallListener, Ap
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
-            if (resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-                ActivityTack.getInstanse().exit();
-                SessionContext.destroy();
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
+        if (null != response && response.body != null) {
+            if (request.flag == AppConst.MESSAGE_COUNT) {
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                boolean hasMsg = left_layout.updateMsgCount(mJson.getString("count"));
+//                if (hasMsg) {
+//                    iv_user.setImageResource(R.drawable.iv_home_user2);
+//                } else {
+//                    iv_user.setImageResource(R.drawable.iv_home_user);
+//                }
             }
-            mStartTime = System.currentTimeMillis();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        left_layout.unregisterBroadReceiver();
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (drawer_layout.isDrawerOpen(left_layout)) {
+                drawer_layout.closeDrawers();
+                return true;
+            }
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                CustomToast.show(getString(R.string.exit_tip), CustomToast.LENGTH_SHORT);
+                exitTime = System.currentTimeMillis();
+            } else {
+                MobclickAgent.onKillProcess(this);
+                ActivityTack.getInstanse().exit();
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public void closeDrawer() {
+        if (null != drawer_layout) {
+            drawer_layout.closeDrawers();
+        }
+    }
+
+    @Override
+    public void doQmhAction() {
+        //全民化插件 platCode生产2003，测试8000
+//        Intent intent = new Intent(HotelMainActivity.this, IOUAppVerifyActivity.class);
+//        intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
+//        intent.putExtra("token", SessionContext.getTicket());
+//        intent.putExtra("platCode", "2003");
+//        intent.putExtra("isShowGuide", "true");
+//        startActivityForResult(intent, REQUEST_CODE_QMH);
     }
 }

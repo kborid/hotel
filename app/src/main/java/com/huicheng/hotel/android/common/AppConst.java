@@ -1,6 +1,6 @@
 package com.huicheng.hotel.android.common;
 
-import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.BuildConfig;
 
 /**
  * 项目常量
@@ -8,7 +8,7 @@ import com.prj.sdk.util.LogUtil;
  * @author LiaoBo
  */
 public final class AppConst {
-    public static final boolean ISDEVELOP = LogUtil.isDebug(); // 开发者模式
+    public static final boolean ISDEVELOP = BuildConfig.DEBUG; // 开发者模式
 
     public static final String APPINFO = "app_info"; //app版本信息
     public static final String IGNORE_UPDATE_VERSION = "ignore_update_version"; //忽略更新版本

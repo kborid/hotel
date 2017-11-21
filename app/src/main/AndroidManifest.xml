@@ -54,7 +54,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:theme,android:allowBackup,android:name">
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.activity.LauncherActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.WelTheme">
@@ -79,7 +79,7 @@
             android:name=".ui.activity.GuideLauncherActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.GuideSwitchActivity"
+            android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait" />
         <!-- 登录 -->
         <activity
@@ -176,7 +176,13 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 
-
+        <!--机票入口main-->
+        <activity
+            android:name=".ui.activity.plane.PlaneMainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--酒店入口main-->
         <activity
             android:name=".ui.activity.hotel.HotelMainActivity"
             android:launchMode="singleTask"
@@ -189,7 +195,7 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--机票订单详情-->
         <activity
-            android:name=".ui.activity.PlaneOrderDetailActivity"
+            android:name=".ui.activity.plane.PlaneOrderDetailActivity"
             android:screenOrientation="portrait" />
         <!--订单评价-->
         <activity

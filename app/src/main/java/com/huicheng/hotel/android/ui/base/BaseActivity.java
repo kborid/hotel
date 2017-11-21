@@ -33,7 +33,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.tools.FixIMMLeaksTools;
-import com.huicheng.hotel.android.ui.activity.MainActivity;
+import com.huicheng.hotel.android.ui.activity.LauncherActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
@@ -64,7 +64,7 @@ import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity implements OnClickListener, DataCallback {
 
-    protected final String TAG = getClass().getSimpleName();
+    protected final String TAG = "cn.abcbooking";
 
     private CustomDialog mDialogVip;
     protected static boolean isHotelVipRefresh = false;
@@ -90,7 +90,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             if (!SessionContext.isLogin()) {
                 SessionContext.initUserInfo();
             }
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, LauncherActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();

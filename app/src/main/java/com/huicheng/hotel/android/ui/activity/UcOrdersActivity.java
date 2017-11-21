@@ -24,6 +24,7 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.OrdersSpendInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderDetailActivity;
+import com.huicheng.hotel.android.ui.activity.plane.PlaneOrderDetailActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;

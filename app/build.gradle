@@ -1,11 +1,9 @@
 apply plugin: 'com.android.application'
 
-static def getAppName() {
-    return "abc";
-}
-
-static def getCurrentDate() {
-    return new Date().format('yyyyMMdd');
+ext.AppName = 'ABC旅行预订'
+ext {
+    appName = 'abc'
+    currentDate = new Date().format('yyyyMMdd')
 }
 
 android {
@@ -14,11 +12,11 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "com.huicheng.hotel.android" //JPush上注册的包名.
+        applicationId 'com.huicheng.hotel.android' //JPush上注册的包名
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 17
-        versionName "2.1.0"
+        versionCode 18
+        versionName '2.1.0.0001'
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库
@@ -67,12 +65,11 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             zipAlignEnabled true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.release
-            minifyEnabled false
-            zipAlignEnabled false
         }
     }
 
@@ -97,13 +94,12 @@ android {
         exclude 'META-INF/NOTICE.txt'
     }
 
-    android.applicationVariants.all {
-        variant ->
+    applicationVariants.all { variant ->
             variant.outputs.each { output ->
                 if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
                     def apkFile = new File(
                             output.outputFile.getParent(),
-                            "${getAppName()}_v${variant.versionName}_${getCurrentDate()}_${variant.buildType.name}.apk")
+                            "${appName}_v${variant.versionName}_${currentDate}_${variant.buildType.name}.apk")
                     output.outputFile = apkFile
                 }
             }
@@ -154,11 +150,11 @@ dependencies {
     //银联全民付
     compile(name: 'qmf-ppplugin-2.1.1', ext: 'aar')
     //银联全民花
-//    compile(name: 'cfp-common-R-1101-1051', ext: 'aar')
-//    compile 'com.github.DgonLam:SelectAddress:v1.1.7'
-//    compile 'com.github.DgonLam:PhotoActivity:1.0.2'
-//    compile 'com.github.DgonLam:RollViewPager:1.0.0'
-//    compile 'com.github.DgonLam:RefreshLayout:1.0.3'
+    //    compile(name: 'cfp-common-R-1101-1051', ext: 'aar')
+    //    compile 'com.github.DgonLam:SelectAddress:v1.1.7'
+    //    compile 'com.github.DgonLam:PhotoActivity:1.0.2'
+    //    compile 'com.github.DgonLam:RollViewPager:1.0.0'
+    //    compile 'com.github.DgonLam:RefreshLayout:1.0.3'
     //添加阴影工具类
     compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.2'
 }

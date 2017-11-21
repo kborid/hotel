@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.ui.activity;
+package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
 import android.content.res.TypedArray;

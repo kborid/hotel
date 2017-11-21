@@ -213,6 +213,10 @@
     <string name="od_btn_assess">去评论</string>
     <string name="od_btn_rebook">再次预订</string>
 
+    <!--机票-->
+    <string name="plane_single">单程</string>
+    <string name="plane_double">往返</string>
+
     <!--debug info-->
     <string name="debug_menu">Debug Menu</string>
     <string name="debug_change">Change Environment</string>
