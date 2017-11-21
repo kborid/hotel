@@ -3,6 +3,7 @@
 
     <dimen name="common_text_size">14sp</dimen>
     <dimen name="common_description_size">12sp</dimen>
+    <dimen name="common_8sp"> 8sp </dimen>
     <dimen name="common_9sp"> 9sp </dimen>
     <dimen name="common_10sp">10sp</dimen>
     <dimen name="common_11sp">11sp</dimen>

@@ -176,12 +176,20 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 
+
+        <!--机票-->
         <!--机票入口main-->
         <activity
             android:name=".ui.activity.plane.PlaneMainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--机票航班列表-->
+        <activity
+            android:name=".ui.activity.plane.PlaneListActivity"
+            android:screenOrientation="portrait" />
+
+        <!--酒店-->
         <!--酒店入口main-->
         <activity
             android:name=".ui.activity.hotel.HotelMainActivity"

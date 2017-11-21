@@ -35,6 +35,8 @@ public class PlaneMainActivity extends BaseMainActivity {
     private TextView tv_off_date, tv_off_week;
     private TextView tv_on_date, tv_on_week;
 
+    private TextView tv_next_search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,8 @@ public class PlaneMainActivity extends BaseMainActivity {
         on_date_lay = (LinearLayout) findViewById(R.id.on_date_lay);
         tv_on_date = (TextView) findViewById(R.id.tv_on_date);
         tv_on_week = (TextView) findViewById(R.id.tv_on_week);
+
+        tv_next_search = (TextView) findViewById(R.id.tv_next_search);
     }
 
     @Override
@@ -86,6 +90,7 @@ public class PlaneMainActivity extends BaseMainActivity {
         });
         off_date_lay.setOnClickListener(this);
         on_date_lay.setOnClickListener(this);
+        tv_next_search.setOnClickListener(this);
     }
 
     @Override
@@ -101,6 +106,10 @@ public class PlaneMainActivity extends BaseMainActivity {
                 startActivityForResult(resIntent, REQUEST_CODE_DATE);
                 break;
             }
+            case R.id.tv_next_search:
+                Intent nextIntent = new Intent(this, PlaneListActivity.class);
+                startActivity(nextIntent);
+                break;
         }
     }
 
