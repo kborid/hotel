@@ -196,7 +196,12 @@
     <string name="point_level_2">非常棒</string><!-->=4.5-->
     <string name="point_level_3">不错哦</string><!-->=4.0-->
 
-    <string name="submit_order">提交订单</string>
+    <string name="order_need_invoice">需要发票</string>
+    <string name="order_need_not_invoice">不需要发票</string>
+    <string name="order_invoice_tips">需要发票（仅限普通发票）</string>
+    <string name="order_submit">提交订单</string>
+    <string name="order_topay">去支付</string>
+    <string name="order_waitConfirm">订单正在确认，请耐心等待</string>
 
     <string name="od_position">位置 / POSITION</string>
     <string name="od_hotel_tel">酒店电话 / HOTEL TEL</string>

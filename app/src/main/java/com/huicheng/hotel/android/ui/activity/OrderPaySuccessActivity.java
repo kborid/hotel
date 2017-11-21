@@ -99,7 +99,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        tv_center_title.setText("订单成功");
+        tv_center_title.setText(getString(R.string.order_waitConfirm));
     }
 
     private void refreshHotelInfo() {

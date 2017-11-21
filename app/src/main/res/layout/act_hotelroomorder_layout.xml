@@ -383,7 +383,7 @@
                         android:layout_alignParentRight="true"
                         android:background="?attr/indicatorBgSel"
                         android:gravity="center"
-                        android:text="@string/submit_order"
+                        android:text="@string/order_submit"
                         android:textColor="@color/white"
                         android:textSize="@dimen/common_15sp" />
                 </RelativeLayout>
