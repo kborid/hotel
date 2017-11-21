@@ -134,7 +134,7 @@ public class InvoiceDetailActivity extends BaseActivity {
                 }
 
                 if (StringUtil.notEmpty(et_email.getText().toString())) {
-                    bean.email = et_id.getText().toString();
+                    bean.email = et_email.getText().toString();
                 } else {
                     CustomToast.show("请输入电子邮箱地址", CustomToast.LENGTH_SHORT);
                     return;

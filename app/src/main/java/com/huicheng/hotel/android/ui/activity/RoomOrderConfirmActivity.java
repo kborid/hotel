@@ -204,9 +204,9 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         }
 
         if (HotelCommDef.PAY_ARR.equals(HotelOrderManager.getInstance().getPayType())) {
-            tv_submit.setText("提交订单");
+            tv_submit.setText(getString(R.string.order_submit));
         } else {
-            tv_submit.setText("去支付");
+            tv_submit.setText(getString(R.string.order_topay));
         }
     }
 
@@ -361,15 +361,15 @@ public class RoomOrderConfirmActivity extends BaseActivity {
                 if (isInvoice) {
                     if (data.getExtras().get("InvoiceDetail") != null) {
                         invoiceDetailInfoBean = (InvoiceDetailInfoBean) data.getExtras().get("InvoiceDetail");
-                        tv_invoice_info.setText("需要发票");
+                        tv_invoice_info.setText(getString(R.string.order_need_invoice));
                     } else {
                         invoiceDetailInfoBean = new InvoiceDetailInfoBean();
-                        tv_invoice_info.setText("不需要发票");
+                        tv_invoice_info.setText(getString(R.string.order_need_not_invoice));
                         isInvoice = false;
                     }
                 } else {
                     invoiceDetailInfoBean = new InvoiceDetailInfoBean();
-                    tv_invoice_info.setText("不需要发票");
+                    tv_invoice_info.setText(getString(R.string.order_need_not_invoice));
                 }
                 LogUtil.i(TAG, new Gson().toJson(invoiceDetailInfoBean));
                 if (invoiceDetailInfoBean != null) {
