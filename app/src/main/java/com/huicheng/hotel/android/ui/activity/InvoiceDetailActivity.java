@@ -22,6 +22,7 @@ import com.prj.sdk.util.StringUtil;
  */
 public class InvoiceDetailActivity extends BaseActivity {
     private Switch btn_switch;
+    private TextView tv_status;
     private LinearLayout invoice_lay;
 
     private EditText et_company_name, et_id, et_email;
@@ -42,6 +43,7 @@ public class InvoiceDetailActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         btn_switch = (Switch) findViewById(R.id.btn_switch);
+        tv_status = (TextView) findViewById(R.id.tv_status);
         invoice_lay = (LinearLayout) findViewById(R.id.invoice_lay);
         et_company_name = (EditText) findViewById(R.id.et_company_name);
         et_id = (EditText) findViewById(R.id.et_id);
@@ -76,6 +78,7 @@ public class InvoiceDetailActivity extends BaseActivity {
 
     private void updateInvoiceInfo() {
         if (isInvoice) {
+            tv_status.setText(getString(R.string.order_invoice_tips));
             invoice_lay.setVisibility(View.VISIBLE);
             if (null != bean) {
                 et_company_name.setText(bean.title);
@@ -83,6 +86,7 @@ public class InvoiceDetailActivity extends BaseActivity {
                 et_email.setText(bean.email);
             }
         } else {
+            tv_status.setText(getString(R.string.order_need_not_invoice));
             invoice_lay.setVisibility(View.GONE);
         }
     }
@@ -96,8 +100,10 @@ public class InvoiceDetailActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 btn_switch.setChecked(isChecked);
                 if (isChecked) {
+                    tv_status.setText(getString(R.string.order_invoice_tips));
                     invoice_lay.setVisibility(View.VISIBLE);
                 } else {
+                    tv_status.setText(getString(R.string.order_need_not_invoice));
                     invoice_lay.setVisibility(View.GONE);
                 }
             }

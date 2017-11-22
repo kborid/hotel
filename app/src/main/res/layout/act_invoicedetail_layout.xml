@@ -22,10 +22,11 @@
         android:padding="20dp">
 
         <TextView
+            android:id="@+id/tv_status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/order_invoice_tips"
+            android:text="@string/order_need_not_invoice"
             android:textColor="?attr/mainColor"
             android:textSize="@dimen/common_12sp"
             android:textStyle="bold" />
