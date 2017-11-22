@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f8f8"
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_title" />
+    <!--预订航班信息-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp">
+
+        <include layout="@layout/layout_plane_order_item" />
+
+        <include layout="@layout/layout_plane_order_item" />
+    </LinearLayout>
+
+    <!--订单填写信息-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbarThumbVertical="@drawable/p3016_scrollbar"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            android:paddingTop="10dp">
+
+            <!--联系人信息-->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/plane_listitem_bg"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:paddingBottom="6dp"
+                android:paddingLeft="22dp"
+                android:paddingRight="22dp"
+                android:paddingTop="6dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:text="联系人"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_14sp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:background="@color/transparent"
+                        android:gravity="center"
+                        android:hint="请输入联系人姓名"
+                        android:inputType="text"
+                        android:textColor="#666666"
+                        android:textColorHint="#cccccc"
+                        android:textSize="@dimen/common_18sp" />
+                </TableRow>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#e2e2e2" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:text="手机号码"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_14sp" />
+
+                    <EditText
+                        android:id="@+id/et_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:background="@color/transparent"
+                        android:gravity="center"
+                        android:hint="用于短信接收"
+                        android:inputType="phone"
+                        android:textColor="#666666"
+                        android:textColorHint="#cccccc"
+                        android:textSize="@dimen/common_18sp" />
+                </TableRow>
+            </TableLayout>
+            <!--乘机人信息-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/layout_plane_custominfo_item" />
+
+            </LinearLayout>
+            <!--保险信息-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/plane_listitem_bg"
+                android:orientation="vertical"
+                android:paddingBottom="12dp"
+                android:paddingLeft="22dp"
+                android:paddingRight="27dp"
+                android:paddingTop="13dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:buttonTint="#666666"
+                        android:checked="true"
+                        android:text="意外险"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="详细说明"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="¥30"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:buttonTint="#666666"
+                        android:text="延误险"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="详细说明"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="¥20"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--发票信息-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/plane_listitem_bg"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="19dp"
+                android:paddingTop="12dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="报销凭证"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_14sp"
+                        android:textStyle="bold" />
+
+                    <Switch
+                        android:id="@+id/btn_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#e2e2e2" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="行程单航班起飞后3天内邮寄，邮寄服务由ABC旅行预订提供，行程单问题请联系12345678901"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/common_12sp" />
+            </LinearLayout>
+
+            <!--agreement-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:paddingLeft="27dp"
+                android:paddingRight="27dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/cb_agree1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:buttonTint="#666666"
+                        android:checked="true"
+                        android:text="同意："
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/cb_agree1"
+                        android:layout_marginLeft="1dp"
+                        android:layout_toRightOf="@id/cb_agree1"
+                        android:text="锂电池规定、禁止危险品乘机说明 及 特殊旅客购票须知"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_12sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <CheckBox
+                        android:id="@+id/cb_agree2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:buttonTint="#666666"
+                        android:checked="true"
+                        android:text="同意："
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/cb_agree2"
+                        android:layout_marginLeft="1dp"
+                        android:layout_toRightOf="@id/cb_agree2"
+                        android:text="ABC旅行预订会员服务协议（包括0元入住协议）"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_12sp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!--底部栏-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="6dp"
+        android:weightSum="5">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <!--总价信息-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥19800"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="(共1人)"
+                        android:textColor="#cccccc"
+                        android:textSize="@dimen/common_12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="订单总价"
+                    android:textColor="#cccccc"
+                    android:textSize="@dimen/common_12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!--订单明细-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:drawableRight="@drawable/iv_accessory_black_alpha3"
+                    android:text="明细"
+                    android:textColor="#cccccc"
+                    android:textSize="@dimen/common_12sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!--提交订单 btn-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="2"
+            android:background="@drawable/plane_detail_book_btn_bg"
+            android:gravity="center"
+            android:text="提交订单"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_18sp" />
+    </LinearLayout>
+</LinearLayout>

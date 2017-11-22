@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="3dp"
+        android:background="@drawable/plane_listitem_bg"
+        android:orientation="vertical"
+        android:paddingBottom="6dp"
+        android:paddingLeft="27dp"
+        android:paddingRight="20dp"
+        android:paddingTop="12dp">
+        <!--机票价格信息-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="¥9900"
+                    android:textColor="@color/plane_mainColor"
+                    android:textSize="@dimen/common_18sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7.4折经济舱"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <View
+                        android:layout_width="@dimen/public_space_value_0.5"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="6dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="实时出票"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <View
+                        android:layout_width="@dimen/public_space_value_0.5"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="6dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="退改签说明"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/plane_detail_book_btn_bg"
+                android:paddingBottom="4dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="3dp"
+                android:text="预订"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_12sp" />
+        </LinearLayout>
+
+
+        <!--航班信息-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="中国邮政航空"
+                android:textColor="#9b9b9b"
+                android:textSize="@dimen/common_12sp" />
+
+            <View
+                android:layout_width="@dimen/public_space_value_0.5"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:background="#cccccc" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="官方直营店"
+                android:textColor="#9b9b9b"
+                android:textSize="@dimen/common_12sp" />
+        </LinearLayout>
+
+
+        <!--特别备注信息-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="6dp"
+            android:visibility="visible">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/line_plane_detailitem"
+                android:layerType="software" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="6dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="含：经济舱+任意酒店一晚"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/common_12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

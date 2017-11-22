@@ -64,7 +64,7 @@ import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity implements OnClickListener, DataCallback {
 
-    protected final String TAG = "cn.abcbooking";
+    protected final String TAG = "AirBookingCenter";
 
     private CustomDialog mDialogVip;
     protected static boolean isHotelVipRefresh = false;

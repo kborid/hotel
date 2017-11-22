@@ -24,31 +24,31 @@ import java.util.List;
  * @author kborid
  * @date 2017/3/6 0006
  */
-public class CommonCustomInfoLayout extends LinearLayout {
+public class CustomInfoLayoutForHotel extends LinearLayout {
     private Context context;
 
     private LinearLayout custom_info_layout;
 
-    public CommonCustomInfoLayout(Context context) {
+    public CustomInfoLayoutForHotel(Context context) {
         super(context);
         this.context = context;
         init();
     }
 
-    public CommonCustomInfoLayout(Context context, AttributeSet attrs) {
+    public CustomInfoLayoutForHotel(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         init();
     }
 
-    public CommonCustomInfoLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CustomInfoLayoutForHotel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         init();
     }
 
     private void init() {
-        LayoutInflater.from(context).inflate(R.layout.custom_info_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.layout_hotel_custominfo, this);
         findViews();
         setClickListeners();
         initializeLayoutItem();
@@ -75,7 +75,7 @@ public class CommonCustomInfoLayout extends LinearLayout {
     }
 
     private View getNewItemView() {
-        final View view = LayoutInflater.from(context).inflate(R.layout.custom_info_item, null);
+        final View view = LayoutInflater.from(context).inflate(R.layout.layout_hotel_custominfo_item, null);
         final TextView tv_person_label = (TextView) view.findViewById(R.id.tv_person_label);
         final ImageView iv_remove = (ImageView) view.findViewById(R.id.iv_remove);
         final ImageView iv_add = (ImageView) view.findViewById(R.id.iv_add);

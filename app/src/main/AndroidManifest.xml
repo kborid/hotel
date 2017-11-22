@@ -184,9 +184,17 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <!--机票航班列表-->
+        <!--机票列表画面-->
         <activity
             android:name=".ui.activity.plane.PlaneListActivity"
+            android:screenOrientation="portrait" />
+        <!--机票详情、航班列表画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--机票订单确认画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneOrderActivity"
             android:screenOrientation="portrait" />
 
         <!--酒店-->

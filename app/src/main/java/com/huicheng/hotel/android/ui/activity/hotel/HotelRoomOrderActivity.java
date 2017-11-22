@@ -30,7 +30,7 @@ import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
-import com.huicheng.hotel.android.ui.custom.CommonCustomInfoLayout;
+import com.huicheng.hotel.android.ui.custom.CustomInfoLayoutForHotel;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
@@ -78,7 +78,7 @@ public class HotelRoomOrderActivity extends BaseActivity {
     private int hotelId, roomId = -1;
     private StringBuilder serviceIds = new StringBuilder();
     private StringBuilder serviceCounts = new StringBuilder();
-    private CommonCustomInfoLayout custom_lay;
+    private CustomInfoLayoutForHotel custom_lay;
     private boolean isYgr = false;
 
     private boolean hasValidCoupon = false;
@@ -115,7 +115,7 @@ public class HotelRoomOrderActivity extends BaseActivity {
         tv_coupon_info = (TextView) findViewById(R.id.tv_coupon_info);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
         tv_submit.getPaint().setFakeBoldText(true);
-        custom_lay = (CommonCustomInfoLayout) findViewById(R.id.custom_lay);
+        custom_lay = (CustomInfoLayoutForHotel) findViewById(R.id.custom_lay);
     }
 
     @Override
