@@ -68,7 +68,7 @@ public class Hotel0YuanHomeActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_back.setImageResource(R.drawable.iv_back_white);
+        setBackButtonResource(R.drawable.iv_back_white);
         Bitmap bm = BitmapUtils.getGrayBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.iv_share));
         iv_share.setImageBitmap(bm);
         iv_share.setEnabled(false);

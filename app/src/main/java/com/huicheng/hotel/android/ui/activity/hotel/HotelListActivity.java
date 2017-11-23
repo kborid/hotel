@@ -16,6 +16,7 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -82,6 +83,9 @@ public class HotelListActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
+        View searchView = LayoutInflater.from(this).inflate(R.layout.layout_hotellist_search, null);
+        setTitleContentView(searchView);
+        setRightButtonResource(R.drawable.iv_map);
         date_lay = (LinearLayout) findViewById(R.id.date_lay);
         tv_in_date = (TextView) findViewById(R.id.tv_in_date);
         tv_out_date = (TextView) findViewById(R.id.tv_out_date);
@@ -205,8 +209,6 @@ public class HotelListActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        btn_back.setOnClickListener(this);
-        btn_right.setOnClickListener(this);
         date_lay.setOnClickListener(this);
         search_lay.setOnClickListener(this);
         sort_lay.setOnClickListener(this);
@@ -278,10 +280,8 @@ public class HotelListActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_back:
-                finish();
-                break;
             case R.id.btn_right:
                 Intent intent = new Intent(this, HotelMapActivity.class);
                 intent.putExtra("index", index);

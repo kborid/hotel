@@ -185,7 +185,7 @@ public class UcPersonalInfoActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_back.setImageResource(R.drawable.iv_back_white);
+        setRightButtonResource(R.drawable.iv_back_white);
         setCountDownTimer(60 * 1000, 1000);
         scroll_view.getBackground().mutate().setAlpha((int) (0.8 * 255));
 

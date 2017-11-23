@@ -126,18 +126,13 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public final void showProgressDialog(Context context) {
-        showProgressDialog(context, null);
-    }
-
     /**
      * 显示loading对话框
      */
-    public final void showProgressDialog(Context cxt, String tip) {
+    public final void showProgressDialog(Context context) {
         if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(cxt);
+            mProgressDialog = new ProgressDialog(context);
         }
-//        mProgressDialog.setMessage(tip);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();

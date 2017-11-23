@@ -70,6 +70,7 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
             et_first.setText(temp.get(i).firstName);
             et_phone.setText(temp.get(i).phone);
             custom_info_layout.addView(customChildView, i);
+            updateButtonStatus(custom_info_layout.getChildCount());
         }
         return temp.size();
     }
@@ -194,12 +195,12 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
 
     private void updateButtonStatus(int count) {
         //刷新状态
-        if (count <= 1) {
+        if (count == 1) {
             custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setEnabled(false);
             custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setAlpha(0.5f);
             custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
             custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
-        } else {
+        } else if (count > 1) {
             custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setEnabled(true);
             custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setAlpha(1.0f);
             custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);

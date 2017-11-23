@@ -120,15 +120,15 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText("酒店空间");
-        btn_right.setImageResource(R.drawable.iv_vippp);
+        setRightButtonResource(R.drawable.iv_vippp);
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         // 会员按钮显示状态
         if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
             btn_right.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isVip) {
-                btn_right.setImageResource(R.drawable.iv_viped);
+                setRightButtonResource(R.drawable.iv_viped);
             } else {
-                btn_right.setImageResource(R.drawable.iv_vippp);
+                setRightButtonResource(R.drawable.iv_vippp);
             }
         } else {
             btn_right.setVisibility(View.INVISIBLE);
@@ -263,9 +263,9 @@ public class HotelSpaceHomeActivity extends BaseActivity {
         super.onResume();
         if (null != hotelDetailInfoBean) {
             if (hotelDetailInfoBean.isVip) {
-                btn_right.setImageResource(R.drawable.iv_viped);
+                setRightButtonResource(R.drawable.iv_viped);
             } else {
-                btn_right.setImageResource(R.drawable.iv_vippp);
+                setRightButtonResource(R.drawable.iv_vippp);
             }
         }
     }

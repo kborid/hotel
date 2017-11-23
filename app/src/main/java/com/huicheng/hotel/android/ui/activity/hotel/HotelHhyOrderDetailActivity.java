@@ -90,7 +90,6 @@ public class HotelHhyOrderDetailActivity extends BaseActivity {
     @Override
     public void initParams() {
         tv_center_title.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false) + "·" + SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
-        tv_center_summary.setText(dateStr);
         super.initParams();
     }
 

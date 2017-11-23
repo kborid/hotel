@@ -170,7 +170,8 @@
                     android:layout_centerVertical="true"
                     android:text="¥1000"
                     android:textColor="#7b7b7b"
-                    android:textSize="@dimen/common_12sp" />
+                    android:textSize="@dimen/common_12sp"
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <RelativeLayout

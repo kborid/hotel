@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.base;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -64,17 +64,19 @@ import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity implements OnClickListener, DataCallback {
 
-    protected final String TAG = "AirBookingCenter";
+    protected final String TAG = getClass().getSimpleName();
 
-    private CustomDialog mDialogVip;
     protected static boolean isHotelVipRefresh = false;
-
-    private ProgressDialog mProgressDialog;
-    protected TextView tv_center_title, tv_center_summary;
-    protected ImageView btn_back, btn_right;
-    protected static String requestID;
-
     protected static boolean isReStarted = false;
+    protected static String requestID;
+    private ProgressDialog mProgressDialog;
+    private CustomDialog mDialogVip;
+
+    protected TextView tv_center_title;
+    private LinearLayout title_content_lay;
+    protected RelativeLayout btn_back, btn_right;
+    private ImageView iv_back, iv_right;
+    private TextView tv_right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,13 +153,13 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
 
     // 初始化组件
     public void initViews() {
+        title_content_lay = (LinearLayout) findViewById(R.id.title_content_lay);
         tv_center_title = (TextView) findViewById(R.id.tv_center_title);
-        if (null != tv_center_title) {
-            tv_center_title.setTypeface(Typeface.DEFAULT_BOLD);
-        }
-        tv_center_summary = (TextView) findViewById(R.id.tv_center_summary);
-        btn_back = (ImageView) findViewById(R.id.btn_back);
-        btn_right = (ImageView) findViewById(R.id.btn_right);
+        btn_back = (RelativeLayout) findViewById(R.id.btn_back);
+        btn_right = (RelativeLayout) findViewById(R.id.btn_right);
+        iv_back = (ImageView) findViewById(R.id.iv_back);
+        iv_right = (ImageView) findViewById(R.id.iv_right);
+        tv_right = (TextView) findViewById(R.id.tv_right);
     }
 
     public void dealIntent() {
@@ -167,22 +169,59 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         dealIntent();
     }
 
-    //设置title的描述
-    public void setTitleSummaryString(String summary) {
-        if (null != tv_center_summary) {
-            if (StringUtil.notEmpty(summary)) {
-                tv_center_summary.setText(summary);
-                tv_center_summary.setVisibility(View.VISIBLE);
-            } else {
-                tv_center_summary.setVisibility(View.GONE);
+    public void setTitleContentView(View view) {
+        if (null != title_content_lay) {
+            if (null != view) {
+                title_content_lay.removeAllViews();
+                title_content_lay.addView(view);
             }
         }
     }
+
+    public void setBackButtonResource(int backResId) {
+        if (null != btn_back) {
+            if (backResId != -1) {
+                iv_back.setImageResource(backResId);
+            }
+        }
+    }
+
+    public void setRightButtonResource(int rightResId) {
+        setRightButtonResource(rightResId, null);
+    }
+
+    public void setRightButtonResource(String rightStr) {
+        setRightButtonResource(-1, rightStr);
+    }
+
+    public void setRightButtonResource(int rightResId, String rightStr) {
+        if (null != btn_right) {
+            if (StringUtil.isEmpty(rightStr) && -1 == rightResId) {
+                btn_right.setVisibility(View.INVISIBLE);
+            } else {
+                btn_right.setVisibility(View.VISIBLE);
+                if (StringUtil.notEmpty(rightStr)) {
+                    tv_right.setVisibility(View.VISIBLE);
+                    tv_right.setText(rightStr);
+                    return;
+                }
+
+                if (rightResId != -1) {
+                    iv_right.setVisibility(View.VISIBLE);
+                    iv_right.setImageResource(rightResId);
+                }
+            }
+        }
+    }
+
 
     // 监听设置
     public void initListeners() {
         if (btn_back != null) {
             btn_back.setOnClickListener(this);
+        }
+        if (btn_right != null) {
+            btn_right.setOnClickListener(this);
         }
     }
 
@@ -232,6 +271,11 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         ActivityTack.getInstanse().removeActivity(this);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+    }
+
     /**
      * 显示loading对话框
      */
@@ -255,9 +299,6 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         }
     }
 
-    /**
-     * 隐藏虚拟按键，并且全屏
-     */
     protected void hideBottomAndStatusBar() {
         //隐藏虚拟按键，并且全屏
         if (Build.VERSION.SDK_INT < 19) { // lower api
@@ -461,7 +502,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
             HotelOrderManager.getInstance().getHotelDetailInfo().isVip = true;
             btn_right.setVisibility(View.VISIBLE);
-            btn_right.setImageResource(R.drawable.iv_viped);
+            setRightButtonResource(R.drawable.iv_viped);
             refreshScreenInfoVipPrice();
             CustomToast.show(getString(R.string.isViped), CustomToast.LENGTH_SHORT);
         }

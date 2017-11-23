@@ -162,8 +162,7 @@ public class HotelDetailActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_right.setImageResource(R.drawable.iv_vippp);
-
+        setRightButtonResource(R.drawable.iv_vippp);
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         beginTime = HotelOrderManager.getInstance().getBeginTime();
         endTime = HotelOrderManager.getInstance().getEndTime();
@@ -260,9 +259,9 @@ public class HotelDetailActivity extends BaseActivity {
             if (hotelDetailInfoBean.isSupportVip) {
                 btn_right.setVisibility(View.VISIBLE);
                 if (hotelDetailInfoBean.isVip) {
-                    btn_right.setImageResource(R.drawable.iv_viped);
+                    setRightButtonResource(R.drawable.iv_viped);
                 } else {
-                    btn_right.setImageResource(R.drawable.iv_vippp);
+                    setRightButtonResource(R.drawable.iv_vippp);
                     if (!SharedPreferenceUtil.getInstance().getBoolean(AppConst.HAS_SHOW_VIP_TIPS, false)) {
                         vip_layout.setVisibility(View.VISIBLE);
                     } else {

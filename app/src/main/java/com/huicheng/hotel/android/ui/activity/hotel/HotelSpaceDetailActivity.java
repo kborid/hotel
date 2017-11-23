@@ -194,15 +194,15 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     public void initParams() {
         super.initParams();
         tv_center_title.setText("帖子详情");
-        btn_right.setImageResource(R.drawable.iv_vippp);
+        setRightButtonResource(R.drawable.iv_vippp);
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         // 会员按钮显示状态
         if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
             btn_right.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isVip) {
-                btn_right.setImageResource(R.drawable.iv_viped);
+                setRightButtonResource(R.drawable.iv_viped);
             } else {
-                btn_right.setImageResource(R.drawable.iv_vippp);
+                setRightButtonResource(R.drawable.iv_vippp);
             }
         } else {
             btn_right.setVisibility(View.INVISIBLE);

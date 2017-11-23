@@ -183,8 +183,7 @@ public class HotelAllSearchActivity extends BaseActivity {
                 mDialog.show();
                 break;
             case R.id.tv_cancel:
-                this.finish();
-                overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
+                finish();
                 break;
             default:
                 break;
@@ -235,11 +234,8 @@ public class HotelAllSearchActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            tv_cancel.performClick();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
     }
 }

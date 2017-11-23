@@ -142,7 +142,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                     if (mPrice > 0) {
                         //判断是否显示特价
                         if (bean.speciallyPrice >= mPrice || bean.speciallyPrice <= 0) {
-                            holder.tv_platform_price.setVisibility(View.GONE);
+                            holder.tv_platform_price.setVisibility(View.INVISIBLE);
                             price = String.valueOf(mPrice);
                             holder.tv_price_unit.setVisibility(View.VISIBLE);
 
@@ -186,13 +186,13 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                             }
                         }
                     } else {
-                        holder.tv_platform_price.setVisibility(View.GONE);
+                        holder.tv_platform_price.setVisibility(View.INVISIBLE);
                         holder.off_lay.setVisibility(View.GONE);
                     }
                     holder.tv_real_price.setText(price);
                     break;
                 case HotelCommDef.TYPE_CLOCK:
-                    holder.tv_platform_price.setVisibility(View.GONE);
+                    holder.tv_platform_price.setVisibility(View.INVISIBLE);
                     if (bean.clockPrice != 0) { //价格为0时判断处理
                         price = String.valueOf(bean.clockPrice);
                         holder.tv_price_unit.setVisibility(View.VISIBLE);

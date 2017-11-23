@@ -84,7 +84,6 @@ public class CalendarChooseActivity extends BaseActivity implements CalendarSele
     public void initParams() {
         super.initParams();
         tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
-        tv_center_title.getPaint().setFakeBoldText(true);
         initWeekLayout();
         if (isTitleCanClick) {
             tv_center_title.setEnabled(true);
