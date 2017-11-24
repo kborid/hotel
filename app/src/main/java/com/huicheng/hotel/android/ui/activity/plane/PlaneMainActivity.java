@@ -14,10 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -67,6 +70,12 @@ public class PlaneMainActivity extends BaseMainActivity {
         tabs.addTab(tabs.newTab().setText(getString(R.string.plane_double)), TAB_DOUBLE, false);
         setIndicator(tabs, 54, 54);
         refreshPlaneStateAndInfo(0);
+        //地点信息
+        String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+        String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+        if (StringUtil.notEmpty(province) || StringUtil.notEmpty(city)) {
+            requestWeatherInfo(beginTime);
+        }
     }
 
     @Override

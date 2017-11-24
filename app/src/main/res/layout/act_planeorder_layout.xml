@@ -6,19 +6,6 @@
     android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
-    <!--预订航班信息-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingLeft="18dp"
-        android:paddingRight="18dp">
-
-        <include layout="@layout/layout_plane_order_item" />
-
-        <include layout="@layout/layout_plane_order_item" />
-    </LinearLayout>
 
     <!--订单填写信息-->
     <ScrollView
@@ -35,13 +22,26 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:orientation="vertical"
-            android:paddingBottom="12dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="12dp">
+            <!--预订航班信息-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:visibility="visible">
 
+                <include layout="@layout/layout_plane_order_item" />
+
+                <include layout="@layout/layout_plane_order_item" />
+            </LinearLayout>
             <!--联系人信息-->
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/plane_listitem_bg"
                 android:focusable="false"
                 android:focusableInTouchMode="true"
@@ -49,7 +49,8 @@
                 android:paddingBottom="6dp"
                 android:paddingLeft="22dp"
                 android:paddingRight="22dp"
-                android:paddingTop="6dp">
+                android:paddingTop="6dp"
+                android:visibility="visible">
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -107,7 +108,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <include layout="@layout/layout_plane_custominfo_item" />
 
@@ -122,7 +124,8 @@
                 android:paddingBottom="12dp"
                 android:paddingLeft="22dp"
                 android:paddingRight="27dp"
-                android:paddingTop="13dp">
+                android:paddingTop="13dp"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -131,11 +134,15 @@
                     android:orientation="horizontal">
 
                     <CheckBox
+                        style="@style/checkBox_style"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:textSize="@dimen/common_14sp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:buttonTint="#666666"
-                        android:checked="true"
+                        android:layout_marginLeft="14dp"
                         android:text="意外险"
                         android:textColor="#666666"
                         android:textSize="@dimen/common_14sp" />
@@ -167,10 +174,15 @@
                     android:orientation="horizontal">
 
                     <CheckBox
+                        style="@style/checkBox_style"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:textSize="@dimen/common_14sp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:buttonTint="#666666"
+                        android:layout_marginLeft="14dp"
                         android:text="延误险"
                         android:textColor="#666666"
                         android:textSize="@dimen/common_14sp" />
@@ -195,7 +207,6 @@
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
-
             <!--发票信息-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -214,6 +225,7 @@
                     android:layout_marginBottom="10dp">
 
                     <TextView
+                        android:id="@+id/tv_invoice_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -222,12 +234,23 @@
                         android:textSize="@dimen/common_14sp"
                         android:textStyle="bold" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/tv_invoice_label"
+                        android:text="(邮费¥10)"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_14sp" />
+
                     <Switch
-                        android:id="@+id/btn_switch"
+                        android:id="@+id/btn_invoice_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"
+                        android:checked="false" />
                 </RelativeLayout>
 
                 <View
@@ -235,15 +258,216 @@
                     android:layout_height="0.5dp"
                     android:background="#e2e2e2" />
 
+                <!--报销说明-->
                 <TextView
+                    android:id="@+id/tv_invoice_tips"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:text="行程单航班起飞后3天内邮寄，邮寄服务由ABC旅行预订提供，行程单问题请联系12345678901"
                     android:textColor="#999999"
                     android:textSize="@dimen/common_12sp" />
-            </LinearLayout>
+                <!--发票信息-->
+                <LinearLayout
+                    android:id="@+id/invoice_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="行程单"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_14sp"
+                            android:textStyle="bold" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#e2e2e2" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="保险发票（电子发票，个人抬头）"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_14sp"
+                            android:textStyle="bold" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#e2e2e2" />
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical">
+
+                        <!--发票信息-->
+                        <TableRow android:layout_marginTop="10dp">
+
+                            <TextView
+                                android:layout_width="95dp"
+                                android:text="发票抬头"
+                                android:textColor="#cccccc"
+                                android:textSize="@dimen/common_12sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <RadioGroup
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:padding="8dp">
+
+                                    <RadioButton
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/vip_detail_tag_selector"
+                                        android:button="@null"
+                                        android:gravity="center"
+                                        android:padding="5dp"
+                                        android:text="个人"
+                                        android:textColor="#cccccc"
+                                        android:textSize="@dimen/common_12sp" />
+
+                                    <RadioButton
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/vip_detail_tag_selector"
+                                        android:button="@null"
+                                        android:gravity="center"
+                                        android:padding="5dp"
+                                        android:text="公司"
+                                        android:textColor="#cccccc"
+                                        android:textSize="@dimen/common_12sp" />
+                                </RadioGroup>
+
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:gravity="center_vertical"
+                                    android:hint="请填写发票抬头"
+                                    android:inputType="text"
+                                    android:padding="10dp"
+                                    android:textColorHint="#cccccc"
+                                    android:textSize="@dimen/common_14sp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0.5dp"
+                                        android:background="#e2e2e2" />
+
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@null"
+                                        android:gravity="center_vertical"
+                                        android:hint="请填写纳税人识别号"
+                                        android:inputType="text"
+                                        android:padding="10dp"
+                                        android:textColorHint="#cccccc"
+                                        android:textSize="@dimen/common_14sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </TableRow>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="#e2e2e2" />
+                        <!--收货地址-->
+                        <TableRow android:layout_marginTop="14dp">
+
+                            <TextView
+                                android:layout_width="95dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="收货信息"
+                                android:textColor="#cccccc"
+                                android:textSize="@dimen/common_12sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/test_short"
+                                    android:textColor="#666666"
+                                    android:textSize="@dimen/common_12sp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="小田  12222222222"
+                                    android:textColor="#666666"
+                                    android:textSize="@dimen/common_12sp" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_chooser"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="24dp"
+                                android:gravity="center_vertical"
+                                android:text="更改"
+                                android:textColor="@color/plane_mainColor"
+                                android:textSize="@dimen/common_12sp" />
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+            </LinearLayout>
             <!--agreement-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -253,17 +477,22 @@
                 android:paddingLeft="27dp"
                 android:paddingRight="27dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <CheckBox
-                        android:id="@+id/cb_agree1"
+                        style="@style/checkBox_style"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:checked="true"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:buttonTint="#666666"
-                        android:checked="true"
+                        android:layout_marginLeft="8dp"
                         android:text="同意："
                         android:textColor="#666666"
                         android:textSize="@dimen/common_12sp" />
@@ -271,27 +500,31 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/cb_agree1"
                         android:layout_marginLeft="1dp"
-                        android:layout_toRightOf="@id/cb_agree1"
+                        android:gravity="bottom"
                         android:text="锂电池规定、禁止危险品乘机说明 及 特殊旅客购票须知"
                         android:textColor="@color/plane_mainColor"
                         android:textSize="@dimen/common_12sp" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
 
                     <CheckBox
-                        android:id="@+id/cb_agree2"
+                        style="@style/checkBox_style"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:checked="true"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:buttonTint="#666666"
-                        android:checked="true"
+                        android:layout_marginLeft="8dp"
                         android:text="同意："
                         android:textColor="#666666"
                         android:textSize="@dimen/common_12sp" />
@@ -299,14 +532,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/cb_agree2"
                         android:layout_marginLeft="1dp"
-                        android:layout_toRightOf="@id/cb_agree2"
+                        android:gravity="bottom"
                         android:text="ABC旅行预订会员服务协议（包括0元入住协议）"
                         android:textColor="@color/plane_mainColor"
                         android:textSize="@dimen/common_12sp" />
-
-                </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -2,18 +2,24 @@ package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.custom.plane.PlaneConsiderLayout;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
@@ -28,11 +34,15 @@ public class PlaneListActivity extends BaseActivity {
     private ListView listview;
     private ArrayList<String> list = new ArrayList<>();
     private PlaneItemAdapter planeItemAdapter;
-
     private Gallery gallery;
     private PlaneDatePriceAdapter planeDatePriceAdapter;
 
     private RelativeLayout calendar_lay;
+    private TextView tv_consider;
+
+    //筛选
+    private PopupWindow mPlaneConsiderPopupWindow = null;
+    private PlaneConsiderLayout mPlaneConsiderLayout = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +56,27 @@ public class PlaneListActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
-        gallery = (Gallery) findViewById(R.id.gallery);
         calendar_lay = (RelativeLayout) findViewById(R.id.calendar_lay);
+        gallery = (Gallery) findViewById(R.id.gallery);
         listview = (ListView) findViewById(R.id.listview);
+        tv_consider = (TextView) findViewById(R.id.tv_consider);
+        //筛选
+        mPlaneConsiderLayout = new PlaneConsiderLayout(this);
+        mPlaneConsiderPopupWindow = new PopupWindow(mPlaneConsiderLayout, ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(470), true);
+        mPlaneConsiderPopupWindow.setAnimationStyle(R.style.share_anmi);
+        mPlaneConsiderPopupWindow.setFocusable(true);
+        mPlaneConsiderPopupWindow.setOutsideTouchable(true);
+        mPlaneConsiderPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        mPlaneConsiderPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                //重置consider
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1f;
+                getWindow().setAttributes(lp);
+            }
+        });
     }
 
     @Override
@@ -77,6 +105,7 @@ public class PlaneListActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        tv_consider.setOnClickListener(this);
     }
 
     @Override
@@ -85,7 +114,18 @@ public class PlaneListActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.calendar_lay:
                 break;
+            case R.id.tv_consider:
+                showConsiderPopupWindow();
+                break;
         }
+    }
+
+    private void showConsiderPopupWindow() {
+        // 设置背景颜色变暗
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.5f;
+        getWindow().setAttributes(lp);
+        mPlaneConsiderPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
     }
 
     @Override

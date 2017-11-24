@@ -62,8 +62,8 @@ public class PlaneOrderDetailActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_back.setImageResource(R.drawable.iv_back_white);
 
+        setRightButtonResource(R.drawable.iv_back_white);
         WebSettings webSetting = mWebView.getSettings();
         webSetting.setJavaScriptEnabled(true);
         webSetting.setJavaScriptCanOpenWindowsAutomatically(true);

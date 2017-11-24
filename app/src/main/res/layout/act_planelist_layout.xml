@@ -65,6 +65,7 @@
         android:padding="6dp">
 
         <TextView
+            android:id="@+id/tv_consider"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

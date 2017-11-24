@@ -181,6 +181,15 @@
         <item>昆明</item>
     </string-array>
 
+    <string-array name="PlaneConditionItem">
+        <item>起飞时段</item>
+        <item>航空公司</item>
+        <item>机场</item>
+        <item>机型</item>
+        <item>仓位</item>
+    </string-array>
+
+
     <string name="iflytek_tips">语音技术由科大讯飞提供</string>
 
     <string name="test">不应当急于求成，应当去熟悉自己的研究对象，锲而不舍，时间会成全一切。凡事开始最难，然而更难的是何以善终。\n——莎士比亚</string>

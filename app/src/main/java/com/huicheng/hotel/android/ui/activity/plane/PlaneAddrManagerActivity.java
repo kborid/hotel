@@ -6,34 +6,32 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.prj.sdk.util.DateUtil;
-import com.prj.sdk.util.LoggerUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * @auth kborid
- * @date 2017/11/22 0022.
+ * @date 2017/11/23 0023.
  */
 
-public class PlaneDetailActivity extends BaseActivity {
+public class PlaneAddrManagerActivity extends BaseActivity {
 
-    private ArrayList<String> list = new ArrayList<>();
+    private TextView tv_right;
     private ListView listview;
-    private PlaneDetailItemAdapter adapter;
-    private View mListHeaderView;
+    private ArrayList<String> list = new ArrayList<>();
+    private AddressManagerAdapter addressManagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(0, 0);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_planedetail_layout);
+        setContentView(R.layout.act_plane_addrmanager_layout);
         initViews();
         initParams();
         initListeners();
@@ -42,43 +40,33 @@ public class PlaneDetailActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
+        tv_right = (TextView) findViewById(R.id.tv_right);
         listview = (ListView) findViewById(R.id.listview);
-        mListHeaderView = LayoutInflater.from(this).inflate(R.layout.lv_planedetail_header, null);
     }
 
     @Override
     public void initParams() {
         super.initParams();
-        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        tv_center_title.setText(DateUtil.getDay("M月d日", System.currentTimeMillis()) + DateUtil.dateToWeek2(new Date(System.currentTimeMillis())));
-        setRightButtonResource(R.drawable.iv_plane_share);
         for (int i = 0; i < 10; i++) {
             list.add(String.valueOf(i));
         }
-        adapter = new PlaneDetailItemAdapter(this, list);
-        listview.setAdapter(adapter);
-        listview.addHeaderView(mListHeaderView);
+        addressManagerAdapter = new AddressManagerAdapter(this, list);
+        listview.setAdapter(addressManagerAdapter);
     }
 
     @Override
     public void initListeners() {
         super.initListeners();
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(PlaneDetailActivity.this, PlaneOrderActivity.class);
-                startActivity(intent);
-            }
-        });
-        btn_right.setOnClickListener(this);
+        tv_right.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_right:
-                LoggerUtil.i(TAG, "right button click~~~");
+            case R.id.tv_right:
+                Intent intent = new Intent(this, PlaneAddrEditActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -98,11 +86,17 @@ public class PlaneDetailActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    private class PlaneDetailItemAdapter extends BaseAdapter {
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
+    }
+
+    private class AddressManagerAdapter extends BaseAdapter {
         private Context context;
         private ArrayList<String> mList = new ArrayList<>();
 
-        PlaneDetailItemAdapter(Context context, ArrayList<String> list) {
+        AddressManagerAdapter(Context context, ArrayList<String> list) {
             this.context = context;
             this.mList = list;
         }
@@ -125,8 +119,9 @@ public class PlaneDetailActivity extends BaseActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (null == convertView) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.lv_planedetail_item, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_address_item, null);
             }
+            convertView.findViewById(R.id.flag_lay).setVisibility(View.INVISIBLE);
             return convertView;
         }
     }
