@@ -188,7 +188,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
     public void onClick(View v) {
 //        super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_back:
+            case R.id.iv_back:
                 startActivity(new Intent(this, HotelMainActivity.class));
                 break;
             case R.id.btn_vip:
@@ -219,7 +219,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
-            btn_back.performClick();
+            iv_back.performClick();
             return true;
         }
         return super.onKeyDown(keyCode, event);

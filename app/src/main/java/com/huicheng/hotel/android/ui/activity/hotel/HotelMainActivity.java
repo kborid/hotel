@@ -184,9 +184,18 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
 
         //地点信息
-        tv_city.setHint("正在定位当前城市");
-        AMapLocationControl.getInstance().startLocation();
-        AMapLocationControl.getInstance().registerLocationListener(this);
+        String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+        String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+        if (StringUtil.notEmpty(province) || StringUtil.notEmpty(city)) {
+            tv_city.setText(CityParseUtils.getCityString(city));
+            HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
+            requestWeatherInfo(beginTime);
+            showHaiNanAd(province);
+        } else {
+            tv_city.setHint("正在定位当前城市");
+            AMapLocationControl.getInstance().startLocationOnce(this);
+        }
+
     }
 
     @Override
@@ -320,7 +329,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AMapLocationControl.getInstance().unRegisterLocationListener(this);
     }
 
     @Override
@@ -447,36 +455,23 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     }
 
     @Override
-    public void onLocation(AMapLocation aMapLocation) {
-        if (null != aMapLocation) {
-            if (aMapLocation.getErrorCode() == 0) {
-                //定位成功回调信息，设置相关消息
-                try {
-                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-                    String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
-                    String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
-                    String siteId = String.valueOf(aMapLocation.getAdCode());
-                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
-
-                    tv_city.setText(CityParseUtils.getCityString(city));
-                    HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
-
-                    requestWeatherInfo(beginTime);
-
-                    showHaiNanAd(province);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                tv_city.setHint("城市定位失败");
-                LogUtil.e(TAG, "location Error, ErrCode:"
-                        + aMapLocation.getErrorCode() + ", errInfo:"
-                        + aMapLocation.getErrorInfo());
-            }
+    public void onLocation(boolean isSuccess, AMapLocation aMapLocation) {
+        LogUtil.i(TAG, "onLocation()");
+        if (isSuccess && aMapLocation != null) {
+            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
+            String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
+            String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
+            String siteId = String.valueOf(aMapLocation.getAdCode());
+            SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
+            tv_city.setText(CityParseUtils.getCityString(city));
+            HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
+            requestWeatherInfo(beginTime);
+            showHaiNanAd(province);
+        } else {
+            tv_city.setHint("城市定位失败");
         }
     }
 }

@@ -317,7 +317,7 @@ public class OrderPayActivity extends BaseActivity {
                 dialog.show();
                 break;
             }
-            case R.id.btn_back: {
+            case R.id.iv_back: {
                 CustomDialog dialog = new CustomDialog(this);
                 dialog.setTitle("温馨提示");
                 dialog.setMessage("您将离开，该订单请在15分钟内完成支付，否则订单自动取消。\n\n离开之后，您可以在\n【个人中心】→【我的订单】中继续支付。");
@@ -392,7 +392,7 @@ public class OrderPayActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
-            btn_back.performClick();
+            iv_back.performClick();
             return true;
         }
         return super.onKeyDown(keyCode, event);

@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/comm_title_rl"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:gravity="center_vertical"
-    tools:ignore="DisableBaselineAlignment">
+    android:gravity="center_vertical">
 
-    <RelativeLayout
-        android:id="@+id/btn_back"
+
+    <ImageView
+        android:id="@+id/iv_back"
         android:layout_width="45dp"
-        android:layout_height="45dp">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/app_name"
-            android:scaleType="center"
-            android:src="@drawable/iv_back" />
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:padding="12dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/iv_back" />
 
     <LinearLayout
         android:id="@+id/title_content_lay"
@@ -45,7 +38,7 @@
     <RelativeLayout
         android:id="@+id/btn_right"
         android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_height="match_parent"
         android:visibility="invisible">
 
         <TextView

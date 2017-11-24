@@ -17,6 +17,6 @@ public class CityAreaInfoBean {
 
     @Override
     public String toString() {
-        return "id = " + id + ", parentId = " + parentId + ", level = " + level + ", province = " + province + ", areaName = " + areaName + ", list size = " + list.size() + ", shortName = " + shortName;
+        return "id:" + id + ", parentId:" + parentId + ", level:" + level + ", province:" + province + ", areaName:" + areaName + ", shortName:" + shortName;
     }
 }

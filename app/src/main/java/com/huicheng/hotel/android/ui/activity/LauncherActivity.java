@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.amap.api.location.AMapLocation;
 import com.fm.openinstall.OpenInstall;
 import com.fm.openinstall.listener.AppInstallListener;
 import com.fm.openinstall.listener.AppWakeUpListener;
@@ -24,6 +25,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
@@ -52,7 +54,7 @@ import java.util.Map;
 /**
  * 欢迎页面
  */
-public class LauncherActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener {
+public class LauncherActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener, AMapLocationControl.MyLocationListener {
 
     private Map<Integer, Integer> mTag = new HashMap<>();
     private static HandlerThread mHandlerThread = null;
@@ -209,7 +211,7 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             requestGDTInterface();
         }
-
+        AMapLocationControl.getInstance().startLocationOnce(this);
         if (null == mHandlerThread) {
             mHandlerThread = new HandlerThread("dealJsonReqThread");
             mHandlerThread.start();
@@ -357,6 +359,22 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
                 SessionContext.destroy();
             }
             mStartTime = System.currentTimeMillis();
+        }
+    }
+
+    //启动时设置一次定位信息
+    @Override
+    public void onLocation(boolean isSuccess, AMapLocation aMapLocation) {
+        LogUtil.i(TAG, "onLocation()");
+        if (isSuccess && null != aMapLocation) {
+            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
+            String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
+            String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
+            String siteId = String.valueOf(aMapLocation.getAdCode());
+            SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
         }
     }
 }

@@ -129,7 +129,7 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_back:
+            case R.id.iv_back:
                 if (mCancelLogin != null) {
                     mCancelLogin.isCancelLogin(true);
                 }

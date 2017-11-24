@@ -458,7 +458,7 @@ public class UcPersonalInfoActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_back:
+            case R.id.iv_back:
                 Intent intent = new Intent(this, HotelMainActivity.class);
                 startActivity(intent);
                 break;
@@ -588,7 +588,7 @@ public class UcPersonalInfoActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
-            btn_back.performClick();
+            iv_back.performClick();
             return true;
         }
         return super.onKeyDown(keyCode, event);

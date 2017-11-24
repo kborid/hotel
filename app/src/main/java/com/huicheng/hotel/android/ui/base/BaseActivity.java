@@ -72,10 +72,11 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     private ProgressDialog mProgressDialog;
     private CustomDialog mDialogVip;
 
-    protected TextView tv_center_title;
     private LinearLayout title_content_lay;
-    protected RelativeLayout btn_back, btn_right;
-    private ImageView iv_back, iv_right;
+    protected TextView tv_center_title;
+    protected RelativeLayout btn_right;
+    protected ImageView iv_back;
+    private ImageView iv_right;
     private TextView tv_right;
 
     @Override
@@ -155,9 +156,8 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     public void initViews() {
         title_content_lay = (LinearLayout) findViewById(R.id.title_content_lay);
         tv_center_title = (TextView) findViewById(R.id.tv_center_title);
-        btn_back = (RelativeLayout) findViewById(R.id.btn_back);
-        btn_right = (RelativeLayout) findViewById(R.id.btn_right);
         iv_back = (ImageView) findViewById(R.id.iv_back);
+        btn_right = (RelativeLayout) findViewById(R.id.btn_right);
         iv_right = (ImageView) findViewById(R.id.iv_right);
         tv_right = (TextView) findViewById(R.id.tv_right);
     }
@@ -179,10 +179,8 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     public void setBackButtonResource(int backResId) {
-        if (null != btn_back) {
-            if (backResId != -1) {
-                iv_back.setImageResource(backResId);
-            }
+        if (null != iv_back && backResId != -1) {
+            iv_back.setImageResource(backResId);
         }
     }
 
@@ -217,8 +215,8 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
 
     // 监听设置
     public void initListeners() {
-        if (btn_back != null) {
-            btn_back.setOnClickListener(this);
+        if (iv_back != null) {
+            iv_back.setOnClickListener(this);
         }
         if (btn_right != null) {
             btn_right.setOnClickListener(this);
@@ -228,7 +226,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_back:
+            case R.id.iv_back:
                 if (getClass().equals(HotelInvoiceActivity.class)
                         || getClass().equals(OrderPayActivity.class)
                         || getClass().equals(OrderPaySuccessActivity.class)

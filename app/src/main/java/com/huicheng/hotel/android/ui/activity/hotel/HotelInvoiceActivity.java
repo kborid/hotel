@@ -109,14 +109,14 @@ public class HotelInvoiceActivity extends BaseActivity {
             }
         });
         tv_confirm.setOnClickListener(this);
-        btn_back.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_back:
+            case R.id.iv_back:
                 if (!btn_switch.isChecked()) {
                     Intent data1 = new Intent();
                     data1.putExtra("isInvoice", btn_switch.isChecked());
@@ -171,7 +171,7 @@ public class HotelInvoiceActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            btn_back.performClick();
+            iv_back.performClick();
             return true;
         }
         return super.onKeyDown(keyCode, event);

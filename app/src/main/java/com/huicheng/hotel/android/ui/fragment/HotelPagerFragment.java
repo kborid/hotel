@@ -24,14 +24,12 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.amap.api.location.AMapLocation;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.permission.PermissionsDef;
@@ -64,7 +62,7 @@ import java.util.List;
 /**
  * Fragment home
  */
-public class HotelPagerFragment extends BaseFragment implements View.OnClickListener, DataCallback, AMapLocationControl.MyLocationListener {
+public class HotelPagerFragment extends BaseFragment implements View.OnClickListener, DataCallback {
 
     private static boolean isFirstLoad = false;
 
@@ -180,10 +178,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         super.initParams();
         String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        if (StringUtil.isEmpty(province) || StringUtil.isEmpty(city)) {
-            AMapLocationControl.getInstance().startLocation();
-            AMapLocationControl.getInstance().registerLocationListener(this);
-        }
         tv_city.setText(CityParseUtils.getProvinceCityString(province, city, " "));
         HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
 
@@ -363,7 +357,6 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onDestroy() {
         super.onDestroy();
-        AMapLocationControl.getInstance().unRegisterLocationListener(this);
     }
 
     private void showHaiNanAdPopupWindow() {
@@ -417,37 +410,5 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
-
-    }
-
-    @Override
-    public void onLocation(AMapLocation aMapLocation) {
-        if (null != aMapLocation) {
-            if (aMapLocation.getErrorCode() == 0) {
-                //定位成功回调信息，设置相关消息
-                try {
-                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-                    String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
-                    String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
-                    String siteId = String.valueOf(aMapLocation.getAdCode());
-                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
-
-                    HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
-                    tv_city.setText(CityParseUtils.getProvinceCityString(province, city, " "));
-
-                    showHaiNanAd(province);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                LogUtil.e(TAG, "location Error, ErrCode:"
-                        + aMapLocation.getErrorCode() + ", errInfo:"
-                        + aMapLocation.getErrorInfo());
-            }
-        }
     }
 }
