@@ -253,6 +253,15 @@ public class HotelListActivity extends BaseActivity {
         HotelOrderManager.getInstance().setDateStr(hotelDateStr);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != customConsiderLayoutForList) {
+            customConsiderLayoutForList.clearPointConditionConfig();
+            customConsiderLayoutForList = null;
+        }
+    }
+
     private void showSortPopupWindow() {
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getWindow().getAttributes();

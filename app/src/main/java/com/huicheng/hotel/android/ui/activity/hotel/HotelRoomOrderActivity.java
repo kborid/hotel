@@ -25,8 +25,6 @@ import com.huicheng.hotel.android.net.bean.InvoiceDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.OrderDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomConfirmInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomDetailInfoBean;
-import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
-import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
@@ -400,7 +398,7 @@ public class HotelRoomOrderActivity extends BaseActivity {
                 OrderDetailInfoBean bean = JSON.parseObject(response.body.toString(), OrderDetailInfoBean.class);
                 if (null != bean) {
                     if (HotelCommDef.PAY_ARR.equals(HotelOrderManager.getInstance().getPayType())) {
-                        Intent intent = new Intent(this, OrderPaySuccessActivity.class);
+                        Intent intent = new Intent(this, HotelOrderPaySuccessActivity.class);
                         intent.putExtra("hotelId", String.valueOf(hotelId));
                         intent.putExtra("roomName", bean.roomName);
                         intent.putExtra("checkRoomDate", bean.checkInAndOutDate);
@@ -408,7 +406,7 @@ public class HotelRoomOrderActivity extends BaseActivity {
                         intent.putExtra("endTime", bean.endDateLong);
                         startActivity(intent);
                     } else {
-                        Intent intent = new Intent(this, OrderPayActivity.class);
+                        Intent intent = new Intent(this, HotelOrderPayActivity.class);
                         intent.putExtra("orderId", bean.orderId);
                         intent.putExtra("orderType", bean.orderType);
                         startActivity(intent);

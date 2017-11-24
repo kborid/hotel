@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/comm_title_rl"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="wrap_content"
     android:gravity="center_vertical">
 
 
     <ImageView
         android:id="@+id/iv_back"
         android:layout_width="45dp"
-        android:layout_height="match_parent"
+        android:layout_height="45dp"
         android:contentDescription="@string/app_name"
         android:padding="12dp"
         android:scaleType="centerInside"
@@ -18,7 +18,7 @@
     <LinearLayout
         android:id="@+id/title_content_lay"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="45dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -38,7 +38,7 @@
     <RelativeLayout
         android:id="@+id/btn_right"
         android:layout_width="45dp"
-        android:layout_height="match_parent"
+        android:layout_height="45dp"
         android:visibility="invisible">
 
         <TextView

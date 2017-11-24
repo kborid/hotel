@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.ui.activity;
+package com.huicheng.hotel.android.ui.activity.hotel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,9 +28,6 @@ import com.huicheng.hotel.android.common.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.common.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelRoomOrderActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -48,7 +45,7 @@ import java.util.Date;
  * @author kborid
  * @date 2017/3/7 0007
  */
-public class OrderPayActivity extends BaseActivity {
+public class HotelOrderPayActivity extends BaseActivity {
 
     private PayResultReceiver mPayReceiver = new PayResultReceiver();
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
@@ -79,7 +76,7 @@ public class OrderPayActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_pay_layout);
+        setContentView(R.layout.act_hotel_orderpay_layout);
         initViews();
         initParams();
         initListeners();
@@ -331,9 +328,9 @@ public class OrderPayActivity extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (ActivityTack.getInstanse().isExitActivity(HotelListActivity.class)) {
-                            startActivity(new Intent(OrderPayActivity.this, HotelListActivity.class));
+                            startActivity(new Intent(HotelOrderPayActivity.this, HotelListActivity.class));
                         } else if (ActivityTack.getInstanse().isExitActivity(HotelRoomOrderActivity.class)) {
-                            Intent intent = new Intent(OrderPayActivity.this, HotelMainActivity.class);
+                            Intent intent = new Intent(HotelOrderPayActivity.this, HotelMainActivity.class);
                             intent.putExtra("isClosed", true);
                             intent.putExtra("index", 0);
                             startActivity(intent);

@@ -11,10 +11,11 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.pay.PayCommDef;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
-import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPaySuccessActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.LogUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.prj.sdk.util.StringUtil;
 
 /**
  * @auth kborid
@@ -34,7 +35,6 @@ public class PayResultReceiver extends BroadcastReceiver {
         if (!BroadCastConst.ACTION_PAY_STATUS.equals(action)) {
             return;
         }
-
         dealPayResult(intent);
     }
 
@@ -46,94 +46,41 @@ public class PayResultReceiver extends BroadcastReceiver {
             LogUtil.i(TAG, info);
             LogUtil.i(TAG, type);
 
-            int ret = PayCommDef.err_fail;
-            String msg = context.getResources().getString(R.string.pay_fail);
+            int ret = PayCommDef.err_error;
+            if (StringUtil.notEmpty(type) && StringUtil.notEmpty(info)) {
+                String retCode = "";
+                switch (type) {
+                    case PayCommDef.ALIPAY:
+                        JSONObject aliPayJson = JSON.parseObject(info);
+                        String aliPayCode = aliPayJson.getString("resultStatus");
+                        String aliPayMsg = aliPayJson.getString("memo");
+                        LogUtil.i(TAG, "AliPay:Code=" + aliPayCode + ", Msg=" + aliPayMsg);
+                        retCode = aliPayCode;
+                        break;
+                    case PayCommDef.WXPAY:
+                    case PayCommDef.UNIONPAY:
+                        retCode = info;
+                        LogUtil.i(TAG, type + ":Code=" + info);
+                        break;
+                }
 
-            switch (type) {
-                case PayCommDef.ALIPAY:
-                    JSONObject aliPayJson = JSON.parseObject(info);
-                    String aliPayCode = aliPayJson.getString("resultStatus");
-                    String aliPayMsg = aliPayJson.getString("memo");
-                    LogUtil.i(TAG, "AliPay: Code=" + aliPayCode + ", Msg=" + aliPayMsg);
-                    switch (aliPayCode) {
-                        case "9000":
-                            ret = PayCommDef.err_success;
-                            break;
-                        case "4000":
-                            ret = PayCommDef.err_fail;
-                            break;
-                        case "6001":
-                            ret = PayCommDef.err_cancel;
-                            break;
-                        case "8000":
-                        case "6004":
-                            ret = PayCommDef.err_unknown;
-                            break;
-                        default:
-                            ret = PayCommDef.err_error;
-                            break;
-                    }
-                    break;
-                case PayCommDef.WXPAY:
-                    LogUtil.i(TAG, "WXPay: Code=" + info);
-                    switch (info) {
-                        case "0":
-                            ret = PayCommDef.err_success;
-                            break;
-                        case "-1":
-                            ret = PayCommDef.err_fail;
-                            break;
-                        case "-2":
-                            ret = PayCommDef.err_cancel;
-                            break;
-                        default:
-                            ret = PayCommDef.err_unknown;
-                            break;
-                    }
-                    break;
-                case PayCommDef.UNIONPAY:
-                    LogUtil.i(TAG, "UnionPay: Code=" + info);
-                    switch (info) {
-                        case "success":
-                            ret = PayCommDef.err_success;
-                            break;
-                        case "fail":
-                            ret = PayCommDef.err_fail;
-                            break;
-                        case "cancel":
-                            ret = PayCommDef.err_cancel;
-                            break;
-                        default:
-                            ret = PayCommDef.err_unknown;
-                            break;
-                    }
-                    break;
+                //整合支付宝、微信、银联支付结果码
+                if ("9000".equals(retCode) || "0".equals(retCode) || "success".equals(retCode)) {
+                    ret = PayCommDef.err_success;
+                } else if ("4000".equals(retCode) || "-1".equals(retCode) || "fail".equals(retCode)) {
+                    ret = PayCommDef.err_fail;
+                } else if ("6001".equals(retCode) || "-2".equals(retCode) || "cancel".equals(retCode)) {
+                    ret = PayCommDef.err_cancel;
+                } else {
+                    ret = PayCommDef.err_error;
+                }
             }
-
-
             LogUtil.i(TAG, "pay result ret = " + ret);
-            switch (ret) {
-                case PayCommDef.err_success:
-                    msg = context.getResources().getString(R.string.pay_success);
-                    break;
-                case PayCommDef.err_fail:
-                    msg = context.getResources().getString(R.string.pay_fail);
-                    break;
-                case PayCommDef.err_cancel:
-                    msg = context.getResources().getString(R.string.pay_cancel);
-                    break;
-                case PayCommDef.err_error:
-                case PayCommDef.err_unknown:
-                    msg = context.getResources().getString(R.string.pay_error);
-                    break;
-            }
-            LogUtil.i(TAG, "pay result msg = " + msg);
-
             if (PayCommDef.err_success == ret) {
                 OrderPayDetailInfoBean orderPayDetailInfoBean = HotelOrderManager.getInstance().getOrderPayDetailInfoBean();
                 LogUtil.i(TAG, "orderPayDetailInfoBean = " + orderPayDetailInfoBean);
                 if (null != orderPayDetailInfoBean) {
-                    Intent intent1 = new Intent(context, OrderPaySuccessActivity.class);
+                    Intent intent1 = new Intent(context, HotelOrderPaySuccessActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent1.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
                     intent1.putExtra("roomName", orderPayDetailInfoBean.roomName);
@@ -147,6 +94,23 @@ public class PayResultReceiver extends BroadcastReceiver {
                     CustomToast.show(context.getResources().getString(R.string.pay_error), CustomToast.LENGTH_SHORT);
                 }
             }
+
+            String msg = context.getResources().getString(R.string.pay_fail);
+            switch (ret) {
+                case PayCommDef.err_success:
+                    msg = context.getResources().getString(R.string.pay_success);
+                    break;
+                case PayCommDef.err_fail:
+                    msg = context.getResources().getString(R.string.pay_fail);
+                    break;
+                case PayCommDef.err_cancel:
+                    msg = context.getResources().getString(R.string.pay_cancel);
+                    break;
+                case PayCommDef.err_error:
+                    msg = context.getResources().getString(R.string.pay_error);
+                    break;
+            }
+            LogUtil.i(TAG, "pay result msg = " + msg);
             CustomToast.show(msg, CustomToast.LENGTH_SHORT);
         }
     }

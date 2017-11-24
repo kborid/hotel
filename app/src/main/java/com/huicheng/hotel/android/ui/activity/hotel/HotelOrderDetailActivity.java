@@ -22,7 +22,6 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
-import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
@@ -266,7 +265,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.btn_pay:
-                intent = new Intent(this, OrderPayActivity.class);
+                intent = new Intent(this, HotelOrderPayActivity.class);
                 intent.putExtra("orderId", orderId);
                 intent.putExtra("orderType", orderType);
                 break;

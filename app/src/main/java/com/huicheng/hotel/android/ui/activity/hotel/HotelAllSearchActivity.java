@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.ui.activity;
+package com.huicheng.hotel.android.ui.activity.hotel;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +27,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelInfoBean;
 import com.huicheng.hotel.android.permission.PermissionsDef;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelDetailActivity;
+import com.huicheng.hotel.android.ui.activity.PermissionsActivity;
 import com.huicheng.hotel.android.ui.adapter.SearchResultAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.iflytek.cloud.RecognizerResult;

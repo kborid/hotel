@@ -15,8 +15,6 @@
         android:id="@+id/weather_content_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
         android:paddingTop="28dp">
         <!--品牌宣传logo-->
         <ImageView
@@ -27,27 +25,19 @@
             android:src="@drawable/iv_white_xc_logo"
             android:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:padding="11dp"
-            android:src="@drawable/iv_back_white"
-            android:visibility="gone" />
         <!--天气信息layout-->
         <RelativeLayout
             android:id="@+id/weather_info_lay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:visibility="gone">
 
             <!--天气text信息-->
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="30dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="45dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -63,8 +53,10 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
+                    android:layout_marginTop="5dp"
                     android:background="@color/white" />
 
                 <LinearLayout

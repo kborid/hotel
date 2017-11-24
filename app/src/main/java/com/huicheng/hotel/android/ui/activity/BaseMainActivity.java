@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -23,6 +22,7 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
+import com.prj.sdk.util.Utils;
 
 import java.util.Calendar;
 
@@ -36,7 +36,6 @@ public class BaseMainActivity extends BaseActivity {
     protected long beginTime, endTime;
     protected View rootView;
     private CustomWeatherLayout customWeatherLay;
-    private ImageView iv_back;
     private LinearLayout contentLay;
 
 //    private int oldSkinIndex = 0;
@@ -48,14 +47,6 @@ public class BaseMainActivity extends BaseActivity {
         setContentView(R.layout.act_basemain_layout);
 //        oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
         customWeatherLay = (CustomWeatherLayout) findViewById(R.id.weather_lay);
-        iv_back = (ImageView)customWeatherLay.findViewById(R.id.iv_back);
-        iv_back.setVisibility(View.VISIBLE);
-        iv_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         contentLay = (LinearLayout) findViewById(R.id.content_lay);
     }
 
@@ -77,16 +68,13 @@ public class BaseMainActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+        findViewById(R.id.comm_title_rl).setPadding(0, Utils.mStatusBarHeight, 0, 0);
+        setBackButtonResource(R.drawable.iv_back_white);
         //初始化时间，今天到明天 1晚
         Calendar calendar = Calendar.getInstance();
         beginTime = calendar.getTime().getTime();
         calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
         endTime = calendar.getTime().getTime();
-    }
-
-    @Override
-    public void initListeners() {
-        super.initListeners();
     }
 
     @Override
@@ -112,11 +100,6 @@ public class BaseMainActivity extends BaseActivity {
         d.flag = AppConst.WEATHER;
 
         requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

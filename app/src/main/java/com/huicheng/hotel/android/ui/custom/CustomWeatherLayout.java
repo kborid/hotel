@@ -217,7 +217,7 @@ public class CustomWeatherLayout extends RelativeLayout {
         rootRlp.height = (int) ((float) rootRlp.width / 750 * 400);
         view.setLayoutParams(rootRlp);
         weather_content_lay = (RelativeLayout) findViewById(R.id.weather_content_lay);
-        weather_content_lay.setPadding(Utils.dip2px(4), Utils.mStatusBarHeight, Utils.dip2px(4), 0);
+        weather_content_lay.setPadding(0, Utils.mStatusBarHeight, 0, 0);
         iv_weather_bg = (ImageView) findViewById(R.id.iv_weather_bg);
         iv_xc = (ImageView) findViewById(R.id.iv_xc);
         weather_info_lay = (RelativeLayout) findViewById(R.id.weather_info_lay);

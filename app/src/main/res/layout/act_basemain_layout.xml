@@ -28,4 +28,6 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <include layout="@layout/comm_title" />
 </RelativeLayout>

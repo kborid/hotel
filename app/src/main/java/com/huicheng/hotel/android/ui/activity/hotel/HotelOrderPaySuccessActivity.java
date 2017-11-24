@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.ui.activity;
+package com.huicheng.hotel.android.ui.activity.hotel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +18,6 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -33,7 +32,7 @@ import com.prj.sdk.util.StringUtil;
  * @author kborid
  * @date 2017/3/13 0013
  */
-public class OrderPaySuccessActivity extends BaseActivity {
+public class HotelOrderPaySuccessActivity extends BaseActivity {
 
     private HotelDetailInfoBean hotelDetailInfoBean;
 
@@ -52,7 +51,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_ordersuccess_layout);
+        setContentView(R.layout.act_hotel_paysuccess_layout);
         initViews();
         initParams();
         initListeners();
@@ -145,7 +144,7 @@ public class OrderPaySuccessActivity extends BaseActivity {
         dialog.setNegativeButton(getString(R.string.active_go), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(OrderPaySuccessActivity.this, HotelMainActivity.class);
+                Intent intent = new Intent(HotelOrderPaySuccessActivity.this, HotelMainActivity.class);
                 intent.putExtra("index", 1);
                 startActivity(intent);
             }

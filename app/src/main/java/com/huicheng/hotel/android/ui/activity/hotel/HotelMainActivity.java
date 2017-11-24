@@ -333,6 +333,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_city: {

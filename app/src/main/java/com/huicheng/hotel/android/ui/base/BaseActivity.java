@@ -34,10 +34,10 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.tools.FixIMMLeaksTools;
 import com.huicheng.hotel.android.ui.activity.LauncherActivity;
-import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
-import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelInvoiceActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPayActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
@@ -228,8 +228,8 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         switch (v.getId()) {
             case R.id.iv_back:
                 if (getClass().equals(HotelInvoiceActivity.class)
-                        || getClass().equals(OrderPayActivity.class)
-                        || getClass().equals(OrderPaySuccessActivity.class)
+                        || getClass().equals(HotelOrderPayActivity.class)
+                        || getClass().equals(HotelOrderPaySuccessActivity.class)
                         || getClass().equals(UcPersonalInfoActivity.class)) {
                     //do nothing
                     LogUtil.i(TAG, "do nothing~~~");
