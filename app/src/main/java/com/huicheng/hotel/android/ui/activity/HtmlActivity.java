@@ -17,15 +17,14 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
-import com.huicheng.hotel.android.ui.activity.UserLoginActivity.onCancelLoginListener;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.prj.sdk.app.AppConst;
+import com.prj.sdk.app.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
@@ -39,7 +38,7 @@ import com.prj.sdk.widget.webview.WebChromeClientCompat;
  * @date 2014-7-8
  */
 @SuppressLint("SetJavaScriptEnabled")
-public class HtmlActivity extends BaseActivity implements onCancelLoginListener {
+public class HtmlActivity extends BaseActivity {
 
     private static final String CSS_STYLE = "<style>* {font-size:40px;padding:10px;}</style>";
     private WebView mWebView;
@@ -135,7 +134,6 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
     public void initParams() {
         super.initParams();
         tv_center_title.setText(mTitle);
-        UserLoginActivity.setCancelLogin(this);
 
         WebSettings webSetting = mWebView.getSettings();
         webSetting.setJavaScriptEnabled(true);
@@ -329,7 +327,6 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
     public void onDestroy() {
         super.onDestroy();
         destroyView();
-        UserLoginActivity.setCancelLogin(null);
         common_loading_widget.closeLoading();
     }
 
@@ -390,23 +387,5 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void isCancelLogin(boolean isCancel) {
-        if (isCancel) {
-            if (mWebView.canGoBack()) {
-                mWebView.goBack();
-            } else {
-                this.finish();
-            }
-        } else {
-            if (loginUrl != null) {// 如果拦截到网页登录，登录成功则跳转到loginUrl
-                mWebView.loadUrl(loginUrl);
-                // loginUrl = null;
-            } else {
-                mWebView.reload();// 刷新
-            }
-        }
     }
 }

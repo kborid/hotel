@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
+import com.prj.sdk.app.AppConst;
 import com.prj.sdk.util.SharedPreferenceUtil;
 
 import java.util.ArrayList;

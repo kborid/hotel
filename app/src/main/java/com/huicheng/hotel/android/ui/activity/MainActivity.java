@@ -20,20 +20,20 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.DataCleanManager;
-import com.huicheng.hotel.android.net.RequestBeanBuilder;
-import com.huicheng.hotel.android.net.bean.AppInfoBean;
+import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.activity.plane.PlaneMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.app.AppConst;
+import com.prj.sdk.app.NetURL;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
@@ -222,6 +222,18 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
             startActivity(intent);
         }
 
+        //每次启动时，如果用户未登录，则显示侧滑
+        if (SessionContext.isFirstDoAction(getClass().getSimpleName())) {
+            if (!SessionContext.isLogin()) {
+                myHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawer_layout.openDrawer(left_layout, true);
+                    }
+                }, 300);
+            }
+        }
+
         if (SessionContext.isLogin()) {
             requestMessageCount();
         }
@@ -320,6 +332,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SessionContext.cleanLocationInfo();
         left_layout.unregisterBroadReceiver();
     }
 

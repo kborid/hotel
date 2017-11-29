@@ -9,7 +9,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.huicheng.hotel.android.common.AppConst;
+import com.prj.sdk.app.AppConst;
 import com.prj.sdk.app.AppContext;
 import com.prj.sdk.util.LogUtil;
 

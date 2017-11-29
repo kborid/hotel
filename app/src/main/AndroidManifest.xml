@@ -310,7 +310,7 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
 
-        <receiver android:name="com.huicheng.hotel.android.common.pay.wxpay.AppRegister">
+        <receiver android:name=".pay.wxpay.AppRegister">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
@@ -381,7 +381,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".common.pay.unionpay.UnionPayActivity"
+            android:name=".pay.unionpay.UnionPayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"

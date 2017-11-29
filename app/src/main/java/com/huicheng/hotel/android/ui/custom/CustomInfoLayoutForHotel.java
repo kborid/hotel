@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.net.bean.InPersonalInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.InPersonalInfoBean;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;

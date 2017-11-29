@@ -1,7 +1,7 @@
 package com.huicheng.hotel.android.ui.JSBridge.functions;
 
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
+import com.prj.sdk.app.NetURL;
 
 import org.json.JSONObject;
 

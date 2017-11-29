@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.prj.sdk.app.AppConst;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.SharedPreferenceUtil;

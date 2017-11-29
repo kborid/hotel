@@ -1,7 +1,5 @@
 package com.prj.sdk.net.data;
 
-import com.prj.sdk.net.bean.ResponseData;
-
 /**
  * UI数据回调函数
  * 

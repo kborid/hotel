@@ -17,19 +17,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.net.RequestBeanBuilder;
-import com.huicheng.hotel.android.net.bean.HotelSpaceTieCommentInfoBean;
+import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.HotelSpaceTieCommentInfoBean;
 import com.huicheng.hotel.android.ui.activity.ImageScaleActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelSpacePublishActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.app.AppConst;
+import com.prj.sdk.app.NetURL;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 

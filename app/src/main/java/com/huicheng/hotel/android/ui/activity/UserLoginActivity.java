@@ -1,6 +1,5 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -21,17 +20,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.common.pay.wxpay.MD5;
-import com.huicheng.hotel.android.net.RequestBeanBuilder;
-import com.huicheng.hotel.android.net.bean.UserInfo;
+import com.huicheng.hotel.android.pay.wxpay.MD5;
+import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.prj.sdk.app.AppConst;
+import com.prj.sdk.app.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -51,12 +50,11 @@ import cn.jpush.android.api.TagAliasCallback;
 /**
  * 登录
  */
-public class UserLoginActivity extends BaseActivity implements DialogInterface.OnCancelListener, OnCheckedChangeListener {
+public class UserLoginActivity extends BaseActivity implements OnCheckedChangeListener {
 
     private EditText et_phone, et_pwd;
     private Button btn_login;
     private TextView tv_forget_pwd, tv_reigster;
-    private static onCancelLoginListener mCancelLogin;
     private CheckBox checkBox;
     private ImageView btn_cancel;
     private String usertoken;
@@ -129,12 +127,6 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_back:
-                if (mCancelLogin != null) {
-                    mCancelLogin.isCancelLogin(true);
-                }
-                this.finish();
-                break;
             case R.id.btn_login:
                 requestCheckUserstatus();
                 break;
@@ -388,9 +380,6 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
                 }
             });
             sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
-            if (mCancelLogin != null) {
-                mCancelLogin.isCancelLogin(false);
-            }
 
             //登录成功，根据性别设置主题
             int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
@@ -418,52 +407,8 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
-        DataLoader.getInstance().clear(requestID);
-        removeProgressDialog();
-        if (mCancelLogin != null) {
-            mCancelLogin.isCancelLogin(true);
-        }
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            if (mCancelLogin != null) {
-                mCancelLogin.isCancelLogin(true);
-            }
-            this.finish();
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
-    }
-
-    /**
-     * 处理取消登录回调接口
-     */
-    public interface onCancelLoginListener {
-        /**
-         * @param isCancel true:取消登录；false:登录成功
-         */
-        public void isCancelLogin(boolean isCancel);
-    }
-
-    /**
-     * 设置登录状态监听
-     *
-     * @param cancelLogin
-     */
-    public static final void setCancelLogin(onCancelLoginListener cancelLogin) {
-        mCancelLogin = cancelLogin;
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mCancelLogin != null) {
-            mCancelLogin = null;
-        }
-
         if (null != mShareAPI) {
             mShareAPI.release();
             mShareAPI = null;

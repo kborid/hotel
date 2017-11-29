@@ -1,9 +1,9 @@
 package com.huicheng.hotel.android.common;
 
-import com.huicheng.hotel.android.net.bean.CouponInfoBean;
-import com.huicheng.hotel.android.net.bean.FansHotelInfoBean;
-import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
-import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.CouponInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.FansHotelInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.OrderPayDetailInfoBean;
 
 import java.util.Calendar;
 import java.util.Date;
