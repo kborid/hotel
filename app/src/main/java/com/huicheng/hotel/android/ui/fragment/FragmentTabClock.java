@@ -47,7 +47,6 @@ import java.util.List;
  */
 public class FragmentTabClock extends BaseFragment implements DataCallback, HotelListActivity.OnUpdateHotelInfoListener {
     public static boolean isFirstLoad = false;
-    private String key = null;
     private HotelListAdapter adapter = null;
     private List<HotelInfoBean> list = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -62,14 +61,15 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     private int pageIndex = 0;
     private int refreshType = 0;
 
-    private String keyword = "";
+    private String key = null;
+    private Bundle bundle = null;
     private int pointIndex, gradeIndex, priceIndex, typeIndex;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isFirstLoad = true;
-        key = getArguments().getString("key");
-        keyword = getArguments().getString("keyword");
+        key = HotelCommDef.CLOCK;
+        bundle = getArguments();
         View view = inflater.inflate(R.layout.fragment_tab_clock, container, false);
         initTypedArrayValue();
         initViews(view);
@@ -78,12 +78,9 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         return view;
     }
 
-    public static Fragment newInstance(String key, String keyword) {
+    public static Fragment newInstance(Bundle searchParams) {
         Fragment fragment = new FragmentTabClock();
-        Bundle bundle = new Bundle();
-        bundle.putString("key", key);
-        bundle.putString("keyword", keyword);
-        fragment.setArguments(bundle);
+        fragment.setArguments(searchParams);
         return fragment;
     }
 
@@ -117,6 +114,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         ((StaggeredGridLayoutManager) layoutManager).setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new HotelListAdapter(getActivity(), list, HotelCommDef.TYPE_CLOCK);
+        adapter.setLandMarkLonLat(bundle.getString("lonLat"));
         recyclerView.setAdapter(adapter);
         empty_lay = (RelativeLayout) view.findViewById(R.id.empty_lay);
     }
@@ -214,7 +212,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
     private void requestHotelClockList(int pageIndex) {
         LogUtil.i(TAG, "requestHotelClockList()");
         LogUtil.i(TAG, "pageIndex = " + pageIndex);
-        LogUtil.i(TAG, "keyword = " + keyword);
+        LogUtil.i(TAG, "keyword = " + bundle.getString("keyword"));
         String star = HotelCommDef.convertConsiderGrade(gradeIndex);
         LogUtil.i(TAG, "star = " + star);
         String[] point = HotelCommDef.convertConsiderPoint(pointIndex);
@@ -229,7 +227,17 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
 
         RequestBeanBuilder b = RequestBeanBuilder.create(SessionContext.isLogin());
         //关键字
-        b.addBody("keyword", keyword);
+        b.addBody("keyword", bundle.getString("keyword"));
+        //地标信息
+        String searchType = HotelCommDef.TYPE_HOTEL;
+        if (bundle.getBoolean("isLandMark")) {
+            searchType = HotelCommDef.TYPE_LAND_MARK;
+            b.addBody("landmark", bundle.getString("landmark"));
+        }
+        b.addBody("searchType", searchType);
+        LogUtil.i(TAG, "searchType = " + searchType);
+        LogUtil.i(TAG, "isLandMark = " + bundle.getBoolean("isLandMark"));
+        LogUtil.i(TAG, "landmark = " + bundle.getString("landmark"));
         //星级
         b.addBody("star", star);
         //评分
@@ -360,7 +368,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         priceIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_PRICE, -1);
         typeIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_TYPE, -1);
         isFirstLoad = false;
-        this.keyword = keyword;
+        bundle.putString("keyword",keyword);
         refreshType = 0;
         if (getUserVisibleHint()) {
             swipeRefreshLayout.setRefreshing(true);

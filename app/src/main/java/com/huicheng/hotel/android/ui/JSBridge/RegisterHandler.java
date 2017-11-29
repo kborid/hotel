@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.huicheng.hotel.android.ui.JSBridge.functions.airPlaneChanged;
 import com.huicheng.hotel.android.ui.JSBridge.functions.colseAndReloadList;
-import com.huicheng.hotel.android.ui.JSBridge.functions.getCityInfo;
 import com.huicheng.hotel.android.ui.JSBridge.functions.getDeviceId;
 import com.huicheng.hotel.android.ui.JSBridge.functions.getPhone;
 import com.huicheng.hotel.android.ui.JSBridge.functions.getServiceHost;
@@ -52,7 +51,7 @@ public class RegisterHandler {
         mWVJBWebViewClient.registerHandler("getUserSexy", new getUserSexy());
         mWVJBWebViewClient.registerHandler("getPhone", new getPhone());
         mWVJBWebViewClient.registerHandler("getDeviceId", new getDeviceId());
-        mWVJBWebViewClient.registerHandler("getCityInfo", new getCityInfo());
+//        mWVJBWebViewClient.registerHandler("getCityInfo", new getCityInfo());
         mWVJBWebViewClient.registerHandler("showException", new showException(mContext));
         mWVJBWebViewClient.registerHandler("handleError", new handleError(mContext));
 

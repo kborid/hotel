@@ -75,6 +75,11 @@ public class CityParseUtils {
         return tempStr;
     }
 
+    public static String getSiteIdString(String siteId) {
+        StringBuilder sb = new StringBuilder(siteId);
+        return sb.replace(4, 6, "00").toString();
+    }
+
     public static void initAreaJsonData(Context context) {
         LogUtil.i(TAG, "initJsonData() begin....");
         try {

@@ -28,6 +28,10 @@ public class HotelCommDef {
     public static final String COUPON_NONE = "0";
     public static final String COUPON_HAVE = "1";
 
+    //全文搜索type
+    public static final String TYPE_HOTEL = "00";
+    public static final String TYPE_LAND_MARK = "01";
+
     // Hotel Vip
     public static final String VIP_SUPPORT = "1";
     public static final String VIP_NOT_SUPPORT = "0";

@@ -33,6 +33,7 @@ import com.huicheng.hotel.android.ui.activity.MyDiscountCouponActivity;
 import com.huicheng.hotel.android.ui.activity.OrderListActivity;
 import com.huicheng.hotel.android.ui.activity.SettingActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
+import com.huicheng.hotel.android.ui.activity.UserRegisterActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
@@ -58,8 +59,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
     private RelativeLayout unlogin_lay;
     private LinearLayout login_lay;
 
-    private Button btn_login;
-    private Button btn_cancel;
+    private Button btn_login, btn_register;
 
     private CircleImageView iv_photo;
     private TextView tv_username, tv_userid;
@@ -111,7 +111,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_login.setBackgroundResource(mBtnLoginId);
-        btn_cancel = (Button) findViewById(R.id.btn_cancel);
+        btn_register = (Button) findViewById(R.id.btn_register);
 
         iv_photo = (CircleImageView) findViewById(R.id.iv_photo);
         tv_username = (TextView) findViewById(R.id.tv_username);
@@ -139,7 +139,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
     private void setListeners() {
         btn_login.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
+        btn_register.setOnClickListener(this);
 
         tv_usercenter.setOnClickListener(this);
         tv_myorder.setOnClickListener(this);
@@ -157,7 +157,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
         if (AppConst.ISDEVELOP) {
             final long[] mPressTime = {0, 0};
-            btn_cancel.setOnTouchListener(new OnTouchListener() {
+            btn_register.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -242,9 +242,8 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
             case R.id.btn_login:
                 context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                 break;
-            case R.id.btn_cancel:
-                doActionIntent = null;
-                closeDrawer();
+            case R.id.btn_register:
+                doActionIntent = new Intent(context, UserRegisterActivity.class);
                 break;
             case R.id.tv_usercenter:
                 doActionIntent = new Intent(context, UserCenterActivity.class);

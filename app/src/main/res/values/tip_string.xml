@@ -30,6 +30,7 @@
 
     <string name="search_home_tips">酒店名 / 关键字 / 位置</string>
     <string name="search_tips">城市 / 区域 / 位置 / 酒店</string>
+    <string name="consider_hotel_tips">价格 / 星级 / 类型</string>
 
     <string name="pay_success">支付成功</string>
     <string name="pay_fail">支付失败</string>

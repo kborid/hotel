@@ -10,10 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.widget.DrawerLayout;
-import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.TextWatcher;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -21,8 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -34,7 +30,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amap.api.location.AMapLocation;
 import com.huicheng.hotel.android.BuildConfig;
-import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -46,7 +41,6 @@ import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
 import com.huicheng.hotel.android.net.bean.WeatherInfoBean;
-import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
@@ -54,11 +48,6 @@ import com.huicheng.hotel.android.ui.custom.CustomWeatherLayout;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.iflytek.cloud.RecognizerResult;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechError;
-import com.iflytek.cloud.ui.RecognizerDialog;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -101,9 +90,10 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     private TextView tv_city;
     private TextView tv_next_search;
     private TextView tv_in_date, tv_days, tv_out_date;
-    private EditText et_keyword;
-    private ImageView iv_reset;
-    private ImageView iv_voice;
+    //    private EditText et_keyword;
+//    private ImageView iv_reset;
+//    private ImageView iv_voice;
+    private TextView tv_search;
     private TextView tv_consider;
 
     private long exitTime = 0;
@@ -153,10 +143,11 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         tv_days = (TextView) findViewById(R.id.tv_days);
         tv_out_date = (TextView) findViewById(R.id.tv_out_date);
 
-        et_keyword = (EditText) findViewById(R.id.et_keyword);
-        iv_reset = (ImageView) findViewById(R.id.iv_reset);
-        iv_reset.setEnabled(false);
-        iv_voice = (ImageView) findViewById(R.id.iv_voice);
+//        et_keyword = (EditText) findViewById(R.id.et_keyword);
+//        iv_reset = (ImageView) findViewById(R.id.iv_reset);
+//        iv_reset.setEnabled(false);
+//        iv_voice = (ImageView) findViewById(R.id.iv_voice);
+        tv_search = (TextView) findViewById(R.id.tv_search);
         tv_consider = (TextView) findViewById(R.id.tv_consider);
 
         //首页筛选菜单
@@ -378,6 +369,30 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
 //            recreate();
 //        }
 
+        //第每次启动时，如果用户未登录，则显示侧滑
+        if (SessionContext.isFirstDoAction(getClass().getSimpleName())) {
+            if (!SessionContext.isLogin()) {
+                myHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawer_layout.openDrawer(left_layout, true);
+                    }
+                }, 300);
+            }
+        }
+
+        //搜索地标，设置城市返回后刷新显示
+        String cacheCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+        if (StringUtil.notEmpty(cacheCity)) {
+            if (!tv_city.getText().toString().equals(cacheCity)) {
+                tv_city.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+                if (!isAdShowed) {
+                    showHaiNanAd(SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
+                }
+                requestWeatherInfo(beginTime);
+            }
+        }
+
         if (SessionContext.isLogin()) {
             requestMessageCount();
         }
@@ -523,35 +538,36 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         tv_out_date.setOnClickListener(this);
         tv_next_search.setOnClickListener(this);
         order_lay.setOnClickListener(this);
-        iv_reset.setOnClickListener(this);
-        iv_voice.setOnClickListener(this);
-        et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    tv_next_search.performClick();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        et_keyword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                iv_reset.setEnabled(StringUtil.notEmpty(s));
-            }
-        });
+//        iv_reset.setOnClickListener(this);
+//        iv_voice.setOnClickListener(this);
+//        et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+//                    tv_next_search.performClick();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+//
+//        et_keyword.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                iv_reset.setEnabled(StringUtil.notEmpty(s));
+//            }
+//        });
+        tv_search.setOnClickListener(this);
         tv_consider.setOnClickListener(this);
     }
 
@@ -582,6 +598,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SessionContext.cleanLocationInfo();
         left_layout.unregisterBroadReceiver();
         AMapLocationControl.getInstance().unRegisterLocationListener(this);
     }
@@ -616,7 +633,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
                 intent = new Intent(this, HotelListActivity.class);
                 intent.putExtra("index", 0);
-                intent.putExtra("keyword", et_keyword.getText().toString());
+                intent.putExtra("keyword", "");
                 break;
             case R.id.tv_in_date:
             case R.id.tv_out_date: {
@@ -627,39 +644,42 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
                 startActivityForResult(resIntent, REQUEST_CODE_DATE);
                 break;
             }
-            case R.id.iv_voice:
-                if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.MIC_PERMISSION)) {
-                    PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
-                    return;
-                }
-                RecognizerDialog mDialog = new RecognizerDialog(this, null);
-                mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
-                mDialog.setParameter(SpeechConstant.ASR_SCH, "1");
-                mDialog.setParameter(SpeechConstant.NLP_VERSION, "3.0");
-                mDialog.setListener(new RecognizerDialogListener() {
-                    @Override
-                    public void onResult(RecognizerResult recognizerResult, boolean b) {
-                        if (b) {
-                            String jsonStr = recognizerResult.getResultString();
-                            JSONObject mJson = JSON.parseObject(jsonStr);
-                            if (mJson.containsKey("text")) {
-                                et_keyword.setText(mJson.getString("text"));
-                                et_keyword.setSelection(et_keyword.getText().length());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(SpeechError speechError) {
-                        LogUtil.e(TAG, "voice error code:" + speechError.getErrorCode() + ", " + speechError.getErrorDescription());
-                    }
-                });
-                mDialog.show();
-                break;
-            case R.id.iv_reset:
-                et_keyword.setText("");
-                et_keyword.setFocusable(false);
-                et_keyword.setFocusableInTouchMode(true);
+//            case R.id.iv_voice:
+//                if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.MIC_PERMISSION)) {
+//                    PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
+//                    return;
+//                }
+//                RecognizerDialog mDialog = new RecognizerDialog(this, null);
+//                mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
+//                mDialog.setParameter(SpeechConstant.ASR_SCH, "1");
+//                mDialog.setParameter(SpeechConstant.NLP_VERSION, "3.0");
+//                mDialog.setListener(new RecognizerDialogListener() {
+//                    @Override
+//                    public void onResult(RecognizerResult recognizerResult, boolean b) {
+//                        if (b) {
+//                            String jsonStr = recognizerResult.getResultString();
+//                            JSONObject mJson = JSON.parseObject(jsonStr);
+//                            if (mJson.containsKey("text")) {
+//                                et_keyword.setText(mJson.getString("text"));
+//                                et_keyword.setSelection(et_keyword.getText().length());
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(SpeechError speechError) {
+//                        LogUtil.e(TAG, "voice error code:" + speechError.getErrorCode() + ", " + speechError.getErrorDescription());
+//                    }
+//                });
+//                mDialog.show();
+//                break;
+//            case R.id.iv_reset:
+//                et_keyword.setText("");
+//                et_keyword.setFocusable(false);
+//                et_keyword.setFocusableInTouchMode(true);
+//                break;
+            case R.id.tv_search:
+                intent = new Intent(this, SearchResultActivity.class);
                 break;
             case R.id.tv_consider:
                 showConsiderPopupWindow();
@@ -756,7 +776,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
                     SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
                     String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
-                    String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
+                    String city = CityParseUtils.getCityString(aMapLocation.getCity());
                     String siteId = String.valueOf(aMapLocation.getAdCode());
                     SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);

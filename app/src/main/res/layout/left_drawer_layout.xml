@@ -64,12 +64,12 @@
                     android:textSize="@dimen/common_16sp" />
 
                 <Button
-                    android:id="@+id/btn_cancel"
+                    android:id="@+id/btn_register"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/comm_rectangle_btn_transparent_withbound"
-                    android:text="@string/side_wait"
+                    android:text="@string/side_register"
                     android:textColor="@color/common_color_selector"
                     android:textSize="@dimen/common_16sp" />
             </LinearLayout>

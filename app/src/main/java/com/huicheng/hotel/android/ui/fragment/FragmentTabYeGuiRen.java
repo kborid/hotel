@@ -50,7 +50,6 @@ import java.util.List;
  */
 public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, HotelListActivity.OnUpdateHotelInfoListener {
     public static boolean isFirstLoad = false;
-    private String key = null;
     private HotelListAdapter adapter = null;
     private List<HotelInfoBean> list = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -66,14 +65,15 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
     private int pageIndex = 0;
     private int refreshType = 0;
 
-    private String keyword = "";
+    private String key = null;
+    private Bundle bundle = null;
     private int pointIndex, gradeIndex, priceIndex, typeIndex;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isFirstLoad = true;
-        key = getArguments().getString("key");
-        keyword = getArguments().getString("keyword");
+        key = HotelCommDef.YEGUIREN;
+        bundle = getArguments();
         View view = inflater.inflate(R.layout.fragment_tab_ygr, container, false);
         initTypedArrayValue();
         initViews(view);
@@ -82,12 +82,9 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         return view;
     }
 
-    public static Fragment newInstance(String key, String keyword) {
+    public static Fragment newInstance(Bundle searchParams) {
         Fragment fragment = new FragmentTabYeGuiRen();
-        Bundle bundle = new Bundle();
-        bundle.putString("key", key);
-        bundle.putString("keyword", keyword);
-        fragment.setArguments(bundle);
+        fragment.setArguments(searchParams);
         return fragment;
     }
 
@@ -121,6 +118,7 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         ((StaggeredGridLayoutManager) layoutManager).setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new HotelListAdapter(getActivity(), list, HotelCommDef.TYPE_YEGUIREN);
+        adapter.setLandMarkLonLat(bundle.getString("lonLat"));
         recyclerView.setAdapter(adapter);
         tv_note = (TextView) view.findViewById(R.id.tv_note);
         empty_lay = (RelativeLayout) view.findViewById(R.id.empty_lay);
@@ -219,7 +217,7 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
     private void requestHotelYGRList(int pageIndex) {
         LogUtil.i(TAG, "requestHotelYGRList()");
         LogUtil.i(TAG, "pageIndex = " + pageIndex);
-        LogUtil.i(TAG, "keyword = " + keyword);
+        LogUtil.i(TAG, "keyword = " + bundle.getString("keyword"));
         String star = HotelCommDef.convertConsiderGrade(gradeIndex);
         LogUtil.i(TAG, "star = " + star);
         String[] point = HotelCommDef.convertConsiderPoint(pointIndex);
@@ -234,7 +232,17 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
 
         RequestBeanBuilder b = RequestBeanBuilder.create(SessionContext.isLogin());
         //关键字
-        b.addBody("keyword", keyword);
+        b.addBody("keyword", bundle.getString("keyword"));
+        //地标信息
+        String searchType = HotelCommDef.TYPE_HOTEL;
+        if (bundle.getBoolean("isLandMark")) {
+            searchType = HotelCommDef.TYPE_LAND_MARK;
+            b.addBody("landmark", bundle.getString("landmark"));
+        }
+        b.addBody("searchType", searchType);
+        LogUtil.i(TAG, "searchType = " + searchType);
+        LogUtil.i(TAG, "isLandMark = " + bundle.getBoolean("isLandMark"));
+        LogUtil.i(TAG, "landmark = " + bundle.getString("landmark"));
         //星级
         b.addBody("star", star);
         //评分
@@ -373,7 +381,7 @@ public class FragmentTabYeGuiRen extends BaseFragment implements DataCallback, H
         priceIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_PRICE, -1);
         typeIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_TYPE, -1);
         isFirstLoad = false;
-        this.keyword = keyword;
+        bundle.putString("keyword", keyword);
         refreshType = 0;
         if (getUserVisibleHint()) {
             swipeRefreshLayout.setRefreshing(true);
