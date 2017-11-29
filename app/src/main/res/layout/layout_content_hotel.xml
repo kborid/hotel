@@ -121,46 +121,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:focusableInTouchMode="true"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_keyword"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_search"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
-                android:layout_weight="1"
-                android:background="@null"
                 android:gravity="center"
-                android:hint="@string/search_home_tips"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:lines="1"
+                android:hint="@string/search_tips"
                 android:paddingBottom="12dp"
                 android:paddingTop="15dp"
                 android:textColor="#3f3f3f"
                 android:textColorHint="#9b9b9b"
                 android:textSize="@dimen/common_16sp" />
-
-            <ImageView
-                android:id="@+id/iv_reset"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/delete_btn_selector"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/iv_voice"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="50dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/iv_home_voice" />
-
         </LinearLayout>
 
         <View
@@ -178,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="价格 / 星级 / 类型"
+                android:hint="@string/consider_hotel_tips"
                 android:paddingBottom="12dp"
                 android:paddingTop="15dp"
                 android:textColor="#3f3f3f"

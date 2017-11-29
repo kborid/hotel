@@ -56,11 +56,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     private TextView tv_search;
     private TextView tv_consider;
 
-    private long exitTime = 0;
-    private long beginTime, endTime;
-    private boolean isNeedCloseLeftDrawer = false;
-    private int oldSkinIndex = 0;
-
     private CustomConsiderLayoutForHome mConsiderLayout = null;
     private PopupWindow mConsiderPopupWindow = null;
     private int typeIndex = -1, gradeIndex = -1, priceIndex = -1;
