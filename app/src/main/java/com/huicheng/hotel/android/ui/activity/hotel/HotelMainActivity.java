@@ -5,20 +5,14 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.TextWatcher;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -26,26 +20,18 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amap.api.location.AMapLocation;
-import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
-import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
-import com.huicheng.hotel.android.ui.activity.PermissionsActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.iflytek.cloud.RecognizerResult;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechError;
-import com.iflytek.cloud.ui.RecognizerDialog;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -64,14 +50,20 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     private TextView tv_city;
     private TextView tv_next_search;
     private TextView tv_in_date, tv_days, tv_out_date;
-    private EditText et_keyword;
-    private ImageView iv_reset;
-    private ImageView iv_voice;
+    //    private EditText et_keyword;
+//    private ImageView iv_reset;
+//    private ImageView iv_voice;
+    private TextView tv_search;
     private TextView tv_consider;
 
-    private int typeIndex = -1, gradeIndex = -1, priceIndex = -1;
+    private long exitTime = 0;
+    private long beginTime, endTime;
+    private boolean isNeedCloseLeftDrawer = false;
+    private int oldSkinIndex = 0;
+
     private CustomConsiderLayoutForHome mConsiderLayout = null;
     private PopupWindow mConsiderPopupWindow = null;
+    private int typeIndex = -1, gradeIndex = -1, priceIndex = -1;
 
     // 海南诚信广告Popup
     private boolean isAdShowed = false;
@@ -97,10 +89,11 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         tv_days = (TextView) findViewById(R.id.tv_days);
         tv_out_date = (TextView) findViewById(R.id.tv_out_date);
 
-        et_keyword = (EditText) findViewById(R.id.et_keyword);
-        iv_reset = (ImageView) findViewById(R.id.iv_reset);
-        iv_reset.setEnabled(false);
-        iv_voice = (ImageView) findViewById(R.id.iv_voice);
+//        et_keyword = (EditText) findViewById(R.id.et_keyword);
+//        iv_reset = (ImageView) findViewById(R.id.iv_reset);
+//        iv_reset.setEnabled(false);
+//        iv_voice = (ImageView) findViewById(R.id.iv_voice);
+        tv_search = (TextView) findViewById(R.id.tv_search);
         tv_consider = (TextView) findViewById(R.id.tv_consider);
 
         //首页筛选菜单
@@ -205,6 +198,17 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         //重置consider
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
 
+        //搜索地标，设置城市返回后刷新显示
+        String cacheCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+        if (StringUtil.notEmpty(cacheCity)) {
+            if (!tv_city.getText().toString().equals(cacheCity)) {
+                tv_city.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+                if (!isAdShowed) {
+                    showHaiNanAd(SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
+                }
+                requestWeatherInfo(beginTime);
+            }
+        }
         //OpenInstall Event 分发
         dispatchOpenInstallEvent();
     }
@@ -289,35 +293,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         tv_out_date.setOnClickListener(this);
         tv_next_search.setOnClickListener(this);
         order_lay.setOnClickListener(this);
-        iv_reset.setOnClickListener(this);
-        iv_voice.setOnClickListener(this);
-        et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    tv_next_search.performClick();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        et_keyword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                iv_reset.setEnabled(StringUtil.notEmpty(s));
-            }
-        });
+        tv_search.setOnClickListener(this);
         tv_consider.setOnClickListener(this);
     }
 
@@ -359,7 +335,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
                 intent = new Intent(this, HotelListActivity.class);
                 intent.putExtra("index", 0);
-                intent.putExtra("keyword", et_keyword.getText().toString());
+                intent.putExtra("keyword", "");
                 break;
             case R.id.tv_in_date:
             case R.id.tv_out_date: {
@@ -370,39 +346,8 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 startActivityForResult(resIntent, REQUEST_CODE_DATE);
                 break;
             }
-            case R.id.iv_voice:
-                if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.MIC_PERMISSION)) {
-                    PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
-                    return;
-                }
-                RecognizerDialog mDialog = new RecognizerDialog(this, null);
-                mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
-                mDialog.setParameter(SpeechConstant.ASR_SCH, "1");
-                mDialog.setParameter(SpeechConstant.NLP_VERSION, "3.0");
-                mDialog.setListener(new RecognizerDialogListener() {
-                    @Override
-                    public void onResult(RecognizerResult recognizerResult, boolean b) {
-                        if (b) {
-                            String jsonStr = recognizerResult.getResultString();
-                            JSONObject mJson = JSON.parseObject(jsonStr);
-                            if (mJson.containsKey("text")) {
-                                et_keyword.setText(mJson.getString("text"));
-                                et_keyword.setSelection(et_keyword.getText().length());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(SpeechError speechError) {
-                        LogUtil.e(TAG, "voice error code:" + speechError.getErrorCode() + ", " + speechError.getErrorDescription());
-                    }
-                });
-                mDialog.show();
-                break;
-            case R.id.iv_reset:
-                et_keyword.setText("");
-                et_keyword.setFocusable(false);
-                et_keyword.setFocusableInTouchMode(true);
+            case R.id.tv_search:
+                intent = new Intent(this, HotelAllSearchActivity.class);
                 break;
             case R.id.tv_consider:
                 showConsiderPopupWindow();

@@ -29,7 +29,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -69,7 +68,7 @@ public class HotelListActivity extends BaseActivity {
     private PopupWindow mSortPopupWindow;
 
 
-    private String keyword = "";
+    private Bundle searchParams = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,16 +186,14 @@ public class HotelListActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             index = bundle.getInt("index");
-            if (bundle.getString("keyword") != null) {
-                keyword = bundle.getString("keyword");
-            }
+            searchParams = bundle;
         }
     }
 
     @Override
     public void initParams() {
         super.initParams();
-        et_search.setText(keyword);
+//        et_search.setText(searchParams.keyWorld);
         beginTime = HotelOrderManager.getInstance().getBeginTime();
         endTime = HotelOrderManager.getInstance().getEndTime();
         hotelDateStr = HotelOrderManager.getInstance().getDateStr();
@@ -240,7 +237,7 @@ public class HotelListActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                keyword = s.toString();
+                searchParams.putString("keyword", s.toString());
             }
         });
     }
@@ -282,7 +279,7 @@ public class HotelListActivity extends BaseActivity {
     private void refreshHotelList() {
         if (null != listenerList && listenerList.size() > 0) {
             for (OnUpdateHotelInfoListener listener : listenerList) {
-                listener.onUpdate(keyword);
+                listener.onUpdate(searchParams.getString("keyword"));
             }
         }
     }
@@ -322,11 +319,11 @@ public class HotelListActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return FragmentTabAllDay.newInstance(HotelCommDef.ALLDAY, keyword);
+                    return FragmentTabAllDay.newInstance(searchParams);
                 case 1:
-                    return FragmentTabClock.newInstance(HotelCommDef.CLOCK, keyword);
+                    return FragmentTabClock.newInstance(searchParams);
                 case 2:
-                    return FragmentTabYeGuiRen.newInstance(HotelCommDef.YEGUIREN, keyword);
+                    return FragmentTabYeGuiRen.newInstance(searchParams);
                 default:
                     return null;
             }

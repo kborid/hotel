@@ -47,6 +47,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     private List<HotelInfoBean> list;
     private int type = 0;
     private int ygrRoomItemBackgroundId;
+    private String lonLat = null;
 
     public HotelListAdapter(Context context, List<HotelInfoBean> list, int type) {
         this.context = context;
@@ -55,6 +56,10 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         TypedArray ta = context.obtainStyledAttributes(R.styleable.MyTheme);
         ygrRoomItemBackgroundId = ta.getResourceId(R.styleable.MyTheme_roomItemGradient, R.drawable.roomitem_ygr_gradient);
         ta.recycle();
+    }
+
+    public void setLandMarkLonLat(String lonLat) {
+        this.lonLat = lonLat;
     }
 
     @Override
@@ -204,16 +209,28 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
 
             // 距离信息
-            LatLng start = null, des = null;
-            float lon = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "0", false));
-            float lat = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "0", false));
-            if (lon != 0 && lat != 0 && StringUtil.notEmpty(bean.hotelCoordinate)) {
-                start = new LatLng(lat, lon);
-                String[] pos = bean.hotelCoordinate.split("\\|");
-                des = new LatLng(Float.valueOf(pos[0]), Float.valueOf(pos[1]));
-                float dis = AMapUtils.calculateLineDistance(start, des);
-                holder.tv_hotel_dis.setText(AMapUtil.getFriendlyLength((int) dis));
-            } else {
+            try {
+                LatLng start = null, des = null;
+                float lon, lat;
+                if (StringUtil.notEmpty(lonLat)) {
+                    String[] pos = lonLat.split("\\|");
+                    lon = Float.valueOf(pos[1]);
+                    lat = Float.valueOf(pos[0]);
+                } else {
+                    lon = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "0", false));
+                    lat = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "0", false));
+                }
+                if (lon != 0 && lat != 0 && StringUtil.notEmpty(bean.hotelCoordinate)) {
+                    start = new LatLng(lat, lon);
+                    String[] pos = bean.hotelCoordinate.split("\\|");
+                    des = new LatLng(Float.valueOf(pos[0]), Float.valueOf(pos[1]));
+                    float dis = AMapUtils.calculateLineDistance(start, des);
+                    holder.tv_hotel_dis.setText(AMapUtil.getFriendlyLength((int) dis));
+                } else {
+                    holder.tv_hotel_dis.setText("暂无距离信息");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 holder.tv_hotel_dis.setText("暂无距离信息");
             }
 

@@ -1,8 +1,6 @@
 package com.huicheng.hotel.android.common;
 
-import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
@@ -185,6 +183,15 @@ public class SessionContext {
     }
 
     /**
+     * 清除定位信息
+     */
+    public static void cleanLocationInfo() {
+        SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, "", false);
+        SharedPreferenceUtil.getInstance().setString(AppConst.CITY, "", false);
+        SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, "", false);
+    }
+
+    /**
      * 销毁数据
      */
     public static void destroy() {
@@ -239,27 +246,6 @@ public class SessionContext {
             }
         }
         return url;
-    }
-
-    public static boolean isRunningApp(Context context, String packageName) {
-        ActivityManager __am = (ActivityManager) context
-                .getApplicationContext().getSystemService(
-                        Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> __list = __am.getRunningTasks(100);
-        if (__list.size() == 0)
-            return false;
-        for (ActivityManager.RunningTaskInfo task : __list) {
-            if (task.topActivity.getPackageName().equals(packageName)) {
-
-                Intent activityIntent = new Intent();
-                activityIntent.setComponent(task.topActivity);
-                activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                context.startActivity(activityIntent);
-                return true;
-            }
-        }
-        return false;
     }
 
     public static String getFirstSpellChat(String cityStr) {
@@ -332,5 +318,17 @@ public class SessionContext {
         value_index[1] = index;
 
         return value_index;
+    }
+
+    private static HashMap<String, Boolean> mFirstDoActionFlag = new HashMap<>();
+
+    public static boolean isFirstDoAction(String key) {
+        boolean isFirst = true;
+        if (!mFirstDoActionFlag.containsKey(key)) {
+            mFirstDoActionFlag.put(key, false);
+        } else {
+            isFirst = mFirstDoActionFlag.get(key);
+        }
+        return isFirst;
     }
 }
