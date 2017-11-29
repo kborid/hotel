@@ -24,7 +24,6 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.activity.DebugInfoActivity;
-<<<<<<< HEAD
 import com.huicheng.hotel.android.ui.activity.UcAboutActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcFansHotelActivity;
@@ -34,16 +33,7 @@ import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
 import com.huicheng.hotel.android.ui.activity.UcSettingActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrdersAssessActivity;
-=======
-import com.huicheng.hotel.android.ui.activity.FansHotelActivity;
-import com.huicheng.hotel.android.ui.activity.FeedbackActivity;
-import com.huicheng.hotel.android.ui.activity.MessageListActivity;
-import com.huicheng.hotel.android.ui.activity.MyDiscountCouponActivity;
-import com.huicheng.hotel.android.ui.activity.OrderListActivity;
-import com.huicheng.hotel.android.ui.activity.SettingActivity;
-import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
 import com.huicheng.hotel.android.ui.activity.UserRegisterActivity;
->>>>>>> 2.1.0
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
