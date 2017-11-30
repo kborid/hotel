@@ -37,7 +37,7 @@ public class VerticalStackTransformer extends VerticalBaseTransformer {
             page.setClickable(true);
         } else if (position <= 1.0f) {
             Log.e("onTransform", "position <= 1.0f ==>" + position);
-            float scale = (float) (page.getWidth() - Utils.dip2px(spaceBetweenFirAndSecWith * position)) / (float) (page.getWidth());
+            float scale = (float) (page.getWidth() - Utils.dp2px(spaceBetweenFirAndSecWith * position)) / (float) (page.getWidth());
             //控制下面卡片的可见度
             page.setAlpha(1.0f - 0.4f * position); // alpha最小0.6f
             //控制停止滑动切换的时候，只有最上面的一张卡片可以点击
@@ -46,10 +46,10 @@ public class VerticalStackTransformer extends VerticalBaseTransformer {
             page.setPivotY(page.getHeight() / 2f);
             page.setScaleX(scale);
             page.setScaleY(scale);
-            page.setTranslationY(-page.getHeight() * position - (page.getHeight() * 0.5f) * (1 - scale) - Utils.dip2px(spaceBetweenFirAndSecHeight) * position);
+            page.setTranslationY(-page.getHeight() * position - (page.getHeight() * 0.5f) * (1 - scale) - Utils.dp2px(spaceBetweenFirAndSecHeight) * position);
         } else if (position <= 2.0f) {
             Log.e("onTransform", "position <= 2.0f ==>" + position);
-            float scale = (float) (page.getWidth() - Utils.dip2px(spaceBetweenFirAndSecWith * position)) / (float) (page.getWidth());
+            float scale = (float) (page.getWidth() - Utils.dp2px(spaceBetweenFirAndSecWith * position)) / (float) (page.getWidth());
             //控制下面卡片的可见度
             page.setAlpha(1.0f - 0.4f * position); // alpha最小0.2f
             //控制停止滑动切换的时候，只有最上面的一张卡片可以点击
@@ -58,7 +58,7 @@ public class VerticalStackTransformer extends VerticalBaseTransformer {
             page.setPivotY(page.getHeight() / 2f);
             page.setScaleX(scale);
             page.setScaleY(scale);
-            page.setTranslationY(-page.getHeight() * position - (page.getHeight() * 0.5f) * (1 - scale) - Utils.dip2px(spaceBetweenSecAndThiHeight) * position);
+            page.setTranslationY(-page.getHeight() * position - (page.getHeight() * 0.5f) * (1 - scale) - Utils.dp2px(spaceBetweenSecAndThiHeight) * position);
         }
     }
 }

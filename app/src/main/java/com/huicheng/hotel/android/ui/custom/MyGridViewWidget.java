@@ -59,7 +59,7 @@ public class MyGridViewWidget extends GridView {
                     // 画竖线
                     if (i % 3 != 0) {
                         // 从上到下 画 左边边框
-                        int padValue = Utils.dip2px(20);
+                        int padValue = Utils.dp2px(20);
                         canvas.drawLine(cellView.getLeft(), cellView.getTop() + padValue, cellView.getLeft(), cellView.getBottom() - padValue * 2, localPaint);
                     }
 

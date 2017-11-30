@@ -194,7 +194,7 @@ public class UcPersonalInfoActivity extends BaseActivity {
         // 设置头像
         headUrl = SessionContext.mUser.user.headphotourl;
         RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) photo_lay.getLayoutParams();
-        rl.width = Utils.mScreenWidth - Utils.dip2px(65);
+        rl.width = Utils.mScreenWidth - Utils.dp2px(65);
         rl.height = rl.width;
         photo_lay.setLayoutParams(rl);
 
@@ -754,7 +754,7 @@ public class UcPersonalInfoActivity extends BaseActivity {
             male_lay.setVisibility(View.VISIBLE);
             female_lay.setVisibility(View.VISIBLE);
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) female_lay.getLayoutParams();
-            lp.leftMargin = Utils.dip2px(15);
+            lp.leftMargin = Utils.dp2px(15);
             female_lay.setLayoutParams(lp);
 
             seekbar.setSeekBarResId(thumbId);

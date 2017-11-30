@@ -167,7 +167,7 @@
                 android:textSize="@dimen/common_12sp" />
 
             <View
-                android:layout_width="@dimen/public_space_value_0.5"
+                android:layout_width="0.5dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="5dp"
@@ -183,7 +183,7 @@
                 android:textSize="@dimen/common_12sp" />
 
             <View
-                android:layout_width="@dimen/public_space_value_0.5"
+                android:layout_width="0.5dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="5dp"
@@ -207,7 +207,7 @@
                 android:textSize="@dimen/common_12sp" />
 
             <View
-                android:layout_width="@dimen/public_space_value_0.5"
+                android:layout_width="0.5dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="5dp"

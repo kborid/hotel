@@ -282,9 +282,9 @@ public class HotelDetailActivity extends BaseActivity {
             );
 
             //设置banner
-            int marginValue = Utils.dip2px(10);
+            int marginValue = Utils.dp2px(10);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                marginValue = Utils.dip2px(5);
+                marginValue = Utils.dp2px(5);
             }
             viewPager.setPageMargin(marginValue);
             viewPager.setAdapter(new MyPagerAdapter(this, hotelDetailInfoBean.picPath));
@@ -360,9 +360,9 @@ public class HotelDetailActivity extends BaseActivity {
             View view = LayoutInflater.from(this).inflate(R.layout.lv_room_item, null);
             CardView cardview = (CardView) view.findViewById(R.id.cardview);
             RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            rlp.width = Utils.mScreenWidth - Utils.dip2px(20);
+            rlp.width = Utils.mScreenWidth - Utils.dp2px(20);
             rlp.height = (int) ((float) rlp.width / 7 * 2);
-            rlp.setMargins(Utils.dip2px(10), Utils.dip2px(5), Utils.dip2px(10), Utils.dip2px(5));
+            rlp.setMargins(Utils.dp2px(10), Utils.dp2px(5), Utils.dp2px(10), Utils.dp2px(5));
             rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
             cardview.setLayoutParams(rlp);
             LinearLayout content_layout = (LinearLayout) view.findViewById(R.id.content_layout);
@@ -435,9 +435,9 @@ public class HotelDetailActivity extends BaseActivity {
             View view = LayoutInflater.from(this).inflate(R.layout.lv_room_item, null);
             CardView cardview = (CardView) view.findViewById(R.id.cardview);
             RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            rlp.width = Utils.mScreenWidth - Utils.dip2px(20);
+            rlp.width = Utils.mScreenWidth - Utils.dp2px(20);
             rlp.height = (int) ((float) rlp.width / 7 * 2);
-            rlp.setMargins(Utils.dip2px(10), Utils.dip2px(5), Utils.dip2px(10), Utils.dip2px(5));
+            rlp.setMargins(Utils.dp2px(10), Utils.dp2px(5), Utils.dp2px(10), Utils.dp2px(5));
             rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
             cardview.setLayoutParams(rlp);
             RoundedLeftImageView iv_icon = (RoundedLeftImageView) view.findViewById(R.id.iv_icon);
@@ -570,7 +570,7 @@ public class HotelDetailActivity extends BaseActivity {
             ListView listview = (ListView) view.findViewById(R.id.listview);
             if (bean.roomlist != null && bean.roomlist.size() > 1) {
                 LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                llp.height = Utils.dip2px(120);
+                llp.height = Utils.dp2px(120);
                 listview.setLayoutParams(llp);
             }
             //没有数据时，显示空view提示
@@ -578,7 +578,7 @@ public class HotelDetailActivity extends BaseActivity {
             emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             emptyView.setText("暂无推荐");
             emptyView.setTextSize(14);
-            emptyView.setPadding(0, Utils.dip2px(15), 0, Utils.dip2px(15));
+            emptyView.setPadding(0, Utils.dp2px(15), 0, Utils.dp2px(15));
             emptyView.setGravity(Gravity.CENTER);
             emptyView.setTextColor(getResources().getColor(R.color.selectedBarColor));
             emptyView.setVisibility(View.GONE);
@@ -676,9 +676,9 @@ public class HotelDetailActivity extends BaseActivity {
                 View view = new View(this);
                 view.setBackgroundResource(indicatorSelId);
                 view.setEnabled(false);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(7), Utils.dip2px(7));
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dp2px(7), Utils.dp2px(7));
                 if (i > 0) {
-                    lp.leftMargin = Utils.dip2px(7);
+                    lp.leftMargin = Utils.dp2px(7);
                 }
                 view.setLayoutParams(lp);
                 indicator_lay.addView(view);

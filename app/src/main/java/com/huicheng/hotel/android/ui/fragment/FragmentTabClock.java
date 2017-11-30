@@ -124,7 +124,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         super.initParams();
         swipeRefreshLayout.setColorSchemeResources(mSwipeRefreshColor);
         swipeRefreshLayout.setDistanceToTriggerSync(200);
-        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dip2px(20));
+        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 
         //初始化筛选条件

@@ -14,7 +14,7 @@ import com.prj.sdk.util.Utils;
  */
 public class RoundedLeftImageView extends android.support.v7.widget.AppCompatImageView {
     /*圆角的半径，依次为左上角xy半径，右上角，右下角，左下角*/
-    private float[] rids = {Utils.dip2px(10), Utils.dip2px(10), 0.0f, 0.0f, 0.0f, 0.0f, Utils.dip2px(10), Utils.dip2px(10),};
+    private float[] rids = {Utils.dp2px(10), Utils.dp2px(10), 0.0f, 0.0f, 0.0f, 0.0f, Utils.dp2px(10), Utils.dp2px(10),};
 
     public RoundedLeftImageView(Context context) {
         super(context);

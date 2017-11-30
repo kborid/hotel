@@ -46,7 +46,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/public_space_value_0.5"
+        android:layout_height="0.5dp"
         android:background="#d4d5da" />
 
     <RelativeLayout
@@ -75,7 +75,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/public_space_value_0.5"
+        android:layout_height="0.5dp"
         android:background="#d4d5da" />
 
     <LinearLayout
@@ -93,9 +93,11 @@
             android:scrollbars="none" />
 
         <LinearLayout
+            android:id="@+id/consider_content_lay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
+            android:gravity="center_horizontal"
             android:orientation="vertical" />
     </LinearLayout>
 </LinearLayout>

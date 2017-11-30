@@ -338,7 +338,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             }
         });
 
-        final LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(Utils.dip2px(300), ViewGroup.LayoutParams.WRAP_CONTENT);
+        final LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(Utils.dp2px(300), ViewGroup.LayoutParams.WRAP_CONTENT);
         //VIP Home Layout
         final View viewHome = LayoutInflater.from(context).inflate(R.layout.dialog_vip_home_layout, null);
         //VIP Detail Layout

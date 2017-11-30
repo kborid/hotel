@@ -158,9 +158,6 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
         Intent intent;
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
-//                intent = new Intent(this, HotelMainActivity.class);
-//            } else {
-//                intent = new Intent(this, GuideLauncherActivity.class);
         }
         intent = new Intent(this, MainActivity.class);
         startActivity(intent);

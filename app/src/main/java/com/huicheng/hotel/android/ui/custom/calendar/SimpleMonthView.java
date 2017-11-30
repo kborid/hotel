@@ -50,7 +50,7 @@ public class SimpleMonthView extends View {
     private static int MONTH_HEADER_SIZE;
     private static int MONTH_LABEL_TEXT_SIZE;
 
-    private int mPadding = Utils.dip2px(20);
+    private int mPadding = Utils.dp2px(20);
 
     private String mDayOfWeekTypeface;
     private String mMonthTitleTypeface;
@@ -397,14 +397,14 @@ public class SimpleMonthView extends View {
         Paint tmpPaint = new Paint();
         tmpPaint.setFakeBoldText(true);
         tmpPaint.setAntiAlias(true);
-        tmpPaint.setTextSize(Utils.dip2px(300));
+        tmpPaint.setTextSize(Utils.dp2px(300));
         tmpPaint.setColor(Color.parseColor("#f0f0f0"));
         tmpPaint.setStyle(Paint.Style.FILL);
 
         int y = mRowHeight * 5;
         String mouthStr = String.valueOf(mMonth + 1);
-//        canvas.drawText(mouthStr, tmpPaint.measureText(mouthStr) / 2 - Utils.dip2px(20) / 2 + (Utils.mScreenWidth - tmpPaint.measureText(mouthStr)) / 2, y, tmpPaint);
-        canvas.drawText(mouthStr, (Utils.mScreenWidth - Utils.dip2px(20) - tmpPaint.measureText(mouthStr)) / 2, y, tmpPaint);
+//        canvas.drawText(mouthStr, tmpPaint.measureText(mouthStr) / 2 - Utils.dp2px(20) / 2 + (Utils.mScreenWidth - tmpPaint.measureText(mouthStr)) / 2, y, tmpPaint);
+        canvas.drawText(mouthStr, (Utils.mScreenWidth - Utils.dp2px(20) - tmpPaint.measureText(mouthStr)) / 2, y, tmpPaint);
     }
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

@@ -116,9 +116,9 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
                 View view = new View(context);
                 view.setBackgroundResource(mIndicatorResId);
                 view.setEnabled(false);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(7), Utils.dip2px(7));
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dp2px(7), Utils.dp2px(7));
                 if (i > 0) {
-                    lp.leftMargin = Utils.dip2px(7);
+                    lp.leftMargin = Utils.dp2px(7);
                 }
                 view.setLayoutParams(lp);
                 indicator_lay.addView(view);

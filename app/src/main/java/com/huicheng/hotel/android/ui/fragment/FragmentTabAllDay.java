@@ -114,7 +114,7 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         ((StaggeredGridLayoutManager) layoutManager).setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.addItemDecoration(new SpacesItemDecoration(Utils.dip2px(10)));
+//        recyclerView.addItemDecoration(new SpacesItemDecoration(Utils.dp2px(10)));
         adapter = new HotelListAdapter(getActivity(), list, HotelCommDef.TYPE_ALL);
         adapter.setLandMarkLonLat(bundle.getString("lonLat"));
         recyclerView.setAdapter(adapter);
@@ -126,7 +126,7 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         super.initParams();
         swipeRefreshLayout.setColorSchemeResources(mSwipeRefreshColor);
         swipeRefreshLayout.setDistanceToTriggerSync(200);
-        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dip2px(20));
+        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 
         //初始化筛选条件

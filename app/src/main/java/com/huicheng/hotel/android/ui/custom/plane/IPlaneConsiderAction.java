@@ -6,7 +6,8 @@ package com.huicheng.hotel.android.ui.custom.plane;
  */
 
 public interface IPlaneConsiderAction {
+    void cancelConsiderConfig();
     void resetConsiderConfig();
-
     void saveConsiderConfig();
+    void reloadConsiderConfig();
 }

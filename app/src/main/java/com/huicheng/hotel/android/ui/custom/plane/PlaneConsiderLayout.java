@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +28,13 @@ public class PlaneConsiderLayout extends LinearLayout {
 
     private ListView listview;
     private ConditionAdapter adapter;
+    private LinearLayout consider_content_lay;
+    private ArrayList<IPlaneConsiderAction> actions = new ArrayList<>();
+    private ConsiderAirOffTimeLayout considerAirOffTimeLayout;
+    private ConsiderAirCompanyLayout considerAirCompanyLayout;
+    private ConsiderAirPortLayout considerAirPortLayout;
+    private ConsiderAirTypeLayout considerAirTypeLayout;
+    private ConsiderAirCangLayout considerAirCangLayout;
 
     public PlaneConsiderLayout(Context context) {
         this(context, null);
@@ -48,6 +56,14 @@ public class PlaneConsiderLayout extends LinearLayout {
         listview = (ListView) findViewById(R.id.listview);
         adapter = new ConditionAdapter();
         listview.setAdapter(adapter);
+        consider_content_lay = (LinearLayout) findViewById(R.id.consider_content_lay);
+        considerAirOffTimeLayout = new ConsiderAirOffTimeLayout(context);
+        considerAirCompanyLayout = new ConsiderAirCompanyLayout(context);
+        considerAirPortLayout = new ConsiderAirPortLayout(context);
+        considerAirTypeLayout = new ConsiderAirTypeLayout(context);
+        considerAirCangLayout = new ConsiderAirCangLayout(context);
+        consider_content_lay.removeAllViews();
+        consider_content_lay.addView(considerAirOffTimeLayout);
     }
 
     private void initListeners() {
@@ -55,8 +71,54 @@ public class PlaneConsiderLayout extends LinearLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 adapter.setSelectedIndex(position);
+                changedContentLayout(position);
             }
         });
+
+        actions.add(considerAirOffTimeLayout);
+        actions.add(considerAirCompanyLayout);
+        actions.add(considerAirPortLayout);
+        actions.add(considerAirTypeLayout);
+        actions.add(considerAirCangLayout);
+    }
+
+    private void changedContentLayout(int index) {
+        consider_content_lay.removeAllViews();
+        switch (index) {
+            case 0:
+                consider_content_lay.addView(considerAirOffTimeLayout);
+                break;
+            case 1:
+                consider_content_lay.addView(considerAirCompanyLayout);
+                break;
+            case 2:
+                consider_content_lay.addView(considerAirPortLayout);
+                break;
+            case 3:
+                consider_content_lay.addView(considerAirTypeLayout);
+                break;
+            case 4:
+                consider_content_lay.addView(considerAirCangLayout);
+                break;
+        }
+    }
+
+    public void reloadConfig() {
+        for (IPlaneConsiderAction action : actions) {
+            action.reloadConsiderConfig();
+        }
+    }
+
+    public void saveConfig() {
+        for (IPlaneConsiderAction action : actions) {
+            action.saveConsiderConfig();
+        }
+    }
+
+    public void resetConfig() {
+        for (IPlaneConsiderAction action : actions) {
+            action.resetConsiderConfig();
+        }
     }
 
     private class ConditionAdapter extends BaseAdapter {

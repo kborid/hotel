@@ -74,9 +74,9 @@ public class CustomNoAutoScrollBannerLayout extends RelativeLayout implements Vi
                 View view = new View(context);
                 view.setBackgroundResource(R.drawable.indicator_room_detail);
                 view.setEnabled(false);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(10), Utils.dip2px(10));
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dp2px(10), Utils.dp2px(10));
                 if (i > 0) {
-                    lp.leftMargin = Utils.dip2px(8);
+                    lp.leftMargin = Utils.dp2px(8);
                 }
                 view.setLayoutParams(lp);
                 indicator_lay.addView(view);

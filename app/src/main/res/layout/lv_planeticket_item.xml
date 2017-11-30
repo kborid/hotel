@@ -166,7 +166,7 @@
                     android:textSize="@dimen/common_10sp" />
 
                 <View
-                    android:layout_width="@dimen/public_space_value_0.5"
+                    android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:background="@color/black" />
@@ -179,7 +179,7 @@
                     android:textSize="@dimen/common_10sp" />
 
                 <View
-                    android:layout_width="@dimen/public_space_value_0.5"
+                    android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:background="@color/black" />

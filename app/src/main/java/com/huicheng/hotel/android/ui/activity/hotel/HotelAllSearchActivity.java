@@ -89,7 +89,7 @@ public class HotelAllSearchActivity extends BaseActivity {
         tv_empty = (TextView) findViewById(R.id.tv_empty);
         mHeaderView = new TextView(this);
         mHeaderView.setText("加上城市名搜索更准确哦!");
-        mHeaderView.setPadding(0, Utils.dip2px(20), 0, Utils.dip2px(20));
+        mHeaderView.setPadding(0, Utils.dp2px(20), 0, Utils.dp2px(20));
         mHeaderView.setTextSize(15);
         mHeaderView.setTextColor(Color.parseColor("#333333"));
         mHeaderView.setGravity(Gravity.CENTER);

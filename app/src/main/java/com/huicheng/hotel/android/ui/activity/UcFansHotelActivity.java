@@ -78,7 +78,7 @@ public class UcFansHotelActivity extends BaseActivity {
         viewPager.setPageTransformer(true, new VerticalStackTransformer(this));
 
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        llp.height = Utils.mScreenHeight - Utils.dip2px(45) - Utils.dip2px(150) - Utils.dip2px(40);
+        llp.height = Utils.mScreenHeight - Utils.dp2px(45) - Utils.dp2px(150) - Utils.dp2px(40);
         llp.width = (int) ((float) llp.height / 7 * 5.5f);
         viewPager.setLayoutParams(llp);
     }

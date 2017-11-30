@@ -270,7 +270,7 @@ public class HotelOrderPayActivity extends BaseActivity {
                     room_detail_layout.addView(roomDetailItem);
                 }
                 LinearLayout.LayoutParams roomDetailLlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                roomDetailLlp.leftMargin = Utils.dip2px(15);
+                roomDetailLlp.leftMargin = Utils.dp2px(15);
                 room_detail_layout.setLayoutParams(roomDetailLlp);
                 service_lay.addView(commView);
 

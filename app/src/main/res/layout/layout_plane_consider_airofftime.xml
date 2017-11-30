@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="7dp"
+        android:checkedButton="@+id/rb_morning"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_morning"
+            android:layout_width="54dp"
+            android:layout_height="28dp"
+            android:background="@drawable/plane_offtime_rect_bg_sel"
+            android:button="@null"
+            android:gravity="center"
+            android:text="上午"
+            android:textColor="@color/plane_text_color_sel"
+            android:textSize="@dimen/common_14sp" />
+
+        <RadioButton
+            android:id="@+id/rb_afternoon"
+            android:layout_width="54dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="18dp"
+            android:background="@drawable/plane_offtime_rect_bg_sel"
+            android:button="@null"
+            android:gravity="center"
+            android:text="下午"
+            android:textColor="@color/plane_text_color_sel"
+            android:textSize="@dimen/common_14sp" />
+
+        <RadioButton
+            android:id="@+id/rb_night"
+            android:layout_width="54dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="18dp"
+            android:background="@drawable/plane_offtime_rect_bg_sel"
+            android:button="@null"
+            android:gravity="center"
+            android:text="夜间"
+            android:textColor="@color/plane_text_color_sel"
+            android:textSize="@dimen/common_14sp" />
+    </RadioGroup>
+
+    <com.huicheng.hotel.android.ui.custom.CustomDoubleSeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp" />
+</LinearLayout>

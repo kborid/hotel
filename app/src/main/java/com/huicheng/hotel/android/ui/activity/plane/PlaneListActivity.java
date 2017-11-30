@@ -62,7 +62,7 @@ public class PlaneListActivity extends BaseActivity {
         tv_consider = (TextView) findViewById(R.id.tv_consider);
         //筛选
         mPlaneConsiderLayout = new PlaneConsiderLayout(this);
-        mPlaneConsiderPopupWindow = new PopupWindow(mPlaneConsiderLayout, ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(470), true);
+        mPlaneConsiderPopupWindow = new PopupWindow(mPlaneConsiderLayout, ViewGroup.LayoutParams.MATCH_PARENT, Utils.dp2px(470), true);
         mPlaneConsiderPopupWindow.setAnimationStyle(R.style.share_anmi);
         mPlaneConsiderPopupWindow.setFocusable(true);
         mPlaneConsiderPopupWindow.setOutsideTouchable(true);
@@ -210,8 +210,8 @@ public class PlaneListActivity extends BaseActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (null == convertView) {
                 convertView = LayoutInflater.from(context).inflate(R.layout.plane_date_item, null);
-                int width = (int) ((float) (Utils.mScreenWidth - Utils.dip2px(40) - Utils.dip2px(6)) / 7);
-//                int height = (int) ((float) width / Utils.dip2px(50) * Utils.dip2px(66));
+                int width = (int) ((float) (Utils.mScreenWidth - Utils.dp2px(40) - Utils.dp2px(6)) / 7);
+//                int height = (int) ((float) width / Utils.dp2px(50) * Utils.dp2px(66));
                 Gallery.LayoutParams layoutParams = new Gallery.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
                 convertView.setLayoutParams(layoutParams);
             }
