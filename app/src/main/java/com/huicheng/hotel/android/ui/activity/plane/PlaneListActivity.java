@@ -71,10 +71,21 @@ public class PlaneListActivity extends BaseActivity {
 
             @Override
             public void onDismiss() {
-                //重置consider
+                System.out.println("plane consider popupwindow ondismiss");
                 WindowManager.LayoutParams lp = getWindow().getAttributes();
                 lp.alpha = 1f;
                 getWindow().setAttributes(lp);
+            }
+        });
+        mPlaneConsiderLayout.setOnConsiderLayoutDismissListener(new PlaneConsiderLayout.OnConsiderLayoutDismissListener() {
+            @Override
+            public void onDismiss(boolean isSave) {
+                System.out.println("plane consider layout callback ondismiss");
+                mPlaneConsiderPopupWindow.dismiss();
+                if (!isSave) {
+                    //重置consider
+                    mPlaneConsiderLayout.cancelConfig();
+                }
             }
         });
     }

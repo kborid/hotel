@@ -22,7 +22,7 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
     private Context context;
     private LinearLayout check_lay;
     private int selectedIndex = -1;
-    private CustomDoubleSeekBar seekbar;
+    private CustomDoubleSeekBar seekBar;
     private float startHour, endHour;
 
     public ConsiderAirOffTimeLayout(Context context) {
@@ -43,7 +43,7 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
     private void init() {
         LayoutInflater.from(context).inflate(R.layout.layout_plane_consider_airofftime, this);
         check_lay = (LinearLayout) findViewById(R.id.check_lay);
-        seekbar = (CustomDoubleSeekBar) findViewById(R.id.seekbar);
+        seekBar = (CustomDoubleSeekBar) findViewById(R.id.seekBar);
     }
 
     private void initListeners() {
@@ -63,9 +63,11 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
                 }
             });
         }
-        seekbar.setOnSeekBarChangeListener(new CustomDoubleSeekBar.OnSeekBarChangeListener() {
+        seekBar.setOnSeekBarChangeListener(new CustomDoubleSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressBefore() {
+                selectedIndex = -1;
+                setSelectedIndex(selectedIndex);
             }
 
             @Override
@@ -90,6 +92,20 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
         if (index != -1) {
             selectedIndex = index;
             check_lay.getChildAt(index).setSelected(true);
+            switch (index) {
+                case 0:
+                    seekBar.setProgressLeft(0);
+                    seekBar.setProgressRight(12);
+                    break;
+                case 1:
+                    seekBar.setProgressLeft(12);
+                    seekBar.setProgressRight(18);
+                    break;
+                case 2:
+                    seekBar.setProgressLeft(18);
+                    seekBar.setProgressRight(24);
+                    break;
+            }
         }
     }
 
@@ -104,8 +120,8 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
         setSelectedIndex(selectedIndex);
         startHour = 0;
         endHour = 24;
-        seekbar.setProgressLow(startHour);
-        seekbar.setProgressHigh(endHour);
+        seekBar.setProgressLeft(startHour);
+        seekBar.setProgressRight(endHour);
     }
 
     @Override
@@ -119,16 +135,9 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
     public void reloadConsiderConfig() {
         selectedIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_PLANE_DURING, -1);
         setSelectedIndex(selectedIndex);
-        try {
-            startHour = SharedPreferenceUtil.getInstance().getFloat(AppConst.CONSIDER_PLANE_START_HOUR, 0f);
-            endHour = SharedPreferenceUtil.getInstance().getFloat(AppConst.CONSIDER_PLANE_END_HOUR, 24f);
-        } catch (Exception e) {
-            startHour = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_PLANE_START_HOUR, 0);
-            endHour = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_PLANE_END_HOUR, 24);
-            SharedPreferenceUtil.getInstance().setFloat(AppConst.CONSIDER_PLANE_START_HOUR, startHour);
-            SharedPreferenceUtil.getInstance().setFloat(AppConst.CONSIDER_PLANE_END_HOUR, endHour);
-        }
-        seekbar.setProgressLow(startHour);
-        seekbar.setProgressHigh(endHour);
+        startHour = SharedPreferenceUtil.getInstance().getFloat(AppConst.CONSIDER_PLANE_START_HOUR, 0f);
+        endHour = SharedPreferenceUtil.getInstance().getFloat(AppConst.CONSIDER_PLANE_END_HOUR, 24f);
+        seekBar.setProgressLeft(startHour);
+        seekBar.setProgressRight(endHour);
     }
 }

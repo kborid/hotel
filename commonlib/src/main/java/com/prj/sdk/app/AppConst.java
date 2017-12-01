@@ -47,6 +47,7 @@ public final class AppConst {
     public static final String CONSIDER_GRADE = "consider_grade";
     public static final String CONSIDER_TYPE = "consider_type";
 
+    public static final String CONSIDER_PLANE_IS_STRAIGHT = "consider_plane_is_straight";
     public static final String CONSIDER_PLANE_DURING = "consider_plane_during";
     public static final String CONSIDER_PLANE_START_HOUR = "consider_plane_start_hour";
     public static final String CONSIDER_PLANE_END_HOUR = "consider_plane_end_hour";

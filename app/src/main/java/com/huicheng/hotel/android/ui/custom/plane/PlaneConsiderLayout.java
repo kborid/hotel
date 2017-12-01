@@ -8,11 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.prj.sdk.app.AppConst;
+import com.prj.sdk.util.SharedPreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +30,8 @@ import java.util.List;
 public class PlaneConsiderLayout extends LinearLayout {
     private Context context;
 
+    private Switch switch_straight;
+    private boolean isStraight = true;
     private ListView listview;
     private ConditionAdapter adapter;
     private LinearLayout consider_content_lay;
@@ -48,29 +54,40 @@ public class PlaneConsiderLayout extends LinearLayout {
     public PlaneConsiderLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        init();
+        initViews();
+        initParmas();
         initListeners();
     }
 
-    private void init() {
+    private void initViews() {
         LayoutInflater.from(context).inflate(R.layout.layout_plane_consider, this);
+        switch_straight = (Switch) findViewById(R.id.switch_straight);
         listview = (ListView) findViewById(R.id.listview);
-        adapter = new ConditionAdapter();
-        listview.setAdapter(adapter);
         consider_content_lay = (LinearLayout) findViewById(R.id.consider_content_lay);
         considerAirOffTimeLayout = new ConsiderAirOffTimeLayout(context);
         considerAirCompanyLayout = new ConsiderAirCompanyLayout(context);
         considerAirPortLayout = new ConsiderAirPortLayout(context);
         considerAirTypeLayout = new ConsiderAirTypeLayout(context);
         considerAirCangLayout = new ConsiderAirCangLayout(context);
-        consider_content_lay.removeAllViews();
-        consider_content_lay.addView(considerAirOffTimeLayout);
         tv_cancel = (TextView) findViewById(R.id.tv_cancel);
         tv_reset = (TextView) findViewById(R.id.tv_reset);
         tv_confirm = (TextView) findViewById(R.id.tv_confirm);
     }
 
+    private void initParmas() {
+        adapter = new ConditionAdapter();
+        listview.setAdapter(adapter);
+        consider_content_lay.removeAllViews();
+        consider_content_lay.addView(considerAirOffTimeLayout);
+    }
+
     private void initListeners() {
+        switch_straight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isStraight = isChecked;
+            }
+        });
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -87,7 +104,9 @@ public class PlaneConsiderLayout extends LinearLayout {
         tv_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelConfig();
+                if (null != listener) {
+                    listener.onDismiss(false);
+                }
             }
         });
         tv_reset.setOnClickListener(new OnClickListener() {
@@ -99,6 +118,9 @@ public class PlaneConsiderLayout extends LinearLayout {
         tv_confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (null != listener) {
+                    listener.onDismiss(true);
+                }
                 saveConfig();
             }
         });
@@ -126,27 +148,44 @@ public class PlaneConsiderLayout extends LinearLayout {
     }
 
     public void cancelConfig() {
+        isStraight = SharedPreferenceUtil.getInstance().getBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, true);
+        switch_straight.setChecked(isStraight);
         for (IPlaneConsiderAction action : actions) {
             action.cancelConsiderConfig();
         }
     }
 
-    public void reloadConfig() {
+    public void resetConfig() {
+        isStraight = true;
+        switch_straight.setChecked(true);
         for (IPlaneConsiderAction action : actions) {
-            action.reloadConsiderConfig();
+            action.resetConsiderConfig();
         }
     }
 
     public void saveConfig() {
+        SharedPreferenceUtil.getInstance().setBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, isStraight);
         for (IPlaneConsiderAction action : actions) {
             action.saveConsiderConfig();
         }
     }
 
-    public void resetConfig() {
+    public void reloadConfig() {
+        isStraight = SharedPreferenceUtil.getInstance().getBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, true);
+        switch_straight.setChecked(isStraight);
         for (IPlaneConsiderAction action : actions) {
-            action.resetConsiderConfig();
+            action.reloadConsiderConfig();
         }
+    }
+
+    public interface OnConsiderLayoutDismissListener {
+        void onDismiss(boolean isSave);
+    }
+
+    private OnConsiderLayoutDismissListener listener = null;
+
+    public void setOnConsiderLayoutDismissListener(OnConsiderLayoutDismissListener listener) {
+        this.listener = listener;
     }
 
     private class ConditionAdapter extends BaseAdapter {
