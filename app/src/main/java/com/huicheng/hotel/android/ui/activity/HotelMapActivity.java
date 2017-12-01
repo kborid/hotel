@@ -451,7 +451,6 @@ public class HotelMapActivity extends BaseActivity
         }
         mapview.onDestroy();
         AMapLocationControl.getInstance().stopLocation();
-        AMapLocationControl.getInstance().unRegisterLocationListener(this);
     }
 
     private void refreshMapOverLayout(boolean hasRoute) {
@@ -565,15 +564,13 @@ public class HotelMapActivity extends BaseActivity
     @Override
     public void activate(OnLocationChangedListener listener) {
         mListener = listener;
-        AMapLocationControl.getInstance().startLocation(true);
-        AMapLocationControl.getInstance().registerLocationListener(this);
+        AMapLocationControl.getInstance().startLocationAlways(this);
     }
 
     @Override
     public void deactivate() {
         mListener = null;
-        AMapLocationControl.getInstance().startLocation();
-        AMapLocationControl.getInstance().unRegisterLocationListener(this);
+        AMapLocationControl.getInstance().stopLocation();
     }
 
     @Override
@@ -589,20 +586,16 @@ public class HotelMapActivity extends BaseActivity
     }
 
     @Override
-    public void onLocation(AMapLocation aMapLocation) {
-        LogUtil.i(TAG, "onLocationChanged()");
-        if (null != aMapLocation) {
-            if (aMapLocation.getErrorCode() == 0) {
-                if (mListener != null) {
-                    mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
-                }
-                this.aMapLocation = aMapLocation;
-                if (isToMyLoc) {
-                    isToMyLoc = false;
-                    amap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), amap.getCameraPosition().zoom));
-                }
-            } else {
-                LogUtil.e(TAG, "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo());
+    public void onLocation(boolean isSuccess, AMapLocation aMapLocation) {
+        LogUtil.i(TAG, "onLocation()");
+        if (isSuccess && null != aMapLocation) {
+            if (mListener != null) {
+                mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
+            }
+            this.aMapLocation = aMapLocation;
+            if (isToMyLoc) {
+                isToMyLoc = false;
+                amap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), amap.getCameraPosition().zoom));
             }
         }
     }

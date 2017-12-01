@@ -35,6 +35,7 @@ import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.net.ConnectException;
@@ -114,7 +115,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         ((StaggeredGridLayoutManager) layoutManager).setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new HotelListAdapter(getActivity(), list, HotelCommDef.TYPE_CLOCK);
-        adapter.setLandMarkLonLat(bundle.getString("lonLat"));
+        adapter.setLandMarkLonLat(bundle.getString("landmark"), bundle.getString("lonLat"));
         recyclerView.setAdapter(adapter);
         empty_lay = (RelativeLayout) view.findViewById(R.id.empty_lay);
     }
@@ -228,16 +229,6 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         RequestBeanBuilder b = RequestBeanBuilder.create(SessionContext.isLogin());
         //关键字
         b.addBody("keyword", bundle.getString("keyword"));
-        //地标信息
-        String searchType = HotelCommDef.TYPE_HOTEL;
-        if (bundle.getBoolean("isLandMark")) {
-            searchType = HotelCommDef.TYPE_LAND_MARK;
-            b.addBody("landmark", bundle.getString("landmark"));
-        }
-        b.addBody("searchType", searchType);
-        LogUtil.i(TAG, "searchType = " + searchType);
-        LogUtil.i(TAG, "isLandMark = " + bundle.getBoolean("isLandMark"));
-        LogUtil.i(TAG, "landmark = " + bundle.getString("landmark"));
         //星级
         b.addBody("star", star);
         //评分
@@ -260,6 +251,28 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         b.addBody("pageSize", String.valueOf(PAGESIZE));
         b.addBody("longitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "", false));
         b.addBody("latitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "", false));
+
+        //地标信息
+        String searchType = HotelCommDef.TYPE_HOTEL;
+        if (bundle.getBoolean("isLandMark")) {
+            searchType = HotelCommDef.TYPE_LAND_MARK;
+            b.addBody("landmark", bundle.getString("landmark"));
+            b.addBody("cityCode", bundle.getString("siteId"));
+            String lonLat = bundle.getString("lonLat");
+            if (StringUtil.isEmpty(lonLat)) {
+                b.addBody("longitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "", false));
+                b.addBody("latitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "", false));
+            } else {
+                String[] pos = lonLat.split("\\|");
+                b.addBody("longitude", pos[1]);
+                b.addBody("latitude", pos[0]);
+            }
+        }
+        b.addBody("searchType", searchType);
+        LogUtil.i(TAG, "searchType = " + searchType);
+        LogUtil.i(TAG, "isLandMark = " + bundle.getBoolean("isLandMark"));
+        LogUtil.i(TAG, "landmark = " + bundle.getString("landmark"));
+        LogUtil.i(TAG, "siteId = " + bundle.getString("siteId"));
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.HOTEL_LIST;

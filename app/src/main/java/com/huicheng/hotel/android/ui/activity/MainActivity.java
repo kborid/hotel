@@ -246,8 +246,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
 
         //地点信息
         tv_city.setHint("正在定位当前城市");
-        AMapLocationControl.getInstance().startLocation();
-        AMapLocationControl.getInstance().registerLocationListener(this);
+        AMapLocationControl.getInstance().startLocationOnce(this);
 
         //更新用户中心
         left_layout.updateUserInfo();
@@ -382,16 +381,16 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         }
 
         //搜索地标，设置城市返回后刷新显示
-        String cacheCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        if (StringUtil.notEmpty(cacheCity)) {
-            if (!tv_city.getText().toString().equals(cacheCity)) {
-                tv_city.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
-                if (!isAdShowed) {
-                    showHaiNanAd(SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
-                }
-                requestWeatherInfo(beginTime);
-            }
-        }
+//        String cacheCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+//        if (StringUtil.notEmpty(cacheCity)) {
+//            if (!tv_city.getText().toString().equals(cacheCity)) {
+//                tv_city.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+//                if (!isAdShowed) {
+//                    showHaiNanAd(SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
+//                }
+//                requestWeatherInfo(beginTime);
+//            }
+//        }
 
         if (SessionContext.isLogin()) {
             requestMessageCount();
@@ -600,7 +599,6 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         super.onDestroy();
         SessionContext.cleanLocationInfo();
         left_layout.unregisterBroadReceiver();
-        AMapLocationControl.getInstance().unRegisterLocationListener(this);
     }
 
     @Override
@@ -768,36 +766,23 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     }
 
     @Override
-    public void onLocation(AMapLocation aMapLocation) {
-        if (null != aMapLocation) {
-            if (aMapLocation.getErrorCode() == 0) {
-                //定位成功回调信息，设置相关消息
-                try {
-                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-                    String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
-                    String city = CityParseUtils.getCityString(aMapLocation.getCity());
-                    String siteId = String.valueOf(aMapLocation.getAdCode());
-                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
-
-                    tv_city.setText(CityParseUtils.getCityString(city));
-                    HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
-
-                    requestWeatherInfo(beginTime);
-
-                    showHaiNanAd(province);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                tv_city.setHint("城市定位失败");
-                LogUtil.e(TAG, "location Error, ErrCode:"
-                        + aMapLocation.getErrorCode() + ", errInfo:"
-                        + aMapLocation.getErrorInfo());
-            }
+    public void onLocation(boolean isSuccess, AMapLocation aMapLocation) {
+        LogUtil.i(TAG, "onLocation()");
+        if (isSuccess && aMapLocation != null) {
+            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
+            String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
+            String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
+            String siteId = String.valueOf(aMapLocation.getAdCode());
+            SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
+            tv_city.setText(CityParseUtils.getCityString(city));
+            HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
+            requestWeatherInfo(beginTime);
+            showHaiNanAd(province);
+        } else {
+            tv_city.setHint("城市定位失败");
         }
     }
 
