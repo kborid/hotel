@@ -15,6 +15,7 @@
         android:paddingTop="4dp">
 
         <TextView
+            android:id="@+id/tv_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="9dp"
@@ -24,6 +25,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -34,6 +36,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

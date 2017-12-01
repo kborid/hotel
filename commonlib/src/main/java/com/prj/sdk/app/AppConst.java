@@ -47,6 +47,10 @@ public final class AppConst {
     public static final String CONSIDER_GRADE = "consider_grade";
     public static final String CONSIDER_TYPE = "consider_type";
 
+    public static final String CONSIDER_PLANE_DURING = "consider_plane_during";
+    public static final String CONSIDER_PLANE_START_HOUR = "consider_plane_start_hour";
+    public static final String CONSIDER_PLANE_END_HOUR = "consider_plane_end_hour";
+
     public static final int ACTIVITY_IMAGE_CAPTURE = 0x01;
     public static final int ACTIVITY_GET_IMAGE = 0x02;
     public static final int ACTIVITY_TAILOR = 0x03;

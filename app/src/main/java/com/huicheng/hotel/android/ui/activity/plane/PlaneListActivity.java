@@ -121,6 +121,7 @@ public class PlaneListActivity extends BaseActivity {
     }
 
     private void showConsiderPopupWindow() {
+        mPlaneConsiderLayout.reloadConfig();
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = 0.5f;

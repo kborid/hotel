@@ -11,8 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.huicheng.hotel.android.R;
-import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.Utils;
 
 import java.math.BigDecimal;
 
@@ -29,12 +27,13 @@ public class CustomDoubleSeekBar extends View {
     private static final int CLICK_IN_RIGHT_AREA = 4;
     private static final int CLICK_OUT_AREA = 5;
     private static final int CLICK_INVAILD = 0;
+    private static final int PROGRESS_MAX = 24;
     /*
      * private static final int[] PRESSED_STATE_SET = {
      * android.R.attr.state_focused, android.R.attr.state_pressed,
      * android.R.attr.state_selected, android.R.attr.state_window_focused, };
      */
-    private static final int[] STATE_NORMAL = {};
+    private static final int[] STATE_NORMAL = {android.R.attr.state_empty};
     private static final int[] STATE_PRESSED = {
             android.R.attr.state_pressed, android.R.attr.state_window_focused,
     };
@@ -53,14 +52,17 @@ public class CustomDoubleSeekBar extends View {
     private double mThumbRightX = 0;    //后滑块中心坐标
     private int mDistance = 0;      //总刻度是固定距离 两边各去掉半个滑块距离
 
+    private static int DP_5_VALUE;
+    private static int DP_10_VALUE;
     private int mThumbMarginTop = 0;   //滑动块顶部距离上边框距离，也就是距离字体顶部的距离
+    private int mTextTimeSize = 0; //字体大小
 
     private int mFlag = CLICK_INVAILD;
     private OnSeekBarChangeListener mBarChangeListener;
 
 
     private double defaultScreenLow = 0;    //默认前滑块位置百分比
-    private double defaultScreenHigh = 24;  //默认后滑块位置百分比
+    private double defaultScreenHigh = PROGRESS_MAX;  //默认后滑块位置百分比
 
 
     public CustomDoubleSeekBar(Context context) {
@@ -74,6 +76,10 @@ public class CustomDoubleSeekBar extends View {
     public CustomDoubleSeekBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         Resources resources = getResources();
+        DP_5_VALUE = (int) (5 * resources.getDisplayMetrics().density + 0.5f);
+        DP_10_VALUE = (int) (10 * resources.getDisplayMetrics().density + 0.5f);
+        mThumbMarginTop = DP_10_VALUE * 2;
+        mTextTimeSize = (int) (12 * resources.getDisplayMetrics().scaledDensity + 0.5f);
         mUnSelectedProgressBarBg = resources.getDrawable(R.drawable.seekbar_unselected_bg);
         mSelectedProgressBarBg = resources.getDrawable(R.drawable.seekbar_selected_bg);
         mThumbLeft = resources.getDrawable(R.drawable.seekbar_thumb);
@@ -86,20 +92,18 @@ public class CustomDoubleSeekBar extends View {
         mProgressBarHeight = mUnSelectedProgressBarBg.getIntrinsicHeight();
         mThumbWidth = mThumbLeft.getIntrinsicWidth();
         mThumbHeight = mThumbLeft.getIntrinsicHeight();
-
-        mThumbMarginTop = Utils.dp2px(20);
     }
 
     //默认执行，计算view的宽高,在onDraw()之前
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
 //        int height = MeasureSpec.getSize(heightMeasureSpec);
-        mProgressBarWidth = width - Utils.dp2px(10);
-        mDistance = width - mThumbWidth - Utils.dp2px(10);
-        mThumbLeftX = mThumbWidth / 2 + Utils.dp2px(5);
+        mProgressBarWidth = width - DP_10_VALUE;
+        mDistance = width - mThumbWidth - DP_10_VALUE;
+        mThumbLeftX = mThumbWidth / 2 + DP_5_VALUE;
         mThumbRightX = mDistance + mThumbWidth / 2;
-        mThumbLeftX = formatDouble(defaultScreenLow / 24 * (mDistance)) + mThumbWidth / 2 + Utils.dp2px(5);
-        mThumbRightX = formatDouble(defaultScreenHigh / 24 * (mDistance)) + mThumbWidth / 2;
+        mThumbLeftX = formatDouble(defaultScreenLow / PROGRESS_MAX * (mDistance)) + mThumbWidth / 2 + DP_5_VALUE;
+        mThumbRightX = formatDouble(defaultScreenHigh / PROGRESS_MAX * (mDistance)) + mThumbWidth / 2;
         setMeasuredDimension(width, mThumbHeight + mThumbMarginTop);
     }
 
@@ -115,13 +119,13 @@ public class CustomDoubleSeekBar extends View {
         text_Paint.setTextAlign(Paint.Align.CENTER);
         text_Paint.setAntiAlias(true);
         text_Paint.setColor(Color.parseColor("#d4d5da"));
-        text_Paint.setTextSize(Utils.sp2px(12));
+        text_Paint.setTextSize(mTextTimeSize);
 
         int aaa = mThumbMarginTop + mThumbHeight / 2 - mProgressBarHeight / 2;
         int bbb = aaa + mProgressBarHeight;
 
         //白色，不会动
-        mUnSelectedProgressBarBg.setBounds(mThumbWidth / 2 + Utils.dp2px(5), aaa, mProgressBarWidth - mThumbWidth / 2, bbb);
+        mUnSelectedProgressBarBg.setBounds(mThumbWidth / 2 + DP_5_VALUE, aaa, mProgressBarWidth - mThumbWidth / 2, bbb);
         mUnSelectedProgressBarBg.draw(canvas);
 
         //蓝色，中间部分会动
@@ -136,16 +140,15 @@ public class CustomDoubleSeekBar extends View {
         mThumbRight.setBounds((int) (mThumbRightX - mThumbWidth / 2), mThumbMarginTop, (int) (mThumbRightX + mThumbWidth / 2), mThumbHeight + mThumbMarginTop);
         mThumbRight.draw(canvas);
 
-        double progressLow = formatDouble((mThumbLeftX - mThumbWidth / 2) * 24 / mDistance);
-        double progressHigh = formatDouble((mThumbRightX - mThumbWidth / 2) * 24 / mDistance);
-        String low = String.format("%1$d:00", (int) progressLow);
-        String high = String.format("%1$d:00", (int) progressHigh);
-        LogUtil.d(TAG, "onDraw-->mThumbLeftX: " + mThumbLeftX + "  mThumbRightX: " + mThumbRightX + "  progressLow: " + progressLow + "  progressHigh: " + progressHigh);
+        double progressLeft = formatDouble((mThumbLeftX - mThumbWidth / 2) * PROGRESS_MAX / mDistance);
+        double progressRight = formatDouble((mThumbRightX - mThumbWidth / 2) * PROGRESS_MAX / mDistance);
+        String low = String.format("%1$d:00", (int) progressLeft);
+        String high = String.format("%1$d:00", (int) progressRight);
         canvas.drawText(low, (int) (mThumbLeftX - (mThumbWidth - text_Paint.measureText(low)) / 2), mThumbMarginTop / 2, text_Paint);
         canvas.drawText(high, (int) (mThumbRightX - (mThumbWidth - text_Paint.measureText(high)) / 2), mThumbMarginTop / 2, text_Paint);
 
         if (mBarChangeListener != null) {
-            mBarChangeListener.onProgressChanged(this, progressLow, progressHigh);
+            mBarChangeListener.onProgressChanged(this, progressLeft, progressRight);
         }
     }
 
@@ -203,8 +206,8 @@ public class CustomDoubleSeekBar extends View {
         } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
 //            Log.d("ACTION_MOVE", "------------------");
             if (mFlag == CLICK_ON_LEFT) {
-                if (e.getX() < 0 || e.getX() <= mThumbWidth / 2 + Utils.dp2px(5)) {
-                    mThumbLeftX = mThumbWidth / 2 + Utils.dp2px(5);
+                if (e.getX() < 0 || e.getX() <= mThumbWidth / 2 + DP_5_VALUE) {
+                    mThumbLeftX = mThumbWidth / 2 + DP_5_VALUE;
                 } else if (e.getX() >= mProgressBarWidth - mThumbWidth / 2) {
                     mThumbLeftX = mThumbWidth / 2 + mDistance;
                     mThumbRightX = mThumbLeftX;
@@ -215,15 +218,15 @@ public class CustomDoubleSeekBar extends View {
                     }
                 }
             } else if (mFlag == CLICK_ON_RIGHT) {
-                if (e.getX() < mThumbWidth / 2 + Utils.dp2px(5)) {
-                    mThumbRightX = mThumbWidth / 2 + Utils.dp2px(5);
+                if (e.getX() < mThumbWidth / 2 + DP_5_VALUE) {
+                    mThumbRightX = mThumbWidth / 2 + DP_5_VALUE;
                     mThumbLeftX = mThumbRightX;
                 } else if (e.getX() > mProgressBarWidth - mThumbWidth / 2) {
                     mThumbRightX = mThumbWidth / 2 + mDistance;
                 } else {
                     mThumbRightX = formatDouble(e.getX());
                     if (mThumbRightX - mThumbLeftX <= 0) {
-                        mThumbLeftX = (mThumbRightX >= mThumbWidth / 2 + Utils.dp2px(5)) ? (mThumbRightX) : mThumbWidth / 2 + Utils.dp2px(5);
+                        mThumbLeftX = (mThumbRightX >= mThumbWidth / 2 + DP_5_VALUE) ? (mThumbRightX) : mThumbWidth / 2 + DP_5_VALUE;
                     }
                 }
             }
@@ -292,14 +295,14 @@ public class CustomDoubleSeekBar extends View {
     //设置前滑块的值
     public void setProgressLow(double progressLow) {
         this.defaultScreenLow = progressLow;
-        mThumbLeftX = formatDouble(progressLow / 24 * (mDistance)) + mThumbWidth / 2;
+        mThumbLeftX = formatDouble(progressLow / PROGRESS_MAX * (mDistance)) + mThumbWidth / 2;
         refresh();
     }
 
     //设置后滑块的值
     public void setProgressHigh(double progressHigh) {
         this.defaultScreenHigh = progressHigh;
-        mThumbRightX = formatDouble(progressHigh / 24 * (mDistance)) + mThumbWidth / 2;
+        mThumbRightX = formatDouble(progressHigh / PROGRESS_MAX * (mDistance)) + mThumbWidth / 2;
         refresh();
     }
 
@@ -313,8 +316,7 @@ public class CustomDoubleSeekBar extends View {
         public void onProgressBefore();
 
         //滑动时
-        public void onProgressChanged(CustomDoubleSeekBar seekBar, double progressLow,
-                                      double progressHigh);
+        public void onProgressChanged(CustomDoubleSeekBar seekBar, double progressLeft, double progressRight);
 
         //滑动后
         public void onProgressAfter();

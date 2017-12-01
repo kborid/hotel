@@ -5,51 +5,49 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <RadioGroup
+    <LinearLayout
+        android:id="@+id/check_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="7dp"
-        android:checkedButton="@+id/rb_morning"
         android:gravity="right"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/rb_morning"
+        <TextView
+            android:id="@+id/tv_morning"
             android:layout_width="54dp"
             android:layout_height="28dp"
             android:background="@drawable/plane_offtime_rect_bg_sel"
-            android:button="@null"
             android:gravity="center"
             android:text="上午"
             android:textColor="@color/plane_text_color_sel"
             android:textSize="@dimen/common_14sp" />
 
-        <RadioButton
-            android:id="@+id/rb_afternoon"
+        <TextView
+            android:id="@+id/tv_afternoon"
             android:layout_width="54dp"
             android:layout_height="28dp"
             android:layout_marginLeft="18dp"
             android:background="@drawable/plane_offtime_rect_bg_sel"
-            android:button="@null"
             android:gravity="center"
             android:text="下午"
             android:textColor="@color/plane_text_color_sel"
             android:textSize="@dimen/common_14sp" />
 
-        <RadioButton
-            android:id="@+id/rb_night"
+        <TextView
+            android:id="@+id/tv_evening"
             android:layout_width="54dp"
             android:layout_height="28dp"
             android:layout_marginLeft="18dp"
             android:background="@drawable/plane_offtime_rect_bg_sel"
-            android:button="@null"
             android:gravity="center"
             android:text="夜间"
             android:textColor="@color/plane_text_color_sel"
             android:textSize="@dimen/common_14sp" />
-    </RadioGroup>
+    </LinearLayout>
 
     <com.huicheng.hotel.android.ui.custom.CustomDoubleSeekBar
+        android:id="@+id/seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp" />

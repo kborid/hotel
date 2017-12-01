@@ -35,6 +35,7 @@ public class PlaneConsiderLayout extends LinearLayout {
     private ConsiderAirPortLayout considerAirPortLayout;
     private ConsiderAirTypeLayout considerAirTypeLayout;
     private ConsiderAirCangLayout considerAirCangLayout;
+    private TextView tv_cancel, tv_reset, tv_confirm;
 
     public PlaneConsiderLayout(Context context) {
         this(context, null);
@@ -64,6 +65,9 @@ public class PlaneConsiderLayout extends LinearLayout {
         considerAirCangLayout = new ConsiderAirCangLayout(context);
         consider_content_lay.removeAllViews();
         consider_content_lay.addView(considerAirOffTimeLayout);
+        tv_cancel = (TextView) findViewById(R.id.tv_cancel);
+        tv_reset = (TextView) findViewById(R.id.tv_reset);
+        tv_confirm = (TextView) findViewById(R.id.tv_confirm);
     }
 
     private void initListeners() {
@@ -80,6 +84,24 @@ public class PlaneConsiderLayout extends LinearLayout {
         actions.add(considerAirPortLayout);
         actions.add(considerAirTypeLayout);
         actions.add(considerAirCangLayout);
+        tv_cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelConfig();
+            }
+        });
+        tv_reset.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetConfig();
+            }
+        });
+        tv_confirm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveConfig();
+            }
+        });
     }
 
     private void changedContentLayout(int index) {
@@ -100,6 +122,12 @@ public class PlaneConsiderLayout extends LinearLayout {
             case 4:
                 consider_content_lay.addView(considerAirCangLayout);
                 break;
+        }
+    }
+
+    public void cancelConfig() {
+        for (IPlaneConsiderAction action : actions) {
+            action.cancelConsiderConfig();
         }
     }
 
