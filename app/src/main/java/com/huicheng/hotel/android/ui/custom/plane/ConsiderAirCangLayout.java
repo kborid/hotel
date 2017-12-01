@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,7 +47,7 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
         for (int i = 0; i < 5; i++) {
             list.add(String.valueOf(i));
         }
-        listview.setAdapter(new AirTypeAdapter(context, list));
+        listview.setAdapter(new AirCangAdapter(context, list));
     }
 
     @Override
@@ -69,12 +70,12 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
 
     }
 
-    private class AirTypeAdapter extends BaseAdapter {
+    private class AirCangAdapter extends BaseAdapter {
 
         private Context context;
         private ArrayList<String> list = new ArrayList<>();
 
-        AirTypeAdapter(Context context, ArrayList<String> list) {
+        AirCangAdapter(Context context, ArrayList<String> list) {
             this.context = context;
             this.list = list;
         }
@@ -99,6 +100,8 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
             convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null);
             TextView tv_title = (TextView) convertView.findViewById(R.id.tv_title);
             tv_title.append(list.get(position));
+            ImageView iv_air_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
+            iv_air_logo.setVisibility(GONE);
             return convertView;
         }
     }

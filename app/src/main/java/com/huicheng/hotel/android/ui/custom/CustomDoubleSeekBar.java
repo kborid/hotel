@@ -153,7 +153,6 @@ public class CustomDoubleSeekBar extends View {
             }
             mFlag = getAreaFlag(e);
 //            Log.d(TAG, "e.getX: " + e.getX() + "mFlag: " + mFlag);
-//            Log.d("ACTION_DOWN", "------------------");
             if (mFlag == CLICK_ON_LEFT) {
                 mThumbLeft.setState(STATE_PRESSED);
             } else if (mFlag == CLICK_ON_RIGHT) {
@@ -194,35 +193,33 @@ public class CustomDoubleSeekBar extends View {
             refresh();
 
         } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
-//            Log.d("ACTION_MOVE", "------------------");
             if (mFlag == CLICK_ON_LEFT) {
                 if (e.getX() <= mThumbWidth / 2) {
                     mThumbLeftX = mThumbWidth / 2;
-                } else if (e.getX() >= mProgressBarWidth - mThumbWidth / 2) {
-                    mThumbLeftX = mThumbWidth / 2 + mDistance;
-                    mThumbRightX = mThumbLeftX;
+                } else if (e.getX() >= mProgressBarWidth - mThumbWidth / 2 - calculateDistanceByPercent(4)) {
+                    mThumbLeftX = mThumbWidth / 2 + mDistance - calculateDistanceByPercent(4);
+                    mThumbRightX = mThumbWidth / 2 + mDistance;
                 } else {
                     mThumbLeftX = e.getX();
-                    if (mThumbRightX - mThumbLeftX <= 0) {
-                        mThumbRightX = (mThumbLeftX <= mDistance + mThumbWidth / 2) ? (mThumbLeftX) : (mDistance + mThumbWidth / 2);
+                    if (mThumbRightX - mThumbLeftX <= calculateDistanceByPercent(4)) {
+                        mThumbRightX = (mThumbLeftX <= mDistance + mThumbWidth / 2 - calculateDistanceByPercent(4)) ? (mThumbLeftX + calculateDistanceByPercent(4)) : (mDistance + mThumbWidth / 2);
                     }
                 }
             } else if (mFlag == CLICK_ON_RIGHT) {
-                if (e.getX() < mThumbWidth / 2) {
-                    mThumbRightX = mThumbWidth / 2;
-                    mThumbLeftX = mThumbRightX;
+                if (e.getX() < mThumbWidth / 2 + calculateDistanceByPercent(4)) {
+                    mThumbRightX = mThumbWidth / 2 + calculateDistanceByPercent(4);
+                    mThumbLeftX = mThumbWidth / 2;
                 } else if (e.getX() > mProgressBarWidth - mThumbWidth / 2) {
                     mThumbRightX = mThumbWidth / 2 + mDistance;
                 } else {
                     mThumbRightX = e.getX();
-                    if (mThumbRightX - mThumbLeftX <= 0) {
-                        mThumbLeftX = (mThumbRightX >= mThumbWidth / 2) ? (mThumbRightX) : mThumbWidth / 2;
+                    if (mThumbRightX - mThumbLeftX <= calculateDistanceByPercent(4)) {
+                        mThumbLeftX = (mThumbRightX >= mThumbWidth / 2 + calculateDistanceByPercent(4)) ? (mThumbRightX - calculateDistanceByPercent(4)) : mThumbWidth / 2;
                     }
                 }
             }
             refresh();
         } else if (e.getAction() == MotionEvent.ACTION_UP) {
-//            Log.d("ACTION_UP", "------------------");
             mThumbLeft.setState(STATE_NORMAL);
             mThumbRight.setState(STATE_NORMAL);
 

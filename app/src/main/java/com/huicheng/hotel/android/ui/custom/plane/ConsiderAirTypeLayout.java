@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -99,6 +100,8 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
             convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null);
             TextView tv_title = (TextView) convertView.findViewById(R.id.tv_title);
             tv_title.append(list.get(position));
+            ImageView iv_air_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
+            iv_air_logo.setVisibility(GONE);
             return convertView;
         }
     }
