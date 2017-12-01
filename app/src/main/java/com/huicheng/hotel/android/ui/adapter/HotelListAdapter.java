@@ -48,6 +48,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     private int type = 0;
     private int ygrRoomItemBackgroundId;
     private String lonLat = null;
+    private String landmark = "";
 
     public HotelListAdapter(Context context, List<HotelInfoBean> list, int type) {
         this.context = context;
@@ -58,7 +59,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         ta.recycle();
     }
 
-    public void setLandMarkLonLat(String lonLat) {
+    public void setLandMarkLonLat(String landmark, String lonLat) {
+        this.landmark = landmark;
         this.lonLat = lonLat;
     }
 
@@ -211,11 +213,13 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             // 距离信息
             try {
                 LatLng start = null, des = null;
+                String landMarkStr = "";
                 float lon, lat;
                 if (StringUtil.notEmpty(lonLat)) {
                     String[] pos = lonLat.split("\\|");
                     lon = Float.valueOf(pos[1]);
                     lat = Float.valueOf(pos[0]);
+                    landMarkStr = "距离" + landmark;
                 } else {
                     lon = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "0", false));
                     lat = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "0", false));
@@ -225,7 +229,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                     String[] pos = bean.hotelCoordinate.split("\\|");
                     des = new LatLng(Float.valueOf(pos[0]), Float.valueOf(pos[1]));
                     float dis = AMapUtils.calculateLineDistance(start, des);
-                    holder.tv_hotel_dis.setText(AMapUtil.getFriendlyLength((int) dis));
+                    holder.tv_hotel_dis.setText(landMarkStr + AMapUtil.getFriendlyLength((int) dis));
                 } else {
                     holder.tv_hotel_dis.setText("暂无距离信息");
                 }

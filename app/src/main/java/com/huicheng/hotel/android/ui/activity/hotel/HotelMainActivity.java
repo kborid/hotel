@@ -194,16 +194,16 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
 
         //搜索地标，设置城市返回后刷新显示
-        String cacheCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        if (StringUtil.notEmpty(cacheCity)) {
-            if (!tv_city.getText().toString().equals(cacheCity)) {
-                tv_city.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
-                if (!isAdShowed) {
-                    showHaiNanAd(SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
-                }
-                requestWeatherInfo(beginTime);
-            }
-        }
+//        String cacheCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+//        if (StringUtil.notEmpty(cacheCity)) {
+//            if (!tv_city.getText().toString().equals(cacheCity)) {
+//                tv_city.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+//                if (!isAdShowed) {
+//                    showHaiNanAd(SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
+//                }
+//                requestWeatherInfo(beginTime);
+//            }
+//        }
         //OpenInstall Event 分发
         dispatchOpenInstallEvent();
     }

@@ -162,11 +162,12 @@ public class HotelAllSearchActivity extends BaseActivity {
                     startActivity(intent);
                 } else if (HotelCommDef.TYPE_LAND_MARK.equals(bean.type)) {
                     //如果是地标类型数据，则手动设置定位城市、SiteId、省信息
-                    setLocationInfo(bean.province, bean.city, bean.adcode);
+//                    setLocationInfo(bean.province, bean.city, bean.adcode);
                     Intent intent = new Intent(HotelAllSearchActivity.this, HotelListActivity.class);
                     intent.putExtra("landmark", bean.landmark);
                     intent.putExtra("isLandMark", true);
                     intent.putExtra("lonLat", bean.hotelCoordinate);
+                    intent.putExtra("siteId", CityParseUtils.getSiteIdString(bean.adcode));
                     startActivity(intent);
                 }
             }
