@@ -29,10 +29,12 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
@@ -50,8 +52,6 @@ import cn.jpush.android.api.TagAliasCallback;
 
 public class UserLoginActivity extends BaseActivity {
 
-
-    private TextView tv_right;
     private EditText et_phone, et_pwd;
     private CheckBox cb_pwd_status_check;
     private TextView tv_register, tv_forget;
@@ -61,7 +61,7 @@ public class UserLoginActivity extends BaseActivity {
     private String mPlatform; //（01-新浪微博，02-腾讯QQ，03-微信，04-支付宝）
     private String thirdpartusername, thirdpartuserheadphotourl, openid, unionid;
     private String usertoken;
-//    private Button btn_wx, btn_qq;
+    private TextView tv_wx, tv_qq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,9 @@ public class UserLoginActivity extends BaseActivity {
         tv_register = (TextView) findViewById(R.id.tv_register);
         tv_forget = (TextView) findViewById(R.id.tv_forget);
         btn_login = (Button) findViewById(R.id.btn_login);
-        tv_right = (TextView) findViewById(R.id.tv_right);
+
+        tv_qq = (TextView) findViewById(R.id.tv_qq);
+        tv_wx = (TextView) findViewById(R.id.tv_wx);
     }
 
     @Override
@@ -105,8 +107,8 @@ public class UserLoginActivity extends BaseActivity {
         btn_login.setOnClickListener(this);
         tv_register.setOnClickListener(this);
         tv_forget.setOnClickListener(this);
-//        btn_wx.setOnClickListener(this);
-//        btn_qq.setOnClickListener(this);
+        tv_wx.setOnClickListener(this);
+        tv_qq.setOnClickListener(this);
 
         et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -130,7 +132,6 @@ public class UserLoginActivity extends BaseActivity {
                 et_pwd.setSelection(et_pwd.getText().length());// 设置光标位置
             }
         });
-        tv_right.setOnClickListener(this);
     }
 
     @Override
@@ -154,19 +155,16 @@ public class UserLoginActivity extends BaseActivity {
                 overridePendingTransition(0, 0);
                 break;
             }
-            case R.id.tv_right:
-                System.out.println("right button click login");
+            case R.id.tv_qq:
+                login(SHARE_MEDIA.QQ);
                 break;
-//            case R.id.btn_qq:
-//                login(SHARE_MEDIA.QQ);
-//                break;
-//            case R.id.btn_wx:
-//                if (WXAPIFactory.createWXAPI(this, null).isWXAppInstalled()) {
-//                    login(SHARE_MEDIA.WEIXIN);
-//                } else {
-//                    CustomToast.show(getString(R.string.not_install_wx), 0);
-//                }
-//                break;
+            case R.id.tv_wx:
+                if (WXAPIFactory.createWXAPI(this, null).isWXAppInstalled()) {
+                    login(SHARE_MEDIA.WEIXIN);
+                } else {
+                    CustomToast.show(getString(R.string.not_install_wx), 0);
+                }
+                break;
         }
     }
 
@@ -174,7 +172,7 @@ public class UserLoginActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (SessionContext.isLogin()) {
-            this.finish();
+            finish();
         }
     }
 
@@ -371,13 +369,11 @@ public class UserLoginActivity extends BaseActivity {
             SharedPreferenceUtil.getInstance().setString(AppConst.LAST_LOGIN_DATE, DateUtil.getCurDateStr(null), false);// 保存登录时间
             SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
             SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
-            // SharedPreferenceUtil.getInstance().setString(AppConst.THIRDPARTYBIND, "", false);//置空第三方绑定信息，需要在详情页面重新获取
             CustomToast.show("登录成功", 0);
             JPushInterface.setAliasAndTags(PRJApplication.getInstance(), SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {
-                    String result = (i == 0) ? "设置成功" : "设置失败";
-                    LogUtil.i(TAG, result + ", Alias = " + s + ", Tag = " + set);
+                    LogUtil.i(TAG, (i == 0) ? "设置成功" : "设置失败" + ", Alias = " + s + ", Tag = " + set);
                 }
             });
             sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
@@ -385,7 +381,7 @@ public class UserLoginActivity extends BaseActivity {
             //登录成功，根据性别设置主题
             int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
             SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
-            this.finish();
+            finish();
         } else if (request.flag == AppConst.BIND_CHECK) {// 如果绑定，直接获取用户信息，没有绑定到绑定页面
             removeProgressDialog();
             JSONObject mJson = JSON.parseObject(response.body.toString());
@@ -414,6 +410,14 @@ public class UserLoginActivity extends BaseActivity {
         if (null != mShareAPI) {
             mShareAPI.release();
             mShareAPI = null;
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (ActivityTack.getInstanse().isExitActivity(UserRegisterActivity.class)) {
+            overridePendingTransition(0, 0);
         }
     }
 

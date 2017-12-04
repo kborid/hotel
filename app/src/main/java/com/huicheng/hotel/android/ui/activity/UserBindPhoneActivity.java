@@ -4,7 +4,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -49,6 +52,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initMainWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_bindphone_layout);
         initViews();
@@ -107,6 +111,10 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         data.path = NetURL.GET_YZM;
         data.flag = AppConst.GET_YZM;
 
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+
         requestID = DataLoader.getInstance().loadData(this, data);
     }
 
@@ -160,6 +168,24 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         super.initListeners();
         tv_yzm.setOnClickListener(this);
         btn_bind.setOnClickListener(this);
+        et_phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 11) {
+                    tv_yzm.performClick();
+                }
+            }
+        });
     }
 
     @Override
@@ -167,15 +193,30 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         super.onClick(v);
         switch (v.getId()) {
             case R.id.tv_yzm:
-                if (!Utils.isMobile(et_phone.getText().toString())) {
-                    CustomToast.show("请输入正确的手机号码", CustomToast.LENGTH_SHORT);
-                    return;
+                if (StringUtil.notEmpty(et_phone.getText().toString())) {
+                    if (Utils.isMobile(et_phone.getText().toString())) {
+                        requestYZM();
+                    } else {
+                        CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
+                    }
+                } else {
+                    CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
                 }
-                requestYZM();
                 break;
             case R.id.btn_bind:
-                if (StringUtil.isEmpty(et_yzm.getText().toString())) {
-                    CustomToast.show("请输入验证码", CustomToast.LENGTH_SHORT);
+                String phoneNumber = et_phone.getText().toString();
+                String checkCode = et_yzm.getText().toString();
+
+                if (StringUtil.isEmpty(phoneNumber)) {
+                    CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
+                    return;
+                }
+                if (!Utils.isMobile(phoneNumber)) {
+                    CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
+                    return;
+                }
+                if (StringUtil.isEmpty(checkCode)) {
+                    CustomToast.show(getString(R.string.tips_user_yzm), CustomToast.LENGTH_SHORT);
                     return;
                 }
                 requestBindPhone();
@@ -206,9 +247,12 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         if (response != null && response.body != null) {
             if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();
-                CustomToast.show("验证码已发送，请稍候...", CustomToast.LENGTH_SHORT);
+                CustomToast.show(getString(R.string.tips_user_send_yzm), CustomToast.LENGTH_SHORT);
                 tv_yzm.setEnabled(false);
+                et_phone.setEnabled(false);
                 mCountDownTimer.start();// 启动倒计时
+                et_yzm.requestFocus();
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             } else if (request.flag == AppConst.BIND) {
                 String ticket = response.body.toString();
                 SharedPreferenceUtil.getInstance().setString(AppConst.ACCESS_TICKET, ticket, true);
@@ -232,13 +276,11 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
                 SharedPreferenceUtil.getInstance().setString(AppConst.LAST_LOGIN_DATE, DateUtil.getCurDateStr(null), false);// 保存登录时间
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
-                // SharedPreferenceUtil.getInstance().setString(AppConst.THIRDPARTYBIND, "", false);//置空第三方绑定信息，需要在详情页面重新获取
                 CustomToast.show("登录成功", 0);
                 JPushInterface.setAliasAndTags(PRJApplication.getInstance(), SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
                     @Override
                     public void gotResult(int i, String s, Set<String> set) {
-                        String result = (i == 0) ? "设置成功" : "设置失败";
-                        LogUtil.i(TAG, result + ", Alias = " + s + ", Tag = " + set);
+                        LogUtil.i(TAG, (i == 0) ? "设置成功" : "设置失败" + ", Alias = " + s + ", Tag = " + set);
                     }
                 });
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
@@ -251,12 +293,12 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
                     requestSaveRecommandData();
                 } else {
                     removeProgressDialog();
-                    this.finish();
+                    finish();
                 }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
                 SessionContext.setOpenInstallAppData(null);
                 removeProgressDialog();
-                this.finish();
+                finish();
             }
         }
     }
@@ -282,6 +324,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
             public void onFinish() {
                 tv_yzm.setEnabled(true);
                 tv_yzm.setText(R.string.tips_reget_yzm);
+                et_phone.setEnabled(true);
             }
         };
     }

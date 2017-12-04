@@ -76,9 +76,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PermissionTheme" />
         <activity
-            android:name=".ui.activity.GuideLauncherActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.GuideSwitchActivity"
             android:screenOrientation="portrait" />
         <activity

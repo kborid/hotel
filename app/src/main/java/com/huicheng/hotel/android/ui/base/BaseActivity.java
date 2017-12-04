@@ -71,7 +71,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
 
     private ProgressDialog mProgressDialog;
     protected TextView tv_center_title, tv_center_summary;
-    protected ImageView btn_back, btn_right;
+    protected ImageView btn_back, iv_back, btn_right;
     protected static String requestID;
 
     protected static boolean isReStarted = false;
@@ -156,6 +156,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             tv_center_title.setTypeface(Typeface.DEFAULT_BOLD);
         }
         tv_center_summary = (TextView) findViewById(R.id.tv_center_summary);
+        iv_back = (ImageView) findViewById(R.id.iv_back);
         btn_back = (ImageView) findViewById(R.id.btn_back);
         btn_right = (ImageView) findViewById(R.id.btn_right);
     }
@@ -184,11 +185,15 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         if (btn_back != null) {
             btn_back.setOnClickListener(this);
         }
+        if (iv_back != null) {
+            iv_back.setOnClickListener(this);
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_back:
             case R.id.btn_back:
                 if (getClass().equals(InvoiceDetailActivity.class)
                         || getClass().equals(OrderPayActivity.class)

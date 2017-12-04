@@ -2,8 +2,11 @@ package com.huicheng.hotel.android.ui.activity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,6 +84,24 @@ public class UserForgetPwdActivity extends BaseActivity {
                 return false;
             }
         });
+        et_phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 11) {
+                    tv_yzm.performClick();
+                }
+            }
+        });
     }
 
     @Override
@@ -92,12 +113,11 @@ public class UserForgetPwdActivity extends BaseActivity {
                     if (Utils.isMobile(et_phone.getText().toString())) {
                         requestYZM();
                     } else {
-                        CustomToast.show("请输入正确的手机号", 0);
+                        CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
                     }
                 } else {
-                    CustomToast.show("请输入手机号", 0);
+                    CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
                 }
-
                 break;
             case R.id.btn_reset:
                 String phoneNumber = et_phone.getText().toString();
@@ -134,7 +154,7 @@ public class UserForgetPwdActivity extends BaseActivity {
     /**
      * 加载验证码
      */
-    private void requestYZM() {
+    private void  requestYZM() {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("businesstype", AppConst.BUSINESS_TYPE_FINDPWD);
         b.addBody("mobile", et_phone.getText().toString());
@@ -189,13 +209,16 @@ public class UserForgetPwdActivity extends BaseActivity {
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (request.flag == AppConst.GET_YZM) {
             removeProgressDialog();
-            CustomToast.show("验证码已发送，请稍后...", 0);
+            CustomToast.show(getString(R.string.tips_user_send_yzm), CustomToast.LENGTH_SHORT);
             tv_yzm.setEnabled(false);
+            et_phone.setEnabled(false);
             mCountDownTimer.start();// 启动倒计时
+            et_yzm.requestFocus();
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         } else if (request.flag == AppConst.FIND_PASSWORD) {
             if (response.body != null) {
-                CustomToast.show("密码已修改", 0);
-                this.finish();
+                CustomToast.show("密码修改成功", 0);
+                finish();
             }
         } else if (request.flag == AppConst.CHECK_YZM) {
             String jsonStr = response.body.toString();
@@ -217,7 +240,7 @@ public class UserForgetPwdActivity extends BaseActivity {
                     requestResetPwd();
                 } else {
                     removeProgressDialog();
-                    CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
+                    CustomToast.show(getString(R.string.tips_user_yzm_error), CustomToast.LENGTH_SHORT);
                 }
             }
         }
@@ -245,6 +268,7 @@ public class UserForgetPwdActivity extends BaseActivity {
             public void onFinish() {
                 tv_yzm.setEnabled(true);
                 tv_yzm.setText(R.string.tips_reget_yzm);
+                et_phone.setEnabled(true);
             }
         };
     }

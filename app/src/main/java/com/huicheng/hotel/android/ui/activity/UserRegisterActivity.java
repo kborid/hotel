@@ -3,10 +3,13 @@ package com.huicheng.hotel.android.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -30,6 +33,7 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -113,6 +117,25 @@ public class UserRegisterActivity extends BaseActivity {
                 et_pwd.setSelection(et_pwd.getText().length());// 设置光标位置
             }
         });
+
+        et_phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 11) {
+                    tv_yzm.performClick();
+                }
+            }
+        });
     }
 
     @Override
@@ -120,6 +143,7 @@ public class UserRegisterActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.tv_right: {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                 Intent intent = new Intent(this, UserLoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -163,7 +187,7 @@ public class UserRegisterActivity extends BaseActivity {
                         return;
                     }
                     if (StringUtil.isEmpty(pwd)) {
-                        CustomToast.show("密码不允许为空", CustomToast.LENGTH_SHORT);
+                        CustomToast.show(getString(R.string.tips_user_pwd), CustomToast.LENGTH_SHORT);
                         return;
                     } else {
                         if (pwd.length() < 6 && pwd.length() > 20) {
@@ -325,11 +349,11 @@ public class UserRegisterActivity extends BaseActivity {
                             break;
                         case "001011":
                             removeProgressDialog();
-                            CustomToast.show("你输入的手机号码已被占用", CustomToast.LENGTH_SHORT);
+                            CustomToast.show(getString(R.string.tips_user_phone_isused), CustomToast.LENGTH_SHORT);
                             break;
                         case "001002":
                             removeProgressDialog();
-                            CustomToast.show("你输入的手机号码为空", CustomToast.LENGTH_SHORT);
+                            CustomToast.show(getString(R.string.tips_user_phone_isempty), CustomToast.LENGTH_SHORT);
                             break;
                         default:
                             break;
@@ -337,9 +361,12 @@ public class UserRegisterActivity extends BaseActivity {
                 }
             } else if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();
-                CustomToast.show("验证码已发送，请稍候...", CustomToast.LENGTH_SHORT);
+                CustomToast.show(getString(R.string.tips_user_send_yzm), CustomToast.LENGTH_SHORT);
                 tv_yzm.setEnabled(false);
+                et_phone.setEnabled(false);
                 mCountDownTimer.start();// 启动倒计时
+                et_yzm.requestFocus();
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             } else if (request.flag == AppConst.CHECK_YZM) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 JSONObject mJson = JSON.parseObject(response.body.toString());
@@ -360,7 +387,7 @@ public class UserRegisterActivity extends BaseActivity {
                         requestRegister();
                     } else {
                         removeProgressDialog();
-                        CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
+                        CustomToast.show(getString(R.string.tips_user_yzm_error), CustomToast.LENGTH_SHORT);
                     }
                 }
             } else if (request.flag == AppConst.REGISTER) {
@@ -397,13 +424,11 @@ public class UserRegisterActivity extends BaseActivity {
                 SharedPreferenceUtil.getInstance().setString(AppConst.LAST_LOGIN_DATE, DateUtil.getCurDateStr(null), false);// 保存登录时间
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
-                // SharedPreferenceUtil.getInstance().setString(AppConst.THIRDPARTYBIND, "", false);//置空第三方绑定信息，需要在详情页面重新获取
                 CustomToast.show("登录成功", 0);
                 JPushInterface.setAliasAndTags(PRJApplication.getInstance(), SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
                     @Override
                     public void gotResult(int i, String s, Set<String> set) {
-                        String result = (i == 0) ? "设置成功" : "设置失败";
-                        LogUtil.i(TAG, result + ", Alias = " + s + ", Tag = " + set);
+                        LogUtil.i(TAG, (i == 0) ? "设置成功" : "设置失败" + ", Alias = " + s + ", Tag = " + set);
                     }
                 });
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
@@ -417,12 +442,12 @@ public class UserRegisterActivity extends BaseActivity {
                     requestSaveRecommandData();
                 } else {
                     removeProgressDialog();
-                    this.finish();
+                    finish();
                 }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
                 SessionContext.setOpenInstallAppData(null);
                 removeProgressDialog();
-                this.finish();
+                finish();
             }
         }
     }
@@ -448,6 +473,7 @@ public class UserRegisterActivity extends BaseActivity {
             @Override
             public void onFinish() {
                 tv_yzm.setEnabled(true);
+                et_phone.setEnabled(true);
                 tv_yzm.setText(R.string.tips_reget_yzm);
             }
         };
@@ -459,6 +485,14 @@ public class UserRegisterActivity extends BaseActivity {
         if (null != mCountDownTimer) {
             mCountDownTimer.cancel();
             mCountDownTimer = null;
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (ActivityTack.getInstanse().isExitActivity(UserLoginActivity.class)) {
+            overridePendingTransition(0, 0);
         }
     }
 }

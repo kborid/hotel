@@ -88,7 +88,6 @@
                 android:layout_marginRight="40dp"
                 android:focusable="false"
                 android:focusableInTouchMode="true"
-                android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingBottom="15dp"
                 android:paddingTop="15dp">
@@ -97,7 +96,6 @@
                     android:id="@+id/et_phone"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
-                    android:layout_marginTop="7dp"
                     android:background="@drawable/user_item_input_bg"
                     android:drawableLeft="@drawable/iv_user_phone"
                     android:drawablePadding="18dp"
