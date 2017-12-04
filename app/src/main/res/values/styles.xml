@@ -214,13 +214,13 @@
     </style>
 
     <!-- checkBox风格 -->
-    <style name="checkBox_style" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/checkbox_selector</item>
+    <style name="userAgreementCheckBoxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/cb_user_agreement_selector</item>
     </style>
 
     <!-- login checkBox风格 -->
-    <style name="login_checkBox_style" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/login_checkbox_show_pwd</item>
+    <style name="userPwdCheckBoxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/cb_user_pwd_status_selector</item>
     </style>
 
     <style name="MyMaterialDialog" parent="@style/iphone_progress_dialog" />

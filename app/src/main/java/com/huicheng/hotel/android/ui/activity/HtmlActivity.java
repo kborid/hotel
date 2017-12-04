@@ -21,7 +21,6 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
-import com.huicheng.hotel.android.ui.activity.UserLoginActivity.onCancelLoginListener;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -38,13 +37,12 @@ import com.prj.sdk.widget.webview.WebChromeClientCompat;
  * @date 2014-7-8
  */
 @SuppressLint("SetJavaScriptEnabled")
-public class HtmlActivity extends BaseActivity implements onCancelLoginListener {
+public class HtmlActivity extends BaseActivity {
 
     private static final String CSS_STYLE = "<style>* {font-size:40px;padding:10px;}</style>";
     private WebView mWebView;
     private CommonLoadingWidget common_loading_widget;
     private String URL, mTitle, loginUrl;
-    private ActivityResult mActivityForResult;
     private String mID;
     private TextView tv_left_title_back, tv_left_title_close;
     private ChooserFileController mCtrl;
@@ -134,7 +132,6 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
     public void initParams() {
         super.initParams();
         tv_center_title.setText(mTitle);
-        UserLoginActivity.setCancelLogin(this);
 
         WebSettings webSetting = mWebView.getSettings();
         webSetting.setJavaScriptEnabled(true);
@@ -328,7 +325,6 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
     public void onDestroy() {
         super.onDestroy();
         destroyView();
-        UserLoginActivity.setCancelLogin(null);
         common_loading_widget.closeLoading();
     }
 
@@ -357,25 +353,7 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (mActivityForResult != null) {
-            mActivityForResult.onActivityResult(requestCode, resultCode, data);
-        }
         mCtrl.onActivityResult(requestCode, resultCode, data);
-
-    }
-
-    /**
-     * Activity回调数据
-     *
-     * @author LiaoBo
-     */
-    public interface ActivityResult {
-        void onActivityResult(int requestCode, int resultCode, Intent data);
-
-    }
-
-    public void setActivityForResult(ActivityResult mResult) {
-        mActivityForResult = mResult;
     }
 
     @Override
@@ -389,23 +367,5 @@ public class HtmlActivity extends BaseActivity implements onCancelLoginListener 
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void isCancelLogin(boolean isCancel) {
-        if (isCancel) {
-            if (mWebView.canGoBack()) {
-                mWebView.goBack();
-            } else {
-                this.finish();
-            }
-        } else {
-            if (loginUrl != null) {// 如果拦截到网页登录，登录成功则跳转到loginUrl
-                mWebView.loadUrl(loginUrl);
-                // loginUrl = null;
-            } else {
-                mWebView.reload();// 刷新
-            }
-        }
     }
 }

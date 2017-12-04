@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -36,13 +37,14 @@ import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * 手机绑定
- *
- * @author LiaoBo
  */
 public class UserBindPhoneActivity extends BaseActivity implements DialogInterface.OnCancelListener {
+
+    private TextView tv_title_summary;
     private EditText et_phone, et_yzm;
-    private Button btn_yzm, btn_bind;
-    private String thirdpartusername, thirdpartuserheadphotourl, openid, mPlatform, usertoken;
+    private TextView tv_yzm;
+    private Button btn_bind;
+    private String thirdpartusername, thirdpartuserheadphotourl, openid, mPlatformCode, mPlatform, usertoken;
     private CountDownTimer mCountDownTimer;
 
     @Override
@@ -57,17 +59,11 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     @Override
     public void initViews() {
         super.initViews();
+        tv_title_summary = (TextView) findViewById(R.id.tv_title_summary);
         et_phone = (EditText) findViewById(R.id.et_phone);
         et_yzm = (EditText) findViewById(R.id.et_yzm);
-        btn_yzm = (Button) findViewById(R.id.btn_yzm);
+        tv_yzm = (TextView) findViewById(R.id.tv_yzm);
         btn_bind = (Button) findViewById(R.id.btn_bind);
-    }
-
-    @Override
-    public void initParams() {
-        super.initParams();
-        tv_center_title.setText(R.string.bind_phone);
-        setCountDownTimer(60 * 1000, 1000);
     }
 
     @Override
@@ -75,12 +71,26 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
-            thirdpartusername = getIntent().getExtras().getString("thirdpartusername");
-            thirdpartuserheadphotourl = getIntent().getExtras().getString("thirdpartuserheadphotourl");
-            openid = getIntent().getExtras().getString("openid");
-            mPlatform = getIntent().getExtras().getString("platform");
-            usertoken = getIntent().getExtras().getString("usertoken");
+            thirdpartusername = bundle.getString("thirdpartusername");
+            thirdpartuserheadphotourl = bundle.getString("thirdpartuserheadphotourl");
+            openid = bundle.getString("openid");
+            mPlatformCode = bundle.getString("platform");
+            usertoken = bundle.getString("usertoken");
         }
+        if (StringUtil.notEmpty(mPlatformCode)) {
+            if ("02".equals(mPlatformCode)) {
+                mPlatform = "QQ";
+            } else if ("03".equals(mPlatformCode)) {
+                mPlatform = "微信";
+            }
+        }
+    }
+
+    @Override
+    public void initParams() {
+        super.initParams();
+        tv_title_summary.setText(String.format(getString(R.string.tips_user_third_login), mPlatform));
+        setCountDownTimer(60 * 1000, 1000);
     }
 
     /**
@@ -106,7 +116,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         b.addBody("mobile", et_phone.getText().toString());
         b.addBody("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
         b.addBody("thirdpartuserheadphotourl", thirdpartuserheadphotourl);
-        b.addBody("platform", mPlatform);
+        b.addBody("platform", mPlatformCode);
         b.addBody("code", et_yzm.getText().toString());
         b.addBody("thirdpartusername", thirdpartusername);
         b.addBody("businesstype", AppConst.BUSINESS_TYPE_BIND);
@@ -148,7 +158,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     @Override
     public void initListeners() {
         super.initListeners();
-        btn_yzm.setOnClickListener(this);
+        tv_yzm.setOnClickListener(this);
         btn_bind.setOnClickListener(this);
     }
 
@@ -156,7 +166,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_yzm:
+            case R.id.tv_yzm:
                 if (!Utils.isMobile(et_phone.getText().toString())) {
                     CustomToast.show("请输入正确的手机号码", CustomToast.LENGTH_SHORT);
                     return;
@@ -177,12 +187,27 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != mCountDownTimer) {
+            mCountDownTimer.cancel();
+            mCountDownTimer = null;
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
+    }
+
+    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();
                 CustomToast.show("验证码已发送，请稍候...", CustomToast.LENGTH_SHORT);
-                btn_yzm.setEnabled(false);
+                tv_yzm.setEnabled(false);
                 mCountDownTimer.start();// 启动倒计时
             } else if (request.flag == AppConst.BIND) {
                 String ticket = response.body.toString();
@@ -250,13 +275,13 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
 
             @Override
             public void onTick(long millisUntilFinished) {
-                btn_yzm.setText(getString(R.string.get_checknumber) + "(" + millisUntilFinished / 1000 + "s)");
+                tv_yzm.setText(millisUntilFinished / 1000 + "s");
             }
 
             @Override
             public void onFinish() {
-                btn_yzm.setEnabled(true);
-                btn_yzm.setText(R.string.get_checknumber);
+                tv_yzm.setEnabled(true);
+                tv_yzm.setText(R.string.tips_reget_yzm);
             }
         };
     }

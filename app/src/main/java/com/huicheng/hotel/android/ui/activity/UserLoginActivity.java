@@ -1,6 +1,5 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -11,9 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +33,6 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
@@ -51,22 +47,25 @@ import cn.jpush.android.api.TagAliasCallback;
 /**
  * 登录
  */
-public class UserLoginActivity extends BaseActivity implements DialogInterface.OnCancelListener, OnCheckedChangeListener {
 
+public class UserLoginActivity extends BaseActivity {
+
+
+    private TextView tv_right;
     private EditText et_phone, et_pwd;
+    private CheckBox cb_pwd_status_check;
+    private TextView tv_register, tv_forget;
     private Button btn_login;
-    private TextView tv_forget_pwd, tv_reigster;
-    private static onCancelLoginListener mCancelLogin;
-    private CheckBox checkBox;
-    private ImageView btn_cancel;
-    private String usertoken;
+
     private UMShareAPI mShareAPI = null;
     private String mPlatform; //（01-新浪微博，02-腾讯QQ，03-微信，04-支付宝）
     private String thirdpartusername, thirdpartuserheadphotourl, openid, unionid;
-    private Button btn_wx, btn_qq;
+    private String usertoken;
+//    private Button btn_wx, btn_qq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initMainWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_login_layout);
         initViews();
@@ -77,22 +76,18 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
     @Override
     public void initViews() {
         super.initViews();
-        et_phone = (EditText) findViewById(R.id.et_username);
+        et_phone = (EditText) findViewById(R.id.et_phone);
         et_pwd = (EditText) findViewById(R.id.et_pwd);
+        cb_pwd_status_check = (CheckBox) findViewById(R.id.cb_pwd_status_check);
+        tv_register = (TextView) findViewById(R.id.tv_register);
+        tv_forget = (TextView) findViewById(R.id.tv_forget);
         btn_login = (Button) findViewById(R.id.btn_login);
-        tv_forget_pwd = (TextView) findViewById(R.id.tv_forget_pwd);
-        tv_reigster = (TextView) findViewById(R.id.tv_reigster);
-        checkBox = (CheckBox) findViewById(R.id.cb_change);
-        btn_cancel = (ImageView) findViewById(R.id.btn_cancel);
-
-        btn_wx = (Button) findViewById(R.id.btn_wx);
-        btn_qq = (Button) findViewById(R.id.btn_qq);
+        tv_right = (TextView) findViewById(R.id.tv_right);
     }
 
     @Override
     public void initParams() {
         super.initParams();
-        tv_center_title.setText(R.string.login_title);
         SessionContext.cleanUserInfo();
         String name = SharedPreferenceUtil.getInstance().getString(AppConst.USERNAME, "", true);
         if (StringUtil.notEmpty(name)) {
@@ -106,13 +101,13 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
 
     @Override
     public void initListeners() {
+        super.initListeners();
         btn_login.setOnClickListener(this);
-        tv_forget_pwd.setOnClickListener(this);
-        tv_reigster.setOnClickListener(this);
-        checkBox.setOnCheckedChangeListener(this);
-        btn_cancel.setOnClickListener(this);
-        btn_wx.setOnClickListener(this);
-        btn_qq.setOnClickListener(this);
+        tv_register.setOnClickListener(this);
+        tv_forget.setOnClickListener(this);
+//        btn_wx.setOnClickListener(this);
+//        btn_qq.setOnClickListener(this);
+
         et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -123,46 +118,56 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
                 return false;
             }
         });
-        super.initListeners();
+
+        cb_pwd_status_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    et_pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    et_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+                et_pwd.setSelection(et_pwd.getText().length());// 设置光标位置
+            }
+        });
+        tv_right.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_back:
-                if (mCancelLogin != null) {
-                    mCancelLogin.isCancelLogin(true);
-                }
-                this.finish();
-                break;
             case R.id.btn_login:
-                requestCheckUserstatus();
+                requestCheckUserStatus();
                 break;
-            case R.id.tv_reigster:
+            case R.id.tv_register: {
                 Intent intent = new Intent();
                 intent.setClass(this, UserRegisterActivity.class);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 break;
-            case R.id.tv_forget_pwd:
-                Intent intent2 = new Intent();
-                intent2.setClass(this, UserForgetPwdActivity.class);
-                startActivity(intent2);
+            }
+            case R.id.tv_forget: {
+                Intent intent = new Intent();
+                intent.setClass(this, UserForgetPwdActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
                 break;
-            case R.id.btn_cancel:// 置空
-                et_phone.setText("");
+            }
+            case R.id.tv_right:
+                System.out.println("right button click login");
                 break;
-            case R.id.btn_qq:
-                login(SHARE_MEDIA.QQ);
-                break;
-            case R.id.btn_wx:
-                if (WXAPIFactory.createWXAPI(this, null).isWXAppInstalled()) {
-                    login(SHARE_MEDIA.WEIXIN);
-                } else {
-                    CustomToast.show(getString(R.string.not_install_wx), 0);
-                }
-                break;
+//            case R.id.btn_qq:
+//                login(SHARE_MEDIA.QQ);
+//                break;
+//            case R.id.btn_wx:
+//                if (WXAPIFactory.createWXAPI(this, null).isWXAppInstalled()) {
+//                    login(SHARE_MEDIA.WEIXIN);
+//                } else {
+//                    CustomToast.show(getString(R.string.not_install_wx), 0);
+//                }
+//                break;
         }
-        super.onClick(v);
     }
 
     @Override
@@ -171,18 +176,6 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
         if (SessionContext.isLogin()) {
             this.finish();
         }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            // 设置为明文显示
-            et_pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-        } else {
-            // 设置为密文显示
-            et_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        }
-        et_pwd.setSelection(et_pwd.getText().length());// 设置光标位置
     }
 
     /**
@@ -255,16 +248,16 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
     /**
      * 登录前检查用户状态
      */
-    private void requestCheckUserstatus() {
-        String userName = et_phone.getText().toString().trim();
-        String pwd = et_pwd.getText().toString().trim();
+    private void requestCheckUserStatus() {
+        String userName = et_phone.getText().toString();
+        String pwd = et_pwd.getText().toString();
 
         if (StringUtil.isEmpty(userName)) {
-            CustomToast.show("用户名不能为空", CustomToast.LENGTH_SHORT);
+            CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
             return;
         }
         if (StringUtil.isEmpty(pwd)) {
-            CustomToast.show("密码不能为空", CustomToast.LENGTH_SHORT);
+            CustomToast.show(getString(R.string.tips_user_pwd), CustomToast.LENGTH_SHORT);
             return;
         }
 
@@ -286,8 +279,8 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
      * 登录
      */
     private void requestLogin() {
-        String userName = et_phone.getText().toString().trim();
-        String pwd = et_pwd.getText().toString().trim();
+        String userName = et_phone.getText().toString();
+        String pwd = et_pwd.getText().toString();
 
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("login", userName);
@@ -373,7 +366,7 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
                 return;
             }
 
-            String userName = et_phone.getText().toString().trim();
+            String userName = et_phone.getText().toString();
             SharedPreferenceUtil.getInstance().setString(AppConst.USERNAME, userName, true);// 保存用户名
             SharedPreferenceUtil.getInstance().setString(AppConst.LAST_LOGIN_DATE, DateUtil.getCurDateStr(null), false);// 保存登录时间
             SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
@@ -388,9 +381,6 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
                 }
             });
             sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
-            if (mCancelLogin != null) {
-                mCancelLogin.isCancelLogin(false);
-            }
 
             //登录成功，根据性别设置主题
             int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
@@ -413,57 +403,14 @@ public class UserLoginActivity extends BaseActivity implements DialogInterface.O
                 intent.putExtra("platform", mPlatform);
                 intent.putExtra("usertoken", usertoken);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         }
-    }
-
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        DataLoader.getInstance().clear(requestID);
-        removeProgressDialog();
-        if (mCancelLogin != null) {
-            mCancelLogin.isCancelLogin(true);
-        }
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            if (mCancelLogin != null) {
-                mCancelLogin.isCancelLogin(true);
-            }
-            this.finish();
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
-    }
-
-    /**
-     * 处理取消登录回调接口
-     */
-    public interface onCancelLoginListener {
-        /**
-         * @param isCancel true:取消登录；false:登录成功
-         */
-        public void isCancelLogin(boolean isCancel);
-    }
-
-    /**
-     * 设置登录状态监听
-     *
-     * @param cancelLogin
-     */
-    public static final void setCancelLogin(onCancelLoginListener cancelLogin) {
-        mCancelLogin = cancelLogin;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mCancelLogin != null) {
-            mCancelLogin = null;
-        }
-
         if (null != mShareAPI) {
             mShareAPI.release();
             mShareAPI = null;

@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -45,20 +43,20 @@ import cn.jpush.android.api.TagAliasCallback;
 
 public class UserRegisterActivity extends BaseActivity {
 
-    private EditText et_phone, et_yzm, et_pwd;
-    private int sex_index = 1; //默认男性
-    private RadioGroup rg_sex_lay;
-    private CheckBox cb_check;
+    private TextView tv_right;
+    private EditText et_phone, et_yzm, et_pwd, et_yqm;
+    private TextView tv_yzm;
+    private Button btn_register;
+    private CheckBox cb_pwd_status_check, cb_agreement_check;
     private TextView tv_agreement;
-    private Button btn_register, btn_yzm;
+
     private CountDownTimer mCountDownTimer;
-    private RelativeLayout checkbox_lay;
-    private CheckBox cb_change;
     private boolean isValid = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initMainWindow();
         setContentView(R.layout.act_register_layout);
         initViews();
         initParams();
@@ -68,33 +66,31 @@ public class UserRegisterActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
+        tv_right = (TextView) findViewById(R.id.tv_right);
         et_phone = (EditText) findViewById(R.id.et_phone);
         et_yzm = (EditText) findViewById(R.id.et_yzm);
-        btn_yzm = (Button) findViewById(R.id.btn_yzm);
+        tv_yzm = (TextView) findViewById(R.id.tv_yzm);
         et_pwd = (EditText) findViewById(R.id.et_pwd);
-        rg_sex_lay = (RadioGroup) findViewById(R.id.rg_sex_lay);
-        rg_sex_lay.getChildAt(0).performClick();
-        cb_check = (CheckBox) findViewById(R.id.cb_check);
-        checkbox_lay = (RelativeLayout) findViewById(R.id.checkBox_lay);
-        tv_agreement = (TextView) findViewById(R.id.tv_agreement);
+        cb_pwd_status_check = (CheckBox) findViewById(R.id.cb_pwd_status_check);
+        et_yqm = (EditText) findViewById(R.id.et_yqm);
         btn_register = (Button) findViewById(R.id.btn_register);
-        cb_change = (CheckBox) findViewById(R.id.cb_change);
+        cb_agreement_check = (CheckBox) findViewById(R.id.cb_agreement_check);
+        tv_agreement = (TextView) findViewById(R.id.tv_agreement);
     }
 
     @Override
     public void initParams() {
         super.initParams();
-        tv_center_title.setText(R.string.create);
         setCountDownTimer(60 * 1000, 1000);
     }
 
     @Override
     public void initListeners() {
         super.initListeners();
+        tv_right.setOnClickListener(this);
         btn_register.setOnClickListener(this);
-        btn_yzm.setOnClickListener(this);
+        tv_yzm.setOnClickListener(this);
         tv_agreement.setOnClickListener(this);
-        checkbox_lay.setOnClickListener(this);
 
         et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -106,27 +102,12 @@ public class UserRegisterActivity extends BaseActivity {
                 return false;
             }
         });
-        rg_sex_lay.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_sex_female:
-                        sex_index = 0;
-                        break;
-                    case R.id.rb_sex_male:
-                        sex_index = 1;
-                        break;
-                }
-            }
-        });
-        cb_change.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_pwd_status_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    // 设置为明文显示
                     et_pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
-                    // 设置为密文显示
                     et_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
                 et_pwd.setSelection(et_pwd.getText().length());// 设置光标位置
@@ -138,58 +119,65 @@ public class UserRegisterActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.checkBox_lay:
-                boolean flag = cb_check.isChecked();
-                cb_check.setChecked(!flag);
+            case R.id.tv_right: {
+                Intent intent = new Intent(this, UserLoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
                 break;
-            case R.id.btn_yzm: {
-                String phone = et_phone.getText().toString().trim();
+            }
+            case R.id.cb_agreement_check:
+                boolean flag = cb_agreement_check.isChecked();
+                cb_agreement_check.setChecked(!flag);
+                break;
+            case R.id.tv_yzm: {
+                String phone = et_phone.getText().toString();
                 if (StringUtil.notEmpty(phone)) {
                     if (Utils.isMobile(phone)) {
                         requestCheckPhoneNumber();
                     } else {
-                        CustomToast.show("请输入正确的手机号", CustomToast.LENGTH_SHORT);
+                        CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
                     }
                 } else {
-                    CustomToast.show("请输入手机号", CustomToast.LENGTH_SHORT);
+                    CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
                 }
 
                 break;
             }
             case R.id.btn_register: {
-                if (cb_check.isChecked()) {
-                    String phone = et_phone.getText().toString().trim();
-                    String yzm = et_yzm.getText().toString().trim();
-                    String pwd = et_pwd.getText().toString().trim();
+                if (cb_agreement_check.isChecked()) {
+                    String phone = et_phone.getText().toString();
+                    String yzm = et_yzm.getText().toString();
+                    String pwd = et_pwd.getText().toString();
 
                     if (StringUtil.isEmpty(phone)) {
-                        CustomToast.show("请输入手机号码", CustomToast.LENGTH_SHORT);
+                        CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
                         return;
                     } else {
                         if (!Utils.isMobile(phone)) {
-                            CustomToast.show("请输入正确的手机号码", CustomToast.LENGTH_SHORT);
+                            CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
                             return;
                         }
                     }
                     if (StringUtil.isEmpty(yzm)) {
-                        CustomToast.show("请输入验证码", CustomToast.LENGTH_SHORT);
+                        CustomToast.show(getString(R.string.tips_user_yzm), CustomToast.LENGTH_SHORT);
                         return;
                     }
                     if (StringUtil.isEmpty(pwd)) {
                         CustomToast.show("密码不允许为空", CustomToast.LENGTH_SHORT);
                         return;
                     } else {
-                        if (pwd.length() < 6 || pwd.length() > 20) {
-                            CustomToast.show("请输入6-20个字符的密码", CustomToast.LENGTH_SHORT);
+                        if (pwd.length() < 6 && pwd.length() > 20) {
+                            CustomToast.show(getString(R.string.tips_user_pwd_confirm), CustomToast.LENGTH_SHORT);
                             return;
                         }
                     }
                     requestCheckYZM();
                 } else {
-                    CustomToast.show("请先阅读《注册协议》", CustomToast.LENGTH_SHORT);
+                    CustomToast.show(getString(R.string.tips_user_agreement), CustomToast.LENGTH_SHORT);
                 }
                 break;
             }
+
             case R.id.tv_agreement:
                 Intent intent = new Intent(this, AboutActivity.class);
                 intent.putExtra("title", getResources().getString(R.string.setting_usage_condition));
@@ -263,10 +251,8 @@ public class UserRegisterActivity extends BaseActivity {
      */
     private void requestRegister() {
         LogUtil.d(TAG, "requestRegister()");
-        LogUtil.i(TAG, "index = " + sex_index);
-        LogUtil.i(TAG, "sex = " + getResources().getStringArray(R.array.sex)[sex_index]);
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("sex", String.valueOf(sex_index));
+        b.addBody("sex", "1");
         b.addBody("businesstype", AppConst.BUSINESS_TYPE_REGISTER);
         b.addBody("mobile", et_phone.getText().toString());
         b.addBody("code", et_yzm.getText().toString());
@@ -286,8 +272,8 @@ public class UserRegisterActivity extends BaseActivity {
      * 登录
      */
     private void requestLogin() {
-        String userName = et_phone.getText().toString().trim();
-        String pwd = et_pwd.getText().toString().trim();
+        String userName = et_phone.getText().toString();
+        String pwd = et_pwd.getText().toString();
 
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("login", userName);
@@ -326,10 +312,6 @@ public class UserRegisterActivity extends BaseActivity {
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-    }
-
-    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.CHECK_PHONE) {
@@ -356,7 +338,7 @@ public class UserRegisterActivity extends BaseActivity {
             } else if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();
                 CustomToast.show("验证码已发送，请稍候...", CustomToast.LENGTH_SHORT);
-                btn_yzm.setEnabled(false);
+                tv_yzm.setEnabled(false);
                 mCountDownTimer.start();// 启动倒计时
             } else if (request.flag == AppConst.CHECK_YZM) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
@@ -410,7 +392,7 @@ public class UserRegisterActivity extends BaseActivity {
                     return;
                 }
 
-                String userName = et_phone.getText().toString().trim();
+                String userName = et_phone.getText().toString();
                 SharedPreferenceUtil.getInstance().setString(AppConst.USERNAME, userName, true);// 保存用户名
                 SharedPreferenceUtil.getInstance().setString(AppConst.LAST_LOGIN_DATE, DateUtil.getCurDateStr(null), false);// 保存登录时间
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
@@ -460,13 +442,13 @@ public class UserRegisterActivity extends BaseActivity {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                btn_yzm.setText(getString(R.string.get_checknumber) + "(" + millisUntilFinished / 1000 + "s)");
+                tv_yzm.setText(millisUntilFinished / 1000 + "s");
             }
 
             @Override
             public void onFinish() {
-                btn_yzm.setEnabled(true);
-                btn_yzm.setText(R.string.get_checknumber);
+                tv_yzm.setEnabled(true);
+                tv_yzm.setText(R.string.tips_reget_yzm);
             }
         };
     }

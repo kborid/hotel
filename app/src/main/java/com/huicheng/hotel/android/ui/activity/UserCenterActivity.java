@@ -353,13 +353,13 @@ public class UserCenterActivity extends BaseActivity {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                btn_yzm.setText(getString(R.string.get_checknumber) + "(" + millisUntilFinished / 1000 + "s)");
+                btn_yzm.setText(millisUntilFinished / 1000 + "s");
             }
 
             @Override
             public void onFinish() {
                 btn_yzm.setEnabled(true);
-                btn_yzm.setText(R.string.get_checknumber);
+                btn_yzm.setText(R.string.tips_reget_yzm);
             }
         };
     }

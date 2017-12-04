@@ -17,8 +17,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/comm_line" />
+        android:layout_height="0.5dp"
+        android:background="#cccccc" />
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
@@ -55,8 +55,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/comm_line" />
+        android:layout_height="0.5dp"
+        android:background="#cccccc" />
 
     <TextView
         android:id="@+id/tv_cancel"

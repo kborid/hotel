@@ -75,4 +75,16 @@
 
     <string name="empty_hotel_list">未找到与之匹配的酒店</string>
 
+    <!--user module tips-->
+    <string name="tips_user_phone">请输入您的手机号</string>
+    <string name="tips_user_phone_confirm">请输入正确的手机号</string>
+    <string name="tips_user_yzm">请输入验证码</string>
+    <string name="tips_reget_yzm">重获验证码</string>
+    <string name="tips_user_pwd">请输入您的密码</string>
+    <string name="tips_user_new_pwd">请输入您的新密码</string>
+    <string name="tips_user_pwd_confirm">请输入6–20个字符的密码</string>
+    <string name="tips_user_yqm">请输入邀请码</string>
+    <string name="tips_user_third_login">获取%1$s登录功能</string>
+    <string name="tips_user_agreement">请先阅读注册协议</string>
+    <string name="tips_user_send_yzm">验证码已发送，请稍候…</string>
 </resources>
