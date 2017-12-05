@@ -244,6 +244,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                 break;
             case R.id.btn_register:
                 doActionIntent = new Intent(context, UserRegisterActivity.class);
+                doActionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.tv_usercenter:
                 doActionIntent = new Intent(context, UserCenterActivity.class);

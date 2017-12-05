@@ -34,7 +34,6 @@
             android:paddingBottom="5dp"
             android:paddingRight="30dp"
             android:paddingTop="17dp"
-            android:text="@string/user_login"
             android:textColor="@color/mainColor"
             android:textSize="@dimen/common_15sp"
             android:textStyle="bold" />
@@ -60,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
                 android:layout_marginRight="40dp"
-                android:text="创建账户"
+                android:text="@string/user_bind_phone"
                 android:textColor="@color/mainColor"
                 android:textSize="@dimen/common_30sp"
                 android:textStyle="bold" />
@@ -74,11 +73,11 @@
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
-                android:text="获取QQ登录功能"
+                android:text="@string/tips_user_third_login"
                 android:textColor="@color/mainColor"
                 android:textSize="@dimen/common_16sp"
                 android:textStyle="bold"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <!--input layout-->
             <LinearLayout
@@ -106,7 +105,8 @@
                     android:paddingRight="15dp"
                     android:textColor="@color/mainColor"
                     android:textColorHint="#cccccc"
-                    android:textSize="@dimen/common_15sp" />
+                    android:textSize="@dimen/common_15sp"
+                    android:transitionName="share_phone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -145,58 +145,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/pwd_lay"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/user_item_input_bg"
-                    android:orientation="horizontal"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp">
-
-                    <EditText
-                        android:id="@+id/et_pwd"
-                        android:layout_width="0dp"
-                        android:layout_height="42dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:drawableLeft="@drawable/iv_user_pwd"
-                        android:drawablePadding="18dp"
-                        android:hint="@string/tips_user_pwd"
-                        android:imeOptions="actionGo"
-                        android:inputType="textPassword"
-                        android:lines="1"
-                        android:textColor="@color/mainColor"
-                        android:textColorHint="#cccccc"
-                        android:textSize="@dimen/common_15sp" />
-
-                    <CheckBox
-                        android:id="@+id/cb_pwd_status_check"
-                        style="@style/userPwdCheckBoxStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-                <EditText
-                    android:id="@+id/et_yqm"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/user_item_input_bg"
-                    android:drawableLeft="@drawable/iv_user_yqm"
-                    android:drawablePadding="18dp"
-                    android:hint="@string/tips_user_yqm"
-                    android:inputType="number"
-                    android:lines="1"
-                    android:maxLength="11"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:textColor="@color/mainColor"
-                    android:textColorHint="#cccccc"
-                    android:textSize="@dimen/common_15sp" />
-
             </LinearLayout>
 
             <!--button layout-->
@@ -211,16 +159,17 @@
                     android:id="@+id/tv_action"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginLeft="45dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@drawable/user_btn_indicator_selector"
                     android:gravity="center"
                     android:maxWidth="200dp"
-                    android:text="@string/ok"
+                    android:text="@string/user_bind"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:transitionName="share_action" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -236,46 +185,6 @@
                     android:textStyle="bold"
                     android:visibility="invisible" />
             </LinearLayout>
-
-        </LinearLayout>
-
-        <!--注册协议-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="22dp"
-            android:paddingLeft="57dp">
-
-            <CheckBox
-                android:id="@+id/cb_agreement_check"
-                style="@style/userAgreementCheckBoxStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true" />
-
-            <TextView
-                android:id="@+id/tv_agree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/cb_agreement_check"
-                android:paddingLeft="10dp"
-                android:text="@string/user_agree_agreement"
-                android:textColor="@color/mainColor"
-                android:textSize="@dimen/common_11sp" />
-
-            <TextView
-                android:id="@+id/tv_agreement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/tv_agree"
-                android:text="@string/user_agreement"
-                android:textColor="@color/mainColor"
-                android:textSize="@dimen/common_11sp"
-                android:textStyle="bold" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

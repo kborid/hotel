@@ -202,7 +202,8 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
                     //do nothing
                     LogUtil.i(TAG, "do nothing~~~");
                 } else {
-                    finish();
+//                    finish();
+                    onBackPressed();
                 }
                 break;
             default:

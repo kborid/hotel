@@ -1,16 +1,25 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +43,7 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
+import com.prj.sdk.util.Utils;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -54,13 +64,24 @@ public class UserLoginActivity extends BaseActivity {
 
     private EditText et_phone, et_pwd;
     private CheckBox cb_pwd_status_check;
+    private LinearLayout pwd_lay;
     private TextView tv_register, tv_forget;
-    private Button btn_login;
+    private LinearLayout btn_layout;
+    private TextView tv_action;
 
     private UMShareAPI mShareAPI = null;
     private String mPlatform; //（01-新浪微博，02-腾讯QQ，03-微信，04-支付宝）
     private String thirdpartusername, thirdpartuserheadphotourl, openid, unionid;
     private String usertoken;
+
+    private boolean isFirst = false;
+    private boolean isOpen = false;
+    private LinearLayout third_login_layout, third_btn_lay;
+    private int mThirdBtnLayoutHeight = 0;
+    private int mActionBtnLayoutHeight = 0;
+    private RelativeLayout arrow_lay;
+    private ImageView iv_arrow;
+    private TextView tv_third_label;
     private TextView tv_wx, tv_qq;
 
     @Override
@@ -79,12 +100,113 @@ public class UserLoginActivity extends BaseActivity {
         et_phone = (EditText) findViewById(R.id.et_phone);
         et_pwd = (EditText) findViewById(R.id.et_pwd);
         cb_pwd_status_check = (CheckBox) findViewById(R.id.cb_pwd_status_check);
+        pwd_lay = (LinearLayout) findViewById(R.id.pwd_lay);
         tv_register = (TextView) findViewById(R.id.tv_register);
         tv_forget = (TextView) findViewById(R.id.tv_forget);
-        btn_login = (Button) findViewById(R.id.btn_login);
+        btn_layout = (LinearLayout) findViewById(R.id.btn_layout);
+        tv_action = (TextView) findViewById(R.id.tv_action);
 
+        third_login_layout = (LinearLayout) findViewById(R.id.third_login_layout);
+        third_btn_lay = (LinearLayout) findViewById(R.id.third_btn_lay);
+        arrow_lay = (RelativeLayout) findViewById(R.id.arrow_lay);
+        iv_arrow = (ImageView) findViewById(R.id.iv_arrow);
+        tv_third_label = (TextView) findViewById(R.id.tv_third_label);
         tv_qq = (TextView) findViewById(R.id.tv_qq);
         tv_wx = (TextView) findViewById(R.id.tv_wx);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        LogUtil.i(TAG, "onWindowFocusChanged()");
+        if (!isFirst) {
+            isFirst = true;
+            mThirdBtnLayoutHeight = third_btn_lay.getHeight();
+            System.out.println("mThirdBtnLayoutHeight = " + mThirdBtnLayoutHeight);
+            third_btn_lay.getLayoutParams().height = 0;
+            third_btn_lay.requestLayout();
+            System.out.println("mThirdBtnLayoutHeight = " + mThirdBtnLayoutHeight);
+            mActionBtnLayoutHeight = btn_layout.getHeight();
+            System.out.println("mActionBtnLayoutHeight = " + mActionBtnLayoutHeight);
+        }
+    }
+
+    private void openThirdLayoutAnim() {
+        ObjectAnimator arrowRotation = ObjectAnimator.ofFloat(iv_arrow, "rotation", 180, 190, 0);
+        ObjectAnimator actionBtnTranslation = ObjectAnimator.ofFloat(btn_layout, "translationY", 0, -mThirdBtnLayoutHeight / 2 + 20, -mThirdBtnLayoutHeight / 2);
+        ValueAnimator thirdBtnHeight = ValueAnimator.ofFloat(0, 20, mThirdBtnLayoutHeight);
+        thirdBtnHeight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                //获取当前的height值，动态更新view的高度
+                int value = ((Float) animation.getAnimatedValue()).intValue();
+                third_btn_lay.getLayoutParams().height = value;
+                third_btn_lay.requestLayout();
+                tv_third_label.setPadding(0, Utils.dip2px(13), 0, Utils.dip2px(17) - (int) ((float) Math.abs(value) / mThirdBtnLayoutHeight * Utils.dip2px(10)));
+            }
+        });
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(1000);
+        animatorSet.play(arrowRotation).with(thirdBtnHeight).with(actionBtnTranslation);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isOpen = true;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        animatorSet.start();
+    }
+
+    private void closeThirdLayoutAnim() {
+        ObjectAnimator arrowRotation = ObjectAnimator.ofFloat(iv_arrow, "rotation", 0, -10, 180);
+        ObjectAnimator actionBtnTranslation = ObjectAnimator.ofFloat(btn_layout, "translationY", -mThirdBtnLayoutHeight / 2, -mThirdBtnLayoutHeight / 2 + 20, 0);
+        ValueAnimator thirdBtnHeight = ValueAnimator.ofFloat(mThirdBtnLayoutHeight, mThirdBtnLayoutHeight + 20, 0);
+        thirdBtnHeight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                //获取当前的height值，动态更新view的高度
+                int value = ((Float) animation.getAnimatedValue()).intValue();
+                third_btn_lay.getLayoutParams().height = value;
+                third_btn_lay.requestLayout();
+                tv_third_label.setPadding(0, Utils.dip2px(13), 0, Utils.dip2px(7) + (int) ((1 - (float) Math.abs(value) / mThirdBtnLayoutHeight) * Utils.dip2px(10)));
+            }
+        });
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(1000);
+        animatorSet.play(arrowRotation).with(thirdBtnHeight).with(actionBtnTranslation);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isOpen = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        animatorSet.start();
     }
 
     @Override
@@ -104,7 +226,7 @@ public class UserLoginActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        btn_login.setOnClickListener(this);
+        tv_action.setOnClickListener(this);
         tv_register.setOnClickListener(this);
         tv_forget.setOnClickListener(this);
         tv_wx.setOnClickListener(this);
@@ -114,7 +236,7 @@ public class UserLoginActivity extends BaseActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    btn_login.performClick();
+                    tv_action.performClick();
                     return true;
                 }
                 return false;
@@ -132,27 +254,50 @@ public class UserLoginActivity extends BaseActivity {
                 et_pwd.setSelection(et_pwd.getText().length());// 设置光标位置
             }
         });
+        arrow_lay.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_login:
+            case R.id.arrow_lay:
+                if (isOpen) {
+                    closeThirdLayoutAnim();
+                } else {
+                    openThirdLayoutAnim();
+                }
+                break;
+            case R.id.tv_action:
                 requestCheckUserStatus();
                 break;
             case R.id.tv_register: {
                 Intent intent = new Intent();
                 intent.setClass(this, UserRegisterActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+                            new Pair<View, String>(et_phone, "share_phone"),
+                            new Pair<View, String>(pwd_lay, "share_pwd"),
+                            new Pair<View, String>(tv_action, "share_action")).toBundle());
+                } else {
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
                 break;
             }
             case R.id.tv_forget: {
                 Intent intent = new Intent();
                 intent.setClass(this, UserForgetPwdActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+                            new Pair<View, String>(et_phone, "share_phone"),
+                            new Pair<View, String>(pwd_lay, "share_pwd"),
+                            new Pair<View, String>(tv_action, "share_action")).toBundle());
+                } else {
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
                 break;
             }
             case R.id.tv_qq:
@@ -322,10 +467,6 @@ public class UserLoginActivity extends BaseActivity {
     }
 
     @Override
-    public void preExecute(ResponseData request) {
-    }
-
-    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (request.flag == AppConst.CHECK_USER) {
             JSONObject mJson = JSON.parseObject(response.body.toString());
@@ -398,8 +539,14 @@ public class UserLoginActivity extends BaseActivity {
                 intent.putExtra("openid", openid);
                 intent.putExtra("platform", mPlatform);
                 intent.putExtra("usertoken", usertoken);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+                            new Pair<View, String>(et_phone, "share_phone"),
+                            new Pair<View, String>(tv_action, "share_action")).toBundle());
+                } else {
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
             }
         }
     }

@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -35,7 +34,7 @@ public class UserForgetPwdActivity extends BaseActivity {
 
     private EditText et_phone, et_yzm, et_pwd;
     private TextView tv_yzm;
-    private Button btn_reset;
+    private TextView tv_action;
     private CountDownTimer mCountDownTimer;
     private boolean isValid = false;
 
@@ -56,7 +55,7 @@ public class UserForgetPwdActivity extends BaseActivity {
         et_yzm = (EditText) findViewById(R.id.et_yzm);
         et_pwd = (EditText) findViewById(R.id.et_pwd);
         tv_yzm = (TextView) findViewById(R.id.tv_yzm);
-        btn_reset = (Button) findViewById(R.id.btn_reset);
+        tv_action = (TextView) findViewById(R.id.tv_action);
     }
 
     @Override
@@ -72,13 +71,13 @@ public class UserForgetPwdActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        btn_reset.setOnClickListener(this);
+        tv_action.setOnClickListener(this);
         tv_yzm.setOnClickListener(this);
         et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    btn_reset.performClick();
+                    tv_action.performClick();
                     return true;
                 }
                 return false;
@@ -119,7 +118,7 @@ public class UserForgetPwdActivity extends BaseActivity {
                     CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
                 }
                 break;
-            case R.id.btn_reset:
+            case R.id.tv_action:
                 String phoneNumber = et_phone.getText().toString();
                 String checkCode = et_yzm.getText().toString();
                 String pwd = et_pwd.getText().toString();

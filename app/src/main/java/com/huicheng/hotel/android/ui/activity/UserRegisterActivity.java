@@ -1,20 +1,23 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -49,8 +52,9 @@ public class UserRegisterActivity extends BaseActivity {
 
     private TextView tv_right;
     private EditText et_phone, et_yzm, et_pwd, et_yqm;
+    private LinearLayout pwd_lay;
     private TextView tv_yzm;
-    private Button btn_register;
+    private TextView tv_action;
     private CheckBox cb_pwd_status_check, cb_agreement_check;
     private TextView tv_agreement;
 
@@ -76,8 +80,9 @@ public class UserRegisterActivity extends BaseActivity {
         tv_yzm = (TextView) findViewById(R.id.tv_yzm);
         et_pwd = (EditText) findViewById(R.id.et_pwd);
         cb_pwd_status_check = (CheckBox) findViewById(R.id.cb_pwd_status_check);
+        pwd_lay = (LinearLayout) findViewById(R.id.pwd_lay);
         et_yqm = (EditText) findViewById(R.id.et_yqm);
-        btn_register = (Button) findViewById(R.id.btn_register);
+        tv_action = (TextView) findViewById(R.id.tv_action);
         cb_agreement_check = (CheckBox) findViewById(R.id.cb_agreement_check);
         tv_agreement = (TextView) findViewById(R.id.tv_agreement);
     }
@@ -92,7 +97,7 @@ public class UserRegisterActivity extends BaseActivity {
     public void initListeners() {
         super.initListeners();
         tv_right.setOnClickListener(this);
-        btn_register.setOnClickListener(this);
+        tv_action.setOnClickListener(this);
         tv_yzm.setOnClickListener(this);
         tv_agreement.setOnClickListener(this);
 
@@ -100,7 +105,7 @@ public class UserRegisterActivity extends BaseActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    btn_register.performClick();
+                    tv_action.performClick();
                     return true;
                 }
                 return false;
@@ -145,8 +150,16 @@ public class UserRegisterActivity extends BaseActivity {
             case R.id.tv_right: {
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                 Intent intent = new Intent(this, UserLoginActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+                            new Pair<View, String>(et_phone, "share_phone"),
+                            new Pair<View, String>(pwd_lay, "share_pwd"),
+                            new Pair<View, String>(tv_action, "share_action")).toBundle());
+                } else {
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
                 break;
             }
             case R.id.cb_agreement_check:
@@ -167,7 +180,7 @@ public class UserRegisterActivity extends BaseActivity {
 
                 break;
             }
-            case R.id.btn_register: {
+            case R.id.tv_action: {
                 if (cb_agreement_check.isChecked()) {
                     String phone = et_phone.getText().toString();
                     String yzm = et_yzm.getText().toString();
@@ -333,6 +346,14 @@ public class UserRegisterActivity extends BaseActivity {
         d.flag = AppConst.SAVE_RECOMMAND;
 
         requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (SessionContext.isLogin()) {
+            finish();
+        }
     }
 
     @Override

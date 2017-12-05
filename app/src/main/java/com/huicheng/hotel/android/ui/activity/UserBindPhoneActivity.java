@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -46,7 +45,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     private TextView tv_title_summary;
     private EditText et_phone, et_yzm;
     private TextView tv_yzm;
-    private Button btn_bind;
+    private TextView tv_action;
     private String thirdpartusername, thirdpartuserheadphotourl, openid, mPlatformCode, mPlatform, usertoken;
     private CountDownTimer mCountDownTimer;
 
@@ -67,7 +66,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         et_phone = (EditText) findViewById(R.id.et_phone);
         et_yzm = (EditText) findViewById(R.id.et_yzm);
         tv_yzm = (TextView) findViewById(R.id.tv_yzm);
-        btn_bind = (Button) findViewById(R.id.btn_bind);
+        tv_action = (TextView) findViewById(R.id.tv_action);
     }
 
     @Override
@@ -167,7 +166,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     public void initListeners() {
         super.initListeners();
         tv_yzm.setOnClickListener(this);
-        btn_bind.setOnClickListener(this);
+        tv_action.setOnClickListener(this);
         et_phone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -203,7 +202,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
                     CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
                 }
                 break;
-            case R.id.btn_bind:
+            case R.id.tv_action:
                 String phoneNumber = et_phone.getText().toString();
                 String checkCode = et_yzm.getText().toString();
 

@@ -86,12 +86,13 @@
         <!-- 登录 -->
         <activity
             android:name=".ui.activity.UserLoginActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 注册 -->
         <activity
             android:name=".ui.activity.UserRegisterActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 忘记密码 -->
