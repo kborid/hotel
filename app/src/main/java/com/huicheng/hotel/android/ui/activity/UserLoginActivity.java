@@ -13,6 +13,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AnticipateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -74,11 +75,13 @@ public class UserLoginActivity extends BaseActivity {
     private String thirdpartusername, thirdpartuserheadphotourl, openid, unionid;
     private String usertoken;
 
+    private static final int ANIMATOR_OPENED = 1;
+    private static final int ANIMATOR_PLAYING = 0;
+    private static final int ANIMATOR_CLOSED = -1;
     private boolean isFirst = false;
-    private boolean isOpen = false;
+    private int mAnimStatus = ANIMATOR_CLOSED;
     private LinearLayout third_login_layout, third_btn_lay;
     private int mThirdBtnLayoutHeight = 0;
-    private int mActionBtnLayoutHeight = 0;
     private RelativeLayout arrow_lay;
     private ImageView iv_arrow;
     private TextView tv_third_label;
@@ -122,41 +125,44 @@ public class UserLoginActivity extends BaseActivity {
         if (!isFirst) {
             isFirst = true;
             mThirdBtnLayoutHeight = third_btn_lay.getHeight();
-            System.out.println("mThirdBtnLayoutHeight = " + mThirdBtnLayoutHeight);
-            third_btn_lay.getLayoutParams().height = 0;
+//            third_btn_lay.getLayoutParams().height = 0;
+            ((LinearLayout.LayoutParams) third_btn_lay.getLayoutParams()).bottomMargin = -mThirdBtnLayoutHeight;
             third_btn_lay.requestLayout();
-            System.out.println("mThirdBtnLayoutHeight = " + mThirdBtnLayoutHeight);
-            mActionBtnLayoutHeight = btn_layout.getHeight();
-            System.out.println("mActionBtnLayoutHeight = " + mActionBtnLayoutHeight);
         }
     }
 
     private void openThirdLayoutAnim() {
-        ObjectAnimator arrowRotation = ObjectAnimator.ofFloat(iv_arrow, "rotation", 180, 190, 0);
-        ObjectAnimator actionBtnTranslation = ObjectAnimator.ofFloat(btn_layout, "translationY", 0, -mThirdBtnLayoutHeight / 2 + 20, -mThirdBtnLayoutHeight / 2);
-        ValueAnimator thirdBtnHeight = ValueAnimator.ofFloat(0, 20, mThirdBtnLayoutHeight);
+        ObjectAnimator arrowRotation = ObjectAnimator.ofFloat(iv_arrow, "rotation", 180, 0);
+        ObjectAnimator actionBtnTranslation = ObjectAnimator.ofFloat(btn_layout, "translationY", 0, -mThirdBtnLayoutHeight / 2);
+        ValueAnimator thirdBtnHeight = ValueAnimator.ofFloat(0, mThirdBtnLayoutHeight);
         thirdBtnHeight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 //获取当前的height值，动态更新view的高度
                 int value = ((Float) animation.getAnimatedValue()).intValue();
-                third_btn_lay.getLayoutParams().height = value;
-                third_btn_lay.requestLayout();
                 tv_third_label.setPadding(0, Utils.dip2px(13), 0, Utils.dip2px(17) - (int) ((float) Math.abs(value) / mThirdBtnLayoutHeight * Utils.dip2px(10)));
+                if (value <= 0) {
+                    value = 0;
+                }
+//                third_btn_lay.getLayoutParams().height = value <= 0 ? 0 : value;
+                ((LinearLayout.LayoutParams) third_btn_lay.getLayoutParams()).bottomMargin = value - mThirdBtnLayoutHeight;
+                third_btn_lay.requestLayout();
             }
         });
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(1000);
+        animatorSet.setDuration(800);
+        animatorSet.setInterpolator(new AnticipateInterpolator());
         animatorSet.play(arrowRotation).with(thirdBtnHeight).with(actionBtnTranslation);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                mAnimStatus = ANIMATOR_PLAYING;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                isOpen = true;
+                mAnimStatus = ANIMATOR_OPENED;
             }
 
             @Override
@@ -171,31 +177,34 @@ public class UserLoginActivity extends BaseActivity {
     }
 
     private void closeThirdLayoutAnim() {
-        ObjectAnimator arrowRotation = ObjectAnimator.ofFloat(iv_arrow, "rotation", 0, -10, 180);
-        ObjectAnimator actionBtnTranslation = ObjectAnimator.ofFloat(btn_layout, "translationY", -mThirdBtnLayoutHeight / 2, -mThirdBtnLayoutHeight / 2 + 20, 0);
-        ValueAnimator thirdBtnHeight = ValueAnimator.ofFloat(mThirdBtnLayoutHeight, mThirdBtnLayoutHeight + 20, 0);
+        ObjectAnimator arrowRotation = ObjectAnimator.ofFloat(iv_arrow, "rotation", 0, 180);
+        ObjectAnimator actionBtnTranslation = ObjectAnimator.ofFloat(btn_layout, "translationY", -mThirdBtnLayoutHeight / 2, 0);
+        ValueAnimator thirdBtnHeight = ValueAnimator.ofFloat(mThirdBtnLayoutHeight, 0);
         thirdBtnHeight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 //获取当前的height值，动态更新view的高度
                 int value = ((Float) animation.getAnimatedValue()).intValue();
-                third_btn_lay.getLayoutParams().height = value;
+//                third_btn_lay.getLayoutParams().height = Math.abs(value);
+                ((LinearLayout.LayoutParams) third_btn_lay.getLayoutParams()).bottomMargin = value - mThirdBtnLayoutHeight;
                 third_btn_lay.requestLayout();
                 tv_third_label.setPadding(0, Utils.dip2px(13), 0, Utils.dip2px(7) + (int) ((1 - (float) Math.abs(value) / mThirdBtnLayoutHeight) * Utils.dip2px(10)));
             }
         });
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(1000);
+        animatorSet.setDuration(800);
+        animatorSet.setInterpolator(new AnticipateInterpolator());
         animatorSet.play(arrowRotation).with(thirdBtnHeight).with(actionBtnTranslation);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                mAnimStatus = ANIMATOR_PLAYING;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                isOpen = false;
+                mAnimStatus = ANIMATOR_CLOSED;
             }
 
             @Override
@@ -262,10 +271,13 @@ public class UserLoginActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.arrow_lay:
-                if (isOpen) {
-                    closeThirdLayoutAnim();
-                } else {
+                if (mAnimStatus == ANIMATOR_PLAYING) {
+                    return;
+                }
+                if (mAnimStatus == ANIMATOR_CLOSED) {
                     openThirdLayoutAnim();
+                } else {
+                    closeThirdLayoutAnim();
                 }
                 break;
             case R.id.tv_action:

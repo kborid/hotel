@@ -514,6 +514,8 @@ public class UserRegisterActivity extends BaseActivity {
         super.finish();
         if (ActivityTack.getInstanse().isExitActivity(UserLoginActivity.class)) {
             overridePendingTransition(0, 0);
+        } else {
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
         }
     }
 }

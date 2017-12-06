@@ -259,7 +259,7 @@ public class SearchResultActivity extends BaseActivity {
             if (request.flag == AppConst.ALL_SEARCH_HOTEL) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 List<HotelInfoBean> temp = JSON.parseArray(response.body.toString(), HotelInfoBean.class);
-                if (temp.size() > 0 && SessionContext.isFirstDoAction(getClass().getSimpleName())) {
+                if (temp.size() > 0 && SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
                     listview.removeHeaderView(mHeaderView);
                     listview.addHeaderView(mHeaderView);
                 } else {
