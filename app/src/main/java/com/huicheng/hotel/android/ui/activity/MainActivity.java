@@ -374,9 +374,10 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
             myHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    drawer_layout.openDrawer(left_layout, true);
+//                    drawer_layout.openDrawer(left_layout, true);
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                 }
-            }, 300);
+            }, 450);
         }
 
         //搜索地标，设置城市返回后刷新显示

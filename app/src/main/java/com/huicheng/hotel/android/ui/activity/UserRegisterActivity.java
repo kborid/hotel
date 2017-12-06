@@ -1,15 +1,12 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -36,7 +33,6 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -64,11 +60,19 @@ public class UserRegisterActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("onCreate()");
         initMainWindow();
+        overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
         setContentView(R.layout.act_register_layout);
         initViews();
         initParams();
         initListeners();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
     }
 
     @Override
@@ -151,15 +155,15 @@ public class UserRegisterActivity extends BaseActivity {
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                 Intent intent = new Intent(this, UserLoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
-                            new Pair<View, String>(et_phone, "share_phone"),
-                            new Pair<View, String>(pwd_lay, "share_pwd"),
-                            new Pair<View, String>(tv_action, "share_action")).toBundle());
-                } else {
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+//                            new Pair<View, String>(et_phone, "share_phone"),
+//                            new Pair<View, String>(pwd_lay, "share_pwd"),
+//                            new Pair<View, String>(tv_action, "share_action")).toBundle());
+//                } else {
+                startActivity(intent);
+//                    overridePendingTransition(0, 0);
+//                }
                 break;
             }
             case R.id.cb_agreement_check:
@@ -512,10 +516,6 @@ public class UserRegisterActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        if (ActivityTack.getInstanse().isExitActivity(UserLoginActivity.class)) {
-            overridePendingTransition(0, 0);
-        } else {
-            overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
-        }
+        overridePendingTransition(R.anim.user_login_exit_in, R.anim.user_login_exit_out);
     }
 }

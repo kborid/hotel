@@ -53,6 +53,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     protected void onCreate(Bundle savedInstanceState) {
         initMainWindow();
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
         setContentView(R.layout.act_bindphone_layout);
         initViews();
         initParams();
@@ -238,7 +239,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, 0);
+        overridePendingTransition(R.anim.user_login_exit_in, R.anim.user_login_exit_out);
     }
 
     @Override

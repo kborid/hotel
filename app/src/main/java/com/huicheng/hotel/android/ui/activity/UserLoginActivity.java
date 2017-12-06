@@ -4,13 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
@@ -39,7 +36,6 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -91,10 +87,17 @@ public class UserLoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         initMainWindow();
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
         setContentView(R.layout.act_login_layout);
         initViews();
         initParams();
         initListeners();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
     }
 
     @Override
@@ -287,29 +290,29 @@ public class UserLoginActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.setClass(this, UserRegisterActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
-                            new Pair<View, String>(et_phone, "share_phone"),
-                            new Pair<View, String>(pwd_lay, "share_pwd"),
-                            new Pair<View, String>(tv_action, "share_action")).toBundle());
-                } else {
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+//                            new Pair<View, String>(et_phone, "share_phone"),
+//                            new Pair<View, String>(pwd_lay, "share_pwd"),
+//                            new Pair<View, String>(tv_action, "share_action")).toBundle());
+//                } else {
+                startActivity(intent);
+//                    overridePendingTransition(0, 0);
+//                }
                 break;
             }
             case R.id.tv_forget: {
                 Intent intent = new Intent();
                 intent.setClass(this, UserForgetPwdActivity.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
-                            new Pair<View, String>(et_phone, "share_phone"),
-                            new Pair<View, String>(pwd_lay, "share_pwd"),
-                            new Pair<View, String>(tv_action, "share_action")).toBundle());
-                } else {
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+//                            new Pair<View, String>(et_phone, "share_phone"),
+//                            new Pair<View, String>(pwd_lay, "share_pwd"),
+//                            new Pair<View, String>(tv_action, "share_action")).toBundle());
+//                } else {
+                startActivity(intent);
+//                    overridePendingTransition(0, 0);
+//                }
                 break;
             }
             case R.id.tv_qq:
@@ -551,14 +554,14 @@ public class UserLoginActivity extends BaseActivity {
                 intent.putExtra("openid", openid);
                 intent.putExtra("platform", mPlatform);
                 intent.putExtra("usertoken", usertoken);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
-                            new Pair<View, String>(et_phone, "share_phone"),
-                            new Pair<View, String>(tv_action, "share_action")).toBundle());
-                } else {
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+//                            new Pair<View, String>(et_phone, "share_phone"),
+//                            new Pair<View, String>(tv_action, "share_action")).toBundle());
+//                } else {
+                startActivity(intent);
+//                    overridePendingTransition(0, 0);
+//                }
             }
         }
     }
@@ -575,9 +578,7 @@ public class UserLoginActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        if (ActivityTack.getInstanse().isExitActivity(UserRegisterActivity.class)) {
-            overridePendingTransition(0, 0);
-        }
+        overridePendingTransition(R.anim.user_login_exit_in, R.anim.user_login_exit_out);
     }
 
     @Override

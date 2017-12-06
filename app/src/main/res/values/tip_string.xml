@@ -76,6 +76,10 @@
     <string name="empty_hotel_list">未找到与之匹配的酒店</string>
 
     <!--user module tips-->
+    <string name="tips_user_hello">Hello!</string>
+    <string name="tips_user_welcome">欢迎来到ABC旅行预订</string>
+    <string name="tips_user_tips1">请您根据是否已有ABC账户，选择</string>
+    <string name="tips_user_tips2">登录/注册</string>
     <string name="tips_user_phone">请输入您的手机号</string>
     <string name="tips_user_phone_confirm">请输入正确的手机号</string>
     <string name="tips_user_yzm">请输入验证码</string>

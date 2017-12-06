@@ -84,7 +84,7 @@
         <item name="orderPlaneItemBg">@drawable/iv_order_plane</item>
         <item name="pullDownAccessory">@drawable/iv_down</item>
         <!--selector-->
-        <item name="mainColorBtnSel">@drawable/maincolor_btn_sel</item>
+        <item name="mainColorBtnSel">@drawable/user_btn_maincolor_selector</item>
         <item name="indicatorBgSel">@drawable/indicator_btn_sel</item>
         <item name="bottomBtnSel">@drawable/comm_rect_bottombtn_sel</item>
         <item name="tagFlowBgSel">@drawable/tf_item_sel</item>

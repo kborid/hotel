@@ -62,7 +62,7 @@
     <string name="login_qq">QQ账号登录</string>
     <string name="user_create">创建账号</string>
     <string name="user_forget_pwd">忘记密码</string>
-    <string name="user_register">立即注册</string>
+    <string name="user_register">注册</string>
     <string name="user_reset">重置</string>
     <string name="user_reset_pwd">重置密码</string>
     <string name="user_bind_phone">绑定手机号</string>

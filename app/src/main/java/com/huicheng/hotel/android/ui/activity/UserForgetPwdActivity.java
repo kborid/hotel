@@ -42,6 +42,7 @@ public class UserForgetPwdActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         initMainWindow();
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
         setContentView(R.layout.act_forget_pwd_layout);
         initViews();
         initParams();
@@ -153,7 +154,7 @@ public class UserForgetPwdActivity extends BaseActivity {
     /**
      * 加载验证码
      */
-    private void  requestYZM() {
+    private void requestYZM() {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("businesstype", AppConst.BUSINESS_TYPE_FINDPWD);
         b.addBody("mobile", et_phone.getText().toString());
@@ -284,6 +285,6 @@ public class UserForgetPwdActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, 0);
+        overridePendingTransition(R.anim.user_login_exit_in, R.anim.user_login_exit_out);
     }
 }

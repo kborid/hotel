@@ -83,6 +83,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--登录入口-->
+        <activity
+            android:name=".ui.activity.UserLoginMainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 登录 -->
         <activity
             android:name=".ui.activity.UserLoginActivity"
