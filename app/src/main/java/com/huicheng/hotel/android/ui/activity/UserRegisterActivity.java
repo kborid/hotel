@@ -60,7 +60,6 @@ public class UserRegisterActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("onCreate()");
         initMainWindow();
         overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
         setContentView(R.layout.act_register_layout);
@@ -95,6 +94,7 @@ public class UserRegisterActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         setCountDownTimer(60 * 1000, 1000);
+        checkInputForActionBtnStatus();
     }
 
     @Override
@@ -135,14 +135,48 @@ public class UserRegisterActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+                if (s.length() == 11) {
+                    tv_yzm.performClick();
+                }
+            }
+        });
+
+        et_yzm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() == 11) {
-                    tv_yzm.performClick();
-                }
+                checkInputForActionBtnStatus();
+            }
+        });
+
+        et_pwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
             }
         });
     }
@@ -185,37 +219,19 @@ public class UserRegisterActivity extends BaseActivity {
                 break;
             }
             case R.id.tv_action: {
-                if (cb_agreement_check.isChecked()) {
-                    String phone = et_phone.getText().toString();
-                    String yzm = et_yzm.getText().toString();
-                    String pwd = et_pwd.getText().toString();
+                String phone = et_phone.getText().toString();
+                String yzm = et_yzm.getText().toString();
+                String pwd = et_pwd.getText().toString();
 
-                    if (StringUtil.isEmpty(phone)) {
-                        CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
-                        return;
-                    } else {
-                        if (!Utils.isMobile(phone)) {
-                            CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
-                            return;
-                        }
-                    }
-                    if (StringUtil.isEmpty(yzm)) {
-                        CustomToast.show(getString(R.string.tips_user_yzm), CustomToast.LENGTH_SHORT);
-                        return;
-                    }
-                    if (StringUtil.isEmpty(pwd)) {
-                        CustomToast.show(getString(R.string.tips_user_pwd), CustomToast.LENGTH_SHORT);
-                        return;
-                    } else {
-                        if (pwd.length() < 6 && pwd.length() > 20) {
-                            CustomToast.show(getString(R.string.tips_user_pwd_confirm), CustomToast.LENGTH_SHORT);
-                            return;
-                        }
-                    }
-                    requestCheckYZM();
-                } else {
-                    CustomToast.show(getString(R.string.tips_user_agreement), CustomToast.LENGTH_SHORT);
+                if (!Utils.isMobile(phone)) {
+                    CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
+                    return;
                 }
+                if (pwd.length() < 6 && pwd.length() > 20) {
+                    CustomToast.show(getString(R.string.tips_user_pwd_confirm), CustomToast.LENGTH_SHORT);
+                    return;
+                }
+                requestCheckYZM();
                 break;
             }
 
@@ -229,6 +245,17 @@ public class UserRegisterActivity extends BaseActivity {
                 break;
         }
 
+    }
+
+    private void checkInputForActionBtnStatus() {
+        boolean flag = false;
+        if (StringUtil.notEmpty(et_phone.getText().toString())
+                && StringUtil.notEmpty(et_yzm.getText().toString())
+                && StringUtil.notEmpty(et_pwd.getText().toString())
+                && cb_agreement_check.isChecked()) {
+            flag = true;
+        }
+        tv_action.setEnabled(flag);
     }
 
     /**
@@ -412,6 +439,7 @@ public class UserRegisterActivity extends BaseActivity {
                         requestRegister();
                     } else {
                         removeProgressDialog();
+                        et_yzm.requestFocus();
                         CustomToast.show(getString(R.string.tips_user_yzm_error), CustomToast.LENGTH_SHORT);
                     }
                 }

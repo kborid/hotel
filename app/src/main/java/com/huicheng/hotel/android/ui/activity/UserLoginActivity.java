@@ -6,6 +6,8 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
@@ -233,6 +235,16 @@ public class UserLoginActivity extends BaseActivity {
         config.isNeedAuthOnGetUserInfo(true);
         mShareAPI = UMShareAPI.get(this);
         mShareAPI.setShareConfig(config);
+        checkInputForActionBtnStatus();
+    }
+
+    private void checkInputForActionBtnStatus() {
+        boolean flag = false;
+        if (StringUtil.notEmpty(et_phone.getText().toString())
+                && StringUtil.notEmpty(et_pwd.getText().toString())) {
+            flag = true;
+        }
+        tv_action.setEnabled(flag);
     }
 
     @Override
@@ -267,6 +279,39 @@ public class UserLoginActivity extends BaseActivity {
             }
         });
         arrow_lay.setOnClickListener(this);
+
+        et_phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+            }
+        });
+
+        et_pwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+            }
+        });
     }
 
     @Override
@@ -408,16 +453,6 @@ public class UserLoginActivity extends BaseActivity {
      */
     private void requestCheckUserStatus() {
         String userName = et_phone.getText().toString();
-        String pwd = et_pwd.getText().toString();
-
-        if (StringUtil.isEmpty(userName)) {
-            CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
-            return;
-        }
-        if (StringUtil.isEmpty(pwd)) {
-            CustomToast.show(getString(R.string.tips_user_pwd), CustomToast.LENGTH_SHORT);
-            return;
-        }
 
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("login", userName);

@@ -95,6 +95,16 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         super.initParams();
         tv_title_summary.setText(String.format(getString(R.string.tips_user_third_login), mPlatform));
         setCountDownTimer(60 * 1000, 1000);
+        checkInputForActionBtnStatus();
+    }
+
+    private void checkInputForActionBtnStatus() {
+        boolean flag = false;
+        if (StringUtil.notEmpty(et_phone.getText().toString())
+                && StringUtil.notEmpty(et_yzm.getText().toString())) {
+            flag = true;
+        }
+        tv_action.setEnabled(flag);
     }
 
     /**
@@ -176,14 +186,31 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+                if (s.length() == 11) {
+                    tv_yzm.performClick();
+                }
+            }
+        });
+
+        et_yzm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() == 11) {
-                    tv_yzm.performClick();
-                }
+                checkInputForActionBtnStatus();
             }
         });
     }
@@ -206,17 +233,8 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
             case R.id.tv_action:
                 String phoneNumber = et_phone.getText().toString();
                 String checkCode = et_yzm.getText().toString();
-
-                if (StringUtil.isEmpty(phoneNumber)) {
-                    CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
-                    return;
-                }
                 if (!Utils.isMobile(phoneNumber)) {
                     CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
-                    return;
-                }
-                if (StringUtil.isEmpty(checkCode)) {
-                    CustomToast.show(getString(R.string.tips_user_yzm), CustomToast.LENGTH_SHORT);
                     return;
                 }
                 requestBindPhone();

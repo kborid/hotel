@@ -67,6 +67,7 @@ public class UserForgetPwdActivity extends BaseActivity {
         if (StringUtil.notEmpty(name)) {
             et_phone.setText(name);// 设置默认用户名
         }
+        checkInputForActionBtnStatus();
     }
 
     @Override
@@ -92,16 +93,60 @@ public class UserForgetPwdActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
                 if (s.length() == 11) {
                     tv_yzm.performClick();
                 }
             }
         });
+
+        et_yzm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+            }
+        });
+
+        et_pwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+            }
+        });
+    }
+
+    private void checkInputForActionBtnStatus() {
+        boolean flag = false;
+        if (StringUtil.notEmpty(et_phone.getText().toString())
+                && StringUtil.notEmpty(et_yzm.getText().toString())
+                && StringUtil.notEmpty(et_pwd.getText().toString())) {
+            flag = true;
+        }
+        tv_action.setEnabled(flag);
     }
 
     @Override
@@ -123,21 +168,8 @@ public class UserForgetPwdActivity extends BaseActivity {
                 String phoneNumber = et_phone.getText().toString();
                 String checkCode = et_yzm.getText().toString();
                 String pwd = et_pwd.getText().toString();
-
-                if (StringUtil.isEmpty(phoneNumber)) {
-                    CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
-                    return;
-                }
                 if (!Utils.isMobile(phoneNumber)) {
                     CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
-                    return;
-                }
-                if (StringUtil.isEmpty(checkCode)) {
-                    CustomToast.show(getString(R.string.tips_user_yzm), CustomToast.LENGTH_SHORT);
-                    return;
-                }
-                if (StringUtil.isEmpty(pwd)) {
-                    CustomToast.show(getString(R.string.tips_user_pwd), CustomToast.LENGTH_SHORT);
                     return;
                 }
                 if (pwd.length() < 6 && pwd.length() > 20) {
@@ -239,6 +271,7 @@ public class UserForgetPwdActivity extends BaseActivity {
                 if (isValid) {
                     requestResetPwd();
                 } else {
+                    et_yzm.requestFocus();
                     removeProgressDialog();
                     CustomToast.show(getString(R.string.tips_user_yzm_error), CustomToast.LENGTH_SHORT);
                 }

@@ -371,13 +371,14 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         //第每次启动时，如果用户未登录，则显示侧滑
         if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName()) &&
                 !SessionContext.isLogin()) {
-            myHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+//            myHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
 //                    drawer_layout.openDrawer(left_layout, true);
-                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-                }
-            }, 450);
+//                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+//                }
+//            }, 450);
+            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
         }
 
         //搜索地标，设置城市返回后刷新显示

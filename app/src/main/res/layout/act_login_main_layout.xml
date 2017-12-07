@@ -43,7 +43,7 @@
         <TextView
             android:id="@+id/tv_title_main"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="75dp"
             android:layout_marginLeft="47dp"
             android:layout_marginRight="40dp"
             android:text="@string/tips_user_hello"
