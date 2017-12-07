@@ -61,8 +61,8 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/plane_listitem_bg"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/iv_plane_card_bg"
             android:focusable="false"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
@@ -139,8 +139,7 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/plane_listitem_bg"
+            android:background="@drawable/iv_plane_card_bg"
             android:focusable="false"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
@@ -215,8 +214,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/plane_listitem_bg"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/iv_plane_card_bg"
             android:paddingLeft="22dp"
             android:paddingRight="22dp">
 

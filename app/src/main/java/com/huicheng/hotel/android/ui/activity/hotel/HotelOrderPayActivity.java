@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +26,7 @@ import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.custom.CommonPayChannelLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.app.AppConst;
@@ -50,28 +50,19 @@ public class HotelOrderPayActivity extends BaseActivity {
     private PayResultReceiver mPayReceiver = new PayResultReceiver();
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
     private String orderId, orderType;
+    private int during = 0;
 
     private LinearLayout root_lay;
     private TextView tv_address, tv_date, tv_room_name, tv_total_price, tv_detail, tv_comment;
     private TextView tv_room_count, tv_during;
     private Button btn_pay;
 
+    private CommonPayChannelLayout payChannelLay;
     private AlipayUtil alipay = null;
     private WXPayUtils wxpay = null;
     private UnionPayUtil unionpay = null;
     //qmf pay
     private QmfPayHelper qmfPayHelper = null;
-    private int payIndex = 0;
-
-    private int[] payIcon = new int[]{
-            R.drawable.iv_pay_zhifubao,
-            R.drawable.iv_pay_weixin,
-            R.drawable.iv_pay_union
-    };
-    private String[] payChannel = new String[]{"支付宝支付", "微信支付", "银联支付"};
-    private LinearLayout payListLay;
-
-    private int during = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +91,7 @@ public class HotelOrderPayActivity extends BaseActivity {
         tv_comment = (TextView) findViewById(R.id.tv_comment);
         tv_room_count = (TextView) findViewById(R.id.tv_room_count);
         tv_during = (TextView) findViewById(R.id.tv_during);
-
-        payListLay = (LinearLayout) findViewById(R.id.payListLay);
+        payChannelLay = (CommonPayChannelLayout) findViewById(R.id.payChannelLay);
     }
 
     @Override
@@ -125,33 +115,6 @@ public class HotelOrderPayActivity extends BaseActivity {
         super.initParams();
         tv_center_title.setText("支付方式");
 
-        payListLay.removeAllViews();
-        for (int i = 0; i < payChannel.length; i++) {
-            View view = LayoutInflater.from(this).inflate(R.layout.lv_pay_item, null);
-            ImageView iv_pay_icon = (ImageView) view.findViewById(R.id.iv_pay_icon);
-            TextView tv_pay_title = (TextView) view.findViewById(R.id.tv_pay_title);
-            ImageView iv_pay_sel = (ImageView) view.findViewById(R.id.iv_pay_sel);
-            iv_pay_icon.setImageResource(payIcon[i]);
-            tv_pay_title.setText(payChannel[i]);
-            if (0 == i) {
-                iv_pay_sel.setImageResource(R.drawable.iv_pay_checked);
-            }
-            final int finalI = i;
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    payIndex = finalI;
-                    ((ImageView) payListLay.getChildAt(payIndex).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.iv_pay_checked);
-                    for (int j = 0; j < payChannel.length; j++) {
-                        if (j != payIndex) {
-                            ((ImageView) payListLay.getChildAt(j).findViewById(R.id.iv_pay_sel)).setImageResource(R.drawable.iv_pay_check);
-                        }
-                    }
-                }
-            });
-            payListLay.addView(view);
-        }
-
         unionpay = new UnionPayUtil(this);
         alipay = new AlipayUtil(this);
         wxpay = new WXPayUtils(this);
@@ -167,11 +130,10 @@ public class HotelOrderPayActivity extends BaseActivity {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("orderNo", orderNo);
         b.addBody("tradeType", "01"); // 01 酒店业务，02 机票业务
-        b.addBody("payChannel", HotelCommDef.getPayChannel(payIndex));
+        b.addBody("payChannel", payChannelLay.getPayChannel());
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.PAY;
-//        d.path = "http://116.62.62.2:8000/hmp-transapi/pay/toPayment.json";
         d.flag = AppConst.PAY;
 
         if (!isProgressShowing()) {

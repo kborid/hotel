@@ -25,6 +25,7 @@ public class PlaneOrderActivity extends BaseActivity {
     private TextView tv_invoice_tips;
 
     private TextView tv_chooser;
+    private TextView tv_submit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class PlaneOrderActivity extends BaseActivity {
         invoice_lay = (LinearLayout) findViewById(R.id.invoice_lay);
         tv_invoice_tips = (TextView) findViewById(R.id.tv_invoice_tips);
         tv_chooser = (TextView) findViewById(R.id.tv_chooser);
+        tv_submit = (TextView) findViewById(R.id.tv_submit);
     }
 
     @Override
@@ -83,16 +85,23 @@ public class PlaneOrderActivity extends BaseActivity {
             }
         });
         tv_chooser.setOnClickListener(this);
+        tv_submit.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.tv_chooser:
+            case R.id.tv_chooser: {
                 Intent intent = new Intent(this, PlaneAddrChooserActivity.class);
                 startActivity(intent);
                 break;
+            }
+            case R.id.tv_submit: {
+                Intent intent = new Intent(this, PlaneOrderPayActivity.class);
+                startActivity(intent);
+                break;
+            }
         }
     }
 
