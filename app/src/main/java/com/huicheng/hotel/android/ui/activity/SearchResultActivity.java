@@ -149,6 +149,9 @@ public class SearchResultActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HotelInfoBean bean = (HotelInfoBean) parent.getAdapter().getItem(position);
+                if (null == bean) {
+                    return;
+                }
                 if (HotelCommDef.TYPE_HOTEL.equals(bean.type)) {
                     if (!SessionContext.isLogin()) {
                         sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
