@@ -232,7 +232,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:switchMinWidth="20dp"
+                android:textOff=""
+                android:textOn=""
+                android:thumb="@drawable/plane_switch_thumb"
+                android:thumbTextPadding="10dp"
+                android:track="@drawable/plane_switch_track" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

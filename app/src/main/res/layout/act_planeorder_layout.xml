@@ -114,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <include layout="@layout/layout_plane_custominfo_item" />
 
@@ -255,7 +255,13 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:checked="false" />
+                            android:checked="true"
+                            android:switchMinWidth="20dp"
+                            android:textOff=""
+                            android:textOn=""
+                            android:thumb="@drawable/plane_switch_thumb"
+                            android:thumbTextPadding="10dp"
+                            android:track="@drawable/plane_switch_track" />
                     </RelativeLayout>
 
                     <View

@@ -246,9 +246,15 @@
                         android:id="@+id/btn_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:switchMinWidth="20dp"
                         android:text="开启筛选"
                         android:textColor="@color/lableColor"
-                        android:textSize="@dimen/common_12sp" />
+                        android:textOff=""
+                        android:textOn=""
+                        android:textSize="@dimen/common_12sp"
+                        android:thumb="@drawable/hotel_switch_thumb"
+                        android:thumbTextPadding="10dp"
+                        android:track="@drawable/hotel_switch_track" />
                 </LinearLayout>
 
                 <!--用户偏好详情设置-->
