@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/title_lay"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:scaleType="center"
+            android:src="@drawable/iv_back" />
+
+        <TextView
+            android:id="@+id/tv_center_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="我的奖励金"
+            android:textColor="@color/titleColor"
+            android:textSize="@dimen/common_18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_center_title"
+            android:layout_alignParentRight="true"
+            android:paddingRight="14dp"
+            android:text="如何获得旅行币？"
+            android:textColor="@color/mainColor"
+            android:textSize="@dimen/common_11sp"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_lay"
+        android:background="@color/white"
+        android:headerDividersEnabled="false"
+        android:scrollbarThumbVertical="@drawable/p3016_scrollbar"
+        android:divider="@drawable/line_balance_divider"
+        android:dividerHeight="0.5dp"
+        android:fitsSystemWindows="true"
+        android:listSelector="@color/transparent" />
+
+    <TextView
+        android:id="@+id/tv_invite"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/oral_balance_bg"
+        android:gravity="center"
+        android:text="邀"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_24sp"
+        android:textStyle="bold" />
+</RelativeLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="7dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="27dp"
+        android:paddingTop="12dp">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/tv_balance_title"
+                android:layout_weight="1"
+                android:text="首单订单奖励"
+                android:textColor="@color/mainColor"
+                android:textSize="@dimen/common_15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_balance_price"
+                android:gravity="right"
+                android:text="+5"
+                android:textColor="@color/mainColor"
+                android:textSize="@dimen/common_15sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="2dp">
+
+            <TextView
+                android:id="@+id/tv_balance_date"
+                android:layout_weight="1"
+                android:text="2018/01/01"
+                android:textColor="#cccccc"
+                android:textSize="@dimen/common_10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_balance_user"
+                android:gravity="right"
+                android:text="田小宝"
+                android:textColor="#cccccc"
+                android:textSize="@dimen/common_10sp"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

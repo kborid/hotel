@@ -126,6 +126,10 @@
             android:name=".ui.activity.OrderListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <!--我的旅行币-->
+        <activity
+            android:name=".ui.activity.MyABCBalanceActivity"
+            android:screenOrientation="portrait" />
         <!--我的优惠券-->
         <activity
             android:name=".ui.activity.MyDiscountCouponActivity"

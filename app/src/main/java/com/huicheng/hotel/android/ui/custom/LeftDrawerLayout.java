@@ -29,6 +29,7 @@ import com.huicheng.hotel.android.ui.activity.DebugInfoActivity;
 import com.huicheng.hotel.android.ui.activity.FansHotelActivity;
 import com.huicheng.hotel.android.ui.activity.FeedbackActivity;
 import com.huicheng.hotel.android.ui.activity.MessageListActivity;
+import com.huicheng.hotel.android.ui.activity.MyABCBalanceActivity;
 import com.huicheng.hotel.android.ui.activity.MyDiscountCouponActivity;
 import com.huicheng.hotel.android.ui.activity.OrderListActivity;
 import com.huicheng.hotel.android.ui.activity.SettingActivity;
@@ -64,7 +65,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
     private CircleImageView iv_photo;
     private TextView tv_username, tv_userid;
-    private TextView tv_usercenter, tv_myorder, tv_msg, tv_yhq, tv_assess, tv_vip, tv_setting, tv_feedback;
+    private TextView tv_usercenter, tv_myorder, tv_msg, tv_lxb, tv_yhq, tv_assess, tv_vip, tv_setting, tv_feedback;
     private TextView tv_msg_count;
     private TextView tv_qmh;
     private TextView tv_usage, tv_private;
@@ -121,6 +122,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         tv_usercenter = (TextView) findViewById(R.id.tv_usercenter);
         tv_myorder = (TextView) findViewById(R.id.tv_myorder);
         tv_msg = (TextView) findViewById(R.id.tv_msg);
+        tv_lxb = (TextView) findViewById(R.id.tv_lxb);
         tv_yhq = (TextView) findViewById(R.id.tv_yhq);
         tv_assess = (TextView) findViewById(R.id.tv_assess);
         tv_vip = (TextView) findViewById(R.id.tv_vip);
@@ -145,6 +147,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         tv_usercenter.setOnClickListener(this);
         tv_myorder.setOnClickListener(this);
         tv_msg.setOnClickListener(this);
+        tv_lxb.setOnClickListener(this);
         tv_yhq.setOnClickListener(this);
         tv_assess.setOnClickListener(this);
         tv_vip.setOnClickListener(this);
@@ -256,6 +259,9 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                 break;
             case R.id.tv_msg:
                 doActionIntent = new Intent(context, MessageListActivity.class);
+                break;
+            case R.id.tv_lxb:
+                doActionIntent = new Intent(context, MyABCBalanceActivity.class);
                 break;
             case R.id.tv_yhq:
                 doActionIntent = new Intent(context, MyDiscountCouponActivity.class);
