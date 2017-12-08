@@ -139,6 +139,7 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
             android:background="@drawable/iv_plane_card_bg"
             android:focusable="false"
             android:focusableInTouchMode="true"
@@ -214,7 +215,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="1dp"
             android:background="@drawable/iv_plane_card_bg"
             android:paddingLeft="22dp"
             android:paddingRight="22dp">

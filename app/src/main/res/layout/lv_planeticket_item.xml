@@ -7,15 +7,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp">
+        android:paddingBottom="9dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="9dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:paddingTop="17dp">
             <!--航班时间信息-->
             <LinearLayout
@@ -205,7 +204,6 @@
             android:layout_width="48dp"
             android:layout_height="14dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
             android:background="@drawable/plane_today_low_bg"
             android:gravity="center"
             android:text="今日最低"

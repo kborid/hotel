@@ -12,10 +12,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -38,7 +38,7 @@ public class PlaneListActivity extends BaseActivity {
     private PlaneDatePriceAdapter planeDatePriceAdapter;
 
     private RelativeLayout calendar_lay;
-    private TextView tv_consider;
+    private LinearLayout consider_lay;
 
     //筛选
     private PopupWindow mPlaneConsiderPopupWindow = null;
@@ -59,11 +59,11 @@ public class PlaneListActivity extends BaseActivity {
         calendar_lay = (RelativeLayout) findViewById(R.id.calendar_lay);
         gallery = (Gallery) findViewById(R.id.gallery);
         listview = (ListView) findViewById(R.id.listview);
-        tv_consider = (TextView) findViewById(R.id.tv_consider);
+        consider_lay = (LinearLayout) findViewById(R.id.consider_lay);
         //筛选
         mPlaneConsiderLayout = new PlaneConsiderLayout(this);
         mPlaneConsiderPopupWindow = new PopupWindow(mPlaneConsiderLayout, ViewGroup.LayoutParams.MATCH_PARENT, Utils.dp2px(470), true);
-        mPlaneConsiderPopupWindow.setAnimationStyle(R.style.share_anmi);
+        mPlaneConsiderPopupWindow.setAnimationStyle(R.style.share_anim);
         mPlaneConsiderPopupWindow.setFocusable(true);
         mPlaneConsiderPopupWindow.setOutsideTouchable(true);
         mPlaneConsiderPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
@@ -116,7 +116,31 @@ public class PlaneListActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        tv_consider.setOnClickListener(this);
+        for (int i = 0; i < consider_lay.getChildCount(); i++) {
+            View view = consider_lay.getChildAt(i);
+            final int finalI = i;
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setSelected(true);
+                    switch (finalI) {
+                        case 0:
+                            consider_lay.getChildAt(1).setSelected(false);
+                            consider_lay.getChildAt(2).setSelected(false);
+                            showConsiderPopupWindow();
+                            break;
+                        case 1:
+                            consider_lay.getChildAt(0).setSelected(false);
+                            consider_lay.getChildAt(2).setSelected(false);
+                            break;
+                        case 2:
+                            consider_lay.getChildAt(0).setSelected(false);
+                            consider_lay.getChildAt(1).setSelected(false);
+                            break;
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -124,9 +148,6 @@ public class PlaneListActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.calendar_lay:
-                break;
-            case R.id.tv_consider:
-                showConsiderPopupWindow();
                 break;
         }
     }

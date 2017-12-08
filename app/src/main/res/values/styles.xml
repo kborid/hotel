@@ -223,6 +223,16 @@
         <item name="android:button">@drawable/cb_user_pwd_status_selector</item>
     </style>
 
+    <!--机票订单同意checkBox-->
+    <style name="planeOrderAgreeCBStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/cb_plane_order_agree</item>
+    </style>
+
+    <!--机票Common checkBox-->
+    <style name="planeCommonCBStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/cb_plane_order_invoice</item>
+    </style>
+
     <style name="MyMaterialDialog" parent="@style/iphone_progress_dialog" />
 
     <style name="iphone_progress_dialog" parent="@android:style/Theme.Dialog">
@@ -249,12 +259,12 @@
         <item name="android:shadowRadius">0</item>
     </style>
 
-    <style name="consider_anmi" parent="@android:style/Animation">
+    <style name="consider_anim" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/consider_open</item>
         <item name="android:windowExitAnimation">@anim/consider_close</item>
     </style>
 
-    <style name="share_anmi" parent="@android:style/Animation">
+    <style name="share_anim" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/push_up_in</item>
         <item name="android:windowExitAnimation">@anim/push_up_out</item>
     </style>

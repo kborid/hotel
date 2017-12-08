@@ -114,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <include layout="@layout/layout_plane_custominfo_item" />
 
@@ -123,7 +123,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:background="@drawable/iv_plane_card_bg"
                     android:orientation="vertical"
                     android:paddingBottom="17dp"
@@ -139,9 +139,9 @@
                         android:orientation="horizontal">
 
                         <CheckBox
-                            style="@style/checkBox_style"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            style="@style/planeOrderAgreeCBStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:textSize="@dimen/common_14sp" />
 
                         <TextView
@@ -179,9 +179,9 @@
                         android:orientation="horizontal">
 
                         <CheckBox
-                            style="@style/checkBox_style"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            style="@style/planeOrderAgreeCBStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:textSize="@dimen/common_14sp" />
 
                         <TextView
@@ -216,7 +216,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:background="@drawable/iv_plane_card_bg"
                     android:orientation="vertical"
                     android:paddingBottom="25dp"
@@ -296,10 +296,12 @@
                                 android:textStyle="bold" />
 
                             <CheckBox
+                                style="@style/planeCommonCBStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true" />
+                                android:layout_centerVertical="true"
+                                android:layout_margin="6dp" />
                         </RelativeLayout>
 
                         <View
@@ -323,10 +325,12 @@
                                 android:textStyle="bold" />
 
                             <CheckBox
+                                style="@style/planeCommonCBStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true" />
+                                android:layout_centerVertical="true"
+                                android:layout_margin="6dp" />
                         </RelativeLayout>
 
                         <View
@@ -478,7 +482,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:orientation="vertical"
                 android:paddingLeft="27dp"
                 android:paddingRight="27dp">
@@ -489,9 +493,9 @@
                     android:orientation="horizontal">
 
                     <CheckBox
-                        style="@style/checkBox_style"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        style="@style/planeOrderAgreeCBStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:checked="true"
                         android:textSize="@dimen/common_12sp" />
 
@@ -521,9 +525,9 @@
                     android:orientation="horizontal">
 
                     <CheckBox
-                        style="@style/checkBox_style"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        style="@style/planeOrderAgreeCBStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:checked="true"
                         android:textSize="@dimen/common_12sp" />
 

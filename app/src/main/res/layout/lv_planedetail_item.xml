@@ -8,10 +8,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="2dp"
         android:background="@drawable/iv_plane_card_bg"
         android:orientation="vertical"
-        android:paddingBottom="11dp"
+        android:paddingBottom="15dp"
         android:paddingLeft="27dp"
         android:paddingRight="20dp"
         android:paddingTop="12dp">

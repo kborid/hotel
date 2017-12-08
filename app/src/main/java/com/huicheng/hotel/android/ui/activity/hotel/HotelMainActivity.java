@@ -113,7 +113,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
             }
         });
         mConsiderPopupWindow = new PopupWindow(mConsiderLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mConsiderPopupWindow.setAnimationStyle(R.style.share_anmi);
+        mConsiderPopupWindow.setAnimationStyle(R.style.share_anim);
         mConsiderPopupWindow.setFocusable(true);
         mConsiderPopupWindow.setOutsideTouchable(true);
         mConsiderPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
