@@ -77,15 +77,25 @@
             android:theme="@style/AppTheme.PermissionTheme" />
         <activity
             android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--登录入口-->
+        <activity
+            android:name=".ui.activity.UserLoginMainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 登录 -->
         <activity
             android:name=".ui.activity.UserLoginActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 注册 -->
         <activity
             android:name=".ui.activity.UserRegisterActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 忘记密码 -->

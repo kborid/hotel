@@ -84,7 +84,7 @@
         <item name="orderPlaneItemBg">@drawable/iv_order_plane</item>
         <item name="pullDownAccessory">@drawable/iv_down</item>
         <!--selector-->
-        <item name="mainColorBtnSel">@drawable/maincolor_btn_sel</item>
+        <item name="mainColorBtnSel">@drawable/user_btn_maincolor_selector</item>
         <item name="indicatorBgSel">@drawable/indicator_btn_sel</item>
         <item name="bottomBtnSel">@drawable/comm_rect_bottombtn_sel</item>
         <item name="tagFlowBgSel">@drawable/tf_item_sel</item>
@@ -214,13 +214,13 @@
     </style>
 
     <!-- checkBox风格 -->
-    <style name="checkBox_style" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/checkbox_selector</item>
+    <style name="userAgreementCheckBoxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/cb_user_agreement_selector</item>
     </style>
 
     <!-- login checkBox风格 -->
-    <style name="login_checkBox_style" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/login_checkbox_show_pwd</item>
+    <style name="userPwdCheckBoxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/cb_user_pwd_status_selector</item>
     </style>
 
     <style name="MyMaterialDialog" parent="@style/iphone_progress_dialog" />
@@ -241,11 +241,6 @@
         <item name="android:layout_height">45dp</item>
         <item name="android:background">?attr/mainColorBtnSel</item>
         <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="AnimTools" parent="@android:style/Animation">
-        <item name="android:windowEnterAnimation">@anim/push_in</item>
-        <item name="android:windowExitAnimation">@anim/push_out</item>
     </style>
 
     <style name="textNoShadow" parent="android:style/Widget.TextView">

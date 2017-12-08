@@ -85,6 +85,13 @@ public class SessionContext {
             mUser = JSON.parseObject(json, UserInfo.class);
             setTicket(ticket);
         }
+        initData();
+    }
+
+    public static void initData() {
+        if (null != mFirstLaunchDoActionFlag) {
+            mFirstLaunchDoActionFlag.clear();
+        }
     }
 
     public static List<HomeBannerInfoBean> getBannerList() {
@@ -197,6 +204,7 @@ public class SessionContext {
      */
     public static void destroy() {
         cleanUserInfo();
+        cleanLocationInfo();
     }
 
     /**
@@ -321,14 +329,14 @@ public class SessionContext {
         return value_index;
     }
 
-    private static HashMap<String, Boolean> mFirstDoActionFlag = new HashMap<>();
+    private static HashMap<String, Boolean> mFirstLaunchDoActionFlag = new HashMap<>();
 
-    public static boolean isFirstDoAction(String key) {
+    public static boolean isFirstLaunchDoAction(String key) {
         boolean isFirst = true;
-        if (!mFirstDoActionFlag.containsKey(key)) {
-            mFirstDoActionFlag.put(key, false);
+        if (!mFirstLaunchDoActionFlag.containsKey(key)) {
+            mFirstLaunchDoActionFlag.put(key, false);
         } else {
-            isFirst = mFirstDoActionFlag.get(key);
+            isFirst = mFirstLaunchDoActionFlag.get(key);
         }
         return isFirst;
     }

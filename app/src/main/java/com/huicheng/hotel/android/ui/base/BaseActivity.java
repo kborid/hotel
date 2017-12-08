@@ -221,6 +221,9 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         if (btn_right != null) {
             btn_right.setOnClickListener(this);
         }
+        if (iv_back != null) {
+            iv_back.setOnClickListener(this);
+        }
     }
 
     @Override
@@ -234,7 +237,8 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
                     //do nothing
                     LogUtil.i(TAG, "do nothing~~~");
                 } else {
-                    finish();
+//                    finish();
+                    onBackPressed();
                 }
                 break;
             default:

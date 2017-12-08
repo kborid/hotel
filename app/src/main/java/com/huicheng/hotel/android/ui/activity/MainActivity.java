@@ -32,6 +32,7 @@ import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.app.AppConst;
 import com.prj.sdk.app.NetURL;
+import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.down.DownCallback;
@@ -223,14 +224,15 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         }
 
         //每次启动时，如果用户未登录，则显示侧滑
-        if (SessionContext.isFirstDoAction(getClass().getSimpleName())) {
+        if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
             if (!SessionContext.isLogin()) {
-                myHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        drawer_layout.openDrawer(left_layout, true);
-                    }
-                }, 300);
+//                myHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        drawer_layout.openDrawer(left_layout, true);
+//                    }
+//                }, 300);
+                sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
             }
         }
 

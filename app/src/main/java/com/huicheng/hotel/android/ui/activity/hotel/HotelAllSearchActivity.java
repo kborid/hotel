@@ -150,6 +150,9 @@ public class HotelAllSearchActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HotelInfoBean bean = (HotelInfoBean) parent.getAdapter().getItem(position);
+                if (null == bean) {
+                    return;
+                }
                 if (HotelCommDef.TYPE_HOTEL.equals(bean.type)) {
                     if (!SessionContext.isLogin()) {
                         sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
@@ -259,7 +262,7 @@ public class HotelAllSearchActivity extends BaseActivity {
             if (request.flag == AppConst.ALL_SEARCH_HOTEL) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 List<HotelInfoBean> temp = JSON.parseArray(response.body.toString(), HotelInfoBean.class);
-                if (temp.size() > 0 && SessionContext.isFirstDoAction(getClass().getSimpleName())) {
+                if (temp.size() > 0 && SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
                     listview.removeHeaderView(mHeaderView);
                     listview.addHeaderView(mHeaderView);
                 } else {

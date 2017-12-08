@@ -14,10 +14,13 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -101,7 +104,8 @@ public class UcPersonalInfoActivity extends BaseActivity {
     private String mTagSelStr = null;
 
     private String phoneNumber, code;
-    private Button btn_yzm;
+    private EditText et_phone, et_yzm;
+    private TextView tv_yzm;
     private CountDownTimer mCountDownTimer;
     private boolean isValid = false;
     private CustomDialog dialog;
@@ -354,13 +358,14 @@ public class UcPersonalInfoActivity extends BaseActivity {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                btn_yzm.setText(getString(R.string.get_checknumber) + "(" + millisUntilFinished / 1000 + "s)");
+                tv_yzm.setText(millisUntilFinished / 1000 + "s");
             }
 
             @Override
             public void onFinish() {
-                btn_yzm.setEnabled(true);
-                btn_yzm.setText(R.string.get_checknumber);
+                tv_yzm.setEnabled(true);
+                et_phone.setEnabled(true);
+                tv_yzm.setText(R.string.tips_reget_yzm);
             }
         };
     }
@@ -503,23 +508,40 @@ public class UcPersonalInfoActivity extends BaseActivity {
                 if (isEdited) {
                     dialog = new CustomDialog(this);
                     View view = LayoutInflater.from(this).inflate(R.layout.dialog_modify_phone_layout, null);
-                    final EditText et_phone = (EditText) view.findViewById(R.id.et_phone);
-                    final EditText et_yzm = (EditText) view.findViewById(R.id.et_yzm);
-                    btn_yzm = (Button) view.findViewById(R.id.btn_yzm);
-                    btn_yzm.setOnClickListener(new View.OnClickListener() {
+                    et_phone = (EditText) view.findViewById(R.id.et_phone);
+                    et_phone.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            if (s.length() == 11) {
+                                tv_yzm.performClick();
+                            }
+                        }
+                    });
+                    et_yzm = (EditText) view.findViewById(R.id.et_yzm);
+                    tv_yzm = (TextView) view.findViewById(R.id.tv_yzm);
+                    tv_yzm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (StringUtil.isEmpty(et_phone.getText().toString())) {
-                                CustomToast.show("请输入手机号码", CustomToast.LENGTH_SHORT);
-                                return;
-                            } else {
-                                if (!Utils.isMobile(et_phone.getText().toString())) {
-                                    CustomToast.show("请输入正确的手机号码", CustomToast.LENGTH_SHORT);
-                                    return;
+                            if (StringUtil.notEmpty(et_phone.getText().toString())) {
+                                if (Utils.isMobile(et_phone.getText().toString())) {
+                                    phoneNumber = et_phone.getText().toString();
+                                    requestCheckPhoneNumber();
+                                } else {
+                                    CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
                                 }
+                            } else {
+                                CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
                             }
-                            phoneNumber = et_phone.getText().toString();
-                            requestCheckPhoneNumber();
                         }
                     });
 
@@ -535,20 +557,19 @@ public class UcPersonalInfoActivity extends BaseActivity {
                     dialog.setNegativeButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (StringUtil.isEmpty(et_phone.getText().toString())) {
-                                CustomToast.show("请输入手机号码", CustomToast.LENGTH_SHORT);
+                            if (StringUtil.isEmpty(phoneNumber)) {
+                                CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
                                 return;
-                            } else {
-                                if (!Utils.isMobile(et_phone.getText().toString())) {
-                                    CustomToast.show("请输入正确的手机号码", CustomToast.LENGTH_SHORT);
-                                    return;
-                                }
                             }
-                            if (StringUtil.isEmpty(et_yzm.getText().toString())) {
-                                CustomToast.show("请输入验证码", CustomToast.LENGTH_SHORT);
+                            if (!Utils.isMobile(phoneNumber)) {
+                                CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
                                 return;
                             }
                             code = et_yzm.getText().toString();
+                            if (StringUtil.isEmpty(code)) {
+                                CustomToast.show(getString(R.string.tips_user_yzm), CustomToast.LENGTH_SHORT);
+                                return;
+                            }
                             requestCheckYZM();
                         }
                     });
@@ -824,9 +845,11 @@ public class UcPersonalInfoActivity extends BaseActivity {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.GET_YZM) {
                 removeProgressDialog();
-                CustomToast.show("验证码已发送，请稍候...", CustomToast.LENGTH_SHORT);
-                btn_yzm.setEnabled(false);
+                CustomToast.show(getString(R.string.tips_user_send_yzm), CustomToast.LENGTH_SHORT);
+                et_phone.setEnabled(false);
                 mCountDownTimer.start();// 启动倒计时
+                et_yzm.requestFocus();
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             } else if (request.flag == AppConst.CHECK_PHONE) {
                 String jsonStr = response.body.toString();
                 JSONObject mjson = JSON.parseObject(jsonStr);
@@ -838,11 +861,11 @@ public class UcPersonalInfoActivity extends BaseActivity {
                             break;
                         case "001011":
                             removeProgressDialog();
-                            CustomToast.show("你输入的手机号码已被占用", CustomToast.LENGTH_SHORT);
+                            CustomToast.show(getString(R.string.tips_user_phone_isused), CustomToast.LENGTH_SHORT);
                             break;
                         case "001002":
                             removeProgressDialog();
-                            CustomToast.show("你输入的手机号码为空", CustomToast.LENGTH_SHORT);
+                            CustomToast.show(getString(R.string.tips_user_phone_isempty), CustomToast.LENGTH_SHORT);
                             break;
                         default:
                             break;
@@ -867,7 +890,7 @@ public class UcPersonalInfoActivity extends BaseActivity {
                         requestChangePhoneNumber();
                     } else {
                         removeProgressDialog();
-                        CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
+                        CustomToast.show(getString(R.string.tips_user_yzm_error), CustomToast.LENGTH_SHORT);
                     }
                 }
             } else if (request.flag == AppConst.CHANGE_PHONENUMBER) {

@@ -44,7 +44,6 @@ public class HtmlActivity extends BaseActivity {
     private WebView mWebView;
     private CommonLoadingWidget common_loading_widget;
     private String URL, mTitle, loginUrl;
-    private ActivityResult mActivityForResult;
     private String mID;
     private TextView tv_left_title_back, tv_left_title_close;
     private ChooserFileController mCtrl;
@@ -355,25 +354,7 @@ public class HtmlActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (mActivityForResult != null) {
-            mActivityForResult.onActivityResult(requestCode, resultCode, data);
-        }
         mCtrl.onActivityResult(requestCode, resultCode, data);
-
-    }
-
-    /**
-     * Activity回调数据
-     *
-     * @author LiaoBo
-     */
-    public interface ActivityResult {
-        void onActivityResult(int requestCode, int resultCode, Intent data);
-
-    }
-
-    public void setActivityForResult(ActivityResult mResult) {
-        mActivityForResult = mResult;
     }
 
     @Override

@@ -7,16 +7,19 @@
     <EditText
         android:id="@+id/et_phone"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@null"
-        android:drawableLeft="@drawable/iv_phone"
-        android:drawablePadding="17dp"
-        android:hint="手机号码"
+        android:layout_height="42dp"
+        android:background="@drawable/user_item_input_bg"
+        android:drawableLeft="@drawable/iv_user_phone"
+        android:drawablePadding="18dp"
+        android:hint="@string/tips_user_phone"
         android:inputType="phone"
         android:lines="1"
         android:maxLength="11"
-        android:textColorHint="@color/commonHintColor"
-        android:textSize="@dimen/common_text_size" />
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/mainColor"
+        android:textColorHint="#cccccc"
+        android:textSize="@dimen/common_15sp" />
 
     <View
         android:layout_width="match_parent"
@@ -24,8 +27,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
+        android:layout_height="42dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/user_item_input_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
 
         <EditText
             android:id="@+id/et_yzm"
@@ -33,24 +40,24 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
-            android:drawableLeft="@drawable/iv_code"
-            android:drawablePadding="12dp"
-            android:hint="验证码"
+            android:drawableLeft="@drawable/iv_user_yzm"
+            android:drawablePadding="18dp"
+            android:hint="@string/tips_user_yzm"
             android:inputType="number"
             android:lines="1"
             android:maxLength="6"
-            android:textColorHint="@color/commonHintColor"
-            android:textSize="@dimen/common_text_size" />
+            android:textColor="@color/mainColor"
+            android:textColorHint="#cccccc"
+            android:textSize="@dimen/common_15sp" />
 
-        <Button
-            android:id="@+id/btn_yzm"
-            android:layout_width="110dp"
-            android:layout_height="35dp"
+        <TextView
+            android:id="@+id/tv_yzm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:background="?attr/mainColorBtnSel"
-            android:text="获取验证码"
-            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="@string/tips_reget_yzm"
+            android:textColor="@color/mainColor"
             android:textSize="@dimen/common_12sp" />
     </LinearLayout>
-
 </LinearLayout>

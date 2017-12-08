@@ -56,10 +56,10 @@ public class PRJApplication extends Application {
         //友盟统计、分享、第三方登录
         PlatformConfig.setWeixin(getResources().getString(R.string.wx_appid), getResources().getString(R.string.wx_appsecret));
         PlatformConfig.setQQZone(getResources().getString(R.string.qq_appid), getResources().getString(R.string.qq_appkey));
-        Config.DEBUG = AppConst.ISDEVELOP;
+        Config.DEBUG = false;
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this, getResources().getString(R.string.umeng_appkey), SessionContext.getAppMetaData(this, "UMENG_CHANNEL")));
-        MobclickAgent.setDebugMode(AppConst.ISDEVELOP);// 普通测试流程，打开调试模式
+        MobclickAgent.setDebugMode(false);// 普通测试流程，打开调试模式
         MobclickAgent.openActivityDurationTrack(false); // 禁止默认的页面统计方式
 
         // JPush

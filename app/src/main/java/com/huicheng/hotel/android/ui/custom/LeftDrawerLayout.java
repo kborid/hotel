@@ -30,6 +30,7 @@ import com.huicheng.hotel.android.ui.activity.UcMessagesActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
 import com.huicheng.hotel.android.ui.activity.UcSettingActivity;
+import com.huicheng.hotel.android.ui.activity.UserLoginActivity;
 import com.huicheng.hotel.android.ui.activity.UserRegisterActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrdersAssessActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -85,7 +86,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
 
         TypedArray ta = context.obtainStyledAttributes(R.styleable.MyTheme);
         mMsgId = ta.getResourceId(R.styleable.MyTheme_indicatorBgSel, R.drawable.indicator_btn_sel);
-        mBtnLoginId = ta.getResourceId(R.styleable.MyTheme_mainColorBtnSel, R.drawable.maincolor_btn_sel);
+        mBtnLoginId = ta.getResourceId(R.styleable.MyTheme_mainColorBtnSel, R.drawable.user_btn_maincolor_selector);
         ta.recycle();
 
         init();
@@ -240,10 +241,12 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         Intent doActionIntent = null;
         switch (v.getId()) {
             case R.id.btn_login:
-                context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                doActionIntent = new Intent(context, UserLoginActivity.class);
+                doActionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.btn_register:
                 doActionIntent = new Intent(context, UserRegisterActivity.class);
+                doActionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.tv_usercenter:
                 doActionIntent = new Intent(context, UcPersonalInfoActivity.class);

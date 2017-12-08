@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_white">
-
     <!--title bar-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,12 +38,12 @@
             android:textSize="@dimen/common_15sp"
             android:textStyle="bold" />
     </LinearLayout>
-
     <!--content layout-->
     <LinearLayout
         android:id="@+id/root_content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="10dp">
@@ -102,7 +101,8 @@
                 android:paddingRight="15dp"
                 android:textColor="@color/mainColor"
                 android:textColorHint="#cccccc"
-                android:textSize="@dimen/common_15sp" />
+                android:textSize="@dimen/common_15sp"
+                android:transitionName="share_phone" />
 
             <LinearLayout
                 android:id="@+id/pwd_lay"
@@ -112,7 +112,8 @@
                 android:background="@drawable/user_item_input_bg"
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:paddingRight="15dp"
+                android:transitionName="share_pwd">
 
                 <EditText
                     android:id="@+id/et_pwd"
@@ -187,7 +188,8 @@
                 android:text="@string/user_login"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:transitionName="share_action" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -203,7 +205,6 @@
                 android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
-
     <!--第三方登录 layout-->
     <LinearLayout
         android:id="@+id/third_login_layout"

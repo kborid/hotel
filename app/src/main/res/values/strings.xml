@@ -55,21 +55,18 @@
 
 
     <!--登录-->
-    <string name="agree_agement">我已阅读并同意</string>
-    <string name="agement">《注册协议》</string>
-    <string name="username">用户名</string>
-    <string name="password">密码</string>
-    <string name="login_title">登录</string>
-    <string name="login">ABC账号登录</string>
+    <string name="user_agree_agreement">我已阅读并同意</string>
+    <string name="user_agreement">注册协议</string>
+    <string name="user_login">登录</string>
     <string name="login_wx">微信登录</string>
     <string name="login_qq">QQ账号登录</string>
-    <string name="create">创建账号</string>
-    <string name="forget_pwd">忘记密码</string>
-    <string name="register">立即注册</string>
-    <string name="login_thrid">使用第三方账号登录</string>
-    <string name="reset_pwd">重置密码</string>
-    <string name="get_checknumber">获取验证码</string>
-    <string name="bind_phone">手机绑定</string>
+    <string name="user_create">创建账号</string>
+    <string name="user_forget_pwd">忘记密码</string>
+    <string name="user_register">注册</string>
+    <string name="user_reset">重置</string>
+    <string name="user_reset_pwd">重置密码</string>
+    <string name="user_bind_phone">绑定手机号</string>
+    <string name="user_bind">绑定</string>
 
     <!--我的-->
     <!--侧滑-->
@@ -123,11 +120,6 @@
         <item>钟点房</item>
         <item>夜归人</item>
         <!--<item>后悔药</item>-->
-    </string-array>
-
-    <string-array name="sex">
-        <item>男</item>
-        <item>女</item>
     </string-array>
 
     <string-array name="HotelStar">
@@ -192,9 +184,9 @@
 
 
     <string name="iflytek_tips">语音技术由科大讯飞提供</string>
-
-    <string name="test">不应当急于求成，应当去熟悉自己的研究对象，锲而不舍，时间会成全一切。凡事开始最难，然而更难的是何以善终。\n——莎士比亚</string>
+    <string name="test">不应当急于求成，应当去熟悉自己的研究对象，锲而不舍，时间会成全一切。凡事开始最难，然而更难的是何以善终。——莎士比亚</string>
     <string name="test_short">天才是百分之一的灵感加百分之九十九的汗水。——爱迪生</string>
+
     <string name="freeAct">0元住</string>
     <string name="freeProc">活动流程</string>
     <string name="freeActNote">—注册ABC账号\n—发送活动连接邀请好友\n   一同参与抢房\n—好友注册成功ABC账号后，\n   您的0元抢房权限即刻激活\n—每名注册用户每次活动限\n   抢一张免费房券</string>

@@ -2,10 +2,12 @@ package com.huicheng.hotel.android.ui.activity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.prj.sdk.app.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
@@ -29,15 +32,17 @@ import com.prj.sdk.util.Utils;
  */
 public class UserForgetPwdActivity extends BaseActivity {
 
-    private EditText et_phone, et_yzm, et_password, et_password2;
-    private Button btn_reset, btn_getYZM;
-    private String mPhoneNum;
+    private EditText et_phone, et_yzm, et_pwd;
+    private TextView tv_yzm;
+    private TextView tv_action;
     private CountDownTimer mCountDownTimer;
     private boolean isValid = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initMainWindow();
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
         setContentView(R.layout.act_forget_pwd_layout);
         initViews();
         initParams();
@@ -49,81 +54,126 @@ public class UserForgetPwdActivity extends BaseActivity {
         super.initViews();
         et_phone = (EditText) findViewById(R.id.et_phone);
         et_yzm = (EditText) findViewById(R.id.et_yzm);
-        et_password = (EditText) findViewById(R.id.et_password);
-        et_password2 = (EditText) findViewById(R.id.et_password2);
-        btn_getYZM = (Button) findViewById(R.id.btn_getYZM);
-        btn_reset = (Button) findViewById(R.id.btn_reset);
+        et_pwd = (EditText) findViewById(R.id.et_pwd);
+        tv_yzm = (TextView) findViewById(R.id.tv_yzm);
+        tv_action = (TextView) findViewById(R.id.tv_action);
     }
 
     @Override
     public void initParams() {
-        tv_center_title.setText(R.string.reset_pwd);
-        setCountDownTimer(60 * 1000, 1000);
         super.initParams();
+        setCountDownTimer(60 * 1000, 1000);
+        String name = SharedPreferenceUtil.getInstance().getString(AppConst.USERNAME, "", true);
+        if (StringUtil.notEmpty(name)) {
+            et_phone.setText(name);// 设置默认用户名
+        }
+        checkInputForActionBtnStatus();
     }
 
     @Override
     public void initListeners() {
         super.initListeners();
-        btn_reset.setOnClickListener(this);
-        btn_getYZM.setOnClickListener(this);
-        et_password2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        tv_action.setOnClickListener(this);
+        tv_yzm.setOnClickListener(this);
+        et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    btn_reset.performClick();
+                    tv_action.performClick();
                     return true;
                 }
                 return false;
             }
         });
+        et_phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+                if (s.length() == 11) {
+                    tv_yzm.performClick();
+                }
+            }
+        });
+
+        et_yzm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+            }
+        });
+
+        et_pwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+            }
+        });
+    }
+
+    private void checkInputForActionBtnStatus() {
+        boolean flag = false;
+        if (StringUtil.notEmpty(et_phone.getText().toString())
+                && StringUtil.notEmpty(et_yzm.getText().toString())
+                && StringUtil.notEmpty(et_pwd.getText().toString())) {
+            flag = true;
+        }
+        tv_action.setEnabled(flag);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_getYZM:
-                mPhoneNum = et_phone.getText().toString().trim();
-                if (StringUtil.notEmpty(mPhoneNum)) {
-                    if (Utils.isMobile(mPhoneNum)) {
+            case R.id.tv_yzm:
+                if (StringUtil.notEmpty(et_phone.getText().toString())) {
+                    if (Utils.isMobile(et_phone.getText().toString())) {
                         requestYZM();
                     } else {
-                        CustomToast.show("请输入正确的手机号", 0);
+                        CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
                     }
                 } else {
-                    CustomToast.show("请输入手机号", 0);
+                    CustomToast.show(getString(R.string.tips_user_phone), CustomToast.LENGTH_SHORT);
                 }
-
                 break;
-            case R.id.btn_reset:
-                String phoneNumber = et_phone.getText().toString().trim();
-                String checkCode = et_yzm.getText().toString().trim();
-                String pwd1 = et_password.getText().toString().trim();
-                String pwd2 = et_password2.getText().toString().trim();
-
-                if (StringUtil.isEmpty(phoneNumber)) {
-                    CustomToast.show("请输入手机号码", 0);
-                    return;
-                }
+            case R.id.tv_action:
+                String phoneNumber = et_phone.getText().toString();
+                String checkCode = et_yzm.getText().toString();
+                String pwd = et_pwd.getText().toString();
                 if (!Utils.isMobile(phoneNumber)) {
-                    CustomToast.show("请输入正确的手机号码", 0);
+                    CustomToast.show(getString(R.string.tips_user_phone_confirm), CustomToast.LENGTH_SHORT);
                     return;
                 }
-                if (StringUtil.isEmpty(checkCode)) {
-                    CustomToast.show("请输入验证码", 0);
-                    return;
-                }
-                if (StringUtil.isEmpty(pwd1)) {
-                    CustomToast.show("请输入密码", 0);
-                    return;
-                }
-                if (pwd1.length() < 6 && pwd1.length() > 20) {
-                    CustomToast.show("请输入6-20个字符的密码", 0);
-                    return;
-                }
-                if (!pwd1.equals(pwd2)) {
-                    CustomToast.show("两次密码不一致", 0);
+                if (pwd.length() < 6 && pwd.length() > 20) {
+                    CustomToast.show(getString(R.string.tips_user_pwd_confirm), CustomToast.LENGTH_SHORT);
                     return;
                 }
                 requestCheckYZM();
@@ -139,7 +189,7 @@ public class UserForgetPwdActivity extends BaseActivity {
     private void requestYZM() {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("businesstype", AppConst.BUSINESS_TYPE_FINDPWD);
-        b.addBody("mobile", mPhoneNum);
+        b.addBody("mobile", et_phone.getText().toString());
         b.addBody("smsparam", "code");
 
         ResponseData d = b.syncRequest(b);
@@ -178,7 +228,7 @@ public class UserForgetPwdActivity extends BaseActivity {
         b.addBody("businesstype", AppConst.BUSINESS_TYPE_FINDPWD);
         b.addBody("mobile", et_phone.getText().toString());
         b.addBody("code", et_yzm.getText().toString());
-        b.addBody("password", MD5.getMessageDigest(et_password.getText().toString().getBytes()));
+        b.addBody("password", MD5.getMessageDigest(et_pwd.getText().toString().getBytes()));
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.FIND_PASSWORD;
@@ -191,13 +241,16 @@ public class UserForgetPwdActivity extends BaseActivity {
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (request.flag == AppConst.GET_YZM) {
             removeProgressDialog();
-            CustomToast.show("验证码已发送，请稍后...", 0);
-            btn_getYZM.setEnabled(false);
+            CustomToast.show(getString(R.string.tips_user_send_yzm), CustomToast.LENGTH_SHORT);
+            tv_yzm.setEnabled(false);
+            et_phone.setEnabled(false);
             mCountDownTimer.start();// 启动倒计时
+            et_yzm.requestFocus();
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         } else if (request.flag == AppConst.FIND_PASSWORD) {
             if (response.body != null) {
-                CustomToast.show("密码已修改", 0);
-                this.finish();
+                CustomToast.show("密码修改成功", 0);
+                finish();
             }
         } else if (request.flag == AppConst.CHECK_YZM) {
             String jsonStr = response.body.toString();
@@ -218,8 +271,9 @@ public class UserForgetPwdActivity extends BaseActivity {
                 if (isValid) {
                     requestResetPwd();
                 } else {
+                    et_yzm.requestFocus();
                     removeProgressDialog();
-                    CustomToast.show("验证码错误", CustomToast.LENGTH_SHORT);
+                    CustomToast.show(getString(R.string.tips_user_yzm_error), CustomToast.LENGTH_SHORT);
                 }
             }
         }
@@ -240,13 +294,14 @@ public class UserForgetPwdActivity extends BaseActivity {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                btn_getYZM.setText(getString(R.string.get_checknumber) + "(" + millisUntilFinished / 1000 + "s)");
+                tv_yzm.setText(millisUntilFinished / 1000 + "s");
             }
 
             @Override
             public void onFinish() {
-                btn_getYZM.setEnabled(true);
-                btn_getYZM.setText(R.string.get_checknumber);
+                tv_yzm.setEnabled(true);
+                tv_yzm.setText(R.string.tips_reget_yzm);
+                et_phone.setEnabled(true);
             }
         };
     }
@@ -258,5 +313,11 @@ public class UserForgetPwdActivity extends BaseActivity {
             mCountDownTimer.cancel();
             mCountDownTimer = null;
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.user_login_exit_in, R.anim.user_login_exit_out);
     }
 }

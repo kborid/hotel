@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white">
+
+    <!--title bar-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right"
+            android:paddingBottom="5dp"
+            android:paddingRight="15dp"
+            android:paddingTop="17dp"
+            android:text="跳过登录"
+            android:textColor="@color/mainColor"
+            android:textSize="@dimen/common_12sp" />
+    </LinearLayout>
+
+    <!--content layout-->
+    <LinearLayout
+        android:id="@+id/root_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <!--main-->
+        <TextView
+            android:id="@+id/tv_title_main"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginLeft="47dp"
+            android:layout_marginRight="40dp"
+            android:text="@string/tips_user_hello"
+            android:textColor="@color/mainColor"
+            android:textSize="60sp"
+            android:textStyle="bold" />
+
+        <!--summary-->
+        <TextView
+            android:id="@+id/tv_title_summary"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginLeft="47dp"
+            android:layout_marginRight="40dp"
+            android:gravity="center_vertical"
+            android:text="@string/tips_user_welcome"
+            android:textColor="@color/mainColor"
+            android:textSize="@dimen/common_16sp" />
+
+        <!--input layout-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="40dp"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingTop="10dp" />
+
+        <!--button layout-->
+        <LinearLayout
+            android:id="@+id/btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/tv_action"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/user_btn_maincolor_selector"
+                android:gravity="center"
+                android:maxWidth="200dp"
+                android:text="@string/user_register"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_action2"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_weight="2"
+                android:background="@drawable/user_btn_maincolor_trans_selector"
+                android:gravity="center"
+                android:maxWidth="100dp"
+                android:text="@string/login_btn"
+                android:textColor="@color/mainColor"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="-30dp"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:paddingLeft="52dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tips_user_tips1"
+                android:textColor="#999999"
+                android:textSize="@dimen/common_12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tips_user_tips2"
+                android:textColor="#8f8f8f"
+                android:textSize="@dimen/common_12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
