@@ -37,6 +37,10 @@ public final class NetURL {
     public static final String FIND_PASSWORD = PORTAL + "user/findPassword.json"; //找回密码
     public static final String CHANGE_PASSWORD = PORTAL + "user/changePassword.json"; //修改密码
 
+    /*奖励金*/
+    public static final String BOUNTY_USER_BASE = PORTAL + "user/bounty/meta"; //奖励金基本信息
+    public static final String BOUNTY_USER_DETAIL = PORTAL + "user/bounty/page"; //奖励金明细
+
     //---------------------------------个人中心------------------------------------------------------
     public static final String CENTER_USERINFO = PORTAL + "user/getUserPreferSetting.json"; //个人中心详细信息
     public static final String SAVE_USERINFO = PORTAL + "user/saveOrUpdateUserPreferSetting.json";

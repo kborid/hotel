@@ -108,9 +108,9 @@ public class UserRegisterActivity extends BaseActivity {
             recommendChannel = mJson.containsKey("channel") ? mJson.getString("channel") : "";
             recommendMobile = mJson.containsKey("mobile") ? mJson.getString("mobile") : "";
             LogUtil.i(TAG, "OpenInstall Info:" + recommendChannel + ", " + recommendUserId + ", " + recommendMobile);
-            if ("07".equals(recommendChannel)) {
+            if ("05".equals(recommendChannel)) {
                 et_yqm.setVisibility(View.GONE);
-            } else if ("05".equals(recommendChannel) && StringUtil.notEmpty(recommendMobile)) {
+            } else if ("07".equals(recommendChannel) && StringUtil.notEmpty(recommendMobile)) {
                 et_yqm.setVisibility(View.VISIBLE);
                 et_yqm.setEnabled(false);
                 et_yqm.setText(recommendMobile);
@@ -349,6 +349,8 @@ public class UserRegisterActivity extends BaseActivity {
         b.addBody("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
         b.addBody("channelid", "00"); //注册渠道：00-app, 01-web
         b.addBody("ip", "");
+        b.addBody("invitermobile", et_yqm.getText().toString());
+
 
         ResponseData data = b.syncRequest(b);
         data.path = NetURL.REGISTER;
@@ -391,7 +393,6 @@ public class UserRegisterActivity extends BaseActivity {
         b.addBody("recommanduserid", recommendUserId);
         b.addBody("userid", SessionContext.mUser.user.userid);
         b.addBody("channel", recommendChannel);
-        b.addBody("invitermobile", recommendMobile);
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.SAVE_RECOMMAND;

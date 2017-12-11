@@ -117,25 +117,21 @@ public final class AppConst {
     public static final int ORDER_DETAIL = CONST_HANDLE_FLAG + 41;
     public static final int ORDER_CANCEL = CONST_HANDLE_FLAG + 42;
     public static final int ORDER_MODIFY = CONST_HANDLE_FLAG + 43;
-
     public static final int PAY = CONST_HANDLE_FLAG + 44;
 
     public static final int ATTEND_USER = CONST_HANDLE_FLAG + 45;
     public static final int DELETE_ATTEND_USER = CONST_HANDLE_FLAG + 46;
     public static final int ATTEND_LIST = CONST_HANDLE_FLAG + 47;
-
     public static final int HOTEL_SPACE = CONST_HANDLE_FLAG + 48;
     public static final int HOTEL_TIE = CONST_HANDLE_FLAG + 49;
     public static final int HOTEL_TIE_COMMENT = CONST_HANDLE_FLAG + 50;
     public static final int HOTEL_TIE_DETAIL = CONST_HANDLE_FLAG + 51;
     public static final int HOTEL_TIE_SUB_COMMENT = CONST_HANDLE_FLAG + 52;
     public static final int PUBLIC_COMMENT = CONST_HANDLE_FLAG + 53;
-
     public static final int HOTEL_TIE_SUPPORT = CONST_HANDLE_FLAG + 54;
     public static final int HOTEL_TIE_SHARE = CONST_HANDLE_FLAG + 55;
 
     public static final int ASSESS_PUBLIC = CONST_HANDLE_FLAG + 56;
-
     public static final int CHECK_ROOM_EMPTY = CONST_HANDLE_FLAG + 57;
     public static final int HOTEL_COMMENT_DELETE = CONST_HANDLE_FLAG + 58;
 
@@ -147,9 +143,10 @@ public final class AppConst {
     public static final int ALL_SEARCH_HOTEL = CONST_HANDLE_FLAG + 63;
 
     public static final int AD_GDT_IF = CONST_HANDLE_FLAG + 64;
-
     public static final int WEATHER = CONST_HANDLE_FLAG + 65;
 
     public static final int COUPON_USEFUL_CHECK = CONST_HANDLE_FLAG + 66;
     public static final int COUPON_USEFUL_LIST = CONST_HANDLE_FLAG + 67;
+    public static final int BOUNTY_USER_BASE = CONST_HANDLE_FLAG + 68;
+    public static final int BOUNTY_USER_DETAIL = CONST_HANDLE_FLAG + 69;
 }

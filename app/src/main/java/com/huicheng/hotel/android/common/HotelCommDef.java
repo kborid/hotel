@@ -18,12 +18,6 @@ public class HotelCommDef {
     public static final int TYPE_CLOCK = 4;
     public static final int TYPE_HOUHUIYAO = 5;
 
-    // Hotel Channel
-    public static final String SHARE_FREE = "01";
-    public static final String SHARE_HOTEL = "02";
-    public static final String SHARE_ROOM = "03";
-    public static final String SHARE_TIE = "04";
-
     // Hotel Free Coupon Status
     public static final String COUPON_NONE = "0";
     public static final String COUPON_HAVE = "1";

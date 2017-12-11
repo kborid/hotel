@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="当前奖励金"
+            android:text="@string/lxb_current"
             android:textColor="@color/white"
             android:textSize="@dimen/common_12sp"
             android:textStyle="bold" />
@@ -30,6 +30,7 @@
             android:background="@color/white" />
 
         <TextView
+            android:id="@+id/tv_current"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
@@ -47,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="元"
+            android:text="@string/yuan"
             android:textColor="@color/white"
             android:textSize="@dimen/common_12sp"
             android:textStyle="bold" />
@@ -70,12 +71,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="累计收益"
+                android:text="@string/lxb_in"
                 android:textColor="@color/mainColor"
                 android:textSize="@dimen/common_15sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -104,12 +106,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="累计支出"
+                android:text="@string/lxb_out"
                 android:textColor="@color/mainColor"
                 android:textSize="@dimen/common_15sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -129,7 +132,7 @@
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:paddingTop="2dp"
-        android:text="奖励金明细"
+        android:text="@string/lxb_detail"
         android:textColor="#666666"
         android:textSize="@dimen/common_12sp" />
 

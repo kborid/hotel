@@ -248,6 +248,12 @@
                         android:layout_height="wrap_content"
                         android:text="开启筛选"
                         android:textColor="@color/lableColor"
+                        android:switchMinWidth="20dp"
+                        android:textOff=""
+                        android:textOn=""
+                        android:thumb="@drawable/hotel_switch_thumb"
+                        android:thumbTextPadding="10dp"
+                        android:track="@drawable/hotel_switch_track"
                         android:textSize="@dimen/common_12sp" />
                 </LinearLayout>
 

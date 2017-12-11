@@ -12,9 +12,9 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.pay.PayCommDef;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.LogUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 /**
  * @auth kborid
@@ -34,7 +34,6 @@ public class PayResultReceiver extends BroadcastReceiver {
         if (!BroadCastConst.ACTION_PAY_STATUS.equals(action)) {
             return;
         }
-
         dealPayResult(intent);
     }
 
@@ -50,6 +49,9 @@ public class PayResultReceiver extends BroadcastReceiver {
             String msg = context.getResources().getString(R.string.pay_fail);
 
             switch (type) {
+                case PayCommDef.NOTPAY:
+                    ret = PayCommDef.err_success;
+                    break;
                 case PayCommDef.ALIPAY:
                     JSONObject aliPayJson = JSON.parseObject(info);
                     String aliPayCode = aliPayJson.getString("resultStatus");

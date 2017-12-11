@@ -37,6 +37,7 @@ import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.Date;
@@ -348,8 +349,7 @@ public class OrderPayActivity extends BaseActivity {
         }
     }
 
-    private void startPay(String str) {
-        JSONObject mJson = JSON.parseObject(str);
+    private void startPay(JSONObject mJson) {
 //        String data;
         if (mJson.containsKey(HotelCommDef.ALIPAY)) {
             //支付宝第三方支付
@@ -434,7 +434,17 @@ public class OrderPayActivity extends BaseActivity {
             } else if (request.flag == AppConst.PAY) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 removeProgressDialog();
-                startPay(response.body.toString());
+                if (StringUtil.notEmpty(response.body.toString())) {
+                    JSONObject json = JSONObject.parseObject(response.body.toString());
+                    if (json.containsKey("status") && json.getString("status").equals("noneedpay")) {
+                        Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
+                        intent.putExtra("info", "noneedpay");
+                        intent.putExtra("type", "noneedpay");
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                    } else {
+                        startPay(json);
+                    }
+                }
             }
         }
     }

@@ -18,6 +18,7 @@
     </string>
 
 
+    <string name="yuan">元</string>
     <string name="multipleSign">×</string>
     <string name="RMB">¥</string>
     <string name="totalRMB">共 ¥</string>
@@ -81,6 +82,11 @@
     <string name="side_order">我的订单</string>
     <string name="side_msg">消息</string>
     <string name="side_lxb">我的旅行币</string>
+    <string name="lxb_how">如何获得旅行币？</string>
+    <string name="lxb_current">当前旅行币</string>
+    <string name="lxb_in">累计收益</string>
+    <string name="lxb_out">累计支出</string>
+    <string name="lxb_detail">旅行币明细</string>
     <string name="side_yhq">我的优惠券</string>
     <string name="side_assess">评价</string>
     <string name="side_fans">粉丝酒店</string>
@@ -197,6 +203,8 @@
     <string name="order_submit">提交订单</string>
     <string name="order_topay">去支付</string>
     <string name="order_waitConfirm">订单正在确认，请耐心等待</string>
+
+    <string name="bountyStr">当前可用旅行币%1$d元</string>
 
     <string name="od_position">位置 / POSITION</string>
     <string name="od_hotel_tel">酒店电话 / HOTEL TEL</string>

@@ -29,10 +29,10 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.control.IShareResultListener;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
@@ -326,7 +326,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                 params.put("hotelID", String.valueOf(hotelId));
                 params.put("blogID", String.valueOf(articleId));
                 params.put("userID", SessionContext.mUser.user.userid);
-                params.put("channel", HotelCommDef.SHARE_TIE);
+                params.put("channel", ShareTypeDef.SHARE_TIE);
                 String url = SessionContext.getUrl(NetURL.SHARE, params);
 
                 final UMWeb web = new UMWeb(url);

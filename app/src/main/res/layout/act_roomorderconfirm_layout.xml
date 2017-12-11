@@ -296,6 +296,7 @@
                     android:id="@+id/coupon_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -342,39 +343,53 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/balance_lay"
+                    android:id="@+id/bounty_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp">
+                    android:visibility="gone"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_balance_info"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="left"
-                        android:hint="您有100元奖励金，已抵扣100元"
-                        android:paddingBottom="20dp"
-                        android:paddingTop="20dp"
-                        android:textColor="@color/mainColor"
-                        android:textSize="@dimen/common_12sp"
-                        android:textStyle="bold" />
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
 
-                    <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true" />
+                        <TextView
+                            android:id="@+id/tv_bounty_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:paddingBottom="20dp"
+                            android:paddingTop="20dp"
+                            android:text="@string/bountyStr"
+                            android:textColor="?attr/mainColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <Switch
+                            android:id="@+id/switch_bounty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:switchMinWidth="20dp"
+                            android:textOff=""
+                            android:textOn=""
+                            android:thumb="@drawable/hotel_switch_thumb"
+                            android:thumbTextPadding="10dp"
+                            android:track="@drawable/hotel_switch_track" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/comm_line2" />
                 </LinearLayout>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@drawable/comm_line2" />
 
             <LinearLayout
                 android:layout_width="match_parent"

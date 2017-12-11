@@ -128,7 +128,7 @@
             android:screenOrientation="portrait" />
         <!--我的旅行币-->
         <activity
-            android:name=".ui.activity.MyABCBalanceActivity"
+            android:name=".ui.activity.MyABCBountyActivity"
             android:screenOrientation="portrait" />
         <!--我的优惠券-->
         <activity

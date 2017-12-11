@@ -29,7 +29,7 @@ import com.huicheng.hotel.android.ui.activity.DebugInfoActivity;
 import com.huicheng.hotel.android.ui.activity.FansHotelActivity;
 import com.huicheng.hotel.android.ui.activity.FeedbackActivity;
 import com.huicheng.hotel.android.ui.activity.MessageListActivity;
-import com.huicheng.hotel.android.ui.activity.MyABCBalanceActivity;
+import com.huicheng.hotel.android.ui.activity.MyABCBountyActivity;
 import com.huicheng.hotel.android.ui.activity.MyDiscountCouponActivity;
 import com.huicheng.hotel.android.ui.activity.OrderListActivity;
 import com.huicheng.hotel.android.ui.activity.SettingActivity;
@@ -261,7 +261,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                 doActionIntent = new Intent(context, MessageListActivity.class);
                 break;
             case R.id.tv_lxb:
-                doActionIntent = new Intent(context, MyABCBalanceActivity.class);
+                doActionIntent = new Intent(context, MyABCBountyActivity.class);
                 break;
             case R.id.tv_yhq:
                 doActionIntent = new Intent(context, MyDiscountCouponActivity.class);

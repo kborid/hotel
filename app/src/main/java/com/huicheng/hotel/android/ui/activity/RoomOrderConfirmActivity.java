@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.huicheng.hotel.android.R;
@@ -62,6 +64,9 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     private TextView tv_invoice_info;
     private LinearLayout coupon_lay;
     private TextView tv_coupon_info;
+    private LinearLayout bounty_lay;
+    private TextView tv_bounty_info;
+    private Switch switch_bounty;
 
     private TextView tv_submit;
     private String mPicUrl, roomName;
@@ -78,7 +83,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     private CommonCustomInfoLayout custom_lay;
     private boolean isYgr = false;
 
-    private boolean hasValidCoupon = false;
+    private boolean isCanUseYhq = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +93,9 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         initParams();
         initListeners();
         if (null == savedInstanceState) {
-            requestCheckValidCoupon();
+            if (isCanUseYhq) {
+                requestCheckValidCoupon();
+            }
         }
     }
 
@@ -108,11 +115,13 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         invoice_lay = (LinearLayout) findViewById(R.id.invoice_lay);
         tv_invoice_info = (TextView) findViewById(R.id.tv_invoice_info);
         coupon_lay = (LinearLayout) findViewById(R.id.coupon_lay);
-        coupon_lay.setVisibility(View.GONE);
         tv_coupon_info = (TextView) findViewById(R.id.tv_coupon_info);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
         tv_submit.getPaint().setFakeBoldText(true);
         custom_lay = (CommonCustomInfoLayout) findViewById(R.id.custom_lay);
+        bounty_lay = (LinearLayout) findViewById(R.id.bounty_lay);
+        tv_bounty_info = (TextView) findViewById(R.id.tv_bounty_info);
+        switch_bounty = (Switch) findViewById(R.id.switch_bounty);
     }
 
     @Override
@@ -155,6 +164,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
 
+        isCanUseYhq = HotelOrderManager.getInstance().getPayType().equals(HotelCommDef.PAY_PRE);
         String picUrl = mPicUrl;
         if (roomDetailInfoBean != null) {
             tv_center_title.setText(roomDetailInfoBean.roomName);
@@ -190,6 +200,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
 
         room_addsub_lay.setUnit("间");
         room_addsub_lay.setCount(1);
+        room_addsub_lay.setMinvalue(1);
         finalPrice = roomPrice + allChooseServicePrice;
         tv_final_price.setText(finalPrice + "元");
         if (isHhy || null != HotelOrderManager.getInstance().getCouponInfoBean()) {
@@ -216,6 +227,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
         b.addBody("hotelid", String.valueOf(hotelId));
+        b.addBody("money", String.valueOf(finalPrice));
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.COUPON_USEFUL_CHECK;
         d.flag = AppConst.COUPON_USEFUL_CHECK;
@@ -240,6 +252,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         if (coupon_lay.isShown() && couponInfo != null) {
             b.addBody("couponid", String.valueOf(couponInfo.id));
         }
+        b.addBody("useBounty", String.valueOf(switch_bounty.isChecked()));
         b.addBody("specialComment", et_content.getText().toString());
 
         b.addBody("useMobiles", custom_lay.getCustomUserPhones());
@@ -271,7 +284,9 @@ public class RoomOrderConfirmActivity extends BaseActivity {
             public void onCountChanged(int count) {
                 finalPrice = roomPrice * count + allChooseServicePrice;
                 tv_final_price.setText(finalPrice + "元");
-                refreshCouponStatus();
+                if (isCanUseYhq) {
+                    requestCheckValidCoupon();
+                }
             }
         });
         rg_arrived.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -414,18 +429,25 @@ public class RoomOrderConfirmActivity extends BaseActivity {
             } else if (request.flag == AppConst.COUPON_USEFUL_CHECK) {
                 removeProgressDialog();
                 LogUtil.i(TAG, "json = " + response.body.toString());
-                hasValidCoupon = (Boolean) response.body;
-                refreshCouponStatus();
+                if (StringUtil.notEmpty(response.body.toString())) {
+                    JSONObject jsonObject = JSON.parseObject(response.body.toString());
+                    if (jsonObject.containsKey("couponstatus")) {
+                        refreshCouponStatus(jsonObject.getBoolean("couponstatus"));
+                    }
+                    if (jsonObject.containsKey("bounty") && jsonObject.getIntValue("bounty") > 0) {
+                        bounty_lay.setVisibility(View.VISIBLE);
+                        int bounty = jsonObject.getIntValue("bounty");
+                        tv_bounty_info.setText(String.format(getString(R.string.bountyStr), bounty));
+                    } else {
+                        bounty_lay.setVisibility(View.GONE);
+                    }
+                }
             }
         }
     }
 
-    private void refreshCouponStatus() {
-        if (!hasValidCoupon) {
-            return;
-        }
-        if (finalPrice >= 500
-                && HotelCommDef.PAY_PRE.equals(HotelOrderManager.getInstance().getPayType())) {
+    private void refreshCouponStatus(boolean hasValidCoupon) {
+        if (hasValidCoupon) {
             coupon_lay.setVisibility(View.VISIBLE);
         } else {
             couponInfo = null;
