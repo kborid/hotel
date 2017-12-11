@@ -220,6 +220,10 @@
         <activity
             android:name=".ui.activity.plane.PlaneOrderPayActivity"
             android:screenOrientation="portrait" />
+        <!--机票订单支付成功-->
+        <activity
+            android:name=".ui.activity.plane.PlaneOrderPaySuccessActivity"
+            android:screenOrientation="portrait" />
 
         <!--酒店-->
         <!--酒店入口main-->

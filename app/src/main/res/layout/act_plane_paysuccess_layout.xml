@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/status_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="32dp">
+
+            <ImageView
+                android:id="@+id/iv_pay_success"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/iv_pay_succ" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:text="订单成功"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/order_info_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="78dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_gohome"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/comm_rectangle_btn_planemain"
+                android:gravity="center"
+                android:text="返回首页"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_18sp" />
+
+            <TextView
+                android:id="@+id/tv_myorder"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/comm_rectangle_btn_white"
+                android:gravity="center"
+                android:text="我的订单"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_18sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -369,32 +369,35 @@
                                     <RadioGroup
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:checkedButton="@+id/rb_personal"
                                         android:orientation="horizontal"
                                         android:padding="8dp">
 
                                         <RadioButton
+                                            android:id="@+id/rb_personal"
                                             android:layout_width="0dp"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="1"
-                                            android:background="@drawable/vip_detail_tag_selector"
+                                            android:background="@drawable/plane_invoice_type_bg_sel"
                                             android:button="@null"
                                             android:gravity="center"
                                             android:padding="5dp"
                                             android:text="个人"
-                                            android:textColor="#cccccc"
+                                            android:textColor="@color/plane_invoice_type_text_sel"
                                             android:textSize="@dimen/common_12sp" />
 
                                         <RadioButton
+                                            android:id="@+id/rb_company"
                                             android:layout_width="0dp"
                                             android:layout_height="wrap_content"
                                             android:layout_marginLeft="10dp"
                                             android:layout_weight="1"
-                                            android:background="@drawable/vip_detail_tag_selector"
+                                            android:background="@drawable/plane_invoice_type_bg_sel"
                                             android:button="@null"
                                             android:gravity="center"
                                             android:padding="5dp"
                                             android:text="公司"
-                                            android:textColor="#cccccc"
+                                            android:textColor="@color/plane_invoice_type_text_sel"
                                             android:textSize="@dimen/common_12sp" />
                                     </RadioGroup>
 

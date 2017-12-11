@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="26dp"
+    android:orientation="vertical">
+
+    <!--单程-->
+    <ImageView
+        android:id="@+id/iv_plane_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:src="@drawable/air_zgyz" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_plane_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="中国邮政航空"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_18sp" />
+
+            <TextView
+                android:id="@+id/tv_plane_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="AB3321"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_plane_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="12月10日 22：20"
+            android:textColor="#666666"
+            android:textSize="@dimen/common_18sp" />
+    </LinearLayout>
+
+</LinearLayout>
