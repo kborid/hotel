@@ -226,14 +226,9 @@ public class DataLoader {
                 byte[] data = getDataFromNet();
 
                 if (data != null && data.length > 0) {
-                    if (request.isLocal) {
-                        response = new ResponseData();
-                        response.data = new String(data, "UTF-8");
-                    } else {
-                        String json = new String(data, "UTF-8");
-                        LogUtil.d(TAG, "Response:" + json);
-                        response = JSON.parseObject(json, ResponseData.class);
-                    }
+                    String json = new String(data, "UTF-8");
+                    LogUtil.d(TAG, "Response:" + json);
+                    response = JSON.parseObject(json, ResponseData.class);
 
                     String key = request.key;
                     if (key == null || key.equals("")) {
@@ -259,52 +254,44 @@ public class DataLoader {
                     try {
                         LogUtil.i(TAG, "notify callback = " + callback);
                         if (callback != null) {
-                            LogUtil.i(TAG, "notify request.isLocal = " + request.isLocal);
-                            if (request.isLocal) {
-                                if (response != null) {// 本地html数据请求直接返回结果
+                            LogUtil.i(TAG, "notify response = " + response);
+                            if (response != null && response.head != null) {
+                                JSONObject mJson = new JSONObject(response.head.toString());
+                                // 将错误code赋值给code，方便使用
+                                if (mJson.has("rtnCode")) {
+                                    response.code = mJson.getString("rtnCode");
+                                }
+                                // 将错误描述赋值给data，方便调用
+                                if (mJson.has("rtnMsg")) {
+                                    response.data = mJson.getString("rtnMsg");
+                                }
+                                LogUtil.i(TAG, "notify response.code = " + response.code);
+                                LogUtil.i(TAG, "notify response.data = " + response.data);
+
+                                if ("000000".equals(response.code)) {
                                     callback.notifyMessage(request, response);
+                                    LogUtil.i(TAG, "callback.notify message " + response.code);
                                 } else {
-                                    callback.notifyError(request, null, mException);
+                                    if ("900902".equals(response.code) || "310001".equals(response.code)) {// 900902 票据失效
+                                        Intent intent = new Intent(BroadCastConst.UNLOGIN_ACTION);
+                                        intent.putExtra("is_show_tip_dialog", true);
+                                        AppContext.mAppContext.sendBroadcast(intent);// 发送登录广播
+                                        response.data = "登录超时,请重新登录";
+                                    }
+                                    callback.notifyError(request, response, mException);
+                                    LogUtil.i(TAG, "callback.notify error " + response.code);
                                 }
                             } else {
-                                LogUtil.i(TAG, "notify response = " + response);
-                                if (response != null && response.head != null) {
-                                    JSONObject mJson = new JSONObject(response.head.toString());
-                                    // 将错误code赋值给code，方便使用
-                                    if (mJson.has("rtnCode")) {
-                                        response.code = mJson.getString("rtnCode");
-                                    }
-                                    // 将错误描述赋值给data，方便调用
-                                    if (mJson.has("rtnMsg")) {
-                                        response.data = mJson.getString("rtnMsg");
-                                    }
-                                    LogUtil.i(TAG, "notify response.code = " + response.code);
-                                    LogUtil.i(TAG, "notify response.data = " + response.data);
-
-                                    if ("000000".equals(response.code)) {
-                                        callback.notifyMessage(request, response);
-                                        LogUtil.i(TAG, "callback.notify message " + response.code);
-                                    } else {
-                                        if ("900902".equals(response.code) || "310001".equals(response.code)) {// 900902 票据失效
-                                            Intent intent = new Intent(BroadCastConst.UNLOGIN_ACTION);
-                                            intent.putExtra("is_show_tip_dialog", true);
-                                            AppContext.mAppContext.sendBroadcast(intent);// 发送登录广播
-                                            response.data = "登录超时,请重新登录";
-                                        }
-                                        callback.notifyError(request, response, mException);
-                                        LogUtil.i(TAG, "callback.notify error " + response.code);
-                                    }
-                                } else {
-                                    callback.notifyError(request, response, mException);
-                                    LogUtil.i(TAG, "callback.notify error else...");
-                                }
+                                callback.notifyError(request, response, mException);
+                                LogUtil.i(TAG, "callback.notify error else...");
                             }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                         if (callback != null) {
+                            response.data = "数据解析异常";
                             callback.notifyError(request, response, e);
-                            LogUtil.i(TAG, "callback.notify error Exception...");
+                            LogUtil.i(TAG, "callback.notify error:数据解析异常");
                         }
                     }
                 }

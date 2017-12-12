@@ -17,9 +17,7 @@ public class ResponseData {
 	public String				type;
 	public Map<String, Object>	header;
 
-	public boolean				isLocal;
 	public String				code;		// 出错代码
-
 	public Object				body;
 	public Object				head;
 	public Object				data;		// 数据对象

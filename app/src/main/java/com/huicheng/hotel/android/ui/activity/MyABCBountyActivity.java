@@ -32,6 +32,7 @@ import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
@@ -201,6 +202,7 @@ public class MyABCBountyActivity extends BaseActivity {
     }
 
     private void requestBountyDetailInfo(int pageIndex) {
+        LogUtil.i(TAG, "requestBountyDetailInfo() pageIndex = " + pageIndex);
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("pageIndex", pageIndex);
         b.addBody("pageSize", PAGE_SIZE);
@@ -290,13 +292,17 @@ public class MyABCBountyActivity extends BaseActivity {
 
             if ("1".equals(list.get(position).type)) {
                 viewHolder.tv_balance_price.setText("+");
+                viewHolder.tv_balance_title.setText("订单奖励");
             } else if ("2".equals(list.get(position).type)) {
                 viewHolder.tv_balance_price.setText("-");
+                viewHolder.tv_balance_title.setText("订单使用");
             } else {
                 viewHolder.tv_balance_price.setText("");
+                viewHolder.tv_balance_title.setText("旅行币");
             }
             viewHolder.tv_balance_price.append(String.valueOf(list.get(position).amount));
             viewHolder.tv_balance_date.setText(DateUtil.getDay("yyyy/MM/dd", list.get(position).createTime));
+            viewHolder.tv_balance_user.setText(list.get(position).remark);
 
             return convertView;
         }
@@ -314,10 +320,12 @@ public class MyABCBountyActivity extends BaseActivity {
         super.onNotifyMessage(request, response);
         if (response != null && response.body != null) {
             if (request.flag == AppConst.BOUNTY_USER_BASE) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 mBountyBaseInfo = JSONObject.parseObject(response.body.toString(), BountyBaseInfo.class);
                 refreshBountyBaseInfo();
                 requestBountyDetailInfo(mPageIndex);
             } else if (request.flag == AppConst.BOUNTY_USER_DETAIL) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 swipeRefreshLayout.setRefreshing(false);
                 removeProgressDialog();
                 mBountyDetailInfo = JSONObject.parseObject(response.body.toString(), BountyDetailInfo.class);
