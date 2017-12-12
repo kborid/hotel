@@ -204,55 +204,6 @@
                     android:background="@drawable/comm_line2" />
 
                 <LinearLayout
-                    android:id="@+id/coupon_lay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="20dp"
-                            android:paddingTop="20dp"
-                            android:text="优惠券"
-                            android:textColor="?attr/mainColor"
-                            android:textSize="@dimen/common_12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_coupon_info"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
-                            android:layout_weight="1"
-                            android:gravity="left"
-                            android:hint="请选择优惠券"
-                            android:textColor="@color/noDiscountColor"
-                            android:textSize="@dimen/common_12sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:scaleType="fitCenter"
-                            android:src="?attr/nextButton" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@drawable/comm_line2" />
-                </LinearLayout>
-
-                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -335,12 +286,122 @@
                             android:textStyle="bold" />
                     </RadioGroup>
                 </LinearLayout>
-            </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@drawable/comm_line2" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
+
+                <LinearLayout
+                    android:id="@+id/coupon_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="20dp"
+                            android:paddingTop="20dp"
+                            android:text="优惠券"
+                            android:textColor="?attr/mainColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_coupon_info"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="left|center_vertical"
+                            android:hint="请选择优惠券"
+                            android:singleLine="true"
+                            android:textColor="@color/noDiscountColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_coupon_del"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/iv_sub" />
+
+                        <ImageView
+                            android:id="@+id/iv_coupon_next"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:scaleType="fitCenter"
+                            android:src="?attr/nextButton" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/comm_line2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bounty_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
+
+                        <TextView
+                            android:id="@+id/tv_bounty_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:paddingBottom="20dp"
+                            android:paddingTop="20dp"
+                            android:text="@string/bountyStr"
+                            android:textColor="?attr/mainColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <Switch
+                            android:id="@+id/switch_bounty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:switchMinWidth="20dp"
+                            android:textOff=""
+                            android:textOn=""
+                            android:thumb="@drawable/hotel_switch_thumb"
+                            android:thumbTextPadding="10dp"
+                            android:track="@drawable/hotel_switch_track" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/comm_line2" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

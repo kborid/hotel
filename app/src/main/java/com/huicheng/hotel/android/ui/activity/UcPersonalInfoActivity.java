@@ -16,7 +16,6 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -605,15 +604,6 @@ public class UcPersonalInfoActivity extends BaseActivity {
 
         }
     };
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            iv_back.performClick();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     private void requestSaveUserPerferSetting() {
         LogUtil.i(TAG, "requestSaveUserPerferSetting()");

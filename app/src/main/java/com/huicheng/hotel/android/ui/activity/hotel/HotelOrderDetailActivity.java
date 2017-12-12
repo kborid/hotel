@@ -171,7 +171,10 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 View view = LayoutInflater.from(this).inflate(R.layout.order_service_item, null);
                 TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
                 TextView tv_price = (TextView) view.findViewById(R.id.tv_price);
-                tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).serviceCnt);
+                tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName);
+                if (orderPayDetailInfoBean.attachInfo.get(i).serviceCnt > 0) {
+                    tv_title.append(" " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).serviceCnt);
+                }
                 tv_price.setText(orderPayDetailInfoBean.attachInfo.get(i).orderMoney + " 元");
                 service_lay.addView(view);
             }

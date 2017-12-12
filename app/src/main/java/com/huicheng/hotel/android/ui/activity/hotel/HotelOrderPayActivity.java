@@ -37,6 +37,7 @@ import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.Date;
@@ -212,7 +213,7 @@ public class HotelOrderPayActivity extends BaseActivity {
                     View roomDetailItem = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
                     TextView tv_room_title = (TextView) roomDetailItem.findViewById(R.id.tv_title);
                     TextView tv_room_price = (TextView) roomDetailItem.findViewById(R.id.tv_price);
-                    if (!"2".equals(orderPayDetailInfoBean.preTotalPriceList.get(i).type)) {
+                    if ("".equals(orderPayDetailInfoBean.preTotalPriceList.get(i).type)) {
                         String startDate = DateUtil.getDay("M月d号", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime);
                         String endDate = String.valueOf(Integer.parseInt(DateUtil.getDay("d", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime)) + 1) + "号";
                         tv_room_title.setText(startDate + "-" + endDate);
@@ -310,8 +311,7 @@ public class HotelOrderPayActivity extends BaseActivity {
         }
     }
 
-    private void startPay(String str) {
-        JSONObject mJson = JSON.parseObject(str);
+    private void startPay(JSONObject mJson) {
 //        String data;
         if (mJson.containsKey(HotelCommDef.ALIPAY)) {
             //支付宝第三方支付
@@ -396,7 +396,17 @@ public class HotelOrderPayActivity extends BaseActivity {
             } else if (request.flag == AppConst.PAY) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 removeProgressDialog();
-                startPay(response.body.toString());
+                if (StringUtil.notEmpty(response.body.toString())) {
+                    JSONObject json = JSONObject.parseObject(response.body.toString());
+                    if (json.containsKey("status") && json.getString("status").equals("noneedpay")) {
+                        Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
+                        intent.putExtra("info", "noneedpay");
+                        intent.putExtra("type", "noneedpay");
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                    } else {
+                        startPay(json);
+                    }
+                }
             }
         }
     }

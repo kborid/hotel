@@ -423,6 +423,7 @@ public class HotelDetailActivity extends BaseActivity {
                     roomId = hotelDetailInfoBean.roomList.get(finalI).id;
                     isClickYgr = "夜归人".equals(hotelDetailInfoBean.roomList.get(finalI).priceType);
                     roomType = Integer.valueOf(hotelDetailInfoBean.roomList.get(finalI).searchType);
+                    HotelOrderManager.getInstance().setHotelType(roomType);
                     requestCheckRoomEmpty(hotelId, roomId, roomType);
                 }
             });
@@ -468,8 +469,8 @@ public class HotelDetailActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     roomId = hotelDetailInfoBean.clockRoomList.get(finalI).id;
-//                    roomType = HotelCommDef.TYPE_CLOCK;
                     roomType = Integer.valueOf(hotelDetailInfoBean.clockRoomList.get(finalI).searchType);
+                    HotelOrderManager.getInstance().setHotelType(roomType);
                     requestCheckRoomEmpty(hotelId, roomId, roomType);
                 }
             });

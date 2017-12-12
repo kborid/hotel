@@ -57,6 +57,11 @@ public class UserRegisterActivity extends BaseActivity {
     private CountDownTimer mCountDownTimer;
     private boolean isValid = false;
 
+    //推荐信息
+    private String recommendMobile;
+    private String recommendUserId;
+    private String recommendChannel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +100,22 @@ public class UserRegisterActivity extends BaseActivity {
         super.initParams();
         setCountDownTimer(60 * 1000, 1000);
         checkInputForActionBtnStatus();
+
+        if (SessionContext.getOpenInstallAppData() != null
+                && StringUtil.notEmpty(SessionContext.getOpenInstallAppData().getData())) {
+            JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
+            recommendUserId = mJson.containsKey("userID") ? mJson.getString("userID") : "";
+            recommendChannel = mJson.containsKey("channel") ? mJson.getString("channel") : "";
+            recommendMobile = mJson.containsKey("mobile") ? mJson.getString("mobile") : "";
+            LogUtil.i(TAG, "OpenInstall Info:" + recommendChannel + ", " + recommendUserId + ", " + recommendMobile);
+            if ("05".equals(recommendChannel)) {
+                et_yqm.setVisibility(View.GONE);
+            } else if ("07".equals(recommendChannel) && StringUtil.notEmpty(recommendMobile)) {
+                et_yqm.setVisibility(View.VISIBLE);
+                et_yqm.setEnabled(false);
+                et_yqm.setText(recommendMobile);
+            }
+        }
     }
 
     @Override
@@ -328,6 +349,8 @@ public class UserRegisterActivity extends BaseActivity {
         b.addBody("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
         b.addBody("channelid", "00"); //注册渠道：00-app, 01-web
         b.addBody("ip", "");
+        b.addBody("invitermobile", et_yqm.getText().toString());
+
 
         ResponseData data = b.syncRequest(b);
         data.path = NetURL.REGISTER;
@@ -366,11 +389,10 @@ public class UserRegisterActivity extends BaseActivity {
 
     private void requestSaveRecommandData() {
         LogUtil.i(TAG, "requestSaveRecommandData()");
-        JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("recommanduserid", mJson.containsKey("userID") ? mJson.getString("userID") : "");
+        b.addBody("recommanduserid", recommendUserId);
         b.addBody("userid", SessionContext.mUser.user.userid);
-        b.addBody("channel", mJson.containsKey("channel") ? mJson.getString("channel") : "");
+        b.addBody("channel", recommendChannel);
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.SAVE_RECOMMAND;
