@@ -251,7 +251,7 @@ public class OrderPayActivity extends BaseActivity {
                     View roomDetailItem = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
                     TextView tv_room_title = (TextView) roomDetailItem.findViewById(R.id.tv_title);
                     TextView tv_room_price = (TextView) roomDetailItem.findViewById(R.id.tv_price);
-                    if (!"2".equals(orderPayDetailInfoBean.preTotalPriceList.get(i).type)) {
+                    if ("".equals(orderPayDetailInfoBean.preTotalPriceList.get(i).type)) {
                         String startDate = DateUtil.getDay("M月d号", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime);
                         String endDate = String.valueOf(Integer.parseInt(DateUtil.getDay("d", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime)) + 1) + "号";
                         tv_room_title.setText(startDate + "-" + endDate);

@@ -296,8 +296,8 @@
                     android:id="@+id/coupon_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -320,18 +320,30 @@
                         <TextView
                             android:id="@+id/tv_coupon_info"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginLeft="40dp"
                             android:layout_weight="1"
-                            android:gravity="left"
+                            android:ellipsize="end"
+                            android:gravity="left|center_vertical"
                             android:hint="请选择优惠券"
+                            android:singleLine="true"
                             android:textColor="@color/noDiscountColor"
                             android:textSize="@dimen/common_12sp"
                             android:textStyle="bold" />
 
                         <ImageView
+                            android:id="@+id/iv_coupon_del"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/iv_sub" />
+
+                        <ImageView
+                            android:id="@+id/iv_coupon_next"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
                             android:scaleType="fitCenter"
                             android:src="?attr/nextButton" />
                     </LinearLayout>
@@ -346,8 +358,8 @@
                     android:id="@+id/bounty_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"

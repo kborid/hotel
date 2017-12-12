@@ -48,5 +48,6 @@ public class CouponInfoBean implements Serializable {
         public int type;
         public String userId;
         public List<String> eventHotel;
+        public int couponvalue;
     }
 }

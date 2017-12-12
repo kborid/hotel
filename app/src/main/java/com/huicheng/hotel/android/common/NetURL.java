@@ -117,7 +117,7 @@ public final class NetURL {
     public static final String TRAIN_HOME = "https://m.ctrip.com/webapp/train/v2/index.html?allianceid=30613&sid=997104&hiderecommapp=1&popup=close&autoawaken=close&showhead=0"; //火车票首页
     public static final String SZ_TAXI_HOME_DEBUG = "https://commonwappre.10101111.com/join";
     public static final String SZ_TAXI_HOME_RELEASE = "https://commonwap.10101111.com/join";
-
+    public static final String BOUNTY_LXB_RULE = "http://pro.abcbooking.cn/wechat/rule/index.html";
     // --------------------------------------------设置缓存的URL-------------------------------------
     public static final String[] CACHE_URL = {};
 }

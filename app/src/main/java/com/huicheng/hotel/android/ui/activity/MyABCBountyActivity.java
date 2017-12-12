@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -58,6 +59,7 @@ public class MyABCBountyActivity extends BaseActivity {
     private TextView tv_current, tv_in, tv_out;
     private TextView tv_invite;
     private ListView listview;
+    private TextView tv_empty;
     private BalanceAdapter adapter;
 
     private PopupWindow mSharePopupWindow = null;
@@ -84,6 +86,7 @@ public class MyABCBountyActivity extends BaseActivity {
         tv_in = (TextView) header.findViewById(R.id.tv_in);
         tv_out = (TextView) header.findViewById(R.id.tv_out);
         listview = (ListView) findViewById(R.id.listview);
+        tv_empty = (TextView) findViewById(R.id.tv_empty);
         tv_invite = (TextView) findViewById(R.id.tv_invite);
     }
 
@@ -96,6 +99,7 @@ public class MyABCBountyActivity extends BaseActivity {
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         adapter = new BalanceAdapter(this, mList);
         listview.setAdapter(adapter);
+        listview.setEmptyView(tv_empty);
         isFirstLoad = true;
     }
 
@@ -175,6 +179,12 @@ public class MyABCBountyActivity extends BaseActivity {
                 ShareControl.getInstance().setUMWebContent(this, web, null);
                 showSharePopupWindow();
                 break;
+            case R.id.tv_right:
+                Intent intent = new Intent(this, HtmlActivity.class);
+                intent.putExtra("title", getString(R.string.lxb_how));
+                intent.putExtra("path", NetURL.BOUNTY_LXB_RULE);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -194,7 +204,7 @@ public class MyABCBountyActivity extends BaseActivity {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("pageIndex", pageIndex);
         b.addBody("pageSize", PAGE_SIZE);
-//        b.addBody("timeRank", "ASC");
+        b.addBody("timeRank", "DESC");//排序类型，默认ASC升序，DESC降序
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.BOUNTY_USER_DETAIL;
         d.path = NetURL.BOUNTY_USER_DETAIL;
@@ -278,12 +288,12 @@ public class MyABCBountyActivity extends BaseActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            if (list.get(position).amount > 0) {
+            if ("1".equals(list.get(position).type)) {
                 viewHolder.tv_balance_price.setText("+");
-            } else if (list.get(position).amount == 0) {
-                viewHolder.tv_balance_price.setText("");
-            } else {
+            } else if ("2".equals(list.get(position).type)) {
                 viewHolder.tv_balance_price.setText("-");
+            } else {
+                viewHolder.tv_balance_price.setText("");
             }
             viewHolder.tv_balance_price.append(String.valueOf(list.get(position).amount));
             viewHolder.tv_balance_date.setText(DateUtil.getDay("yyyy/MM/dd", list.get(position).createTime));
@@ -318,5 +328,12 @@ public class MyABCBountyActivity extends BaseActivity {
                 refreshBountyDetailListInfo();
             }
         }
+    }
+
+    @Override
+    public void onNotifyError(ResponseData request) {
+        super.onNotifyError(request);
+        removeProgressDialog();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

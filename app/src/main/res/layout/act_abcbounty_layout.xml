@@ -36,6 +36,7 @@
             android:layout_alignParentRight="true"
             android:paddingRight="14dp"
             android:text="@string/lxb_how"
+            android:onClick="onClick"
             android:textColor="@color/mainColor"
             android:textSize="@dimen/common_11sp"
             android:visibility="visible" />
@@ -60,6 +61,16 @@
             android:listSelector="@color/transparent"
             android:scrollbarThumbVertical="@drawable/p3016_scrollbar" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="没有旅行币明细"
+        android:textColor="@color/secColorShadow"
+        android:textSize="@dimen/common_15sp"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_invite"

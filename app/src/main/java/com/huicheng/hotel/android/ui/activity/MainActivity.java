@@ -705,6 +705,9 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
             if (!isAdShowed) {
                 showHaiNanAd(tempProvince);
             }
+            if (AMapLocationControl.getInstance().isStart()) {
+                AMapLocationControl.getInstance().stopLocation();
+            }
         } else if (requestCode == REQUEST_CODE_DATE) {
             if (null != data) {
                 beginTime = data.getLongExtra("beginTime", beginTime);

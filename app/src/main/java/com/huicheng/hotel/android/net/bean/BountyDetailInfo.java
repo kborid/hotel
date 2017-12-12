@@ -21,8 +21,8 @@ public class BountyDetailInfo {
         public String id;
         public String remark;
         public float restAmount;
-        public int status;
-        public int type;
+        public String status;
+        public String type;
         public String useOrderNo;
         public long useTime;
         public String userId;
