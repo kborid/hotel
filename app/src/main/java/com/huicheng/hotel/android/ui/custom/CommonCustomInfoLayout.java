@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.net.bean.InPersonalInfoBean;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
@@ -71,6 +72,7 @@ public class CommonCustomInfoLayout extends LinearLayout {
             et_phone.setText(temp.get(i).phone);
             custom_info_layout.addView(customChildView, i);
         }
+        updateButtonStatus(custom_info_layout.getChildCount());
         return temp.size();
     }
 
@@ -193,6 +195,7 @@ public class CommonCustomInfoLayout extends LinearLayout {
     }
 
     private void updateButtonStatus(int count) {
+        LogUtil.i("CommonCustomInfoLayout", "updateButtonStatus() count = " + count);
         //刷新状态
         if (count <= 1) {
             custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setEnabled(false);

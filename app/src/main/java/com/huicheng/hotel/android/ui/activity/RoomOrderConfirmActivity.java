@@ -221,6 +221,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
             ((EditText) custom_lay.getChildAt(0).findViewById(R.id.et_phone)).setText(SessionContext.mUser.user.mobile);
         } else {
             int person = custom_lay.setPersonInfos(jsonStr);
+            LogUtil.i(TAG, "customLayout person = " + person);
         }
 
         if (HotelCommDef.PAY_ARR.equals(HotelOrderManager.getInstance().getPayType())) {
