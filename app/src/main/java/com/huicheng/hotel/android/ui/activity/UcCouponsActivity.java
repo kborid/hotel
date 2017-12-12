@@ -45,8 +45,8 @@ import java.util.List;
  */
 public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
-    private static final int FREE_COUPON = 1;
-    private static final int UNION_COUPON = 2;
+    private static final int COUPON_FREE = 1;
+    private static final int COUPON_UNION = 2;
 
     private LinearLayout noDiscountLayout, hasDiscountLayout, active_lay;
     private TextView tv_no_coupon_note, tv_no_coupon_time;
@@ -191,18 +191,13 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
         switch (v.getId()) {
             case R.id.btn_use:
                 CouponInfoBean.CouponInfo info = couponInfoBean.coupon.get(positionIndex);
-                if (info.type == 2) {
-                    Intent data = new Intent();
-                    data.putExtra("coupon", info);
-                    setResult(RESULT_OK, data);
-                    finish();
-                } else {
-                    HotelOrderManager.getInstance().reset();
-                    HotelOrderManager.getInstance().setCouponInfoBean(info);
-                    Intent intent = new Intent(this, CalendarChooseActivity.class);
-                    intent.putExtra("isCouponBooking", true);
-                    startActivity(intent);
+                if (info.type == COUPON_FREE) {
+                    return;
                 }
+                Intent data = new Intent();
+                data.putExtra("coupon", info);
+                setResult(RESULT_OK, data);
+                finish();
                 break;
             case R.id.active_lay:
                 Intent intent1 = new Intent(this, Hotel0YuanHomeActivity.class);
@@ -242,21 +237,7 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
             btn_use.setVisibility(View.VISIBLE);
         }
 
-        if (info.type == UNION_COUPON) {
-            btn_use.setEnabled(true);
-            tv_summary.setText(getString(R.string.coupon_tips2));
-            tv_summary.append(getString(R.string.coupon_tips_support));
-            if (info.eventHotel != null && info.eventHotel.size() > 0) {
-                for (int i = 0; i < info.eventHotel.size(); i++) {
-                    tv_summary.append(info.eventHotel.get(i));
-                    if (i != info.eventHotel.size() - 1) {
-                        tv_summary.append("，");
-                    }
-                }
-            } else {
-                tv_summary.append("无");
-            }
-        } else {
+        if (info.type == COUPON_FREE) {
             btn_use.setEnabled(false);
             String name = info.hotelName;
             String date = DateUtil.getDay("yyyy/MM/dd", couponInfoBean.coupon.get(position).activeTime);
@@ -271,6 +252,20 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
             style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mainColor)), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             style.setSpan(new StyleSpan(Typeface.BOLD), index[1], index[1] + date.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             tv_summary.setText(style);
+        } else {
+            btn_use.setEnabled(true);
+            tv_summary.setText(getString(R.string.coupon_tips2));
+            tv_summary.append(getString(R.string.coupon_tips_support));
+            if (info.eventHotel != null && info.eventHotel.size() > 0) {
+                for (int i = 0; i < info.eventHotel.size(); i++) {
+                    tv_summary.append(info.eventHotel.get(i));
+                    if (i != info.eventHotel.size() - 1) {
+                        tv_summary.append("，");
+                    }
+                }
+            } else {
+                tv_summary.append("无");
+            }
         }
     }
 
@@ -334,12 +329,12 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
                     .into(iv_background);
 
             String name;
-            if (info.type == UNION_COUPON) {
-                name = info.name;
-                tv_limit.setVisibility(View.VISIBLE);
-            } else {
+            if (info.type == COUPON_FREE) {
                 name = info.hotelName;
                 tv_limit.setVisibility(View.GONE);
+            } else {
+                name = info.name;
+                tv_limit.setVisibility(View.VISIBLE);
             }
             tv_name.setText(name);
             tv_id_num.setText("凭证号：" + info.code);

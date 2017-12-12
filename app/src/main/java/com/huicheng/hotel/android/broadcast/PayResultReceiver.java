@@ -62,10 +62,13 @@ public class PayResultReceiver extends BroadcastReceiver {
                         retCode = info;
                         LogUtil.i(TAG, type + ":Code=" + info);
                         break;
+                    case PayCommDef.NOTPAY:
+                        retCode = PayCommDef.NOTPAY;
+                        break;
                 }
 
                 //整合支付宝、微信、银联支付结果码
-                if ("9000".equals(retCode) || "0".equals(retCode) || "success".equals(retCode)) {
+                if ("9000".equals(retCode) || "0".equals(retCode) || "success".equals(retCode) || PayCommDef.NOTPAY.equals(retCode)) {
                     ret = PayCommDef.err_success;
                 } else if ("4000".equals(retCode) || "-1".equals(retCode) || "fail".equals(retCode)) {
                     ret = PayCommDef.err_fail;

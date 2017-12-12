@@ -15,6 +15,7 @@ import com.huicheng.hotel.android.R;
  * @date 2017/1/4 0004
  */
 public class CommonAddSubLayout extends LinearLayout implements View.OnClickListener {
+    private int MINVALUE = 0;
     private int MAXVALUE = 50;
     private Context context;
 
@@ -89,12 +90,12 @@ public class CommonAddSubLayout extends LinearLayout implements View.OnClickList
     }
 
     private void updateButtonStatus(int count) {
-        if (0 == MAXVALUE) {
+        if (MINVALUE == MAXVALUE) {
             iv_sub.setEnabled(false);
             iv_sub.setAlpha(0.5f);
             iv_add.setEnabled(false);
             iv_add.setAlpha(0.5f);
-        } else if (count <= 0) {
+        } else if (count <= MINVALUE) {
             iv_add.setEnabled(true);
             iv_add.setAlpha(1f);
             iv_sub.setEnabled(false);
@@ -131,11 +132,23 @@ public class CommonAddSubLayout extends LinearLayout implements View.OnClickList
     }
 
     public void setCount(int def) {
-        count = def;
+        if (def <= MINVALUE) {
+            count = MINVALUE;
+        } else {
+            count = def;
+        }
         tv_count.setText(count + "");
         updateButtonStatus(count);
     }
 
+    public void setMinvalue(int def) {
+        if (def >= count) {
+            count = def;
+        }
+        MINVALUE = def;
+        tv_count.setText(count + "");
+        updateButtonStatus(count);
+    }
     public void setMaxvalue(int def) {
         MAXVALUE = def;
         updateButtonStatus(count);

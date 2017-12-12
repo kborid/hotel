@@ -24,6 +24,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
@@ -214,7 +215,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
             JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
             if (null != mJson && mJson.containsKey("channel")) {
                 String channel = mJson.getString("channel");
-                if (HotelCommDef.SHARE_HOTEL.equals(channel)) {
+                if (ShareTypeDef.SHARE_HOTEL.equals(channel)) {
                     long beginDate = Long.valueOf(mJson.getString("beginDate"));
                     long endDate = Long.valueOf(mJson.getString("endDate"));
                     HotelOrderManager.getInstance().setBeginTime(beginDate);
@@ -223,7 +224,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     startActivity(intent);
                     SessionContext.setOpenInstallAppData(null);
-                } else if (HotelCommDef.SHARE_ROOM.equals(channel)) {
+                } else if (ShareTypeDef.SHARE_ROOM.equals(channel)) {
                     long beginDate = Long.valueOf(mJson.getString("beginDate"));
                     long endDate = Long.valueOf(mJson.getString("endDate"));
                     HotelOrderManager.getInstance().setBeginTime(beginDate);
@@ -234,11 +235,11 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                     intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
                     startActivity(intent);
                     SessionContext.setOpenInstallAppData(null);
-                } else if (HotelCommDef.SHARE_FREE.equals(channel)) {
+                } else if (ShareTypeDef.SHARE_FREE.equals(channel)) {
                     Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
                     startActivity(intent);
                     SessionContext.setOpenInstallAppData(null);
-                } else if (HotelCommDef.SHARE_TIE.equals(channel)) {
+                } else if (ShareTypeDef.SHARE_TIE.equals(channel)) {
                     Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));

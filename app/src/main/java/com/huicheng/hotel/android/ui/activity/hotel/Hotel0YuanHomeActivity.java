@@ -14,8 +14,8 @@ import android.widget.PopupWindow;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.FreeOneNightBean;
@@ -137,7 +137,7 @@ public class Hotel0YuanHomeActivity extends BaseActivity {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("type", "invite");
                 params.put("userID", SessionContext.mUser.user.userid);
-                params.put("channel", HotelCommDef.SHARE_FREE);
+                params.put("channel", ShareTypeDef.SHARE_FREE);
                 String url = SessionContext.getUrl(NetURL.SHARE, params);
 
                 UMWeb web = new UMWeb(url);

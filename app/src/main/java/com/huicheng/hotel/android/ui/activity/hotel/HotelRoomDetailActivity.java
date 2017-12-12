@@ -32,6 +32,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
@@ -527,7 +528,7 @@ public class HotelRoomDetailActivity extends BaseActivity {
                 params.put("hotelType", String.valueOf(room_type));
                 params.put("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime(isYgr)));
                 params.put("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime(isYgr)));
-                params.put("channel", HotelCommDef.SHARE_ROOM);
+                params.put("channel", ShareTypeDef.SHARE_ROOM);
                 String url = SessionContext.getUrl(NetURL.SHARE, params);
 
                 final UMWeb web = new UMWeb(url);
