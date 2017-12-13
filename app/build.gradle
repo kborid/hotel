@@ -99,7 +99,7 @@ android {
                 if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
                     def apkFile = new File(
                             output.outputFile.getParent(),
-                            "${appName}_v${variant.versionName}_${currentDate}_${variant.buildType.name}.apk")
+                            "${getAppName()}_v${variant.versionName}_${variant.versionCode}_${getCurrentDate()}_${variant.buildType.name}.apk")
                     output.outputFile = apkFile
                 }
             }

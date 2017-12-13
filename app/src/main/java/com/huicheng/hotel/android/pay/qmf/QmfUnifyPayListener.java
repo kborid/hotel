@@ -11,6 +11,5 @@ public class QmfUnifyPayListener implements UnifyPayListener {
 
     @Override
     public void onResult(int i, String s) {
-        System.out.println("onResult() i = " + i + ", s = " + s);
     }
 }

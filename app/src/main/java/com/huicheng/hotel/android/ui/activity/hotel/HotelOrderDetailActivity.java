@@ -175,6 +175,9 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 if (orderPayDetailInfoBean.attachInfo.get(i).serviceCnt > 0) {
                     tv_title.append(" " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).serviceCnt);
                 }
+                if ("".equals(orderPayDetailInfoBean.attachInfo.get(i).type)){
+                    (view.findViewById(R.id.tv_gong)).setVisibility(View.VISIBLE);
+                }
                 tv_price.setText(orderPayDetailInfoBean.attachInfo.get(i).orderMoney + " 元");
                 service_lay.addView(view);
             }

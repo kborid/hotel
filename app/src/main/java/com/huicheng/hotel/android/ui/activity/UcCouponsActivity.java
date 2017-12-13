@@ -47,6 +47,7 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
 
     private static final int COUPON_FREE = 1;
     private static final int COUPON_UNION = 2;
+    private static final int COUPON_NORMAL = 3;
 
     private LinearLayout noDiscountLayout, hasDiscountLayout, active_lay;
     private TextView tv_no_coupon_note, tv_no_coupon_time;
@@ -94,7 +95,7 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
     @Override
     public void initParams() {
         super.initParams();
-        tv_center_title.setText("我的优惠券");
+        tv_center_title.setText(R.string.side_yhq);
     }
 
     @Override
@@ -241,7 +242,7 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
             btn_use.setEnabled(false);
             String name = info.hotelName;
             String date = DateUtil.getDay("yyyy/MM/dd", couponInfoBean.coupon.get(position).activeTime);
-            String note = String.format(getString(R.string.coupon_tips1), name, date);
+            String note = String.format(getString(R.string.coupon_tips_free), name, date);
             int index[] = new int[2];
             index[0] = note.indexOf(name);
             index[1] = note.indexOf(date);
@@ -254,17 +255,20 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
             tv_summary.setText(style);
         } else {
             btn_use.setEnabled(true);
-            tv_summary.setText(getString(R.string.coupon_tips2));
-            tv_summary.append(getString(R.string.coupon_tips_support));
-            if (info.eventHotel != null && info.eventHotel.size() > 0) {
-                for (int i = 0; i < info.eventHotel.size(); i++) {
-                    tv_summary.append(info.eventHotel.get(i));
-                    if (i != info.eventHotel.size() - 1) {
-                        tv_summary.append("，");
+//            tv_summary.setText(getString(R.string.coupon_tips_union));
+            tv_summary.setText(info.detailRule);
+            if (info.type == COUPON_UNION) {
+                tv_summary.append(getString(R.string.coupon_tips_support));
+                if (info.eventHotel != null && info.eventHotel.size() > 0) {
+                    for (int i = 0; i < info.eventHotel.size(); i++) {
+                        tv_summary.append(info.eventHotel.get(i));
+                        if (i != info.eventHotel.size() - 1) {
+                            tv_summary.append("，");
+                        }
                     }
+                } else {
+                    tv_summary.append("无");
                 }
-            } else {
-                tv_summary.append("无");
             }
         }
     }
@@ -331,12 +335,11 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
             String name;
             if (info.type == COUPON_FREE) {
                 name = info.hotelName;
-                tv_limit.setVisibility(View.GONE);
             } else {
                 name = info.name;
-                tv_limit.setVisibility(View.VISIBLE);
             }
             tv_name.setText(name);
+            tv_limit.setText(info.rootRule);
             tv_id_num.setText("凭证号：" + info.code);
             tv_valid_time.setText("有效期：" + DateUtil.getDay("yyyy/MM/dd", info.createTime) + "-" + DateUtil.getDay("yyyy/MM/dd", info.activeTime));
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import com.umeng.socialize.media.UMWeb;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @auth kborid
@@ -60,7 +62,7 @@ public class MyABCBountyActivity extends BaseActivity {
     private TextView tv_current, tv_in, tv_out;
     private TextView tv_invite;
     private ListView listview;
-    private TextView tv_empty;
+    private LinearLayout empty_lay;
     private BalanceAdapter adapter;
 
     private PopupWindow mSharePopupWindow = null;
@@ -83,11 +85,11 @@ public class MyABCBountyActivity extends BaseActivity {
         super.initViews();
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         header = LayoutInflater.from(this).inflate(R.layout.lv_balance_header, null);
+        empty_lay = (LinearLayout) header.findViewById(R.id.empty_lay);
         tv_current = (TextView) header.findViewById(R.id.tv_current);
         tv_in = (TextView) header.findViewById(R.id.tv_in);
         tv_out = (TextView) header.findViewById(R.id.tv_out);
         listview = (ListView) findViewById(R.id.listview);
-        tv_empty = (TextView) findViewById(R.id.tv_empty);
         tv_invite = (TextView) findViewById(R.id.tv_invite);
     }
 
@@ -100,7 +102,7 @@ public class MyABCBountyActivity extends BaseActivity {
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         adapter = new BalanceAdapter(this, mList);
         listview.setAdapter(adapter);
-        listview.setEmptyView(tv_empty);
+        listview.addHeaderView(header);
         isFirstLoad = true;
     }
 
@@ -174,9 +176,12 @@ public class MyABCBountyActivity extends BaseActivity {
                 String url = SessionContext.getUrl(NetURL.SHARE, params);
 
                 final UMWeb web = new UMWeb(url);
-                web.setTitle("ABC");
+                Random random = new Random(System.currentTimeMillis());
+                int index = random.nextInt(ShareTypeDef.ShareContentEnum.values().length);
+                ShareTypeDef.ShareContentEnum value = ShareTypeDef.ShareContentEnum.values()[index];
+                web.setTitle(value.getShareTitle());
                 web.setThumb(new UMImage(MyABCBountyActivity.this, BitmapFactory.decodeResource(getResources(), R.drawable.logo)));
-                web.setDescription("开启无中介预订时代！");
+                web.setDescription(value.getShareDescription());
                 ShareControl.getInstance().setUMWebContent(this, web, null);
                 showSharePopupWindow();
                 break;
@@ -214,15 +219,17 @@ public class MyABCBountyActivity extends BaseActivity {
     }
 
     private void refreshBountyBaseInfo() {
-        listview.removeHeaderView(header);
+        int current = 0;
+        int lxbIn = 0;
+        int lxbOut = 0;
         if (null != mBountyBaseInfo) {
-            listview.addHeaderView(header);
-            tv_current.setText(String.valueOf(mBountyBaseInfo.rest));
-            tv_in.setText(String.valueOf(mBountyBaseInfo.total));
-            tv_out.setText(String.valueOf(mBountyBaseInfo.used));
-        } else {
-            listview.removeHeaderView(header);
+            current = mBountyBaseInfo.rest;
+            lxbIn = mBountyBaseInfo.total;
+            lxbOut = mBountyBaseInfo.used;
         }
+        tv_current.setText(String.valueOf(current));
+        tv_in.setText(String.valueOf(lxbIn));
+        tv_out.setText(String.valueOf(lxbOut));
     }
 
     private void refreshBountyDetailListInfo() {
@@ -232,6 +239,13 @@ public class MyABCBountyActivity extends BaseActivity {
             }
             mList.addAll(mBountyDetailInfo.balances);
             adapter.notifyDataSetChanged();
+        }
+
+        //empty view判断
+        if (mList.size() > 0) {
+            empty_lay.setVisibility(View.GONE);
+        } else {
+            empty_lay.setVisibility(View.VISIBLE);
         }
     }
 
@@ -303,7 +317,6 @@ public class MyABCBountyActivity extends BaseActivity {
             viewHolder.tv_balance_price.append(String.valueOf(list.get(position).amount));
             viewHolder.tv_balance_date.setText(DateUtil.getDay("yyyy/MM/dd", list.get(position).createTime));
             viewHolder.tv_balance_user.setText(list.get(position).remark);
-
             return convertView;
         }
 
