@@ -42,6 +42,7 @@ public class OrderPayDetailInfoBean implements Serializable {
         public String orderId;
         public int orderMoney;
         public String serviceName;
+        public String type;
         public int servicePrice;
         public int serviceVipPrice;
     }

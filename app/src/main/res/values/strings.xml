@@ -87,6 +87,7 @@
     <string name="lxb_in">累计收益</string>
     <string name="lxb_out">累计支出</string>
     <string name="lxb_detail">旅行币明细</string>
+    <string name="lxb_empty_tips">暂无旅行币明细</string>
     <string name="side_yhq">我的优惠券</string>
     <string name="side_assess">评价</string>
     <string name="side_fans">粉丝酒店</string>
