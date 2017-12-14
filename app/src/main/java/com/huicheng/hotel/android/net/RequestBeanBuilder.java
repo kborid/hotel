@@ -15,6 +15,7 @@ import com.prj.sdk.app.AppContext;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.constants.InfoType;
 import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
@@ -69,14 +70,18 @@ public class RequestBeanBuilder {
         try {
             // 先对body进行base64
             String bodyText = new Gson().toJson(body);
+            LogUtil.i("RequestBeanBuilder", "bodyTextJson:" + bodyText);
             // 对报文进行BASE64编码，避免中文处理问题
             String base64Text = new String(Base64.encodeBase64((AppConst.APPID + bodyText).getBytes("utf-8"), false));
+            LogUtil.i("RequestBeanBuilder", "bodyBase64Text:" + base64Text);
             // MD5摘要，生成固定长度字符串用于加密
             String destText = MD5Tool.getMD5(base64Text);
+            LogUtil.i("RequestBeanBuilder", "bodyMD5Text:" + destText);
             data.setDataMing(destText);
             data.setKey(AppConst.APPKEY);
             // 3DES加密
             Algorithm3DES.encryptMode(data);
+            LogUtil.i("RequestBeanBuilder", "bodyAlgorithm3DESText:" + data.getDataMi());
         } catch (Exception e) {
             e.printStackTrace();
         }

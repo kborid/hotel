@@ -25,6 +25,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.common.pay.wxpay.MD5;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.UserInfo;
@@ -108,9 +109,9 @@ public class UserRegisterActivity extends BaseActivity {
             recommendChannel = mJson.containsKey("channel") ? mJson.getString("channel") : "";
             recommendMobile = mJson.containsKey("mobile") ? mJson.getString("mobile") : "";
             LogUtil.i(TAG, "OpenInstall Info:" + recommendChannel + ", " + recommendUserId + ", " + recommendMobile);
-            if ("05".equals(recommendChannel)) {
+            if (ShareTypeDef.SHARE_B2C.equals(recommendChannel)) {
                 et_yqm.setVisibility(View.GONE);
-            } else if ("07".equals(recommendChannel) && StringUtil.notEmpty(recommendMobile)) {
+            } else if (ShareTypeDef.SHARE_C2C.equals(recommendChannel) && StringUtil.notEmpty(recommendMobile)) {
                 et_yqm.setVisibility(View.VISIBLE);
                 et_yqm.setEnabled(false);
                 et_yqm.setText(recommendMobile);
@@ -197,6 +198,13 @@ public class UserRegisterActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                checkInputForActionBtnStatus();
+            }
+        });
+
+        cb_agreement_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 checkInputForActionBtnStatus();
             }
         });
