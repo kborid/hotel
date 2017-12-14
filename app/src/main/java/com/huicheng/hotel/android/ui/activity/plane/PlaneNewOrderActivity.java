@@ -16,7 +16,7 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
  * @date 2017/11/22 0022.
  */
 
-public class PlaneOrderActivity extends BaseActivity {
+public class PlaneNewOrderActivity extends BaseActivity {
 
     private Switch btn_custom_switch;
     private LinearLayout test_layout;
@@ -30,7 +30,7 @@ public class PlaneOrderActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_planeorder_layout);
+        setContentView(R.layout.act_plane_neworder_layout);
         initViews();
         initParams();
         initListeners();

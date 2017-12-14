@@ -95,14 +95,16 @@ android {
     }
 
     applicationVariants.all { variant ->
-            variant.outputs.each { output ->
-                if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
-                    def apkFile = new File(
-                            output.outputFile.getParent(),
-                            "${getAppName()}_v${variant.versionName}_${variant.versionCode}_${getCurrentDate()}_${variant.buildType.name}.apk")
-                    output.outputFile = apkFile
-                }
+        variant.outputs.each { output ->
+            if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+                def apkFile = new File(
+                        output.outputFile.getParent(),
+                        "${appName}_v${variant.versionName}_${variant.versionCode}_${currentDate}_${variant.buildType.name}.apk")
+                output.outputFile = apkFile
+                //App名字_v版本号_版本代码_当天日期_构建类型.apk
+                //例如：abc_v1.0.0_1_20171212_debug.apk
             }
+        }
     }
 }
 

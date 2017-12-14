@@ -118,6 +118,8 @@
 
                     <include layout="@layout/layout_plane_custominfo_item" />
 
+                    <include layout="@layout/layout_plane_custominfo_item" />
+
                 </LinearLayout>
                 <!--保险信息-->
                 <LinearLayout
@@ -491,7 +493,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:orientation="vertical"
                 android:paddingLeft="27dp"
                 android:paddingRight="27dp">

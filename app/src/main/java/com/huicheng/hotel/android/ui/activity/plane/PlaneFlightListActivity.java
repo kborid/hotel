@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * @date 2017/11/21 0021.
  */
 
-public class PlaneListActivity extends BaseActivity {
+public class PlaneFlightListActivity extends BaseActivity {
 
     private ListView listview;
     private ArrayList<String> list = new ArrayList<>();
@@ -47,7 +47,7 @@ public class PlaneListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_planelist_layout);
+        setContentView(R.layout.act_plane_flightlist_layout);
         initViews();
         initParams();
         initListeners();
@@ -112,7 +112,7 @@ public class PlaneListActivity extends BaseActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(PlaneListActivity.this, PlaneDetailActivity.class);
+                Intent intent = new Intent(PlaneFlightListActivity.this, PlaneTicketListActivity.class);
                 startActivity(intent);
             }
         });
@@ -209,7 +209,7 @@ public class PlaneListActivity extends BaseActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (null == convertView) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.lv_planeticket_item, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_flight_item, null);
             }
             return convertView;
         }

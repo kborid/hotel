@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -23,7 +25,7 @@ import java.util.Date;
  * @date 2017/11/22 0022.
  */
 
-public class PlaneDetailActivity extends BaseActivity {
+public class PlaneTicketListActivity extends BaseActivity {
 
     private ArrayList<String> list = new ArrayList<>();
     private ListView listview;
@@ -33,7 +35,7 @@ public class PlaneDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_planedetail_layout);
+        setContentView(R.layout.act_plane_ticketlist_layout);
         initViews();
         initParams();
         initListeners();
@@ -43,7 +45,7 @@ public class PlaneDetailActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         listview = (ListView) findViewById(R.id.listview);
-        mListHeaderView = LayoutInflater.from(this).inflate(R.layout.lv_planedetail_header, null);
+        mListHeaderView = LayoutInflater.from(this).inflate(R.layout.lv_plane_ticket_header, null);
     }
 
     @Override
@@ -66,8 +68,6 @@ public class PlaneDetailActivity extends BaseActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(PlaneDetailActivity.this, PlaneOrderActivity.class);
-                startActivity(intent);
             }
         });
         btn_right.setOnClickListener(this);
@@ -124,10 +124,36 @@ public class PlaneDetailActivity extends BaseActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
             if (null == convertView) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.lv_planedetail_item, null);
+                viewHolder = new ViewHolder();
+                convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_ticket_item, null);
+                viewHolder.tv_order = (TextView) convertView.findViewById(R.id.tv_order);
+                viewHolder.remark_layout = (LinearLayout) convertView.findViewById(R.id.remark_layout);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            viewHolder.tv_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PlaneTicketListActivity.this, PlaneNewOrderActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            if (position % 2 == 0) {
+                viewHolder.remark_layout.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.remark_layout.setVisibility(View.GONE);
             }
             return convertView;
+        }
+
+        private class ViewHolder {
+            TextView tv_order;
+            LinearLayout remark_layout;
         }
     }
 }

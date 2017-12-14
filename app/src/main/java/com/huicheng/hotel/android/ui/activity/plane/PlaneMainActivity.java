@@ -116,7 +116,7 @@ public class PlaneMainActivity extends BaseMainActivity {
                 break;
             }
             case R.id.tv_next_search:
-                Intent nextIntent = new Intent(this, PlaneListActivity.class);
+                Intent nextIntent = new Intent(this, PlaneFlightListActivity.class);
                 startActivity(nextIntent);
                 break;
         }

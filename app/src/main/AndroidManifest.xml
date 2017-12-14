@@ -197,15 +197,15 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--机票列表画面-->
         <activity
-            android:name=".ui.activity.plane.PlaneListActivity"
+            android:name=".ui.activity.plane.PlaneFlightListActivity"
             android:screenOrientation="portrait" />
         <!--机票详情、航班列表画面-->
         <activity
-            android:name=".ui.activity.plane.PlaneDetailActivity"
+            android:name=".ui.activity.plane.PlaneTicketListActivity"
             android:screenOrientation="portrait" />
         <!--机票订单确认画面-->
         <activity
-            android:name=".ui.activity.plane.PlaneOrderActivity"
+            android:name=".ui.activity.plane.PlaneNewOrderActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--机票地址管理画面-->
