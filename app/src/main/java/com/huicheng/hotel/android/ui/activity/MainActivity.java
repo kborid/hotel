@@ -97,6 +97,8 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     private TextView tv_consider;
 
     private long exitTime = 0;
+    private Calendar calendar = Calendar.getInstance();
+    private boolean isSelectedDate = false;
     private long beginTime, endTime;
     private boolean isNeedCloseLeftDrawer = false;
     private int oldSkinIndex = 0;
@@ -233,13 +235,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         weather_lay.setLayoutParams(weatherRlp);
 
         //初始化时间，今天到明天 1晚
-        Calendar calendar = Calendar.getInstance();
-        beginTime = calendar.getTime().getTime();
-        calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
-        endTime = calendar.getTime().getTime();
-        HotelOrderManager.getInstance().setBeginTime(beginTime);
-        HotelOrderManager.getInstance().setEndTime(endTime);
-        HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
+        initCurrentTodayTime();
         tv_in_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", beginTime)));
         tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
         tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
@@ -357,7 +353,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     @Override
     public void onResume() {
         super.onResume();
-
+        LogUtil.i(TAG, "onResume()");
         //重置consider
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
         //男性女性界面初始化
@@ -602,6 +598,12 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         left_layout.unregisterBroadReceiver();
     }
 
+    private void initCurrentTodayTime() {
+        beginTime = calendar.getTime().getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
+        endTime = calendar.getTime().getTime();
+    }
+
     @Override
     public void onClick(View v) {
         Intent intent = null;
@@ -627,6 +629,9 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
                     return;
                 }
                 HotelOrderManager.getInstance().reset();
+                if (!isSelectedDate) {
+                    initCurrentTodayTime();
+                }
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
                 HotelOrderManager.getInstance().setEndTime(endTime);
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
@@ -678,6 +683,12 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
 //                et_keyword.setFocusableInTouchMode(true);
 //                break;
             case R.id.tv_search:
+                if (!isSelectedDate) {
+                    initCurrentTodayTime();
+                }
+                HotelOrderManager.getInstance().setBeginTime(beginTime);
+                HotelOrderManager.getInstance().setEndTime(endTime);
+                HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
                 intent = new Intent(this, SearchResultActivity.class);
                 break;
             case R.id.tv_consider:
@@ -710,6 +721,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
             }
         } else if (requestCode == REQUEST_CODE_DATE) {
             if (null != data) {
+                isSelectedDate = true;
                 beginTime = data.getLongExtra("beginTime", beginTime);
                 endTime = data.getLongExtra("endTime", endTime);
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
