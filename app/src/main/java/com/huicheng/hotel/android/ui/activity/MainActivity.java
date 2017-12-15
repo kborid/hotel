@@ -97,7 +97,6 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     private TextView tv_consider;
 
     private long exitTime = 0;
-    private Calendar calendar = Calendar.getInstance();
     private boolean isSelectedDate = false;
     private long beginTime, endTime;
     private boolean isNeedCloseLeftDrawer = false;
@@ -599,6 +598,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     }
 
     private void initCurrentTodayTime() {
+        Calendar calendar = Calendar.getInstance();
         beginTime = calendar.getTime().getTime();
         calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
         endTime = calendar.getTime().getTime();
