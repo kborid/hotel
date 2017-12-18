@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -88,10 +89,12 @@ public class PlaneAddrChooserActivity extends BaseActivity {
     private class AddressChooserAdapter extends BaseAdapter {
         private Context context;
         private ArrayList<String> mList = new ArrayList<>();
+        private int mSelectedIndex;
 
         AddressChooserAdapter(Context context, ArrayList<String> list) {
             this.context = context;
             this.mList = list;
+            mSelectedIndex = -1;
         }
 
         @Override
@@ -110,12 +113,43 @@ public class PlaneAddrChooserActivity extends BaseActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ViewHolder viewHolder;
             if (null == convertView) {
+                viewHolder = new ViewHolder();
                 convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_address_item, null);
+                viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
             }
             convertView.findViewById(R.id.action_lay).setVisibility(View.GONE);
+
+            if (position == mSelectedIndex) {
+                viewHolder.iv_flag.setSelected(true);
+            } else {
+                viewHolder.iv_flag.setSelected(false);
+            }
+
+            viewHolder.iv_flag.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setSelectedIndex(v.isSelected() ? -1 : position);
+                }
+            });
+
             return convertView;
+        }
+
+        public void setSelectedIndex(int index) {
+            System.out.println("selectedIndex = " + mSelectedIndex);
+            this.mSelectedIndex = index;
+            System.out.println("index = " + index);
+            notifyDataSetChanged();
+        }
+
+        class ViewHolder {
+            ImageView iv_flag;
         }
     }
 }

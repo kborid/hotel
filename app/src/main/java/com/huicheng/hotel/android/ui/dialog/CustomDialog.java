@@ -143,9 +143,9 @@ public class CustomDialog extends Dialog {
 
     private void setCheckBox(boolean isChecked) {
         if (isChecked) {
-            checkbox.setImageResource(R.drawable.iv_checked);
+            checkbox.setImageResource(R.drawable.iv_plane_order_checked);
         } else {
-            checkbox.setImageResource(R.drawable.check);
+            checkbox.setImageResource(R.drawable.iv_plane_order_unchecked);
         }
     }
 

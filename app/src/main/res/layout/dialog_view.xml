@@ -95,7 +95,7 @@
                         android:id="@+id/checkbox_imageview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/check" />
+                        android:src="@drawable/iv_plane_order_unchecked" />
 
                     <TextView
                         android:id="@+id/checkbox_textview"

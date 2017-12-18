@@ -11,6 +11,6 @@ public class MultiChoiceLayout extends CheckedRelativeLayout {
 
 	public MultiChoiceLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setImageResouce(R.drawable.check, R.drawable.iv_checked);
+		setImageResouce(R.drawable.iv_plane_order_unchecked, R.drawable.iv_plane_order_checked);
 	}
 }
