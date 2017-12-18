@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.PlaneCommDef;
+import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
 import com.prj.sdk.app.AppConst;
@@ -28,11 +30,8 @@ import java.util.Date;
 public class PlaneMainActivity extends BaseMainActivity {
 
     private static final int REQUEST_CODE_DATE = 0x01;
-    private static final int TAB_SINGLE = 0;
-    private static final int TAB_DOUBLE = 1;
     private TabLayout tabs;
     private int selectedIndex = 0;
-    private boolean isSingle = true;
 
     private LinearLayout off_date_lay, on_date_lay;
     private TextView tv_off_date, tv_off_week;
@@ -66,10 +65,11 @@ public class PlaneMainActivity extends BaseMainActivity {
     @Override
     public void initParams() {
         super.initParams();
-        tabs.addTab(tabs.newTab().setText(getString(R.string.plane_single)), TAB_SINGLE, true);
-        tabs.addTab(tabs.newTab().setText(getString(R.string.plane_double)), TAB_DOUBLE, false);
+        tabs.addTab(tabs.newTab().setText(getString(R.string.plane_single)), PlaneCommDef.FLIGHT_SINGLE, true);
+        tabs.addTab(tabs.newTab().setText(getString(R.string.plane_double)), PlaneCommDef.FLIGHT_GO_BACK, false);
         setIndicator(tabs, 54, 54);
-        refreshPlaneStateAndInfo(0);
+        refreshPlaneStateAndInfo(PlaneCommDef.FLIGHT_SINGLE);
+        PlaneOrderManager.Instance.setFlightType(PlaneCommDef.FLIGHT_SINGLE);
         //地点信息
         String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
@@ -87,6 +87,7 @@ public class PlaneMainActivity extends BaseMainActivity {
                 System.out.println("onTabSelected() " + tab.getText() + ", " + tab.getPosition());
                 selectedIndex = tab.getPosition();
                 refreshPlaneStateAndInfo(selectedIndex);
+                PlaneOrderManager.Instance.setFlightType((selectedIndex == PlaneCommDef.FLIGHT_SINGLE) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GO_BACK);
             }
 
             @Override
@@ -123,15 +124,13 @@ public class PlaneMainActivity extends BaseMainActivity {
     }
 
     private void refreshPlaneStateAndInfo(int pos) {
-        if (pos == TAB_SINGLE) {
-            isSingle = true;
+        if (pos == PlaneCommDef.FLIGHT_SINGLE) {
             tv_off_date.setText(DateUtil.getDay("M月d日", beginTime));
             tv_off_week.setText(DateUtil.dateToWeek2(new Date(beginTime)));
             on_date_lay.setEnabled(false);
             tv_on_date.setText("");
             tv_on_week.setText("— —");
         } else {
-            isSingle = false;
             tv_off_date.setText(DateUtil.getDay("M月d日", beginTime));
             tv_off_week.setText(DateUtil.dateToWeek2(new Date(beginTime)));
             on_date_lay.setEnabled(true);

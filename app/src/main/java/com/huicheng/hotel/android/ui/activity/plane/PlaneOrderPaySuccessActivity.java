@@ -10,21 +10,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.PlaneCommDef;
+import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.prj.sdk.util.BitmapUtils;
 
 public class PlaneOrderPaySuccessActivity extends BaseActivity {
 
-    private static final int ORDER_SINGLE = 0;
-    private static final int ORDER_GOBACK = 1;
-
     private ImageView iv_pay_success;
     private LinearLayout order_info_lay;
     private TextView tv_gohome, tv_myorder;
 
     private View orderLayout;
-    private int mPlaneOrderType = ORDER_SINGLE;
     private ImageView iv_plane_icon, iv_plane_icon_back;
     private TextView tv_plane_name, tv_plane_name_back;
     private TextView tv_plane_code, tv_plane_code_back;
@@ -52,9 +50,6 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
     public void dealIntent() {
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
-        if (null != bundle) {
-            mPlaneOrderType = bundle.getInt("planeOrderType");
-        }
     }
 
     @Override
@@ -62,9 +57,8 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
         super.initParams();
         tv_center_title.setText("订单成功");
         iv_pay_success.setImageBitmap(BitmapUtils.getAlphaBitmap(iv_pay_success.getDrawable(), getResources().getColor(R.color.plane_mainColor)));
-        mPlaneOrderType = ORDER_GOBACK;
         order_info_lay.removeAllViews();
-        if (ORDER_SINGLE == mPlaneOrderType) {
+        if (PlaneOrderManager.Instance.getFlightType() == PlaneCommDef.FLIGHT_SINGLE) {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_gosingle_order_item, null);
         } else {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_goback_order_item, null);

@@ -235,6 +235,11 @@
     <string name="plane_single">单程</string>
     <string name="plane_double">往返</string>
 
+    <string-array name="cardType">
+        <item>身份证</item>
+        <item>护照</item>
+    </string-array>
+
     <!--debug info-->
     <string name="debug_menu">Debug Menu</string>
     <string name="debug_change">Change Environment</string>

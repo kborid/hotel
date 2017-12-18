@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -9,7 +10,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.PlaneCommDef;
+import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane;
 
 /**
  * @auth kborid
@@ -18,8 +22,11 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
 
 public class PlaneNewOrderActivity extends BaseActivity {
 
-    private Switch btn_custom_switch;
-    private LinearLayout test_layout;
+    //预订航班信息
+    private LinearLayout flight_layout;
+    private LinearLayout flight_flag_layout;
+    private CustomInfoLayoutForPlane custom_info_layout_plane;
+
     private Switch btn_invoice_switch;
     private LinearLayout invoice_lay;
     private TextView tv_invoice_tips;
@@ -39,8 +46,11 @@ public class PlaneNewOrderActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
-        btn_custom_switch = (Switch) findViewById(R.id.btn_custom_switch);
-        test_layout = (LinearLayout) findViewById(R.id.test_layout);
+        flight_layout = (LinearLayout) findViewById(R.id.flight_layout);
+        flight_flag_layout = (LinearLayout) findViewById(R.id.flight_flag_layout);
+
+        custom_info_layout_plane = (CustomInfoLayoutForPlane) findViewById(R.id.custom_info_layout_plane);
+
         btn_invoice_switch = (Switch) findViewById(R.id.btn_invoice_switch);
         invoice_lay = (LinearLayout) findViewById(R.id.invoice_lay);
         tv_invoice_tips = (TextView) findViewById(R.id.tv_invoice_tips);
@@ -53,6 +63,14 @@ public class PlaneNewOrderActivity extends BaseActivity {
         super.initParams();
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText("杭州 → 北京");
+        if (PlaneOrderManager.Instance.getFlightType() == PlaneCommDef.FLIGHT_GO_BACK) {
+            flight_flag_layout.addView(LayoutInflater.from(this).inflate(R.layout.layout_plane_order_item, null));
+            flight_flag_layout.getChildAt(0).findViewById(R.id.tv_flight_flag).setVisibility(View.VISIBLE);
+            ((TextView) flight_flag_layout.getChildAt(0).findViewById(R.id.tv_flight_flag)).setText("去程：");
+            flight_flag_layout.getChildAt(1).findViewById(R.id.tv_flight_flag).setVisibility(View.VISIBLE);
+            ((TextView) flight_flag_layout.getChildAt(1).findViewById(R.id.tv_flight_flag)).setText("返程：");
+        }
+
         //initialize
         btn_invoice_switch.setChecked(false);
         tv_invoice_tips.setVisibility(View.VISIBLE);
@@ -62,16 +80,6 @@ public class PlaneNewOrderActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        btn_custom_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    test_layout.setVisibility(View.VISIBLE);
-                } else {
-                    test_layout.setVisibility(View.GONE);
-                }
-            }
-        });
         btn_invoice_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

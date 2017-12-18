@@ -35,6 +35,7 @@ public class PlaneOrderPayActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText("支付方式");
     }
 

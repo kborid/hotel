@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <TableLayout
@@ -23,10 +23,7 @@
             android:paddingRight="22dp"
             android:paddingTop="6dp">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <TableRow>
 
                 <TextView
                     android:text="乘机人"
@@ -34,6 +31,7 @@
                     android:textSize="@dimen/common_14sp" />
 
                 <EditText
+                    android:id="@+id/ed_custom_name"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:layout_weight="1"
@@ -51,25 +49,22 @@
                 android:layout_height="0.5dp"
                 android:background="#e2e2e2" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <TableRow>
 
                 <TextView
+                    android:layout_gravity="center_vertical"
                     android:text="证件类型"
                     android:textColor="#666666"
                     android:textSize="@dimen/common_14sp" />
 
-                <TextView
+                <Spinner
+                    android:id="@+id/spinner_card_type"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="身份证"
-                    android:textColor="#666666"
-                    android:textSize="@dimen/common_18sp"
-                    android:textStyle="bold" />
+                    android:background="@color/transparent"
+                    android:entries="@array/cardType"
+                    android:textAlignment="center" />
             </TableRow>
 
             <View
@@ -77,23 +72,66 @@
                 android:layout_height="0.5dp"
                 android:background="#e2e2e2" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <TableRow>
 
-                <TextView
-                    android:text="证件号码"
-                    android:textColor="#666666"
-                    android:textSize="@dimen/common_14sp" />
+                <RelativeLayout android:layout_height="44dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="证件号码"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="乘机人生日"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_14sp"
+                        android:visibility="invisible" />
+                </RelativeLayout>
 
                 <EditText
+                    android:id="@+id/et_card_number"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:layout_weight="1"
                     android:background="@color/transparent"
                     android:gravity="center"
-                    android:hint="请输入证件号码"
+                    android:hint="必须和乘机人一致"
+                    android:inputType="text"
+                    android:textColor="#666666"
+                    android:textColorHint="#cccccc"
+                    android:textSize="@dimen/common_18sp" />
+            </TableRow>
+
+            <View
+                android:id="@+id/line_birthday_for_hz"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#e2e2e2"
+                android:visibility="gone" />
+
+            <TableRow
+                android:id="@+id/row_birthday_for_hz"
+                android:visibility="gone">
+
+                <TextView
+                    android:text="乘机人生日"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/common_14sp" />
+
+                <EditText
+                    android:id="@+id/et_birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:gravity="center"
+                    android:hint="必须和乘机人一致"
                     android:inputType="text"
                     android:textColor="#666666"
                     android:textColorHint="#cccccc"
@@ -107,9 +145,11 @@
         </TableLayout>
 
         <ImageView
+            android:id="@+id/iv_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/iv_plane_custom_add" />
     </LinearLayout>
 
@@ -143,7 +183,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/test_layout"
+        android:id="@+id/no_adult_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:animateLayoutChanges="true"

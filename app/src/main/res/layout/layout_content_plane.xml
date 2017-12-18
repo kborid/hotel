@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="25dp"
             app:tabBackground="@drawable/common_item_selector_bg"
-            app:tabIndicatorColor="?attr/mainColor"
+            app:tabIndicatorColor="@color/plane_mainColor"
             app:tabIndicatorHeight="3dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="#3c3c3c"

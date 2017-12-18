@@ -1,19 +1,22 @@
-package com.huicheng.hotel.android.ui.custom;
+package com.huicheng.hotel.android.ui.custom.plane;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.requestbuilder.bean.InPersonalInfoBean;
-import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
@@ -22,33 +25,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author kborid
- * @date 2017/3/6 0006
+ * @auth kborid
+ * @date 2017/12/18 0018.
  */
-public class CustomInfoLayoutForHotel extends LinearLayout {
-    private Context context;
 
+public class CustomInfoLayoutForPlane extends LinearLayout {
+    private Context context;
     private LinearLayout custom_info_layout;
 
-    public CustomInfoLayoutForHotel(Context context) {
+    public CustomInfoLayoutForPlane(Context context) {
         this(context, null);
     }
 
-    public CustomInfoLayoutForHotel(Context context, AttributeSet attrs) {
+    public CustomInfoLayoutForPlane(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CustomInfoLayoutForHotel(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CustomInfoLayoutForPlane(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         init();
     }
 
     private void init() {
-        LayoutInflater.from(context).inflate(R.layout.layout_hotel_custominfo, this);
+        LayoutInflater.from(context).inflate(R.layout.layout_plane_custominfo, this);
         findViews();
-        setClickListeners();
-        initializeLayoutItem();
+        initializeFirstLayoutItem();
     }
 
     private void findViews() {
@@ -74,23 +76,44 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
     }
 
     private View getNewItemView() {
-        final View view = LayoutInflater.from(context).inflate(R.layout.layout_hotel_custominfo_item, null);
-        final TextView tv_person_label = (TextView) view.findViewById(R.id.tv_person_label);
-        final ImageView iv_remove = (ImageView) view.findViewById(R.id.iv_remove);
-        final ImageView iv_add = (ImageView) view.findViewById(R.id.iv_add);
-        tv_person_label.setOnClickListener(new OnClickListener() {
+        final View itemView = LayoutInflater.from(context).inflate(R.layout.layout_plane_custominfo_item, null);
+        final EditText ed_custom_name = (EditText) itemView.findViewById(R.id.ed_custom_name);
+        final EditText et_card_number = (EditText) itemView.findViewById(R.id.et_card_number);
+        final Spinner spinner_card_type = (Spinner) itemView.findViewById(R.id.spinner_card_type);
+        // 建立Adapter并且绑定数据源
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.layout_plane_custominfo_item_cardtype_item, context.getResources().getStringArray(R.array.cardType));
+        adapter.setDropDownViewResource(R.layout.layout_plane_custominfo_item_cardtype_item);
+        spinner_card_type.setAdapter(adapter);
+        spinner_card_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                CustomDialog dialog = new CustomDialog(context);
-                dialog.setMessage(context.getResources().getString(R.string.in_person_msg));
-                dialog.setNegativeButton(context.getResources().getString(R.string.iknown), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+                    et_card_number.setHint("必须和乘机人一致");
+                    itemView.findViewById(R.id.line_birthday_for_hz).setVisibility(VISIBLE);
+                    itemView.findViewById(R.id.row_birthday_for_hz).setVisibility(VISIBLE);
+                } else {
+                    et_card_number.setHint("请输入证件号码");
+                    itemView.findViewById(R.id.line_birthday_for_hz).setVisibility(GONE);
+                    itemView.findViewById(R.id.row_birthday_for_hz).setVisibility(GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        final Switch isAdult = (Switch) itemView.findViewById(R.id.btn_custom_switch);
+        final LinearLayout noAdultLayout = (LinearLayout) itemView.findViewById(R.id.no_adult_layout);
+        final ImageView iv_add = (ImageView) itemView.findViewById(R.id.iv_add);
+//        final ImageView iv_remove = (ImageView) view.findViewById(R.id.iv_remove);
+        isAdult.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    noAdultLayout.setVisibility(VISIBLE);
+                } else {
+                    noAdultLayout.setVisibility(GONE);
+                }
             }
         });
         iv_add.setOnClickListener(new OnClickListener() {
@@ -100,15 +123,15 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
                 updateButtonStatus(custom_info_layout.getChildCount());
             }
         });
-        iv_remove.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                custom_info_layout.removeView(view);
-                updateButtonStatus(custom_info_layout.getChildCount());
-            }
-        });
+//        iv_remove.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                custom_info_layout.removeView(view);
+//                updateButtonStatus(custom_info_layout.getChildCount());
+//            }
+//        });
 
-        return view;
+        return itemView;
     }
 
     public boolean isEditViewEmpty() {
@@ -181,29 +204,25 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
         return phoneStr;
     }
 
-    private void initializeLayoutItem() {
+    private void initializeFirstLayoutItem() {
         custom_info_layout.removeAllViews();
         custom_info_layout.addView(getNewItemView());
         updateButtonStatus(custom_info_layout.getChildCount());
     }
 
-    private void setClickListeners() {
-
-    }
-
     private void updateButtonStatus(int count) {
         LogUtil.i("CommonCustomInfoLayout", "updateButtonStatus() count = " + count);
         //刷新状态
-        if (count == 1) {
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setEnabled(false);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setAlpha(0.5f);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
-        } else if (count > 1) {
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setEnabled(true);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setAlpha(1.0f);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
-        }
+//        if (count == 1) {
+//            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setEnabled(false);
+//            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setAlpha(0.5f);
+//            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
+//            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
+//        } else if (count > 1) {
+//            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setEnabled(true);
+//            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setAlpha(1.0f);
+//            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
+//            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
+//        }
     }
 }

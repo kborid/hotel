@@ -30,6 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="6dp"
+                    android:paddingLeft="20dp"
                     android:paddingTop="6dp"
                     android:text="航班信息"
                     android:textColor="#9b9b9b"
@@ -38,14 +39,299 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="#cccccc" />
 
                 <LinearLayout
-                    android:id="@+id/payListLay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:paddingBottom="20dp"
+                    android:paddingTop="10dp">
+                    <!--航班机场信息-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10月10日 周六"
+                            android:textColor="#3c3c3c"
+                            android:textSize="@dimen/common_16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:text="杭州-北京"
+                            android:textColor="#3c3c3c"
+                            android:textSize="@dimen/common_16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:text="经济舱"
+                            android:textColor="#3c3c3c"
+                            android:textSize="@dimen/common_16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <!--航班时间信息-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <!--起飞时间、机场信息-->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right|center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="22:55"
+                                android:textColor="#3c3c3c"
+                                android:textSize="@dimen/common_20sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="萧山机场T2"
+                                android:textColor="#666666"
+                                android:textSize="@dimen/common_12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="41dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="-10dp"
+                                android:layout_marginRight="-10dp"
+                                android:background="@drawable/line_plane_listitem_time"
+                                android:layerType="software" />
+                            <!--航行时间、经停信息-->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <!--航班经停信息-->
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:visibility="visible">
+
+                                    <TextView
+                                        android:layout_width="56dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="经停南京"
+                                        android:textColor="@color/plane_mainColor"
+                                        android:textSize="@dimen/common_10sp"
+                                        android:textStyle="bold" />
+
+                                    <View
+                                        android:layout_width="56dp"
+                                        android:layout_height="1dp"
+                                        android:layout_marginBottom="2dp"
+                                        android:layout_marginTop="2dp"
+                                        android:background="@drawable/line_plane_listitem"
+                                        android:layerType="software" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="21小时40分钟"
+                                    android:textColor="#666666"
+                                    android:textSize="@dimen/common_12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="41dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="-10dp"
+                                android:layout_marginRight="-10dp"
+                                android:background="@drawable/line_plane_listitem_time"
+                                android:layerType="software" />
+                        </LinearLayout>
+                        <!--降落时间、机场信息-->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="24:35"
+                                android:textColor="#3c3c3c"
+                                android:textSize="@dimen/common_20sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="双流机场T1"
+                                android:textColor="#666666"
+                                android:textSize="@dimen/common_12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--航班基本信息-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="中国邮政航空"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="YZ1234"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="2dp"
+                            android:background="#666666" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="空客320  (中)"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="2dp"
+                            android:background="#666666" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="准点率"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="80%"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="2dp"
+                            android:background="#666666" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="有餐食"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#cccccc" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="22dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="订单总价"
+                        android:textColor="#9b9b9b"
+                        android:textSize="@dimen/common_18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/RMB"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="9900"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="9dp"
+                        android:text="详情"
+                        android:textColor="@color/plane_mainColor"
+                        android:textSize="@dimen/common_12sp" />
+                </LinearLayout>
             </LinearLayout>
 
             <com.huicheng.hotel.android.ui.custom.CommonPayChannelLayout

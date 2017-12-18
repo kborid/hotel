@@ -23,17 +23,31 @@
             android:paddingBottom="12dp">
             <!--预订航班信息-->
             <LinearLayout
+                android:id="@+id/flight_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:paddingLeft="18dp"
                 android:paddingRight="18dp"
                 android:visibility="visible">
 
-                <include layout="@layout/layout_plane_order_item" />
+                <LinearLayout
+                    android:id="@+id/flight_flag_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <include layout="@layout/layout_plane_order_item" />
+                    <include layout="@layout/layout_plane_order_item" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/iv_accessory_black_alpha3" />
             </LinearLayout>
 
             <LinearLayout
@@ -110,17 +124,10 @@
                     </TableRow>
                 </TableLayout>
                 <!--乘机人信息-->
-                <LinearLayout
+                <com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane
+                    android:id="@+id/custom_info_layout_plane"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
-
-                    <include layout="@layout/layout_plane_custominfo_item" />
-
-                    <include layout="@layout/layout_plane_custominfo_item" />
-
-                </LinearLayout>
+                    android:layout_height="wrap_content" />
                 <!--保险信息-->
                 <LinearLayout
                     android:layout_width="match_parent"
