@@ -40,11 +40,12 @@ import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
+import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.net.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
-import com.huicheng.hotel.android.ui.custom.CustomWeatherLayout;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -65,6 +66,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLeftDrawerListener, AMapLocationControl.MyLocationListener {
 
@@ -77,7 +79,8 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
 
     private DrawerLayout drawer_layout;
     private LeftDrawerLayout left_layout;
-    private CustomWeatherLayout weather_lay;
+    //    private CustomWeatherLayout weather_lay;
+    private CommonBannerLayout banner_lay;
 
     private RelativeLayout blur_lay;
     private ImageView iv_blur;
@@ -118,6 +121,11 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         initViews();
         initParams();
         initListeners();
+        if (null == savedInstanceState) {
+            if (SessionContext.getBannerList().size() == 0) {
+                requestMainBannerInfo();
+            }
+        }
     }
 
     public void initViews() {
@@ -127,7 +135,8 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
             drawer_layout.setScrimColor(getResources().getColor(R.color.transparent50));
         }
         left_layout = (LeftDrawerLayout) findViewById(R.id.left_layout);
-        weather_lay = (CustomWeatherLayout) findViewById(R.id.weather_lay);
+//        weather_lay = (CustomWeatherLayout) findViewById(R.id.weather_lay);
+        banner_lay = (CommonBannerLayout) findViewById(R.id.banner_lay);
 
         blur_lay = (RelativeLayout) findViewById(R.id.blur_lay);
         iv_blur = (ImageView) findViewById(R.id.iv_blur);
@@ -231,7 +240,12 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         RelativeLayout.LayoutParams weatherRlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         weatherRlp.width = Utils.mScreenWidth;
         weatherRlp.height = (int) ((float) weatherRlp.width / 750 * 400);
-        weather_lay.setLayoutParams(weatherRlp);
+//        weather_lay.setLayoutParams(weatherRlp);
+        banner_lay.setLayoutParams(weatherRlp);
+        if (SessionContext.getBannerList().size() > 0) {
+            banner_lay.setImageResource(SessionContext.getBannerList());
+        }
+        banner_lay.setWeatherInfoLayoutMargin(Utils.dip2px(11), Utils.mStatusBarHeight + Utils.dip2px(10), 0, 0);
 
         //初始化时间，今天到明天 1晚
         initCurrentTodayTime();
@@ -268,15 +282,23 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     }
 
     private void requestWeatherInfo(long timeStamp) {
+        LogUtil.i(TAG, "requestWeatherInfo() timeStamp = " + timeStamp);
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("cityname", SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
         b.addBody("date", DateUtil.getDay("yyyyMMdd", timeStamp));
         b.addBody("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
-
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.WEATHER;
         d.flag = AppConst.WEATHER;
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
 
+    private void requestMainBannerInfo() {
+        LogUtil.i(TAG, "requestHotelBanner()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.HOTEL_BANNER;
+        d.flag = AppConst.HOTEL_BANNER;
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -353,6 +375,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     public void onResume() {
         super.onResume();
         LogUtil.i(TAG, "onResume()");
+        banner_lay.startBanner();
         //重置consider
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
         //男性女性界面初始化
@@ -588,6 +611,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     @Override
     public void onPause() {
         super.onPause();
+        banner_lay.stopBanner();
     }
 
     @Override
@@ -764,9 +788,18 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
-                    weather_lay.refreshWeatherInfo(beginTime, bean);
+//                    weather_lay.refreshWeatherInfo(beginTime, bean);
+                    banner_lay.updateWeatherInfo(beginTime, bean);
                 } else {
-                    weather_lay.refreshWeatherInfo(beginTime, null);
+//                    weather_lay.refreshWeatherInfo(beginTime, null);
+                    banner_lay.updateWeatherInfo(beginTime, null);
+                }
+            } else if (request.flag == AppConst.HOTEL_BANNER) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
+                SessionContext.setBannerList(temp);
+                if (null != banner_lay) {
+                    banner_lay.setImageResource(temp);
                 }
             }
         }
@@ -777,7 +810,8 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         super.onNotifyError(request);
         removeProgressDialog();
         if (request.flag == AppConst.WEATHER) {
-            weather_lay.refreshWeatherInfo(beginTime, null);
+//            weather_lay.refreshWeatherInfo(beginTime, null);
+            banner_lay.updateWeatherInfo(beginTime, null);
         }
     }
 

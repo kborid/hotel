@@ -23,10 +23,15 @@
                 android:layout_height="wrap_content">
 
                 <!--天气预报-->
-                <com.huicheng.hotel.android.ui.custom.CustomWeatherLayout
+                <!--<com.huicheng.hotel.android.ui.custom.CustomWeatherLayout
                     android:id="@+id/weather_lay"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content" />-->
+                <!--banner-->
+                <com.huicheng.hotel.android.ui.custom.CommonBannerLayout
+                    android:id="@+id/banner_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
                 <RelativeLayout
                     android:id="@+id/user_lay"

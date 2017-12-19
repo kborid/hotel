@@ -51,7 +51,7 @@
     </string>
     <string name="coupon_tips_support">\n\n支持使用该券的酒店：</string>
     <string name="orderListItemDateStr">入住时间：%1$s-%2$s (%3$d晚)</string>
-    <string name="homeTemperatureStr">%1$s°</string>
+    <string name="homeTemperatureStr">%1$s℃</string>
     <string name="roomCountStr">%1$d间</string>
 
 
