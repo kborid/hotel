@@ -209,6 +209,8 @@ public class HotelOrderPayActivity extends BaseActivity {
                 tv_title_comm.setText(sb);
                 tv_price_comm.setText(String.format(getString(R.string.rmbStr), String.valueOf(orderPayDetailInfoBean.roomPrice)));
                 room_detail_layout.removeAllViews();
+
+                //房间信息
                 for (int i = 0; i < orderPayDetailInfoBean.preTotalPriceList.size(); i++) {
                     View roomDetailItem = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
                     TextView tv_room_title = (TextView) roomDetailItem.findViewById(R.id.tv_title);
@@ -237,6 +239,7 @@ public class HotelOrderPayActivity extends BaseActivity {
                 room_detail_layout.setLayoutParams(roomDetailLlp);
                 service_lay.addView(commView);
 
+                //选购服务信息
                 for (int i = 0; i < orderPayDetailInfoBean.attachInfo.size(); i++) {
                     View item = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
                     TextView tv_title = (TextView) item.findViewById(R.id.tv_title);
@@ -244,6 +247,17 @@ public class HotelOrderPayActivity extends BaseActivity {
                     tv_price.getPaint().setFakeBoldText(true);
                     tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).serviceCnt);
                     tv_price.setText(String.format(getString(R.string.rmbStr), String.valueOf(orderPayDetailInfoBean.attachInfo.get(i).orderMoney)));
+                    service_lay.addView(item);
+                }
+
+                //减免信息
+                for (int i = 0; i < orderPayDetailInfoBean.deductiblePriceList.size(); i++) {
+                    View item = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
+                    TextView tv_title = (TextView) item.findViewById(R.id.tv_title);
+                    TextView tv_price = (TextView) item.findViewById(R.id.tv_price);
+                    tv_price.getPaint().setFakeBoldText(true);
+                    tv_title.setText(orderPayDetailInfoBean.deductiblePriceList.get(i).name);
+                    tv_price.setText(" - " + String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.deductiblePriceList.get(i).price))));
                     service_lay.addView(item);
                 }
 

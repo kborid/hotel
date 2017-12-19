@@ -17,6 +17,7 @@ import com.fm.openinstall.OpenInstall;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -48,6 +49,11 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     private TextView tv_action;
     private String thirdpartusername, thirdpartuserheadphotourl, openid, mPlatformCode, mPlatform, usertoken;
     private CountDownTimer mCountDownTimer;
+
+    //推荐信息
+    private String recommendMobile;
+    private String recommendUserId;
+    private String recommendChannel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +102,15 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         tv_title_summary.setText(String.format(getString(R.string.tips_user_third_login), mPlatform));
         setCountDownTimer(60 * 1000, 1000);
         checkInputForActionBtnStatus();
+
+        if (SessionContext.getOpenInstallAppData() != null
+                && StringUtil.notEmpty(SessionContext.getOpenInstallAppData().getData())) {
+            JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
+            recommendUserId = mJson.containsKey("userID") ? mJson.getString("userID") : "";
+            recommendChannel = mJson.containsKey("channel") ? mJson.getString("channel") : "";
+            recommendMobile = mJson.containsKey("mobile") ? mJson.getString("mobile") : "";
+            LogUtil.i(TAG, "OpenInstall Info:" + recommendChannel + ", " + recommendUserId + ", " + recommendMobile);
+        }
     }
 
     private void checkInputForActionBtnStatus() {
@@ -139,6 +154,7 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
         b.addBody("thirdpartusername", thirdpartusername);
         b.addBody("businesstype", AppConst.BUSINESS_TYPE_BIND);
         b.addBody("channelid", "00");
+        b.addBody("invitermobile", ShareTypeDef.SHARE_C2C.equals(recommendChannel) ? recommendMobile : "");
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.BIND;
@@ -152,9 +168,9 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
     private void requestSaveRecommandData() {
         JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("recommanduserid", mJson.containsKey("userID") ? mJson.getString("userID") : "");
+        b.addBody("recommanduserid", recommendUserId);
         b.addBody("userid", SessionContext.mUser.user.userid);
-        b.addBody("channel", mJson.containsKey("channel") ? mJson.getString("channel") : "");
+        b.addBody("channel", recommendChannel);
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.SAVE_RECOMMAND;

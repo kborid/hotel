@@ -111,6 +111,7 @@ public final class NetURL {
     public static final String ACTIVE_ABOUT = PORTAL + "system/gettipshowornot.json"; //活动相关
 
     // -----------------------------------Html 5----------------------------------------------------
+    public static final String SHARE_BOUNTY = "http://pro.abcbooking.cn/wechat/rule/share.html"; //旅行币分享链接
     public static final String SHARE = PORTAL + "pages/plain/pages/agreements/share.html"; //分享
     public static final String SAVE_RECOMMAND = PORTAL + "user/saveRecommand.json"; //推荐
     public static final String PLANE_HOME = PORTAL + "pages/plain/pages/air.html"; //机票页

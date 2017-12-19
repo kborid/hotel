@@ -173,7 +173,7 @@ public class MyABCBountyActivity extends BaseActivity {
                 params.put("userID", SessionContext.mUser.user.userid);
                 params.put("mobile", SessionContext.mUser.user.mobile);
                 params.put("channel", ShareTypeDef.SHARE_C2C);
-                String url = SessionContext.getUrl(NetURL.SHARE, params);
+                String url = SessionContext.getUrl(NetURL.SHARE_BOUNTY, params);
 
                 final UMWeb web = new UMWeb(url);
                 Random random = new Random(System.currentTimeMillis());

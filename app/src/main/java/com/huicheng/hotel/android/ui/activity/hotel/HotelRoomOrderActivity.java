@@ -175,7 +175,6 @@ public class HotelRoomOrderActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
 
-        isCanUseYhq = HotelOrderManager.getInstance().getPayType().equals(HotelCommDef.PAY_PRE);
         String picUrl = mPicUrl;
         if (roomDetailInfoBean != null) {
             tv_center_title.setText(roomDetailInfoBean.roomName);
@@ -223,6 +222,13 @@ public class HotelRoomOrderActivity extends BaseActivity {
         } else {
             int person = custom_lay.setPersonInfos(jsonStr);
             LogUtil.i(TAG, "customLayout person = " + person);
+        }
+
+        isCanUseYhq = HotelOrderManager.getInstance().getPayType().equals(HotelCommDef.PAY_PRE);
+        if (isCanUseYhq) {
+            coupon_lay.setVisibility(View.VISIBLE);
+        } else {
+            coupon_lay.setVisibility(View.GONE);
         }
 
         if (HotelCommDef.PAY_ARR.equals(HotelOrderManager.getInstance().getPayType())) {
