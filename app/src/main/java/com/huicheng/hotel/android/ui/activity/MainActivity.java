@@ -245,7 +245,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         if (SessionContext.getBannerList().size() > 0) {
             banner_lay.setImageResource(SessionContext.getBannerList());
         }
-        banner_lay.setWeatherInfoLayoutMargin(Utils.dip2px(11), Utils.mStatusBarHeight + Utils.dip2px(10), 0, 0);
+        banner_lay.setWeatherInfoLayoutMargin(Utils.dip2px(11), Utils.mStatusBarHeight + Utils.dip2px(5), 0, 0);
 
         //初始化时间，今天到明天 1晚
         initCurrentTodayTime();

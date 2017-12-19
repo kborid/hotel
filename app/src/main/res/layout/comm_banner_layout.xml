@@ -45,8 +45,8 @@
         android:orientation="horizontal"
         android:paddingBottom="4dp"
         android:paddingLeft="14dp"
-        android:paddingRight="14dp"
-        android:paddingTop="5dp">
+        android:paddingRight="24dp"
+        android:paddingTop="6dp">
 
         <ImageView
             android:id="@+id/iv_weather_icon"
@@ -57,7 +57,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="13dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -78,7 +78,7 @@
                     android:id="@+id/tv_weather_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="9dp"
                     android:text="-112°C"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_12sp" />
