@@ -47,15 +47,13 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
     }
 
     @Override
-    public void dealIntent() {
-        super.dealIntent();
-        Bundle bundle = getIntent().getExtras();
-    }
-
-    @Override
     public void initParams() {
         super.initParams();
+        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText("订单成功");
+        setRightButtonResource("完成");
+        setRightButtonResourceTextColor(getResources().getColor(R.color.plane_mainColor));
+
         iv_pay_success.setImageBitmap(BitmapUtils.getAlphaBitmap(iv_pay_success.getDrawable(), getResources().getColor(R.color.plane_mainColor)));
         order_info_lay.removeAllViews();
         if (PlaneOrderManager.Instance.getFlightType() == PlaneCommDef.FLIGHT_SINGLE) {
@@ -86,6 +84,7 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.iv_back:
+            case R.id.btn_right:
             case R.id.tv_gohome: {
                 startActivity(new Intent(this, PlaneMainActivity.class));
                 break;

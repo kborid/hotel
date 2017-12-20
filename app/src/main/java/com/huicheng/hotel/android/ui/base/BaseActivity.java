@@ -190,6 +190,12 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         setRightButtonResource(rightResId, null);
     }
 
+    public void setRightButtonResourceTextColor(int color) {
+        if (null != tv_right) {
+            tv_right.setTextColor(color);
+        }
+    }
+
     public void setRightButtonResource(String rightStr) {
         setRightButtonResource(-1, rightStr);
     }
