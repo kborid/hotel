@@ -9,32 +9,28 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.DownloadListener;
+import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.widget.webview.ChooserFileController;
 import com.prj.sdk.widget.webview.WebChromeClientCompat;
 
 /**
  * 中间件处理，加载html5应用数据
- *
- * @author LiaoBo
- * @date 2014-7-8
  */
 @SuppressLint("SetJavaScriptEnabled")
 public class HtmlActivity extends BaseActivity {
@@ -42,71 +38,39 @@ public class HtmlActivity extends BaseActivity {
     private static final String CSS_STYLE = "<style>* {font-size:40px;padding:10px;}</style>";
     private WebView mWebView;
     private CommonLoadingWidget common_loading_widget;
-    private String URL, mTitle, loginUrl;
-    private String mID;
-    private TextView tv_left_title_back, tv_left_title_close;
+    private String mID, URL, /*mTitle,*/
+            loginUrl;
+    private RelativeLayout title_lay;
+    private ImageView iv_back, iv_close;
     private ChooserFileController mCtrl;
-    private int paddingValue = 0;
-    private int CLOSEWIDTH = 0;
-    private int BACKWIDTH = 0;
 
+    private boolean isJSTest = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initMainWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ui_html_act);
-        createController();
         initViews();
-        dealIntent();
         initParams();
         initListeners();
-        // important , so that you can use js to call Uemng APIs
-        // new MobclickAgentJSInterface(this, mWebView, new MyWebChromeClient());
         if (AppConst.ISDEVELOP) {
-            if (getIntent().getBooleanExtra("ISJS", false)) {
+            if (isJSTest) {
                 mWebView.loadUrl("file:///android_asset/ExampleApp.html");
+                RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                rlp.setMargins(0, Utils.mStatusBarHeight + Utils.dip2px(50), 0, 0);
+                mWebView.setLayoutParams(rlp);
             }
-        }
-    }
-
-    private void createController() {
-        mCtrl = new ChooserFileController(this);
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        BACKWIDTH = tv_left_title_back.getWidth();
-        CLOSEWIDTH = tv_left_title_close.getWidth();
-        paddingValue = BACKWIDTH;
-        tv_left_title_close.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv_left_title_back:
-                if (mWebView.canGoBack()) {
-                    mWebView.goBack();
-                } else {
-                    goBack();
-                }
-                break;
-            case R.id.tv_left_title_close:
-                goBack();
-                break;
-
-            default:
-                break;
         }
     }
 
     public void initViews() {
         super.initViews();
         mWebView = (WebView) findViewById(R.id.webview);
-        tv_left_title_back = (TextView) findViewById(R.id.tv_left_title_back);
         common_loading_widget = (CommonLoadingWidget) findViewById(R.id.common_loading_widget);
-        tv_left_title_close = (TextView) findViewById(R.id.tv_left_title_close);
+        title_lay = (RelativeLayout) findViewById(R.id.title_lay);
+        iv_back = (ImageView) findViewById(R.id.iv_back);
+        iv_close = (ImageView) findViewById(R.id.iv_close);
     }
 
     @Override
@@ -114,24 +78,31 @@ public class HtmlActivity extends BaseActivity {
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
+            isJSTest = bundle.getBoolean("ISJS");
             if (bundle.getString("path") != null) {
                 URL = bundle.getString("path");
                 if (URL != null && !URL.startsWith("http")) {
                     URL = "http://" + URL;
                 }
             }
-            if (bundle.getString("title") != null) {
-                mTitle = bundle.getString("title");
-            }
-            if (bundle.getString("id") != null) {
-                mID = bundle.getString("id");
-            }
+//            if (bundle.getString("title") != null) {
+//                mTitle = bundle.getString("title");
+//            }
+//            if (bundle.getString("id") != null) {
+//                mID = bundle.getString("id");
+//            }
         }
     }
 
     public void initParams() {
         super.initParams();
-        tv_center_title.setText(mTitle);
+//        tv_center_title.setText(mTitle);
+
+        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(50));
+        rlp.setMargins(0, Utils.mStatusBarHeight, 0, 0);
+        title_lay.setLayoutParams(rlp);
+
+        mCtrl = new ChooserFileController(this);
 
         WebSettings webSetting = mWebView.getSettings();
         webSetting.setJavaScriptEnabled(true);
@@ -153,7 +124,6 @@ public class HtmlActivity extends BaseActivity {
         webSetting.setDatabasePath(Utils.getFolderDir("webDatabase"));
         webSetting.setGeolocationEnabled(true); // 启用地理定位
         webSetting.setDefaultTextEncodingName("utf-8");
-        mWebView.setDownloadListener(new MyWebViewDownLoadListener());// 开启文件下载功能
         try {
             StringBuilder sb = new StringBuilder();
             String pkName = this.getPackageName();
@@ -175,8 +145,27 @@ public class HtmlActivity extends BaseActivity {
         super.initListeners();
         mWebView.setWebViewClient(new MyWebViewClient(mWebView));
         mWebView.setWebChromeClient(new WebChromeClientCompat(this, mCtrl, tv_center_title));
-        tv_left_title_back.setOnClickListener(this);
-        tv_left_title_close.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
+        iv_close.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_back:
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack();
+                } else {
+                    goBack();
+                }
+                break;
+            case R.id.iv_close:
+                goBack();
+                break;
+
+            default:
+                break;
+        }
     }
 
     /**
@@ -191,9 +180,9 @@ public class HtmlActivity extends BaseActivity {
         }
     }
 
-    class MyWebViewClient extends WVJBWebViewClient {
+    private class MyWebViewClient extends WVJBWebViewClient {
 
-        public MyWebViewClient(WebView webView) {
+        MyWebViewClient(WebView webView) {
 //             support js send
 //            super(webView, new WVJBWebViewClient.WVJBHandler() {
 //                @Override
@@ -224,12 +213,9 @@ public class HtmlActivity extends BaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            tv_center_title.setPadding(paddingValue, 0, paddingValue, 0);
-            if (StringUtil.notEmpty(mTitle)) {
-                tv_center_title.setText(mTitle);
-            }
-
+//            if (StringUtil.notEmpty(mTitle)) {
+//                tv_center_title.setText(mTitle);
+//            }
             mWebView.setEnabled(false);
         }
 
@@ -237,26 +223,23 @@ public class HtmlActivity extends BaseActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-            if (view.canGoBack()) {
-                tv_left_title_close.setVisibility(View.VISIBLE);
-                paddingValue = BACKWIDTH + CLOSEWIDTH;
-            } else {
-                tv_left_title_close.setVisibility(View.GONE);
-                paddingValue = BACKWIDTH;
-            }
-            tv_center_title.setPadding(paddingValue, 0, paddingValue, 0);
-            String title = view.getTitle();
-            if (StringUtil.notEmpty(title)
-                    && !title.startsWith(NetURL.getApi().replace("http://", ""))
-                    && !title.contains(".html")
-                    && !title.contains(".htm")
-                    && !title.contains(".jsp")
-                    && !title.contains(".aspx")
-                    && !title.contains(".do")
-                    && !AppConst.ISDEVELOP) {
-                mTitle = title;
-                tv_center_title.setText(mTitle);// 点击后退，设置标题
-            }
+//            if (view.canGoBack()) {
+//                iv_close.setVisibility(View.VISIBLE);
+//            } else {
+//                iv_close.setVisibility(View.GONE);
+//            }
+//            String title = view.getTitle();
+//            if (StringUtil.notEmpty(title)
+//                    && !title.startsWith(NetURL.getApi().replace("http://", ""))
+//                    && !title.contains(".html")
+//                    && !title.contains(".htm")
+//                    && !title.contains(".jsp")
+//                    && !title.contains(".aspx")
+//                    && !title.contains(".do")
+//                    && !AppConst.ISDEVELOP) {
+//                mTitle = title;
+//                tv_center_title.setText(mTitle);// 点击后退，设置标题
+//            }
 
             common_loading_widget.closeLoading();
             if (!view.getSettings().getLoadsImagesAutomatically()) {
@@ -298,34 +281,17 @@ public class HtmlActivity extends BaseActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mWebView.saveState(outState);
-    }
-
-    /**
-     * webview 下载文件
-     *
-     * @author LiaoBo
-     */
-    class MyWebViewDownLoadListener implements DownloadListener {
-
-        @Override
-        public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-            Utils.startWebView(HtmlActivity.this, url);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mWebView.stopLoading();
+    protected void onPause() {
+        super.onPause();
     }
 
     public void onDestroy() {
         super.onDestroy();
+        mWebView.stopLoading();
         destroyView();
-        common_loading_widget.closeLoading();
+        if (common_loading_widget.isShown()) {
+            common_loading_widget.closeLoading();
+        }
     }
 
     /**

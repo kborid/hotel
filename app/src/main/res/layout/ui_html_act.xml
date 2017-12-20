@@ -1,75 +1,48 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
-    android:orientation="vertical">
+    android:background="@color/white">
 
-    <RelativeLayout
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="?attr/mainColor">
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+    <!-- 加载页面 -->
 
-        <!-- 捕获焦点 -->
+    <com.huicheng.hotel.android.ui.custom.CommonLoadingWidget
+        android:id="@+id/common_loading_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
-        <View
-            android:layout_width="0px"
-            android:layout_height="0px"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
+    <!--title-->
+    <RelativeLayout
+        android:id="@+id/title_lay"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp">
 
-        <TextView
-            android:id="@+id/tv_left_title_back"
+        <ImageView
+            android:id="@+id/iv_back"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:gravity="center"
-            android:text="@string/back"
-            android:textColor="@color/common_title_selector"
-            android:textSize="@dimen/common_14sp" />
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/iv_back_forweb" />
 
-        <TextView
-            android:id="@+id/tv_left_title_close"
+        <ImageView
+            android:id="@+id/iv_close"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/tv_left_title_back"
-            android:gravity="center"
-            android:text="@string/close"
-            android:textColor="@color/common_title_selector"
-            android:textSize="@dimen/common_14sp" />
-
-        <TextView
-            android:id="@+id/tv_center_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/common_18sp" />
-
+            android:layout_toRightOf="@id/iv_back"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:src="@drawable/iv_close"
+            android:visibility="gone" />
     </RelativeLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <WebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fadingEdge="none"
-            android:overScrollMode="never" />
-        <!-- 加载页面 -->
-
-        <com.huicheng.hotel.android.ui.custom.CommonLoadingWidget
-            android:id="@+id/common_loading_widget"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-    </FrameLayout>
-
-</LinearLayout>
+</RelativeLayout>
