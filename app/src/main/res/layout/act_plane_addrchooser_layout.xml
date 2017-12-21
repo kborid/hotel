@@ -50,12 +50,22 @@
             android:textSize="@dimen/common_12sp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/transparent"
-        android:listSelector="@color/transparent"
-        android:scrollbarThumbVertical="@drawable/p3016_scrollbar"
-        android:scrollbars="none" />
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/transparent"
+            android:listSelector="@color/transparent"
+            android:scrollbarThumbVertical="@drawable/p3016_scrollbar"
+            android:scrollbars="none" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/title_bottom_shadow_bg" />
+    </RelativeLayout>
 </LinearLayout>

@@ -7,13 +7,21 @@
 
     <include layout="@layout/comm_title" />
 
-    <!--航班列表-->
-    <ListView
-        android:id="@+id/listview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@color/transparent"
-        android:listSelector="@color/transparent"
-        android:scrollbars="none" />
+        android:layout_height="match_parent">
+        <!--航班列表-->
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/transparent"
+            android:listSelector="@color/transparent"
+            android:scrollbars="none" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/title_bottom_shadow_bg" />
+    </RelativeLayout>
 </LinearLayout>

@@ -6,10 +6,17 @@
     android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
+
+    <!--title shadow-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@drawable/title_bottom_shadow_bg" />
     <!--日期选择layout-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-3dp"
         android:gravity="center"
         android:paddingBottom="8dp"
         android:paddingLeft="20dp"
