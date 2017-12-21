@@ -10,10 +10,12 @@ import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.huicheng.hotel.android.ui.custom.CustomWeatherLayout;
+import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
 import com.prj.sdk.app.AppConst;
 import com.prj.sdk.app.NetURL;
 import com.prj.sdk.net.data.DataLoader;
@@ -25,6 +27,7 @@ import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * @auth kborid
@@ -35,7 +38,8 @@ public class BaseMainActivity extends BaseActivity {
     protected static Handler myHandler = new Handler(Looper.getMainLooper());
     protected long beginTime, endTime;
     protected View rootView;
-    private CustomWeatherLayout customWeatherLay;
+    //    private CustomWeatherLayout customWeatherLay;
+    private CommonBannerLayout banner_lay;
     private LinearLayout contentLay;
 
 //    private int oldSkinIndex = 0;
@@ -46,8 +50,15 @@ public class BaseMainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_basemain_layout);
 //        oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
-        customWeatherLay = (CustomWeatherLayout) findViewById(R.id.weather_lay);
+//        customWeatherLay = (CustomWeatherLayout) findViewById(R.id.weather_lay);
+        banner_lay = (CommonBannerLayout) findViewById(R.id.banner_lay);
         contentLay = (LinearLayout) findViewById(R.id.content_lay);
+
+        if (null == savedInstanceState) {
+            if (SessionContext.getBannerList().size() == 0) {
+                requestHomeBannerInfo();
+            }
+        }
     }
 
     protected void initContentLayout(View view) {
@@ -70,6 +81,16 @@ public class BaseMainActivity extends BaseActivity {
         super.initParams();
         findViewById(R.id.comm_title_rl).setPadding(0, Utils.mStatusBarHeight, 0, 0);
         setBackButtonResource(R.drawable.iv_back_white);
+        LinearLayout.LayoutParams weatherRlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        weatherRlp.width = Utils.mScreenWidth;
+        weatherRlp.height = (int) ((float) weatherRlp.width / 750 * 400);
+//        weather_lay.setLayoutParams(weatherRlp);
+        banner_lay.setLayoutParams(weatherRlp);
+        if (SessionContext.getBannerList().size() > 0) {
+            banner_lay.setImageResource(SessionContext.getBannerList());
+        }
+        banner_lay.setWeatherInfoLayoutMargin(Utils.dp2px(11), Utils.mStatusBarHeight + Utils.dp2px(10), 0, 0);
+
         //初始化时间，今天到明天 1晚
         Calendar calendar = Calendar.getInstance();
         beginTime = calendar.getTime().getTime();
@@ -80,6 +101,7 @@ public class BaseMainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        banner_lay.startBanner();
         //男性女性界面初始化
 //        int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
 //        if (oldSkinIndex != newSkinIndex) {
@@ -87,6 +109,21 @@ public class BaseMainActivity extends BaseActivity {
 //            isReStarted = true;
 //            recreate();
 //        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        banner_lay.stopBanner();
+    }
+
+    private void requestHomeBannerInfo() {
+        LogUtil.i(TAG, "requestHotelBanner()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.HOTEL_BANNER;
+        d.flag = AppConst.HOTEL_BANNER;
+        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     public void requestWeatherInfo(long timeStamp) {
@@ -111,10 +148,17 @@ public class BaseMainActivity extends BaseActivity {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
-                    customWeatherLay.refreshWeatherInfo(beginTime, bean);
+//                    customWeatherLay.refreshWeatherInfo(beginTime, bean);
+                    banner_lay.updateWeatherInfo(beginTime, bean);
                 } else {
-                    customWeatherLay.refreshWeatherInfo(beginTime, null);
+//                    customWeatherLay.refreshWeatherInfo(beginTime, null);
+                    banner_lay.updateWeatherInfo(beginTime, null);
                 }
+            } else if (request.flag == AppConst.HOTEL_BANNER) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
+                SessionContext.setBannerList(temp);
+                banner_lay.setImageResource(temp);
             }
         }
     }
@@ -124,7 +168,8 @@ public class BaseMainActivity extends BaseActivity {
         super.onNotifyError(request);
         removeProgressDialog();
         if (request.flag == AppConst.WEATHER) {
-            customWeatherLay.refreshWeatherInfo(beginTime, null);
+//            customWeatherLay.refreshWeatherInfo(beginTime, null);
+            banner_lay.updateWeatherInfo(beginTime, null);
         }
     }
 }

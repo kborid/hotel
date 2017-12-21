@@ -187,41 +187,30 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     public void setRightButtonResource(int rightResId) {
-        setRightButtonResource(rightResId, null);
-    }
-
-    public void setRightButtonResourceTextColor(int color) {
-        if (null != tv_right) {
-            tv_right.setTextColor(color);
-        }
-    }
-
-    public void setRightButtonResource(String rightStr) {
-        setRightButtonResource(-1, rightStr);
-    }
-
-    public void setRightButtonResource(int rightResId, String rightStr) {
-        if (null != btn_right) {
-            if (StringUtil.isEmpty(rightStr) && -1 == rightResId) {
-                btn_right.setVisibility(View.INVISIBLE);
-            } else {
-                btn_right.setVisibility(View.VISIBLE);
-                if (StringUtil.notEmpty(rightStr)) {
-                    tv_right.setVisibility(View.VISIBLE);
-                    tv_right.setText(rightStr);
-                    return;
-                }
-
-                if (rightResId != -1) {
-                    iv_right.setVisibility(View.VISIBLE);
-                    iv_right.setImageResource(rightResId);
-                }
+        if (null != iv_right) {
+            if (rightResId != -1) {
+                tv_right.setVisibility(View.GONE);
+                iv_right.setVisibility(View.VISIBLE);
+                iv_right.setImageResource(rightResId);
             }
         }
     }
 
+    public void setRightButtonResource(String rightStr, int textColor) {
+        if (null != tv_right) {
+            if (StringUtil.notEmpty(rightStr)) {
+                iv_right.setVisibility(View.GONE);
+                tv_right.setVisibility(View.VISIBLE);
+                tv_right.setText(rightStr);
+                tv_right.setTextColor(textColor);
+            }
+        }
+    }
 
-    // 监听设置
+    public void setRightButtonResource(String rightStr) {
+        setRightButtonResource(rightStr, getResources().getColor(R.color.secColor));
+    }
+
     public void initListeners() {
         if (iv_back != null) {
             iv_back.setOnClickListener(this);
@@ -229,8 +218,8 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         if (btn_right != null) {
             btn_right.setOnClickListener(this);
         }
-        if (iv_back != null) {
-            iv_back.setOnClickListener(this);
+        if (iv_right != null) {
+            iv_right.setOnClickListener(this);
         }
     }
 

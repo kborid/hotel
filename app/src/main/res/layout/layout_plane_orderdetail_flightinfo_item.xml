@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="18dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp">
+
+    <!--航班方向、时间、价钱-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="去程"
+            android:textColor="#666666"
+            android:textSize="@dimen/common_20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="12月12日 22：22"
+            android:textColor="#666666"
+            android:textSize="@dimen/common_18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@string/RMB"
+            android:textColor="@color/plane_mainColor"
+            android:textSize="@dimen/common_18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="9900"
+            android:textColor="@color/plane_mainColor"
+            android:textSize="@dimen/common_18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!--航班信息、乘客人数-->
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
+
+        <TableRow android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:src="@drawable/air_zgyz" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="中国邮政航空"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_14sp" />
+
+            <TextView
+                android:layout_marginLeft="27dp"
+                android:text="MU9157"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="成人×2"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_14sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="2dp"
+            android:gravity="center">
+
+            <!--占位符-->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="值机柜台"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_14sp" />
+
+            <TextView
+                android:layout_marginLeft="27dp"
+                android:text="C656"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+
+            <!--占位符-->
+            <TextView
+                android:layout_weight="1"
+                android:visibility="invisible" />
+        </TableRow>
+    </TableLayout>
+
+    <!--机场信息-->
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <TableRow android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="22：22"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:src="@drawable/iv_plane_orderdetail_flag" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="22：22"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="2dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="虹桥机场"
+                android:textColor="#797979"
+                android:textSize="@dimen/common_12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="20小时20分钟20秒"
+                android:textColor="#666666"
+                android:textSize="@dimen/common_10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:text="虹桥机场"
+                android:textColor="#797979"
+                android:textSize="@dimen/common_12sp" />
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/line_plane_listitem"
+        android:layerType="software" />
+
+    <!--附加费用，如机建费、燃油费、保险等-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="7dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="机建燃油×2"
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="详细信息"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_10sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/RMB"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="30"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="延误险×2"
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="详细信息"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_10sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/RMB"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="20"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/line_plane_listitem"
+        android:layerType="software" />
+</LinearLayout>

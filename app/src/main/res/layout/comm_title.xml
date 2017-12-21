@@ -38,8 +38,7 @@
     <RelativeLayout
         android:id="@+id/btn_right"
         android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:visibility="invisible">
+        android:layout_height="45dp">
 
         <TextView
             android:id="@+id/tv_right"

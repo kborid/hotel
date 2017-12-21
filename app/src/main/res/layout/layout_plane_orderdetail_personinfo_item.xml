@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="乘机人"
+        android:textColor="#9b9b9b"
+        android:textSize="@dimen/common_14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="田孃孃"
+        android:textColor="#3c3c3c"
+        android:textSize="@dimen/common_18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="证件类型"
+        android:textColor="#9b9b9b"
+        android:textSize="@dimen/common_14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="身份证"
+        android:textColor="#3c3c3c"
+        android:textSize="@dimen/common_18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="证件号码"
+        android:textColor="#9b9b9b"
+        android:textSize="@dimen/common_14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="123456789012345678"
+        android:textColor="#3c3c3c"
+        android:textSize="@dimen/common_18sp"
+        android:textStyle="bold" />
+</LinearLayout>

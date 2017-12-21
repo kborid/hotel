@@ -51,8 +51,7 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
         super.initParams();
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText("订单成功");
-        setRightButtonResource("完成");
-        setRightButtonResourceTextColor(getResources().getColor(R.color.plane_mainColor));
+        setRightButtonResource("完成", getResources().getColor(R.color.plane_mainColor));
 
         iv_pay_success.setImageBitmap(BitmapUtils.getAlphaBitmap(iv_pay_success.getDrawable(), getResources().getColor(R.color.plane_mainColor)));
         order_info_lay.removeAllViews();
@@ -60,15 +59,15 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_gosingle_order_item, null);
         } else {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_goback_order_item, null);
-            iv_plane_icon_back = (ImageView)orderLayout.findViewById(R.id.iv_plane_icon_back);
+            iv_plane_icon_back = (ImageView) orderLayout.findViewById(R.id.iv_plane_icon_back);
             tv_plane_name_back = (TextView) orderLayout.findViewById(R.id.tv_plane_name_back);
-            tv_plane_code_back = (TextView)orderLayout.findViewById(R.id.tv_plane_code_back);
-            tv_plane_date_back = (TextView)orderLayout.findViewById(R.id.tv_plane_date_back);
+            tv_plane_code_back = (TextView) orderLayout.findViewById(R.id.tv_plane_code_back);
+            tv_plane_date_back = (TextView) orderLayout.findViewById(R.id.tv_plane_date_back);
         }
-        iv_plane_icon = (ImageView)orderLayout.findViewById(R.id.iv_plane_icon);
+        iv_plane_icon = (ImageView) orderLayout.findViewById(R.id.iv_plane_icon);
         tv_plane_name = (TextView) orderLayout.findViewById(R.id.tv_plane_name);
-        tv_plane_code = (TextView)orderLayout.findViewById(R.id.tv_plane_code);
-        tv_plane_date = (TextView)orderLayout.findViewById(R.id.tv_plane_date);
+        tv_plane_code = (TextView) orderLayout.findViewById(R.id.tv_plane_code);
+        tv_plane_date = (TextView) orderLayout.findViewById(R.id.tv_plane_date);
         order_info_lay.addView(orderLayout);
     }
 

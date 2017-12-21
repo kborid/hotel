@@ -2,10 +2,12 @@ package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -30,6 +32,9 @@ public class PlaneNewOrderActivity extends BaseActivity {
     private Switch btn_invoice_switch;
     private LinearLayout invoice_lay;
     private TextView tv_invoice_tips;
+    private RadioGroup rg_invoice;
+    private TextView tv_personal_invoice;
+    private LinearLayout company_invoice;
 
     private TextView tv_chooser;
     private TextView tv_submit;
@@ -54,6 +59,10 @@ public class PlaneNewOrderActivity extends BaseActivity {
         btn_invoice_switch = (Switch) findViewById(R.id.btn_invoice_switch);
         invoice_lay = (LinearLayout) findViewById(R.id.invoice_lay);
         tv_invoice_tips = (TextView) findViewById(R.id.tv_invoice_tips);
+        rg_invoice = (RadioGroup) findViewById(R.id.rg_invoice);
+        tv_personal_invoice = (TextView) findViewById(R.id.tv_personal_invoice);
+        company_invoice = (LinearLayout) findViewById(R.id.company_invoice);
+
         tv_chooser = (TextView) findViewById(R.id.tv_chooser);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
     }
@@ -80,12 +89,29 @@ public class PlaneNewOrderActivity extends BaseActivity {
     @Override
     public void initListeners() {
         super.initListeners();
+        flight_flag_layout.setOnClickListener(this);
+        rg_invoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_personal:
+                        tv_personal_invoice.setVisibility(View.VISIBLE);
+                        company_invoice.setVisibility(View.GONE);
+                        break;
+                    case R.id.rb_company:
+                        tv_personal_invoice.setVisibility(View.GONE);
+                        company_invoice.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
         btn_invoice_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     tv_invoice_tips.setVisibility(View.GONE);
                     invoice_lay.setVisibility(View.VISIBLE);
+                    rg_invoice.check(R.id.rb_personal);
                 } else {
                     tv_invoice_tips.setVisibility(View.VISIBLE);
                     invoice_lay.setVisibility(View.GONE);
@@ -100,6 +126,11 @@ public class PlaneNewOrderActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.flight_flag_layout: {
+                Intent intent = new Intent(this, PlaneOrderDetailActivity.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.tv_chooser: {
                 Intent intent = new Intent(this, PlaneAddrChooserActivity.class);
                 startActivity(intent);

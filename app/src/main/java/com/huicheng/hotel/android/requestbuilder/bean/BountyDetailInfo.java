@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.net.bean;
+package com.huicheng.hotel.android.requestbuilder.bean;
 
 import java.util.List;
 
