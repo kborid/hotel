@@ -74,7 +74,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 		setTextColor(Color.WHITE);
 		setTypeface(Typeface.DEFAULT_BOLD);
 		setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-		setPadding(dip2Px(5), dip2Px(1), dip2Px(5), dip2Px(1));
+		setPadding(dp2px(5), dp2px(1), dp2px(5), dp2px(1));
 
 		// set default background
 		setBackground(9, Color.parseColor("#d3321b"));
@@ -88,7 +88,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 
 	@SuppressLint("NewApi")
 	public void setBackground(int dipRadius, int badgeColor) {
-		int radius = dip2Px(dipRadius);
+		int radius = dp2px(dipRadius);
 		float[] radiusArray = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
 
 		RoundRectShape roundRect = new RoundRectShape(radiusArray, null, null);
@@ -162,10 +162,10 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 
 	public void setBadgeMargin(int leftDipMargin, int topDipMargin, int rightDipMargin, int bottomDipMargin) {
 		LayoutParams params = (LayoutParams) getLayoutParams();
-		params.leftMargin = dip2Px(leftDipMargin);
-		params.topMargin = dip2Px(topDipMargin);
-		params.rightMargin = dip2Px(rightDipMargin);
-		params.bottomMargin = dip2Px(bottomDipMargin);
+		params.leftMargin = dp2px(leftDipMargin);
+		params.topMargin = dp2px(topDipMargin);
+		params.rightMargin = dp2px(rightDipMargin);
+		params.bottomMargin = dp2px(bottomDipMargin);
 		setLayoutParams(params);
 	}
 
@@ -241,7 +241,7 @@ public class BadgeView extends android.support.v7.widget.AppCompatTextView {
 	/*
 	 * converts dip to px
 	 */
-	private int dip2Px(float dip) {
+	private int dp2px(float dip) {
 		return (int) (dip * getContext().getResources().getDisplayMetrics().density + 0.5f);
 	}
 

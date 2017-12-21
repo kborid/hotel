@@ -7,15 +7,22 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.WeatherCommDef;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.ui.adapter.BannerImageAdapter;
+import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +41,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
     private int positionIndex = 0;
     private CustomViewPagerScroller customViewPagerScroller;
     private List<HomeBannerInfoBean> mList = new ArrayList<>();
+    private LinearLayout weather_layout;
 
     private int mIndicatorResId;
 
@@ -71,6 +79,7 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
         customViewPagerScroller.setScrollDuration(1500);
         customViewPagerScroller.initViewPagerScroll(viewpager);
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
+        weather_layout = (LinearLayout) findViewById(R.id.weather_layout);
     }
 
     public void setImageResource(List<HomeBannerInfoBean> list) {
@@ -144,6 +153,45 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
                 indicator_lay.getChildAt(positionIndex).setEnabled(false);
                 positionIndex = newPosition;
             }
+        }
+    }
+
+    public void setWeatherInfoLayoutMargin(int left, int top, int right, int bottom) {
+        if (null != weather_layout) {
+            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            rlp.setMargins(left, top, right, bottom);
+            weather_layout.setLayoutParams(rlp);
+        }
+    }
+
+    public void updateWeatherInfo(long timeStamp, WeatherInfoBean bean) {
+        if (null != bean) {
+            weather_layout.setVisibility(VISIBLE);
+            ImageView iv_weather_icon = (ImageView) weather_layout.findViewById(R.id.iv_weather_icon);
+            TextView tv_weather_info = (TextView) weather_layout.findViewById(R.id.tv_weather_info);
+            TextView tv_weather_temp = (TextView) weather_layout.findViewById(R.id.tv_weather_temp);
+            TextView tv_weather_date = (TextView) weather_layout.findViewById(R.id.tv_weather_date);
+            int weatherIconId, weatherBgId;
+            String weatherTemp, weatherInfo;
+            if (new Date(bean.systemTime).getHours() >= 18) {
+                weatherInfo = bean.night_weather;
+                weatherTemp = bean.night_air_temperature;
+                weatherBgId = WeatherCommDef.WEATHER_NIGHT_CODES.get(bean.night_weather_code)[0];
+                weatherIconId = WeatherCommDef.WEATHER_NIGHT_CODES.get(bean.night_weather_code)[1];
+            } else {
+                weatherInfo = bean.day_weather;
+                weatherTemp = bean.day_air_temperature;
+                weatherBgId = WeatherCommDef.WEATHER_DAY_CODES.get(bean.day_weather_code)[0];
+                weatherIconId = WeatherCommDef.WEATHER_DAY_CODES.get(bean.day_weather_code)[1];
+            }
+            tv_weather_temp.setText(String.format(context.getString(R.string.homeTemperatureStr), weatherTemp));
+            tv_weather_info.setText(weatherInfo);
+//            tv_loc.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+            tv_weather_date.setText(DateUtil.getDay("yyyy.MM.dd", timeStamp));
+            iv_weather_icon.setImageResource(weatherIconId);
+//            iv_weather_bg.setImageResource(weatherBgId);
+        } else {
+            weather_layout.setVisibility(GONE);
         }
     }
 }

@@ -9,8 +9,8 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import com.prj.sdk.util.Utils;
 import com.huicheng.hotel.android.R;
+import com.prj.sdk.util.Utils;
 
 import java.util.Calendar;
 
