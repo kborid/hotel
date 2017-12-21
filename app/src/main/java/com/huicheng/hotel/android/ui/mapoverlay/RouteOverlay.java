@@ -149,7 +149,7 @@ public class RouteOverlay {
             try {
                 LatLngBounds bounds = getLatLngBounds();
                 mAMap.animateCamera(CameraUpdateFactory
-                        .newLatLngBoundsRect(bounds, Utils.dip2px(50), Utils.dip2px(50), Utils.dip2px(100), Utils.dip2px(100)));
+                        .newLatLngBoundsRect(bounds, Utils.dp2px(50), Utils.dp2px(50), Utils.dp2px(100), Utils.dp2px(100)));
             } catch (Throwable e) {
                 e.printStackTrace();
             }

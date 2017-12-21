@@ -98,7 +98,7 @@ public class MyABCBountyActivity extends BaseActivity {
         super.initParams();
         swipeRefreshLayout.setColorSchemeResources(R.color.mainColor);
         swipeRefreshLayout.setDistanceToTriggerSync(200);
-        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dip2px(20));
+        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         adapter = new BalanceAdapter(this, mList);
         listview.setAdapter(adapter);

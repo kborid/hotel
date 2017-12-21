@@ -58,7 +58,7 @@ public class HtmlActivity extends BaseActivity {
             if (isJSTest) {
                 mWebView.loadUrl("file:///android_asset/ExampleApp.html");
                 RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                rlp.setMargins(0, Utils.mStatusBarHeight + Utils.dip2px(50), 0, 0);
+                rlp.setMargins(0, Utils.mStatusBarHeight + Utils.dp2px(50), 0, 0);
                 mWebView.setLayoutParams(rlp);
             }
         }
@@ -98,7 +98,7 @@ public class HtmlActivity extends BaseActivity {
         super.initParams();
 //        tv_center_title.setText(mTitle);
 
-        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dip2px(50));
+        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dp2px(50));
         rlp.setMargins(0, Utils.mStatusBarHeight, 0, 0);
         title_lay.setLayoutParams(rlp);
 

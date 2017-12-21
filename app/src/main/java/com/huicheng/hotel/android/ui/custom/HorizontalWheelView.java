@@ -158,7 +158,7 @@ public class HorizontalWheelView extends HorizontalScrollView {
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         tv.setText(item);
         tv.setGravity(Gravity.CENTER);
-        int padding = dip2px(15);
+        int padding = dp2px(15);
         tv.setPadding(padding, padding, padding, padding);
         if (0 == itemWidth) {
             itemWidth = getViewMeasuredWidth(tv);
@@ -240,7 +240,7 @@ public class HorizontalWheelView extends HorizontalScrollView {
 //        if (null == paint) {
 //            paint = new Paint();
 //            paint.setColor(Color.parseColor("#83cde6"));
-//            paint.setStrokeWidth(dip2px(1f));
+//            paint.setStrokeWidth(dp2px(1f));
 //        }
 //
 //        background = new Drawable() {
@@ -330,7 +330,7 @@ public class HorizontalWheelView extends HorizontalScrollView {
         this.onWheelViewListener = onWheelViewListener;
     }
 
-    private int dip2px(float dpValue) {
+    private int dp2px(float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }

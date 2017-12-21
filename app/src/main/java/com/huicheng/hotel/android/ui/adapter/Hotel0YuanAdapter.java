@@ -56,7 +56,7 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
 
         if (marginValue.size() <= position) {
             if (position == 1 || position == 3) {
-                marginValue.add(Utils.dip2px(60));
+                marginValue.add(Utils.dp2px(60));
             } else {
                 marginValue.add(0);
             }
@@ -102,7 +102,7 @@ public class Hotel0YuanAdapter extends RecyclerView.Adapter<Hotel0YuanAdapter.Ho
 
             holder.root_view.setOnClickListener(null);
         }
-        gd.setCornerRadius(Utils.dip2px(20));
+        gd.setCornerRadius(Utils.dp2px(20));
         holder.iv_hotel_alpha.setBackground(gd);
     }
 

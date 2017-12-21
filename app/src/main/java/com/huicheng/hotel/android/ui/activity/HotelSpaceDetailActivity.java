@@ -233,7 +233,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
                     if (size > 9) {
                         pictureList = pictureList.subList(0, 9);
                     }
-                    CommonGridViewPicsAdapter adapter = new CommonGridViewPicsAdapter(HotelSpaceDetailActivity.this, pictureList, Utils.dip2px(55), 1f);
+                    CommonGridViewPicsAdapter adapter = new CommonGridViewPicsAdapter(HotelSpaceDetailActivity.this, pictureList, Utils.dp2px(55), 1f);
                     gridview.setAdapter(adapter);
                 } else {
                     gridview.setVisibility(View.GONE);

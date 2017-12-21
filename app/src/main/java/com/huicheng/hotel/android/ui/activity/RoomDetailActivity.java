@@ -148,7 +148,7 @@ public class RoomDetailActivity extends BaseActivity {
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rlp.width = (int) ((float) Utils.mScreenWidth / 5 * 3);
         rlp.height = (int) ((float) rlp.width / 3 * 2);
-        rlp.bottomMargin = Utils.dip2px(60);
+        rlp.bottomMargin = Utils.dp2px(60);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         iv_qtips_active.setLayoutParams(rlp);
@@ -282,9 +282,9 @@ public class RoomDetailActivity extends BaseActivity {
                 View view = new View(this);
                 view.setBackgroundResource(R.drawable.indicator_sel);
                 view.setEnabled(false);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(7), Utils.dip2px(7));
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dp2px(7), Utils.dp2px(7));
                 if (i > 0) {
-                    lp.leftMargin = Utils.dip2px(7);
+                    lp.leftMargin = Utils.dp2px(7);
                 }
                 view.setLayoutParams(lp);
                 indicator_lay.addView(view);
@@ -352,7 +352,7 @@ public class RoomDetailActivity extends BaseActivity {
 
             root_lay.setVisibility(View.VISIBLE);
             //设置banner
-//            viewPager.setPageMargin(Utils.dip2px(10));
+//            viewPager.setPageMargin(Utils.dp2px(10));
             viewPager.setAdapter(new MyPagerAdapter(this, roomDetailInfoBean.picList));
             viewPager.setOffscreenPageLimit(roomDetailInfoBean.picList.size());
             initIndicatorLay(roomDetailInfoBean.picList.size());
@@ -646,7 +646,7 @@ public class RoomDetailActivity extends BaseActivity {
                 }
 
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                lp.topMargin = Utils.dip2px(20);
+                lp.topMargin = Utils.dp2px(20);
                 if (i >= 3 && isShowMore) {
                     more_lay.setVisibility(View.VISIBLE);
                     view.setVisibility(View.GONE);
@@ -667,7 +667,7 @@ public class RoomDetailActivity extends BaseActivity {
                         iv_close.setImageBitmap(BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_detail_close), getResources().getColor(R.color.white)));
                         CustomNoAutoScrollBannerLayout custom_viewpager = (CustomNoAutoScrollBannerLayout) view.findViewById(R.id.custom_viewpager);
                         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        llp.width = Utils.dip2px(300);
+                        llp.width = Utils.dp2px(300);
                         llp.height = (int) ((float) llp.width / 34 * 25);
                         custom_viewpager.setLayoutParams(llp);
 
@@ -747,7 +747,7 @@ public class RoomDetailActivity extends BaseActivity {
                     tv_content.append("，");
                 }
             }
-            free_service_lay.setPadding(0, Utils.dip2px(20), 0, 0);
+            free_service_lay.setPadding(0, Utils.dp2px(20), 0, 0);
             free_service_lay.addView(tv_content);
         } else {
             findViewById(R.id.tv_free_service_note).setVisibility(View.GONE);
@@ -890,7 +890,7 @@ public class RoomDetailActivity extends BaseActivity {
                 holder = new ViewHolder();
                 convertView = LayoutInflater.from(context).inflate(R.layout.gv_support_service_item, null);
                 GridView.LayoutParams vlp = new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                vlp.width = (int) ((float) (Utils.mScreenWidth - Utils.dip2px(40)) / 4);
+                vlp.width = (int) ((float) (Utils.mScreenWidth - Utils.dp2px(40)) / 4);
                 vlp.height = vlp.width;
                 convertView.setLayoutParams(vlp);
 

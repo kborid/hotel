@@ -234,7 +234,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         super.initParams();
         RelativeLayout.LayoutParams ucRlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ucRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        user_lay.setPadding(Utils.dip2px(20), Utils.mStatusBarHeight + Utils.dip2px(10), Utils.dip2px(20), Utils.dip2px(10));
+        user_lay.setPadding(Utils.dp2px(20), Utils.mStatusBarHeight + Utils.dp2px(10), Utils.dp2px(20), Utils.dp2px(10));
         user_lay.setLayoutParams(ucRlp);
 
         RelativeLayout.LayoutParams weatherRlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -245,7 +245,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         if (SessionContext.getBannerList().size() > 0) {
             banner_lay.setImageResource(SessionContext.getBannerList());
         }
-        banner_lay.setWeatherInfoLayoutMargin(Utils.dip2px(11), Utils.mStatusBarHeight + Utils.dip2px(5), 0, 0);
+        banner_lay.setWeatherInfoLayoutMargin(Utils.dp2px(11), Utils.mStatusBarHeight + Utils.dp2px(5), 0, 0);
 
         //初始化时间，今天到明天 1晚
         initCurrentTodayTime();

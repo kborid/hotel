@@ -139,7 +139,7 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
                 noDiscountLayout.setVisibility(View.GONE);
                 hasDiscountLayout.setVisibility(View.VISIBLE);
 
-                viewPager.setPageMargin(Utils.dip2px(10));
+                viewPager.setPageMargin(Utils.dp2px(10));
                 viewPager.setAdapter(new MyPagerAdapter(this, couponInfoBean.coupon));
                 initIndicatorLay(couponInfoBean.coupon.size());
                 viewPager.setOffscreenPageLimit(couponInfoBean.coupon.size());
@@ -167,9 +167,9 @@ public class MyDiscountCouponActivity extends BaseActivity implements ViewPager.
                 View view = new View(this);
                 view.setBackgroundResource(R.drawable.indicator_sel);
                 view.setEnabled(false);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dip2px(7), Utils.dip2px(7));
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dp2px(7), Utils.dp2px(7));
                 if (i > 0) {
-                    lp.leftMargin = Utils.dip2px(7);
+                    lp.leftMargin = Utils.dp2px(7);
                 }
                 view.setLayoutParams(lp);
                 indicator_lay.addView(view);

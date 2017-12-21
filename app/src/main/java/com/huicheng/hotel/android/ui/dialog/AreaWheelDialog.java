@@ -53,7 +53,7 @@ public class AreaWheelDialog extends Dialog implements OnWheelChangedListener, V
         this.setContentView(R.layout.dialog_wheel_view);
         this.getWindow().setBackgroundDrawable(new ColorDrawable(0));// 去除窗口透明部分显示的黑色
         LayoutParams p = getWindow().getAttributes(); // 获取对话框当前的参数值
-        p.width = Utils.mScreenWidth - Utils.dip2px(50);
+        p.width = Utils.mScreenWidth - Utils.dp2px(50);
         p.dimAmount = 0.9f;
         getWindow().setAttributes(p);
 //        getWindow().setGravity(Gravity.BOTTOM);

@@ -52,7 +52,7 @@ public class CustomRoundRectImageView extends android.support.v7.widget.AppCompa
         Drawable drawable = getDrawable();
         if (null != drawable) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            Bitmap b = getRoundBitmap(bitmap, Utils.dip2px(10));
+            Bitmap b = getRoundBitmap(bitmap, Utils.dp2px(10));
             final Rect rectSrc = new Rect(0, 0, b.getWidth(), b.getHeight());
             final Rect rectDest = new Rect(0, 0, getWidth(), getHeight());
             paint.reset();

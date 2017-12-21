@@ -108,7 +108,7 @@ public class Utils {
         return hasNavigationBar;
     }
 
-    public static int dip2px(float dipValue) {
+    public static int dp2px(float dipValue) {
         final float scale = AppContext.mAppContext.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }

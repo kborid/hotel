@@ -249,54 +249,60 @@ public class OrderPayActivity extends BaseActivity {
                 room_detail_layout.removeAllViews();
 
                 //房间信息
-                for (int i = 0; i < orderPayDetailInfoBean.preTotalPriceList.size(); i++) {
-                    View roomDetailItem = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
-                    TextView tv_room_title = (TextView) roomDetailItem.findViewById(R.id.tv_title);
-                    TextView tv_room_price = (TextView) roomDetailItem.findViewById(R.id.tv_price);
-                    if ("".equals(orderPayDetailInfoBean.preTotalPriceList.get(i).type)) {
-                        String startDate = DateUtil.getDay("M月d号", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime);
-                        String endDate = String.valueOf(Integer.parseInt(DateUtil.getDay("d", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime)) + 1) + "号";
-                        tv_room_title.setText(startDate + "-" + endDate);
-                        tv_room_title.setTextSize(10);
-                        tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
-                        tv_room_price.setText(String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.preTotalPriceList.get(i).price))));
-                        tv_room_price.setTextSize(10);
-                        tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
-                    } else {
-                        tv_room_title.setText(orderPayDetailInfoBean.preTotalPriceList.get(i).name);
-                        tv_room_title.setTextSize(10);
-                        tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
-                        tv_room_price.setText("-" + String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.preTotalPriceList.get(i).price))));
-                        tv_room_price.setTextSize(10);
-                        tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                if (orderPayDetailInfoBean != null && orderPayDetailInfoBean.preTotalPriceList != null) {
+                    for (int i = 0; i < orderPayDetailInfoBean.preTotalPriceList.size(); i++) {
+                        View roomDetailItem = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
+                        TextView tv_room_title = (TextView) roomDetailItem.findViewById(R.id.tv_title);
+                        TextView tv_room_price = (TextView) roomDetailItem.findViewById(R.id.tv_price);
+                        if ("".equals(orderPayDetailInfoBean.preTotalPriceList.get(i).type)) {
+                            String startDate = DateUtil.getDay("M月d号", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime);
+                            String endDate = String.valueOf(Integer.parseInt(DateUtil.getDay("d", orderPayDetailInfoBean.preTotalPriceList.get(i).activeTime)) + 1) + "号";
+                            tv_room_title.setText(startDate + "-" + endDate);
+                            tv_room_title.setTextSize(10);
+                            tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                            tv_room_price.setText(String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.preTotalPriceList.get(i).price))));
+                            tv_room_price.setTextSize(10);
+                            tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                        } else {
+                            tv_room_title.setText(orderPayDetailInfoBean.preTotalPriceList.get(i).name);
+                            tv_room_title.setTextSize(10);
+                            tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                            tv_room_price.setText("-" + String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.preTotalPriceList.get(i).price))));
+                            tv_room_price.setTextSize(10);
+                            tv_room_title.setTextColor(getResources().getColor(R.color.titleSummaryColor));
+                        }
+                        room_detail_layout.addView(roomDetailItem);
                     }
-                    room_detail_layout.addView(roomDetailItem);
+                    LinearLayout.LayoutParams roomDetailLlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    roomDetailLlp.leftMargin = Utils.dp2px(15);
+                    room_detail_layout.setLayoutParams(roomDetailLlp);
+                    service_lay.addView(commView);
                 }
-                LinearLayout.LayoutParams roomDetailLlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                roomDetailLlp.leftMargin = Utils.dip2px(15);
-                room_detail_layout.setLayoutParams(roomDetailLlp);
-                service_lay.addView(commView);
 
                 //选购服务信息
-                for (int i = 0; i < orderPayDetailInfoBean.attachInfo.size(); i++) {
-                    View item = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
-                    TextView tv_title = (TextView) item.findViewById(R.id.tv_title);
-                    TextView tv_price = (TextView) item.findViewById(R.id.tv_price);
-                    tv_price.getPaint().setFakeBoldText(true);
-                    tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).serviceCnt);
-                    tv_price.setText(String.format(getString(R.string.rmbStr), String.valueOf(orderPayDetailInfoBean.attachInfo.get(i).orderMoney)));
-                    service_lay.addView(item);
+                if (orderPayDetailInfoBean != null && orderPayDetailInfoBean.attachInfo != null) {
+                    for (int i = 0; i < orderPayDetailInfoBean.attachInfo.size(); i++) {
+                        View item = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
+                        TextView tv_title = (TextView) item.findViewById(R.id.tv_title);
+                        TextView tv_price = (TextView) item.findViewById(R.id.tv_price);
+                        tv_price.getPaint().setFakeBoldText(true);
+                        tv_title.setText(orderPayDetailInfoBean.attachInfo.get(i).serviceName + " " + getString(R.string.multipleSign) + " " + orderPayDetailInfoBean.attachInfo.get(i).serviceCnt);
+                        tv_price.setText(String.format(getString(R.string.rmbStr), String.valueOf(orderPayDetailInfoBean.attachInfo.get(i).orderMoney)));
+                        service_lay.addView(item);
+                    }
                 }
 
                 //减免信息
-                for (int i = 0; i < orderPayDetailInfoBean.deductiblePriceList.size(); i++) {
-                    View item = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
-                    TextView tv_title = (TextView) item.findViewById(R.id.tv_title);
-                    TextView tv_price = (TextView) item.findViewById(R.id.tv_price);
-                    tv_price.getPaint().setFakeBoldText(true);
-                    tv_title.setText(orderPayDetailInfoBean.deductiblePriceList.get(i).name);
-                    tv_price.setText(" - " + String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.deductiblePriceList.get(i).price))));
-                    service_lay.addView(item);
+                if (orderPayDetailInfoBean != null && orderPayDetailInfoBean.deductiblePriceList != null) {
+                    for (int i = 0; i < orderPayDetailInfoBean.deductiblePriceList.size(); i++) {
+                        View item = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
+                        TextView tv_title = (TextView) item.findViewById(R.id.tv_title);
+                        TextView tv_price = (TextView) item.findViewById(R.id.tv_price);
+                        tv_price.getPaint().setFakeBoldText(true);
+                        tv_title.setText(orderPayDetailInfoBean.deductiblePriceList.get(i).name);
+                        tv_price.setText(" - " + String.format(getString(R.string.rmbStr), String.valueOf((int) Float.parseFloat(orderPayDetailInfoBean.deductiblePriceList.get(i).price))));
+                        service_lay.addView(item);
+                    }
                 }
 
                 dialog.addView(view);

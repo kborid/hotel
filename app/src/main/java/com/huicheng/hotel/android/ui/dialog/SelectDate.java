@@ -9,8 +9,8 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import com.prj.sdk.util.Utils;
 import com.huicheng.hotel.android.R;
+import com.prj.sdk.util.Utils;
 
 import java.util.Calendar;
 
@@ -53,7 +53,7 @@ public class SelectDate extends LinearLayout {
         // popupWindow.setAnimationStyle(R.style.AnimBottom);
 
         button = new Button(mContext);
-        LayoutParams btn_params = new LayoutParams(LayoutParams.MATCH_PARENT, Utils.dip2px(50));
+        LayoutParams btn_params = new LayoutParams(LayoutParams.MATCH_PARENT, Utils.dp2px(50));
         btn_params.leftMargin = 5;
         btn_params.rightMargin = 5;
         btn_params.topMargin = 10;

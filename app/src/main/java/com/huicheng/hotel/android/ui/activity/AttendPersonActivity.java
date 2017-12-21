@@ -62,7 +62,7 @@ public class AttendPersonActivity extends BaseActivity {
         TextView emptyView = new TextView(this);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         emptyView.setText("没有更多关注的好友");
-        emptyView.setPadding(0, Utils.dip2px(30), 0, Utils.dip2px(30));
+        emptyView.setPadding(0, Utils.dp2px(30), 0, Utils.dp2px(30));
         emptyView.setGravity(Gravity.CENTER);
         emptyView.setTextColor(getResources().getColor(R.color.searchHintColor));
         emptyView.setVisibility(View.GONE);

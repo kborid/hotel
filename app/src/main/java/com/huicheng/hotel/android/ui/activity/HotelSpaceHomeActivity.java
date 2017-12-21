@@ -104,7 +104,7 @@ public class HotelSpaceHomeActivity extends BaseActivity {
         TextView emptyView = new TextView(this);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         emptyView.setText("酒店暂未发布帖子");
-        emptyView.setPadding(0, Utils.dip2px(30), 0, Utils.dip2px(30));
+        emptyView.setPadding(0, Utils.dp2px(30), 0, Utils.dp2px(30));
         emptyView.setGravity(Gravity.CENTER);
         emptyView.setTextColor(getResources().getColor(R.color.searchHintColor));
         emptyView.setVisibility(View.GONE);
@@ -136,9 +136,9 @@ public class HotelSpaceHomeActivity extends BaseActivity {
 
         //根据宽高比设置cardview大小，适配不同尺寸的屏幕
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        llp.width = Utils.mScreenWidth - Utils.dip2px(50);
+        llp.width = Utils.mScreenWidth - Utils.dp2px(50);
         llp.height = (int) ((float) llp.width / 13 * 8);
-        llp.topMargin = Utils.dip2px(5);
+        llp.topMargin = Utils.dp2px(5);
         cardview.setLayoutParams(llp);
     }
 
@@ -421,7 +421,7 @@ public class HotelSpaceHomeActivity extends BaseActivity {
                 if (size > 9) {
                     pictureList = pictureList.subList(0, 9);
                 }
-                CommonGridViewPicsAdapter adapter = new CommonGridViewPicsAdapter(context, pictureList, Utils.dip2px(115));
+                CommonGridViewPicsAdapter adapter = new CommonGridViewPicsAdapter(context, pictureList, Utils.dp2px(115));
                 viewHolder.gridview.setAdapter(adapter);
             } else {
                 viewHolder.gridview.setVisibility(View.GONE);

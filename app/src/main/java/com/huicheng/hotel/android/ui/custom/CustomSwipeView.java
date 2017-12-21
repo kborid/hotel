@@ -116,8 +116,8 @@ public class CustomSwipeView extends ViewGroup {
         public int clampViewPositionHorizontal(View child, int left, int dx) {
             if (left > 0) {
                 return 0;
-            } else if (-left > Utils.dip2px(40)) {
-                return -Utils.dip2px(40);
+            } else if (-left > Utils.dp2px(40)) {
+                return -Utils.dp2px(40);
             }
             return left;
         }
@@ -126,7 +126,7 @@ public class CustomSwipeView extends ViewGroup {
         public void onViewReleased(View child, float xVel, float yVel) {
             //核心逻辑：滑动MainView超过一定距离就显示MenuView
             LogUtil.i(TAG, "onViewReleased()");
-            if (itemView.getWidth() - itemView.getRight() < Utils.dip2px(20)) {
+            if (itemView.getWidth() - itemView.getRight() < Utils.dp2px(20)) {
                 isShowDelete(false);
                 if (onSlideDeleteListener != null) {
                     onSlideDeleteListener.onClose(CustomSwipeView.this); // 调用接口打开的方法
@@ -143,7 +143,7 @@ public class CustomSwipeView extends ViewGroup {
 
     public void isShowDelete(boolean isShowDelete) {
         if (isShowDelete) {
-            mViewDragHelper.smoothSlideViewTo(itemView, -Utils.dip2px(40), 0);
+            mViewDragHelper.smoothSlideViewTo(itemView, -Utils.dp2px(40), 0);
         } else {
             mViewDragHelper.smoothSlideViewTo(itemView, 0, 0);
         }

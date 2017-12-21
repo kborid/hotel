@@ -145,7 +145,7 @@ public class UserLoginActivity extends BaseActivity {
             public void onAnimationUpdate(ValueAnimator animation) {
                 //获取当前的height值，动态更新view的高度
                 int value = ((Float) animation.getAnimatedValue()).intValue();
-                tv_third_label.setPadding(0, Utils.dip2px(13), 0, Utils.dip2px(17) - (int) ((float) Math.abs(value) / mThirdBtnLayoutHeight * Utils.dip2px(10)));
+                tv_third_label.setPadding(0, Utils.dp2px(13), 0, Utils.dp2px(17) - (int) ((float) Math.abs(value) / mThirdBtnLayoutHeight * Utils.dp2px(10)));
                 if (value <= 0) {
                     value = 0;
                 }
@@ -193,7 +193,7 @@ public class UserLoginActivity extends BaseActivity {
 //                third_btn_lay.getLayoutParams().height = Math.abs(value);
                 ((LinearLayout.LayoutParams) third_btn_lay.getLayoutParams()).bottomMargin = value - mThirdBtnLayoutHeight;
                 third_btn_lay.requestLayout();
-                tv_third_label.setPadding(0, Utils.dip2px(13), 0, Utils.dip2px(7) + (int) ((1 - (float) Math.abs(value) / mThirdBtnLayoutHeight) * Utils.dip2px(10)));
+                tv_third_label.setPadding(0, Utils.dp2px(13), 0, Utils.dp2px(7) + (int) ((1 - (float) Math.abs(value) / mThirdBtnLayoutHeight) * Utils.dp2px(10)));
             }
         });
 

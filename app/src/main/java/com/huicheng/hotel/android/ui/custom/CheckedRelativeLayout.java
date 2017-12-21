@@ -21,7 +21,7 @@ public class CheckedRelativeLayout extends RelativeLayout implements Checkable {
         LayoutParams lp = (LayoutParams) imageView.getLayoutParams();
         lp.addRule(RelativeLayout.CENTER_VERTICAL);
         lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        lp.rightMargin = Utils.dip2px(8);
+        lp.rightMargin = Utils.dp2px(8);
 
     }
 
