@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
@@ -167,7 +168,8 @@ public class SettingActivity extends BaseActivity {
             LogUtil.i(TAG, "内部文件大小：" + DataCleanManager.getFormatSize(DataCleanManager.getFolderSize(this.getFilesDir())));
             LogUtil.i(TAG, "外部缓存大小：" + DataCleanManager.getFormatSize(DataCleanManager.getFolderSize(this.getExternalCacheDir())));
             LogUtil.i(TAG, "请求数据缓存大小：" + DataCleanManager.getFormatSize(DataCleanManager.getFolderSize(new File(Utils.getFolderDir("dataCache")))));
-            LogUtil.i(TAG, "请求图片缓存大小：" + DataCleanManager.getFormatSize(DataCleanManager.getFolderSize(new File(Utils.getFolderDir("imageCache")))));
+            LogUtil.i(TAG, "请求图片缓存大小(旧)：" + DataCleanManager.getFormatSize(DataCleanManager.getFolderSize(new File(Utils.getFolderDir("imageCache")))));
+            LogUtil.i(TAG, "请求图片缓存大小(新)：" + DataCleanManager.getFormatSize(DataCleanManager.getFolderSize(new File(Utils.getFolderDir(DiskCache.Factory.DEFAULT_DISK_CACHE_DIR)))));
             totalCacheSize += DataCleanManager.getFolderSize(this.getCacheDir());
             totalCacheSize += DataCleanManager.getFolderSize(this.getExternalCacheDir());
             totalCacheSize += DataCleanManager.getFolderSize(new File(Utils.getFolderDir("dataCache")));
