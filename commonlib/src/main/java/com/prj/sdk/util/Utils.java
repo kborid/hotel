@@ -29,10 +29,9 @@ import java.util.regex.Pattern;
 
 /**
  * 全局公共类
- *
- * @author Liao
  */
 public class Utils {
+    private static final String TAG = "Utils";
 
     /**
      * 屏幕宽
@@ -133,71 +132,29 @@ public class Utils {
      * @return
      */
     public static String getFolderDir(String subFolder) {
-        String rootDir = null;
+        File rootDir = null;
         if (subFolder == null) {
             subFolder = "";
         }
-        if (isSDCardEnable()) {
-            rootDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + AppContext.mAppContext.getPackageName() + File.separator + subFolder + File.separator;
-        } else {
-            rootDir = AppContext.mAppContext.getCacheDir() + File.separator + subFolder + File.separator;
+        LogUtil.i(TAG, "temp_1_cacheDir = " + AppContext.mAppContext.getExternalCacheDir());
+        LogUtil.i(TAG, "temp_2_cacheDir = " + AppContext.mAppContext.getCacheDir());
+        File cacheDir = AppContext.mAppContext.getExternalCacheDir();
+        if (null == cacheDir) {
+            cacheDir = AppContext.mAppContext.getCacheDir();
         }
-        // 创建文件目录
-        File file = new File(rootDir);
-        if (!file.exists()) // 创建目录
-        {
-            file.mkdirs();
-        }
-
-        return rootDir;
-    }
-
-    /**
-     * 判断文件是否存在
-     *
-     * @param subFolder
-     * @return
-     */
-    public static boolean isFolderDir(String subFolder) {
-        String rootDir = null;
-        if (subFolder == null) {
-            subFolder = "";
-        }
-        if (Utils.isSDCardEnable()) {
-            // SD-card available
-            rootDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + AppContext.mAppContext.getPackageName() + File.separator + subFolder
-                    + File.separator;
-
-            File file = new File(rootDir);
-            if (!file.exists()) {
-                return false;
-            }
-        } else {
-            rootDir = AppContext.mAppContext.getCacheDir() + File.separator + subFolder + File.separator;
-            File file = new File(rootDir);
-            if (!file.exists()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 判断文件路径是否存在
-     *
-     * @param filePath
-     * @return true 存在 false 不存在
-     */
-    public static boolean isExist(String filePath) {
-        File file = new File(filePath);
-        return file.exists();
+        LogUtil.i(TAG, "cacheDir = " + cacheDir.getAbsolutePath());
+        rootDir = new File(cacheDir, subFolder);
+        LogUtil.i(TAG, "rootDir = " + rootDir.getAbsolutePath());
+        if (!rootDir.exists()) // 创建目录
+            rootDir.mkdirs();
+        return rootDir.getAbsolutePath();
     }
 
     /**
      * SD是否可用
      */
     public static boolean isSDCardEnable() {
-        return android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
     /**
