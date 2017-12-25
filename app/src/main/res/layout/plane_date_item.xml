@@ -13,6 +13,7 @@
         android:padding="5dp">
 
         <TextView
+            android:id="@+id/tv_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -21,6 +22,7 @@
             android:textSize="@dimen/common_12sp" />
 
         <TextView
+            android:id="@+id/tv_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
@@ -31,6 +33,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"

@@ -55,7 +55,7 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
 
         iv_pay_success.setImageBitmap(BitmapUtils.getAlphaBitmap(iv_pay_success.getDrawable(), getResources().getColor(R.color.plane_mainColor)));
         order_info_lay.removeAllViews();
-        if (PlaneOrderManager.Instance.getFlightType() == PlaneCommDef.FLIGHT_SINGLE) {
+        if (PlaneOrderManager.instance.getFlightType() == PlaneCommDef.FLIGHT_SINGLE) {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_gosingle_order_item, null);
         } else {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_goback_order_item, null);

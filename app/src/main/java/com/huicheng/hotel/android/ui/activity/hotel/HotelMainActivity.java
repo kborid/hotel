@@ -325,6 +325,9 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                     return;
                 }
                 HotelOrderManager.getInstance().reset();
+                if (!isSelectedDate) {
+                    initCurrentTodayTime();
+                }
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
                 HotelOrderManager.getInstance().setEndTime(endTime);
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
@@ -370,6 +373,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         }
         if (requestCode == REQUEST_CODE_DATE) {
             if (null != data) {
+                isSelectedDate = true;
                 beginTime = data.getLongExtra("beginTime", beginTime);
                 endTime = data.getLongExtra("endTime", endTime);
                 HotelOrderManager.getInstance().setBeginTime(beginTime);

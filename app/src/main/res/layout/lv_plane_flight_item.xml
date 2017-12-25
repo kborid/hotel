@@ -30,19 +30,35 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_off_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="22:55"
                         android:textColor="#3c3c3c"
                         android:textSize="@dimen/common_20sp" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:text="萧山机场T2"
-                        android:textColor="#666666"
-                        android:textSize="@dimen/common_12sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_off_airport"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="萧山机场"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_off_terminal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="T2"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <View
@@ -61,6 +77,7 @@
 
                     <!--航班经停信息-->
                     <LinearLayout
+                        android:id="@+id/stopover_lay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -68,6 +85,7 @@
                         android:visibility="visible">
 
                         <TextView
+                            android:id="@+id/tv_stop_city"
                             android:layout_width="56dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -86,6 +104,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tv_flight_during"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="23小时40分钟"
@@ -109,26 +128,53 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_on_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="24:35"
                         android:textColor="#3c3c3c"
                         android:textSize="@dimen/common_20sp" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:text="双流机场T1"
-                        android:textColor="#666666"
-                        android:textSize="@dimen/common_12sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_on_airport"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="双流机场"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_on_terminal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="T1"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_12sp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:text="@string/RMB"
+                    android:textColor="@color/plane_mainColor"
+                    android:textSize="@dimen/common_20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_flight_price"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|right"
-                    android:text="¥9900"
+                    android:text="9900"
                     android:textColor="@color/plane_mainColor"
                     android:textSize="@dimen/common_20sp"
                     android:textStyle="bold" />
@@ -144,11 +190,13 @@
                 android:paddingLeft="1dp">
 
                 <ImageView
+                    android:id="@+id/iv_flight_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/air_zgyz" />
 
                 <TextView
+                    android:id="@+id/tv_flight_company"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -157,6 +205,7 @@
                     android:textSize="@dimen/common_10sp" />
 
                 <TextView
+                    android:id="@+id/tv_flight_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -171,6 +220,7 @@
                     android:background="@color/black" />
 
                 <TextView
+                    android:id="@+id/tv_flight_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="空客320  (中)"
@@ -181,32 +231,38 @@
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
+                    android:visibility="gone"
                     android:background="@color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="准点率"
+                    android:visibility="gone"
                     android:textColor="#3c3c3c"
                     android:textSize="@dimen/common_10sp" />
 
                 <TextView
+                    android:id="@+id/tv_flight_percentInTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="80%"
+                    android:text="0%"
+                    android:visibility="gone"
                     android:textColor="#3c3c3c"
                     android:textSize="@dimen/common_10sp" />
             </LinearLayout>
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_tag_lowest"
             android:layout_width="48dp"
             android:layout_height="14dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/plane_today_low_bg"
             android:gravity="center"
             android:text="今日最低"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:textSize="@dimen/common_8sp" />
     </RelativeLayout>

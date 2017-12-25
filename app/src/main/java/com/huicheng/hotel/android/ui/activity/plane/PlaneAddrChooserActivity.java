@@ -142,9 +142,7 @@ public class PlaneAddrChooserActivity extends BaseActivity {
         }
 
         public void setSelectedIndex(int index) {
-            System.out.println("selectedIndex = " + mSelectedIndex);
             this.mSelectedIndex = index;
-            System.out.println("index = " + index);
             notifyDataSetChanged();
         }
 

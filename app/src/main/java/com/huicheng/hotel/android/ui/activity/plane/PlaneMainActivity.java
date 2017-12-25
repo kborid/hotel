@@ -98,13 +98,16 @@ public class PlaneMainActivity extends BaseMainActivity {
         tabs.addTab(tabs.newTab().setText(getString(R.string.plane_double)), PlaneCommDef.FLIGHT_GO_BACK, false);
         setIndicator(tabs, 54, 54);
         refreshPlaneStateAndInfo(PlaneCommDef.FLIGHT_SINGLE);
-        PlaneOrderManager.Instance.setFlightType(PlaneCommDef.FLIGHT_SINGLE);
+        PlaneOrderManager.instance.setFlightType(PlaneCommDef.FLIGHT_SINGLE);
         //地点信息
         String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
         String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         if (StringUtil.notEmpty(province) || StringUtil.notEmpty(city)) {
             requestWeatherInfo(beginTime);
         }
+        //初始化起飞
+        PlaneOrderManager.instance.setFlightOffDate(beginTime);
+        PlaneOrderManager.instance.setFlightOnDate(endTime);
     }
 
     @Override
@@ -120,10 +123,9 @@ public class PlaneMainActivity extends BaseMainActivity {
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println("onTabSelected() " + tab.getText() + ", " + tab.getPosition());
                 selectedIndex = tab.getPosition();
                 refreshPlaneStateAndInfo(selectedIndex);
-                PlaneOrderManager.Instance.setFlightType((selectedIndex == PlaneCommDef.FLIGHT_SINGLE) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GO_BACK);
+                PlaneOrderManager.instance.setFlightType((selectedIndex == PlaneCommDef.FLIGHT_SINGLE) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GO_BACK);
             }
 
             @Override
@@ -154,6 +156,16 @@ public class PlaneMainActivity extends BaseMainActivity {
                 break;
             }
             case R.id.tv_next_search:
+                PlaneOrderManager.instance.reset();
+                if (!isSelectedDate) {
+                    initCurrentTodayTime();
+                }
+                PlaneOrderManager.instance.setFlightOffDate(beginTime);
+                PlaneOrderManager.instance.setFlightOnDate(endTime);
+                PlaneOrderManager.instance.setFlightOffCity(tv_off_city.getText().toString());
+                PlaneOrderManager.instance.setFlightOffAirport(tv_off_airport.getText().toString());
+                PlaneOrderManager.instance.setFlightOnCity(tv_on_city.getText().toString());
+                PlaneOrderManager.instance.setFlightOnAirport(tv_on_airport.getText().toString());
                 Intent nextIntent = new Intent(this, PlaneFlightListActivity.class);
                 startActivity(nextIntent);
                 break;
@@ -300,8 +312,11 @@ public class PlaneMainActivity extends BaseMainActivity {
         }
         if (requestCode == REQUEST_CODE_DATE) {
             if (null != data) {
+                isSelectedDate = true;
                 beginTime = data.getLongExtra("beginTime", beginTime);
                 endTime = data.getLongExtra("endTime", endTime);
+                PlaneOrderManager.instance.setFlightOffDate(beginTime);
+                PlaneOrderManager.instance.setFlightOnDate(endTime);
                 refreshPlaneStateAndInfo(selectedIndex);
             }
         }

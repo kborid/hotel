@@ -119,6 +119,11 @@ public final class NetURL {
     public static final String SZ_TAXI_HOME_DEBUG = "https://commonwappre.10101111.com/join";
     public static final String SZ_TAXI_HOME_RELEASE = "https://commonwap.10101111.com/join";
     public static final String BOUNTY_LXB_RULE = "http://pro.abcbooking.cn/wechat/rule/index.html";
+
+    //-------------------------------------机票-----------------------------------------------------
+    public static final String PLANE_FLIGHT_LIST = PORTAL + "search/flight.json"; //搜索航班列表
+
+
     // --------------------------------------------设置缓存的URL-------------------------------------
     public static final String[] CACHE_URL = {};
 }

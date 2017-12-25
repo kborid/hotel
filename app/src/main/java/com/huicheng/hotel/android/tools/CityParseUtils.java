@@ -5,9 +5,9 @@ import android.content.Context;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -47,6 +47,10 @@ public class CityParseUtils {
             }
         }
         return tempStr;
+    }
+
+    public static String getPlaneOffOnCity(String off, String on, String mid) {
+        return getProvinceCityString(on, off, mid);
     }
 
     public static String getProvinceString(String province) {

@@ -41,6 +41,7 @@ public class BaseMainActivity extends BaseActivity {
     //    private CustomWeatherLayout customWeatherLay;
     private CommonBannerLayout banner_lay;
     private LinearLayout contentLay;
+    protected boolean isSelectedDate = false;
 
 //    private int oldSkinIndex = 0;
 
@@ -91,6 +92,10 @@ public class BaseMainActivity extends BaseActivity {
         }
         banner_lay.setWeatherInfoLayoutMargin(Utils.dp2px(11), Utils.mStatusBarHeight + Utils.dp2px(10), 0, 0);
 
+        initCurrentTodayTime();
+    }
+
+    public void initCurrentTodayTime() {
         //初始化时间，今天到明天 1晚
         Calendar calendar = Calendar.getInstance();
         beginTime = calendar.getTime().getTime();

@@ -202,8 +202,8 @@
 #jpush混淆end
 
 #webview相关兼容扩展混淆
--dontwarn com.prj.sdk.widget.webview.**
--keep class com.prj.sdk.widget.webview.** { *; }
+-dontwarn com.prj.sdk.webview.**
+-keep class com.prj.sdk.webview.** { *; }
 
 #支付宝start
 -keep class com.alipay.android.app.IAlixPay{*;}

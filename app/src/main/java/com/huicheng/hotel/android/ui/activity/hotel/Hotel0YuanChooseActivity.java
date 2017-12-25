@@ -18,14 +18,12 @@ import com.huicheng.hotel.android.requestbuilder.bean.CouponDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.FreeOneNightBean;
 import com.huicheng.hotel.android.ui.adapter.Hotel0YuanAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.huicheng.hotel.android.ui.dialog.AreaWheelDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.app.AppConst;
 import com.prj.sdk.app.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
-import com.prj.sdk.util.LogUtil;
 
 import java.lang.ref.WeakReference;
 import java.net.ConnectException;
@@ -38,7 +36,7 @@ import java.util.TimerTask;
  * @author kborid
  * @date 2016/11/15 0015
  */
-public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelDialog.AreaWheelCallback {
+public class Hotel0YuanChooseActivity extends BaseActivity /*implements AreaWheelDialog.AreaWheelCallback*/ {
 
     private static final int ROW = 5;
     private static final int UPDATETIMER = 0x01;
@@ -184,9 +182,9 @@ public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelD
                 this.finish();
                 break;
             case R.id.addr_lay:
-                AreaWheelDialog dialog = new AreaWheelDialog(this, this);
-                dialog.setCanceled(true);
-                dialog.show();
+//                AreaWheelDialog dialog = new AreaWheelDialog(this, this);
+//                dialog.setCanceled(true);
+//                dialog.show();
                 break;
             default:
                 break;
@@ -205,17 +203,17 @@ public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelD
         myHandler.removeCallbacksAndMessages(null);
     }
 
-    @Override
-    public void onAreaWheelInfo(String ProviceName, String CityName, String AreaName, String Id, String ParentId) {
-        LogUtil.i(TAG, ProviceName + " " + CityName + " " + AreaName);
-        tv_city.setText(CityName);
-        tv_area.setText(AreaName);
-        if (bean != null) {
-            requestFreeActiveDetail(ParentId, Id, 0);
-        } else {
-            CustomToast.show("当前无活动", CustomToast.LENGTH_SHORT);
-        }
-    }
+//    @Override
+//    public void onAreaWheelInfo(String ProviceName, String CityName, String AreaName, String Id, String ParentId) {
+//        LogUtil.i(TAG, ProviceName + " " + CityName + " " + AreaName);
+//        tv_city.setText(CityName);
+//        tv_area.setText(AreaName);
+//        if (bean != null) {
+//            requestFreeActiveDetail(ParentId, Id, 0);
+//        } else {
+//            CustomToast.show("当前无活动", CustomToast.LENGTH_SHORT);
+//        }
+//    }
 
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {

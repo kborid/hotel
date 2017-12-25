@@ -91,6 +91,9 @@ public class PlaneConsiderLayout extends LinearLayout {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (adapter.getSelectedIndex() == position) {
+                    return;
+                }
                 adapter.setSelectedIndex(position);
                 changedContentLayout(position);
             }
@@ -196,6 +199,10 @@ public class PlaneConsiderLayout extends LinearLayout {
         void setSelectedIndex(int index) {
             this.selectedIndex = index;
             notifyDataSetChanged();
+        }
+
+        int getSelectedIndex(){
+            return selectedIndex;
         }
 
         @Override

@@ -152,4 +152,9 @@ public final class AppConst {
     public static final int COUPON_USEFUL_LIST = CONST_HANDLE_FLAG + 67;
     public static final int BOUNTY_USER_BASE = CONST_HANDLE_FLAG + 68;
     public static final int BOUNTY_USER_DETAIL = CONST_HANDLE_FLAG + 69;
+
+    /**
+     * 机票相关
+     */
+    public static final int PLANE_FLIGHT_LIST = CONST_HANDLE_FLAG + 70;
 }

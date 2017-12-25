@@ -1,11 +1,12 @@
-package com.prj.sdk.widget.wheel.adapters;
+package com.huicheng.hotel.android.requestbuilder.bean;
 
 import java.util.List;
 
 /**
- * @author kborid
- * @date 2017/2/24 0024
+ * @auth kborid
+ * @date 2017/12/22 0022.
  */
+
 public class CityAreaInfoBean {
     public String id;
     public String parentId;

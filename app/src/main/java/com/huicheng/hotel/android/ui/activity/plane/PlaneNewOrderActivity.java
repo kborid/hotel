@@ -72,7 +72,7 @@ public class PlaneNewOrderActivity extends BaseActivity {
         super.initParams();
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText("杭州 → 北京");
-        if (PlaneOrderManager.Instance.getFlightType() == PlaneCommDef.FLIGHT_GO_BACK) {
+        if (PlaneOrderManager.instance.getFlightType() == PlaneCommDef.FLIGHT_GO_BACK) {
             flight_flag_layout.addView(LayoutInflater.from(this).inflate(R.layout.layout_plane_order_item, null));
             flight_flag_layout.getChildAt(0).findViewById(R.id.tv_flight_flag).setVisibility(View.VISIBLE);
             ((TextView) flight_flag_layout.getChildAt(0).findViewById(R.id.tv_flight_flag)).setText("去程：");
