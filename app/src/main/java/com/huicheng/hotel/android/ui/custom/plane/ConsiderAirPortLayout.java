@@ -62,6 +62,10 @@ public class ConsiderAirPortLayout extends LinearLayout implements IPlaneConside
         }
     }
 
+    public void updateAirportInfo(){
+
+    }
+
     @Override
     public void cancelConsiderConfig() {
 

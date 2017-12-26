@@ -43,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:drawableTop="@drawable/iv_plane_list_date"
+                android:gravity="center"
                 android:text="日期"
                 android:textColor="#666666"
                 android:textSize="@dimen/common_10sp" />
@@ -63,8 +64,8 @@
         <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
             android:divider="@color/transparent"
             android:listSelector="@color/transparent"
             android:scrollbars="none" />

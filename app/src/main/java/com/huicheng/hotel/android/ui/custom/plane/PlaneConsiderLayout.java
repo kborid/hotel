@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.prj.sdk.app.AppConst;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 
 import java.util.ArrayList;
@@ -28,10 +29,12 @@ import java.util.List;
  */
 
 public class PlaneConsiderLayout extends LinearLayout {
+    private static final String TAG = "PlaneConsiderLayout";
+
     private Context context;
 
     private Switch switch_straight;
-    private boolean isStraight = true;
+    private boolean isStraight = false;
     private ListView listview;
     private ConditionAdapter adapter;
     private LinearLayout consider_content_lay;
@@ -55,7 +58,7 @@ public class PlaneConsiderLayout extends LinearLayout {
         super(context, attrs, defStyleAttr);
         this.context = context;
         initViews();
-        initParmas();
+        initParams();
         initListeners();
     }
 
@@ -74,7 +77,7 @@ public class PlaneConsiderLayout extends LinearLayout {
         tv_confirm = (TextView) findViewById(R.id.tv_confirm);
     }
 
-    private void initParmas() {
+    private void initParams() {
         adapter = new ConditionAdapter();
         listview.setAdapter(adapter);
         consider_content_lay.removeAllViews();
@@ -151,7 +154,7 @@ public class PlaneConsiderLayout extends LinearLayout {
     }
 
     public void cancelConfig() {
-        isStraight = SharedPreferenceUtil.getInstance().getBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, true);
+        isStraight = SharedPreferenceUtil.getInstance().getBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, false);
         switch_straight.setChecked(isStraight);
         for (IPlaneConsiderAction action : actions) {
             action.cancelConsiderConfig();
@@ -159,14 +162,16 @@ public class PlaneConsiderLayout extends LinearLayout {
     }
 
     public void resetConfig() {
-        isStraight = true;
-        switch_straight.setChecked(true);
+        LogUtil.i(TAG, "resetConfig()");
+        isStraight = false;
+        switch_straight.setChecked(false);
         for (IPlaneConsiderAction action : actions) {
             action.resetConsiderConfig();
         }
     }
 
     public void saveConfig() {
+        LogUtil.i(TAG, "saveConfig()");
         SharedPreferenceUtil.getInstance().setBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, isStraight);
         for (IPlaneConsiderAction action : actions) {
             action.saveConsiderConfig();
@@ -174,11 +179,18 @@ public class PlaneConsiderLayout extends LinearLayout {
     }
 
     public void reloadConfig() {
-        isStraight = SharedPreferenceUtil.getInstance().getBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, true);
+        LogUtil.i(TAG, "reloadConfig()");
+        isStraight = SharedPreferenceUtil.getInstance().getBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, false);
         switch_straight.setChecked(isStraight);
         for (IPlaneConsiderAction action : actions) {
             action.reloadConsiderConfig();
         }
+    }
+
+    public void initConfig() {
+        LogUtil.i(TAG, "initConfig()");
+        resetConfig();
+        saveConfig();
     }
 
     public interface OnConsiderLayoutDismissListener {
@@ -201,7 +213,7 @@ public class PlaneConsiderLayout extends LinearLayout {
             notifyDataSetChanged();
         }
 
-        int getSelectedIndex(){
+        int getSelectedIndex() {
             return selectedIndex;
         }
 
@@ -240,5 +252,29 @@ public class PlaneConsiderLayout extends LinearLayout {
         class ViewHolder {
             private TextView tv_consider;
         }
+    }
+
+    public boolean isStraight() {
+        return switch_straight.isChecked();
+    }
+
+    public ConsiderAirOffTimeLayout getConsiderAirOffTimeLayout() {
+        return considerAirOffTimeLayout;
+    }
+
+    public ConsiderAirPortLayout getConsiderAirPortLayout() {
+        return considerAirPortLayout;
+    }
+
+    public ConsiderAirCompanyLayout getConsiderAirCompanyLayout() {
+        return considerAirCompanyLayout;
+    }
+
+    public ConsiderAirTypeLayout getConsiderAirTypeLayout() {
+        return considerAirTypeLayout;
+    }
+
+    public ConsiderAirCangLayout getConsiderAirCangLayout() {
+        return considerAirCangLayout;
     }
 }

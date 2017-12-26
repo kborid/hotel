@@ -3,6 +3,7 @@ package com.huicheng.hotel.android.ui.activity.plane;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
@@ -37,8 +38,6 @@ import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,6 +66,8 @@ public class PlaneFlightListActivity extends BaseActivity {
     private PlaneDatePriceAdapter planeDatePriceAdapter;
     private List<Date> mDateList = new ArrayList<>();
     private int mCurrentPrice = 0;
+    private int selectedIndex = 0;
+    private boolean isClick = false;
 
     private RelativeLayout calendar_lay;
     private LinearLayout consider_lay;
@@ -148,8 +149,8 @@ public class PlaneFlightListActivity extends BaseActivity {
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 
         mOffTime = PlaneOrderManager.instance.getFlightOffDate();
-        int selection = DateUtil.getGapCount(Calendar.getInstance().getTime(), new Date(mOffTime));
-        int max = selection < CALENDAR_SHOW_MAX ? CALENDAR_SHOW_MAX : selection;
+        selectedIndex = DateUtil.getGapCount(Calendar.getInstance().getTime(), new Date(mOffTime));
+        int max = selectedIndex < CALENDAR_SHOW_MAX ? CALENDAR_SHOW_MAX : selectedIndex;
         for (int i = 0; i < max; i++) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
@@ -158,25 +159,14 @@ public class PlaneFlightListActivity extends BaseActivity {
         }
         planeDatePriceAdapter = new PlaneDatePriceAdapter(this, mDateList);
         gallery.setAdapter(planeDatePriceAdapter);
-        gallery.setCallbackDuringFling(false);
-//        setCallbackOnUnselectedItemClick(gallery, false);
-        gallery.setSelection(selection);
+        gallery.setCallbackDuringFling(false); //该设置项表示当滑动gallery且停止时，最后一个选中的item才会回调onItemSelected方法
+        gallery.setSelection(selectedIndex);
 
         planeItemAdapter = new PlaneItemAdapter(this, mFlightList);
         listview.setAdapter(planeItemAdapter);
-    }
 
-    private void setCallbackOnUnselectedItemClick(Gallery gallery, boolean flag) {
-        Class<?> galleryWidget = gallery.getClass();
-        Method callbackOnUnselectedItemClick = null;
-        Field test = null;
-        try {
-            test = galleryWidget.getDeclaredField("mShouldCallbackOnUnselectedItemClick");
-            callbackOnUnselectedItemClick = galleryWidget.getMethod("setCallbackOnUnselectedItemClick", Boolean.class);
-            callbackOnUnselectedItemClick.invoke(galleryWidget, flag);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //初始化筛选条件
+        mPlaneConsiderLayout.initConfig();
     }
 
     @Override
@@ -200,13 +190,32 @@ public class PlaneFlightListActivity extends BaseActivity {
         gallery.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //TODO 点击切换动作待优化
-                mOffTime = mDateList.get(position).getTime();
-                requestPlaneFlightInfo(true);
+                //通过判断当前选中的index和isClick，避免点击item时回调onItemSelected方法，避免多次请求航班列表接口
+                if (selectedIndex == position) {
+                    if (isClick) {
+                        isClick = false;
+                        return;
+                    }
+                }
+                if (!isClick) {
+                    mOffTime = mDateList.get(position).getTime();
+                    requestPlaneFlightInfo(true);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //通过判断当前选中的index和isClick，避免点击item时回调onItemSelected方法，避免多次请求航班列表接口
+                selectedIndex = position;
+                isClick = true;
+                mOffTime = mDateList.get(position).getTime();
+                requestPlaneFlightInfo(true);
             }
         });
 
@@ -260,9 +269,10 @@ public class PlaneFlightListActivity extends BaseActivity {
     }
 
     private void requestPlaneFlightInfo(boolean isBusy) {
+        LogUtil.i(TAG, "requestPlaneFlightInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("date", DateUtil.getDay("yyyy-MM-dd", mOffTime));
-        b.addBody("dpt", "PEK"); //起飞机场
+        b.addBody("dpt", "CTU"); //起飞机场
         b.addBody("arr", "SHA"); //着陆机场
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_FLIGHT_LIST;
@@ -345,7 +355,7 @@ public class PlaneFlightListActivity extends BaseActivity {
                 viewHolder.tv_flight_during = (TextView) convertView.findViewById(R.id.tv_flight_during);
                 viewHolder.tv_flight_price = (TextView) convertView.findViewById(R.id.tv_flight_price);
                 viewHolder.iv_flight_icon = (ImageView) convertView.findViewById(R.id.iv_flight_icon);
-                viewHolder.tv_flight_company = (TextView) convertView.findViewById(R.id.tv_flight_company);
+                viewHolder.tv_flight_carrier = (TextView) convertView.findViewById(R.id.tv_flight_carrier);
                 viewHolder.tv_flight_code = (TextView) convertView.findViewById(R.id.tv_flight_code);
                 viewHolder.tv_flight_name = (TextView) convertView.findViewById(R.id.tv_flight_name);
                 viewHolder.tv_flight_percentInTime = (TextView) convertView.findViewById(R.id.tv_flight_percentInTime);
@@ -371,8 +381,9 @@ public class PlaneFlightListActivity extends BaseActivity {
             }
             viewHolder.tv_flight_during.setText(bean.flightTimes);
             viewHolder.tv_flight_price.setText(String.valueOf((int) bean.barePrice));
-            viewHolder.tv_flight_name.setText(bean.flightTypeFullName);
+            viewHolder.tv_flight_carrier.setText(bean.carrier);
             viewHolder.tv_flight_code.setText(bean.flightNum);
+            viewHolder.tv_flight_name.setText(bean.flightTypeFullName);
 
             if (bean.equals(minBean)) {
                 viewHolder.tv_tag_lowest.setVisibility(View.VISIBLE);
@@ -395,7 +406,7 @@ public class PlaneFlightListActivity extends BaseActivity {
             TextView tv_flight_during;
             TextView tv_flight_price;
             ImageView iv_flight_icon;
-            TextView tv_flight_company;
+            TextView tv_flight_carrier;
             TextView tv_flight_code;
             TextView tv_flight_name;
             TextView tv_flight_percentInTime;
@@ -472,22 +483,7 @@ public class PlaneFlightListActivity extends BaseActivity {
         super.onNotifyMessage(request, response);
         if (response != null && response.body != null) {
             if (request.flag == AppConst.PLANE_FLIGHT_LIST) {
-                removeProgressDialog();
-                swipeRefreshLayout.setRefreshing(false);
-                LogUtil.i(TAG, "json = " + response.body.toString());
-                Logger.i(response.body.toString());
-                List<PlaneFlightItemInfoBean> temp = JSON.parseArray(response.body.toString(), PlaneFlightItemInfoBean.class);
-                if (temp.size() > 0) {
-                    mFlightList.clear();
-                    mFlightList.addAll(temp);
-                    Collections.sort(mFlightList, mComparator);
-                }
-                LogUtil.i(TAG, "flight count = " + mFlightList.size());
-                planeItemAdapter.notifyDataSetChanged();
-                listview.setSelection(0);
-                minBean = Collections.min(mFlightList, new BarePriceComparator());
-                mCurrentPrice = (int) minBean.barePrice;
-                planeDatePriceAdapter.notifyDataSetChanged();
+                new DealResponseAsyncTask().execute(response.body.toString());
             }
         }
     }
@@ -497,6 +493,50 @@ public class PlaneFlightListActivity extends BaseActivity {
         super.onNotifyError(request);
         removeProgressDialog();
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private class DealResponseAsyncTask extends AsyncTask<String, Integer, Void> {
+
+        private List<PlaneFlightItemInfoBean> allList = new ArrayList<>();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            LogUtil.i(TAG, "json = " + params[0]);
+            Logger.i(params[0]);
+            allList = JSON.parseArray(params[0], PlaneFlightItemInfoBean.class);
+            mCurrentPrice = 0;
+            if (allList.size() > 0) {
+                //获取最小价格航班
+                minBean = Collections.min(allList, new BarePriceComparator());
+                mCurrentPrice = (int) minBean.barePrice;
+
+                //刷新数据
+                mFlightList.clear();
+                mFlightList.addAll(checkConditionsResult(allList));
+                Collections.sort(mFlightList, mComparator);
+            }
+            LogUtil.i(TAG, "flight count = " + mFlightList.size());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            LogUtil.i(TAG, "onPostExecute()");
+            removeProgressDialog();
+            swipeRefreshLayout.setRefreshing(false);
+            planeItemAdapter.notifyDataSetChanged();
+            listview.setSelection(0);
+            planeDatePriceAdapter.notifyDataSetChanged();
+            //刷新筛选框选项
+            mPlaneConsiderLayout.getConsiderAirTypeLayout().updateAirTypeInfo(allList);
+            mPlaneConsiderLayout.getConsiderAirCangLayout().updateCangInfo(allList);
+        }
     }
 
     /**
@@ -537,13 +577,13 @@ public class PlaneFlightListActivity extends BaseActivity {
                 formatStr1 += "mm分钟";
             }
 
-            if (o1.flightTimes.contains("天")) {
+            if (o2.flightTimes.contains("天")) {
                 formatStr2 += "dd天";
             }
-            if (o1.flightTimes.contains("小时")) {
+            if (o2.flightTimes.contains("小时")) {
                 formatStr2 += "HH小时";
             }
-            if (o1.flightTimes.contains("分钟")) {
+            if (o2.flightTimes.contains("分钟")) {
                 formatStr2 += "mm分钟";
             }
 
@@ -556,5 +596,52 @@ public class PlaneFlightListActivity extends BaseActivity {
             }
             return 0;
         }
+    }
+
+    private List<PlaneFlightItemInfoBean> checkConditionsResult(List<PlaneFlightItemInfoBean> list) {
+        LogUtil.i(TAG, "checkConditionsResult()");
+        List<PlaneFlightItemInfoBean> temp = null;
+        if (list != null && list.size() > 0) {
+            temp = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                PlaneFlightItemInfoBean bean = list.get(i);
+                //是否直达
+                {
+                    if (mPlaneConsiderLayout.isStraight()) {
+                        //航班经停，则跳过
+                        if (bean.stop) {
+                            continue;
+                        }
+                    }
+                }
+
+                //起飞时段
+                {
+                    float[] hours = mPlaneConsiderLayout.getConsiderAirOffTimeLayout().getOffTimeStartEnd();
+                    String startHour = String.format("%1$02d:00", (int) hours[0]);
+                    String endHour = String.format("%1$02d:00", (int) hours[1]);
+                    //航班起飞时间小于开始时间或大于结束时间，则跳过
+                    if (startHour.compareTo(bean.dptTime) > 0 || endHour.compareTo(bean.dptTime) < 0) {
+                        continue;
+                    }
+                }
+
+                //TODO 航空公司
+                {
+                }
+                //TODO 机场信息
+                {
+                }
+                //TODO 机型信息
+                {
+                }
+                //TODO 仓位信息
+                {
+                }
+
+                temp.add(bean);
+            }
+        }
+        return temp;
     }
 }

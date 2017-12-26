@@ -133,8 +133,8 @@ public class CustomDoubleSeekBar extends View {
 
         double progressLeft = (mThumbLeftX - mThumbWidth / 2) * PROGRESS_MAX / mDistance;
         double progressRight = (mThumbRightX - mThumbWidth / 2) * PROGRESS_MAX / mDistance;
-        System.out.println("mThumbLeftX = " + mThumbLeftX + ", mThumbRightX= " + mThumbRightX);
-        System.out.println("progressLeft = " + progressLeft + ", progressRight= " + progressRight);
+//        System.out.println("mThumbLeftX = " + mThumbLeftX + ", mThumbRightX= " + mThumbRightX);
+//        System.out.println("progressLeft = " + progressLeft + ", progressRight= " + progressRight);
         String Left = String.format("%1$02d:00", (int) progressLeft);
         String Right = String.format("%1$02d:00", (int) progressRight);
         canvas.drawText(Left, (int) (mThumbLeftX - (mThumbWidth - text_Paint.measureText(Left)) / 2) + DP_5_VALUE, mThumbMarginTop / 2, text_Paint);

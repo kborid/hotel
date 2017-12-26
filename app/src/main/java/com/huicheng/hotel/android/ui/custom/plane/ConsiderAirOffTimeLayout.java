@@ -59,7 +59,6 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
                     } else {
                         setSelectedIndex(finalI);
                     }
-                    System.out.println("selected index = " + selectedIndex);
                 }
             });
         }
@@ -139,5 +138,12 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
         endHour = SharedPreferenceUtil.getInstance().getFloat(AppConst.CONSIDER_PLANE_END_HOUR, 24f);
         seekBar.setProgressLeft(startHour);
         seekBar.setProgressRight(endHour);
+    }
+
+    public float[] getOffTimeStartEnd() {
+        float[] offTime = new float[2];
+        offTime[0] = startHour;
+        offTime[1] = endHour;
+        return offTime;
     }
 }

@@ -80,7 +80,7 @@
             android:textOn=""
             android:thumbTextPadding="10dp"
             android:layout_centerVertical="true"
-            android:checked="true" />
+            android:checked="false" />
     </RelativeLayout>
 
     <View

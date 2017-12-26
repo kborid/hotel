@@ -73,6 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:minWidth="76dp"
                     android:orientation="vertical">
 
                     <!--航班经停信息-->
@@ -196,7 +197,7 @@
                     android:src="@drawable/air_zgyz" />
 
                 <TextView
-                    android:id="@+id/tv_flight_company"
+                    android:id="@+id/tv_flight_carrier"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -231,16 +232,16 @@
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
-                    android:visibility="gone"
-                    android:background="@color/black" />
+                    android:background="@color/black"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="准点率"
-                    android:visibility="gone"
                     android:textColor="#3c3c3c"
-                    android:textSize="@dimen/common_10sp" />
+                    android:textSize="@dimen/common_10sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_flight_percentInTime"
@@ -248,9 +249,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="0%"
-                    android:visibility="gone"
                     android:textColor="#3c3c3c"
-                    android:textSize="@dimen/common_10sp" />
+                    android:textSize="@dimen/common_10sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
 
@@ -262,8 +263,8 @@
             android:background="@drawable/plane_today_low_bg"
             android:gravity="center"
             android:text="今日最低"
-            android:visibility="gone"
             android:textColor="@color/white"
-            android:textSize="@dimen/common_8sp" />
+            android:textSize="@dimen/common_8sp"
+            android:visibility="gone" />
     </RelativeLayout>
 </RelativeLayout>

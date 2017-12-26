@@ -64,5 +64,29 @@ public enum PlaneOrderManager {
         return onAirport;
     }
 
+    private AirportInfo offAirportInfo;
+    public void setFlightOffAirportInfo(AirportInfo offAirportInfo){
+        this.offAirportInfo = offAirportInfo;
+    }
+    public AirportInfo getFlightOffAirportInfo(){
+        return offAirportInfo;
+    }
+
+    private AirportInfo onAirportInfo;
+    public void setFlightOnAirportInfo(AirportInfo onAirportInfo){
+        this.onAirportInfo = onAirportInfo;
+    }
+    public AirportInfo getFlightOnAirportInfo(){
+        return onAirportInfo;
+    }
+
     public void reset(){}
+
+
+    public class AirportInfo {
+        public String name;
+        public String _3Code;
+        public String _4Code;
+        public String cityName;
+    }
 }
