@@ -1,22 +1,17 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Gallery;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +22,9 @@ import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightItemInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
+import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
+import com.huicheng.hotel.android.ui.adapter.PlaneFlightDatePriceItemAdapter;
+import com.huicheng.hotel.android.ui.adapter.PlaneFlightItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.plane.PlaneConsiderLayout;
 import com.orhanobut.logger.Logger;
@@ -55,19 +53,17 @@ public class PlaneFlightListActivity extends BaseActivity {
 
     private static final int CALENDAR_SHOW_MAX = 100;
 
-    private ListView listview;
-    private PlaneItemAdapter planeItemAdapter;
+    private RecyclerView recyclerView;
+    private TextView tv_empty;
+    private PlaneFlightItemAdapter planeFlightItemAdapter;
     private List<PlaneFlightItemInfoBean> mFlightList = new ArrayList<>();
     private Comparator<PlaneFlightItemInfoBean> mComparator = new FlightTimesComparator();
-    private PlaneFlightItemInfoBean minBean = null;
     private long mOffTime = 0;
 
-    private Gallery gallery;
-    private PlaneDatePriceAdapter planeDatePriceAdapter;
+    private RecyclerView dateRecycleView;
+    private PlaneFlightDatePriceItemAdapter planeFlightDatePriceItemAdapter;
     private List<Date> mDateList = new ArrayList<>();
-    private int mCurrentPrice = 0;
     private int selectedIndex = 0;
-    private boolean isClick = false;
 
     private RelativeLayout calendar_lay;
     private LinearLayout consider_lay;
@@ -85,14 +81,20 @@ public class PlaneFlightListActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
+        if (null == savedInstanceState) {
+            requestPlaneFlightInfo(true);
+        }
     }
 
     @Override
     public void initViews() {
         super.initViews();
+        dateRecycleView = (RecyclerView) findViewById(R.id.dateRecycleView);
+        dateRecycleView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         calendar_lay = (RelativeLayout) findViewById(R.id.calendar_lay);
-        gallery = (Gallery) findViewById(R.id.gallery);
-        listview = (ListView) findViewById(R.id.listview);
+        tv_empty = (TextView) findViewById(R.id.tv_empty);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         consider_lay = (LinearLayout) findViewById(R.id.consider_lay);
         //筛选
         mPlaneConsiderLayout = new PlaneConsiderLayout(this);
@@ -127,11 +129,6 @@ public class PlaneFlightListActivity extends BaseActivity {
     }
 
     @Override
-    public void dealIntent() {
-        super.dealIntent();
-    }
-
-    @Override
     public void initParams() {
         super.initParams();
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
@@ -157,14 +154,11 @@ public class PlaneFlightListActivity extends BaseActivity {
             calendar.add(Calendar.DAY_OF_MONTH, i);
             mDateList.add(calendar.getTime());
         }
-        planeDatePriceAdapter = new PlaneDatePriceAdapter(this, mDateList);
-        gallery.setAdapter(planeDatePriceAdapter);
-        gallery.setCallbackDuringFling(false); //该设置项表示当滑动gallery且停止时，最后一个选中的item才会回调onItemSelected方法
-        gallery.setSelection(selectedIndex);
-
-        planeItemAdapter = new PlaneItemAdapter(this, mFlightList);
-        listview.setAdapter(planeItemAdapter);
-
+        planeFlightDatePriceItemAdapter = new PlaneFlightDatePriceItemAdapter(this, mDateList);
+        dateRecycleView.setAdapter(planeFlightDatePriceItemAdapter);
+        planeFlightDatePriceItemAdapter.setSelectedIndex(selectedIndex);
+        planeFlightItemAdapter = new PlaneFlightItemAdapter(this, mFlightList);
+        recyclerView.setAdapter(planeFlightItemAdapter);
         //初始化筛选条件
         mPlaneConsiderLayout.initConfig();
     }
@@ -180,42 +174,23 @@ public class PlaneFlightListActivity extends BaseActivity {
             }
         });
         calendar_lay.setOnClickListener(this);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        planeFlightDatePriceItemAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void OnItemClick(View v, int position) {
+                if (selectedIndex == position) {
+                    return;
+                }
+                selectedIndex = position;
+                mOffTime = mDateList.get(position).getTime();
+                planeFlightDatePriceItemAdapter.setSelectedIndex(selectedIndex);
+                requestPlaneFlightInfo(true);
+            }
+        });
+        planeFlightItemAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
+            @Override
+            public void OnItemClick(View v, int position) {
                 Intent intent = new Intent(PlaneFlightListActivity.this, PlaneTicketListActivity.class);
                 startActivity(intent);
-            }
-        });
-        gallery.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //通过判断当前选中的index和isClick，避免点击item时回调onItemSelected方法，避免多次请求航班列表接口
-                if (selectedIndex == position) {
-                    if (isClick) {
-                        isClick = false;
-                        return;
-                    }
-                }
-                if (!isClick) {
-                    mOffTime = mDateList.get(position).getTime();
-                    requestPlaneFlightInfo(true);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //通过判断当前选中的index和isClick，避免点击item时回调onItemSelected方法，避免多次请求航班列表接口
-                selectedIndex = position;
-                isClick = true;
-                mOffTime = mDateList.get(position).getTime();
-                requestPlaneFlightInfo(true);
             }
         });
 
@@ -272,7 +247,7 @@ public class PlaneFlightListActivity extends BaseActivity {
         LogUtil.i(TAG, "requestPlaneFlightInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("date", DateUtil.getDay("yyyy-MM-dd", mOffTime));
-        b.addBody("dpt", "CTU"); //起飞机场
+        b.addBody("dpt", "PEK"); //起飞机场
         b.addBody("arr", "SHA"); //着陆机场
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_FLIGHT_LIST;
@@ -294,12 +269,6 @@ public class PlaneFlightListActivity extends BaseActivity {
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        calendar_lay.setMinimumHeight(gallery.getHeight());
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
     }
@@ -312,170 +281,6 @@ public class PlaneFlightListActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    private class PlaneItemAdapter extends BaseAdapter {
-        private Context context;
-        private List<PlaneFlightItemInfoBean> mList = new ArrayList<>();
-
-        PlaneItemAdapter(Context context, List<PlaneFlightItemInfoBean> list) {
-            this.context = context;
-            this.mList = list;
-        }
-
-        @Override
-        public int getCount() {
-            return mList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (null == convertView) {
-                viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_flight_item, null);
-                viewHolder.tv_off_time = (TextView) convertView.findViewById(R.id.tv_off_time);
-                viewHolder.tv_off_airport = (TextView) convertView.findViewById(R.id.tv_off_airport);
-                viewHolder.tv_off_terminal = (TextView) convertView.findViewById(R.id.tv_off_terminal);
-                viewHolder.tv_on_time = (TextView) convertView.findViewById(R.id.tv_on_time);
-                viewHolder.tv_on_airport = (TextView) convertView.findViewById(R.id.tv_on_airport);
-                viewHolder.tv_on_terminal = (TextView) convertView.findViewById(R.id.tv_on_terminal);
-                viewHolder.stopover_lay = (LinearLayout) convertView.findViewById(R.id.stopover_lay);
-                viewHolder.tv_stop_city = (TextView) convertView.findViewById(R.id.tv_stop_city);
-                viewHolder.tv_flight_during = (TextView) convertView.findViewById(R.id.tv_flight_during);
-                viewHolder.tv_flight_price = (TextView) convertView.findViewById(R.id.tv_flight_price);
-                viewHolder.iv_flight_icon = (ImageView) convertView.findViewById(R.id.iv_flight_icon);
-                viewHolder.tv_flight_carrier = (TextView) convertView.findViewById(R.id.tv_flight_carrier);
-                viewHolder.tv_flight_code = (TextView) convertView.findViewById(R.id.tv_flight_code);
-                viewHolder.tv_flight_name = (TextView) convertView.findViewById(R.id.tv_flight_name);
-                viewHolder.tv_flight_percentInTime = (TextView) convertView.findViewById(R.id.tv_flight_percentInTime);
-                viewHolder.tv_tag_lowest = (TextView) convertView.findViewById(R.id.tv_tag_lowest);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-
-            PlaneFlightItemInfoBean bean = mList.get(position);
-
-            viewHolder.tv_off_time.setText(bean.dptTime);
-            viewHolder.tv_off_airport.setText(bean.dptAirport);
-            viewHolder.tv_off_terminal.setText(bean.dptTerminal);
-            viewHolder.tv_on_time.setText(bean.arrTime);
-            viewHolder.tv_on_airport.setText(bean.arrAirport);
-            viewHolder.tv_on_terminal.setText(bean.arrTerminal);
-            if (bean.stop) {
-                viewHolder.stopover_lay.setVisibility(View.VISIBLE);
-                viewHolder.tv_stop_city.setText("经停" + bean.stopCityName);
-            } else {
-                viewHolder.stopover_lay.setVisibility(View.GONE);
-            }
-            viewHolder.tv_flight_during.setText(bean.flightTimes);
-            viewHolder.tv_flight_price.setText(String.valueOf((int) bean.barePrice));
-            viewHolder.tv_flight_carrier.setText(bean.carrier);
-            viewHolder.tv_flight_code.setText(bean.flightNum);
-            viewHolder.tv_flight_name.setText(bean.flightTypeFullName);
-
-            if (bean.equals(minBean)) {
-                viewHolder.tv_tag_lowest.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.tv_tag_lowest.setVisibility(View.GONE);
-            }
-
-            return convertView;
-        }
-
-        class ViewHolder {
-            TextView tv_off_time;
-            TextView tv_off_airport;
-            TextView tv_off_terminal;
-            TextView tv_on_time;
-            TextView tv_on_airport;
-            TextView tv_on_terminal;
-            LinearLayout stopover_lay;
-            TextView tv_stop_city;
-            TextView tv_flight_during;
-            TextView tv_flight_price;
-            ImageView iv_flight_icon;
-            TextView tv_flight_carrier;
-            TextView tv_flight_code;
-            TextView tv_flight_name;
-            TextView tv_flight_percentInTime;
-            TextView tv_tag_lowest;
-        }
-    }
-
-    private class PlaneDatePriceAdapter extends BaseAdapter {
-        private Context context;
-        private List<Date> mList = new ArrayList<>();
-
-        PlaneDatePriceAdapter(Context context, List<Date> list) {
-            this.context = context;
-            this.mList = list;
-        }
-
-        @Override
-        public int getCount() {
-            return mList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (null == convertView) {
-                viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(context).inflate(R.layout.plane_date_item, null);
-                int width = (int) ((float) (Utils.mScreenWidth - Utils.dp2px(40) - Utils.dp2px(6)) / 7);
-//                int height = (int) ((float) width / Utils.dp2px(50) * Utils.dp2px(66));
-                Gallery.LayoutParams layoutParams = new Gallery.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-                convertView.setLayoutParams(layoutParams);
-
-                viewHolder.tv_week = (TextView) convertView.findViewById(R.id.tv_week);
-                viewHolder.tv_day = (TextView) convertView.findViewById(R.id.tv_day);
-                viewHolder.tv_price = (TextView) convertView.findViewById(R.id.tv_price);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-
-            Date date = mList.get(position);
-            viewHolder.tv_week.setText(DateUtil.dateToWeek(date));
-            viewHolder.tv_day.setText(DateUtil.getDay("d", date.getTime()));
-
-            if (DateUtil.getGapCount(date, new Date(mOffTime)) == 0 && mCurrentPrice > 0) {
-                viewHolder.tv_price.setVisibility(View.VISIBLE);
-                viewHolder.tv_price.setText(String.format(getString(R.string.rmbStr), String.valueOf(mCurrentPrice)));
-            } else {
-                viewHolder.tv_price.setVisibility(View.INVISIBLE);
-            }
-
-            return convertView;
-        }
-
-        class ViewHolder {
-            TextView tv_week;
-            TextView tv_day;
-            TextView tv_price;
-        }
     }
 
     @Override
@@ -493,11 +298,17 @@ public class PlaneFlightListActivity extends BaseActivity {
         super.onNotifyError(request);
         removeProgressDialog();
         swipeRefreshLayout.setRefreshing(false);
+        if (mFlightList.size() <= 0) {
+            tv_empty.setVisibility(View.VISIBLE);
+        } else {
+            tv_empty.setVisibility(View.GONE);
+        }
     }
 
     private class DealResponseAsyncTask extends AsyncTask<String, Integer, Void> {
 
         private List<PlaneFlightItemInfoBean> allList = new ArrayList<>();
+        private int minPrice = 0;
 
         @Override
         protected void onPreExecute() {
@@ -509,11 +320,11 @@ public class PlaneFlightListActivity extends BaseActivity {
             LogUtil.i(TAG, "json = " + params[0]);
             Logger.i(params[0]);
             allList = JSON.parseArray(params[0], PlaneFlightItemInfoBean.class);
-            mCurrentPrice = 0;
             if (allList.size() > 0) {
                 //获取最小价格航班
-                minBean = Collections.min(allList, new BarePriceComparator());
-                mCurrentPrice = (int) minBean.barePrice;
+                PlaneFlightItemInfoBean min = Collections.min(allList, new BarePriceComparator());
+                planeFlightItemAdapter.updateMinFlightItemInfo(min);
+                minPrice = (int) min.barePrice;
 
                 //刷新数据
                 mFlightList.clear();
@@ -530,12 +341,17 @@ public class PlaneFlightListActivity extends BaseActivity {
             LogUtil.i(TAG, "onPostExecute()");
             removeProgressDialog();
             swipeRefreshLayout.setRefreshing(false);
-            planeItemAdapter.notifyDataSetChanged();
-            listview.setSelection(0);
-            planeDatePriceAdapter.notifyDataSetChanged();
+            planeFlightItemAdapter.notifyDataSetChanged();
+            recyclerView.scrollToPosition(0);
+            if (mFlightList.size() <= 0) {
+                tv_empty.setVisibility(View.VISIBLE);
+            } else {
+                tv_empty.setVisibility(View.GONE);
+            }
+            planeFlightDatePriceItemAdapter.setMinPrice(minPrice, mOffTime);
+            planeFlightDatePriceItemAdapter.notifyDataSetChanged();
             //刷新筛选框选项
-            mPlaneConsiderLayout.getConsiderAirTypeLayout().updateAirTypeInfo(allList);
-            mPlaneConsiderLayout.getConsiderAirCangLayout().updateCangInfo(allList);
+            mPlaneConsiderLayout.updateChildConsiderInfo(allList);
         }
     }
 

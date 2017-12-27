@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightItemInfoBean;
 import com.prj.sdk.app.AppConst;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -256,6 +257,13 @@ public class PlaneConsiderLayout extends LinearLayout {
 
     public boolean isStraight() {
         return switch_straight.isChecked();
+    }
+
+    public void updateChildConsiderInfo(List<PlaneFlightItemInfoBean> list){
+        considerAirCompanyLayout.updateAirCompanyInfo(list);
+        considerAirPortLayout.updateAirportInfo(list);
+        considerAirTypeLayout.updateAirTypeInfo(list);
+        considerAirCangLayout.updateCangInfo(list);
     }
 
     public ConsiderAirOffTimeLayout getConsiderAirOffTimeLayout() {

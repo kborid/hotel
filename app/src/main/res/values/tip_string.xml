@@ -74,6 +74,7 @@
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
 
     <string name="empty_hotel_list">未找到与之匹配的酒店</string>
+    <string name="empty_flight_list">未找到符合条件的航班</string>
 
     <!--user module tips-->
     <string name="tips_user_hello">Hello!</string>

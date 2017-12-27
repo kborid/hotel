@@ -23,16 +23,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="中国邮政航空"
+            android:text="不限"
             android:textColor="@color/plane_flight_consider_text_sel"
             android:textSize="@dimen/common_16sp" />
 
         <ImageView
             android:id="@+id/iv_flag"
-            android:src="@drawable/cb_plane_order_invoice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp" />
+            android:layout_marginRight="16dp"
+            android:src="@drawable/iv_consider_check" />
     </LinearLayout>
 
     <View

@@ -58,14 +58,10 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
             for (int i = 0; i < list.size(); i++) {
                 PlaneFlightItemInfoBean bean = list.get(i);
                 String type = "";
-                if (bean.flightTypeFullName.contains("宽") || bean.flightTypeFullName.contains("大")) {
-                    type = "大型机";
-                } else if (bean.flightTypeFullName.contains("中")) {
-                    type = "中型机";
-                } else if (bean.flightTypeFullName.contains("小")) {
-                    type = "小型机";
+                if (bean.cabin.contains("Y")) {
+                    type = "经济舱";
                 } else {
-                    type = "不限";
+                    type = "头等舱";
                 }
                 if (!mList.contains(type)) {
                     mList.add(type);
@@ -97,6 +93,9 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
 
     private class AirCangAdapter extends BaseAdapter {
 
+        private static final int IS_ALL = 0;
+        private static final int NOT_ALL = 1;
+
         private Context context;
         private ArrayList<String> list = new ArrayList<>();
 
@@ -121,13 +120,43 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
         }
 
         @Override
+        public int getItemViewType(int position) {
+            return list.get(position).equals("不限") ? IS_ALL : NOT_ALL;
+        }
+
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null);
-            TextView tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-            tv_title.setText(list.get(position));
-            ImageView iv_air_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
-            iv_air_logo.setVisibility(GONE);
+            ViewHolder viewHolder;
+            if (null == convertView) {
+                viewHolder = new ViewHolder();
+                switch (getItemViewType(position)) {
+                    case IS_ALL:
+                        convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_all_item, null);
+                        viewHolder.iv_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
+                        viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+                        viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
+                        break;
+                    case NOT_ALL:
+                    default:
+                        convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null);
+                        viewHolder.iv_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
+                        viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+                        viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
+                        break;
+                }
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            viewHolder.tv_title.setText(list.get(position));
+            viewHolder.iv_logo.setVisibility(GONE);
             return convertView;
+        }
+
+        class ViewHolder {
+            ImageView iv_logo;
+            TextView tv_title;
+            ImageView iv_flag;
         }
     }
 }

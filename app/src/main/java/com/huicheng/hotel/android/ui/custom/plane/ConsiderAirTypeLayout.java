@@ -97,6 +97,9 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
 
     private class AirTypeAdapter extends BaseAdapter {
 
+        private static final int IS_ALL = 0;
+        private static final int NOT_ALL = 1;
+
         private Context context;
         private ArrayList<String> list = new ArrayList<>();
 
@@ -121,13 +124,43 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
         }
 
         @Override
+        public int getItemViewType(int position) {
+            return list.get(position).equals("不限") ? IS_ALL : NOT_ALL;
+        }
+
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null);
-            TextView tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-            tv_title.setText(list.get(position));
-            ImageView iv_air_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
-            iv_air_logo.setVisibility(GONE);
+            ViewHolder viewHolder;
+            if (null == convertView) {
+                viewHolder = new ViewHolder();
+                switch (getItemViewType(position)) {
+                    case IS_ALL:
+                        convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_all_item, null);
+                        viewHolder.iv_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
+                        viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+                        viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
+                        break;
+                    case NOT_ALL:
+                    default:
+                        convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null);
+                        viewHolder.iv_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
+                        viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+                        viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
+                        break;
+                }
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            viewHolder.tv_title.setText(list.get(position));
+            viewHolder.iv_logo.setVisibility(GONE);
             return convertView;
+        }
+
+        class ViewHolder {
+            ImageView iv_logo;
+            TextView tv_title;
+            ImageView iv_flag;
         }
     }
 }

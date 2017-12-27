@@ -9,7 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightItemInfoBean;
 import com.prj.sdk.util.Utils;
+
+import java.util.List;
 
 /**
  * @auth kborid
@@ -62,7 +65,7 @@ public class ConsiderAirPortLayout extends LinearLayout implements IPlaneConside
         }
     }
 
-    public void updateAirportInfo(){
+    public void updateAirportInfo(List<PlaneFlightItemInfoBean> list){
 
     }
 
