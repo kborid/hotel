@@ -73,6 +73,8 @@ public final class NetURL {
     public static final String ALL_MESSAGE = PORTAL + "msg/page.json";
     public static final String MESSAGE_UPDATE = PORTAL + "msg/update.json";
 
+    public static final String MENUS_STATUS = PORTAL + "user/mainpageUsers.json";
+
     //---------------------------------酒店---------------------------------------------------------
     public static final String ALL_SEARCH_HOTEL = PORTAL + "hotel/search.json"; //全文检索
     public static final String HOTEL_LIST = PORTAL + "hotel/list.json";

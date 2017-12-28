@@ -89,7 +89,9 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
 
     private RelativeLayout user_lay;
     private ImageView iv_user;
+    private LinearLayout coupon_lay;
     private LinearLayout order_lay;
+    private LinearLayout bounty_lay;
     private TextView tv_city;
     private TextView tv_next_search;
     private TextView tv_in_date, tv_days, tv_out_date;
@@ -147,7 +149,10 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         iv_user = (ImageView) findViewById(R.id.iv_user);
         tv_city = (TextView) findViewById(R.id.tv_city);
         tv_next_search = (TextView) findViewById(R.id.tv_next_search);
+
+        coupon_lay = (LinearLayout) findViewById(R.id.coupon_lay);
         order_lay = (LinearLayout) findViewById(R.id.order_lay);
+        bounty_lay = (LinearLayout) findViewById(R.id.bounty_lay);
 
         tv_in_date = (TextView) findViewById(R.id.tv_in_date);
         tv_days = (TextView) findViewById(R.id.tv_days);
@@ -413,6 +418,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
 
         if (SessionContext.isLogin()) {
             requestMessageCount();
+            requestUserMenusStatus();
         }
 
         if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
@@ -512,6 +518,29 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestUserMenusStatus() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.MENUS_STATUS;
+        d.flag = AppConst.MENUS_STATUS;
+        DataLoader.getInstance().loadData(this, d);
+    }
+
+    private void updateUserMenuStatus(String str) {
+        JSONObject mJson = JSON.parseObject(str);
+        boolean couponflag = mJson.containsKey("couponflag") ? mJson.getBoolean("couponflag") : false;
+        int couponResId = couponflag ? R.drawable.iv_my_coupon_red : R.drawable.iv_my_coupon_normal;
+        ((ImageView) findViewById(R.id.iv_coupon_icon)).setImageResource(couponResId);
+
+        boolean orderflag = mJson.containsKey("orderflag") ? mJson.getBoolean("orderflag") : false;
+        int orderResId = orderflag ? R.drawable.iv_my_order_red : R.drawable.iv_my_order_normal;
+        ((ImageView) findViewById(R.id.iv_order_icon)).setImageResource(orderResId);
+
+        boolean bountyflag = mJson.containsKey("bountyflag") ? mJson.getBoolean("bountyflag") : false;
+        int bountyResId = bountyflag ? R.drawable.iv_my_bounty_red : R.drawable.iv_my_bounty_normal;
+        ((ImageView) findViewById(R.id.iv_bounty_icon)).setImageResource(bountyResId);
+    }
+
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         LogUtil.i(TAG, "onNewIntent()");
@@ -555,7 +584,9 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         tv_in_date.setOnClickListener(this);
         tv_out_date.setOnClickListener(this);
         tv_next_search.setOnClickListener(this);
+        coupon_lay.setOnClickListener(this);
         order_lay.setOnClickListener(this);
+        bounty_lay.setOnClickListener(this);
 //        iv_reset.setOnClickListener(this);
 //        iv_voice.setOnClickListener(this);
 //        et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -640,12 +671,29 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
                 startActivityForResult(resIntent, REQUEST_CODE_CITY);
                 break;
             }
+            case R.id.coupon_lay:
+                if (!SessionContext.isLogin()) {
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    return;
+                }
+                ((ImageView) findViewById(R.id.iv_coupon_icon)).setImageResource(R.drawable.iv_my_coupon_normal);
+                intent = new Intent(this, MyDiscountCouponActivity.class);
+                break;
             case R.id.order_lay:
                 if (!SessionContext.isLogin()) {
                     sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                     return;
                 }
+                ((ImageView) findViewById(R.id.iv_order_icon)).setImageResource(R.drawable.iv_my_order_normal);
                 intent = new Intent(this, OrderListActivity.class);
+                break;
+            case R.id.bounty_lay:
+                if (!SessionContext.isLogin()) {
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    return;
+                }
+                ((ImageView) findViewById(R.id.iv_bounty_icon)).setImageResource(R.drawable.iv_my_bounty_normal);
+                intent = new Intent(this, MyABCBountyActivity.class);
                 break;
             case R.id.tv_next_search:
                 if (StringUtil.isEmpty(tv_city.getText().toString())) {
@@ -800,6 +848,11 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
                 SessionContext.setBannerList(temp);
                 if (null != banner_lay) {
                     banner_lay.setImageResource(temp);
+                }
+            } else if (request.flag == AppConst.MENUS_STATUS) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
+                    updateUserMenuStatus(response.body.toString());
                 }
             }
         }
