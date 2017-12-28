@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
-import com.prj.sdk.constants.BroadCastConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,10 +75,6 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
         viewHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!SessionContext.isLogin()) {
-                    context.sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-                    return;
-                }
                 if (null != listener) {
                     listener.OnItemClick(v, position);
                 }

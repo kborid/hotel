@@ -30,8 +30,6 @@ import com.prj.sdk.util.LoggerUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -191,8 +189,7 @@ public class PlaneTicketListActivity extends BaseActivity {
             }
             //准点率
             if (StringUtil.notEmpty(bean.correct)) {
-                DecimalFormat df = (DecimalFormat) NumberFormat.getPercentInstance();
-                temp.add("准点率  " + df.format(Integer.valueOf(bean.correct) * 100));
+                temp.add("准点率  " + bean.correct);
             }
             //有无餐食
             temp.add(String.format("%1$s餐食", bean.meal ? "有" : "无"));
