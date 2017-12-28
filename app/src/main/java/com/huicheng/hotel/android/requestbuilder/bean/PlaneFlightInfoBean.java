@@ -7,7 +7,7 @@ import java.util.Comparator;
  * @date 2017/12/22 0022.
  */
 
-public class PlaneFlightItemInfoBean implements Comparator<PlaneFlightItemInfoBean> {
+public class PlaneFlightInfoBean implements Comparator<PlaneFlightInfoBean> {
     public String stopCityName;
     public String arr;
     public String bfTag;
@@ -44,7 +44,7 @@ public class PlaneFlightItemInfoBean implements Comparator<PlaneFlightItemInfoBe
     public String distance;
 
     @Override
-    public int compare(PlaneFlightItemInfoBean o1, PlaneFlightItemInfoBean o2) {
+    public int compare(PlaneFlightInfoBean o1, PlaneFlightInfoBean o2) {
         return o1.flightTimes.compareTo(o2.flightTimes);
     }
 }

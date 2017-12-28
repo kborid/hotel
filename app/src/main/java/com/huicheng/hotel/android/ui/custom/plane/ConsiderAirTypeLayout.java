@@ -6,13 +6,14 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightItemInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
     private MyListViewWidget listview;
     private ArrayList<String> mList = new ArrayList<>();
     private AirTypeAdapter adapter;
+    private int selectedIndex = 0;
 
     public ConsiderAirTypeLayout(Context context) {
         this(context, null);
@@ -49,14 +51,24 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
         listview = (MyListViewWidget) findViewById(R.id.listview);
         adapter = new AirTypeAdapter(context, mList);
         listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (selectedIndex == position) {
+                    return;
+                }
+                selectedIndex = position;
+                adapter.setSelectedIndex(selectedIndex);
+            }
+        });
     }
 
-    public void updateAirTypeInfo(List<PlaneFlightItemInfoBean> list) {
+    public void updateAirTypeInfo(List<PlaneFlightInfoBean> list) {
         if (list != null && list.size() > 0) {
             mList.clear();
             mList.add("不限");
             for (int i = 0; i < list.size(); i++) {
-                PlaneFlightItemInfoBean bean = list.get(i);
+                PlaneFlightInfoBean bean = list.get(i);
                 String type = "";
                 if (bean.flightTypeFullName.contains("宽") || bean.flightTypeFullName.contains("大")) {
                     type = "大型机";
@@ -102,10 +114,16 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
 
         private Context context;
         private ArrayList<String> list = new ArrayList<>();
+        private int selectedIndex = 0;
 
         AirTypeAdapter(Context context, ArrayList<String> list) {
             this.context = context;
             this.list = list;
+        }
+
+        public void setSelectedIndex(int selectedIndex) {
+            this.selectedIndex = selectedIndex;
+            notifyDataSetChanged();
         }
 
         @Override
@@ -136,28 +154,31 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
                 switch (getItemViewType(position)) {
                     case IS_ALL:
                         convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_all_item, null);
-                        viewHolder.iv_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
-                        viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-                        viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
                         break;
                     case NOT_ALL:
                     default:
                         convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null);
-                        viewHolder.iv_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
-                        viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-                        viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
                         break;
                 }
+                viewHolder.root = (LinearLayout) convertView.findViewById(R.id.root);
+                viewHolder.iv_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
+                viewHolder.iv_logo.setVisibility(GONE);
+                viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+                viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
+
             viewHolder.tv_title.setText(list.get(position));
-            viewHolder.iv_logo.setVisibility(GONE);
+
+            viewHolder.root.setSelected(selectedIndex == position);
+
             return convertView;
         }
 
         class ViewHolder {
+            LinearLayout root;
             ImageView iv_logo;
             TextView tv_title;
             ImageView iv_flag;

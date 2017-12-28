@@ -11,17 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!--航班列表-->
-        <ListView
-            android:id="@+id/listview"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/transparent"
-            android:listSelector="@color/transparent"
-            android:scrollbars="none" />
+            android:layout_height="match_parent">
 
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/transparent"
+                android:listSelector="@color/transparent"
+                android:scrollbars="none" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <!--Title Shadow-->
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="@drawable/title_bottom_shadow_bg" />
+            android:background="@drawable/shadow_title_bottom" />
     </RelativeLayout>
 </LinearLayout>

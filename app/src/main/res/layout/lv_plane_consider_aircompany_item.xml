@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center"
@@ -15,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:visibility="visible"
             android:layout_marginRight="12dp"
             android:src="@drawable/air_zgyz" />
 
@@ -29,7 +31,7 @@
 
         <ImageView
             android:id="@+id/iv_flag"
-            android:src="@drawable/cb_plane_order_invoice"
+            android:src="@drawable/consider_checkbox_flag_sel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp" />

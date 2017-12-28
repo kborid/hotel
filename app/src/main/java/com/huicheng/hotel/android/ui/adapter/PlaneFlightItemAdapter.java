@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightItemInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.prj.sdk.constants.BroadCastConst;
 
 import java.util.ArrayList;
@@ -26,15 +26,15 @@ import java.util.List;
 
 public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItemAdapter.ViewHolder> {
     private Context context;
-    private List<PlaneFlightItemInfoBean> mList = new ArrayList<>();
-    private PlaneFlightItemInfoBean minBean = null;
+    private List<PlaneFlightInfoBean> mList = new ArrayList<>();
+    private PlaneFlightInfoBean minBean = null;
 
-    public PlaneFlightItemAdapter(Context context, List<PlaneFlightItemInfoBean> list) {
+    public PlaneFlightItemAdapter(Context context, List<PlaneFlightInfoBean> list) {
         this.context = context;
         this.mList = list;
     }
 
-    public void updateMinFlightItemInfo(PlaneFlightItemInfoBean bean) {
+    public void updateMinFlightItemInfo(PlaneFlightInfoBean bean) {
         this.minBean = bean;
     }
 
@@ -48,7 +48,7 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        final PlaneFlightItemInfoBean bean = mList.get(position);
+        final PlaneFlightInfoBean bean = mList.get(position);
 
         viewHolder.tv_off_time.setText(bean.dptTime);
         viewHolder.tv_off_airport.setText(bean.dptAirport);

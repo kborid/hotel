@@ -39,6 +39,7 @@ import java.util.Date;
 public class PlaneMainActivity extends BaseMainActivity {
 
     private static final int REQUEST_CODE_DATE = 0x01;
+    private static final int REQUEST_CODE_AIRPORT = 0x03;
     private WindowManager mWindowManager;
     private TabLayout tabs;
     private int selectedIndex = 0;
@@ -136,6 +137,8 @@ public class PlaneMainActivity extends BaseMainActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        off_land_city_info.setOnClickListener(this);
+        on_land_city_info.setOnClickListener(this);
         iv_change.setOnClickListener(this);
         off_date_lay.setOnClickListener(this);
         on_date_lay.setOnClickListener(this);
@@ -168,6 +171,11 @@ public class PlaneMainActivity extends BaseMainActivity {
                 PlaneOrderManager.instance.setFlightOnAirport(tv_on_airport.getText().toString());
                 Intent nextIntent = new Intent(this, PlaneFlightListActivity.class);
                 startActivity(nextIntent);
+                break;
+            case R.id.off_land_city_info:
+            case R.id.on_land_city_info:
+                Intent airportIntent = new Intent(this, PlaneAirportChooserActivity.class);
+                startActivityForResult(airportIntent, REQUEST_CODE_AIRPORT);
                 break;
             case R.id.iv_change:
                 doAnim();

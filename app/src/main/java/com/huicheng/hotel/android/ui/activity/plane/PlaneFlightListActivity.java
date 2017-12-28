@@ -18,22 +18,24 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
-import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightItemInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
+import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
 import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightDatePriceItemAdapter;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.plane.PlaneConsiderLayout;
-import com.orhanobut.logger.Logger;
 import com.prj.sdk.app.AppConst;
 import com.prj.sdk.app.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.LoggerUtil;
 import com.prj.sdk.util.Utils;
 
 import java.text.SimpleDateFormat;
@@ -51,13 +53,11 @@ import java.util.List;
 
 public class PlaneFlightListActivity extends BaseActivity {
 
-    private static final int CALENDAR_SHOW_MAX = 100;
-
     private RecyclerView recyclerView;
     private TextView tv_empty;
     private PlaneFlightItemAdapter planeFlightItemAdapter;
-    private List<PlaneFlightItemInfoBean> mFlightList = new ArrayList<>();
-    private Comparator<PlaneFlightItemInfoBean> mComparator = new FlightTimesComparator();
+    private List<PlaneFlightInfoBean> mFlightList = new ArrayList<>();
+    private Comparator<PlaneFlightInfoBean> mComparator = new FlightTimesComparator();
     private long mOffTime = 0;
 
     private RecyclerView dateRecycleView;
@@ -145,15 +145,28 @@ public class PlaneFlightListActivity extends BaseActivity {
         swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 
-        mOffTime = PlaneOrderManager.instance.getFlightOffDate();
-        selectedIndex = DateUtil.getGapCount(Calendar.getInstance().getTime(), new Date(mOffTime));
-        int max = selectedIndex < CALENDAR_SHOW_MAX ? CALENDAR_SHOW_MAX : selectedIndex;
-        for (int i = 0; i < max; i++) {
+        Calendar c = Calendar.getInstance();
+        LogUtil.i(TAG, "Current Date:" + c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DATE));
+        int maxYear = c.get(Calendar.YEAR);
+        int maxMonth = c.get(Calendar.MONTH) + 6;
+        maxYear = maxMonth > 12 ? maxYear + 1 : maxYear;
+        maxMonth = maxMonth > 12 ? maxMonth - 12 : maxMonth;
+        c.set(Calendar.DATE, 1);
+        c.roll(Calendar.DATE, -1);
+        int maxDate = c.get(Calendar.DATE);
+        LogUtil.i(TAG, "Maximum Date:" + maxYear + "-" + maxMonth + "-" + maxDate);
+        c.set(maxYear, maxMonth - 1, c.get(Calendar.DATE));
+        int max = DateUtil.getGapCount(Calendar.getInstance().getTime(), c.getTime());
+        LogUtil.i(TAG, "showAllDays = " + max);
+        for (int i = 0; i <= max; i++) {
             Calendar calendar = Calendar.getInstance();
-            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
-            calendar.add(Calendar.DAY_OF_MONTH, i);
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
+            calendar.add(Calendar.DATE, i);
             mDateList.add(calendar.getTime());
         }
+
+        mOffTime = PlaneOrderManager.instance.getFlightOffDate();
+        selectedIndex = DateUtil.getGapCount(Calendar.getInstance().getTime(), new Date(mOffTime));
         planeFlightDatePriceItemAdapter = new PlaneFlightDatePriceItemAdapter(this, mDateList);
         dateRecycleView.setAdapter(planeFlightDatePriceItemAdapter);
         planeFlightDatePriceItemAdapter.setSelectedIndex(selectedIndex);
@@ -189,6 +202,13 @@ public class PlaneFlightListActivity extends BaseActivity {
         planeFlightItemAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
+                int type = PlaneOrderManager.instance.getFlightType();
+                if (null == PlaneOrderManager.instance.getGoFlightInfo() || type == PlaneCommDef.FLIGHT_SINGLE) {
+                    PlaneOrderManager.instance.setGoFlightInfo(mFlightList.get(position));
+                } else if (type == PlaneCommDef.FLIGHT_GO_BACK) {
+                    PlaneOrderManager.instance.setBackFlightInfo(mFlightList.get(position));
+                }
+                PlaneOrderManager.instance.setFlightOffDate(mOffTime);
                 Intent intent = new Intent(PlaneFlightListActivity.this, PlaneTicketListActivity.class);
                 startActivity(intent);
             }
@@ -239,6 +259,8 @@ public class PlaneFlightListActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.calendar_lay:
+                Intent intent = new Intent(this, CalendarChooseActivity.class);
+                startActivityForResult(intent, 0x01);
                 break;
         }
     }
@@ -307,7 +329,7 @@ public class PlaneFlightListActivity extends BaseActivity {
 
     private class DealResponseAsyncTask extends AsyncTask<String, Integer, Void> {
 
-        private List<PlaneFlightItemInfoBean> allList = new ArrayList<>();
+        private List<PlaneFlightInfoBean> allList = new ArrayList<>();
         private int minPrice = 0;
 
         @Override
@@ -318,11 +340,11 @@ public class PlaneFlightListActivity extends BaseActivity {
         @Override
         protected Void doInBackground(String... params) {
             LogUtil.i(TAG, "json = " + params[0]);
-            Logger.i(params[0]);
-            allList = JSON.parseArray(params[0], PlaneFlightItemInfoBean.class);
+            LoggerUtil.i(params[0]);
+            allList = JSON.parseArray(params[0], PlaneFlightInfoBean.class);
             if (allList.size() > 0) {
                 //获取最小价格航班
-                PlaneFlightItemInfoBean min = Collections.min(allList, new BarePriceComparator());
+                PlaneFlightInfoBean min = Collections.min(allList, new BarePriceComparator());
                 planeFlightItemAdapter.updateMinFlightItemInfo(min);
                 minPrice = (int) min.barePrice;
 
@@ -358,10 +380,10 @@ public class PlaneFlightListActivity extends BaseActivity {
     /**
      * 航班价格排序比较器
      */
-    private static class BarePriceComparator implements Comparator<PlaneFlightItemInfoBean> {
+    private static class BarePriceComparator implements Comparator<PlaneFlightInfoBean> {
 
         @Override
-        public int compare(PlaneFlightItemInfoBean o1, PlaneFlightItemInfoBean o2) {
+        public int compare(PlaneFlightInfoBean o1, PlaneFlightInfoBean o2) {
             return Double.valueOf(o1.barePrice).compareTo(o2.barePrice);
         }
     }
@@ -369,9 +391,9 @@ public class PlaneFlightListActivity extends BaseActivity {
     /**
      * 起飞时间排序比较器
      */
-    private static class OffTimeComparator implements Comparator<PlaneFlightItemInfoBean> {
+    private static class OffTimeComparator implements Comparator<PlaneFlightInfoBean> {
         @Override
-        public int compare(PlaneFlightItemInfoBean o1, PlaneFlightItemInfoBean o2) {
+        public int compare(PlaneFlightInfoBean o1, PlaneFlightInfoBean o2) {
             return o1.dptTime.compareTo(o2.dptTime);
         }
     }
@@ -379,9 +401,9 @@ public class PlaneFlightListActivity extends BaseActivity {
     /**
      * 飞行时间排序比较器(默认)
      */
-    private static class FlightTimesComparator implements Comparator<PlaneFlightItemInfoBean> {
+    private static class FlightTimesComparator implements Comparator<PlaneFlightInfoBean> {
         @Override
-        public int compare(PlaneFlightItemInfoBean o1, PlaneFlightItemInfoBean o2) {
+        public int compare(PlaneFlightInfoBean o1, PlaneFlightInfoBean o2) {
             String formatStr1 = "", formatStr2 = "";
             if (o1.flightTimes.contains("天")) {
                 formatStr1 += "dd天";
@@ -414,13 +436,13 @@ public class PlaneFlightListActivity extends BaseActivity {
         }
     }
 
-    private List<PlaneFlightItemInfoBean> checkConditionsResult(List<PlaneFlightItemInfoBean> list) {
+    private List<PlaneFlightInfoBean> checkConditionsResult(List<PlaneFlightInfoBean> list) {
         LogUtil.i(TAG, "checkConditionsResult()");
-        List<PlaneFlightItemInfoBean> temp = null;
+        List<PlaneFlightInfoBean> temp = null;
         if (list != null && list.size() > 0) {
             temp = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
-                PlaneFlightItemInfoBean bean = list.get(i);
+                PlaneFlightInfoBean bean = list.get(i);
                 //是否直达
                 {
                     if (mPlaneConsiderLayout.isStraight()) {
@@ -459,5 +481,26 @@ public class PlaneFlightListActivity extends BaseActivity {
             }
         }
         return temp;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        if (requestCode == 0x01) {
+            if (null != data) {
+                long tmp = data.getLongExtra("beginTime", mOffTime);
+                if (tmp == mOffTime) {
+                    return;
+                }
+                mOffTime = tmp;
+                selectedIndex = DateUtil.getGapCount(Calendar.getInstance().getTime(), new Date(mOffTime));
+                dateRecycleView.scrollToPosition(selectedIndex);
+                planeFlightDatePriceItemAdapter.setSelectedIndex(selectedIndex);
+                requestPlaneFlightInfo(true);
+            }
+        }
     }
 }

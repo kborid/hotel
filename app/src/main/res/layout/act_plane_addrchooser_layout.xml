@@ -66,6 +66,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="@drawable/title_bottom_shadow_bg" />
+            android:background="@drawable/shadow_title_bottom" />
     </RelativeLayout>
 </LinearLayout>

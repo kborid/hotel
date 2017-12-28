@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center"
@@ -16,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="12dp"
+            android:visibility="gone"
             android:src="@drawable/air_zgyz" />
 
         <TextView
@@ -32,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
-            android:src="@drawable/iv_consider_check" />
+            android:src="@drawable/consider_all_flag_sel" />
     </LinearLayout>
 
     <View

@@ -330,8 +330,6 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
         @Override
         protected Void doInBackground(Integer... params) {
             LogUtil.i(TAG, "json = " + response.body.toString());
-//            LoggerUtil.init();
-//            Logger.json(response.body.toString());
             if (response != null && response.body != null && !"{}".equals(response.body.toString())) {
                 List<HotelInfoBean> temp = JSON.parseArray(response.body.toString(), HotelInfoBean.class);
                 if (params[0] == 0) {

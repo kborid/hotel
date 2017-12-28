@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/root"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="66dp"
         android:background="@drawable/plane_date_bg_sel"
         android:gravity="center"
         android:orientation="vertical"
@@ -16,7 +16,8 @@
         <TextView
             android:id="@+id/tv_week"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="三"
             android:textColor="@color/plane_date_color_sel"
@@ -25,8 +26,9 @@
         <TextView
             android:id="@+id/tv_day"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="3dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="31"
             android:textColor="@color/plane_date_color_sel"
@@ -36,7 +38,8 @@
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginTop="3dp"
             android:gravity="center"
             android:text="¥9900"

@@ -18,6 +18,7 @@ import com.prj.sdk.app.AppConst;
 import com.prj.sdk.app.AppContext;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.LoggerUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
@@ -46,6 +47,7 @@ public class PRJApplication extends Application {
     public void onCreate() {
         super.onCreate();
         LogUtil.i(TAG, "Application Start--->>> onCreate()");
+        LoggerUtil.init();
         AppContext.init(this);
 //        Collections.addAll(DataLoader.getInstance().mCacheUrls, NetURL.CACHE_URL);
 //        BDLocationControl.getInstance().startLocationOnce();

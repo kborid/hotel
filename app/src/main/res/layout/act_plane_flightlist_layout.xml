@@ -11,23 +11,15 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@drawable/title_bottom_shadow_bg" />
+        android:background="@drawable/shadow_title_bottom" />
     <!--日期选择layout-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="82dp"
         android:layout_marginTop="-3dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:orientation="horizontal">
 
-        <!--<Gallery
-            android:id="@+id/gallery"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:spacing="1dp" />-->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/dateRecycleView"
             android:layout_width="0dp"
@@ -39,7 +31,6 @@
             android:id="@+id/calendar_lay"
             android:layout_width="64dp"
             android:layout_height="match_parent"
-            android:background="#f8f8f8"
             android:gravity="center">
 
             <TextView
@@ -58,82 +49,92 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#e0e0e0" />
-    <!--机票列表-->
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!--<ListView
-                android:id="@+id/listview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:animateLayoutChanges="true"
-                android:divider="@color/transparent"
-                android:listSelector="@color/transparent"
-                android:scrollbars="none" />-->
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:id="@+id/tv_empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/empty_flight_list"
-                android:textColor="@color/secColorShadow"
-                android:textSize="@dimen/common_18sp"
-                android:visibility="gone" />
-        </FrameLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <!--筛选栏-->
-    <LinearLayout
-        android:id="@+id/consider_lay"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="6dp">
-
-        <TextView
+        <!--机票列表-->
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawablePadding="1dp"
-            android:drawableTop="@drawable/plane_consider_logo_sel"
-            android:gravity="center"
-            android:text="筛选"
-            android:textColor="@color/plane_flight_bottom_text_sel"
-            android:textSize="@dimen/common_10sp" />
+            android:layout_marginBottom="49dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawablePadding="1dp"
-            android:drawableTop="@drawable/plane_consider_time_sel"
-            android:gravity="center"
-            android:text="时间"
-            android:textColor="@color/plane_flight_bottom_text_sel"
-            android:textSize="@dimen/common_10sp" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/empty_flight_list"
+                    android:textColor="@color/secColorShadow"
+                    android:textSize="@dimen/common_18sp"
+                    android:visibility="gone" />
+            </FrameLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <!--筛选栏-->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawablePadding="1dp"
-            android:drawableTop="@drawable/plane_consider_price_sel"
-            android:gravity="center"
-            android:text="价格"
-            android:textColor="@color/plane_flight_bottom_text_sel"
-            android:textSize="@dimen/common_10sp" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@drawable/shadow_bottombar_top" />
+
+            <LinearLayout
+                android:id="@+id/consider_lay"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawablePadding="1dp"
+                    android:drawableTop="@drawable/plane_consider_logo_sel"
+                    android:gravity="center"
+                    android:text="筛选"
+                    android:textColor="@color/plane_flight_bottom_text_sel"
+                    android:textSize="@dimen/common_10sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawablePadding="1dp"
+                    android:drawableTop="@drawable/plane_consider_time_sel"
+                    android:gravity="center"
+                    android:text="时间"
+                    android:textColor="@color/plane_flight_bottom_text_sel"
+                    android:textSize="@dimen/common_10sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawablePadding="1dp"
+                    android:drawableTop="@drawable/plane_consider_price_sel"
+                    android:gravity="center"
+                    android:text="价格"
+                    android:textColor="@color/plane_flight_bottom_text_sel"
+                    android:textSize="@dimen/common_10sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
