@@ -107,8 +107,8 @@ public class PlaneMainActivity extends BaseMainActivity {
             requestWeatherInfo(beginTime);
         }
         //初始化起飞
-        PlaneOrderManager.instance.setFlightOffDate(beginTime);
-        PlaneOrderManager.instance.setFlightOnDate(endTime);
+        PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
+        PlaneOrderManager.instance.setBackFlightOffDate(endTime);
     }
 
     @Override
@@ -126,7 +126,6 @@ public class PlaneMainActivity extends BaseMainActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 selectedIndex = tab.getPosition();
                 refreshPlaneStateAndInfo(selectedIndex);
-                PlaneOrderManager.instance.setFlightType((selectedIndex == PlaneCommDef.FLIGHT_SINGLE) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GO_BACK);
             }
 
             @Override
@@ -163,8 +162,9 @@ public class PlaneMainActivity extends BaseMainActivity {
                 if (!isSelectedDate) {
                     initCurrentTodayTime();
                 }
-                PlaneOrderManager.instance.setFlightOffDate(beginTime);
-                PlaneOrderManager.instance.setFlightOnDate(endTime);
+                PlaneOrderManager.instance.setFlightType((selectedIndex == 0) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GO_BACK);
+                PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
+                PlaneOrderManager.instance.setBackFlightOffDate(endTime);
                 PlaneOrderManager.instance.setFlightOffCity(tv_off_city.getText().toString());
                 PlaneOrderManager.instance.setFlightOffAirport(tv_off_airport.getText().toString());
                 PlaneOrderManager.instance.setFlightOnCity(tv_on_city.getText().toString());
@@ -323,8 +323,8 @@ public class PlaneMainActivity extends BaseMainActivity {
                 isSelectedDate = true;
                 beginTime = data.getLongExtra("beginTime", beginTime);
                 endTime = data.getLongExtra("endTime", endTime);
-                PlaneOrderManager.instance.setFlightOffDate(beginTime);
-                PlaneOrderManager.instance.setFlightOnDate(endTime);
+                PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
+                PlaneOrderManager.instance.setBackFlightOffDate(endTime);
                 refreshPlaneStateAndInfo(selectedIndex);
             }
         }

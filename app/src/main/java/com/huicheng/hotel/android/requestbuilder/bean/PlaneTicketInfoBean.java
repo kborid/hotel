@@ -61,6 +61,8 @@ public class PlaneTicketInfoBean {
         public int vppr;
         public String wrapperId;
 
+        public String com;
+
         @Override
         public int compareTo(@NonNull VendorInfo o) {
             return Integer.valueOf(this.cabinType).compareTo(o.cabinType);

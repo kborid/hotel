@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
@@ -42,8 +44,12 @@ import java.util.List;
 
 public class PlaneTicketListActivity extends BaseActivity {
 
+    private PlaneCommDef.GoBackStatus status;
+    private long mOffTime = 0;
+
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView listview;
+    private PlaneTicketInfoBean mTicketBean = null;
     private List<PlaneTicketInfoBean.VendorInfo> mVendorList = new ArrayList<>();
     private PlaneTicketVendorItemAdapter adapter;
     private View mListHeaderView;
@@ -94,9 +100,14 @@ public class PlaneTicketListActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+        status = PlaneOrderManager.instance.getStatus();
+        mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
+        if (PlaneOrderManager.instance.isBackFlightBack()) {
+            mOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
+        }
+
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        long offTime = PlaneOrderManager.instance.getFlightOffDate();
-        tv_center_title.setText(DateUtil.getDay("M月d日", offTime) + DateUtil.dateToWeek2(new Date(offTime)));
+        tv_center_title.setText(DateUtil.getDay("M月d日", mOffTime) + DateUtil.dateToWeek2(new Date(mOffTime)));
         setRightButtonResource(R.drawable.iv_plane_share);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
@@ -115,7 +126,19 @@ public class PlaneTicketListActivity extends BaseActivity {
         adapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
-                Intent intent = new Intent(PlaneTicketListActivity.this, PlaneNewOrderActivity.class);
+                Intent intent = null;
+                PlaneOrderManager.instance.setTicketInfo(mTicketBean);
+                PlaneOrderManager.instance.setFlightVendorInfo(mVendorList.get(position));
+                if (PlaneOrderManager.instance.getFlightType() == PlaneCommDef.FLIGHT_SINGLE){
+                    intent = new Intent(PlaneTicketListActivity.this, PlaneNewOrderActivity.class);
+                } else {
+                    if (PlaneOrderManager.instance.getStatus() == PlaneCommDef.GoBackStatus.STATUS_BACK){
+                        intent = new Intent(PlaneTicketListActivity.this, PlaneNewOrderActivity.class);
+                    } else {
+                        PlaneOrderManager.instance.setStatus(PlaneCommDef.GoBackStatus.STATUS_BACK);
+                        intent = new Intent(PlaneTicketListActivity.this, PlaneFlightListActivity.class);
+                    }
+                }
                 startActivity(intent);
             }
         });
@@ -143,8 +166,8 @@ public class PlaneTicketListActivity extends BaseActivity {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("dpt", "PEK"); //起飞机场
         b.addBody("arr", "SHA"); //着陆机场
-        b.addBody("date", DateUtil.getDay("yyyy-MM-dd", PlaneOrderManager.instance.getFlightOffDate()));
-        b.addBody("flightNum", PlaneOrderManager.instance.getCurrFlightInfo().flightNum);
+        b.addBody("date", DateUtil.getDay("yyyy-MM-dd", mOffTime));
+        b.addBody("flightNum", PlaneOrderManager.instance.getFlightInfo().flightNum);
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_TICKET_LIST;
         d.path = NetURL.PLANE_TICKET_LIST;
@@ -154,47 +177,46 @@ public class PlaneTicketListActivity extends BaseActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    private void updateTicketHeaderInfo(PlaneTicketInfoBean bean) {
-        if (null != bean) {
+    private void updateTicketHeaderInfo() {
+        if (null != mTicketBean) {
             //起飞信息
             tv_off_city.setText(PlaneOrderManager.instance.getFlightOffCity());
-            tv_off_time.setText(bean.btime);
-            tv_off_airport.setText(bean.depAirport);
-            tv_off_terminal.setText(bean.depTerminal);
+            tv_off_time.setText(mTicketBean.btime);
+            tv_off_airport.setText(mTicketBean.depAirport);
+            tv_off_terminal.setText(mTicketBean.depTerminal);
             //降落信息
             tv_on_city.setText(PlaneOrderManager.instance.getFlightOnCity());
-            tv_on_time.setText(bean.etime);
-            tv_on_airport.setText(bean.arrAirport);
-            tv_on_terminal.setText(bean.arrTerminal);
+            tv_on_time.setText(mTicketBean.etime);
+            tv_on_airport.setText(mTicketBean.arrAirport);
+            tv_on_terminal.setText(mTicketBean.arrTerminal);
             //经停
-            if (bean.stop) {
+            if (mTicketBean.stop) {
                 stopover_lay.setVisibility(View.VISIBLE);
-                ((TextView) stopover_lay.findViewById(R.id.tv_stop_city)).setText("经停" + bean.stopCityName);
+                ((TextView) stopover_lay.findViewById(R.id.tv_stop_city)).setText("经停" + mTicketBean.stopCityName);
             } else {
                 stopover_lay.setVisibility(View.GONE);
             }
             //航班飞行时间
-            tv_flight_during.setText(PlaneOrderManager.instance.getCurrFlightInfo().flightTimes);
+            tv_flight_during.setText(PlaneOrderManager.instance.getFlightInfo().flightTimes);
 
             //航班基本信息
-            flight_server_lay.setVisibility(View.GONE);
             ArrayList<String> temp = new ArrayList<>();
             //航班名称、代号
-            if (StringUtil.notEmpty(bean.com) || StringUtil.notEmpty(bean.code)) {
-                temp.add(bean.com + bean.code);
+            if (StringUtil.notEmpty(mTicketBean.com) || StringUtil.notEmpty(mTicketBean.code)) {
+                temp.add(mTicketBean.com + mTicketBean.code);
             }
             //航班机型
-            if (StringUtil.notEmpty(PlaneOrderManager.instance.getCurrFlightInfo().flightTypeFullName)) {
-                temp.add(PlaneOrderManager.instance.getCurrFlightInfo().flightTypeFullName);
+            if (StringUtil.notEmpty(PlaneOrderManager.instance.getFlightInfo().flightTypeFullName)) {
+                temp.add(PlaneOrderManager.instance.getFlightInfo().flightTypeFullName);
             }
             //准点率
-            if (StringUtil.notEmpty(bean.correct)) {
-                temp.add("准点率  " + bean.correct);
+            if (StringUtil.notEmpty(mTicketBean.correct)) {
+                temp.add("准点率  " + mTicketBean.correct);
             }
             //有无餐食
-            temp.add(String.format("%1$s餐食", bean.meal ? "有" : "无"));
-            if (temp.size() > 0) {
-                flight_server_lay.setVisibility(View.VISIBLE);
+            temp.add(String.format("%1$s餐食", mTicketBean.meal ? "有" : "无"));
+            if (temp.size() <= 0) {
+                flight_server_lay.setVisibility(View.GONE);
             }
 
             flight_server_lay.removeAllViews();
@@ -202,15 +224,14 @@ public class PlaneTicketListActivity extends BaseActivity {
                 TextView tv_server = new TextView(this);
                 tv_server.setTextColor(Color.parseColor("#666666"));
                 tv_server.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                tv_server.setGravity(Gravity.CENTER);
                 tv_server.setText(temp.get(i));
+                //the fucking divider's line
                 if (i > 0) {
                     View line = new View(this);
                     line.setBackgroundColor(Color.parseColor("#666666"));
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Utils.dp2px(1), ViewGroup.LayoutParams.MATCH_PARENT);
-                    lp.leftMargin = Utils.dp2px(6);
-                    lp.rightMargin = Utils.dp2px(6);
-                    lp.topMargin = Utils.dp2px(3);
-                    lp.bottomMargin = Utils.dp2px(3);
+                    lp.setMargins(Utils.dp2px(6), Utils.dp2px(3), Utils.dp2px(6), Utils.dp2px(3));
                     flight_server_lay.addView(line, lp);
                 }
                 flight_server_lay.addView(tv_server);
@@ -231,6 +252,7 @@ public class PlaneTicketListActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        PlaneOrderManager.instance.setStatus(status);
     }
 
     @Override
@@ -242,14 +264,14 @@ public class PlaneTicketListActivity extends BaseActivity {
                 swipeRefreshLayout.setRefreshing(false);
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 LoggerUtil.i(response.body.toString());
-                PlaneTicketInfoBean bean = JSON.parseObject(response.body.toString(), PlaneTicketInfoBean.class);
-                if (bean != null && bean.vendors != null && bean.vendors.size() > 0) {
+                mTicketBean = JSON.parseObject(response.body.toString(), PlaneTicketInfoBean.class);
+                if (mTicketBean != null && mTicketBean.vendors != null && mTicketBean.vendors.size() > 0) {
                     mVendorList.clear();
-                    mVendorList.addAll(bean.vendors);
+                    mVendorList.addAll(mTicketBean.vendors);
                     Collections.sort(mVendorList);
                 }
-                PlaneOrderManager.instance.setGoTicketInfo(bean);
-                updateTicketHeaderInfo(bean);
+                updateTicketHeaderInfo();
+                adapter.setFlightCompany(mTicketBean.com);
                 adapter.notifyDataSetChanged();
             }
         }

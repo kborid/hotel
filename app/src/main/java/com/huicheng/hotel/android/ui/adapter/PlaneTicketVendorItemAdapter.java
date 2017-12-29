@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.prj.sdk.util.StringUtil;
 
@@ -37,10 +36,15 @@ public class PlaneTicketVendorItemAdapter extends BaseAdapter {
 
     private Context context;
     private List<PlaneTicketInfoBean.VendorInfo> mList = new ArrayList<>();
+    private String com;
 
     public PlaneTicketVendorItemAdapter(Context context, List<PlaneTicketInfoBean.VendorInfo> list) {
         this.context = context;
         this.mList = list;
+    }
+
+    public void setFlightCompany(String com) {
+        this.com = com;
     }
 
     @Override
@@ -81,17 +85,19 @@ public class PlaneTicketVendorItemAdapter extends BaseAdapter {
         viewHolder.tv_price.setText(String.valueOf(vendorInfo.barePrice));
         String discount_cabin = "";
         if (StringUtil.notEmpty(vendorInfo.discount)) {
-            float discount = 1.1f;
+            float discount = 0f;
             try {
                 discount = Float.parseFloat(vendorInfo.discount);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            discount_cabin = (discount > 0f) ? "" : String.format("%1$0.1f折", discount);
+            discount_cabin = (discount <= 0f) ? "" : String.format("%1$.1f折", discount);
         }
         viewHolder.tv_discount_cabin.setText(discount_cabin);
         viewHolder.tv_discount_cabin.append(cabinMap.get(vendorInfo.cabinType));
-        viewHolder.tv_air_company.setText(PlaneOrderManager.instance.getCurrTicketInfo().com);
+        if (StringUtil.notEmpty(com)) {
+            viewHolder.tv_air_company.setText(com);
+        }
         viewHolder.tv_vendor_name.setText(vendorInfo.domain);
 
         viewHolder.remark_layout.setVisibility(View.GONE);

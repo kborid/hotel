@@ -53,6 +53,8 @@ import java.util.List;
 
 public class PlaneFlightListActivity extends BaseActivity {
 
+    private PlaneCommDef.GoBackStatus status;
+
     private RecyclerView recyclerView;
     private TextView tv_empty;
     private PlaneFlightItemAdapter planeFlightItemAdapter;
@@ -131,6 +133,18 @@ public class PlaneFlightListActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+        status = PlaneOrderManager.instance.getStatus();
+        mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
+        Calendar dd = Calendar.getInstance();
+        dd.set(Calendar.DATE, -1);
+
+        //TODO 返程航班查询日历显示处理
+        long time = dd.getTime().getTime();
+        if (PlaneOrderManager.instance.isBackFlightBack()){
+            mOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
+            time = PlaneOrderManager.instance.getGoFlightOffDate();
+        }
+
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText(
                 CityParseUtils.getPlaneOffOnCity(
@@ -165,7 +179,6 @@ public class PlaneFlightListActivity extends BaseActivity {
             mDateList.add(calendar.getTime());
         }
 
-        mOffTime = PlaneOrderManager.instance.getFlightOffDate();
         selectedIndex = DateUtil.getGapCount(Calendar.getInstance().getTime(), new Date(mOffTime));
         planeFlightDatePriceItemAdapter = new PlaneFlightDatePriceItemAdapter(this, mDateList);
         dateRecycleView.setAdapter(planeFlightDatePriceItemAdapter);
@@ -202,13 +215,12 @@ public class PlaneFlightListActivity extends BaseActivity {
         planeFlightItemAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
-                int type = PlaneOrderManager.instance.getFlightType();
-                if (null == PlaneOrderManager.instance.getGoFlightInfo() || type == PlaneCommDef.FLIGHT_SINGLE) {
-                    PlaneOrderManager.instance.setGoFlightInfo(mFlightList.get(position));
-                } else if (type == PlaneCommDef.FLIGHT_GO_BACK) {
-                    PlaneOrderManager.instance.setBackFlightInfo(mFlightList.get(position));
+                if (PlaneOrderManager.instance.isBackFlightBack()) {
+                    PlaneOrderManager.instance.setBackFlightOffDate(mOffTime);
+                } else {
+                    PlaneOrderManager.instance.setGoFlightOffDate(mOffTime);
                 }
-                PlaneOrderManager.instance.setFlightOffDate(mOffTime);
+                PlaneOrderManager.instance.setFlightInfo(mFlightList.get(position));
                 Intent intent = new Intent(PlaneFlightListActivity.this, PlaneTicketListActivity.class);
                 startActivity(intent);
             }
@@ -303,6 +315,7 @@ public class PlaneFlightListActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        PlaneOrderManager.instance.setStatus(status);
     }
 
     @Override

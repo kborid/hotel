@@ -159,7 +159,7 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
         }
-        intent = new Intent(this, MainActivity.class);
+        intent = new Intent(this, MainSwitcherActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.launch_in, R.anim.launch_out);

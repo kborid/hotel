@@ -48,7 +48,7 @@ import java.io.File;
  * @author kborid
  * @date 2017/5/24 0024
  */
-public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLeftDrawerListener {
+public class MainSwitcherActivity extends BaseActivity implements LeftDrawerLayout.OnLeftDrawerListener {
     private AppInfoBean mAppInfoBean = null;
     private long exitTime = 0;
     private LinearLayout hotel_lay, plane_lay, train_lay, taxi_lay;
@@ -68,7 +68,7 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
     protected void onCreate(Bundle savedInstanceState) {
         initMainWindow();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_main_layout);
+        setContentView(R.layout.act_mainswitcher_layout);
         initViews();
         initParams();
         initListeners();
@@ -263,9 +263,9 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
         dialog.setPositiveButton(getString(R.string.update_todo), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final CustomDialog pd = new CustomDialog(MainActivity.this);
+                final CustomDialog pd = new CustomDialog(MainSwitcherActivity.this);
                 pd.setTitle(R.string.download_ing);
-                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.progress_download_layout, null);
+                View view = LayoutInflater.from(MainSwitcherActivity.this).inflate(R.layout.progress_download_layout, null);
                 final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
                 final TextView tv_percent = (TextView) view.findViewById(R.id.tv_percent);
                 final TextView tv_size = (TextView) view.findViewById(R.id.tv_size);

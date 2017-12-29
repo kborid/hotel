@@ -76,7 +76,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PermissionTheme" />
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.activity.MainSwitcherActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
