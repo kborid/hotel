@@ -194,6 +194,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                         }
                     } else {
                         holder.tv_platform_price.setVisibility(View.INVISIBLE);
+                        holder.tv_price_unit.setVisibility(View.GONE);
                         holder.off_lay.setVisibility(View.GONE);
                     }
                     holder.tv_real_price.setText(price);

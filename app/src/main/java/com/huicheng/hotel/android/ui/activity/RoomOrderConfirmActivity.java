@@ -58,7 +58,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
     private int arrivedValue = 1;
     private EditText et_content;
     private RoundedAllImageView iv_room_pic;
-    private TextView tv_date, tv_total_price, tv_final_price;
+    private TextView tv_date, tv_breakfast, tv_total_price, tv_final_price;
     private LinearLayout choose_service_lay;
     private CommonAddSubLayout room_addsub_lay;
 
@@ -112,6 +112,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         et_content = (EditText) findViewById(R.id.et_content);
         iv_room_pic = (RoundedAllImageView) findViewById(R.id.iv_room_pic);
         tv_date = (TextView) findViewById(R.id.tv_date);
+        tv_breakfast = (TextView) findViewById(R.id.tv_breakfast);
         tv_total_price = (TextView) findViewById(R.id.tv_total_price);
         tv_total_price.getPaint().setFakeBoldText(true);
         tv_final_price = (TextView) findViewById(R.id.tv_final_price);
@@ -177,6 +178,10 @@ public class RoomOrderConfirmActivity extends BaseActivity {
         String picUrl = mPicUrl;
         if (roomDetailInfoBean != null) {
             tv_center_title.setText(roomDetailInfoBean.roomName);
+            if (roomDetailInfoBean.breakfast > 0) {
+                tv_breakfast.setText(String.format("早餐  %1$d份", roomDetailInfoBean.breakfast));
+                tv_breakfast.setVisibility(View.VISIBLE);
+            }
             if (roomDetailInfoBean.picList != null && roomDetailInfoBean.picList.size() > 0) {
                 picUrl = roomDetailInfoBean.picList.get(0);
             }
@@ -193,7 +198,7 @@ public class RoomOrderConfirmActivity extends BaseActivity {
 
         String date = DateUtil.getDay("MM月dd日", HotelOrderManager.getInstance().getBeginTime(isYgr)) + "-" + DateUtil.getDay("dd日", HotelOrderManager.getInstance().getEndTime(isYgr));
         String during = DateUtil.getGapCount(HotelOrderManager.getInstance().getBeginDate(isYgr), HotelOrderManager.getInstance().getEndDate(isYgr)) + "晚";
-        tv_date.setText(date + " " + during);
+        tv_date.setText(date + "  " + during);
         tv_total_price.setText(roomPrice + allChooseServicePrice + "元");
         choose_service_lay.removeAllViews();
         for (String key : roomServiceMap.keySet()) {
