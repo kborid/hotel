@@ -70,10 +70,16 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
             for (int i = 0; i < list.size(); i++) {
                 PlaneFlightInfoBean bean = list.get(i);
                 String type = "";
-                if (bean.cabin.contains("Y")) {
-                    type = "经济舱";
-                } else {
-                    type = "头等舱";
+                switch (bean.positionLevel) {
+                    case 1:
+                        type = "商务舱";
+                        break;
+                    case 2:
+                        type = "头等舱";
+                        break;
+                    default:
+                        type = "经济舱";
+                        break;
                 }
                 if (!mList.contains(type)) {
                     mList.add(type);

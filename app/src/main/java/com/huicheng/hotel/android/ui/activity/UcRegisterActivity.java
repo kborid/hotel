@@ -45,7 +45,7 @@ import java.util.Set;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-public class UserRegisterActivity extends BaseActivity {
+public class UcRegisterActivity extends BaseActivity {
 
     private TextView tv_right;
     private EditText et_phone, et_yzm, et_pwd, et_yqm;
@@ -216,7 +216,7 @@ public class UserRegisterActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_right: {
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-                Intent intent = new Intent(this, UserLoginActivity.class);
+                Intent intent = new Intent(this, UcLoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,

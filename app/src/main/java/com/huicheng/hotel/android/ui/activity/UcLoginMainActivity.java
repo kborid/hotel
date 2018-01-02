@@ -14,7 +14,7 @@ import com.huicheng.hotel.android.ui.base.BaseActivity;
  * @date 2017/12/6 0006.
  */
 
-public class UserLoginMainActivity extends BaseActivity {
+public class UcLoginMainActivity extends BaseActivity {
 
     private TextView tv_right, tv_action, tv_action2;
 
@@ -58,13 +58,13 @@ public class UserLoginMainActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_action: {
-                Intent intent = new Intent(this, UserRegisterActivity.class);
+                Intent intent = new Intent(this, UcRegisterActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             }
             case R.id.tv_action2: {
-                Intent intent = new Intent(this, UserLoginActivity.class);
+                Intent intent = new Intent(this, UcLoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

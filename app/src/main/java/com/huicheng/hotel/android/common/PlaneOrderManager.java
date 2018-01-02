@@ -13,7 +13,7 @@ public enum PlaneOrderManager {
     instance;
 
     private static final String TAG = "PlaneOrderManager";
-    private PlaneCommDef.GoBackStatus status = PlaneCommDef.GoBackStatus.STATUS_GO;
+    private int status = PlaneCommDef.STATUS_GO;
     private int flightType = PlaneCommDef.FLIGHT_SINGLE;
 
     private String offCity;
@@ -131,94 +131,80 @@ public enum PlaneOrderManager {
         return backVendorInfo;
     }
 
-    public void setStatus(PlaneCommDef.GoBackStatus status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public PlaneCommDef.GoBackStatus getStatus() {
+    public int getStatus() {
         return status;
     }
 
 
     public void setFlightInfo(PlaneFlightInfoBean flightInfo) {
-        if (PlaneCommDef.FLIGHT_SINGLE == flightType) {
-            this.goFlightInfo = flightInfo;
+        if (isBackBookingTypeForGoBack()) {
+            this.backFlightInfo = flightInfo;
         } else {
-            if (PlaneCommDef.GoBackStatus.STATUS_GO == status) {
-                this.goFlightInfo = flightInfo;
-            } else {
-                this.backFlightInfo = flightInfo;
-            }
+            this.goFlightInfo = flightInfo;
         }
     }
 
     public PlaneFlightInfoBean getFlightInfo() {
-        if (PlaneCommDef.FLIGHT_SINGLE == flightType) {
-            return goFlightInfo;
+        if (isBackBookingTypeForGoBack()) {
+            return backFlightInfo;
         } else {
-            if (PlaneCommDef.GoBackStatus.STATUS_GO == status) {
-                return goFlightInfo;
-            } else {
-                return backFlightInfo;
-            }
+            return goFlightInfo;
         }
     }
 
     public void setTicketInfo(PlaneTicketInfoBean ticketInfo) {
-        if (PlaneCommDef.FLIGHT_SINGLE == flightType) {
-            this.goTicketInfo = ticketInfo;
+        if (isBackBookingTypeForGoBack()) {
+            this.backTicketInfo = ticketInfo;
         } else {
-            if (PlaneCommDef.GoBackStatus.STATUS_GO == status) {
-                this.goTicketInfo = ticketInfo;
-            } else {
-                this.backTicketInfo = ticketInfo;
-            }
+            this.goTicketInfo = ticketInfo;
         }
     }
 
     public PlaneTicketInfoBean getTicketInfo() {
-        if (PlaneCommDef.FLIGHT_SINGLE == flightType) {
+        if (isBackBookingTypeForGoBack()) {
+            return backTicketInfo;
+        } else {
             return goTicketInfo;
-        } else {
-            if (PlaneCommDef.GoBackStatus.STATUS_GO == status) {
-                return goTicketInfo;
-            } else {
-                return backTicketInfo;
-            }
         }
     }
 
-    public void setFlightVendorInfo(PlaneTicketInfoBean.VendorInfo vendorInfo) {
-        if (PlaneCommDef.FLIGHT_SINGLE == flightType) {
+    public void setVendorInfo(PlaneTicketInfoBean.VendorInfo vendorInfo) {
+        if (isBackBookingTypeForGoBack()) {
+            this.backVendorInfo = vendorInfo;
+        } else {
             this.goVendorInfo = vendorInfo;
-        } else {
-            if (PlaneCommDef.GoBackStatus.STATUS_GO == status) {
-                this.goVendorInfo = vendorInfo;
-            } else {
-                this.backVendorInfo = vendorInfo;
-            }
         }
     }
 
-    public PlaneTicketInfoBean.VendorInfo getFlightVendorInfo() {
-        if (PlaneCommDef.FLIGHT_SINGLE == flightType) {
+    public PlaneTicketInfoBean.VendorInfo getVendorInfo() {
+        if (isBackBookingTypeForGoBack()) {
+            return backVendorInfo;
+        } else {
             return goVendorInfo;
-        } else {
-            if (PlaneCommDef.GoBackStatus.STATUS_GO == status) {
-                return goVendorInfo;
-            } else {
-                return backVendorInfo;
-            }
         }
     }
 
-    public boolean isBackFlightBack() {
+    public boolean isFlightGoBack() {
+        return flightType == PlaneCommDef.FLIGHT_GOBACK;
+    }
+
+    public boolean isBackBookingTypeForGoBack() {
+        LogUtil.i(TAG, "isBackBookingTypeForGoBack()");
         LogUtil.i(TAG, "FlightType = " + flightType + ", FlowStatus = " + status);
-        return flightType == PlaneCommDef.FLIGHT_GO_BACK && status == PlaneCommDef.GoBackStatus.STATUS_BACK;
+        return flightType == PlaneCommDef.FLIGHT_GOBACK && status == PlaneCommDef.STATUS_BACK;
+    }
+
+    public boolean isGoBookingTypeForGoBack() {
+        LogUtil.i(TAG, "isGoFlightInTypeAll()");
+        return flightType == PlaneCommDef.FLIGHT_GOBACK && status == PlaneCommDef.STATUS_GO;
     }
 
     public void reset() {
-        status = PlaneCommDef.GoBackStatus.STATUS_GO;
+        status = PlaneCommDef.STATUS_GO;
         flightType = PlaneCommDef.FLIGHT_SINGLE;
         goOffDate = 0;
         backOffDate = 0;
@@ -233,6 +219,8 @@ public enum PlaneOrderManager {
         backFlightInfo = null;
         goTicketInfo = null;
         backTicketInfo = null;
+        goVendorInfo = null;
+        backVendorInfo = null;
     }
 
     public class AirportInfo {

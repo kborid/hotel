@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -55,14 +54,14 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
 
         iv_pay_success.setImageBitmap(BitmapUtils.getAlphaBitmap(iv_pay_success.getDrawable(), getResources().getColor(R.color.plane_mainColor)));
         order_info_lay.removeAllViews();
-        if (PlaneOrderManager.instance.getFlightType() == PlaneCommDef.FLIGHT_SINGLE) {
-            orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_gosingle_order_item, null);
-        } else {
+        if (PlaneOrderManager.instance.isFlightGoBack()) {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_goback_order_item, null);
             iv_plane_icon_back = (ImageView) orderLayout.findViewById(R.id.iv_plane_icon_back);
             tv_plane_name_back = (TextView) orderLayout.findViewById(R.id.tv_plane_name_back);
             tv_plane_code_back = (TextView) orderLayout.findViewById(R.id.tv_plane_code_back);
             tv_plane_date_back = (TextView) orderLayout.findViewById(R.id.tv_plane_date_back);
+        } else {
+            orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_gosingle_order_item, null);
         }
         iv_plane_icon = (ImageView) orderLayout.findViewById(R.id.iv_plane_icon);
         tv_plane_name = (TextView) orderLayout.findViewById(R.id.tv_plane_name);

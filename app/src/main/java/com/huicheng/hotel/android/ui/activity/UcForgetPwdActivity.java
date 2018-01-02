@@ -30,7 +30,7 @@ import com.prj.sdk.util.Utils;
 /**
  * 找回密码
  */
-public class UserForgetPwdActivity extends BaseActivity {
+public class UcForgetPwdActivity extends BaseActivity {
 
     private EditText et_phone, et_yzm, et_pwd;
     private TextView tv_yzm;

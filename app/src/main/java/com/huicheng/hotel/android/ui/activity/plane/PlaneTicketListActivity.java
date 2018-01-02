@@ -44,7 +44,7 @@ import java.util.List;
 
 public class PlaneTicketListActivity extends BaseActivity {
 
-    private PlaneCommDef.GoBackStatus status;
+    private int status;
     private long mOffTime = 0;
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -100,20 +100,20 @@ public class PlaneTicketListActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+        swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
+        swipeRefreshLayout.setDistanceToTriggerSync(200);
+        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+
         status = PlaneOrderManager.instance.getStatus();
         mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
-        if (PlaneOrderManager.instance.isBackFlightBack()) {
+        if (PlaneOrderManager.instance.isBackBookingTypeForGoBack()) {
             mOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
         }
 
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText(DateUtil.getDay("M月d日", mOffTime) + DateUtil.dateToWeek2(new Date(mOffTime)));
         setRightButtonResource(R.drawable.iv_plane_share);
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
-        swipeRefreshLayout.setDistanceToTriggerSync(200);
-        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
-        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 
         adapter = new PlaneTicketVendorItemAdapter(this, mVendorList);
         listview.setAdapter(adapter);
@@ -126,18 +126,14 @@ public class PlaneTicketListActivity extends BaseActivity {
         adapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
-                Intent intent = null;
+                Intent intent;
                 PlaneOrderManager.instance.setTicketInfo(mTicketBean);
-                PlaneOrderManager.instance.setFlightVendorInfo(mVendorList.get(position));
-                if (PlaneOrderManager.instance.getFlightType() == PlaneCommDef.FLIGHT_SINGLE){
-                    intent = new Intent(PlaneTicketListActivity.this, PlaneNewOrderActivity.class);
+                PlaneOrderManager.instance.setVendorInfo(mVendorList.get(position));
+                if (PlaneOrderManager.instance.isGoBookingTypeForGoBack()) {
+                    PlaneOrderManager.instance.setStatus(PlaneCommDef.STATUS_BACK);
+                    intent = new Intent(PlaneTicketListActivity.this, PlaneFlightListActivity.class);
                 } else {
-                    if (PlaneOrderManager.instance.getStatus() == PlaneCommDef.GoBackStatus.STATUS_BACK){
-                        intent = new Intent(PlaneTicketListActivity.this, PlaneNewOrderActivity.class);
-                    } else {
-                        PlaneOrderManager.instance.setStatus(PlaneCommDef.GoBackStatus.STATUS_BACK);
-                        intent = new Intent(PlaneTicketListActivity.this, PlaneFlightListActivity.class);
-                    }
+                    intent = new Intent(PlaneTicketListActivity.this, PlaneNewOrderActivity.class);
                 }
                 startActivity(intent);
             }

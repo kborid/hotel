@@ -22,17 +22,17 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.activity.DebugInfoActivity;
-import com.huicheng.hotel.android.ui.activity.MyABCBountyActivity;
 import com.huicheng.hotel.android.ui.activity.UcAboutActivity;
+import com.huicheng.hotel.android.ui.activity.UcBountyActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcFansHotelActivity;
 import com.huicheng.hotel.android.ui.activity.UcFeedbackActivity;
+import com.huicheng.hotel.android.ui.activity.UcLoginActivity;
 import com.huicheng.hotel.android.ui.activity.UcMessagesActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
+import com.huicheng.hotel.android.ui.activity.UcRegisterActivity;
 import com.huicheng.hotel.android.ui.activity.UcSettingActivity;
-import com.huicheng.hotel.android.ui.activity.UserLoginActivity;
-import com.huicheng.hotel.android.ui.activity.UserRegisterActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrdersAssessActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
@@ -244,11 +244,11 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         Intent doActionIntent = null;
         switch (v.getId()) {
             case R.id.btn_login:
-                doActionIntent = new Intent(context, UserLoginActivity.class);
+                doActionIntent = new Intent(context, UcLoginActivity.class);
                 doActionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.btn_register:
-                doActionIntent = new Intent(context, UserRegisterActivity.class);
+                doActionIntent = new Intent(context, UcRegisterActivity.class);
                 doActionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.tv_usercenter:
@@ -261,7 +261,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                 doActionIntent = new Intent(context, UcMessagesActivity.class);
                 break;
             case R.id.tv_lxb:
-                doActionIntent = new Intent(context, MyABCBountyActivity.class);
+                doActionIntent = new Intent(context, UcBountyActivity.class);
                 break;
             case R.id.tv_yhq:
                 doActionIntent = new Intent(context, UcCouponsActivity.class);

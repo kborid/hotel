@@ -8,11 +8,9 @@ package com.huicheng.hotel.android.common;
 public class PlaneCommDef {
     //航班类型，单程或往返
     public static final int FLIGHT_SINGLE = 0;
-    public static final int FLIGHT_GO_BACK = 1;
+    public static final int FLIGHT_GOBACK = 1;
 
-    //往返航班的去、往状态
-    public enum GoBackStatus {
-        STATUS_GO,
-        STATUS_BACK;
-    }
+    //航班预订状态，单程、往返去程和往返回程
+    public static final int STATUS_GO = 0;
+    public static final int STATUS_BACK = 1;
 }

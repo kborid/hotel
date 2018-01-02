@@ -98,9 +98,9 @@ public class BaseMainActivity extends BaseActivity {
     public void initCurrentTodayTime() {
         //初始化时间，今天到明天 1晚
         Calendar calendar = Calendar.getInstance();
-        beginTime = calendar.getTime().getTime();
+        beginTime = calendar.getTimeInMillis();
         calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
-        endTime = calendar.getTime().getTime();
+        endTime = calendar.getTimeInMillis();
     }
 
     @Override

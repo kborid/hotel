@@ -41,7 +41,7 @@ import cn.jpush.android.api.TagAliasCallback;
 /**
  * 手机绑定
  */
-public class UserBindPhoneActivity extends BaseActivity implements DialogInterface.OnCancelListener {
+public class UcBindPhoneActivity extends BaseActivity implements DialogInterface.OnCancelListener {
 
     private TextView tv_title_summary;
     private EditText et_phone, et_yzm;

@@ -96,7 +96,7 @@ public class PlaneMainActivity extends BaseMainActivity {
         super.initParams();
         mWindowManager = getWindowManager();
         tabs.addTab(tabs.newTab().setText(getString(R.string.plane_single)), PlaneCommDef.FLIGHT_SINGLE, true);
-        tabs.addTab(tabs.newTab().setText(getString(R.string.plane_double)), PlaneCommDef.FLIGHT_GO_BACK, false);
+        tabs.addTab(tabs.newTab().setText(getString(R.string.plane_double)), PlaneCommDef.FLIGHT_GOBACK, false);
         setIndicator(tabs, 54, 54);
         refreshPlaneStateAndInfo(PlaneCommDef.FLIGHT_SINGLE);
         PlaneOrderManager.instance.setFlightType(PlaneCommDef.FLIGHT_SINGLE);
@@ -162,7 +162,7 @@ public class PlaneMainActivity extends BaseMainActivity {
                 if (!isSelectedDate) {
                     initCurrentTodayTime();
                 }
-                PlaneOrderManager.instance.setFlightType((selectedIndex == 0) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GO_BACK);
+                PlaneOrderManager.instance.setFlightType((selectedIndex == 0) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GOBACK);
                 PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
                 PlaneOrderManager.instance.setBackFlightOffDate(endTime);
                 PlaneOrderManager.instance.setFlightOffCity(tv_off_city.getText().toString());

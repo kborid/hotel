@@ -58,7 +58,7 @@ import cn.jpush.android.api.TagAliasCallback;
 /**
  * 登录
  */
-public class UserLoginActivity extends BaseActivity {
+public class UcLoginActivity extends BaseActivity {
 
     private EditText et_phone, et_pwd;
     private CheckBox cb_pwd_status_check;
@@ -332,7 +332,7 @@ public class UserLoginActivity extends BaseActivity {
                 break;
             case R.id.tv_register: {
                 Intent intent = new Intent();
-                intent.setClass(this, UserRegisterActivity.class);
+                intent.setClass(this, UcRegisterActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
@@ -347,7 +347,7 @@ public class UserLoginActivity extends BaseActivity {
             }
             case R.id.tv_forget: {
                 Intent intent = new Intent();
-                intent.setClass(this, UserForgetPwdActivity.class);
+                intent.setClass(this, UcForgetPwdActivity.class);
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
 //                            new Pair<View, String>(et_phone, "share_phone"),
@@ -582,7 +582,7 @@ public class UserLoginActivity extends BaseActivity {
                 SessionContext.setTicket(accessTicket);
                 getUserInfo(accessTicket);
             } else {
-                Intent intent = new Intent(this, UserBindPhoneActivity.class);
+                Intent intent = new Intent(this, UcBindPhoneActivity.class);
                 intent.putExtra("thirdpartusername", thirdpartusername);
                 intent.putExtra("thirdpartuserheadphotourl", thirdpartuserheadphotourl);
                 intent.putExtra("openid", openid);

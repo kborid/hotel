@@ -48,7 +48,7 @@ import java.util.Random;
  * @date 2017/12/8 0008.
  */
 
-public class MyABCBountyActivity extends BaseActivity {
+public class UcBountyActivity extends BaseActivity {
     private static final int PAGE_SIZE = 10;
     private int mPageIndex = 0;
     private BountyBaseInfo mBountyBaseInfo = null;
@@ -180,7 +180,7 @@ public class MyABCBountyActivity extends BaseActivity {
                 int index = random.nextInt(ShareTypeDef.ShareContentEnum.values().length);
                 ShareTypeDef.ShareContentEnum value = ShareTypeDef.ShareContentEnum.values()[index];
                 web.setTitle(value.getShareTitle());
-                web.setThumb(new UMImage(MyABCBountyActivity.this, BitmapFactory.decodeResource(getResources(), R.drawable.logo)));
+                web.setThumb(new UMImage(UcBountyActivity.this, BitmapFactory.decodeResource(getResources(), R.drawable.logo)));
                 web.setDescription(value.getShareDescription());
                 ShareControl.getInstance().setUMWebContent(this, web, null);
                 showSharePopupWindow();

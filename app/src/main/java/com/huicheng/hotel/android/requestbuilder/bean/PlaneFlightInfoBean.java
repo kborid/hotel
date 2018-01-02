@@ -42,6 +42,7 @@ public class PlaneFlightInfoBean implements Comparator<PlaneFlightInfoBean> {
     public double bfBarePrice;
     public String carrier;
     public String distance;
+    public int positionLevel;
 
     @Override
     public int compare(PlaneFlightInfoBean o1, PlaneFlightInfoBean o2) {

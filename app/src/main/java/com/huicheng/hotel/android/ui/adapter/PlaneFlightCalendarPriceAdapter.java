@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2017/12/27 0027.
  */
 
-public class PlaneFlightDatePriceItemAdapter extends RecyclerView.Adapter<PlaneFlightDatePriceItemAdapter.ViewHolder> {
+public class PlaneFlightCalendarPriceAdapter extends RecyclerView.Adapter<PlaneFlightCalendarPriceAdapter.ViewHolder> {
 
     private Context context;
     private LinearLayout.LayoutParams mLp = null;
@@ -30,7 +30,7 @@ public class PlaneFlightDatePriceItemAdapter extends RecyclerView.Adapter<PlaneF
     private long timestamp = 0;
     private int selectedIndex = 0;
 
-    public PlaneFlightDatePriceItemAdapter(Context context, List<Date> list) {
+    public PlaneFlightCalendarPriceAdapter(Context context, List<Date> list) {
         this.context = context;
         this.mList = list;
     }

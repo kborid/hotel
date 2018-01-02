@@ -18,14 +18,13 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
 import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
-import com.huicheng.hotel.android.ui.adapter.PlaneFlightDatePriceItemAdapter;
+import com.huicheng.hotel.android.ui.adapter.PlaneFlightCalendarPriceAdapter;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.plane.PlaneConsiderLayout;
@@ -53,7 +52,7 @@ import java.util.List;
 
 public class PlaneFlightListActivity extends BaseActivity {
 
-    private PlaneCommDef.GoBackStatus status;
+    private int status;
 
     private RecyclerView recyclerView;
     private TextView tv_empty;
@@ -62,8 +61,8 @@ public class PlaneFlightListActivity extends BaseActivity {
     private Comparator<PlaneFlightInfoBean> mComparator = new FlightTimesComparator();
     private long mOffTime = 0;
 
-    private RecyclerView dateRecycleView;
-    private PlaneFlightDatePriceItemAdapter planeFlightDatePriceItemAdapter;
+    private RecyclerView calendarRecycleView;
+    private PlaneFlightCalendarPriceAdapter planeFlightCalendarPriceAdapter;
     private List<Date> mDateList = new ArrayList<>();
     private int selectedIndex = 0;
 
@@ -91,8 +90,8 @@ public class PlaneFlightListActivity extends BaseActivity {
     @Override
     public void initViews() {
         super.initViews();
-        dateRecycleView = (RecyclerView) findViewById(R.id.dateRecycleView);
-        dateRecycleView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        calendarRecycleView = (RecyclerView) findViewById(R.id.calendarRecycleView);
+        calendarRecycleView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         calendar_lay = (RelativeLayout) findViewById(R.id.calendar_lay);
         tv_empty = (TextView) findViewById(R.id.tv_empty);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -133,18 +132,10 @@ public class PlaneFlightListActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        status = PlaneOrderManager.instance.getStatus();
-        mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
-        Calendar dd = Calendar.getInstance();
-        dd.set(Calendar.DATE, -1);
-
-        //TODO 返程航班查询日历显示处理
-        long time = dd.getTime().getTime();
-        if (PlaneOrderManager.instance.isBackFlightBack()){
-            mOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
-            time = PlaneOrderManager.instance.getGoFlightOffDate();
-        }
-
+        swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
+        swipeRefreshLayout.setDistanceToTriggerSync(200);
+        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText(
                 CityParseUtils.getPlaneOffOnCity(
@@ -153,36 +144,67 @@ public class PlaneFlightListActivity extends BaseActivity {
                         "→"
                 )
         );
+        status = PlaneOrderManager.instance.getStatus();
 
-        swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
-        swipeRefreshLayout.setDistanceToTriggerSync(200);
-        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
-        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        Calendar curr = Calendar.getInstance(); //当前、今天日期Calendar
+        Calendar max = Calendar.getInstance(); //应该显示最大日期Calendar
+        Calendar start = Calendar.getInstance(); //航班列表头部起始日期显示calendar
 
-        Calendar c = Calendar.getInstance();
-        LogUtil.i(TAG, "Current Date:" + c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DATE));
-        int maxYear = c.get(Calendar.YEAR);
-        int maxMonth = c.get(Calendar.MONTH) + 6;
-        maxYear = maxMonth > 12 ? maxYear + 1 : maxYear;
-        maxMonth = maxMonth > 12 ? maxMonth - 12 : maxMonth;
-        c.set(Calendar.DATE, 1);
-        c.roll(Calendar.DATE, -1);
-        int maxDate = c.get(Calendar.DATE);
-        LogUtil.i(TAG, "Maximum Date:" + maxYear + "-" + maxMonth + "-" + maxDate);
-        c.set(maxYear, maxMonth - 1, c.get(Calendar.DATE));
-        int max = DateUtil.getGapCount(Calendar.getInstance().getTime(), c.getTime());
-        LogUtil.i(TAG, "showAllDays = " + max);
-        for (int i = 0; i <= max; i++) {
+        //计算日历显示的最大日期
+        {
+            //根据当前日期date，计算calendar显示的最大月份和该月份天数，并转成日期date
+            int maxYear = curr.get(Calendar.YEAR);
+            int maxMonth = curr.get(Calendar.MONTH) + 5;
+            int maxDate = curr.get(Calendar.DATE);
+            maxYear = maxMonth > 12 ? maxYear + 1 : maxYear;
+            maxMonth = maxMonth > 12 ? maxMonth - 12 : maxMonth;
+
+            //将计算出的最大月份和该月份最大天数转换成最大的日期date
+            max.set(maxYear, maxMonth, maxDate);
+            max.set(Calendar.DATE, 1);
+            max.roll(Calendar.DATE, -1);
+            maxDate = max.get(Calendar.DATE);
+            max.set(maxYear, maxMonth, maxDate);
+        }
+
+        /**
+         * 如果当前订票类型是往返，则需要判断返程日期与去程日期，
+         * 如果之前记录的返程日期比去程日期小，则默认设置返程日期为去程日期后一天
+         */
+        mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
+        if (PlaneOrderManager.instance.isBackBookingTypeForGoBack()) {
+            long backOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
+            start.setTime(new Date(backOffTime));
+            if (mOffTime >= backOffTime) {
+                start.setTime(new Date(mOffTime));
+                start.add(Calendar.DATE, +1);
+            }
+            mOffTime = start.getTimeInMillis();
+        }
+
+        // 设置后的日期打印
+        LogUtil.i(TAG, "Current Date:" + printlnTimeStampByDate(curr));
+        LogUtil.i(TAG, "OffTime Date:" + printlnTimeStampByDate(mOffTime));
+        LogUtil.i(TAG, "Start_t Date:" + printlnTimeStampByDate(start));
+        LogUtil.i(TAG, "Maximum Date:" + printlnTimeStampByDate(max));
+
+        //通过最大月份天数和当前日期计算出显示的总天数
+        int maxDays = DateUtil.getGapCount(start.getTime(), max.getTime());
+        LogUtil.i(TAG, "maxDays = " + maxDays);
+
+        //根据计算结果显示航班列表头部的calendar栏
+        for (int i = 0; i <= maxDays; i++) {
             Calendar calendar = Calendar.getInstance();
-            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
+            calendar.set(start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DATE), 0, 0, 0);
             calendar.add(Calendar.DATE, i);
             mDateList.add(calendar.getTime());
         }
 
-        selectedIndex = DateUtil.getGapCount(Calendar.getInstance().getTime(), new Date(mOffTime));
-        planeFlightDatePriceItemAdapter = new PlaneFlightDatePriceItemAdapter(this, mDateList);
-        dateRecycleView.setAdapter(planeFlightDatePriceItemAdapter);
-        planeFlightDatePriceItemAdapter.setSelectedIndex(selectedIndex);
+        selectedIndex = DateUtil.getGapCount(start.getTime(), new Date(mOffTime));
+        planeFlightCalendarPriceAdapter = new PlaneFlightCalendarPriceAdapter(this, mDateList);
+        calendarRecycleView.setAdapter(planeFlightCalendarPriceAdapter);
+        calendarRecycleView.scrollToPosition(selectedIndex);
+        planeFlightCalendarPriceAdapter.setSelectedIndex(selectedIndex);
         planeFlightItemAdapter = new PlaneFlightItemAdapter(this, mFlightList);
         recyclerView.setAdapter(planeFlightItemAdapter);
         //初始化筛选条件
@@ -200,7 +222,7 @@ public class PlaneFlightListActivity extends BaseActivity {
             }
         });
         calendar_lay.setOnClickListener(this);
-        planeFlightDatePriceItemAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
+        planeFlightCalendarPriceAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
                 if (selectedIndex == position) {
@@ -208,14 +230,15 @@ public class PlaneFlightListActivity extends BaseActivity {
                 }
                 selectedIndex = position;
                 mOffTime = mDateList.get(position).getTime();
-                planeFlightDatePriceItemAdapter.setSelectedIndex(selectedIndex);
+                LogUtil.i(TAG, "SingleLine Selected OffDate:" + printlnTimeStampByDate(mOffTime));
+                planeFlightCalendarPriceAdapter.setSelectedIndex(selectedIndex);
                 requestPlaneFlightInfo(true);
             }
         });
         planeFlightItemAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
-                if (PlaneOrderManager.instance.isBackFlightBack()) {
+                if (PlaneOrderManager.instance.isBackBookingTypeForGoBack()) {
                     PlaneOrderManager.instance.setBackFlightOffDate(mOffTime);
                 } else {
                     PlaneOrderManager.instance.setGoFlightOffDate(mOffTime);
@@ -383,8 +406,8 @@ public class PlaneFlightListActivity extends BaseActivity {
             } else {
                 tv_empty.setVisibility(View.GONE);
             }
-            planeFlightDatePriceItemAdapter.setMinPrice(minPrice, mOffTime);
-            planeFlightDatePriceItemAdapter.notifyDataSetChanged();
+            planeFlightCalendarPriceAdapter.setMinPrice(minPrice, mOffTime);
+            planeFlightCalendarPriceAdapter.notifyDataSetChanged();
             //刷新筛选框选项
             mPlaneConsiderLayout.updateChildConsiderInfo(allList);
         }
@@ -509,11 +532,22 @@ public class PlaneFlightListActivity extends BaseActivity {
                     return;
                 }
                 mOffTime = tmp;
+                LogUtil.i(TAG, "Calendar Selected Off Date:" + printlnTimeStampByDate(mOffTime));
                 selectedIndex = DateUtil.getGapCount(Calendar.getInstance().getTime(), new Date(mOffTime));
-                dateRecycleView.scrollToPosition(selectedIndex);
-                planeFlightDatePriceItemAdapter.setSelectedIndex(selectedIndex);
+                planeFlightCalendarPriceAdapter.setSelectedIndex(selectedIndex);
+                calendarRecycleView.scrollToPosition(selectedIndex);
                 requestPlaneFlightInfo(true);
             }
         }
+    }
+
+    private String printlnTimeStampByDate(long timestamp) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date(timestamp));
+        return printlnTimeStampByDate(c);
+    }
+
+    private String printlnTimeStampByDate(Calendar c) {
+        return c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DATE);
     }
 }
