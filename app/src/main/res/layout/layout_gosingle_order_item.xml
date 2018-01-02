@@ -11,7 +11,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:src="@drawable/air_zgyz" />
+        android:src="@drawable/air_ca_gjhk" />
 
     <LinearLayout
         android:layout_width="match_parent"

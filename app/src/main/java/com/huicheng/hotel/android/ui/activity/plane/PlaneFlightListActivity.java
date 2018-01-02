@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
@@ -53,6 +54,7 @@ import java.util.List;
 public class PlaneFlightListActivity extends BaseActivity {
 
     private int status;
+    private String mOff3Code, mOn3Code;
 
     private RecyclerView recyclerView;
     private TextView tv_empty;
@@ -139,12 +141,15 @@ public class PlaneFlightListActivity extends BaseActivity {
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText(
                 CityParseUtils.getPlaneOffOnCity(
-                        PlaneOrderManager.instance.getFlightOffCity(),
-                        PlaneOrderManager.instance.getFlightOnCity(),
+                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityName,
+                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityName,
                         "→"
                 )
         );
         status = PlaneOrderManager.instance.getStatus();
+        LogUtil.i(TAG, "FlightType = " + PlaneOrderManager.instance.getFlightType() + ", FlowStatus = " + status);
+        mOff3Code = PlaneOrderManager.instance.getFlightOffAirportInfo()._3Code;
+        mOn3Code = PlaneOrderManager.instance.getFlightOnAirportInfo()._3Code;
 
         Calendar curr = Calendar.getInstance(); //当前、今天日期Calendar
         Calendar max = Calendar.getInstance(); //应该显示最大日期Calendar
@@ -173,6 +178,11 @@ public class PlaneFlightListActivity extends BaseActivity {
          */
         mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
         if (PlaneOrderManager.instance.isBackBookingTypeForGoBack()) {
+            //如果往返，则交换起飞着陆机场信息
+            String tmp = mOn3Code;
+            mOn3Code = mOff3Code;
+            mOff3Code = tmp;
+
             long backOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
             start.setTime(new Date(backOffTime));
             if (mOffTime >= backOffTime) {
@@ -304,8 +314,8 @@ public class PlaneFlightListActivity extends BaseActivity {
         LogUtil.i(TAG, "requestPlaneFlightInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("date", DateUtil.getDay("yyyy-MM-dd", mOffTime));
-        b.addBody("dpt", "PEK"); //起飞机场
-        b.addBody("arr", "SHA"); //着陆机场
+        b.addBody("dpt", mOff3Code); //起飞机场
+        b.addBody("arr", mOn3Code); //着陆机场
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_FLIGHT_LIST;
         d.path = NetURL.PLANE_FLIGHT_LIST;
@@ -338,7 +348,8 @@ public class PlaneFlightListActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        PlaneOrderManager.instance.setStatus(status);
+        PlaneOrderManager.instance.setStatus(PlaneCommDef.STATUS_GO);
+        LogUtil.i(TAG, "FlightType = " + PlaneOrderManager.instance.getFlightType() + ", FlowStatus = " + status);
     }
 
     @Override

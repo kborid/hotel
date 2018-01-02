@@ -13,10 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,7 +28,6 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
 
     private Context context;
     private MyListViewWidget listview;
-    private ArrayList<String> mList = new ArrayList<>();
     private AirTypeAdapter adapter;
     private int selectedIndex = 0;
 
@@ -49,7 +48,7 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
     private void init() {
         LayoutInflater.from(context).inflate(R.layout.layout_plane_consider_airtype, this);
         listview = (MyListViewWidget) findViewById(R.id.listview);
-        adapter = new AirTypeAdapter(context, mList);
+        adapter = new AirTypeAdapter(context, Arrays.asList(context.getResources().getStringArray(R.array.flightType)));
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,29 +62,29 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
         });
     }
 
-    public void updateAirTypeInfo(List<PlaneFlightInfoBean> list) {
-        if (list != null && list.size() > 0) {
-            mList.clear();
-            mList.add("不限");
-            for (int i = 0; i < list.size(); i++) {
-                PlaneFlightInfoBean bean = list.get(i);
-                String type = "";
-                if (bean.flightTypeFullName.contains("宽") || bean.flightTypeFullName.contains("大")) {
-                    type = "大型机";
-                } else if (bean.flightTypeFullName.contains("中")) {
-                    type = "中型机";
-                } else if (bean.flightTypeFullName.contains("小")) {
-                    type = "小型机";
-                } else {
-                    type = "不限";
-                }
-                if (!mList.contains(type)) {
-                    mList.add(type);
-                }
-            }
-            adapter.notifyDataSetChanged();
-        }
-    }
+//    public void updateAirTypeInfo(List<PlaneFlightInfoBean> list) {
+//        if (list != null && list.size() > 0) {
+//            mList.clear();
+//            mList.add("不限");
+//            for (int i = 0; i < list.size(); i++) {
+//                PlaneFlightInfoBean bean = list.get(i);
+//                String type = "";
+//                if (bean.flightTypeFullName.contains("宽") || bean.flightTypeFullName.contains("大")) {
+//                    type = "大型机";
+//                } else if (bean.flightTypeFullName.contains("中")) {
+//                    type = "中型机";
+//                } else if (bean.flightTypeFullName.contains("小")) {
+//                    type = "小型机";
+//                } else {
+//                    type = "不限";
+//                }
+//                if (!mList.contains(type)) {
+//                    mList.add(type);
+//                }
+//            }
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
 
     @Override
     public void cancelConsiderConfig() {
@@ -113,10 +112,10 @@ public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConside
         private static final int NOT_ALL = 1;
 
         private Context context;
-        private ArrayList<String> list = new ArrayList<>();
+        private List<String> list = new ArrayList<>();
         private int selectedIndex = 0;
 
-        AirTypeAdapter(Context context, ArrayList<String> list) {
+        AirTypeAdapter(Context context, List<String> list) {
             this.context = context;
             this.list = list;
         }

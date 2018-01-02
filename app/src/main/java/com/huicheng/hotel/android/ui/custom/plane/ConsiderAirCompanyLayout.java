@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
+import com.prj.sdk.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,6 +159,15 @@ public class ConsiderAirCompanyLayout extends LinearLayout implements IPlaneCons
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
+            }
+            String name = list.get(position);
+            if (StringUtil.notEmpty(name)
+                    && PlaneCommDef.AIR_ICON_CODE.containsKey(name)
+                    && PlaneCommDef.AIR_ICON_CODE.get(name) != 0) {
+                viewHolder.iv_logo.setImageResource(PlaneCommDef.AIR_ICON_CODE.get(name));
+                viewHolder.iv_logo.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.iv_logo.setVisibility(View.INVISIBLE);
             }
             viewHolder.tv_title.setText(list.get(position));
             viewHolder.root.setSelected(selectedIndex == position);

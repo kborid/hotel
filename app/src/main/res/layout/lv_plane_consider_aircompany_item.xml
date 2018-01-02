@@ -18,7 +18,7 @@
             android:layout_marginLeft="10dp"
             android:visibility="visible"
             android:layout_marginRight="12dp"
-            android:src="@drawable/air_zgyz" />
+            android:src="@drawable/air_ca_gjhk" />
 
         <TextView
             android:id="@+id/tv_title"

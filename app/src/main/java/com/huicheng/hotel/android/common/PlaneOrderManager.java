@@ -16,10 +16,6 @@ public enum PlaneOrderManager {
     private int status = PlaneCommDef.STATUS_GO;
     private int flightType = PlaneCommDef.FLIGHT_SINGLE;
 
-    private String offCity;
-    private String onCity;
-    private String offAirport;
-    private String onAirport;
     private AirportInfo offAirportInfo;
     private AirportInfo onAirportInfo;
 
@@ -56,38 +52,6 @@ public enum PlaneOrderManager {
 
     public long getBackFlightOffDate() {
         return backOffDate;
-    }
-
-    public void setFlightOffCity(String offCity) {
-        this.offCity = offCity;
-    }
-
-    public String getFlightOffCity() {
-        return offCity;
-    }
-
-    public void setFlightOffAirport(String offAirport) {
-        this.offAirport = offAirport;
-    }
-
-    public String getFlightOffAirport() {
-        return offAirport;
-    }
-
-    public void setFlightOnCity(String onCity) {
-        this.onCity = onCity;
-    }
-
-    public String getFlightOnCity() {
-        return onCity;
-    }
-
-    public void setFlightOnAirport(String onAirport) {
-        this.onAirport = onAirport;
-    }
-
-    public String getFlightOnAirport() {
-        return onAirport;
     }
 
     public void setFlightOffAirportInfo(AirportInfo offAirportInfo) {
@@ -194,7 +158,6 @@ public enum PlaneOrderManager {
 
     public boolean isBackBookingTypeForGoBack() {
         LogUtil.i(TAG, "isBackBookingTypeForGoBack()");
-        LogUtil.i(TAG, "FlightType = " + flightType + ", FlowStatus = " + status);
         return flightType == PlaneCommDef.FLIGHT_GOBACK && status == PlaneCommDef.STATUS_BACK;
     }
 
@@ -208,10 +171,6 @@ public enum PlaneOrderManager {
         flightType = PlaneCommDef.FLIGHT_SINGLE;
         goOffDate = 0;
         backOffDate = 0;
-        offCity = "";
-        offAirport = "";
-        onCity = "";
-        offAirport = "";
         offAirportInfo = null;
         onAirportInfo = null;
 
@@ -223,7 +182,7 @@ public enum PlaneOrderManager {
         backVendorInfo = null;
     }
 
-    public class AirportInfo {
+    public static class AirportInfo {
         public String name;
         public String _3Code;
         public String _4Code;

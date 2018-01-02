@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/rootView"
     android:background="@drawable/iv_plane_card_bg">
 
     <RelativeLayout
@@ -195,7 +195,7 @@
                     android:id="@+id/iv_flight_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/air_zgyz" />
+                    android:src="@drawable/air_ca_gjhk" />
 
                 <TextView
                     android:id="@+id/tv_flight_carrier"
@@ -219,7 +219,7 @@
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
-                    android:background="@color/black" />
+                    android:background="#3c3c3c" />
 
                 <TextView
                     android:id="@+id/tv_flight_name"
@@ -229,30 +229,35 @@
                     android:textColor="#3c3c3c"
                     android:textSize="@dimen/common_10sp" />
 
-                <View
-                    android:layout_width="0.5dp"
+                <LinearLayout
+                    android:id="@+id/zdl_lay"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:background="@color/black"
-                    android:visibility="gone" />
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:background="#3c3c3c" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="准点率"
-                    android:textColor="#3c3c3c"
-                    android:textSize="@dimen/common_10sp"
-                    android:visibility="gone" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="准点率"
+                        android:textColor="#3c3c3c"
+                        android:textSize="@dimen/common_10sp" />
 
-                <TextView
-                    android:id="@+id/tv_flight_percentInTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="0%"
-                    android:textColor="#3c3c3c"
-                    android:textSize="@dimen/common_10sp"
-                    android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/tv_flight_percentInTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="0%"
+                        android:textColor="#3c3c3c"
+                        android:textSize="@dimen/common_10sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

@@ -262,8 +262,8 @@ public class PlaneConsiderLayout extends LinearLayout {
     public void updateChildConsiderInfo(List<PlaneFlightInfoBean> list){
         considerAirCompanyLayout.updateAirCompanyInfo(list);
         considerAirPortLayout.updateAirportInfo(list);
-        considerAirTypeLayout.updateAirTypeInfo(list);
-        considerAirCangLayout.updateCangInfo(list);
+//        considerAirTypeLayout.updateAirTypeInfo(list);
+//        considerAirCangLayout.updateCangInfo(list);
     }
 
     public ConsiderAirOffTimeLayout getConsiderAirOffTimeLayout() {

@@ -40,7 +40,7 @@
             android:id="@+id/iv_plane_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/air_zgyz" />
+            android:src="@drawable/air_ca_gjhk" />
 
         <TextView
             android:id="@+id/tv_plane_name"
@@ -98,7 +98,7 @@
             android:id="@+id/iv_plane_icon_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/air_zgyz" />
+            android:src="@drawable/air_ca_gjhk" />
 
         <TextView
             android:id="@+id/tv_plane_name_back"

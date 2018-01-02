@@ -46,6 +46,7 @@ public class PlaneTicketListActivity extends BaseActivity {
 
     private int status;
     private long mOffTime = 0;
+    private String mOff3Code, mOn3Code;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView listview;
@@ -106,9 +107,16 @@ public class PlaneTicketListActivity extends BaseActivity {
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 
         status = PlaneOrderManager.instance.getStatus();
+        LogUtil.i(TAG, "FlightType = " + PlaneOrderManager.instance.getFlightType() + ", FlowStatus = " + status);
         mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
+        mOff3Code = PlaneOrderManager.instance.getFlightOffAirportInfo()._3Code;
+        mOn3Code = PlaneOrderManager.instance.getFlightOnAirportInfo()._3Code;
         if (PlaneOrderManager.instance.isBackBookingTypeForGoBack()) {
             mOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
+            //如果往返，则交换起飞着陆机场信息
+            String tmp = mOn3Code;
+            mOn3Code = mOff3Code;
+            mOff3Code = tmp;
         }
 
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
@@ -160,8 +168,8 @@ public class PlaneTicketListActivity extends BaseActivity {
 
     private void requestPlaneTicketInfo(boolean isBusy) {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("dpt", "PEK"); //起飞机场
-        b.addBody("arr", "SHA"); //着陆机场
+        b.addBody("dpt", mOff3Code); //起飞机场
+        b.addBody("arr", mOn3Code); //着陆机场
         b.addBody("date", DateUtil.getDay("yyyy-MM-dd", mOffTime));
         b.addBody("flightNum", PlaneOrderManager.instance.getFlightInfo().flightNum);
         ResponseData d = b.syncRequest(b);
@@ -176,12 +184,12 @@ public class PlaneTicketListActivity extends BaseActivity {
     private void updateTicketHeaderInfo() {
         if (null != mTicketBean) {
             //起飞信息
-            tv_off_city.setText(PlaneOrderManager.instance.getFlightOffCity());
+            tv_off_city.setText(PlaneOrderManager.instance.getFlightOffAirportInfo().cityName);
             tv_off_time.setText(mTicketBean.btime);
             tv_off_airport.setText(mTicketBean.depAirport);
             tv_off_terminal.setText(mTicketBean.depTerminal);
             //降落信息
-            tv_on_city.setText(PlaneOrderManager.instance.getFlightOnCity());
+            tv_on_city.setText(PlaneOrderManager.instance.getFlightOnAirportInfo().cityName);
             tv_on_time.setText(mTicketBean.etime);
             tv_on_airport.setText(mTicketBean.arrAirport);
             tv_on_terminal.setText(mTicketBean.arrTerminal);
@@ -249,6 +257,7 @@ public class PlaneTicketListActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         PlaneOrderManager.instance.setStatus(status);
+        LogUtil.i(TAG, "FlightType = " + PlaneOrderManager.instance.getFlightType() + ", FlowStatus = " + status);
     }
 
     @Override

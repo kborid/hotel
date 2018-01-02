@@ -48,6 +48,7 @@ public class PlaneMainActivity extends BaseMainActivity {
     private LinearLayout off_land_city_info, on_land_city_info;
     private TextView tv_off_city, tv_on_city;
     private TextView tv_off_airport, tv_on_airport;
+    private TextView tv_off_3code, tv_on_3code;
     private int height;
     private LinearLayout off_date_lay, on_date_lay;
     private TextView tv_off_date, tv_off_week;
@@ -76,8 +77,10 @@ public class PlaneMainActivity extends BaseMainActivity {
         on_land_city_info = (LinearLayout) findViewById(R.id.on_land_city_info);
         tv_off_city = (TextView) findViewById(R.id.tv_off_city);
         tv_off_airport = (TextView) findViewById(R.id.tv_off_airport);
+        tv_off_3code = (TextView) findViewById(R.id.tv_off_3code);
         tv_on_city = (TextView) findViewById(R.id.tv_on_city);
         tv_on_airport = (TextView) findViewById(R.id.tv_on_airport);
+        tv_on_3code = (TextView) findViewById(R.id.tv_on_3code);
 
         off_date_lay = (LinearLayout) findViewById(R.id.off_date_lay);
         tv_off_date = (TextView) findViewById(R.id.tv_off_date);
@@ -165,10 +168,19 @@ public class PlaneMainActivity extends BaseMainActivity {
                 PlaneOrderManager.instance.setFlightType((selectedIndex == 0) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GOBACK);
                 PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
                 PlaneOrderManager.instance.setBackFlightOffDate(endTime);
-                PlaneOrderManager.instance.setFlightOffCity(tv_off_city.getText().toString());
-                PlaneOrderManager.instance.setFlightOffAirport(tv_off_airport.getText().toString());
-                PlaneOrderManager.instance.setFlightOnCity(tv_on_city.getText().toString());
-                PlaneOrderManager.instance.setFlightOnAirport(tv_on_airport.getText().toString());
+
+                PlaneOrderManager.AirportInfo offAirportInfo = new PlaneOrderManager.AirportInfo();
+                offAirportInfo.cityName = tv_off_city.getText().toString();
+                offAirportInfo.name = tv_off_airport.getText().toString();
+                offAirportInfo._3Code = tv_off_3code.getText().toString();
+                PlaneOrderManager.instance.setFlightOffAirportInfo(offAirportInfo);
+
+                PlaneOrderManager.AirportInfo onAirportInfo = new PlaneOrderManager.AirportInfo();
+                onAirportInfo.cityName = tv_on_city.getText().toString();
+                onAirportInfo.name = tv_on_airport.getText().toString();
+                onAirportInfo._3Code = tv_on_3code.getText().toString();
+                PlaneOrderManager.instance.setFlightOnAirportInfo(onAirportInfo);
+
                 Intent nextIntent = new Intent(this, PlaneFlightListActivity.class);
                 startActivity(nextIntent);
                 break;
@@ -244,10 +256,14 @@ public class PlaneMainActivity extends BaseMainActivity {
                 super.onAnimationEnd(animation);
                 String tempCityStr = tv_off_city.getText().toString();
                 String tempAirportStr = tv_off_airport.getText().toString();
+                String temp3CodeStr = tv_off_3code.getText().toString();
+
                 tv_off_city.setText(tv_on_city.getText());
                 tv_off_airport.setText(tv_on_airport.getText());
+                tv_off_3code.setText(tv_on_3code.getText());
                 tv_on_city.setText(tempCityStr);
                 tv_on_airport.setText(tempAirportStr);
+                tv_on_3code.setText(temp3CodeStr);
 
                 off_land_city_info.setAlpha(1f);
                 off_land_city_info.setVisibility(View.VISIBLE);

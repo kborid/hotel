@@ -13,10 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,8 +28,8 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
 
     private Context context;
     private MyListViewWidget listview;
-    private ArrayList<String> mList = new ArrayList<>();
     private AirCangAdapter adapter = null;
+    private List<String> mList = new ArrayList<>();
     private int selectedIndex = 0;
 
     public ConsiderAirCangLayout(Context context) {
@@ -49,45 +49,33 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
     private void init() {
         LayoutInflater.from(context).inflate(R.layout.layout_plane_consider_aircang, this);
         listview = (MyListViewWidget) findViewById(R.id.listview);
+        mList.clear();
+        mList.addAll(Arrays.asList(context.getResources().getStringArray(R.array.flightCang)));
         adapter = new AirCangAdapter(context, mList);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (selectedIndex == position) {
-                    return;
-                }
                 selectedIndex = position;
                 adapter.setSelectedIndex(selectedIndex);
             }
         });
     }
 
-    public void updateCangInfo(List<PlaneFlightInfoBean> list) {
-        if (list != null && list.size() > 0) {
-            mList.clear();
-            mList.add("不限");
-            for (int i = 0; i < list.size(); i++) {
-                PlaneFlightInfoBean bean = list.get(i);
-                String type = "";
-                switch (bean.positionLevel) {
-                    case 1:
-                        type = "商务舱";
-                        break;
-                    case 2:
-                        type = "头等舱";
-                        break;
-                    default:
-                        type = "经济舱";
-                        break;
-                }
-                if (!mList.contains(type)) {
-                    mList.add(type);
-                }
-            }
-            adapter.notifyDataSetChanged();
-        }
-    }
+//    public void updateCangInfo(List<PlaneFlightInfoBean> list) {
+//        if (list != null && list.size() > 0) {
+//            mList.clear();
+//            mList.add("不限");
+//            for (int i = 0; i < list.size(); i++) {
+//                PlaneFlightInfoBean bean = list.get(i);
+//                String type = PlaneCommDef.getCabinString(bean.positionLevel);
+//                if (!mList.contains(type)) {
+//                    mList.add(type);
+//                }
+//            }
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
 
     @Override
     public void cancelConsiderConfig() {
@@ -115,10 +103,10 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
         private static final int NOT_ALL = 1;
 
         private Context context;
-        private ArrayList<String> list = new ArrayList<>();
+        private List<String> list = new ArrayList<>();
         private int selectedIndex = 0;
 
-        AirCangAdapter(Context context, ArrayList<String> list) {
+        AirCangAdapter(Context context, List<String> list) {
             this.context = context;
             this.list = list;
         }
@@ -174,7 +162,16 @@ public class ConsiderAirCangLayout extends LinearLayout implements IPlaneConside
 
             viewHolder.tv_title.setText(list.get(position));
 
-            viewHolder.root.setSelected(selectedIndex == position);
+            if (selectedIndex == 0) {
+                viewHolder.root.setSelected(position == 0);
+            } else {
+                if (position == 0) {
+                    viewHolder.root.setSelected(false);
+                }
+                if (position == selectedIndex) {
+                    viewHolder.root.setSelected(!viewHolder.root.isSelected());
+                }
+            }
 
             return convertView;
         }

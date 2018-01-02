@@ -235,6 +235,20 @@
     <string name="plane_single">单程</string>
     <string name="plane_double">往返</string>
 
+    <string-array name="flightCang">
+        <item>不限</item>
+        <item>经济舱</item>
+        <item>头等舱</item>
+        <item>商务舱</item>
+    </string-array>
+
+    <string-array name="flightType">
+        <item>不限</item>
+        <item>大型机</item>
+        <item>中型机</item>
+        <item>小型机</item>
+    </string-array>
+
     <string-array name="cardType">
         <item>身份证</item>
         <item>护照</item>

@@ -38,10 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/layout_plane_order_item" />
-                </LinearLayout>
+                    android:orientation="vertical" />
 
                 <ImageView
                     android:layout_width="wrap_content"

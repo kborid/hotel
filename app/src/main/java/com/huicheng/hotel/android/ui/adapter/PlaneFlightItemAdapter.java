@@ -11,7 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
+import com.prj.sdk.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,22 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
         viewHolder.tv_flight_carrier.setText(bean.carrier);
         viewHolder.tv_flight_code.setText(bean.flightNum);
         viewHolder.tv_flight_name.setText(bean.flightTypeFullName);
+        if (StringUtil.notEmpty(bean.carrier)
+                && PlaneCommDef.AIR_ICON_CODE.containsKey(bean.carrier)
+                && PlaneCommDef.AIR_ICON_CODE.get(bean.carrier) != 0) {
+            viewHolder.iv_flight_icon.setImageResource(PlaneCommDef.AIR_ICON_CODE.get(bean.carrier));
+            viewHolder.iv_flight_icon.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.iv_flight_icon.setVisibility(View.GONE);
+        }
+
+        String correct = "99.99%";
+        if (StringUtil.notEmpty(correct)) {
+            viewHolder.tv_flight_percentInTime.setText(correct);
+            viewHolder.zdl_lay.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.zdl_lay.setVisibility(View.GONE);
+        }
 
         if (bean.equals(minBean)) {
             viewHolder.tv_tag_lowest.setVisibility(View.VISIBLE);
@@ -103,6 +121,7 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
         TextView tv_flight_carrier;
         TextView tv_flight_code;
         TextView tv_flight_name;
+        LinearLayout zdl_lay;
         TextView tv_flight_percentInTime;
         TextView tv_tag_lowest;
 
@@ -123,6 +142,7 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
             tv_flight_carrier = (TextView) itemView.findViewById(R.id.tv_flight_carrier);
             tv_flight_code = (TextView) itemView.findViewById(R.id.tv_flight_code);
             tv_flight_name = (TextView) itemView.findViewById(R.id.tv_flight_name);
+            zdl_lay = (LinearLayout) itemView.findViewById(R.id.zdl_lay);
             tv_flight_percentInTime = (TextView) itemView.findViewById(R.id.tv_flight_percentInTime);
             tv_tag_lowest = (TextView) itemView.findViewById(R.id.tv_tag_lowest);
         }
