@@ -17,7 +17,8 @@ public final class NetURL {
         }
     }
 
-    private static final String PORTAL = (SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0) == 4) ? getApi() : getApi() + "hmp_website/"; // PORTAL地址  hmp_website/
+    private static final String DOMAIN = getApi();
+    private static final String PORTAL = (SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0) == 4) ? DOMAIN : DOMAIN + "hmp_website/"; // PORTAL地址  hmp_website/
 
     //---------------------------------common------------------------------------------------------
     public static final String UPLOAD = PORTAL + "upload/img.up"; // 上传图片
@@ -113,7 +114,7 @@ public final class NetURL {
     public static final String ACTIVE_ABOUT = PORTAL + "system/gettipshowornot.json"; //活动相关
 
     // -----------------------------------Html 5----------------------------------------------------
-    public static final String SHARE_BOUNTY = "http://pro.abcbooking.cn/wechat/rule/share.html"; //旅行币分享链接
+    public static final String SHARE_BOUNTY = DOMAIN + "wechat/rule/inviteshare.html"; //旅行币分享链接
     public static final String SHARE = PORTAL + "pages/plain/pages/agreements/share.html"; //分享
     public static final String SAVE_RECOMMAND = PORTAL + "user/saveRecommand.json"; //推荐
     public static final String PLANE_HOME = PORTAL + "pages/plain/pages/air.html"; //机票页
