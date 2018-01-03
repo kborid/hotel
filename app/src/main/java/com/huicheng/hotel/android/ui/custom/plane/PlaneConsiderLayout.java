@@ -16,9 +16,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,21 +28,18 @@ import java.util.List;
  */
 
 public class PlaneConsiderLayout extends LinearLayout {
-    private static final String TAG = "PlaneConsiderLayout";
-
     private Context context;
 
     private Switch switch_straight;
+    private boolean mIsOriginalStraight = false;
     private boolean isStraight = false;
-    private ListView listview;
+    private int mSelectedIndex = 0;
+    private ListView considerNamesListView;
     private ConditionAdapter adapter;
-    private LinearLayout consider_content_lay;
-    private ArrayList<IPlaneConsiderAction> actions = new ArrayList<>();
-    private ConsiderAirOffTimeLayout considerAirOffTimeLayout;
-    private ConsiderAirCompanyLayout considerAirCompanyLayout;
-    private ConsiderAirPortLayout considerAirPortLayout;
-    private ConsiderAirTypeLayout considerAirTypeLayout;
-    private ConsiderAirCangLayout considerAirCangLayout;
+    private LinearLayout mContentLayout;
+    private List<String> considerNames = new ArrayList<>();
+    private List<IPlaneConsiderNotifyListener> listeners = new ArrayList<>();
+    private List<BaseConsiderAirLayout> considerLayouts = new ArrayList<>();
     private TextView tv_cancel, tv_reset, tv_confirm;
 
     public PlaneConsiderLayout(Context context) {
@@ -66,53 +61,54 @@ public class PlaneConsiderLayout extends LinearLayout {
     private void initViews() {
         LayoutInflater.from(context).inflate(R.layout.layout_plane_consider, this);
         switch_straight = (Switch) findViewById(R.id.switch_straight);
-        listview = (ListView) findViewById(R.id.listview);
-        consider_content_lay = (LinearLayout) findViewById(R.id.consider_content_lay);
-        considerAirOffTimeLayout = new ConsiderAirOffTimeLayout(context);
-        considerAirCompanyLayout = new ConsiderAirCompanyLayout(context);
-        considerAirPortLayout = new ConsiderAirPortLayout(context);
-        considerAirTypeLayout = new ConsiderAirTypeLayout(context);
-        considerAirCangLayout = new ConsiderAirCangLayout(context);
+        considerNamesListView = (ListView) findViewById(R.id.listview);
+        considerNames = Arrays.asList(getResources().getStringArray(R.array.PlaneConditionItem));
+        considerLayouts.add(new ConsiderAirOffTimeLayout(context));
+        considerLayouts.add(new ConsiderAirCompanyLayout(context));
+        considerLayouts.add(new ConsiderAirPortLayout(context));
+        considerLayouts.add(new ConsiderAirTypeLayout(context));
+        considerLayouts.add(new ConsiderAirCangLayout(context));
+        mContentLayout = (LinearLayout) findViewById(R.id.consider_content_lay);
         tv_cancel = (TextView) findViewById(R.id.tv_cancel);
         tv_reset = (TextView) findViewById(R.id.tv_reset);
         tv_confirm = (TextView) findViewById(R.id.tv_confirm);
     }
 
     private void initParams() {
-        adapter = new ConditionAdapter();
-        listview.setAdapter(adapter);
-        consider_content_lay.removeAllViews();
-        consider_content_lay.addView(considerAirOffTimeLayout);
+        mSelectedIndex = 0;
+        adapter = new ConditionAdapter(context, considerNames);
+        considerNamesListView.setAdapter(adapter);
+        mContentLayout.removeAllViews();
+        mContentLayout.addView(considerLayouts.get(mSelectedIndex));
     }
 
     private void initListeners() {
+        listeners.addAll(considerLayouts);
         switch_straight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isStraight = isChecked;
             }
         });
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        considerNamesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (adapter.getSelectedIndex() == position) {
+                if (mSelectedIndex == position) {
                     return;
                 }
-                adapter.setSelectedIndex(position);
-                changedContentLayout(position);
+                mSelectedIndex = position;
+                adapter.setSelectedIndex(mSelectedIndex);
+                mContentLayout.removeAllViews();
+                mContentLayout.addView(considerLayouts.get(mSelectedIndex));
             }
         });
 
-        actions.add(considerAirOffTimeLayout);
-        actions.add(considerAirCompanyLayout);
-        actions.add(considerAirPortLayout);
-        actions.add(considerAirTypeLayout);
-        actions.add(considerAirCangLayout);
         tv_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                cancelConfig();
                 if (null != listener) {
-                    listener.onDismiss(false);
+                    listener.cancelConfig();
                 }
             }
         });
@@ -125,89 +121,60 @@ public class PlaneConsiderLayout extends LinearLayout {
         tv_confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != listener) {
-                    listener.onDismiss(true);
-                }
                 saveConfig();
+                if (null != listener) {
+                    listener.saveConfig();
+                }
             }
         });
     }
 
-    private void changedContentLayout(int index) {
-        consider_content_lay.removeAllViews();
-        switch (index) {
-            case 0:
-                consider_content_lay.addView(considerAirOffTimeLayout);
-                break;
-            case 1:
-                consider_content_lay.addView(considerAirCompanyLayout);
-                break;
-            case 2:
-                consider_content_lay.addView(considerAirPortLayout);
-                break;
-            case 3:
-                consider_content_lay.addView(considerAirTypeLayout);
-                break;
-            case 4:
-                consider_content_lay.addView(considerAirCangLayout);
-                break;
-        }
-    }
-
     public void cancelConfig() {
-        isStraight = SharedPreferenceUtil.getInstance().getBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, false);
-        switch_straight.setChecked(isStraight);
-        for (IPlaneConsiderAction action : actions) {
-            action.cancelConsiderConfig();
+        isStraight = mIsOriginalStraight;
+        for (IPlaneConsiderNotifyListener listener : listeners) {
+            listener.cancel();
         }
     }
 
     public void resetConfig() {
-        LogUtil.i(TAG, "resetConfig()");
         isStraight = false;
         switch_straight.setChecked(false);
-        for (IPlaneConsiderAction action : actions) {
-            action.resetConsiderConfig();
+        for (IPlaneConsiderNotifyListener listener : listeners) {
+            listener.reset();
         }
     }
 
     public void saveConfig() {
-        LogUtil.i(TAG, "saveConfig()");
-        SharedPreferenceUtil.getInstance().setBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, isStraight);
-        for (IPlaneConsiderAction action : actions) {
-            action.saveConsiderConfig();
+        mIsOriginalStraight = isStraight;
+        for (IPlaneConsiderNotifyListener listener : listeners) {
+            listener.save();
         }
     }
 
     public void reloadConfig() {
-        LogUtil.i(TAG, "reloadConfig()");
-        isStraight = SharedPreferenceUtil.getInstance().getBoolean(AppConst.CONSIDER_PLANE_IS_STRAIGHT, false);
+        isStraight = mIsOriginalStraight;
         switch_straight.setChecked(isStraight);
-        for (IPlaneConsiderAction action : actions) {
-            action.reloadConsiderConfig();
+        for (IPlaneConsiderNotifyListener listener : listeners) {
+            listener.reload();
         }
     }
 
-    public void initConfig() {
-        LogUtil.i(TAG, "initConfig()");
-        resetConfig();
-        saveConfig();
-    }
+    private OnConsiderLayoutResultListener listener = null;
 
-    public interface OnConsiderLayoutDismissListener {
-        void onDismiss(boolean isSave);
-    }
-
-    private OnConsiderLayoutDismissListener listener = null;
-
-    public void setOnConsiderLayoutDismissListener(OnConsiderLayoutDismissListener listener) {
+    public void setOnConsiderLayoutResultListener(OnConsiderLayoutResultListener listener) {
         this.listener = listener;
     }
 
     private class ConditionAdapter extends BaseAdapter {
 
-        private List<String> list = Arrays.asList(getResources().getStringArray(R.array.PlaneConditionItem));
+        private Context context;
+        private List<String> list = new ArrayList<>();
         private int selectedIndex = 0;
+
+        ConditionAdapter(Context context, List<String> list) {
+            this.context = context;
+            this.list = list;
+        }
 
         void setSelectedIndex(int index) {
             this.selectedIndex = index;
@@ -259,30 +226,17 @@ public class PlaneConsiderLayout extends LinearLayout {
         return switch_straight.isChecked();
     }
 
-    public void updateChildConsiderInfo(List<PlaneFlightInfoBean> list){
-        considerAirCompanyLayout.updateAirCompanyInfo(list);
-        considerAirPortLayout.updateAirportInfo(list);
-//        considerAirTypeLayout.updateAirTypeInfo(list);
-//        considerAirCangLayout.updateCangInfo(list);
+    public void updateChildConsiderInfo(List<PlaneFlightInfoBean> list) {
+        for (int i = 0; i < considerLayouts.size(); i++) {
+            considerLayouts.get(i).updateDataInfo(list);
+        }
     }
 
-    public ConsiderAirOffTimeLayout getConsiderAirOffTimeLayout() {
-        return considerAirOffTimeLayout;
-    }
-
-    public ConsiderAirPortLayout getConsiderAirPortLayout() {
-        return considerAirPortLayout;
-    }
-
-    public ConsiderAirCompanyLayout getConsiderAirCompanyLayout() {
-        return considerAirCompanyLayout;
-    }
-
-    public ConsiderAirTypeLayout getConsiderAirTypeLayout() {
-        return considerAirTypeLayout;
-    }
-
-    public ConsiderAirCangLayout getConsiderAirCangLayout() {
-        return considerAirCangLayout;
+    public BaseConsiderAirLayout getConsiderAirLayout(String name) {
+        if (StringUtil.notEmpty(name)) {
+            int index = considerNames.indexOf(name);
+            return considerLayouts.get(index);
+        }
+        return null;
     }
 }

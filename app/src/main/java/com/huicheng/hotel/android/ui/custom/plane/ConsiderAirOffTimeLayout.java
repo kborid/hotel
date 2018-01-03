@@ -8,52 +8,59 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.ui.custom.CustomDoubleSeekBar;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.util.SharedPreferenceUtil;
+
+import java.util.List;
 
 /**
  * @auth kborid
  * @date 2017/11/29 0029.
  */
 
-public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneConsiderAction {
+public class ConsiderAirOffTimeLayout extends BaseConsiderAirLayout {
 
-    private Context context;
     private LinearLayout check_lay;
-    private int selectedIndex = -1;
     private CustomDoubleSeekBar seekBar;
-    private float startHour, endHour;
+
+    private int mSelectedIndex, mOriginalIndex;
+    private float mStartHour, mOriginalStartHour;
+    private float mEndHour, mOriginalEndHour;
 
     public ConsiderAirOffTimeLayout(Context context) {
-        this(context, null);
+        super(context);
     }
 
     public ConsiderAirOffTimeLayout(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
     }
 
     public ConsiderAirOffTimeLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
-        init();
-        initListeners();
     }
 
-    private void init() {
+    @Override
+    protected void initParams() {
+        mSelectedIndex = -1;
+        mStartHour = 0f;
+        mEndHour = 24f;
+        mOriginalIndex = -1;
+        mOriginalStartHour = 0f;
+        mOriginalEndHour = 24f;
         LayoutInflater.from(context).inflate(R.layout.layout_plane_consider_airofftime, this);
         check_lay = (LinearLayout) findViewById(R.id.check_lay);
         seekBar = (CustomDoubleSeekBar) findViewById(R.id.seekBar);
     }
 
-    private void initListeners() {
+    @Override
+    protected void setListeners() {
         for (int i = 0; i < check_lay.getChildCount(); i++) {
             View view = check_lay.getChildAt(i);
             final int finalI = i;
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectedIndex = -1;
+                    mSelectedIndex = -1;
                     if (v.isSelected()) {
                         v.setSelected(false);
                     } else {
@@ -65,20 +72,25 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
         seekBar.setOnSeekBarChangeListener(new CustomDoubleSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressBefore() {
-                selectedIndex = -1;
-                setSelectedIndex(selectedIndex);
+                mSelectedIndex = -1;
+                setSelectedIndex(mSelectedIndex);
             }
 
             @Override
             public void onProgressChanged(CustomDoubleSeekBar seekBar, double progressLeft, double progressRight) {
-                startHour = (float) progressLeft;
-                endHour = (float) progressRight;
+                mStartHour = (float) progressLeft;
+                mEndHour = (float) progressRight;
             }
 
             @Override
             public void onProgressAfter() {
             }
         });
+    }
+
+    @Override
+    protected void updateDataInfo(List<PlaneFlightInfoBean> list) {
+
     }
 
     private void setSelectedIndex(int index) {
@@ -89,7 +101,7 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
             }
         }
         if (index != -1) {
-            selectedIndex = index;
+            mSelectedIndex = index;
             check_lay.getChildAt(index).setSelected(true);
             switch (index) {
                 case 0:
@@ -109,41 +121,45 @@ public class ConsiderAirOffTimeLayout extends LinearLayout implements IPlaneCons
     }
 
     @Override
-    public void cancelConsiderConfig() {
-        reloadConsiderConfig();
+    public void cancel() {
+        mSelectedIndex = mOriginalIndex;
+        mStartHour = mOriginalStartHour;
+        mEndHour = mOriginalEndHour;
     }
 
     @Override
-    public void resetConsiderConfig() {
-        selectedIndex = -1;
-        setSelectedIndex(selectedIndex);
-        startHour = 0;
-        endHour = 24;
-        seekBar.setProgressLeft(startHour);
-        seekBar.setProgressRight(endHour);
+    public void reset() {
+        mSelectedIndex = -1;
+        setSelectedIndex(mSelectedIndex);
+
+        mStartHour = 0;
+        mEndHour = 24;
+        seekBar.setProgressLeft(mStartHour);
+        seekBar.setProgressRight(mEndHour);
     }
 
     @Override
-    public void saveConsiderConfig() {
-        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_PLANE_DURING, selectedIndex);
-        SharedPreferenceUtil.getInstance().setFloat(AppConst.CONSIDER_PLANE_START_HOUR, startHour);
-        SharedPreferenceUtil.getInstance().setFloat(AppConst.CONSIDER_PLANE_END_HOUR, endHour);
+    public void save() {
+        mOriginalIndex = mSelectedIndex;
+        mOriginalStartHour = mStartHour;
+        mOriginalEndHour = mEndHour;
     }
 
     @Override
-    public void reloadConsiderConfig() {
-        selectedIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.CONSIDER_PLANE_DURING, -1);
-        setSelectedIndex(selectedIndex);
-        startHour = SharedPreferenceUtil.getInstance().getFloat(AppConst.CONSIDER_PLANE_START_HOUR, 0f);
-        endHour = SharedPreferenceUtil.getInstance().getFloat(AppConst.CONSIDER_PLANE_END_HOUR, 24f);
-        seekBar.setProgressLeft(startHour);
-        seekBar.setProgressRight(endHour);
+    public void reload() {
+        mSelectedIndex = mOriginalIndex;
+        setSelectedIndex(mSelectedIndex);
+
+        mStartHour = mOriginalStartHour;
+        mEndHour = mOriginalEndHour;
+        seekBar.setProgressLeft(mStartHour);
+        seekBar.setProgressRight(mEndHour);
     }
 
-    public float[] getOffTimeStartEnd() {
+    public float[] getOffTimeLayoutValue() {
         float[] offTime = new float[2];
-        offTime[0] = startHour;
-        offTime[1] = endHour;
+        offTime[0] = mStartHour;
+        offTime[1] = mEndHour;
         return offTime;
     }
 }

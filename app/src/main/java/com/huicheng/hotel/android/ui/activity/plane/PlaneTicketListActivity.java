@@ -109,14 +109,14 @@ public class PlaneTicketListActivity extends BaseActivity {
         status = PlaneOrderManager.instance.getStatus();
         LogUtil.i(TAG, "FlightType = " + PlaneOrderManager.instance.getFlightType() + ", FlowStatus = " + status);
         mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
-        mOff3Code = PlaneOrderManager.instance.getFlightOffAirportInfo()._3Code;
-        mOn3Code = PlaneOrderManager.instance.getFlightOnAirportInfo()._3Code;
+        mOff3Code = PlaneOrderManager.instance.getFlightInfo().dpt;
+        mOn3Code = PlaneOrderManager.instance.getFlightInfo().arr;
         if (PlaneOrderManager.instance.isBackBookingTypeForGoBack()) {
             mOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
             //如果往返，则交换起飞着陆机场信息
-            String tmp = mOn3Code;
-            mOn3Code = mOff3Code;
-            mOff3Code = tmp;
+//            String tmp = mOn3Code;
+//            mOn3Code = mOff3Code;
+//            mOff3Code = tmp;
         }
 
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
@@ -184,12 +184,12 @@ public class PlaneTicketListActivity extends BaseActivity {
     private void updateTicketHeaderInfo() {
         if (null != mTicketBean) {
             //起飞信息
-            tv_off_city.setText(PlaneOrderManager.instance.getFlightOffAirportInfo().cityName);
+            tv_off_city.setText(PlaneOrderManager.instance.getFlightOffAirportInfo().cityname);
             tv_off_time.setText(mTicketBean.btime);
             tv_off_airport.setText(mTicketBean.depAirport);
             tv_off_terminal.setText(mTicketBean.depTerminal);
             //降落信息
-            tv_on_city.setText(PlaneOrderManager.instance.getFlightOnAirportInfo().cityName);
+            tv_on_city.setText(PlaneOrderManager.instance.getFlightOnAirportInfo().cityname);
             tv_on_time.setText(mTicketBean.etime);
             tv_on_airport.setText(mTicketBean.arrAirport);
             tv_on_terminal.setText(mTicketBean.arrTerminal);

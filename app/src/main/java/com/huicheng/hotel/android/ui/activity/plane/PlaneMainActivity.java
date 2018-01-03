@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
 import com.prj.sdk.app.AppConst;
@@ -45,10 +46,10 @@ public class PlaneMainActivity extends BaseMainActivity {
     private int selectedIndex = 0;
 
     private ImageView iv_change;
+    private CityAirportInfoBean off, on;
     private LinearLayout off_land_city_info, on_land_city_info;
     private TextView tv_off_city, tv_on_city;
-    private TextView tv_off_airport, tv_on_airport;
-    private TextView tv_off_3code, tv_on_3code;
+    private TextView tv_off_piny, tv_on_piny;
     private int height;
     private LinearLayout off_date_lay, on_date_lay;
     private TextView tv_off_date, tv_off_week;
@@ -76,11 +77,9 @@ public class PlaneMainActivity extends BaseMainActivity {
         off_land_city_info = (LinearLayout) findViewById(R.id.off_land_city_info);
         on_land_city_info = (LinearLayout) findViewById(R.id.on_land_city_info);
         tv_off_city = (TextView) findViewById(R.id.tv_off_city);
-        tv_off_airport = (TextView) findViewById(R.id.tv_off_airport);
-        tv_off_3code = (TextView) findViewById(R.id.tv_off_3code);
+        tv_off_piny = (TextView) findViewById(R.id.tv_off_piny);
         tv_on_city = (TextView) findViewById(R.id.tv_on_city);
-        tv_on_airport = (TextView) findViewById(R.id.tv_on_airport);
-        tv_on_3code = (TextView) findViewById(R.id.tv_on_3code);
+        tv_on_piny = (TextView) findViewById(R.id.tv_on_piny);
 
         off_date_lay = (LinearLayout) findViewById(R.id.off_date_lay);
         tv_off_date = (TextView) findViewById(R.id.tv_off_date);
@@ -112,6 +111,14 @@ public class PlaneMainActivity extends BaseMainActivity {
         //初始化起飞
         PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
         PlaneOrderManager.instance.setBackFlightOffDate(endTime);
+        //test
+        off = new CityAirportInfoBean();
+        off.cityname = "上海";
+        off.pinyin = "SHANGHAI";
+        on = new CityAirportInfoBean();
+        on.cityname = "北京";
+        on.pinyin = "BEIJING";
+        PlaneOrderManager.instance.setFlightOnAirportInfo(on);
     }
 
     @Override
@@ -168,26 +175,20 @@ public class PlaneMainActivity extends BaseMainActivity {
                 PlaneOrderManager.instance.setFlightType((selectedIndex == 0) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GOBACK);
                 PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
                 PlaneOrderManager.instance.setBackFlightOffDate(endTime);
-
-                PlaneOrderManager.AirportInfo offAirportInfo = new PlaneOrderManager.AirportInfo();
-                offAirportInfo.cityName = tv_off_city.getText().toString();
-                offAirportInfo.name = tv_off_airport.getText().toString();
-                offAirportInfo._3Code = tv_off_3code.getText().toString();
-                PlaneOrderManager.instance.setFlightOffAirportInfo(offAirportInfo);
-
-                PlaneOrderManager.AirportInfo onAirportInfo = new PlaneOrderManager.AirportInfo();
-                onAirportInfo.cityName = tv_on_city.getText().toString();
-                onAirportInfo.name = tv_on_airport.getText().toString();
-                onAirportInfo._3Code = tv_on_3code.getText().toString();
-                PlaneOrderManager.instance.setFlightOnAirportInfo(onAirportInfo);
-
+                PlaneOrderManager.instance.setFlightOffAirportInfo(off);
+                PlaneOrderManager.instance.setFlightOnAirportInfo(on);
                 Intent nextIntent = new Intent(this, PlaneFlightListActivity.class);
                 startActivity(nextIntent);
                 break;
             case R.id.off_land_city_info:
+                Intent offIntent = new Intent(this, PlaneAirportChooserActivity.class);
+                offIntent.putExtra("type", "OFF");
+                startActivityForResult(offIntent, REQUEST_CODE_AIRPORT);
+                break;
             case R.id.on_land_city_info:
-                Intent airportIntent = new Intent(this, PlaneAirportChooserActivity.class);
-                startActivityForResult(airportIntent, REQUEST_CODE_AIRPORT);
+                Intent onIntent = new Intent(this, PlaneAirportChooserActivity.class);
+                onIntent.putExtra("type", "ON");
+                startActivityForResult(onIntent, REQUEST_CODE_AIRPORT);
                 break;
             case R.id.iv_change:
                 doAnim();
@@ -254,17 +255,11 @@ public class PlaneMainActivity extends BaseMainActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                String tempCityStr = tv_off_city.getText().toString();
-                String tempAirportStr = tv_off_airport.getText().toString();
-                String temp3CodeStr = tv_off_3code.getText().toString();
+                CityAirportInfoBean bean = on;
+                on = off;
+                off = bean;
 
-                tv_off_city.setText(tv_on_city.getText());
-                tv_off_airport.setText(tv_on_airport.getText());
-                tv_off_3code.setText(tv_on_3code.getText());
-                tv_on_city.setText(tempCityStr);
-                tv_on_airport.setText(tempAirportStr);
-                tv_on_3code.setText(temp3CodeStr);
-
+                refreshTextDisplay();
                 off_land_city_info.setAlpha(1f);
                 off_land_city_info.setVisibility(View.VISIBLE);
                 mWindowManager.removeView(copyViewOff);
@@ -343,8 +338,28 @@ public class PlaneMainActivity extends BaseMainActivity {
                 PlaneOrderManager.instance.setBackFlightOffDate(endTime);
                 refreshPlaneStateAndInfo(selectedIndex);
             }
+        } else if (requestCode == REQUEST_CODE_AIRPORT) {
+            String airport = data.getStringExtra("type");
+            CityAirportInfoBean bean = (CityAirportInfoBean) data.getSerializableExtra("cityAirport");
+            if ("OFF".equals(airport)) {
+                off = bean;
+            } else {
+                on = bean;
+            }
+            refreshTextDisplay();
         }
         requestWeatherInfo(beginTime);
+    }
+
+    private void refreshTextDisplay() {
+        if (null != off) {
+            tv_off_city.setText(off.cityname);
+            tv_off_piny.setText(off.pinyin);
+        }
+        if (null != on) {
+            tv_on_city.setText(on.cityname);
+            tv_on_piny.setText(on.pinyin);
+        }
     }
 
     /**

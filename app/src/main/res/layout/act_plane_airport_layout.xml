@@ -5,12 +5,19 @@
     android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
+    <!--title shadow-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@drawable/shadow_title_bottom" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/transparent"
+        android:layout_marginTop="-3dp"
+        android:divider="@color/plane_mainColor"
+        android:dividerHeight="0.5dp"
         android:listSelector="@color/transparent"
         android:scrollbars="none" />
 </LinearLayout>

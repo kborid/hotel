@@ -79,8 +79,8 @@ public class PlaneNewOrderActivity extends BaseActivity {
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText(
                 CityParseUtils.getPlaneOffOnCity(
-                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityName,
-                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityName,
+                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityname,
+                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityname,
                         "→"
                 )
         );

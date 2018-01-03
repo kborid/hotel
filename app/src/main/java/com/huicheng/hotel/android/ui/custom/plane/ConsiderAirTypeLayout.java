@@ -5,17 +5,13 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
+import com.prj.sdk.util.Utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,163 +20,89 @@ import java.util.List;
  * @date 2017/11/29 0029.
  */
 
-public class ConsiderAirTypeLayout extends LinearLayout implements IPlaneConsiderAction {
+public class ConsiderAirTypeLayout extends BaseConsiderAirLayout {
 
-    private Context context;
-    private MyListViewWidget listview;
-    private AirTypeAdapter adapter;
-    private int selectedIndex = 0;
+    private int mOriginalIndex;
+    private int selectedIndex;
 
     public ConsiderAirTypeLayout(Context context) {
-        this(context, null);
+        super(context);
     }
 
     public ConsiderAirTypeLayout(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
     }
 
     public ConsiderAirTypeLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
-        init();
-    }
-
-    private void init() {
-        LayoutInflater.from(context).inflate(R.layout.layout_plane_consider_airtype, this);
-        listview = (MyListViewWidget) findViewById(R.id.listview);
-        adapter = new AirTypeAdapter(context, Arrays.asList(context.getResources().getStringArray(R.array.flightType)));
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (selectedIndex == position) {
-                    return;
-                }
-                selectedIndex = position;
-                adapter.setSelectedIndex(selectedIndex);
-            }
-        });
-    }
-
-//    public void updateAirTypeInfo(List<PlaneFlightInfoBean> list) {
-//        if (list != null && list.size() > 0) {
-//            mList.clear();
-//            mList.add("不限");
-//            for (int i = 0; i < list.size(); i++) {
-//                PlaneFlightInfoBean bean = list.get(i);
-//                String type = "";
-//                if (bean.flightTypeFullName.contains("宽") || bean.flightTypeFullName.contains("大")) {
-//                    type = "大型机";
-//                } else if (bean.flightTypeFullName.contains("中")) {
-//                    type = "中型机";
-//                } else if (bean.flightTypeFullName.contains("小")) {
-//                    type = "小型机";
-//                } else {
-//                    type = "不限";
-//                }
-//                if (!mList.contains(type)) {
-//                    mList.add(type);
-//                }
-//            }
-//            adapter.notifyDataSetChanged();
-//        }
-//    }
-
-    @Override
-    public void cancelConsiderConfig() {
-
     }
 
     @Override
-    public void resetConsiderConfig() {
-
-    }
-
-    @Override
-    public void saveConsiderConfig() {
-
-    }
-
-    @Override
-    public void reloadConsiderConfig() {
-
-    }
-
-    private class AirTypeAdapter extends BaseAdapter {
-
-        private static final int IS_ALL = 0;
-        private static final int NOT_ALL = 1;
-
-        private Context context;
-        private List<String> list = new ArrayList<>();
-        private int selectedIndex = 0;
-
-        AirTypeAdapter(Context context, List<String> list) {
-            this.context = context;
-            this.list = list;
-        }
-
-        public void setSelectedIndex(int selectedIndex) {
-            this.selectedIndex = selectedIndex;
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return list.get(position).equals("不限") ? IS_ALL : NOT_ALL;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (null == convertView) {
-                viewHolder = new ViewHolder();
-                switch (getItemViewType(position)) {
-                    case IS_ALL:
-                        convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_all_item, null);
-                        break;
-                    case NOT_ALL:
-                    default:
-                        convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null);
-                        break;
-                }
-                viewHolder.root = (LinearLayout) convertView.findViewById(R.id.root);
-                viewHolder.iv_logo = (ImageView) convertView.findViewById(R.id.iv_air_logo);
-                viewHolder.iv_logo.setVisibility(GONE);
-                viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-                viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
-                convertView.setTag(viewHolder);
+    protected void initParams() {
+        mOriginalIndex = 0;
+        selectedIndex = 0;
+        setPadding(Utils.dp2px(34), 0, 0, 0);
+        setOrientation(LinearLayout.VERTICAL);
+        removeAllViews();
+        List<String> list = Arrays.asList(context.getResources().getStringArray(R.array.flightType));
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 0) {
+                addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_all_item, null));
             } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+                addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null));
             }
 
-            viewHolder.tv_title.setText(list.get(position));
-
-            viewHolder.root.setSelected(selectedIndex == position);
-
-            return convertView;
+            View item = getChildAt(i);
+            item.findViewById(R.id.iv_air_logo).setVisibility(GONE);
+            ((TextView) item.findViewById(R.id.tv_title)).setText(list.get(i));
+            item.findViewById(R.id.root).setSelected(i == selectedIndex);
         }
+    }
 
-        class ViewHolder {
-            LinearLayout root;
-            ImageView iv_logo;
-            TextView tv_title;
-            ImageView iv_flag;
+    @Override
+    protected void setListeners() {
+        for (int i = 0; i < getChildCount(); i++) {
+            View item = getChildAt(i);
+            final int finalI = i;
+            item.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedIndex = finalI;
+                    refreshViewSelectedStatus(selectedIndex);
+                }
+            });
         }
+    }
+
+    @Override
+    protected void updateDataInfo(List<PlaneFlightInfoBean> list) {
+
+    }
+
+    @Override
+    public int getFlightType() {
+        return selectedIndex;
+    }
+
+    @Override
+    public void cancel() {
+        selectedIndex = mOriginalIndex;
+    }
+
+    @Override
+    public void reset() {
+        selectedIndex = 0;
+        refreshViewSelectedStatus(selectedIndex);
+    }
+
+    @Override
+    public void save() {
+        mOriginalIndex = selectedIndex;
+    }
+
+    @Override
+    public void reload() {
+        selectedIndex = mOriginalIndex;
+        refreshViewSelectedStatus(selectedIndex);
     }
 }

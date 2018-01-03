@@ -21,6 +21,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
@@ -28,6 +29,7 @@ import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightCalendarPriceAdapter;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.custom.plane.OnConsiderLayoutResultListener;
 import com.huicheng.hotel.android.ui.custom.plane.PlaneConsiderLayout;
 import com.prj.sdk.app.AppConst;
 import com.prj.sdk.app.NetURL;
@@ -54,7 +56,7 @@ import java.util.List;
 public class PlaneFlightListActivity extends BaseActivity {
 
     private int status;
-    private String mOff3Code, mOn3Code;
+    private String mOffPiny, mOnPiny;
 
     private RecyclerView recyclerView;
     private TextView tv_empty;
@@ -115,16 +117,18 @@ public class PlaneFlightListActivity extends BaseActivity {
                 getWindow().setAttributes(lp);
             }
         });
-        mPlaneConsiderLayout.setOnConsiderLayoutDismissListener(new PlaneConsiderLayout.OnConsiderLayoutDismissListener() {
+        mPlaneConsiderLayout.setOnConsiderLayoutResultListener(new OnConsiderLayoutResultListener() {
             @Override
-            public void onDismiss(boolean isSave) {
+            public void saveConfig() {
                 mPlaneConsiderPopupWindow.dismiss();
-                if (isSave) {
-                    requestPlaneFlightInfo(true);
-                } else {
-                    //重置consider
-                    mPlaneConsiderLayout.cancelConfig();
-                }
+                requestPlaneFlightInfo(true);
+            }
+
+            @Override
+            public void cancelConfig() {
+                mPlaneConsiderPopupWindow.dismiss();
+                //重置consider
+                mPlaneConsiderLayout.cancelConfig();
             }
         });
 
@@ -139,17 +143,8 @@ public class PlaneFlightListActivity extends BaseActivity {
         swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        tv_center_title.setText(
-                CityParseUtils.getPlaneOffOnCity(
-                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityName,
-                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityName,
-                        "→"
-                )
-        );
         status = PlaneOrderManager.instance.getStatus();
         LogUtil.i(TAG, "FlightType = " + PlaneOrderManager.instance.getFlightType() + ", FlowStatus = " + status);
-        mOff3Code = PlaneOrderManager.instance.getFlightOffAirportInfo()._3Code;
-        mOn3Code = PlaneOrderManager.instance.getFlightOnAirportInfo()._3Code;
 
         Calendar curr = Calendar.getInstance(); //当前、今天日期Calendar
         Calendar max = Calendar.getInstance(); //应该显示最大日期Calendar
@@ -179,9 +174,9 @@ public class PlaneFlightListActivity extends BaseActivity {
         mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
         if (PlaneOrderManager.instance.isBackBookingTypeForGoBack()) {
             //如果往返，则交换起飞着陆机场信息
-            String tmp = mOn3Code;
-            mOn3Code = mOff3Code;
-            mOff3Code = tmp;
+            CityAirportInfoBean tmp = PlaneOrderManager.instance.getFlightOnAirportInfo();
+            PlaneOrderManager.instance.setFlightOnAirportInfo(PlaneOrderManager.instance.getFlightOffAirportInfo());
+            PlaneOrderManager.instance.setFlightOffAirportInfo(tmp);
 
             long backOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
             start.setTime(new Date(backOffTime));
@@ -210,6 +205,16 @@ public class PlaneFlightListActivity extends BaseActivity {
             mDateList.add(calendar.getTime());
         }
 
+        mOffPiny = PlaneOrderManager.instance.getFlightOffAirportInfo().pinyin;
+        mOnPiny = PlaneOrderManager.instance.getFlightOnAirportInfo().pinyin;
+        tv_center_title.setText(
+                CityParseUtils.getPlaneOffOnCity(
+                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityname,
+                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityname,
+                        "→"
+                )
+        );
+
         selectedIndex = DateUtil.getGapCount(start.getTime(), new Date(mOffTime));
         planeFlightCalendarPriceAdapter = new PlaneFlightCalendarPriceAdapter(this, mDateList);
         calendarRecycleView.setAdapter(planeFlightCalendarPriceAdapter);
@@ -217,8 +222,6 @@ public class PlaneFlightListActivity extends BaseActivity {
         planeFlightCalendarPriceAdapter.setSelectedIndex(selectedIndex);
         planeFlightItemAdapter = new PlaneFlightItemAdapter(this, mFlightList);
         recyclerView.setAdapter(planeFlightItemAdapter);
-        //初始化筛选条件
-        mPlaneConsiderLayout.initConfig();
     }
 
     @Override
@@ -314,8 +317,8 @@ public class PlaneFlightListActivity extends BaseActivity {
         LogUtil.i(TAG, "requestPlaneFlightInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("date", DateUtil.getDay("yyyy-MM-dd", mOffTime));
-        b.addBody("dpt", mOff3Code); //起飞机场
-        b.addBody("arr", mOn3Code); //着陆机场
+        b.addBody("dpt", mOffPiny); //起飞机场
+        b.addBody("arr", mOnPiny); //着陆机场
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_FLIGHT_LIST;
         d.path = NetURL.PLANE_FLIGHT_LIST;
@@ -485,6 +488,7 @@ public class PlaneFlightListActivity extends BaseActivity {
 
     private List<PlaneFlightInfoBean> checkConditionsResult(List<PlaneFlightInfoBean> list) {
         LogUtil.i(TAG, "checkConditionsResult()");
+        String[] considerName = getResources().getStringArray(R.array.PlaneConditionItem);
         List<PlaneFlightInfoBean> temp = null;
         if (list != null && list.size() > 0) {
             temp = new ArrayList<>();
@@ -502,7 +506,7 @@ public class PlaneFlightListActivity extends BaseActivity {
 
                 //起飞时段
                 {
-                    float[] hours = mPlaneConsiderLayout.getConsiderAirOffTimeLayout().getOffTimeStartEnd();
+                    float[] hours = mPlaneConsiderLayout.getConsiderAirLayout(considerName[0]).getOffTimeLayoutValue();
                     String startHour = String.format("%1$02d:00", (int) hours[0]);
                     String endHour = String.format("%1$02d:00", (int) hours[1]);
                     //航班起飞时间小于开始时间或大于结束时间，则跳过
@@ -513,15 +517,19 @@ public class PlaneFlightListActivity extends BaseActivity {
 
                 //TODO 航空公司
                 {
+                    int[] airCompanies = mPlaneConsiderLayout.getConsiderAirLayout(considerName[1]).getAirCompanyValue();
                 }
                 //TODO 机场信息
                 {
+                    int[] airports = mPlaneConsiderLayout.getConsiderAirLayout(considerName[2]).getAirportValue();
                 }
                 //TODO 机型信息
                 {
+                    int airType = mPlaneConsiderLayout.getConsiderAirLayout(considerName[3]).getFlightType();
                 }
                 //TODO 仓位信息
                 {
+                    int airCang = mPlaneConsiderLayout.getConsiderAirLayout(considerName[4]).getFlightCang();
                 }
 
                 temp.add(bean);

@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.common;
 
+import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.prj.sdk.util.LogUtil;
@@ -16,8 +17,8 @@ public enum PlaneOrderManager {
     private int status = PlaneCommDef.STATUS_GO;
     private int flightType = PlaneCommDef.FLIGHT_SINGLE;
 
-    private AirportInfo offAirportInfo;
-    private AirportInfo onAirportInfo;
+    private CityAirportInfoBean offAirportInfo;
+    private CityAirportInfoBean onAirportInfo;
 
     private long goOffDate = 0;
     private PlaneFlightInfoBean goFlightInfo;
@@ -54,19 +55,19 @@ public enum PlaneOrderManager {
         return backOffDate;
     }
 
-    public void setFlightOffAirportInfo(AirportInfo offAirportInfo) {
+    public void setFlightOffAirportInfo(CityAirportInfoBean offAirportInfo) {
         this.offAirportInfo = offAirportInfo;
     }
 
-    public AirportInfo getFlightOffAirportInfo() {
+    public CityAirportInfoBean getFlightOffAirportInfo() {
         return offAirportInfo;
     }
 
-    public void setFlightOnAirportInfo(AirportInfo onAirportInfo) {
+    public void setFlightOnAirportInfo(CityAirportInfoBean onAirportInfo) {
         this.onAirportInfo = onAirportInfo;
     }
 
-    public AirportInfo getFlightOnAirportInfo() {
+    public CityAirportInfoBean getFlightOnAirportInfo() {
         return onAirportInfo;
     }
 
