@@ -12,29 +12,22 @@
         android:layout_height="0.5dp"
         android:background="#999999" />
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/iv_hotel_logo_large" />
-        </RelativeLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/iv_hotel_logo_large" />
 
         <ScrollView
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:scrollbars="none">
 
             <LinearLayout
@@ -445,5 +438,5 @@
             </LinearLayout>
         </ScrollView>
 
-    </FrameLayout>
+    </RelativeLayout>
 </LinearLayout>

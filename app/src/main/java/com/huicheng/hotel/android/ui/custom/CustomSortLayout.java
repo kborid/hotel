@@ -28,10 +28,14 @@ import java.util.List;
 
 public class CustomSortLayout extends LinearLayout {
 
+    private static final int SORT_COMPREHENSIVE = 0;
+    private static final int SORT_DISTANCE = 1;
     private Context context;
 
     private List<String> mList = new ArrayList<>();
     private ListView listview;
+    private MySortAdapter adapter;
+    private int selectedIndex = 0;
 
     public CustomSortLayout(Context context) {
         this(context, null);
@@ -44,30 +48,41 @@ public class CustomSortLayout extends LinearLayout {
     public CustomSortLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        init();
+        findViews();
+        setListeners();
     }
 
-    private void init() {
+    private void findViews() {
         LayoutInflater.from(context).inflate(R.layout.pw_sort_layout, this);
         listview = (ListView) findViewById(R.id.listview);
         mList.clear();
         mList.addAll(Arrays.asList(context.getResources().getStringArray(R.array.SortString)));
-        final MySortAdapter adapter = new MySortAdapter(context, mList);
+        adapter = new MySortAdapter(context, mList);
         listview.setAdapter(adapter);
+    }
+
+    public void updateConditions(boolean isLandMark) {
+        selectedIndex = isLandMark ? SORT_DISTANCE : SORT_COMPREHENSIVE;
+        SharedPreferenceUtil.getInstance().setInt(AppConst.SORT_INDEX, selectedIndex);
+        adapter.setSelectedIndex(selectedIndex);
+    }
+
+    private void setListeners() {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (adapter.selectedIndex != position) {
-                    adapter.setSelectedIndex(position);
-                    SharedPreferenceUtil.getInstance().setInt(AppConst.SORT_INDEX, position);
-                    if (listener != null) {
-                        listener.doAction();
-                    }
+                if (selectedIndex == position) {
+                    return;
+                }
+                selectedIndex = position;
+                adapter.setSelectedIndex(selectedIndex);
+                SharedPreferenceUtil.getInstance().setInt(AppConst.SORT_INDEX, selectedIndex);
+                if (listener != null) {
+                    listener.doAction();
                 }
                 if (listener != null) {
                     listener.dismiss();
                 }
-
             }
         });
     }
@@ -77,15 +92,15 @@ public class CustomSortLayout extends LinearLayout {
 
         private List<String> list = new ArrayList<>();
         private Context context;
-        private int selectedIndex = 0;
+        private int selectedIndex;
 
         MySortAdapter(Context context, List<String> list) {
             this.context = context;
             this.list = list;
-            selectedIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SORT_INDEX, 0);
+            selectedIndex = SORT_COMPREHENSIVE;
         }
 
-        public void setSelectedIndex(int index) {
+        void setSelectedIndex(int index) {
             selectedIndex = index;
             notifyDataSetChanged();
         }
@@ -133,7 +148,6 @@ public class CustomSortLayout extends LinearLayout {
             TextView tv_name;
             ImageView iv_flag;
         }
-
     }
 
     private OnSortResultListener listener = null;

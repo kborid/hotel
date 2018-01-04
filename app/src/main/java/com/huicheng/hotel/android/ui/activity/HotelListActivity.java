@@ -67,6 +67,7 @@ public class HotelListActivity extends BaseActivity {
 
 
     private Bundle searchParams = new Bundle();
+    private boolean isLandMark = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +183,7 @@ public class HotelListActivity extends BaseActivity {
         if (bundle != null) {
             index = bundle.getInt("index");
             searchParams = bundle;
+            isLandMark = searchParams.getBoolean("isLandMark");
         }
     }
 
@@ -196,6 +198,8 @@ public class HotelListActivity extends BaseActivity {
         tv_in_date.setText(DateUtil.getDay("住MM-dd", beginTime));
         tv_out_date.setText(DateUtil.getDay("离MM-dd", endTime));
         setIndicator(tabs, 30, 30);
+
+        customSortLayout.updateConditions(isLandMark);
     }
 
     @Override
