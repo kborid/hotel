@@ -130,7 +130,6 @@ public class HotelOrderDetailActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         mScrollY = scroll_view.getScrollY();
-        System.out.println(TAG + ", mScrollY = " + mScrollY);
     }
 
     private void requestOrderDetailInfo() {
