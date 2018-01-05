@@ -56,6 +56,7 @@ import java.util.Map;
  */
 public class LauncherActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener, AMapLocationControl.MyLocationListener {
 
+    private int mTagCount = 0;
     private Map<Integer, Integer> mTag = new HashMap<>();
     private static HandlerThread mHandlerThread = null;
     private static Handler mHandler = null;
@@ -107,16 +108,7 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
         }
         Utils.initScreenSize(this);// 设置手机屏幕大小
         SessionContext.initUserInfo();
-    }
-
-    private void requestAppVersionInfo() {
-        LogUtil.i(TAG, "requestAppVersionInfo()");
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("contype", "0"); // 0:android, 1:ios
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.APP_INFO;
-        d.flag = AppConst.APP_INFO;
-        requestID = DataLoader.getInstance().loadData(this, d);
+        mTagCount = 0; //初始化接口请求个数
     }
 
     private void requestGDTInterface() {
@@ -129,6 +121,17 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestAppVersionInfo() {
+        LogUtil.i(TAG, "requestAppVersionInfo()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        b.addBody("contype", "0"); // 0:android, 1:ios
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.APP_INFO;
+        d.flag = AppConst.APP_INFO;
+        requestID = DataLoader.getInstance().loadData(this, d);
+        mTagCount++;
+    }
+
     private void requestHomeBannerInfo() {
         LogUtil.i(TAG, "requestHotelBanner()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
@@ -136,6 +139,17 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
         d.path = NetURL.HOTEL_BANNER;
         d.flag = AppConst.HOTEL_BANNER;
         requestID = DataLoader.getInstance().loadData(this, d);
+        mTagCount++;
+    }
+
+    private void requestAirportInfo() {
+        LogUtil.i(TAG, "requestAirportInfo()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.PLANE_AIRPORT_LIST;
+        d.flag = AppConst.PLANE_AIRPORT_LIST;
+        requestID = DataLoader.getInstance().loadData(this, d);
+        mTagCount++;
     }
 
     public void doLastAction() {
@@ -219,6 +233,9 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
                     CityParseUtils.initAreaJsonData(LauncherActivity.this);
                     requestHomeBannerInfo();
                     requestAppVersionInfo();
+                    if (StringUtil.isEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.CITY_PLANE_JSON, "", false))) {
+                        requestAirportInfo();
+                    }
                 }
             });
         }
@@ -260,9 +277,13 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
                 SessionContext.setBannerList(temp);
             } else if (request.flag == AppConst.AD_GDT_IF) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
+            } else if (request.flag == AppConst.PLANE_AIRPORT_LIST) {
+                mTag.put(AppConst.PLANE_AIRPORT_LIST, AppConst.PLANE_AIRPORT_LIST);
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                SharedPreferenceUtil.getInstance().setString(AppConst.CITY_PLANE_JSON, response.body.toString(), false);
             }
 
-            if (mTag.size() == 2) {
+            if (mTag.size() == mTagCount) {
                 doLastAction();
             }
         }
@@ -271,7 +292,7 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
     @Override
     public void onNotifyError(ResponseData request) {
         mTag.put(request.flag, request.flag);
-        if (mTag.size() == 2) {
+        if (mTag.size() == mTagCount) {
             doLastAction();
         }
     }

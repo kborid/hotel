@@ -17,6 +17,10 @@ public final class AppConst {
     public static final String SKIN_INDEX = "skin_index"; //皮肤资源index
     public static final String HAS_SHOW_VIP_TIPS = "has_show_vip_tips"; //是否已经显示vip提示
 
+    public static final String CITY_HOTEL_JSON_FILE = "hotel_city_json_file"; //酒店模块城市选择文件缓存
+    public static final String CITY_HOTEL_JSON = "hotel_city_json_string"; //酒店模块城市选择缓存
+    public static final String CITY_PLANE_JSON = "plane_city_json_string"; //机票模块城市选择缓存
+
     public static final String IN_PERSON_INFO = "in_person_info";
 
     public static final String ACCESS_TICKET = "accessTicket"; // 记录用户登录ticket
@@ -28,6 +32,7 @@ public final class AppConst {
     public static final String LOCATION_LAT = "location_lat";
 
     public static final String HISTORY = "history";
+    public static final String AIRPORT_HISTORY = "airport_history";
     public static final String PROVINCE = "province";
     public static final String CITY = "city";
     public static final String SITEID = "siteid"; // site id

@@ -16,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -31,7 +31,9 @@ import com.prj.sdk.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kborid
@@ -51,6 +53,10 @@ public class HotelCityChooseActivity extends BaseActivity {
             }
         }
     };
+
+    private List<CityAreaInfoBean> mList = new ArrayList<>();
+    private Map<String, List<CityAreaInfoBean>> mMap = new HashMap<>();
+    private String mListJsonStr, mMapJsonStr;
 
     private TextView tv_search_input;
     private List<String> mHistoryList = new ArrayList<>();
@@ -76,8 +82,7 @@ public class HotelCityChooseActivity extends BaseActivity {
         initParams();
         initListeners();
         if (null == savedInstanceState) {
-            if (null != SessionContext.getCityAreaList() && SessionContext.getCityAreaList().size() > 0
-                    && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
+            if (StringUtil.notEmpty(mListJsonStr) && StringUtil.notEmpty(mMapJsonStr)) {
                 myHandler.sendEmptyMessage(0x01);
             } else {
                 showProgressDialog(this);
@@ -130,20 +135,25 @@ public class HotelCityChooseActivity extends BaseActivity {
         gv_hot.setAdapter(hotCityAdapter);
 
         tv_city_index.setText("A");
+
+        mListJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON_FILE, "", false);
+        mMapJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON, "", false);
     }
 
     private void initCityListData() {
-        cityIndexList.clear();
+        mList = JSON.parseArray(mListJsonStr, CityAreaInfoBean.class);
+        mMap = JSON.parseObject(mMapJsonStr, new TypeReference<Map<String, List<CityAreaInfoBean>>>() {});
 
         List<String> tmp = new ArrayList<>();
-        for (String key : SessionContext.getCityAreaMap().keySet()) {
+        for (String key : mMap.keySet()) {
             tmp.add(key);
         }
         Collections.sort(tmp);
+        cityIndexList.clear();
         cityIndexList.addAll(tmp);
         cityIndexAdapter.notifyDataSetChanged();
         cityList.clear();
-        cityList.addAll(SessionContext.getCityAreaMap().get(tv_city_index.getText().toString()));
+        cityList.addAll(mMap.get(tv_city_index.getText().toString()));
         cityListAdapter.notifyDataSetChanged();
     }
 
@@ -157,7 +167,7 @@ public class HotelCityChooseActivity extends BaseActivity {
                 String selectedChar = cityIndexList.get(position);
                 tv_city_index.setText(selectedChar);
                 cityList.clear();
-                cityList.addAll(SessionContext.getCityAreaMap().get(selectedChar));
+                cityList.addAll(mMap.get(selectedChar));
                 cityListAdapter.notifyDataSetChanged();
                 listView.setSelectionAfterHeaderView();
                 cityIndexAdapter.setSelectedIndex(position);
@@ -234,13 +244,13 @@ public class HotelCityChooseActivity extends BaseActivity {
     private CityAreaInfoBean findCityBeanByCityString(String cityStr) {
         CityAreaInfoBean item = null;
         if (StringUtil.notEmpty(cityStr)) {
-            for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
-                for (int j = 0; j < SessionContext.getCityAreaList().get(i).list.size(); j++) {
-                    if (SessionContext.getCityAreaList().get(i).list.get(j).shortName.equals(cityStr)) {
-                        item = SessionContext.getCityAreaList().get(i).list.get(j);
-                        mProvince = SessionContext.getCityAreaList().get(i).shortName;
+            for (int i = 0; i < mList.size(); i++) {
+                for (int j = 0; j < mList.get(i).list.size(); j++) {
+                    if (mList.get(i).list.get(j).shortName.equals(cityStr)) {
+                        item = mList.get(i).list.get(j);
+                        mProvince = mList.get(i).shortName;
 //                        if (mProvince.equals(item.shortName)) {
-//                            mSiteId = SessionContext.getCityAreaList().get(i).id;
+//                            mSiteId = mList.get(i).id;
 //                        } else {
                         mSiteId = item.id;
 //                        }

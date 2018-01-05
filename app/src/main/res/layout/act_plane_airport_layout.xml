@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_white"
     android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
@@ -11,13 +12,115 @@
         android:layout_height="3dp"
         android:background="@drawable/shadow_title_bottom" />
 
-    <ListView
-        android:id="@+id/listView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="-3dp"
-        android:divider="@color/plane_mainColor"
-        android:dividerHeight="0.5dp"
-        android:listSelector="@color/transparent"
-        android:scrollbars="none" />
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#f6f6f6"
+            android:paddingBottom="3dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingTop="3dp"
+            android:text="历史记录"
+            android:textColor="#353535"
+            android:textSize="@dimen/common_15sp" />
+
+        <com.huicheng.hotel.android.ui.custom.MyGridViewWidget
+            android:id="@+id/gv_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:horizontalSpacing="5dp"
+            android:numColumns="5"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:verticalSpacing="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#f6f6f6"
+            android:paddingBottom="3dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingTop="3dp"
+            android:text="热门城市"
+            android:textColor="#353535"
+            android:textSize="@dimen/common_15sp" />
+
+        <com.huicheng.hotel.android.ui.custom.MyGridViewWidget
+            android:id="@+id/gv_hot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:horizontalSpacing="5dp"
+            android:numColumns="5"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:verticalSpacing="5dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/lineColor2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_city_index"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@color/citySelColor"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:text="S"
+                    android:textColor="#9b9b9b"
+                    android:textSize="@dimen/common_20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/lineColor2" />
+
+                <ListView
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@drawable/line_location_item"
+                    android:dividerHeight="0.1dp"
+                    android:scrollbars="none" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lineColor2" />
+
+            <GridView
+                android:id="@+id/gv_index"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:horizontalSpacing="0.1dp"
+                android:numColumns="3"
+                android:verticalSpacing="0.1dp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

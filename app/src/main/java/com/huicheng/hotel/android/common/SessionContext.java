@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.fm.openinstall.model.AppData;
 import com.huicheng.hotel.android.PRJApplication;
-import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -41,9 +39,6 @@ public class SessionContext {
 
     private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
 
-    private static List<CityAreaInfoBean> cityAreaList = new ArrayList<>();
-    private static Map<String, List<CityAreaInfoBean>> cityAreaMap = new HashMap<>();
-
     private static List<HotelMapInfoBean> allDayList = new ArrayList<>();
     private static List<HotelMapInfoBean> clockList = new ArrayList<>();
     private static List<HotelMapInfoBean> ygrList = new ArrayList<>();
@@ -53,11 +48,7 @@ public class SessionContext {
      * 是否登录
      */
     public static boolean isLogin() {
-        boolean ret = false;
-        if (StringUtil.notEmpty(getTicket()) && mUser != null) {
-            ret = true;
-        }
-        return ret;
+        return StringUtil.notEmpty(getTicket()) && mUser != null;
     }
 
     /**
@@ -93,7 +84,7 @@ public class SessionContext {
         initData();
     }
 
-    public static void initData() {
+    private static void initData() {
         if (null != mFirstLaunchDoActionFlag) {
             mFirstLaunchDoActionFlag.clear();
         }
@@ -108,30 +99,6 @@ public class SessionContext {
             bannerList = list;
         } else {
             bannerList = new ArrayList<>();
-        }
-    }
-
-    public static List<CityAreaInfoBean> getCityAreaList() {
-        return cityAreaList;
-    }
-
-    public static void setCityAreaList(List<CityAreaInfoBean> list) {
-        if (null != list) {
-            cityAreaList = list;
-        } else {
-            cityAreaList = new ArrayList<>();
-        }
-    }
-
-    public static Map<String, List<CityAreaInfoBean>> getCityAreaMap() {
-        return cityAreaMap;
-    }
-
-    public static void setCityAreaMap(Map<String, List<CityAreaInfoBean>> map) {
-        if (null != map) {
-            cityAreaMap = map;
-        } else {
-            cityAreaMap = new HashMap<>();
         }
     }
 
