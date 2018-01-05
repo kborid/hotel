@@ -14,6 +14,7 @@ public class ShareTypeDef {
     public static final String SHARE_B2C            = "05"; //B2C推广
     public static final String SHARE_UNION          = "06"; //银联优惠券二维码推广
     public static final String SHARE_C2C            = "07"; //C2C推广
+    public static final String SHARE_P2C            = "08"; //Platform平台推广
 
     public enum ShareContentEnum{
         GROUP_1("昨天我用这个APP订房巨便宜！快去下载！", "别忘了参加小金库活动，拿完优惠券还能躺赚旅行币！"),

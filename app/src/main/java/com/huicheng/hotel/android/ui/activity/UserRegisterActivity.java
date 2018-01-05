@@ -109,7 +109,7 @@ public class UserRegisterActivity extends BaseActivity {
             recommendChannel = mJson.containsKey("channel") ? mJson.getString("channel") : "";
             recommendMobile = mJson.containsKey("mobile") ? mJson.getString("mobile") : "";
             LogUtil.i(TAG, "OpenInstall Info:" + recommendChannel + ", " + recommendUserId + ", " + recommendMobile);
-            if (ShareTypeDef.SHARE_B2C.equals(recommendChannel)) {
+            if (ShareTypeDef.SHARE_B2C.equals(recommendChannel) || ShareTypeDef.SHARE_P2C.equals(recommendChannel)) {
                 et_yqm.setVisibility(View.GONE);
             } else if (ShareTypeDef.SHARE_C2C.equals(recommendChannel) && StringUtil.notEmpty(recommendMobile)) {
                 et_yqm.setVisibility(View.VISIBLE);
