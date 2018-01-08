@@ -10,4 +10,5 @@ public class BountyBaseInfo {
     public int rest;
     public int total;
     public int used;
+    public int invitationsNum;
 }

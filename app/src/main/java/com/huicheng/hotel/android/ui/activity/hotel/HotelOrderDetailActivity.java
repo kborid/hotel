@@ -1,14 +1,17 @@
 package com.huicheng.hotel.android.ui.activity.hotel;
 
-import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -20,6 +23,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.app.AppConst;
 import com.prj.sdk.app.NetURL;
@@ -27,6 +31,7 @@ import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.StringUtil;
 
 import java.util.Date;
 
@@ -42,6 +47,8 @@ public class HotelOrderDetailActivity extends BaseActivity {
     private LinearLayout root_lay;
     private TextView tv_in_date, tv_during_days, tv_out_date;
     private TextView tv_hotel_position, tv_hotel_phone;
+    private CustomDialog mCallDialog = null;
+    private CustomDialog mNaviDialog = null;
 
     private TextView tv_room_name;
     private TextView tv_price;
@@ -54,6 +61,10 @@ public class HotelOrderDetailActivity extends BaseActivity {
     private View name_line, phone_line;
 
     private TextView tv_pay, tv_hhy, tv_cancel, tv_modify, tv_confirm, tv_assess, tv_booking;
+
+    private Handler myHandler = new Handler();
+    private ScrollView scroll_view;
+    private int mScrollY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +110,8 @@ public class HotelOrderDetailActivity extends BaseActivity {
         tv_confirm = (TextView) findViewById(R.id.tv_confirm);
         tv_assess = (TextView) findViewById(R.id.tv_assess);
         tv_booking = (TextView) findViewById(R.id.tv_booking);
+
+        scroll_view = (ScrollView) findViewById(R.id.scroll_view);
     }
 
     @Override
@@ -116,6 +129,7 @@ public class HotelOrderDetailActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
+        mScrollY = scroll_view.getScrollY();
     }
 
     private void requestOrderDetailInfo() {
@@ -262,6 +276,8 @@ public class HotelOrderDetailActivity extends BaseActivity {
         tv_assess.setOnClickListener(this);
         tv_booking.setOnClickListener(this);
         tv_confirm.setOnClickListener(this);
+        tv_hotel_position.setOnClickListener(this);
+        tv_hotel_phone.setOnClickListener(this);
     }
 
     @Override
@@ -269,7 +285,64 @@ public class HotelOrderDetailActivity extends BaseActivity {
         super.onClick(v);
         Intent intent = null;
         switch (v.getId()) {
-            case R.id.tv_pay:
+            case R.id.tv_hotel_position:
+                if (StringUtil.notEmpty(tv_hotel_position.getText().toString())
+                        && StringUtil.notEmpty(orderPayDetailInfoBean)
+                        && StringUtil.notEmpty(orderPayDetailInfoBean.coordinate)) {
+                    String lonlat = orderPayDetailInfoBean.coordinate;
+                    String[] lonlatStr = lonlat.split("\\|");
+                    Uri mUri = Uri.parse("geo:" + Double.valueOf(lonlatStr[0]) + "," + Double.valueOf(lonlatStr[1]) + "?q=" + orderPayDetailInfoBean.name);
+                    final Intent naviIntent = new Intent(Intent.ACTION_VIEW, mUri);
+                    if (naviIntent.resolveActivity(getPackageManager()) == null) {
+                        CustomToast.show("您的手机中未安装任何地图导航工具", Toast.LENGTH_SHORT);
+                        return;
+                    }
+                    if (null == mNaviDialog) {
+                        mNaviDialog = new CustomDialog(this);
+                    }
+                    mNaviDialog.setMessage(String.format("是否导航到%1$s", orderPayDetailInfoBean.name));
+                    mNaviDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    mNaviDialog.setPositiveButton("导航", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(naviIntent);
+                        }
+                    });
+                    mNaviDialog.setCanceledOnTouchOutside(true);
+                    mNaviDialog.show();
+                }
+                break;
+            case R.id.tv_hotel_phone:
+                if (StringUtil.notEmpty(tv_hotel_phone.getText().toString())) {
+                    if (null == mCallDialog) {
+                        mCallDialog = new CustomDialog(this);
+                    }
+                    mCallDialog.setMessage(String.format("是否拨打电话给%1$s", orderPayDetailInfoBean.name));
+                    mCallDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    mCallDialog.setPositiveButton("拨打", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Uri dialUri = Uri.parse("tel:" + orderPayDetailInfoBean.hotelPhone);
+                            Intent callIntent = new Intent(Intent.ACTION_DIAL, dialUri);
+                            callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(callIntent);
+                        }
+                    });
+                    mCallDialog.setCanceledOnTouchOutside(true);
+                    mCallDialog.show();
+                }
+                break;
+            case R.id.btn_pay:
                 intent = new Intent(this, HotelOrderPayActivity.class);
                 intent.putExtra("orderId", orderId);
                 intent.putExtra("orderType", orderType);
@@ -327,7 +400,6 @@ public class HotelOrderDetailActivity extends BaseActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void modifyEnableOrderInfo(boolean flag) {
         if (flag) {
             et_name.setEnabled(true);
@@ -361,11 +433,27 @@ public class HotelOrderDetailActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        myHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scroll_view.scrollTo(0, mScrollY);
+            }
+        }, 200);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mScrollY = scroll_view.getScrollY();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (null != myHandler) {
+            myHandler.removeCallbacksAndMessages(null);
+            myHandler = null;
+        }
     }
 
     @Override

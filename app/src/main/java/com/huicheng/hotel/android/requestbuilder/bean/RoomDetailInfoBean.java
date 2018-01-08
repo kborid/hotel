@@ -30,10 +30,11 @@ public class RoomDetailInfoBean implements Serializable {
     public int unitPrice;
     public boolean onlyOnline;
     public boolean showTipsOrNot;
+    public int breakfast;
 
     public static class ChooseService implements Serializable {
-        public String editable;
         public int id;
+        public String editable;
         public int limitCnt;
         public int price;
         public String serviceName;

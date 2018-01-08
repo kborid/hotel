@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.fm.openinstall.model.AppData;
-import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
@@ -21,10 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * 缓存全局数据
@@ -160,13 +155,13 @@ public class SessionContext {
         SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, "", true);
         SharedPreferenceUtil.getInstance().setString(AppConst.ACCESS_TICKET, "", true);
 //        SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, 0);
-        //清空极光推送的别名设置
-        JPushInterface.setAliasAndTags(PRJApplication.getInstance(), "", null, new TagAliasCallback() {
-            @Override
-            public void gotResult(int i, String s, Set<String> set) {
-                LogUtil.i(TAG, ((i == 0) ? "设置成功" : "设置失败") + ", Alias = " + s + ", Tag = " + set);
-            }
-        });
+//        清空极光推送的别名设置
+//        JPushInterface.setAliasAndTags(PRJApplication.getInstance(), "", null, new TagAliasCallback() {
+//            @Override
+//            public void gotResult(int i, String s, Set<String> set) {
+//                LogUtil.i(TAG, ((i == 0) ? "设置成功" : "设置失败") + ", Alias = " + s + ", Tag = " + set);
+//            }
+//        });
     }
 
     /**

@@ -35,6 +35,7 @@ public class OrderPayDetailInfoBean implements Serializable {
     public String hotelAddress;
     public String hotelPhone;
     public List<RoomDetailInfoBean.TotalPriceList> deductiblePriceList;
+    public String coordinate;
 
 
 

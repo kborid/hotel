@@ -59,7 +59,7 @@ public class UcBountyActivity extends BaseActivity {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private View header = null;
-    private TextView tv_current, tv_in, tv_out;
+    private TextView tv_current, tv_in, tv_out, tv_friends;
     private TextView tv_invite;
     private ListView listview;
     private LinearLayout empty_lay;
@@ -89,6 +89,7 @@ public class UcBountyActivity extends BaseActivity {
         tv_current = (TextView) header.findViewById(R.id.tv_current);
         tv_in = (TextView) header.findViewById(R.id.tv_in);
         tv_out = (TextView) header.findViewById(R.id.tv_out);
+        tv_friends = (TextView)header.findViewById(R.id.tv_friends);
         listview = (ListView) findViewById(R.id.listview);
         tv_invite = (TextView) findViewById(R.id.tv_invite);
     }
@@ -222,14 +223,17 @@ public class UcBountyActivity extends BaseActivity {
         int current = 0;
         int lxbIn = 0;
         int lxbOut = 0;
+        int lxbFriends = 0;
         if (null != mBountyBaseInfo) {
             current = mBountyBaseInfo.rest;
             lxbIn = mBountyBaseInfo.total;
             lxbOut = mBountyBaseInfo.used;
+            lxbFriends = mBountyBaseInfo.invitationsNum;
         }
         tv_current.setText(String.valueOf(current));
         tv_in.setText(String.valueOf(lxbIn));
         tv_out.setText(String.valueOf(lxbOut));
+        tv_friends.setText(String.valueOf(lxbFriends));
     }
 
     private void refreshBountyDetailListInfo() {

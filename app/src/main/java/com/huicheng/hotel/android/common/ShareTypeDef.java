@@ -14,12 +14,12 @@ public class ShareTypeDef {
     public static final String SHARE_B2C            = "05"; //B2C推广
     public static final String SHARE_UNION          = "06"; //银联优惠券二维码推广
     public static final String SHARE_C2C            = "07"; //C2C推广
+    public static final String SHARE_P2C            = "08"; //Platform平台推广
 
     public enum ShareContentEnum{
-        GROUP_1("大家都改用这个APP订房了，价格真的比别家都低啊！", "注册时千万别忘了填我的手机号，拿完优惠券还能赚旅行币抵现！！"),
-        GROUP_2("我转给你，就是为了让你便宜的！", "大家都改用这个APP订房了，价格都比别家都低，还能..."),
-        GROUP_3("我跟你说，昨天我用这个APP订房巨便宜！", "注册时千万别忘了填我的手机号，还能拿额外优惠啊~"),
-        ;
+        GROUP_1("昨天我用这个APP订房巨便宜！快去下载！", "别忘了参加小金库活动，拿完优惠券还能躺赚旅行币！"),
+        GROUP_2("昨天我用这个APP订房巨便宜！快去下载！", "别忘了参加小金库活动，拿完优惠券还能躺赚旅行币！"),
+        GROUP_3("昨天我用这个APP订房巨便宜！快去下载！", "别忘了参加小金库活动，拿完优惠券还能躺赚旅行币！"),;
 
         private String title, description;
 
