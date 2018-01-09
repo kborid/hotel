@@ -16,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author kborid
@@ -55,8 +54,7 @@ public class HotelCityChooseActivity extends BaseActivity {
     };
 
     private List<CityAreaInfoBean> mList = new ArrayList<>();
-    private Map<String, List<CityAreaInfoBean>> mMap = new HashMap<>();
-    private String mListJsonStr, mMapJsonStr;
+    private HashMap<String, List<CityAreaInfoBean>> mMap = new HashMap<>();
 
     private TextView tv_search_input;
     private List<String> mHistoryList = new ArrayList<>();
@@ -82,7 +80,8 @@ public class HotelCityChooseActivity extends BaseActivity {
         initParams();
         initListeners();
         if (null == savedInstanceState) {
-            if (StringUtil.notEmpty(mListJsonStr) && StringUtil.notEmpty(mMapJsonStr)) {
+            if (StringUtil.notEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON_FILE, "", false))
+                    && StringUtil.notEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON, "", false))) {
                 myHandler.sendEmptyMessage(0x01);
             } else {
                 showProgressDialog(this);
@@ -120,7 +119,6 @@ public class HotelCityChooseActivity extends BaseActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText("选择目的地");
-        String cityStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         //历史记录
         String historyCity = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY, "", false);
         if (StringUtil.notEmpty(historyCity)) {
@@ -135,14 +133,11 @@ public class HotelCityChooseActivity extends BaseActivity {
         gv_hot.setAdapter(hotCityAdapter);
 
         tv_city_index.setText("A");
-
-        mListJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON_FILE, "", false);
-        mMapJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON, "", false);
     }
 
     private void initCityListData() {
-        mList = JSON.parseArray(mListJsonStr, CityAreaInfoBean.class);
-        mMap = JSON.parseObject(mMapJsonStr, new TypeReference<Map<String, List<CityAreaInfoBean>>>() {});
+        mList = SessionContext.getCityAreaList();
+        mMap = SessionContext.getCityAreaMap();
 
         List<String> tmp = new ArrayList<>();
         for (String key : mMap.keySet()) {
@@ -178,6 +173,7 @@ public class HotelCityChooseActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCity = cityList.get(position).shortName;
+                System.out.println("List click!!! city = " + mCity);
                 CityAreaInfoBean item = findCityBeanByCityString(mCity);
                 //增加历史记录
                 addHistory(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
@@ -242,6 +238,7 @@ public class HotelCityChooseActivity extends BaseActivity {
     }
 
     private CityAreaInfoBean findCityBeanByCityString(String cityStr) {
+        LogUtil.i(TAG, "---begin---findCityBeanByCityString() cityStr = " + cityStr);
         CityAreaInfoBean item = null;
         if (StringUtil.notEmpty(cityStr)) {
             for (int i = 0; i < mList.size(); i++) {
@@ -260,11 +257,13 @@ public class HotelCityChooseActivity extends BaseActivity {
                 }
             }
         }
+        LogUtil.i(TAG, "---enddd---findCityBeanByCityString()");
         return item;
     }
 
     //更新历史记录，最大显示5条，超过替换最早一条，去重处理
     private void addHistory(String city) {
+        LogUtil.i(TAG, "---begin---addHistory() city = " + city);
         int index = 0;
         if (mHistoryList.contains(city)) {
             index = mHistoryList.indexOf(city);
@@ -280,6 +279,7 @@ public class HotelCityChooseActivity extends BaseActivity {
             String jsonStr = JSON.toJSONString(mHistoryList);
             SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY, jsonStr, false);
         }
+        LogUtil.i(TAG, "---enddd---addHistory()");
     }
 
     @Override

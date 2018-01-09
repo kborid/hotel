@@ -193,9 +193,9 @@
 
                 <ImageView
                     android:id="@+id/iv_flight_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/air_ca_gjhk" />
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/tv_flight_carrier"
@@ -234,8 +234,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
                     <View
                         android:layout_width="0.5dp"
                         android:layout_height="match_parent"

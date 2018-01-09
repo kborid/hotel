@@ -18,18 +18,30 @@ public class PlaneCommDef {
     public static final int STATUS_GO = 0;
     public static final int STATUS_BACK = 1;
 
+    //航班筛选：航班类型
+    public static final int FLIGHT_TYPE_ALL = 0; //不限
+    public static final int FLIGHT_TYPE_BIG = 1; //大型机
+    public static final int FLIGHT_TYPE_MID = 2; //中型机
+    public static final int FLIGHT_TYPE_SML = 3; //小型机
+
+    //航班筛选：航班仓位
+    public static final int FLIGHT_CANG_ALL = 0; //不限
+    public static final int FLIGHT_CANG_JINGJI = 1; //经济舱
+    public static final int FLIGHT_CANG_TOUDENG = 2; //头等舱
+    public static final int FLIGHT_CANG_SHANGWU = 3; //商务舱
+
     //仓位等级
-    public static final int CABIN_0 = 0; //经济舱，0或其他
-    public static final int CABIN_1 = 1; //商务舱
-    public static final int CABIN_2 = 2; //头等舱
+    public static final int CABIN_JINGJI = 0; //经济舱，0或其他
+    public static final int CABIN_SHANGWU = 1; //商务舱
+    public static final int CABIN_TOUDENG = 2; //头等舱
 
     public static String getCabinString(int level) {
         String cabin = "经济舱";
         switch (level) {
-            case CABIN_1:
+            case CABIN_SHANGWU:
                 cabin = "商务舱";
                 break;
-            case CABIN_2:
+            case CABIN_TOUDENG:
                 cabin = "头等舱";
                 break;
             default:

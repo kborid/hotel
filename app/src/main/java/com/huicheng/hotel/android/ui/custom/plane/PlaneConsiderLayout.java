@@ -65,7 +65,7 @@ public class PlaneConsiderLayout extends LinearLayout {
         considerNames = Arrays.asList(getResources().getStringArray(R.array.PlaneConditionItem));
         considerLayouts.add(new ConsiderAirOffTimeLayout(context));
         considerLayouts.add(new ConsiderAirCompanyLayout(context));
-        considerLayouts.add(new ConsiderAirPortLayout(context));
+        considerLayouts.add(new ConsiderAirportLayout(context));
         considerLayouts.add(new ConsiderAirTypeLayout(context));
         considerLayouts.add(new ConsiderAirCangLayout(context));
         mContentLayout = (LinearLayout) findViewById(R.id.consider_content_lay);

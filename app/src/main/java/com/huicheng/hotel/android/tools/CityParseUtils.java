@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.google.gson.Gson;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
@@ -17,7 +18,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @auth kborid
@@ -121,30 +121,34 @@ public class CityParseUtils {
             cityListJsonStr = parseJsonFileAssets(context);
         }
         LogUtil.i(TAG, "cityListJsonStr = " + cityListJsonStr);
+        List<CityAreaInfoBean> tmpCityAreaList = JSON.parseArray(cityListJsonStr, CityAreaInfoBean.class);
+        SessionContext.setCityAreaList(tmpCityAreaList);
 
         String cityMapJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON, "", false);
         if (StringUtil.notEmpty(cityListJsonStr) && (isFocusParse || StringUtil.isEmpty(cityMapJsonStr))) {
-            List<CityAreaInfoBean> cityAreaList = JSON.parseArray(cityListJsonStr, CityAreaInfoBean.class);
-            if (cityAreaList.size() > 0) {
-                Map<String, List<CityAreaInfoBean>> cityAreaInfoBeanMap = new HashMap<>();
-                for (int i = 0; i < cityAreaList.size(); i++) {
-                    for (int j = 0; j < cityAreaList.get(i).list.size(); j++) {
-                        String shortName = cityAreaList.get(i).list.get(j).shortName;
+            if (tmpCityAreaList.size() > 0) {
+                HashMap<String, List<CityAreaInfoBean>> cityAreaMap = new HashMap<>();
+                for (int i = 0; i < tmpCityAreaList.size(); i++) {
+                    for (int j = 0; j < tmpCityAreaList.get(i).list.size(); j++) {
+                        String shortName = tmpCityAreaList.get(i).list.get(j).shortName;
                         String str = SessionContext.getFirstSpellChat(shortName).toUpperCase(); //转大写
                         List<CityAreaInfoBean> tmp;
-                        if (!cityAreaInfoBeanMap.containsKey(str)) {
+                        if (!cityAreaMap.containsKey(str)) {
                             tmp = new ArrayList<>();
                         } else {
-                            tmp = cityAreaInfoBeanMap.get(str);
+                            tmp = cityAreaMap.get(str);
                         }
-                        tmp.add(cityAreaList.get(i).list.get(j));
-                        cityAreaInfoBeanMap.put(str, tmp);
+                        tmp.add(tmpCityAreaList.get(i).list.get(j));
+                        cityAreaMap.put(str, tmp);
                     }
                 }
-                cityMapJsonStr = new Gson().toJson(cityAreaInfoBeanMap);
+                cityMapJsonStr = new Gson().toJson(cityAreaMap);
                 SharedPreferenceUtil.getInstance().setString(AppConst.CITY_HOTEL_JSON, cityMapJsonStr, false);
             }
         }
+        HashMap<String, List<CityAreaInfoBean>> cityAreaMap = JSON.parseObject(cityMapJsonStr, new TypeReference<HashMap<String, List<CityAreaInfoBean>>>() {
+        });
+        SessionContext.setCityAreaMap(cityAreaMap);
         LogUtil.i(TAG, "cityMapJsonStr = " + cityMapJsonStr);
         LogUtil.i(TAG, "initJsonData() end....");
     }

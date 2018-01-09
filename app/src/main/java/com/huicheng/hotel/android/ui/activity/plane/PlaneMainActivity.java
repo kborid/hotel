@@ -39,8 +39,6 @@ import java.util.Date;
 
 public class PlaneMainActivity extends BaseMainActivity {
 
-    private static final int REQUEST_CODE_DATE = 0x01;
-    private static final int REQUEST_CODE_AIRPORT = 0x03;
     private WindowManager mWindowManager;
     private TabLayout tabs;
     private int selectedIndex = 0;
@@ -169,9 +167,7 @@ public class PlaneMainActivity extends BaseMainActivity {
             }
             case R.id.tv_next_search:
                 PlaneOrderManager.instance.reset();
-                if (!isSelectedDate) {
-                    initCurrentTodayTime();
-                }
+                updateBeginTimeEndTime();
                 PlaneOrderManager.instance.setFlightType((selectedIndex == 0) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GOBACK);
                 PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
                 PlaneOrderManager.instance.setBackFlightOffDate(endTime);

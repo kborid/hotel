@@ -20,7 +20,9 @@ import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
@@ -38,6 +40,8 @@ import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.LoggerUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.text.SimpleDateFormat;
@@ -88,6 +92,11 @@ public class PlaneFlightListActivity extends BaseActivity {
         initListeners();
         if (null == savedInstanceState) {
             requestPlaneFlightInfo(true);
+            String tmp = SharedPreferenceUtil.getInstance().getString(AppConst.AIR_COMPANY_JSON, "", false);
+            LoggerUtil.i(tmp);
+            if (StringUtil.isEmpty(tmp)) {
+                requestAirCompaniesInfo();
+            }
         }
     }
 
@@ -329,6 +338,15 @@ public class PlaneFlightListActivity extends BaseActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestAirCompaniesInfo() {
+        LogUtil.i(TAG, "requestAirCompaniesInfo()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.AIR_COMPANY_LIST;
+        d.flag = AppConst.AIR_COMPANY_LIST;
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     private void showConsiderPopupWindow() {
         mPlaneConsiderLayout.reloadConfig();
         // 设置背景颜色变暗
@@ -361,14 +379,19 @@ public class PlaneFlightListActivity extends BaseActivity {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.PLANE_FLIGHT_LIST) {
                 new DealResponseAsyncTask().execute(response.body.toString());
+            } else if (request.flag == AppConst.AIR_COMPANY_LIST) {
+                if (StringUtil.notEmpty(response.body.toString())) {
+                    SharedPreferenceUtil.getInstance().setString(AppConst.AIR_COMPANY_JSON, response.body.toString(), false);
+                    List<AirCompanyInfoBean> tmp = JSON.parseArray(response.body.toString(), AirCompanyInfoBean.class);
+                    SessionContext.setAirCompanyMap(tmp);
+                }
             }
         }
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
-        removeProgressDialog();
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         swipeRefreshLayout.setRefreshing(false);
         if (mFlightList.size() <= 0) {
             tv_empty.setVisibility(View.VISIBLE);
@@ -391,7 +414,9 @@ public class PlaneFlightListActivity extends BaseActivity {
         protected Void doInBackground(String... params) {
             LogUtil.i(TAG, "json = " + params[0]);
             LoggerUtil.i(params[0]);
-            allList = JSON.parseArray(params[0], PlaneFlightInfoBean.class);
+            if (StringUtil.notEmpty(params[0]) && !"{}".equals(params[0])) {
+                allList = JSON.parseArray(params[0], PlaneFlightInfoBean.class);
+            }
             if (allList.size() > 0) {
                 //获取最小价格航班
                 PlaneFlightInfoBean min = Collections.min(allList, new BarePriceComparator());
@@ -515,21 +540,83 @@ public class PlaneFlightListActivity extends BaseActivity {
                     }
                 }
 
-                //TODO 航空公司
+                //航空公司
                 {
-                    int[] airCompanies = mPlaneConsiderLayout.getConsiderAirLayout(considerName[1]).getAirCompanyValue();
+                    int[] airCompanies = mPlaneConsiderLayout.getConsiderAirLayout(considerName[1]).getFlightConditionValue();
+                    if (airCompanies != null && airCompanies.length > 0) {
+                        if (airCompanies[0] == 0) {
+                            //如果值为0或包含0，则表示不限
+                            //do nothing
+                        } else {
+                            boolean isEqual = false;
+                            for (int airCompany : airCompanies) {
+                                if (bean.carrier.equals(mPlaneConsiderLayout.getConsiderAirLayout(considerName[1]).getListData().get(airCompany))) {
+                                    isEqual = true;
+                                    break;
+                                }
+                            }
+                            if (!isEqual) {
+                                continue;
+                            }
+                        }
+                    }
                 }
                 //TODO 机场信息
                 {
-                    int[] airports = mPlaneConsiderLayout.getConsiderAirLayout(considerName[2]).getAirportValue();
+                    int[] airports = mPlaneConsiderLayout.getConsiderAirLayout(considerName[2]).getFlightConditionValue();
                 }
-                //TODO 机型信息
+
+                //机型信息
                 {
-                    int airType = mPlaneConsiderLayout.getConsiderAirLayout(considerName[3]).getFlightType();
+                    int[] airTypes = mPlaneConsiderLayout.getConsiderAirLayout(considerName[3]).getFlightConditionValue();
+                    if (airTypes != null && airTypes.length > 0) {
+                        switch (airTypes[0]) {
+                            case PlaneCommDef.FLIGHT_TYPE_ALL:
+                                //do nothing
+                                break;
+                            case PlaneCommDef.FLIGHT_TYPE_BIG:
+                                if (!bean.flightTypeFullName.contains("大") && !bean.flightTypeFullName.contains("宽")) {
+                                    continue;
+                                }
+                                break;
+                            case PlaneCommDef.FLIGHT_TYPE_MID:
+                                if (!bean.flightTypeFullName.contains("中")) {
+                                    continue;
+                                }
+                                break;
+                            case PlaneCommDef.FLIGHT_TYPE_SML:
+                                if (!bean.flightTypeFullName.contains("小")) {
+                                    continue;
+                                }
+                                break;
+                        }
+                    }
                 }
-                //TODO 仓位信息
+                //仓位信息
                 {
-                    int airCang = mPlaneConsiderLayout.getConsiderAirLayout(considerName[4]).getFlightCang();
+                    int[] airCangs = mPlaneConsiderLayout.getConsiderAirLayout(considerName[4]).getFlightConditionValue();
+                    if (airCangs != null && airCangs.length > 0) {
+                        switch (airCangs[0]) {
+                            case PlaneCommDef.FLIGHT_CANG_ALL:
+                                //do nothing
+                                break;
+                            case PlaneCommDef.FLIGHT_CANG_JINGJI:
+                                if (bean.positionLevel == PlaneCommDef.CABIN_SHANGWU || bean.positionLevel == PlaneCommDef.CABIN_TOUDENG) {
+                                    continue;
+                                }
+                                break;
+                            case PlaneCommDef.FLIGHT_CANG_TOUDENG:
+                                if (bean.positionLevel != PlaneCommDef.CABIN_TOUDENG) {
+                                    continue;
+                                }
+                                break;
+                            case PlaneCommDef.FLIGHT_CANG_SHANGWU:
+                                if (bean.positionLevel != PlaneCommDef.CABIN_SHANGWU) {
+                                    continue;
+                                }
+                                break;
+                        }
+                    }
                 }
 
                 temp.add(bean);

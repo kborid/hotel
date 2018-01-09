@@ -514,24 +514,30 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
-        if (request.flag == AppConst.AD_GDT_IF) {
-            return;
-        }
-        String message;
-        if (e != null && e instanceof ConnectException) {
-            message = getString(R.string.dialog_tip_net_error);
+        String msg, code;
+        if (response != null && response.data != null) {
+            msg = response.data.toString();
+            code = response.code;
+//            onNotifyError(request, response);
         } else {
-            message = response != null && response.data != null ? response.data.toString() : getString(R.string.dialog_tip_null_error);
+            if (e != null && e instanceof ConnectException) {
+                msg = getString(R.string.dialog_tip_net_error);
+                code = "-2";
+            } else {
+                msg = getString(R.string.dialog_tip_null_error);
+                code = "-1";
+            }
+            CustomToast.show(msg, CustomToast.LENGTH_LONG);
         }
-        CustomToast.show(message, CustomToast.LENGTH_LONG);
-        onNotifyError(request);
+        onNotifyError(request, response);
+        LogUtil.e(TAG, "ErrorCode:" + code + ",ErrorMsg:" + msg);
     }
 
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         LogUtil.d(TAG, "onNotifyMessage()");
     }
 
-    public void onNotifyError(ResponseData request) {
+    public void onNotifyError(ResponseData request, ResponseData response) {
         LogUtil.d(TAG, "onNotifyError()");
     }
 }

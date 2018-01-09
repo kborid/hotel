@@ -55,6 +55,7 @@ public class MainSwitcherActivity extends BaseActivity implements LeftDrawerLayo
     private String[] tips = new String[4];
     private static Handler myHandler = new Handler(Looper.getMainLooper());
     private boolean isNeedCloseLeftDrawer = false;
+    private boolean isFirstLaunch = false;
 
     private DrawerLayout drawer_layout;
     private LeftDrawerLayout left_layout;
@@ -106,6 +107,7 @@ public class MainSwitcherActivity extends BaseActivity implements LeftDrawerLayo
     @Override
     public void initParams() {
         super.initParams();
+        isFirstLaunch = true;
         tips = getResources().getStringArray(R.array.MainTabTips);
         //app更新提示
         String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
@@ -216,11 +218,14 @@ public class MainSwitcherActivity extends BaseActivity implements LeftDrawerLayo
     @Override
     protected void onResume() {
         super.onResume();
-        if (SessionContext.getOpenInstallAppData() != null) {
-            myHandler.removeCallbacksAndMessages(null);
-            Intent intent = new Intent(this, HotelMainActivity.class);
-            intent.putExtra("index", 0);
-            startActivity(intent);
+        if (isFirstLaunch) {
+            isFirstLaunch = false;
+            if (SessionContext.getOpenInstallAppData() != null) {
+                myHandler.removeCallbacksAndMessages(null);
+                Intent intent = new Intent(this, HotelMainActivity.class);
+                intent.putExtra("index", 0);
+                startActivity(intent);
+            }
         }
 
         //每次启动时，如果用户未登录，则显示侧滑

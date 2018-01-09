@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -25,14 +26,20 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.control.AMapLocationControl;
+import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
 import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
+import com.huicheng.hotel.android.ui.activity.UcBountyActivity;
+import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.app.AppConst;
+import com.prj.sdk.app.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -43,10 +50,10 @@ import java.util.Date;
 
 public class HotelMainActivity extends BaseMainActivity implements AMapLocationControl.MyLocationListener {
 
-    private static final int REQUEST_CODE_CITY = 0x01;
-    private static final int REQUEST_CODE_DATE = 0x02;
-
+    private LinearLayout coupon_lay;
     private LinearLayout order_lay;
+    private LinearLayout bounty_lay;
+
     private TextView tv_city;
     private TextView tv_next_search;
     private TextView tv_in_date, tv_days, tv_out_date;
@@ -78,11 +85,14 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         super.initViews();
         tv_city = (TextView) findViewById(R.id.tv_city);
         tv_next_search = (TextView) findViewById(R.id.tv_next_search);
-        order_lay = (LinearLayout) findViewById(R.id.order_lay);
 
         tv_in_date = (TextView) findViewById(R.id.tv_in_date);
         tv_days = (TextView) findViewById(R.id.tv_days);
         tv_out_date = (TextView) findViewById(R.id.tv_out_date);
+
+        coupon_lay = (LinearLayout) findViewById(R.id.coupon_lay);
+        order_lay = (LinearLayout) findViewById(R.id.order_lay);
+        bounty_lay = (LinearLayout) findViewById(R.id.bounty_lay);
 
 //        et_keyword = (EditText) findViewById(R.id.et_keyword);
 //        iv_reset = (ImageView) findViewById(R.id.iv_reset);
@@ -163,7 +173,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     @Override
     public void initParams() {
         super.initParams();
-        //初始化时间，今天到明天 1晚
         HotelOrderManager.getInstance().setBeginTime(beginTime);
         HotelOrderManager.getInstance().setEndTime(endTime);
         HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
@@ -189,6 +198,10 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     @Override
     public void onResume() {
         super.onResume();
+
+        if (SessionContext.isLogin()) {
+            requestUserMenusStatus();
+        }
 
         //重置consider
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
@@ -251,6 +264,29 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         }
     }
 
+    private void requestUserMenusStatus() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.MENUS_STATUS;
+        d.flag = AppConst.MENUS_STATUS;
+        DataLoader.getInstance().loadData(this, d);
+    }
+
+    private void updateUserMenuStatus(String str) {
+        JSONObject mJson = JSON.parseObject(str);
+        boolean couponflag = mJson.containsKey("couponflag") ? mJson.getBoolean("couponflag") : false;
+        int couponResId = couponflag ? R.drawable.iv_my_coupon_red : R.drawable.iv_my_coupon_normal;
+        ((ImageView) findViewById(R.id.iv_coupon_icon)).setImageResource(couponResId);
+
+        boolean orderflag = mJson.containsKey("orderflag") ? mJson.getBoolean("orderflag") : false;
+        int orderResId = orderflag ? R.drawable.iv_my_order_red : R.drawable.iv_my_order_normal;
+        ((ImageView) findViewById(R.id.iv_order_icon)).setImageResource(orderResId);
+
+        boolean bountyflag = mJson.containsKey("bountyflag") ? mJson.getBoolean("bountyflag") : false;
+        int bountyResId = bountyflag ? R.drawable.iv_my_bounty_red : R.drawable.iv_my_bounty_normal;
+        ((ImageView) findViewById(R.id.iv_bounty_icon)).setImageResource(bountyResId);
+    }
+
     private void showHaiNanAdPopupWindow() {
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getWindow().getAttributes();
@@ -287,7 +323,9 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         tv_in_date.setOnClickListener(this);
         tv_out_date.setOnClickListener(this);
         tv_next_search.setOnClickListener(this);
+        coupon_lay.setOnClickListener(this);
         order_lay.setOnClickListener(this);
+        bounty_lay.setOnClickListener(this);
         tv_search.setOnClickListener(this);
         tv_consider.setOnClickListener(this);
     }
@@ -308,16 +346,36 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_city: {
+                updateBeginTimeEndTime();
+                HotelOrderManager.getInstance().setBeginTime(beginTime);
+                HotelOrderManager.getInstance().setEndTime(endTime);
                 Intent resIntent = new Intent(this, HotelCityChooseActivity.class);
                 startActivityForResult(resIntent, REQUEST_CODE_CITY);
                 break;
             }
+            case R.id.coupon_lay:
+                if (!SessionContext.isLogin()) {
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    return;
+                }
+                ((ImageView) findViewById(R.id.iv_coupon_icon)).setImageResource(R.drawable.iv_my_coupon_normal);
+                intent = new Intent(this, UcCouponsActivity.class);
+                break;
             case R.id.order_lay:
                 if (!SessionContext.isLogin()) {
                     sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                     return;
                 }
+                ((ImageView) findViewById(R.id.iv_order_icon)).setImageResource(R.drawable.iv_my_order_normal);
                 intent = new Intent(this, UcOrdersActivity.class);
+                break;
+            case R.id.bounty_lay:
+                if (!SessionContext.isLogin()) {
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    return;
+                }
+                ((ImageView) findViewById(R.id.iv_bounty_icon)).setImageResource(R.drawable.iv_my_bounty_normal);
+                intent = new Intent(this, UcBountyActivity.class);
                 break;
             case R.id.tv_next_search:
                 if (StringUtil.isEmpty(tv_city.getText().toString())) {
@@ -325,9 +383,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                     return;
                 }
                 HotelOrderManager.getInstance().reset();
-                if (!isSelectedDate) {
-                    initCurrentTodayTime();
-                }
+                updateBeginTimeEndTime();
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
                 HotelOrderManager.getInstance().setEndTime(endTime);
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
@@ -345,6 +401,10 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 break;
             }
             case R.id.tv_search:
+                updateBeginTimeEndTime();
+                HotelOrderManager.getInstance().setBeginTime(beginTime);
+                HotelOrderManager.getInstance().setEndTime(endTime);
+                HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
                 intent = new Intent(this, HotelAllSearchActivity.class);
                 break;
             case R.id.tv_consider:
@@ -353,6 +413,19 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         }
         if (null != intent) {
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
+        if (response != null && response.body != null) {
+            if (request.flag == AppConst.MENUS_STATUS) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
+                    updateUserMenuStatus(response.body.toString());
+                }
+            }
         }
     }
 
@@ -376,6 +449,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 isSelectedDate = true;
                 beginTime = data.getLongExtra("beginTime", beginTime);
                 endTime = data.getLongExtra("endTime", endTime);
+                updateBeginTimeEndTime();
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
                 HotelOrderManager.getInstance().setEndTime(endTime);
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));

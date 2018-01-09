@@ -183,9 +183,8 @@ public class UcFansHotelActivity extends BaseActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
-        removeProgressDialog();
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         refreshFansHotelLayout();
     }
 

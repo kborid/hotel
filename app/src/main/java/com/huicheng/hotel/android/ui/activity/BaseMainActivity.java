@@ -35,10 +35,13 @@ import java.util.List;
  */
 
 public class BaseMainActivity extends BaseActivity {
+    protected static final int REQUEST_CODE_DATE = 0x01;
+    protected static final int REQUEST_CODE_CITY = 0x02;
+    protected static final int REQUEST_CODE_AIRPORT = 0x03;
+
     protected static Handler myHandler = new Handler(Looper.getMainLooper());
     protected long beginTime, endTime;
     protected View rootView;
-    //    private CustomWeatherLayout customWeatherLay;
     private CommonBannerLayout banner_lay;
     private LinearLayout contentLay;
     protected boolean isSelectedDate = false;
@@ -51,7 +54,6 @@ public class BaseMainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_basemain_layout);
 //        oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
-//        customWeatherLay = (CustomWeatherLayout) findViewById(R.id.weather_lay);
         banner_lay = (CommonBannerLayout) findViewById(R.id.banner_lay);
         contentLay = (LinearLayout) findViewById(R.id.content_lay);
 
@@ -85,22 +87,23 @@ public class BaseMainActivity extends BaseActivity {
         LinearLayout.LayoutParams weatherRlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         weatherRlp.width = Utils.mScreenWidth;
         weatherRlp.height = (int) ((float) weatherRlp.width / 750 * 400);
-//        weather_lay.setLayoutParams(weatherRlp);
         banner_lay.setLayoutParams(weatherRlp);
         if (SessionContext.getBannerList().size() > 0) {
             banner_lay.setImageResource(SessionContext.getBannerList());
         }
         banner_lay.setWeatherInfoLayoutMargin(Utils.dp2px(11), Utils.mStatusBarHeight + Utils.dp2px(10), 0, 0);
 
-        initCurrentTodayTime();
+        //初始化时间，如果没有手动选择，则默认显示今天到明天 1晚
+        updateBeginTimeEndTime();
     }
 
-    public void initCurrentTodayTime() {
-        //初始化时间，今天到明天 1晚
-        Calendar calendar = Calendar.getInstance();
-        beginTime = calendar.getTimeInMillis();
-        calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
-        endTime = calendar.getTimeInMillis();
+    protected void updateBeginTimeEndTime() {
+        if (!isSelectedDate) {
+            Calendar calendar = Calendar.getInstance();
+            beginTime = calendar.getTime().getTime();
+            calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
+            endTime = calendar.getTime().getTime();
+        }
     }
 
     @Override
@@ -153,10 +156,8 @@ public class BaseMainActivity extends BaseActivity {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
-//                    customWeatherLay.refreshWeatherInfo(beginTime, bean);
                     banner_lay.updateWeatherInfo(beginTime, bean);
                 } else {
-//                    customWeatherLay.refreshWeatherInfo(beginTime, null);
                     banner_lay.updateWeatherInfo(beginTime, null);
                 }
             } else if (request.flag == AppConst.HOTEL_BANNER) {
@@ -169,11 +170,9 @@ public class BaseMainActivity extends BaseActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
-        removeProgressDialog();
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         if (request.flag == AppConst.WEATHER) {
-//            customWeatherLay.refreshWeatherInfo(beginTime, null);
             banner_lay.updateWeatherInfo(beginTime, null);
         }
     }

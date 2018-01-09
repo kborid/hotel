@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -40,11 +41,10 @@ import java.util.List;
 
 public class PlaneAirportChooserActivity extends BaseActivity {
 
-    private String mJsonStr;
     private List<CityAirportInfoBean> mList = new ArrayList<>();
 
     private List<String> mFirstCharList = new ArrayList<>();
-    private List<CityAirportInfoBean> mAirportByFirstCharList = new ArrayList<>();
+    private List<CityAirportInfoBean> mAirportList = new ArrayList<>();
 
     private List<String> mHistoryList = new ArrayList<>();
     private List<String> mHotCityList = new ArrayList<>();
@@ -67,11 +67,9 @@ public class PlaneAirportChooserActivity extends BaseActivity {
         initParams();
         initListeners();
         if (null == savedInstanceState) {
-            if (StringUtil.isEmpty(mJsonStr)) {
+            if (StringUtil.isEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.CITY_PLANE_JSON, "", false))) {
                 requestAirportInfo();
             } else {
-                mList = JSON.parseArray(mJsonStr, CityAirportInfoBean.class);
-                Collections.sort(mList);
                 updateScreenInfo();
             }
         }
@@ -99,7 +97,7 @@ public class PlaneAirportChooserActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        tv_center_title.setText("选择飞机场✈");
+        tv_center_title.setText(String.format("选择%1$s", "OFF".equals(airportType) ? "出发地" : "目的地"));
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
 
         //历史记录
@@ -116,13 +114,12 @@ public class PlaneAirportChooserActivity extends BaseActivity {
         gv_hot.setAdapter(hotCityAdapter);
 
         tv_city_index.setText("A");
+        mList = SessionContext.getAirportList();
 
         cityIndexAdapter = new CityIndexAdapter(this, mFirstCharList);
         gv_index.setAdapter(cityIndexAdapter);
-        cityListAdapter = new CityListAdapter(this, mAirportByFirstCharList);
+        cityListAdapter = new CityListAdapter(this, mAirportList);
         listView.setAdapter(cityListAdapter);
-
-        mJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_PLANE_JSON, "", false);
     }
 
     private void updateScreenInfo() {
@@ -130,14 +127,14 @@ public class PlaneAirportChooserActivity extends BaseActivity {
             String firstChar = mList.get(0).firstchar;
             tv_city_index.setText(firstChar);
             mFirstCharList.clear();
-            mAirportByFirstCharList.clear();
+            mAirportList.clear();
             for (int i = 0; i < mList.size(); i++) {
                 CityAirportInfoBean bean = mList.get(i);
                 if (!mFirstCharList.contains(bean.firstchar)) {
                     mFirstCharList.add(bean.firstchar);
                 }
                 if (bean.firstchar.equals(firstChar)) {
-                    mAirportByFirstCharList.add(bean);
+                    mAirportList.add(bean);
                 }
             }
         }
@@ -173,11 +170,11 @@ public class PlaneAirportChooserActivity extends BaseActivity {
                 cityIndexAdapter.setSelectedIndex(position);
                 String firstChar = mFirstCharList.get(position);
                 tv_city_index.setText(firstChar);
-                mAirportByFirstCharList.clear();
+                mAirportList.clear();
                 for (int i = 0; i < mList.size(); i++) {
                     CityAirportInfoBean bean = mList.get(i);
                     if (bean.firstchar.equals(firstChar)) {
-                        mAirportByFirstCharList.add(bean);
+                        mAirportList.add(bean);
                     }
                 }
                 cityListAdapter.notifyDataSetChanged();
@@ -187,7 +184,7 @@ public class PlaneAirportChooserActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CityAirportInfoBean bean = mAirportByFirstCharList.get(position);
+                CityAirportInfoBean bean = mAirportList.get(position);
                 //增加历史记录
                 addHistory(bean.cityname);
                 Intent data = new Intent();
@@ -295,15 +292,10 @@ public class PlaneAirportChooserActivity extends BaseActivity {
                     mList.addAll(temp);
                     Collections.sort(mList);
                 }
+                SessionContext.setAirportList(mList);
                 updateScreenInfo();
             }
         }
-    }
-
-    @Override
-    public void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
-        removeProgressDialog();
     }
 
     private class QuickSelCityAdapter extends BaseAdapter {

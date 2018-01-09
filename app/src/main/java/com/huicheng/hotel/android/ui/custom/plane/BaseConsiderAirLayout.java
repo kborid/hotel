@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ import java.util.List;
  */
 
 public abstract class BaseConsiderAirLayout extends LinearLayout implements IPlaneConsiderNotifyListener {
+    protected ArrayList<Integer> mOriginalIndex = new ArrayList<>();
+    protected ArrayList<Integer> mSelectedIndex = new ArrayList<>();
     protected Context context;
 
     public BaseConsiderAirLayout(Context context) {
@@ -38,31 +41,34 @@ public abstract class BaseConsiderAirLayout extends LinearLayout implements IPla
 
     protected abstract void updateDataInfo(List<PlaneFlightInfoBean> list);
 
-    protected void refreshViewSelectedStatus(int index) {
+    protected void refreshViewSelectedStatus(ArrayList<Integer> list) {
         for (int i = 0; i < getChildCount(); i++) {
-            getChildAt(i).setSelected(i == index);
+            getChildAt(i).setSelected(list.contains(i));
         }
     }
 
-
+    protected int[] convertArrays(ArrayList<Integer> list) {
+        int[] tmp = null;
+        if (list != null) {
+            tmp = new int[list.size()];
+            if (list.size() > 0) {
+                for (int i = 0; i < list.size(); i++) {
+                    tmp[i] = list.get(i);
+                }
+            }
+        }
+        return tmp;
+    }
 
     public float[] getOffTimeLayoutValue() {
         throw new UnsupportedOperationException();
     }
 
-    public int[] getAirCompanyValue(){
+    public int[] getFlightConditionValue() {
         throw new UnsupportedOperationException();
     }
 
-    public int[] getAirportValue() {
-        throw new UnsupportedOperationException();
-    }
-
-    public int getFlightType() {
-        throw new UnsupportedOperationException();
-    }
-
-    public int getFlightCang() {
+    public List<String> getListData() {
         throw new UnsupportedOperationException();
     }
 }

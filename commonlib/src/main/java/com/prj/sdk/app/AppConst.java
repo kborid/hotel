@@ -19,7 +19,8 @@ public final class AppConst {
 
     public static final String CITY_HOTEL_JSON_FILE = "hotel_city_json_file"; //酒店模块城市选择文件缓存
     public static final String CITY_HOTEL_JSON = "hotel_city_json_string"; //酒店模块城市选择缓存
-    public static final String CITY_PLANE_JSON = "plane_city_json_string"; //机票模块城市选择缓存
+    public static final String CITY_PLANE_JSON = "plane_city_json_string"; //机场缓存
+    public static final String AIR_COMPANY_JSON = "air_company_json"; //航司缓存
 
     public static final String IN_PERSON_INFO = "in_person_info";
 
@@ -153,6 +154,7 @@ public final class AppConst {
     public static final int BOUNTY_USER_BASE = HOTEL_HANDLE_FLAG + 68;
     public static final int BOUNTY_USER_DETAIL = HOTEL_HANDLE_FLAG + 69;
 
+    public static final int MENUS_STATUS = HOTEL_HANDLE_FLAG + 70;
     /**
      * 机票相关
      */
@@ -160,4 +162,5 @@ public final class AppConst {
     public static final int PLANE_AIRPORT_LIST = PLANE_HANDLE_FLAG + 1;
     public static final int PLANE_FLIGHT_LIST = PLANE_HANDLE_FLAG + 2;
     public static final int PLANE_TICKET_LIST = PLANE_HANDLE_FLAG + 3;
+    public static final int AIR_COMPANY_LIST = PLANE_HANDLE_FLAG + 4;
 }

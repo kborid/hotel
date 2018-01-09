@@ -7,6 +7,9 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.fm.openinstall.model.AppData;
+import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
@@ -33,6 +36,10 @@ public class SessionContext {
     private static AppData mAppData;          // OpenInstall数据
 
     private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
+    private static List<CityAreaInfoBean> mCityAreaList = new ArrayList<>();
+    private static HashMap<String, List<CityAreaInfoBean>> mCityAreaMap = new HashMap<>();
+    private static List<CityAirportInfoBean> airportList = new ArrayList<>(); //机场列表
+    private static HashMap<String, AirCompanyInfoBean> airCompanyMap = new HashMap<>(); //航司Map
 
     private static List<HotelMapInfoBean> allDayList = new ArrayList<>();
     private static List<HotelMapInfoBean> clockList = new ArrayList<>();
@@ -92,8 +99,6 @@ public class SessionContext {
     public static void setBannerList(List<HomeBannerInfoBean> list) {
         if (null != list) {
             bannerList = list;
-        } else {
-            bannerList = new ArrayList<>();
         }
     }
 
@@ -104,8 +109,6 @@ public class SessionContext {
     public static void setAllDayList(List<HotelMapInfoBean> list) {
         if (null != list) {
             allDayList = list;
-        } else {
-            allDayList = new ArrayList<>();
         }
     }
 
@@ -116,8 +119,6 @@ public class SessionContext {
     public static void setClockList(List<HotelMapInfoBean> list) {
         if (null != list) {
             clockList = list;
-        } else {
-            clockList = new ArrayList<>();
         }
     }
 
@@ -128,8 +129,6 @@ public class SessionContext {
     public static void setYgrList(List<HotelMapInfoBean> list) {
         if (null != list) {
             ygrList = list;
-        } else {
-            ygrList = new ArrayList<>();
         }
     }
 
@@ -140,9 +139,50 @@ public class SessionContext {
     public static void setHhyList(List<HotelMapInfoBean> list) {
         if (null != list) {
             hhyList = list;
-        } else {
-            hhyList = new ArrayList<>();
         }
+    }
+
+    public static List<CityAreaInfoBean> getCityAreaList() {
+        return mCityAreaList;
+    }
+
+    public static void setCityAreaList(List<CityAreaInfoBean> list) {
+        if (null != list) {
+            mCityAreaList = list;
+        }
+    }
+
+    public static HashMap<String, List<CityAreaInfoBean>> getCityAreaMap() {
+        return mCityAreaMap;
+    }
+
+    public static void setCityAreaMap(HashMap<String, List<CityAreaInfoBean>> list) {
+        if (null != list) {
+            mCityAreaMap = list;
+        }
+    }
+
+    public static void setAirCompanyMap(List<AirCompanyInfoBean> list) {
+        if (list != null && list.size() > 0) {
+            airCompanyMap.clear();
+            for (AirCompanyInfoBean bean : list) {
+                airCompanyMap.put(bean.code, bean);
+            }
+        }
+    }
+
+    public static HashMap<String, AirCompanyInfoBean> getAirCompanyMap() {
+        return airCompanyMap;
+    }
+
+    public static void setAirportList(List<CityAirportInfoBean> list) {
+        if (null != list) {
+            airportList = list;
+        }
+    }
+
+    public static List<CityAirportInfoBean> getAirportList() {
+        return airportList;
     }
 
     /**

@@ -22,9 +22,6 @@ import java.util.List;
 
 public class ConsiderAirCangLayout extends BaseConsiderAirLayout {
 
-    private int mOriginalIndex;
-    private int selectedIndex;
-
     public ConsiderAirCangLayout(Context context) {
         super(context);
     }
@@ -39,13 +36,17 @@ public class ConsiderAirCangLayout extends BaseConsiderAirLayout {
 
     @Override
     protected void initParams() {
-        mOriginalIndex = 0;
-        selectedIndex = 0;
         setPadding(Utils.dp2px(34), 0, 0, 0);
         setOrientation(LinearLayout.VERTICAL);
+        mSelectedIndex.clear();
+        mSelectedIndex.add(0);
+        mOriginalIndex.clear();
+        mOriginalIndex.add(0);
+
+        //初始化数据
         removeAllViews();
-        List<String> list = Arrays.asList(context.getResources().getStringArray(R.array.flightCang));
-        for (int i = 0; i < list.size(); i++) {
+        List<String> tmp = Arrays.asList(context.getResources().getStringArray(R.array.flightCang));
+        for (int i = 0; i < tmp.size(); i++) {
             if (i == 0) {
                 addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_all_item, null));
             } else {
@@ -54,8 +55,8 @@ public class ConsiderAirCangLayout extends BaseConsiderAirLayout {
 
             View item = getChildAt(i);
             item.findViewById(R.id.iv_air_logo).setVisibility(GONE);
-            ((TextView) item.findViewById(R.id.tv_title)).setText(list.get(i));
-            item.findViewById(R.id.root).setSelected(i == selectedIndex);
+            ((TextView) item.findViewById(R.id.tv_title)).setText(tmp.get(i));
+            refreshViewSelectedStatus(mSelectedIndex);
         }
     }
 
@@ -67,8 +68,9 @@ public class ConsiderAirCangLayout extends BaseConsiderAirLayout {
             item.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectedIndex = finalI;
-                    refreshViewSelectedStatus(selectedIndex);
+                    mSelectedIndex.clear();
+                    mSelectedIndex.add(finalI);
+                    refreshViewSelectedStatus(mSelectedIndex);
                 }
             });
         }
@@ -76,33 +78,36 @@ public class ConsiderAirCangLayout extends BaseConsiderAirLayout {
 
     @Override
     protected void updateDataInfo(List<PlaneFlightInfoBean> list) {
-
     }
 
     @Override
-    public int getFlightCang() {
-        return selectedIndex;
+    public int[] getFlightConditionValue() {
+        return convertArrays(mSelectedIndex);
     }
 
     @Override
     public void cancel() {
-        selectedIndex = mOriginalIndex;
+        mSelectedIndex.clear();
+        mSelectedIndex.addAll(mOriginalIndex);
     }
 
     @Override
     public void reset() {
-        selectedIndex = 0;
-        refreshViewSelectedStatus(selectedIndex);
+        mSelectedIndex.clear();
+        mSelectedIndex.add(0);
+        refreshViewSelectedStatus(mSelectedIndex);
     }
 
     @Override
     public void save() {
-        mOriginalIndex = selectedIndex;
+        mOriginalIndex.clear();
+        mOriginalIndex.addAll(mSelectedIndex);
     }
 
     @Override
     public void reload() {
-        selectedIndex = mOriginalIndex;
-        refreshViewSelectedStatus(selectedIndex);
+        mSelectedIndex.clear();
+        mSelectedIndex.addAll(mOriginalIndex);
+        refreshViewSelectedStatus(mSelectedIndex);
     }
 }

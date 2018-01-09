@@ -10,10 +10,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
+import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.util.StringUtil;
+import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,14 +68,30 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
         }
         viewHolder.tv_flight_during.setText(bean.flightTimes);
         viewHolder.tv_flight_price.setText(String.valueOf((int) bean.barePrice));
-        viewHolder.tv_flight_carrier.setText(bean.carrier);
         viewHolder.tv_flight_code.setText(bean.flightNum);
         viewHolder.tv_flight_name.setText(bean.flightTypeFullName);
-        if (StringUtil.notEmpty(bean.carrier)
-                && PlaneCommDef.AIR_ICON_CODE.containsKey(bean.carrier)
-                && PlaneCommDef.AIR_ICON_CODE.get(bean.carrier) != 0) {
-            viewHolder.iv_flight_icon.setImageResource(PlaneCommDef.AIR_ICON_CODE.get(bean.carrier));
-            viewHolder.iv_flight_icon.setVisibility(View.VISIBLE);
+        if (StringUtil.notEmpty(bean.carrier)) {
+            if (SessionContext.getAirCompanyMap().size() > 0
+                    && SessionContext.getAirCompanyMap().containsKey(bean.carrier)) {
+                AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(bean.carrier);
+                viewHolder.tv_flight_carrier.setText(companyInfoBean.company);
+                viewHolder.iv_flight_icon.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(new CustomReqURLFormatModelImpl(companyInfoBean.logourl))
+                        .fitCenter()
+                        .override(Utils.dp2px(15), Utils.dp2px(15))
+                        .into(viewHolder.iv_flight_icon);
+            } else {
+                viewHolder.tv_flight_carrier.setText(bean.carrier);
+                if (StringUtil.notEmpty(bean.carrier)
+                        && PlaneCommDef.AIR_ICON_CODE.containsKey(bean.carrier)
+                        && PlaneCommDef.AIR_ICON_CODE.get(bean.carrier) != 0) {
+                    viewHolder.iv_flight_icon.setVisibility(View.VISIBLE);
+                    viewHolder.iv_flight_icon.setImageResource(PlaneCommDef.AIR_ICON_CODE.get(bean.carrier));
+                } else {
+                    viewHolder.iv_flight_icon.setVisibility(View.GONE);
+                }
+            }
         } else {
             viewHolder.iv_flight_icon.setVisibility(View.GONE);
         }

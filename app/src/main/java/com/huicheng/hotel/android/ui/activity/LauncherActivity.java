@@ -27,7 +27,9 @@ import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -47,6 +49,7 @@ import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +65,7 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
     private static Handler mHandler = null;
 
     private static long mStartTime = 0;
-    private static final long AD_SHOWTIME = 2000;
+    private static final long AD_SHOWTIME = 1000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,6 +155,16 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
         mTagCount++;
     }
 
+    private void requestAirCompaniesInfo() {
+        LogUtil.i(TAG, "requestAirCompaniesInfo()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.AIR_COMPANY_LIST;
+        d.flag = AppConst.AIR_COMPANY_LIST;
+        requestID = DataLoader.getInstance().loadData(this, d);
+        mTagCount++;
+    }
+
     public void doLastAction() {
         LogUtil.i(TAG, "doLastAction()");
         long exitTime = System.currentTimeMillis();
@@ -233,8 +246,21 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
                     CityParseUtils.initAreaJsonData(LauncherActivity.this);
                     requestHomeBannerInfo();
                     requestAppVersionInfo();
-                    if (StringUtil.isEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.CITY_PLANE_JSON, "", false))) {
+                    //初始化机场信息
+                    String airportJson = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_PLANE_JSON, "", false);
+                    if (StringUtil.isEmpty(airportJson)) {
                         requestAirportInfo();
+                    } else {
+                        List<CityAirportInfoBean> tmp = JSON.parseArray(airportJson, CityAirportInfoBean.class);
+                        SessionContext.setAirportList(tmp);
+                    }
+                    //初始化航司信息
+                    String airCompanyJson = SharedPreferenceUtil.getInstance().getString(AppConst.AIR_COMPANY_JSON, "", false);
+                    if (StringUtil.isEmpty(airCompanyJson)) {
+                        requestAirCompaniesInfo();
+                    } else {
+                        List<AirCompanyInfoBean> tmp = JSON.parseArray(airCompanyJson, AirCompanyInfoBean.class);
+                        SessionContext.setAirCompanyMap(tmp);
                     }
                 }
             });
@@ -281,6 +307,15 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
                 mTag.put(AppConst.PLANE_AIRPORT_LIST, AppConst.PLANE_AIRPORT_LIST);
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 SharedPreferenceUtil.getInstance().setString(AppConst.CITY_PLANE_JSON, response.body.toString(), false);
+                List<CityAirportInfoBean> tmp = JSON.parseArray(response.body.toString(), CityAirportInfoBean.class);
+                Collections.sort(tmp);
+                SessionContext.setAirportList(tmp);
+            } else if (request.flag == AppConst.AIR_COMPANY_LIST) {
+                mTag.put(AppConst.AIR_COMPANY_LIST, AppConst.AIR_COMPANY_LIST);
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                SharedPreferenceUtil.getInstance().setString(AppConst.AIR_COMPANY_JSON, response.body.toString(), false);
+                List<AirCompanyInfoBean> tmp = JSON.parseArray(response.body.toString(), AirCompanyInfoBean.class);
+                SessionContext.setAirCompanyMap(tmp);
             }
 
             if (mTag.size() == mTagCount) {
@@ -290,7 +325,8 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         mTag.put(request.flag, request.flag);
         if (mTag.size() == mTagCount) {
             doLastAction();

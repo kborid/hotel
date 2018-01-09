@@ -19,20 +19,20 @@ import java.util.List;
  * @date 2017/11/29 0029.
  */
 
-public class ConsiderAirPortLayout extends BaseConsiderAirLayout {
+public class ConsiderAirportLayout extends BaseConsiderAirLayout {
 
     private TextView tv_off_airport, tv_on_airport;
     private LinearLayout off_lay, on_lay;
 
-    public ConsiderAirPortLayout(Context context) {
+    public ConsiderAirportLayout(Context context) {
         super(context);
     }
 
-    public ConsiderAirPortLayout(Context context, @Nullable AttributeSet attrs) {
+    public ConsiderAirportLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ConsiderAirPortLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ConsiderAirportLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -47,7 +47,6 @@ public class ConsiderAirPortLayout extends BaseConsiderAirLayout {
 
     @Override
     protected void setListeners() {
-
     }
 
     @Override
@@ -74,7 +73,7 @@ public class ConsiderAirPortLayout extends BaseConsiderAirLayout {
     }
 
     @Override
-    public int[] getAirportValue() {
+    public int[] getFlightConditionValue() {
         return new int[2];
     }
 

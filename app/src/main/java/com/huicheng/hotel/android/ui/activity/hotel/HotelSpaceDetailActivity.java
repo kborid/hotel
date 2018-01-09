@@ -586,7 +586,8 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         replyListView.stopRefresh();
     }
 

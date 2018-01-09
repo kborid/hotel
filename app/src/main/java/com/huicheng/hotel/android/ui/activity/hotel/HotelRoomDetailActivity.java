@@ -45,6 +45,7 @@ import com.huicheng.hotel.android.ui.custom.CustomNoAutoScrollBannerLayout;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.app.AppConst;
 import com.prj.sdk.app.NetURL;
@@ -810,9 +811,10 @@ public class HotelRoomDetailActivity extends BaseActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         if (request.flag == AppConst.ROOM_DETAIL) {
+            CustomToast.show(response.data.toString(), CustomToast.LENGTH_SHORT);
             this.finish();
         }
     }
