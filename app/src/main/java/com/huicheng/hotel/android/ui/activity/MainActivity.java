@@ -667,6 +667,11 @@ public class MainActivity extends BaseActivity implements LeftDrawerLayout.OnLef
                 drawer_layout.openDrawer(left_layout);
                 break;
             case R.id.tv_city: {
+                if (!isSelectedDate) {
+                    initCurrentTodayTime();
+                }
+                HotelOrderManager.getInstance().setBeginTime(beginTime);
+                HotelOrderManager.getInstance().setEndTime(endTime);
                 Intent resIntent = new Intent(this, LocationChooseActivity.class);
                 startActivityForResult(resIntent, REQUEST_CODE_CITY);
                 break;
