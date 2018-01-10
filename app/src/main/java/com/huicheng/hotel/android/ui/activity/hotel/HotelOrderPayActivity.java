@@ -134,7 +134,8 @@ public class HotelOrderPayActivity extends BaseActivity {
         b.addBody("payChannel", payChannelLay.getPayChannel());
 
         ResponseData d = b.syncRequest(b);
-        d.path = NetURL.PAY;
+//        d.path = NetURL.PAY;
+        d.path = "http://192.168.0.208:83/pay/toPayment.json";
         d.flag = AppConst.PAY;
 
         if (!isProgressShowing()) {
@@ -332,13 +333,9 @@ public class HotelOrderPayActivity extends BaseActivity {
     }
 
     private void startPay(JSONObject mJson) {
-//        String data;
         if (mJson.containsKey(HotelCommDef.ALIPAY)) {
             //支付宝第三方支付
             alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
-            //全民付
-//            data = mJson.getString(HotelCommDef.ALIPAY);
-//            qmfPayHelper.setPayStragety(new QmfAliPay());
         } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
             //微信第三方支付
             JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
@@ -350,22 +347,19 @@ public class HotelOrderPayActivity extends BaseActivity {
                     mmJson.getString("prepayid"),
                     mmJson.getString("noncestr"),
                     mmJson.getString("timestamp"));
-            //全民付
-//            data = mJson.getString(HotelCommDef.WXPAY);
-//            qmfPayHelper.setPayStragety(new QmfWxPay());
         } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
             //银联第三方支付
             JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
             unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
             unionpay.unionStartPay(mmJson.getString("tn"));
-            //全民付
-//            data = mJson.getString(HotelCommDef.UNIONPAY);
-//            qmfPayHelper.setPayStragety(new QmfPosterPay(this));
         } else {
             CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
-//            return;
         }
-//        qmfPayHelper.startPay(data);
+    }
+
+    private void startPayQmf(String ret) {
+        qmfPayHelper.setPayStrategy(payChannelLay.getPayIndex());
+        qmfPayHelper.startPay(ret);
     }
 
     @Override
@@ -392,6 +386,7 @@ public class HotelOrderPayActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
         if (data == null) {
             return;
         }
@@ -416,7 +411,7 @@ public class HotelOrderPayActivity extends BaseActivity {
             } else if (request.flag == AppConst.PAY) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 removeProgressDialog();
-                if (StringUtil.notEmpty(response.body.toString())) {
+                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     JSONObject json = JSONObject.parseObject(response.body.toString());
                     if (json.containsKey("status") && json.getString("status").equals("noneedpay")) {
                         Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
@@ -424,8 +419,11 @@ public class HotelOrderPayActivity extends BaseActivity {
                         intent.putExtra("type", "noneedpay");
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
                     } else {
-                        startPay(json);
+//                        startPay(json);
+                        startPayQmf(json.toString());
                     }
+                } else {
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent());
                 }
             }
         }

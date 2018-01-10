@@ -9,7 +9,7 @@ import com.huicheng.hotel.android.PRJApplication;
  * @date 2017/11/2 0002.
  */
 
-public class QmfAliPay implements IQmfPayStragety {
+public class QmfAliPay implements IQmfPayStrategy {
     private UnifyPayPlugin payPlugin = null;
 
     public QmfAliPay() {

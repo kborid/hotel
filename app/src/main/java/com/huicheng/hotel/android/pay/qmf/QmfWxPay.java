@@ -10,7 +10,7 @@ import com.huicheng.hotel.android.pay.wxpay.Constants;
  * @date 2017/11/2 0002.
  */
 
-public class QmfWxPay implements IQmfPayStragety {
+public class QmfWxPay implements IQmfPayStrategy {
     private UnifyPayPlugin payPlugin = null;
 
     public QmfWxPay() {

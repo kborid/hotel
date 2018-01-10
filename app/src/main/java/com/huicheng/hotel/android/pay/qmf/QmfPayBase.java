@@ -6,7 +6,7 @@ package com.huicheng.hotel.android.pay.qmf;
  */
 
 public abstract class QmfPayBase {
-    protected IQmfPayStragety payStragety;
+    protected IQmfPayStrategy payStrategy;
 
     public abstract void startPay(String str);
 }
