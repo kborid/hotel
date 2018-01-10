@@ -1,8 +1,6 @@
 package com.huicheng.hotel.android.ui.custom.plane;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -29,24 +27,16 @@ public class ConsiderAirOffTimeLayout extends BaseConsiderAirLayout {
 
     public ConsiderAirOffTimeLayout(Context context) {
         super(context);
-    }
-
-    public ConsiderAirOffTimeLayout(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public ConsiderAirOffTimeLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    @Override
-    protected void initParams() {
         mSelectedIndex = -1;
         mStartHour = 0f;
         mEndHour = 24f;
         mOriginalIndex = -1;
         mOriginalStartHour = 0f;
         mOriginalEndHour = 24f;
+    }
+
+    @Override
+    protected void initParams() {
         LayoutInflater.from(context).inflate(R.layout.layout_plane_consider_airofftime, this);
         check_lay = (LinearLayout) findViewById(R.id.check_lay);
         seekBar = (CustomDoubleSeekBar) findViewById(R.id.seekBar);
@@ -90,7 +80,6 @@ public class ConsiderAirOffTimeLayout extends BaseConsiderAirLayout {
 
     @Override
     protected void updateDataInfo(List<PlaneFlightInfoBean> list) {
-
     }
 
     private void setSelectedIndex(int index) {
@@ -118,6 +107,16 @@ public class ConsiderAirOffTimeLayout extends BaseConsiderAirLayout {
                     break;
             }
         }
+    }
+
+    @Override
+    public int[] getFlightConditionValue() {
+        return new int[]{(int) mStartHour, (int) mEndHour};
+    }
+
+    @Override
+    public List<String> getDataList(int index) {
+        return null;
     }
 
     @Override
@@ -154,12 +153,5 @@ public class ConsiderAirOffTimeLayout extends BaseConsiderAirLayout {
         mEndHour = mOriginalEndHour;
         seekBar.setProgressLeft(mStartHour);
         seekBar.setProgressRight(mEndHour);
-    }
-
-    public float[] getOffTimeLayoutValue() {
-        float[] offTime = new float[2];
-        offTime[0] = mStartHour;
-        offTime[1] = mEndHour;
-        return offTime;
     }
 }

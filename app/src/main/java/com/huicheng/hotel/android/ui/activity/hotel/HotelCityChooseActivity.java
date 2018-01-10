@@ -173,7 +173,6 @@ public class HotelCityChooseActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCity = cityList.get(position).shortName;
-                System.out.println("List click!!! city = " + mCity);
                 CityAreaInfoBean item = findCityBeanByCityString(mCity);
                 //增加历史记录
                 addHistory(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));

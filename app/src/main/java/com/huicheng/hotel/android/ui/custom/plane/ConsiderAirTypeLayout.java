@@ -1,8 +1,6 @@
 package com.huicheng.hotel.android.ui.custom.plane;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -12,6 +10,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.prj.sdk.util.Utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,16 +21,10 @@ import java.util.List;
 
 public class ConsiderAirTypeLayout extends BaseConsiderAirLayout {
 
+    private List<String> mList = new ArrayList<>();
+
     public ConsiderAirTypeLayout(Context context) {
         super(context);
-    }
-
-    public ConsiderAirTypeLayout(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public ConsiderAirTypeLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
     }
 
     @Override
@@ -45,17 +38,17 @@ public class ConsiderAirTypeLayout extends BaseConsiderAirLayout {
 
         //初始化数据
         removeAllViews();
-        List<String> tmp = Arrays.asList(context.getResources().getStringArray(R.array.flightType));
-        for (int i = 0; i < tmp.size(); i++) {
+        mList = Arrays.asList(context.getResources().getStringArray(R.array.flightType));
+        for (int i = 0; i < mList.size(); i++) {
             if (i == 0) {
-                addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_all_item, null));
+                addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_common_all_item, null));
             } else {
-                addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null));
+                addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_common_other_item, null));
             }
 
             View item = getChildAt(i);
             item.findViewById(R.id.iv_air_logo).setVisibility(GONE);
-            ((TextView) item.findViewById(R.id.tv_title)).setText(tmp.get(i));
+            ((TextView) item.findViewById(R.id.tv_title)).setText(mList.get(i));
             refreshViewSelectedStatus(mSelectedIndex);
         }
     }
@@ -83,6 +76,11 @@ public class ConsiderAirTypeLayout extends BaseConsiderAirLayout {
     @Override
     public int[] getFlightConditionValue() {
         return convertArrays(mSelectedIndex);
+    }
+
+    @Override
+    public List<String> getDataList(int index) {
+        return mList;
     }
 
     @Override

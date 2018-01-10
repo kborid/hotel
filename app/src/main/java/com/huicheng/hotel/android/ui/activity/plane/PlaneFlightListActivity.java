@@ -390,6 +390,24 @@ public class PlaneFlightListActivity extends BaseActivity {
     }
 
     @Override
+    public void onNotifyOverrideMessage(ResponseData request, ResponseData response) {
+        super.onNotifyOverrideMessage(request, response);
+        //刷新数据
+        mFlightList.clear();
+        planeFlightItemAdapter.notifyDataSetChanged();
+        planeFlightCalendarPriceAdapter.setMinPrice(0, mOffTime);
+        planeFlightCalendarPriceAdapter.notifyDataSetChanged();
+        //刷新筛选框选项
+        mPlaneConsiderLayout.updateChildConsiderInfo(mFlightList);
+        swipeRefreshLayout.setRefreshing(false);
+        if (mFlightList.size() <= 0) {
+            tv_empty.setVisibility(View.VISIBLE);
+        } else {
+            tv_empty.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void onNotifyError(ResponseData request, ResponseData response) {
         super.onNotifyError(request, response);
         swipeRefreshLayout.setRefreshing(false);
@@ -447,6 +465,7 @@ public class PlaneFlightListActivity extends BaseActivity {
             }
             planeFlightCalendarPriceAdapter.setMinPrice(minPrice, mOffTime);
             planeFlightCalendarPriceAdapter.notifyDataSetChanged();
+
             //刷新筛选框选项
             mPlaneConsiderLayout.updateChildConsiderInfo(allList);
         }
@@ -531,11 +550,11 @@ public class PlaneFlightListActivity extends BaseActivity {
 
                 //起飞时段
                 {
-                    float[] hours = mPlaneConsiderLayout.getConsiderAirLayout(considerName[0]).getOffTimeLayoutValue();
-                    String startHour = String.format("%1$02d:00", (int) hours[0]);
-                    String endHour = String.format("%1$02d:00", (int) hours[1]);
+                    int[] times = mPlaneConsiderLayout.getConsiderAirLayout(considerName[0]).getFlightConditionValue();
+                    String start = String.format("%1$02d" + String.valueOf(":00"), times[0]);
+                    String enddd = String.format("%1$02d" + String.valueOf(":00"), times[1]);
                     //航班起飞时间小于开始时间或大于结束时间，则跳过
-                    if (startHour.compareTo(bean.dptTime) > 0 || endHour.compareTo(bean.dptTime) < 0) {
+                    if (start.compareTo(bean.dptTime) > 0 || enddd.compareTo(bean.dptTime) < 0) {
                         continue;
                     }
                 }
@@ -550,7 +569,7 @@ public class PlaneFlightListActivity extends BaseActivity {
                         } else {
                             boolean isEqual = false;
                             for (int airCompany : airCompanies) {
-                                if (bean.carrier.equals(mPlaneConsiderLayout.getConsiderAirLayout(considerName[1]).getListData().get(airCompany))) {
+                                if (bean.carrier.equals(mPlaneConsiderLayout.getConsiderAirLayout(considerName[1]).getDataList(0).get(airCompany))) {
                                     isEqual = true;
                                     break;
                                 }
@@ -561,9 +580,21 @@ public class PlaneFlightListActivity extends BaseActivity {
                         }
                     }
                 }
-                //TODO 机场信息
+                //机场信息
                 {
                     int[] airports = mPlaneConsiderLayout.getConsiderAirLayout(considerName[2]).getFlightConditionValue();
+                    int offIndex = airports[0];
+                    int onIndex = airports[1];
+                    String offAirport = mPlaneConsiderLayout.getConsiderAirLayout(considerName[2]).getDataList(0).get(offIndex);
+                    String onAirport = mPlaneConsiderLayout.getConsiderAirLayout(considerName[2]).getDataList(1).get(onIndex);
+                    //起飞机场不等于不限，且不等于选择的机场，则跳过，无需判断降落机场
+                    if (!"不限".equals(offAirport) && !bean.dptAirport.equals(offAirport)) {
+                        continue;
+                    }
+                    //起飞机场满足条件，则判断降落机场，降落机场不等于不限，且不等于选择的机场，则跳过
+                    if (!"不限".equals(onAirport) && !bean.arrAirport.equals(onAirport)) {
+                        continue;
+                    }
                 }
 
                 //机型信息

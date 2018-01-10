@@ -41,6 +41,10 @@ public abstract class BaseConsiderAirLayout extends LinearLayout implements IPla
 
     protected abstract void updateDataInfo(List<PlaneFlightInfoBean> list);
 
+    public abstract int[] getFlightConditionValue();
+
+    public abstract List<String> getDataList(int index);
+
     protected void refreshViewSelectedStatus(ArrayList<Integer> list) {
         for (int i = 0; i < getChildCount(); i++) {
             getChildAt(i).setSelected(list.contains(i));
@@ -58,17 +62,5 @@ public abstract class BaseConsiderAirLayout extends LinearLayout implements IPla
             }
         }
         return tmp;
-    }
-
-    public float[] getOffTimeLayoutValue() {
-        throw new UnsupportedOperationException();
-    }
-
-    public int[] getFlightConditionValue() {
-        throw new UnsupportedOperationException();
-    }
-
-    public List<String> getListData() {
-        throw new UnsupportedOperationException();
     }
 }

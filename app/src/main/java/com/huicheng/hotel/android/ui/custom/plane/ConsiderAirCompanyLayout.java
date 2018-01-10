@@ -1,8 +1,6 @@
 package com.huicheng.hotel.android.ui.custom.plane;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,14 +31,6 @@ public class ConsiderAirCompanyLayout extends BaseConsiderAirLayout {
 
     public ConsiderAirCompanyLayout(Context context) {
         super(context);
-    }
-
-    public ConsiderAirCompanyLayout(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public ConsiderAirCompanyLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
     }
 
     @Override
@@ -85,9 +75,9 @@ public class ConsiderAirCompanyLayout extends BaseConsiderAirLayout {
             removeAllViews();
             for (int i = 0; i < mList.size(); i++) {
                 if (i == 0) {
-                    addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_all_item, null));
+                    addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_common_all_item, null));
                 } else {
-                    addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_aircompany_item, null));
+                    addView(LayoutInflater.from(context).inflate(R.layout.lv_plane_consider_common_other_item, null));
                 }
 
                 View item = getChildAt(i);
@@ -113,7 +103,11 @@ public class ConsiderAirCompanyLayout extends BaseConsiderAirLayout {
                             iv_air_logo.setVisibility(View.VISIBLE);
                             iv_air_logo.setImageResource(PlaneCommDef.AIR_ICON_CODE.get(name));
                         } else {
-                            iv_air_logo.setVisibility(View.INVISIBLE);
+                            if (i == 0) {
+                                iv_air_logo.setVisibility(GONE);
+                            } else {
+                                iv_air_logo.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
                 } else {
@@ -126,7 +120,7 @@ public class ConsiderAirCompanyLayout extends BaseConsiderAirLayout {
     }
 
     @Override
-    public List<String> getListData() {
+    public List<String> getDataList(int index) {
         return mList;
     }
 

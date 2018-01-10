@@ -27,6 +27,7 @@ import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
+import com.huicheng.hotel.android.common.PlaneErrorDef;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
@@ -515,7 +516,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
         String msg, code;
-        if (response != null && response.data != null) {
+        if (null != response && null != response.data) {
             msg = response.data.toString();
             code = response.code;
 //            onNotifyError(request, response);
@@ -529,8 +530,14 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             }
             CustomToast.show(msg, CustomToast.LENGTH_LONG);
         }
-        onNotifyError(request, response);
+        if (!isCheckException(request, response)) {
+            onNotifyError(request, response);
+        }
         LogUtil.e(TAG, "ErrorCode:" + code + ",ErrorMsg:" + msg);
+    }
+
+    public void onNotifyOverrideMessage(ResponseData request, ResponseData response) {
+        LogUtil.d(TAG, "onNotifyOverrideMessage()");
     }
 
     public void onNotifyMessage(ResponseData request, ResponseData response) {
@@ -539,5 +546,16 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
 
     public void onNotifyError(ResponseData request, ResponseData response) {
         LogUtil.d(TAG, "onNotifyError()");
+    }
+
+    private boolean isCheckException(ResponseData request, ResponseData response) {
+        boolean isFlag = false;
+        if (null != response && null != response.data) {
+            if (PlaneErrorDef.FLIGHT_REQUEST_IS_INVALID.equals(response.code)) {
+                isFlag = true;
+                onNotifyOverrideMessage(request, response);
+            }
+        }
+        return isFlag;
     }
 }
