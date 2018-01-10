@@ -13,7 +13,7 @@ import com.chinaums.pppay.WelcomeActivity;
  * @date 2017/11/2 0002.
  */
 
-public class QmfPosterPay implements IQmfPayStragety {
+public class QmfPosterPay implements IQmfPayStrategy {
     private Context context;
 
     public QmfPosterPay(Context context) {
