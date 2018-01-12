@@ -21,11 +21,12 @@ public enum PlaneOrderManager {
     private CityAirportInfoBean onAirportInfo;
 
     private long goOffDate = 0;
+    private long backOffDate = 0;
+
     private PlaneFlightInfoBean goFlightInfo;
     private PlaneTicketInfoBean goTicketInfo;
     private PlaneTicketInfoBean.VendorInfo goVendorInfo;
 
-    private long backOffDate = 0;
     private PlaneFlightInfoBean backFlightInfo;
     private PlaneTicketInfoBean backTicketInfo;
     private PlaneTicketInfoBean.VendorInfo backVendorInfo;
@@ -181,12 +182,5 @@ public enum PlaneOrderManager {
         backTicketInfo = null;
         goVendorInfo = null;
         backVendorInfo = null;
-    }
-
-    public static class AirportInfo {
-        public String name;
-        public String _3Code;
-        public String _4Code;
-        public String cityName;
     }
 }

@@ -159,8 +159,8 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
         LogUtil.i(TAG, "requestAirCompaniesInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         ResponseData d = b.syncRequest(b);
-        d.path = NetURL.AIR_COMPANY_LIST;
-        d.flag = AppConst.AIR_COMPANY_LIST;
+        d.path = NetURL.PLANE_COMPANY_LIST;
+        d.flag = AppConst.PLANE_COMPANY_LIST;
         requestID = DataLoader.getInstance().loadData(this, d);
         mTagCount++;
     }
@@ -310,8 +310,8 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
                 List<CityAirportInfoBean> tmp = JSON.parseArray(response.body.toString(), CityAirportInfoBean.class);
                 Collections.sort(tmp);
                 SessionContext.setAirportList(tmp);
-            } else if (request.flag == AppConst.AIR_COMPANY_LIST) {
-                mTag.put(AppConst.AIR_COMPANY_LIST, AppConst.AIR_COMPANY_LIST);
+            } else if (request.flag == AppConst.PLANE_COMPANY_LIST) {
+                mTag.put(AppConst.PLANE_COMPANY_LIST, AppConst.PLANE_COMPANY_LIST);
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 SharedPreferenceUtil.getInstance().setString(AppConst.AIR_COMPANY_JSON, response.body.toString(), false);
                 List<AirCompanyInfoBean> tmp = JSON.parseArray(response.body.toString(), AirCompanyInfoBean.class);

@@ -96,7 +96,7 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
             viewHolder.iv_flight_icon.setVisibility(View.GONE);
         }
 
-        String correct = "99.99%";
+        String correct = "";
         if (StringUtil.notEmpty(correct)) {
             viewHolder.tv_flight_percentInTime.setText(correct);
             viewHolder.zdl_lay.setVisibility(View.VISIBLE);

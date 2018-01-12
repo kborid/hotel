@@ -92,9 +92,7 @@ public class PlaneFlightListActivity extends BaseActivity {
         initListeners();
         if (null == savedInstanceState) {
             requestPlaneFlightInfo(true);
-            String tmp = SharedPreferenceUtil.getInstance().getString(AppConst.AIR_COMPANY_JSON, "", false);
-            LoggerUtil.i(tmp);
-            if (StringUtil.isEmpty(tmp)) {
+            if (StringUtil.isEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.AIR_COMPANY_JSON, "", false))) {
                 requestAirCompaniesInfo();
             }
         }
@@ -342,8 +340,8 @@ public class PlaneFlightListActivity extends BaseActivity {
         LogUtil.i(TAG, "requestAirCompaniesInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         ResponseData d = b.syncRequest(b);
-        d.path = NetURL.AIR_COMPANY_LIST;
-        d.flag = AppConst.AIR_COMPANY_LIST;
+        d.path = NetURL.PLANE_COMPANY_LIST;
+        d.flag = AppConst.PLANE_COMPANY_LIST;
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -379,7 +377,7 @@ public class PlaneFlightListActivity extends BaseActivity {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.PLANE_FLIGHT_LIST) {
                 new DealResponseAsyncTask().execute(response.body.toString());
-            } else if (request.flag == AppConst.AIR_COMPANY_LIST) {
+            } else if (request.flag == AppConst.PLANE_COMPANY_LIST) {
                 if (StringUtil.notEmpty(response.body.toString())) {
                     SharedPreferenceUtil.getInstance().setString(AppConst.AIR_COMPANY_JSON, response.body.toString(), false);
                     List<AirCompanyInfoBean> tmp = JSON.parseArray(response.body.toString(), AirCompanyInfoBean.class);

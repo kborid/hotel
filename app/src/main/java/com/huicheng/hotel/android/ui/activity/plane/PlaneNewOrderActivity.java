@@ -14,12 +14,18 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane;
+import com.prj.sdk.app.AppConst;
+import com.prj.sdk.app.NetURL;
+import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.LogUtil;
 
 import java.util.Date;
 
@@ -30,6 +36,8 @@ import java.util.Date;
 
 public class PlaneNewOrderActivity extends BaseActivity {
 
+    private static final int TYPE_GO = 1;
+    private static final int TYPE_BACK = 2;
     //预订航班信息
     private LinearLayout flight_layout;
     private LinearLayout flight_flag_layout;
@@ -45,6 +53,10 @@ public class PlaneNewOrderActivity extends BaseActivity {
     private TextView tv_chooser;
     private TextView tv_submit;
 
+    private int flightType = PlaneCommDef.FLIGHT_SINGLE;
+    private FlightDetailInfo goFlightDetailInfo = null;
+    private FlightDetailInfo backFlightDetailInfo = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +64,18 @@ public class PlaneNewOrderActivity extends BaseActivity {
         initViews();
         initParams();
         initListeners();
+        if (null == savedInstanceState) {
+            requestTicketBookingInfo(TYPE_GO, goFlightDetailInfo);
+            if (flightType == PlaneCommDef.FLIGHT_GOBACK) {
+                requestTicketBookingInfo(TYPE_BACK, backFlightDetailInfo);
+            }
+        }
     }
 
     @Override
     public void initViews() {
         super.initViews();
+        flightType = PlaneOrderManager.instance.getFlightType();
         flight_layout = (LinearLayout) findViewById(R.id.flight_layout);
         flight_flag_layout = (LinearLayout) findViewById(R.id.flight_flag_layout);
 
@@ -71,6 +90,21 @@ public class PlaneNewOrderActivity extends BaseActivity {
 
         tv_chooser = (TextView) findViewById(R.id.tv_chooser);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
+
+        goFlightDetailInfo = new FlightDetailInfo(
+                "GO",
+                PlaneOrderManager.instance.getGoFlightInfo(),
+                PlaneOrderManager.instance.getGoTicketInfo(),
+                PlaneOrderManager.instance.getGoVendorInfo()
+        );
+        if (flightType == PlaneCommDef.FLIGHT_GOBACK) {
+            backFlightDetailInfo = new FlightDetailInfo(
+                    "BACK",
+                    PlaneOrderManager.instance.getBackFlightInfo(),
+                    PlaneOrderManager.instance.getBackTicketInfo(),
+                    PlaneOrderManager.instance.getBackVendorInfo()
+            );
+        }
     }
 
     @Override
@@ -198,6 +232,42 @@ public class PlaneNewOrderActivity extends BaseActivity {
         super.onResume();
     }
 
+    private void requestTicketBookingInfo(int type, FlightDetailInfo info) {
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        b.addBody("barePrice", info.vendorInfo.barePrice);
+        b.addBody("basePrice", info.vendorInfo.basePrice);
+        b.addBody("businessExt", info.vendorInfo.businessExt);
+        b.addBody("cabin", info.vendorInfo.cabin);
+        b.addBody("client", info.vendorInfo.domain);
+        b.addBody("policyId", info.vendorInfo.policyId);
+        b.addBody("policyType", info.vendorInfo.policyType);
+        b.addBody("price", info.vendorInfo.price);
+        b.addBody("tag", info.vendorInfo.bprtag);
+        b.addBody("ticketPrice", info.vendorInfo.vppr);
+        b.addBody("userName", "wneydek9283");
+        b.addBody("wrapperId", info.vendorInfo.wrapperId);
+        b.addBody("carrier", info.flightInfo.carrier);
+        b.addBody("flightNum", info.flightInfo.flightNum);
+        String startTime = info.flightInfo.dptTime;
+        b.addBody("dptTime", startTime.replace(":", ""));
+        b.addBody("from", info.flightInfo.dpt);
+        b.addBody("to", info.flightInfo.arr);
+        String startDate = info.ticketInfo.date;
+        b.addBody("startTime", startDate.replace("-", ""));
+        b.addBody("flightType", "1"); //固定值，1表示单程
+
+        ResponseData d = b.syncRequest(b);
+        d.flag = AppConst.PLANE_BOOKING_INFO << type;
+        d.path = NetURL.PLANE_BOOKING_INFO;
+        d.key = info.tag;
+
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -206,5 +276,44 @@ public class PlaneNewOrderActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
+        if (response != null && response.body != null) {
+            LogUtil.i(TAG, "flag = " + request.flag);
+            if (request.flag == (AppConst.PLANE_BOOKING_INFO << TYPE_GO)) {
+                removeProgressDialog();
+                LogUtil.i(TAG, "go booking info json = " + response.body.toString());
+            } else if (request.flag == (AppConst.PLANE_BOOKING_INFO << TYPE_BACK)) {
+                removeProgressDialog();
+                LogUtil.i(TAG, "back booking info json = " + response.body.toString());
+            }
+        }
+    }
+
+    @Override
+    public void onNotifyOverrideMessage(ResponseData request, ResponseData response) {
+        super.onNotifyOverrideMessage(request, response);
+    }
+
+    @Override
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
+    }
+
+    private class FlightDetailInfo {
+        String tag;
+        PlaneFlightInfoBean flightInfo;
+        PlaneTicketInfoBean ticketInfo;
+        PlaneTicketInfoBean.VendorInfo vendorInfo;
+
+        FlightDetailInfo(String tag, PlaneFlightInfoBean flightInfo, PlaneTicketInfoBean ticketInfo, PlaneTicketInfoBean.VendorInfo vendorInfo) {
+            this.tag = tag;
+            this.flightInfo = flightInfo;
+            this.ticketInfo = ticketInfo;
+            this.vendorInfo = vendorInfo;
+        }
     }
 }

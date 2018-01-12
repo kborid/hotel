@@ -127,7 +127,8 @@ public final class NetURL {
     public static final String PLANE_AIRPORT_LIST = PORTAL + "search/airports.json"; //查询机场列表
     public static final String PLANE_FLIGHT_LIST = PORTAL + "search/flight.json"; //搜索航班列表
     public static final String PLANE_TICKET_LIST = PORTAL + "search/price.json"; //查询机票列表
-    public static final String AIR_COMPANY_LIST = PORTAL + "search/getaircompanys.json"; //查询航司列表
+    public static final String PLANE_COMPANY_LIST = PORTAL + "search/getaircompanys.json"; //查询航司列表
+    public static final String PLANE_BOOKING_INFO = PORTAL + "booking.json"; //机票booking预留信息
 
 
     // --------------------------------------------设置缓存的URL-------------------------------------
