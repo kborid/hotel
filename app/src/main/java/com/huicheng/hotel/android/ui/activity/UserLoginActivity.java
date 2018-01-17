@@ -30,7 +30,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.common.pay.wxpay.MD5;
+import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseActivity;

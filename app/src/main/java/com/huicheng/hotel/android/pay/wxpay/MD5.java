@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.common.pay.wxpay;
+package com.huicheng.hotel.android.pay.wxpay;
 
 import java.security.MessageDigest;
 

@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.common.pay.alipay;
+package com.huicheng.hotel.android.pay.alipay;
 
 import android.app.Activity;
 import android.content.Intent;

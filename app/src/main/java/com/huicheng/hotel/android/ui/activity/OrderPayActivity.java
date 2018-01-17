@@ -22,10 +22,10 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
-import com.huicheng.hotel.android.common.pay.alipay.AlipayUtil;
-import com.huicheng.hotel.android.common.pay.qmf.QmfPayHelper;
-import com.huicheng.hotel.android.common.pay.unionpay.UnionPayUtil;
-import com.huicheng.hotel.android.common.pay.wxpay.WXPayUtils;
+import com.huicheng.hotel.android.pay.alipay.AlipayUtil;
+import com.huicheng.hotel.android.pay.qmf.QmfPayHelper;
+import com.huicheng.hotel.android.pay.unionpay.UnionPayUtil;
+import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -395,7 +395,7 @@ public class OrderPayActivity extends BaseActivity {
     }
 
     private void startPayQmf(String ret) {
-        qmfPayHelper.setPayStrategy(payChannelLay.getPayIndex());
+        qmfPayHelper.setPayStrategy(payIndex);
         qmfPayHelper.startPay(ret);
     }
 

@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.common.pay.unionpay;
+package com.huicheng.hotel.android.pay.unionpay;
 
 import android.content.Context;
 

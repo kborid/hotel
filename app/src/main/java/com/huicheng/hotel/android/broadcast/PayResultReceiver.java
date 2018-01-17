@@ -9,7 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
-import com.huicheng.hotel.android.common.pay.PayCommDef;
+import com.huicheng.hotel.android.pay.PayCommDef;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;

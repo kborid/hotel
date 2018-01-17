@@ -1,9 +1,9 @@
-package com.huicheng.hotel.android.common.pay.qmf;
+package com.huicheng.hotel.android.pay.qmf;
 
 import com.chinaums.pppay.unify.UnifyPayPlugin;
 import com.chinaums.pppay.unify.UnifyPayRequest;
 import com.huicheng.hotel.android.PRJApplication;
-import com.huicheng.hotel.android.common.pay.wxpay.Constants;
+import com.huicheng.hotel.android.pay.wxpay.Constants;
 
 /**
  * @auth kborid

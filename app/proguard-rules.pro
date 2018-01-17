@@ -216,7 +216,7 @@
 -dontwarn com.alipay.apmobilesecuritysdk.face**
 -keep class com.alipay.apmobilesecuritysdk.face.**{*;}
 -dontwarn android.net.SSLCertificateSocketFactory
--keep class com.huicheng.hotel.android.common.pay.alipay.PayResult
+-keep class com.huicheng.hotel.android.pay.alipay.PayResult
 #支付宝end
 
 -keep class com.huicheng.hotel.android.net.bean.** {*;}

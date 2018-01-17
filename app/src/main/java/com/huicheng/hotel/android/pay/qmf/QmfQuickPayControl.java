@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.common.pay.qmf;
+package com.huicheng.hotel.android.pay.qmf;
 
 import android.app.Service;
 import android.content.ComponentName;

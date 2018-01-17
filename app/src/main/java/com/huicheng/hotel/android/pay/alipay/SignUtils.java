@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.common.pay.alipay;
+package com.huicheng.hotel.android.pay.alipay;
 
 import java.security.KeyFactory;
 import java.security.PrivateKey;

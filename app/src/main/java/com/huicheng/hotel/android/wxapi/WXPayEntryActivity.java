@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.huicheng.hotel.android.common.pay.wxpay.Constants;
+import com.huicheng.hotel.android.pay.wxpay.Constants;
 import com.prj.sdk.constants.BroadCastConst;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;

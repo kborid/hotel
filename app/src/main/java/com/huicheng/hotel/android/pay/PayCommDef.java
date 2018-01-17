@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.common.pay;
+package com.huicheng.hotel.android.pay;
 
 /**
  * @auth kborid
