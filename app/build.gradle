@@ -1,11 +1,8 @@
 apply plugin: 'com.android.application'
 
-static def getAppName() {
-    return "abc";
-}
-
-static def getCurrentDate() {
-    return new Date().format('yyyyMMdd');
+ext {
+    appName = 'abc'
+    currentDate = new Date().format('yyyyMMdd')
 }
 
 android {
@@ -14,11 +11,11 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "com.huicheng.hotel.android" //JPush上注册的包名.
+        applicationId 'com.huicheng.hotel.android' //JPush上注册的包名.
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 24
-        versionName "2.3.2"
+        versionCode 25
+        versionName "2.3.3"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库
@@ -67,12 +64,11 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             zipAlignEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.release
-            minifyEnabled false
-            zipAlignEnabled false
         }
     }
 
@@ -103,7 +99,7 @@ android {
                 if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
                     def apkFile = new File(
                             output.outputFile.getParent(),
-                            "${getAppName()}_v${variant.versionName}_${variant.versionCode}_${getCurrentDate()}_${variant.buildType.name}.apk")
+                            "${appName}_v${variant.versionName}_${variant.versionCode}_${currentDate}_${variant.buildType.name}.apk")
                     output.outputFile = apkFile
                 }
             }
