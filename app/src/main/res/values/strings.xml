@@ -253,6 +253,7 @@
     <string-array name="cardType">
         <item>身份证</item>
         <item>护照</item>
+        <item>其他</item>
     </string-array>
 
     <!--debug info-->

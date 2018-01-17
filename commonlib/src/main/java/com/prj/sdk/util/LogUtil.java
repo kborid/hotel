@@ -25,7 +25,7 @@ public class LogUtil {
     // 调试信息输出
     public static void d(String tag, String msg) {
         if (isDebug()) {
-            Log.d(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.v(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 

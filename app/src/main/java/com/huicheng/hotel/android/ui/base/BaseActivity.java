@@ -27,7 +27,6 @@ import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
-import com.huicheng.hotel.android.common.PlaneErrorDef;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
@@ -515,47 +514,36 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
-        String msg, code;
+        String msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", "-1", getString(R.string.dialog_tip_null_error));
         if (null != response && null != response.data) {
-            msg = response.data.toString();
-            code = response.code;
-//            onNotifyError(request, response);
+            msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", response.code, response.data.toString());
         } else {
             if (e != null && e instanceof ConnectException) {
-                msg = getString(R.string.dialog_tip_net_error);
-                code = "-2";
-            } else {
-                msg = getString(R.string.dialog_tip_null_error);
-                code = "-1";
+                msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", "-2", getString(R.string.dialog_tip_net_error));
             }
-            CustomToast.show(msg, CustomToast.LENGTH_LONG);
         }
-        if (!isCheckException(request, response)) {
+        LogUtil.e(TAG, msg);
+        if (isCheckException(request, response)) {
+            onNotifyOverrideMessage(request, response);
+        } else {
+            CustomToast.show(msg, CustomToast.LENGTH_LONG);
             onNotifyError(request, response);
         }
-        LogUtil.e(TAG, "ErrorCode:" + code + ",ErrorMsg:" + msg);
     }
 
-    public void onNotifyOverrideMessage(ResponseData request, ResponseData response) {
-        LogUtil.d(TAG, "onNotifyOverrideMessage()");
+    protected boolean isCheckException(ResponseData request, ResponseData response) {
+        return false;
     }
 
-    public void onNotifyMessage(ResponseData request, ResponseData response) {
-        LogUtil.d(TAG, "onNotifyMessage()");
+    protected void onNotifyMessage(ResponseData request, ResponseData response) {
+        LogUtil.i(TAG, "onNotifyMessage()");
     }
 
-    public void onNotifyError(ResponseData request, ResponseData response) {
-        LogUtil.d(TAG, "onNotifyError()");
+    protected void onNotifyOverrideMessage(ResponseData request, ResponseData response) {
+        LogUtil.w(TAG, "onNotifyOverrideMessage()");
     }
 
-    private boolean isCheckException(ResponseData request, ResponseData response) {
-        boolean isFlag = false;
-        if (null != response && null != response.data) {
-            if (PlaneErrorDef.FLIGHT_REQUEST_IS_INVALID.equals(response.code)) {
-                isFlag = true;
-                onNotifyOverrideMessage(request, response);
-            }
-        }
-        return isFlag;
+    protected void onNotifyError(ResponseData request, ResponseData response) {
+        LogUtil.e(TAG, "onNotifyError()");
     }
 }

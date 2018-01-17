@@ -11,11 +11,15 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
+import com.huicheng.hotel.android.common.PlaneErrorDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlanePassengerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -27,7 +31,10 @@ import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @auth kborid
@@ -56,6 +63,14 @@ public class PlaneNewOrderActivity extends BaseActivity {
     private int flightType = PlaneCommDef.FLIGHT_SINGLE;
     private FlightDetailInfo goFlightDetailInfo = null;
     private FlightDetailInfo backFlightDetailInfo = null;
+    private PlaneBookingInfo goFlightBookingInfo = null;
+    private PlaneBookingInfo backFlightBookingInfo = null;
+
+    private List<PlaneBookingInfo> mBkInfo = new ArrayList<>();
+    private List<PlanePassengerInfoBean> mPassengers = new ArrayList<>();
+
+    private int requestTagCount = 0;
+    private HashMap<Integer, Integer> mTag = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +80,10 @@ public class PlaneNewOrderActivity extends BaseActivity {
         initParams();
         initListeners();
         if (null == savedInstanceState) {
+            mBkInfo.clear();
+            mPassengers.clear();
+            requestTagCount = 0;
+            mTag.clear();
             requestTicketBookingInfo(TYPE_GO, goFlightDetailInfo);
             if (flightType == PlaneCommDef.FLIGHT_GOBACK) {
                 requestTicketBookingInfo(TYPE_BACK, backFlightDetailInfo);
@@ -220,6 +239,7 @@ public class PlaneNewOrderActivity extends BaseActivity {
                 break;
             }
             case R.id.tv_submit: {
+//                requestSubmitOrderInfo();
                 Intent intent = new Intent(this, PlaneOrderPayActivity.class);
                 startActivity(intent);
                 break;
@@ -259,12 +279,27 @@ public class PlaneNewOrderActivity extends BaseActivity {
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_BOOKING_INFO << type;
         d.path = NetURL.PLANE_BOOKING_INFO;
-        d.key = info.tag;
 
         if (!isProgressShowing()) {
             showProgressDialog(this);
         }
 
+        requestID = DataLoader.getInstance().loadData(this, d);
+        requestTagCount++;
+    }
+
+    private void requestSubmitOrderInfo() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        b.addBody("bKInfo", JSON.toJSONString(mBkInfo));
+        b.addBody("invoiceTax", "");
+        b.addBody("passengers", JSON.toJSONString(mPassengers));
+
+        ResponseData d = b.syncRequest(b);
+        d.flag = AppConst.PLANE_NEW_ORDER;
+        d.path = NetURL.PLANE_NEW_ORDER;
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -284,23 +319,49 @@ public class PlaneNewOrderActivity extends BaseActivity {
         if (response != null && response.body != null) {
             LogUtil.i(TAG, "flag = " + request.flag);
             if (request.flag == (AppConst.PLANE_BOOKING_INFO << TYPE_GO)) {
-                removeProgressDialog();
+                mTag.put(request.flag, request.flag);
+                if (mTag.size() == requestTagCount) {
+                    removeProgressDialog();
+                }
                 LogUtil.i(TAG, "go booking info json = " + response.body.toString());
+                goFlightBookingInfo = JSON.parseObject(response.body.toString(), PlaneBookingInfo.class);
+                mBkInfo.add(goFlightBookingInfo);
             } else if (request.flag == (AppConst.PLANE_BOOKING_INFO << TYPE_BACK)) {
-                removeProgressDialog();
+                mTag.put(request.flag, request.flag);
+                if (mTag.size() == requestTagCount) {
+                    removeProgressDialog();
+                }
                 LogUtil.i(TAG, "back booking info json = " + response.body.toString());
+                backFlightBookingInfo = JSON.parseObject(response.body.toString(), PlaneBookingInfo.class);
+                mBkInfo.add(backFlightBookingInfo);
             }
         }
     }
 
     @Override
+    protected boolean isCheckException(ResponseData request, ResponseData response) {
+        if (null != response && null != response.data) {
+            if (PlaneErrorDef.FLIGHT_REQUEST_IS_INVALID.equals(response.code)) {
+                return true;
+            }
+        }
+        return super.isCheckException(request, response);
+    }
+
+    @Override
     public void onNotifyOverrideMessage(ResponseData request, ResponseData response) {
         super.onNotifyOverrideMessage(request, response);
+        if (mTag.size() == requestTagCount) {
+            removeProgressDialog();
+        }
     }
 
     @Override
     public void onNotifyError(ResponseData request, ResponseData response) {
         super.onNotifyError(request, response);
+        if (mTag.size() == requestTagCount) {
+            removeProgressDialog();
+        }
     }
 
     private class FlightDetailInfo {

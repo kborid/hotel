@@ -164,4 +164,5 @@ public final class AppConst {
     public static final int PLANE_TICKET_LIST = PLANE_HANDLE_FLAG + 3;
     public static final int PLANE_COMPANY_LIST = PLANE_HANDLE_FLAG + 4;
     public static final int PLANE_BOOKING_INFO = PLANE_HANDLE_FLAG + 5;
+    public static final int PLANE_NEW_ORDER = PLANE_HANDLE_FLAG + 6;
 }

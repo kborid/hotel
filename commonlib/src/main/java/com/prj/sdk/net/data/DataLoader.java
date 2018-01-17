@@ -277,11 +277,11 @@ public class DataLoader {
                                         response.data = "登录超时,请重新登录";
                                     }
                                     callback.notifyError(request, response, mException);
-                                    LogUtil.i(TAG, "callback.notify error " + response.code);
+                                    LogUtil.e(TAG, "callback.notify error " + response.code);
                                 }
                             } else {
                                 callback.notifyError(request, response, mException);
-                                LogUtil.i(TAG, "callback.notify error else...");
+                                LogUtil.e(TAG, "callback.notify else error");
                             }
                         }
                     } catch (Exception e) {

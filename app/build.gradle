@@ -9,14 +9,15 @@ ext {
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
+    //从API 23开始标准Android SDK就不再包含，需手动添加该library
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId 'com.huicheng.hotel.android' //JPush上注册的包名
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 23
-        versionName "2.3.1"
+        versionCode 25
+        versionName "2.3.3"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库
@@ -65,7 +66,7 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             zipAlignEnabled true
-//            shrinkResources true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {

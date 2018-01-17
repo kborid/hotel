@@ -28,8 +28,6 @@ import java.util.List;
 public class CustomInfoLayoutForHotel extends LinearLayout {
     private Context context;
 
-    private LinearLayout custom_info_layout;
-
     public CustomInfoLayoutForHotel(Context context) {
         this(context, null);
     }
@@ -45,19 +43,13 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
     }
 
     private void init() {
-        LayoutInflater.from(context).inflate(R.layout.layout_hotel_custominfo, this);
-        findViews();
         setClickListeners();
         initializeLayoutItem();
     }
 
-    private void findViews() {
-        custom_info_layout = (LinearLayout) findViewById(R.id.custom_info_layout);
-    }
-
     public int setPersonInfos(String json) {
         List<InPersonalInfoBean> temp = JSON.parseArray(json, InPersonalInfoBean.class);
-        custom_info_layout.removeAllViews();
+        removeAllViews();
         for (int i = 0; i < temp.size(); i++) {
             View customChildView = getNewItemView();
             EditText et_last = (EditText) customChildView.findViewById(R.id.et_last);
@@ -66,10 +58,10 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
             et_last.setText(temp.get(i).lastName);
             et_first.setText(temp.get(i).firstName);
             et_phone.setText(temp.get(i).phone);
-            custom_info_layout.addView(customChildView, i);
-            updateButtonStatus(custom_info_layout.getChildCount());
+            addView(customChildView, i);
+            updateButtonStatus(getChildCount());
         }
-        updateButtonStatus(custom_info_layout.getChildCount());
+        updateButtonStatus(getChildCount());
         return temp.size();
     }
 
@@ -96,15 +88,15 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
         iv_add.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                custom_info_layout.addView(getNewItemView());
-                updateButtonStatus(custom_info_layout.getChildCount());
+                addView(getNewItemView());
+                updateButtonStatus(getChildCount());
             }
         });
         iv_remove.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                custom_info_layout.removeView(view);
-                updateButtonStatus(custom_info_layout.getChildCount());
+                removeView(view);
+                updateButtonStatus(getChildCount());
             }
         });
 
@@ -112,10 +104,10 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
     }
 
     public boolean isEditViewEmpty() {
-        for (int i = 0; i < custom_info_layout.getChildCount(); i++) {
-            EditText et_last = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_last);
-            EditText et_first = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_first);
-            EditText et_phone = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_phone);
+        for (int i = 0; i < getChildCount(); i++) {
+            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
+            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
+            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
             if (StringUtil.isEmpty(et_last.getText().toString()) || StringUtil.isEmpty(et_first.getText().toString()) || StringUtil.isEmpty(et_phone.getText().toString())) {
                 return true;
             }
@@ -124,10 +116,10 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
     }
 
     public boolean isValidPhoneNumber() {
-        for (int i = 0; i < custom_info_layout.getChildCount(); i++) {
-//            EditText et_last = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_last);
-//            EditText et_first = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_first);
-            EditText et_phone = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_phone);
+        for (int i = 0; i < getChildCount(); i++) {
+//            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
+//            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
+            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
             if (!Utils.isMobile(et_phone.getText().toString())) {
                 return true;
             }
@@ -137,10 +129,10 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
 
     public String getCustomInfoJsonString() {
         List<InPersonalInfoBean> temp = new ArrayList<>();
-        for (int i = 0; i < custom_info_layout.getChildCount(); i++) {
-            EditText et_last = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_last);
-            EditText et_first = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_first);
-            EditText et_phone = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_phone);
+        for (int i = 0; i < getChildCount(); i++) {
+            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
+            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
+            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
 
             InPersonalInfoBean bean = new InPersonalInfoBean();
             bean.lastName = et_last.getText().toString();
@@ -153,13 +145,13 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
 
     public String getCustomUserNames() {
         String nameStr = "";
-        for (int i = 0; i < custom_info_layout.getChildCount(); i++) {
-            EditText et_last = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_last);
-            EditText et_first = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_first);
-//            EditText et_phone = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_phone);
+        for (int i = 0; i < getChildCount(); i++) {
+            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
+            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
+//            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
 
             nameStr += (et_last.getText().toString() + et_first.getText().toString());
-            if (i < custom_info_layout.getChildCount() - 1) {
+            if (i < getChildCount() - 1) {
                 nameStr += "|";
             }
         }
@@ -168,13 +160,13 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
 
     public String getCustomUserPhones() {
         String phoneStr = "";
-        for (int i = 0; i < custom_info_layout.getChildCount(); i++) {
-//            EditText et_last = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_last);
-//            EditText et_first = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_first);
-            EditText et_phone = (EditText) custom_info_layout.getChildAt(i).findViewById(R.id.et_phone);
+        for (int i = 0; i < getChildCount(); i++) {
+//            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
+//            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
+            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
 
             phoneStr += et_phone.getText().toString();
-            if (i < custom_info_layout.getChildCount() - 1) {
+            if (i < getChildCount() - 1) {
                 phoneStr += "|";
             }
         }
@@ -182,9 +174,9 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
     }
 
     private void initializeLayoutItem() {
-        custom_info_layout.removeAllViews();
-        custom_info_layout.addView(getNewItemView());
-        updateButtonStatus(custom_info_layout.getChildCount());
+        removeAllViews();
+        addView(getNewItemView());
+        updateButtonStatus(getChildCount());
     }
 
     private void setClickListeners() {
@@ -195,15 +187,15 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
         LogUtil.i("CommonCustomInfoLayout", "updateButtonStatus() count = " + count);
         //刷新状态
         if (count == 1) {
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setEnabled(false);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setAlpha(0.5f);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
+            getChildAt(0).findViewById(R.id.iv_remove).setEnabled(false);
+            getChildAt(0).findViewById(R.id.iv_remove).setAlpha(0.5f);
+            getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
+            getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
         } else if (count > 1) {
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setEnabled(true);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_remove).setAlpha(1.0f);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
-            custom_info_layout.getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
+            getChildAt(0).findViewById(R.id.iv_remove).setEnabled(true);
+            getChildAt(0).findViewById(R.id.iv_remove).setAlpha(1.0f);
+            getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
+            getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
         }
     }
 }
