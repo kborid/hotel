@@ -30,7 +30,7 @@
             android:layout_marginLeft="10dp"
             android:contentDescription="@string/app_name"
             android:scaleType="centerInside"
-            android:src="@drawable/iv_back_forweb" />
+            android:src="@drawable/iv_new_black_back" />
 
         <ImageView
             android:id="@+id/iv_close"

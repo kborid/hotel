@@ -45,6 +45,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent"
         android:layout_below="@id/title_lay">
 

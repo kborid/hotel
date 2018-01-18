@@ -207,9 +207,9 @@ public class UserBindPhoneActivity extends BaseActivity implements DialogInterfa
             @Override
             public void afterTextChanged(Editable s) {
                 checkInputForActionBtnStatus();
-                if (s.length() == 11) {
-                    tv_yzm.performClick();
-                }
+//                if (s.length() == 11) {
+//                    tv_yzm.performClick();
+//                }
             }
         });
 

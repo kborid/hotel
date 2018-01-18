@@ -20,8 +20,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
-import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
@@ -104,9 +104,9 @@ public class UserForgetPwdActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 checkInputForActionBtnStatus();
-                if (s.length() == 11) {
-                    tv_yzm.performClick();
-                }
+//                if (s.length() == 11) {
+//                    tv_yzm.performClick();
+//                }
             }
         });
 

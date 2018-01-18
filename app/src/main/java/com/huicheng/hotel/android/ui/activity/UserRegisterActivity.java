@@ -26,9 +26,9 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
-import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.UserInfo;
+import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
@@ -162,9 +162,10 @@ public class UserRegisterActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 checkInputForActionBtnStatus();
-                if (s.length() == 11) {
-                    tv_yzm.performClick();
-                }
+                //输入11位电话号码之后，自动发送验证码
+//                if (s.length() == 11) {
+//                    tv_yzm.performClick();
+//                }
             }
         });
 

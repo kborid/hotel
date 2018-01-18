@@ -206,7 +206,7 @@ public class RoomDetailActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_back.setImageResource(R.drawable.iv_back_white);
+        btn_back.setImageResource(R.drawable.iv_new_black_back);
 
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {

@@ -101,6 +101,10 @@
                     android:id="@+id/note_lay"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:paddingLeft="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingRight="7dp"
+                    android:paddingTop="7dp"
                     android:layout_weight="1"
                     android:gravity="center">
 
@@ -109,6 +113,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:maxLines="2"
+                        android:ellipsize="end"
                         android:text="高級大床房"
                         android:textColor="@color/lableColor"
                         android:textSize="@dimen/common_10sp" />

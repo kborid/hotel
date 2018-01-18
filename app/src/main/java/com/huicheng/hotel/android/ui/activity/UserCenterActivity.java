@@ -14,8 +14,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -507,24 +505,6 @@ public class UserCenterActivity extends BaseActivity {
                     dialog = new CustomDialog(this);
                     View view = LayoutInflater.from(this).inflate(R.layout.dialog_modify_phone_layout, null);
                     et_phone = (EditText) view.findViewById(R.id.et_phone);
-                    et_phone.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            if (s.length() == 11) {
-                                tv_yzm.performClick();
-                            }
-                        }
-                    });
                     et_yzm = (EditText) view.findViewById(R.id.et_yzm);
                     tv_yzm = (TextView) view.findViewById(R.id.tv_yzm);
                     tv_yzm.setOnClickListener(new View.OnClickListener() {

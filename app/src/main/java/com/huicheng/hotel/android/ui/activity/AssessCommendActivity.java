@@ -199,7 +199,9 @@ public class AssessCommendActivity extends BaseActivity {
                     adapter.notifyDataSetChanged();
                 } else {
                     pageIndex--;
-                    CustomToast.show("没有更多数据", CustomToast.LENGTH_SHORT);
+                    if (list.size() > 0) {
+                        CustomToast.show("没有更多数据", CustomToast.LENGTH_SHORT);
+                    }
                 }
                 listview.stopLoadMore();
                 listview.stopRefresh();
