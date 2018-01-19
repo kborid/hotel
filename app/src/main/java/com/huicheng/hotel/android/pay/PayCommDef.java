@@ -11,6 +11,7 @@ public class PayCommDef {
     public static final String WXPAY = "wechat";
     public static final String UNIONPAY = "unionPay";
     public static final String NOTPAY = "noneedpay";
+    public static final String CUSTOMPAY = "custompay";
 
     //支付结果
     public static final String P_SUCCESS = "pay_success";

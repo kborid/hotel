@@ -1,9 +1,8 @@
 package com.huicheng.hotel.android.pay.wxpay;
 
 import android.app.Activity;
-import android.view.Gravity;
-import android.widget.Toast;
 
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.tencent.mm.opensdk.constants.Build;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -314,15 +313,17 @@ public class WXPayUtils {
      */
     public boolean isSupport() {
         if (!msgApi.isWXAppInstalled()) {
-            Toast toast = Toast.makeText(mActivity, "没有安装微信", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CustomToast.show("没有安装微信", CustomToast.LENGTH_LONG);
+//            Toast toast = Toast.makeText(mActivity, "没有安装微信", Toast.LENGTH_SHORT);
+//            toast.setGravity(Gravity.CENTER, 0, 0);
+//            toast.show();
             return false;
         }
         if (msgApi.getWXAppSupportAPI() < Build.PAY_SUPPORTED_SDK_INT) {
-            Toast toast = Toast.makeText(mActivity, "当前版本不支持支付功能", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            CustomToast.show("当前版本不支持支付功能", CustomToast.LENGTH_LONG);
+//            Toast toast = Toast.makeText(mActivity, "当前版本不支持支付功能", Toast.LENGTH_SHORT);
+//            toast.setGravity(Gravity.CENTER, 0, 0);
+//            toast.show();
             return false;
         }
         return true;

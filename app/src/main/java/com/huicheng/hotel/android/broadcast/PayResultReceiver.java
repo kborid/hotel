@@ -9,8 +9,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
-import com.huicheng.hotel.android.pay.PayCommDef;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
+import com.huicheng.hotel.android.pay.PayCommDef;
 import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
@@ -40,8 +40,8 @@ public class PayResultReceiver extends BroadcastReceiver {
     private void dealPayResult(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (null != bundle) {
-            String info = intent.getExtras().getString("info");
-            String type = intent.getExtras().getString("type");
+            String type = (null != bundle.getString("type")) ? bundle.getString("type") : "";
+            String info = (null != bundle.getString("info")) ? bundle.getString("info") : "";
             LogUtil.i(TAG, info);
             LogUtil.i(TAG, type);
 
@@ -51,6 +51,19 @@ public class PayResultReceiver extends BroadcastReceiver {
             switch (type) {
                 case PayCommDef.NOTPAY:
                     ret = PayCommDef.err_success;
+                    break;
+                case PayCommDef.CUSTOMPAY:
+                    switch (info) {
+                        case "SUCCESS":
+                            ret = PayCommDef.err_success;
+                            break;
+                        case "ERROR":
+                            ret = PayCommDef.err_fail;
+                            break;
+                        default:
+                            ret = PayCommDef.err_unknown;
+                            break;
+                    }
                     break;
                 case PayCommDef.ALIPAY:
                     JSONObject aliPayJson = JSON.parseObject(info);
