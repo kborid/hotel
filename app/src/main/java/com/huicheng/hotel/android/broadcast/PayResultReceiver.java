@@ -11,7 +11,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.pay.PayCommDef;
-import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.LogUtil;
@@ -148,7 +148,7 @@ public class PayResultReceiver extends BroadcastReceiver {
                 OrderPayDetailInfoBean orderPayDetailInfoBean = HotelOrderManager.getInstance().getOrderPayDetailInfoBean();
                 LogUtil.i(TAG, "orderPayDetailInfoBean = " + orderPayDetailInfoBean);
                 if (null != orderPayDetailInfoBean) {
-                    Intent intent1 = new Intent(context, OrderPaySuccessActivity.class);
+                    Intent intent1 = new Intent(context, HotelOrderPaySuccessActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent1.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
                     intent1.putExtra("roomName", orderPayDetailInfoBean.roomName);

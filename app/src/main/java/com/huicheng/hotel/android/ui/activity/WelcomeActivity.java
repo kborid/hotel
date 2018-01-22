@@ -31,6 +31,7 @@ import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -158,7 +159,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
         }
-        intent = new Intent(this, MainActivity.class);
+        intent = new Intent(this, HotelMainActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.launch_in, R.anim.launch_out);

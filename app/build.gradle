@@ -8,7 +8,6 @@ ext {
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
-    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId 'com.huicheng.hotel.android' //JPush上注册的包名.

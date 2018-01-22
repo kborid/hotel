@@ -33,11 +33,11 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.tools.FixIMMLeaksTools;
-import com.huicheng.hotel.android.ui.activity.InvoiceDetailActivity;
-import com.huicheng.hotel.android.ui.activity.OrderPayActivity;
-import com.huicheng.hotel.android.ui.activity.OrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
 import com.huicheng.hotel.android.ui.activity.WelcomeActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelInvoiceActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPayActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
@@ -195,9 +195,9 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         switch (v.getId()) {
             case R.id.iv_back:
             case R.id.btn_back:
-                if (getClass().equals(InvoiceDetailActivity.class)
-                        || getClass().equals(OrderPayActivity.class)
-                        || getClass().equals(OrderPaySuccessActivity.class)
+                if (getClass().equals(HotelInvoiceActivity.class)
+                        || getClass().equals(HotelOrderPayActivity.class)
+                        || getClass().equals(HotelOrderPaySuccessActivity.class)
                         || getClass().equals(UserCenterActivity.class)) {
                     //do nothing
                     LogUtil.i(TAG, "do nothing~~~");

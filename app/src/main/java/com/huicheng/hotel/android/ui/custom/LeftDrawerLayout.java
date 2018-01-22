@@ -23,19 +23,19 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
-import com.huicheng.hotel.android.ui.activity.AboutActivity;
-import com.huicheng.hotel.android.ui.activity.AssessOrdersActivity;
 import com.huicheng.hotel.android.ui.activity.DebugInfoActivity;
-import com.huicheng.hotel.android.ui.activity.FansHotelActivity;
-import com.huicheng.hotel.android.ui.activity.FeedbackActivity;
-import com.huicheng.hotel.android.ui.activity.MessageListActivity;
-import com.huicheng.hotel.android.ui.activity.MyABCBountyActivity;
-import com.huicheng.hotel.android.ui.activity.MyDiscountCouponActivity;
-import com.huicheng.hotel.android.ui.activity.OrderListActivity;
-import com.huicheng.hotel.android.ui.activity.SettingActivity;
+import com.huicheng.hotel.android.ui.activity.UcAboutActivity;
+import com.huicheng.hotel.android.ui.activity.UcBountyActivity;
+import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
+import com.huicheng.hotel.android.ui.activity.UcFansHotelActivity;
+import com.huicheng.hotel.android.ui.activity.UcFeedbackActivity;
+import com.huicheng.hotel.android.ui.activity.UcLoginActivity;
+import com.huicheng.hotel.android.ui.activity.UcMessagesActivity;
+import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
+import com.huicheng.hotel.android.ui.activity.UcRegisterActivity;
+import com.huicheng.hotel.android.ui.activity.UcSettingActivity;
 import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
-import com.huicheng.hotel.android.ui.activity.UserLoginActivity;
-import com.huicheng.hotel.android.ui.activity.UserRegisterActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelAssessOrdersActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
@@ -244,39 +244,39 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         Intent doActionIntent = null;
         switch (v.getId()) {
             case R.id.btn_login:
-                doActionIntent = new Intent(context, UserLoginActivity.class);
+                doActionIntent = new Intent(context, UcLoginActivity.class);
                 doActionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.btn_register:
-                doActionIntent = new Intent(context, UserRegisterActivity.class);
+                doActionIntent = new Intent(context, UcRegisterActivity.class);
                 doActionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.tv_usercenter:
                 doActionIntent = new Intent(context, UserCenterActivity.class);
                 break;
             case R.id.tv_myorder:
-                doActionIntent = new Intent(context, OrderListActivity.class);
+                doActionIntent = new Intent(context, UcOrdersActivity.class);
                 break;
             case R.id.tv_msg:
-                doActionIntent = new Intent(context, MessageListActivity.class);
+                doActionIntent = new Intent(context, UcMessagesActivity.class);
                 break;
             case R.id.tv_lxb:
-                doActionIntent = new Intent(context, MyABCBountyActivity.class);
+                doActionIntent = new Intent(context, UcBountyActivity.class);
                 break;
             case R.id.tv_yhq:
-                doActionIntent = new Intent(context, MyDiscountCouponActivity.class);
+                doActionIntent = new Intent(context, UcCouponsActivity.class);
                 break;
             case R.id.tv_assess:
-                doActionIntent = new Intent(context, AssessOrdersActivity.class);
+                doActionIntent = new Intent(context, HotelAssessOrdersActivity.class);
                 break;
             case R.id.tv_vip:
-                doActionIntent = new Intent(context, FansHotelActivity.class);
+                doActionIntent = new Intent(context, UcFansHotelActivity.class);
                 break;
             case R.id.tv_setting:
-                doActionIntent = new Intent(context, SettingActivity.class);
+                doActionIntent = new Intent(context, UcSettingActivity.class);
                 break;
             case R.id.tv_feedback:
-                doActionIntent = new Intent(context, FeedbackActivity.class);
+                doActionIntent = new Intent(context, UcFeedbackActivity.class);
                 break;
             case R.id.tv_qmh:
                 if (null != listener) {
@@ -287,14 +287,14 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                 clearTicket();
                 break;
             case R.id.tv_usage:
-                doActionIntent = new Intent(context, AboutActivity.class);
+                doActionIntent = new Intent(context, UcAboutActivity.class);
                 doActionIntent.putExtra("title", getResources().getString(R.string.setting_usage_condition));
-                doActionIntent.putExtra("index", AboutActivity.WORK_CONDITION);
+                doActionIntent.putExtra("index", UcAboutActivity.WORK_CONDITION);
                 break;
             case R.id.tv_private:
-                doActionIntent = new Intent(context, AboutActivity.class);
+                doActionIntent = new Intent(context, UcAboutActivity.class);
                 doActionIntent.putExtra("title", getResources().getString(R.string.setting_private));
-                doActionIntent.putExtra("index", AboutActivity.STATEMENT);
+                doActionIntent.putExtra("index", UcAboutActivity.STATEMENT);
                 break;
             default:
                 break;

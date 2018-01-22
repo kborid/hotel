@@ -126,8 +126,8 @@ public class WebViewPagerFragment extends BaseFragment {
             case TAB_PLANE:
                 mURL = NetURL.PLANE_HOME;
 
-//                mIsReLoad = MainActivity.getIsNeedReload();
-//                String orderId = MainActivity.getPlaneOrderId();
+//                mIsReLoad = HotelMainActivity.getIsNeedReload();
+//                String orderId = HotelMainActivity.getPlaneOrderId();
 //                if (StringUtil.notEmpty(orderId)) {
 //                    mURL = mURL + "?yiorderid=" + orderId;
 //                }

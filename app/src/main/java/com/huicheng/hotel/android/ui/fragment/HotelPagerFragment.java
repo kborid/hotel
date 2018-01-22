@@ -35,9 +35,9 @@ import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.HotelCalendarChooseActivity;
-import com.huicheng.hotel.android.ui.activity.HotelListActivity;
-import com.huicheng.hotel.android.ui.activity.LocationChooseActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelCityChooseActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -249,7 +249,7 @@ public class HotelPagerFragment extends BaseFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.tv_city:
             case R.id.iv_location: {
-                Intent resIntent = new Intent(getActivity(), LocationChooseActivity.class);
+                Intent resIntent = new Intent(getActivity(), HotelCityChooseActivity.class);
                 startActivityForResult(resIntent, 0x01);
             }
             break;

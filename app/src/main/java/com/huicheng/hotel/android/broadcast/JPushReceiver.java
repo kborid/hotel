@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.huicheng.hotel.android.ui.activity.HotelSpaceDetailActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelSpaceDetailActivity;
 import com.prj.sdk.util.LogUtil;
 
 import cn.jpush.android.api.JPushInterface;

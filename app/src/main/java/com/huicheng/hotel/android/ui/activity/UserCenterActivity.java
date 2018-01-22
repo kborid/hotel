@@ -37,6 +37,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.UserInfo;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.custom.CustomRatingBar;
 import com.huicheng.hotel.android.ui.custom.RangeSeekBar;
@@ -460,7 +461,7 @@ public class UserCenterActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_back:
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, HotelMainActivity.class);
                 startActivity(intent);
                 break;
             case R.id.camer_lay:

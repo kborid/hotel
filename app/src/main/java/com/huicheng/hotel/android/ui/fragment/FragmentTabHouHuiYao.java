@@ -23,8 +23,8 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.net.bean.HouHuiYaoInfoBean;
-import com.huicheng.hotel.android.ui.activity.HotelListActivity;
-import com.huicheng.hotel.android.ui.activity.HouHuiYaoOrderDetailActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelHhyOrderDetailActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
@@ -194,7 +194,7 @@ public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, 
         lv_recommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), HouHuiYaoOrderDetailActivity.class);
+                Intent intent = new Intent(getActivity(), HotelHhyOrderDetailActivity.class);
                 intent.putExtra("regretOrderid", recommendList.get(position).id);
                 startActivity(intent);
             }
@@ -203,7 +203,7 @@ public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, 
         lv_other.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), HouHuiYaoOrderDetailActivity.class);
+                Intent intent = new Intent(getActivity(), HotelHhyOrderDetailActivity.class);
                 intent.putExtra("regretOrderid", otherList.get(position).id);
                 startActivity(intent);
             }

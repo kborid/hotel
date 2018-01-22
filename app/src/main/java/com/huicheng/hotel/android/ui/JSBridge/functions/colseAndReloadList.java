@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
-import com.huicheng.hotel.android.ui.activity.OrderListActivity;
+import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 
 /**
  * @author kborid
@@ -18,7 +18,7 @@ public class colseAndReloadList implements WVJBWebViewClient.WVJBHandler {
 
     @Override
     public void request(Object data, WVJBWebViewClient.WVJBResponseCallback callback) {
-        Intent intent = new Intent(context, OrderListActivity.class);
+        Intent intent = new Intent(context, UcOrdersActivity.class);
         context.startActivity(intent);
     }
 }

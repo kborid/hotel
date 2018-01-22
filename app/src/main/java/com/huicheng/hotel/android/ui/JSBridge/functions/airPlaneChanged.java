@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
-import com.huicheng.hotel.android.ui.activity.MainActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 
 /**
  * @author kborid
@@ -24,7 +24,7 @@ public class airPlaneChanged implements WVJBWebViewClient.WVJBHandler {
         if (data != null) {
             JSONObject mJson = JSON.parseObject(data.toString());
             String orderId = mJson.getString("yiorderid");
-            Intent intent = new Intent(mContext, MainActivity.class);
+            Intent intent = new Intent(mContext, HotelMainActivity.class);
             intent.putExtra("index", 1);
             intent.putExtra("orderId", orderId);
             intent.putExtra("isClosed", true);

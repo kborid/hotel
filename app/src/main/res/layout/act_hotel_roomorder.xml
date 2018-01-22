@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/comm_line2" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarThumbVertical="@drawable/p3016_scrollbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="25dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="25dp">
+
+                <com.huicheng.hotel.android.ui.custom.RoundedAllImageView xmlns:roundImage="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/iv_room_pic"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/def_order_confirm"
+                    roundImage:radius="5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|right"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_18sp"
+                        tools:text="8月26日-27日  2晚" />
+
+                    <TextView
+                        android:id="@+id/tv_breakfast"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|right"
+                        android:visibility="gone"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_18sp"
+                        tools:text="早餐  2份" />
+
+                    <LinearLayout
+                        android:id="@+id/choose_service_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <TextView
+                        android:id="@+id/tv_total_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical|right"
+                        android:textColor="?attr/indicatorColor"
+                        android:textSize="30sp"
+                        tools:text="1150元" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/comm_line2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="20dp"
+                        android:text="房间数"
+                        android:textColor="?attr/mainColor"
+                        android:textSize="@dimen/common_12sp"
+                        android:textStyle="bold" />
+
+                    <com.huicheng.hotel.android.ui.custom.CommonAddSubLayout
+                        android:id="@+id/room_addsub_lay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="20dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
+
+                <com.huicheng.hotel.android.ui.custom.CommonCustomInfoLayout
+                    android:id="@+id/custom_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="特别要求"
+                        android:textColor="?attr/mainColor"
+                        android:textSize="@dimen/common_12sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:background="@drawable/comm_rectangle_gray"
+                        android:gravity="left"
+                        android:hint="输入内容"
+                        android:minHeight="70dp"
+                        android:padding="10dp"
+                        android:textColor="?attr/mainColor"
+                        android:textColorHint="#e1e1e1"
+                        android:textSize="@dimen/common_12sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
+
+                <LinearLayout
+                    android:id="@+id/invoice_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="20dp"
+                        android:paddingTop="20dp"
+                        android:text="发票    "
+                        android:textColor="?attr/mainColor"
+                        android:textSize="@dimen/common_12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_invoice_info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:hint="不需要发票"
+                        android:textColor="@color/noDiscountColor"
+                        android:textSize="@dimen/common_12sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitCenter"
+                        android:src="?attr/nextButton" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="20dp"
+                        android:paddingTop="20dp"
+                        android:text="预抵时间"
+                        android:textColor="?attr/mainColor"
+                        android:textSize="@dimen/common_12sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_arrived"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:layout_weight="1"
+                        android:checkedButton="@+id/btn_rb1"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp">
+
+                        <RadioButton
+                            android:id="@+id/btn_rb1"
+                            style="@style/redio_btn_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:background="?attr/orderTimeCheckSel"
+                            android:text="18点前"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/btn_rb2"
+                            style="@style/redio_btn_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:background="?attr/orderTimeCheckSel"
+                            android:text="22点前"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/btn_rb3"
+                            style="@style/redio_btn_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:background="?attr/orderTimeCheckSel"
+                            android:text="24点前"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/btn_rb4"
+                            style="@style/redio_btn_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:background="?attr/orderTimeCheckSel"
+                            android:text="24点后"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/comm_line2" />
+
+                <LinearLayout
+                    android:id="@+id/coupon_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="20dp"
+                            android:paddingTop="20dp"
+                            android:text="优惠券"
+                            android:textColor="?attr/mainColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_coupon_info"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="left|center_vertical"
+                            android:hint="请选择优惠券"
+                            android:singleLine="true"
+                            android:textColor="@color/noDiscountColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_coupon_del"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/iv_sub" />
+
+                        <ImageView
+                            android:id="@+id/iv_coupon_next"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:scaleType="fitCenter"
+                            android:src="?attr/nextButton" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/comm_line2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bounty_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
+
+                        <TextView
+                            android:id="@+id/tv_bounty_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:paddingBottom="20dp"
+                            android:paddingTop="20dp"
+                            android:text="@string/bountyStr"
+                            android:textColor="?attr/mainColor"
+                            android:textSize="@dimen/common_12sp"
+                            android:textStyle="bold" />
+
+                        <Switch
+                            android:id="@+id/switch_bounty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:switchMinWidth="20dp"
+                            android:textOff=""
+                            android:textOn=""
+                            android:thumb="@drawable/hotel_switch_thumb"
+                            android:thumbTextPadding="10dp"
+                            android:track="@drawable/hotel_switch_track" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/comm_line2" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="33dp"
+                    android:paddingTop="33dp"
+                    android:text="总价："
+                    android:textColor="?attr/mainColor"
+                    android:textSize="@dimen/common_14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_final_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:paddingBottom="33dp"
+                    android:paddingTop="33dp"
+                    android:textColor="?attr/indicatorColor"
+                    android:textSize="30dp"
+                    tools:text="1150元" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_submit"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:background="?attr/indicatorBgSel"
+                        android:gravity="center"
+                        android:text="@string/order_submit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/common_15sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
