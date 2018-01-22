@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.permission;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.activity.WelcomeActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.util.LogUtil;
 
 /**
@@ -25,13 +25,13 @@ public class PermissionsActivity extends AppCompatActivity {
 
     private static final String TAG = "Permission";
 
-    private static final int PERMISSION_REQUEST_CODE = 0; // 系统权限管理页面的参数
-    private static final String EXTRA_PERMISSIONS = "com.kborid.permissiontest.extra_permission"; // 权限参数
+    private static final int PERMISSION_REQUEST_CODE = 0; //系统权限管理页面的参数
+    private static final String EXTRA_PERMISSIONS = "com.kborid.permissiontest.extra_permission"; //权限参数
     private static final String PACKAGE_URL_SCHEME = "package:"; // 方案
 
-    private boolean isRequireCheck; // 是否需要系统权限检测
+    private boolean isRequireCheck; //是否需要系统权限检测
 
-    // 启动当前权限页面的公开接口
+    //启动当前权限页面的公开接口
     public static void startActivityForResult(Activity activity, int requestCode, String... permissions) {
         LogUtil.i(TAG, "startActivityForResult()");
         Intent intent = new Intent(activity, PermissionsActivity.class);
@@ -62,27 +62,27 @@ public class PermissionsActivity extends AppCompatActivity {
         if (isRequireCheck) {
             String[] permissions = getPermissions();
             if (PRJApplication.getPermissionsChecker(this).lacksPermissions(permissions)) {
-                requestPermissions(permissions); // 请求权限
+                requestPermissions(permissions); //请求权限
             } else {
-                allPermissionsGranted(); // 全部权限都已获取
+                allPermissionsGranted(); //全部权限都已获取
             }
         } else {
             isRequireCheck = true;
         }
     }
 
-    // 返回传递的权限参数
+    //返回传递的权限参数
     private String[] getPermissions() {
         return getIntent().getStringArrayExtra(EXTRA_PERMISSIONS);
     }
 
-    // 请求权限兼容低版本
+    //请求权限兼容低版本
     private void requestPermissions(String... permissions) {
         LogUtil.i(TAG, "requestPermissions()");
         ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
     }
 
-    // 全部权限均已获取
+    //全部权限均已获取
     private void allPermissionsGranted() {
         LogUtil.i(TAG, "allPermissionsGranted()");
         setResult(PermissionsDef.PERMISSIONS_GRANTED);
@@ -110,7 +110,7 @@ public class PermissionsActivity extends AppCompatActivity {
         }
     }
 
-    // 含有全部的权限
+    //含有全部的权限
     private boolean hasAllPermissionsGranted(@NonNull int[] grantResults) {
         for (int grantResult : grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {
@@ -120,34 +120,32 @@ public class PermissionsActivity extends AppCompatActivity {
         return true;
     }
 
-    // 显示缺失权限提示
+    //显示缺失权限提示
     private void showMissingPermissionDialog() {
         LogUtil.i(TAG, "showMissingPermissionDialog()");
-        AlertDialog.Builder builder = new AlertDialog.Builder(PermissionsActivity.this);
-        builder.setTitle("帮助");
-        builder.setMessage("\n当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"打开所需权限。");
-
+        CustomDialog mDialog = new CustomDialog(this);
+        mDialog.setTitle("提示");
+        mDialog.setMessage(String.format("“%1$s”缺少必要权限。\n\n请点击“设置”-“权限”打开所需权限。", getResources().getString(R.string.app_name)));
         // 拒绝, 退出应用
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        mDialog.setNegativeButton("关闭", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 setResult(PermissionsDef.PERMISSIONS_DENIED);
                 finish();
             }
         });
-
-        builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+        mDialog.setPositiveButton("设置", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startAppSettings();
             }
         });
-        builder.setCancelable(false);
-
-        builder.show();
+        mDialog.setCancelable(false);
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
     }
 
-    // 启动应用的设置
+    //启动应用的设置
     private void startAppSettings() {
         LogUtil.i(TAG, "startAppSettings()");
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
