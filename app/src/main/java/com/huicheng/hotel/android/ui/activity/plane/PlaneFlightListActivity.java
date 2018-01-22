@@ -406,6 +406,16 @@ public class PlaneFlightListActivity extends BaseActivity {
     }
 
     @Override
+    protected boolean isCheckException(ResponseData request, ResponseData response) {
+        if (response != null && response.data != null) {
+            if (response.code.equals("1001")) { //flightRequest is invalid
+                return true;
+            }
+        }
+        return super.isCheckException(request, response);
+    }
+
+    @Override
     public void onNotifyError(ResponseData request, ResponseData response) {
         super.onNotifyError(request, response);
         swipeRefreshLayout.setRefreshing(false);

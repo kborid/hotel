@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 
-ext.AppName = 'ABC旅行预订'
 ext {
     appName = 'abc'
     currentDate = new Date().format('yyyyMMdd')
