@@ -15,10 +15,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.huicheng.hotel.android.BuildConfig;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.permission.PermissionsActivity;
+import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -45,6 +48,9 @@ public class FeedbackActivity extends BaseActivity {
     private Button btn_submit;
     private String bgPath = null;
     private String imgUrl = null;
+
+    private String mCallNumber = "";
+    private CustomDialog mDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +97,6 @@ public class FeedbackActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        Intent intent = null;
         switch (v.getId()) {
             case R.id.iv_screen:
                 choosePictureDialog();
@@ -123,27 +128,52 @@ public class FeedbackActivity extends BaseActivity {
                 requestSubmit();
                 break;
             case R.id.hotel_phone_lay:
-                Uri hotelUri = Uri.parse("tel:" + getResources().getString(R.string.hotel_plane_phone));
-                intent = new Intent(Intent.ACTION_DIAL, hotelUri);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mCallNumber = getResources().getString(R.string.hotel_plane_phone);
+                dialServicePhone();
                 break;
             case R.id.train_phone_lay:
-                Uri trainUri = Uri.parse("tel:" + getResources().getString(R.string.train_phone));
-                intent = new Intent(Intent.ACTION_DIAL, trainUri);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mCallNumber = getResources().getString(R.string.train_phone);
+                dialServicePhone();
                 break;
             case R.id.taxi_phone_lay:
-                Uri taxiUri = Uri.parse("tel:" + getResources().getString(R.string.taxi_phone));
-                intent = new Intent(Intent.ACTION_DIAL, taxiUri);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mCallNumber = getResources().getString(R.string.taxi_phone);
+                dialServicePhone();
                 break;
             default:
                 break;
         }
+    }
 
-        if (null != intent) {
-            startActivity(intent);
+    private void dialServicePhone() {
+        if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.PHONE_PERMISSION)) {
+            PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.PHONE_PERMISSION);
+            return;
         }
+        showDialDialog(mCallNumber);
+    }
+
+    private void showDialDialog(final String number) {
+        if (null == mDialog) {
+            mDialog = new CustomDialog(this);
+        }
+        mDialog.setMessage(String.format("是否拨打客服电话%1$s", number));
+        mDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        mDialog.setPositiveButton("拨打", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Uri dialUri = Uri.parse("tel:" + number);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, dialUri);
+                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(callIntent);
+            }
+        });
+        mDialog.setCanceledOnTouchOutside(true);
+        mDialog.show();
     }
 
     private void choosePictureDialog() {
@@ -250,6 +280,11 @@ public class FeedbackActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == PermissionsDef.PERMISSIONS_GRANTED
+                && requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            showDialDialog(mCallNumber);
+            return;
+        }
         if (resultCode != RESULT_OK) {
             return;
         }

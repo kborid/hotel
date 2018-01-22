@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.ui.activity;
+package com.huicheng.hotel.android.permission;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,14 +15,15 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.ui.activity.WelcomeActivity;
+import com.prj.sdk.util.LogUtil;
 
 /**
  * 权限获取页面
  */
 public class PermissionsActivity extends AppCompatActivity {
 
-    public static final int PERMISSIONS_GRANTED = 0; // 权限授权
-    public static final int PERMISSIONS_DENIED = 1; // 权限拒绝
+    private static final String TAG = "Permission";
 
     private static final int PERMISSION_REQUEST_CODE = 0; // 系统权限管理页面的参数
     private static final String EXTRA_PERMISSIONS = "com.kborid.permissiontest.extra_permission"; // 权限参数
@@ -32,6 +33,7 @@ public class PermissionsActivity extends AppCompatActivity {
 
     // 启动当前权限页面的公开接口
     public static void startActivityForResult(Activity activity, int requestCode, String... permissions) {
+        LogUtil.i(TAG, "startActivityForResult()");
         Intent intent = new Intent(activity, PermissionsActivity.class);
         intent.putExtra(EXTRA_PERMISSIONS, permissions);
         ActivityCompat.startActivityForResult(activity, intent, requestCode, null);
@@ -44,6 +46,7 @@ public class PermissionsActivity extends AppCompatActivity {
             throw new RuntimeException("PermissionsActivity需要使用静态startActivityForResult方法启动!");
         }
         if (null != savedInstanceState) {
+            LogUtil.i(TAG, "restart WelcomeActivity");
             Intent intent = new Intent(this, WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -75,12 +78,14 @@ public class PermissionsActivity extends AppCompatActivity {
 
     // 请求权限兼容低版本
     private void requestPermissions(String... permissions) {
+        LogUtil.i(TAG, "requestPermissions()");
         ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
     }
 
     // 全部权限均已获取
     private void allPermissionsGranted() {
-        setResult(PERMISSIONS_GRANTED);
+        LogUtil.i(TAG, "allPermissionsGranted()");
+        setResult(PermissionsDef.PERMISSIONS_GRANTED);
         finish();
     }
 
@@ -95,6 +100,7 @@ public class PermissionsActivity extends AppCompatActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        LogUtil.i(TAG, "onRequestPermissionsResult()");
         if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
             isRequireCheck = true;
             allPermissionsGranted();
@@ -116,6 +122,7 @@ public class PermissionsActivity extends AppCompatActivity {
 
     // 显示缺失权限提示
     private void showMissingPermissionDialog() {
+        LogUtil.i(TAG, "showMissingPermissionDialog()");
         AlertDialog.Builder builder = new AlertDialog.Builder(PermissionsActivity.this);
         builder.setTitle("帮助");
         builder.setMessage("\n当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"打开所需权限。");
@@ -124,7 +131,7 @@ public class PermissionsActivity extends AppCompatActivity {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                setResult(PERMISSIONS_DENIED);
+                setResult(PermissionsDef.PERMISSIONS_DENIED);
                 finish();
             }
         });
@@ -142,6 +149,7 @@ public class PermissionsActivity extends AppCompatActivity {
 
     // 启动应用的设置
     private void startAppSettings() {
+        LogUtil.i(TAG, "startAppSettings()");
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse(PACKAGE_URL_SCHEME + getPackageName()));
         startActivity(intent);

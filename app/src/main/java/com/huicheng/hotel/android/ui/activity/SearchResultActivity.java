@@ -28,6 +28,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelInfoBean;
+import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.adapter.SearchResultAdapter;
@@ -61,6 +62,7 @@ public class SearchResultActivity extends BaseActivity {
     private ImageView iv_all_rec;
     private TextView tv_cancel;
 
+    private RecognizerDialog mDialog = null;
     private String keyWorld;
 
     private List<HotelInfoBean> list = new ArrayList<>();
@@ -198,29 +200,7 @@ public class SearchResultActivity extends BaseActivity {
                     PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
                     return;
                 }
-                RecognizerDialog mDialog = new RecognizerDialog(this, null);
-                mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
-                mDialog.setParameter(SpeechConstant.ASR_SCH, "1");
-                mDialog.setParameter(SpeechConstant.NLP_VERSION, "3.0");
-                mDialog.setListener(new RecognizerDialogListener() {
-                    @Override
-                    public void onResult(RecognizerResult recognizerResult, boolean b) {
-                        if (b) {
-                            String jsonStr = recognizerResult.getResultString();
-                            JSONObject mJson = JSON.parseObject(jsonStr);
-                            if (mJson.containsKey("text")) {
-                                et_input.setText(mJson.getString("text"));
-                                et_input.setSelection(et_input.getText().length());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(SpeechError speechError) {
-                        LogUtil.e(TAG, "voice error code:" + speechError.getErrorCode() + ", " + speechError.getErrorDescription());
-                    }
-                });
-                mDialog.show();
+                showMicDialog();
                 break;
             case R.id.tv_cancel:
                 this.finish();
@@ -229,6 +209,34 @@ public class SearchResultActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    private void showMicDialog() {
+        if (null == mDialog) {
+            mDialog = new RecognizerDialog(this, null);
+            mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
+            mDialog.setParameter(SpeechConstant.ASR_SCH, "1");
+            mDialog.setParameter(SpeechConstant.NLP_VERSION, "3.0");
+        }
+        mDialog.setListener(new RecognizerDialogListener() {
+            @Override
+            public void onResult(RecognizerResult recognizerResult, boolean b) {
+                if (b) {
+                    String jsonStr = recognizerResult.getResultString();
+                    JSONObject mJson = JSON.parseObject(jsonStr);
+                    if (mJson.containsKey("text")) {
+                        et_input.setText(mJson.getString("text"));
+                        et_input.setSelection(et_input.getText().length());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(SpeechError speechError) {
+                LogUtil.e(TAG, "voice error code:" + speechError.getErrorCode() + ", " + speechError.getErrorDescription());
+            }
+        });
+        mDialog.show();
     }
 
     private void requestAllSearch(String keyWorld) {
@@ -287,5 +295,14 @@ public class SearchResultActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == PermissionsDef.PERMISSIONS_GRANTED
+                && requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            showMicDialog();
+        }
     }
 }

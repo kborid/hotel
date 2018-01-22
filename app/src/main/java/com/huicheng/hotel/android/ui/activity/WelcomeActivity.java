@@ -28,6 +28,7 @@ import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
 import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
+import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseActivity;
@@ -349,7 +350,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         super.onActivityResult(requestCode, resultCode, data);
         // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
         if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
-            if (resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+            if (resultCode == PermissionsDef.PERMISSIONS_DENIED) {
                 ActivityTack.getInstanse().exit();
                 SessionContext.destroy();
             }
