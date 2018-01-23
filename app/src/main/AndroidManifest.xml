@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <permission android:name="android.permission.WRITE_APN_SETTINGS" />
     <!--获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -64,8 +65,10 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="abcbooking" />
             </intent-filter>
         </activity>
@@ -273,7 +276,6 @@
         <!--支付结果画面-->
         <activity
             android:name=".ui.activity.hotel.HotelOrderPaySuccessActivity"
-
             android:screenOrientation="portrait" />
         <!--发票页面-->
         <activity
@@ -405,9 +407,9 @@
             android:value="@string/amap_appkey" />
         <service android:name="com.amap.api.location.APSService" />
         <!--百度地图-->
-        <meta-data
+        <!--<meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="@string/baidu_appkey" />
+            android:value="@string/baidu_appkey" />-->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
