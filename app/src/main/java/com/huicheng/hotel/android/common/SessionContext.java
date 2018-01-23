@@ -14,7 +14,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
 import com.huicheng.hotel.android.tools.PinyinUtils;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;

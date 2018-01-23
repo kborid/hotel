@@ -1,4 +1,4 @@
-package com.prj.sdk.app;
+package com.huicheng.hotel.android.content;
 
 import com.prj.sdk.BuildConfig;
 
@@ -155,6 +155,8 @@ public final class AppConst {
     public static final int BOUNTY_USER_DETAIL = HOTEL_HANDLE_FLAG + 69;
 
     public static final int MENUS_STATUS = HOTEL_HANDLE_FLAG + 70;
+    public static final int PAY_UNION = HOTEL_HANDLE_FLAG + 71;
+    public static final int PAY_RESULT = HOTEL_HANDLE_FLAG + 72;
     /**
      * 机票相关
      */

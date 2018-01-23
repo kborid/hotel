@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.requestbuilder.bean.InvoiceDetailInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.StringUtil;
 
@@ -20,7 +20,7 @@ import com.prj.sdk.util.StringUtil;
  * @author kborid
  * @date 2017/1/7 0007
  */
-public class HotelInvoiceActivity extends BaseActivity {
+public class HotelInvoiceActivity extends BaseAppActivity {
     private Switch btn_switch;
     private TextView tv_status;
     private LinearLayout invoice_lay;
@@ -31,12 +31,8 @@ public class HotelInvoiceActivity extends BaseActivity {
     private boolean isInvoice = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_invoicedetail_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_invoicedetail);
     }
 
     @Override
@@ -48,7 +44,6 @@ public class HotelInvoiceActivity extends BaseActivity {
         et_company_name = (EditText) findViewById(R.id.et_company_name);
         et_id = (EditText) findViewById(R.id.et_id);
         et_email = (EditText) findViewById(R.id.et_email);
-
         tv_confirm = (TextView) findViewById(R.id.tv_confirm);
     }
 
@@ -72,7 +67,6 @@ public class HotelInvoiceActivity extends BaseActivity {
         tv_center_title.setText("发票");
         btn_switch.setChecked(isInvoice);
         invoice_lay.setVisibility(View.GONE);
-
         updateInvoiceInfo();
     }
 
@@ -90,7 +84,6 @@ public class HotelInvoiceActivity extends BaseActivity {
             invoice_lay.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public void initListeners() {
@@ -155,17 +148,6 @@ public class HotelInvoiceActivity extends BaseActivity {
             default:
                 break;
         }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

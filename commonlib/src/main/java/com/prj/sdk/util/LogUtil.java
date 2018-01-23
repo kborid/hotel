@@ -9,6 +9,8 @@ import com.prj.sdk.BuildConfig;
  */
 public class LogUtil {
 
+    private static final String TAG = "ABC";
+
     private static long startTime = 0;
 
     public static boolean isDebug() {
@@ -16,37 +18,67 @@ public class LogUtil {
     }
 
     // 冗余信息输出
-    public static void v(String tag, String msg) {
+    public static void v(String subTag, String msg) {
         if (isDebug()) {
-            Log.v(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.v(TAG, subTag + ": [" + Thread.currentThread().getName() + "]:" + msg);
+        }
+    }
+
+    public static void v(String msg) {
+        if (isDebug()) {
+            Log.v(TAG, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
     // 调试信息输出
-    public static void d(String tag, String msg) {
+    public static void d(String subTag, String msg) {
         if (isDebug()) {
-            Log.v(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.d(TAG, subTag + ": [" + Thread.currentThread().getName() + "]:" + msg);
+        }
+    }
+
+    public static void d(String msg) {
+        if (isDebug()) {
+            Log.d(TAG, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
     // 提示信息输出
-    public static void i(String tag, String msg) {
+    public static void i(String subTag, String msg) {
         if (isDebug()) {
-            Log.i(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.i(TAG, subTag + ": [" + Thread.currentThread().getName() + "]:" + msg);
+        }
+    }
+
+    public static void i(String msg) {
+        if (isDebug()) {
+            Log.i(TAG, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
     // 警告信息输出
-    public static void w(String tag, String msg) {
+    public static void w(String subTag, String msg) {
         if (isDebug()) {
-            Log.w(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.w(TAG, subTag + ": [" + Thread.currentThread().getName() + "]:" + msg);
+        }
+    }
+
+    public static void w(String msg) {
+        if (isDebug()) {
+            Log.w(TAG, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
     // 错误信息输出
-    public static void e(String tag, String msg) {
+    public static void e(String subTag, String msg) {
         if (isDebug()) {
-            Log.e(tag, "[" + Thread.currentThread().getName() + "]:" + msg);
+            Log.e(TAG, subTag + ": [" + Thread.currentThread().getName() + "]:" + msg);
+        }
+    }
+
+    public static void e(String msg) {
+        if (isDebug()) {
+            Log.e(TAG, "[" + Thread.currentThread().getName() + "]:" + msg);
         }
     }
 
@@ -55,7 +87,7 @@ public class LogUtil {
      */
     public static void startTime() {
         startTime = System.currentTimeMillis();
-        d("记录方法调用的开始时间", "start time:" + startTime);
+        d("调用开始时间", "sta-t time:" + startTime);
     }
 
     /*
@@ -63,6 +95,6 @@ public class LogUtil {
      */
     public static void useTime() {
         long endTime = System.currentTimeMillis();
-        d("记录方法调用的使用时间", "use time:" + (endTime - startTime));
+        d("调用花费时间", "cos-t time:" + (endTime - startTime));
     }
 }

@@ -5,7 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -31,10 +30,10 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -58,7 +57,7 @@ import cn.jpush.android.api.TagAliasCallback;
 /**
  * 登录
  */
-public class UcLoginActivity extends BaseActivity {
+public class UcLoginActivity extends BaseAppActivity {
 
     private EditText et_phone, et_pwd;
     private CheckBox cb_pwd_status_check;
@@ -85,14 +84,15 @@ public class UcLoginActivity extends BaseActivity {
     private TextView tv_wx, tv_qq;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initMainWindow();
-        super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
-        setContentView(R.layout.act_login_layout);
-        initViews();
-        initParams();
-        initListeners();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_login);
     }
 
     @Override

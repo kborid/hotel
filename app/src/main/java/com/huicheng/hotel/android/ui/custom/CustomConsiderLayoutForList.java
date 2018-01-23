@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.huicheng.hotel.android.R;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;

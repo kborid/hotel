@@ -14,8 +14,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,14 +36,14 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomRatingBar;
 import com.huicheng.hotel.android.ui.custom.RangeSeekBar;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -69,7 +67,7 @@ import java.util.Set;
  * @author kborid
  * @date 2016/11/30 0030
  */
-public class UcPersonalInfoActivity extends BaseActivity {
+public class UcPersonalInfoActivity extends BaseAppActivity {
 
     private Calendar calendar = Calendar.getInstance();
     private boolean isEdited = false;
@@ -119,10 +117,8 @@ public class UcPersonalInfoActivity extends BaseActivity {
     private int thumbId, thumbDisableId, settingId, settingOkId, leftImageId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_personalinfo_layout);
-
+    protected void initTypeArrayAttributes() {
+        super.initTypeArrayAttributes();
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         lineSelectedColorId = ta.getInt(R.styleable.MyTheme_userCenterThumbText, getResources().getColor(R.color.mainColor));
         lineSelectedDisableColorId = ta.getInt(R.styleable.MyTheme_userCenterThumbTextDisable, getResources().getColor(R.color.indicatorColor));
@@ -132,10 +128,11 @@ public class UcPersonalInfoActivity extends BaseActivity {
         settingOkId = ta.getResourceId(R.styleable.MyTheme_settingOKButton, R.drawable.iv_setting_ok);
         leftImageId = ta.getResourceId(R.styleable.MyTheme_leftImage, R.drawable.iv_left);
         ta.recycle();
+    }
 
-        initViews();
-        initParams();
-        initListeners();
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_personalinfo);
     }
 
     @Override
@@ -508,24 +505,6 @@ public class UcPersonalInfoActivity extends BaseActivity {
                     dialog = new CustomDialog(this);
                     View view = LayoutInflater.from(this).inflate(R.layout.dialog_modify_phone_layout, null);
                     et_phone = (EditText) view.findViewById(R.id.et_phone);
-                    et_phone.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            if (s.length() == 11) {
-                                tv_yzm.performClick();
-                            }
-                        }
-                    });
                     et_yzm = (EditText) view.findViewById(R.id.et_yzm);
                     tv_yzm = (TextView) view.findViewById(R.id.tv_yzm);
                     tv_yzm.setOnClickListener(new View.OnClickListener() {
@@ -585,7 +564,7 @@ public class UcPersonalInfoActivity extends BaseActivity {
                 break;
             case R.id.tv_birthday:
                 if (isEdited) {
-                    new DatePickerDialog(UcPersonalInfoActivity.this, R.style.MyMaterialDialog,
+                    new DatePickerDialog(this, R.style.MyMaterialDialog,
                             mDateSetListener, mYear, mMonth - 1, mDay).show();
                 }
                 break;

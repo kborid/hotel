@@ -15,18 +15,21 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
+import com.huicheng.hotel.android.permission.PermissionsActivity;
+import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.activity.UcAssessesActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -39,7 +42,7 @@ import java.util.Date;
  * @author kborid
  * @date 2016/12/8 0008
  */
-public class HotelOrderDetailActivity extends BaseActivity {
+public class HotelOrderDetailActivity extends BaseAppActivity {
 
     private String orderId, orderType;
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
@@ -67,15 +70,14 @@ public class HotelOrderDetailActivity extends BaseActivity {
     private int mScrollY;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotel_orderdetail_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestOrderDetailInfo();
-        }
+    protected void requestData() {
+        super.requestData();
+        requestOrderDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_orderdetail);
     }
 
     @Override
@@ -319,27 +321,11 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_hotel_phone:
                 if (StringUtil.notEmpty(tv_hotel_phone.getText().toString())) {
-                    if (null == mCallDialog) {
-                        mCallDialog = new CustomDialog(this);
+                    if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.PHONE_PERMISSION)) {
+                        PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.PHONE_PERMISSION);
+                        return;
                     }
-                    mCallDialog.setMessage(String.format("是否拨打电话给%1$s", orderPayDetailInfoBean.name));
-                    mCallDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    mCallDialog.setPositiveButton("拨打", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Uri dialUri = Uri.parse("tel:" + orderPayDetailInfoBean.hotelPhone);
-                            Intent callIntent = new Intent(Intent.ACTION_DIAL, dialUri);
-                            callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(callIntent);
-                        }
-                    });
-                    mCallDialog.setCanceledOnTouchOutside(true);
-                    mCallDialog.show();
+                    showDialDialog(orderPayDetailInfoBean.name, orderPayDetailInfoBean.hotelPhone);
                 }
                 break;
             case R.id.btn_pay:
@@ -363,14 +349,14 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 requestModifyOrderInfo();
                 break;
             case R.id.tv_assess:
-                intent = new Intent(this, HotelOrdersAssessActivity.class);
+                intent = new Intent(this, UcAssessesActivity.class);
                 break;
             case R.id.tv_hotel_name:
             case R.id.tv_booking:
                 HotelOrderManager.getInstance().reset();
                 HotelOrderManager.getInstance().setOrderPayDetailInfoBean(orderPayDetailInfoBean);
                 HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(orderPayDetailInfoBean.province, orderPayDetailInfoBean.location, "-"));
-                intent = new Intent(this, CalendarChooseActivity.class);
+                intent = new Intent(this, HotelCalendarChooseActivity.class);
                 intent.putExtra("isReBooking", true);
                 break;
             default:
@@ -380,6 +366,30 @@ public class HotelOrderDetailActivity extends BaseActivity {
         if (null != intent) {
             startActivity(intent);
         }
+    }
+
+    private void showDialDialog(String name, final String number) {
+        if (null == mCallDialog) {
+            mCallDialog = new CustomDialog(this);
+        }
+        mCallDialog.setMessage(String.format("是否拨打电话给%1$s", name));
+        mCallDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        mCallDialog.setPositiveButton("拨打", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Uri dialUri = Uri.parse("tel:" + number);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, dialUri);
+                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(callIntent);
+            }
+        });
+        mCallDialog.setCanceledOnTouchOutside(true);
+        mCallDialog.show();
     }
 
     private void requestModifyOrderInfo() {
@@ -487,6 +497,15 @@ public class HotelOrderDetailActivity extends BaseActivity {
                 CustomToast.show(getString(R.string.order_modify_success), CustomToast.LENGTH_SHORT);
                 modifyEnableOrderInfo(false);
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == PermissionsDef.PERMISSIONS_GRANTED
+                && requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            showDialDialog(orderPayDetailInfoBean.name, orderPayDetailInfoBean.hotelPhone);
         }
     }
 }

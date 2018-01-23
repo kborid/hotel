@@ -1,60 +1,36 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
-import android.os.Bundle;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.util.LogUtil;
 
 /**
  * @author kborid
  * @date 2017/3/10 0010
  */
-public class PlaneOrderDetailActivity extends BaseActivity {
+public class PlaneOrderDetailActivity extends BaseAppActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_plane_orderdetail_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void setContentView() {
+        setContentView(R.layout.act_plane_orderdetail);
     }
 
     @Override
-    public void initViews() {
-        super.initViews();
-    }
-
-    @Override
-    public void dealIntent() {
-        super.dealIntent();
-    }
-
-    @Override
-    public void initParams() {
-        super.initParams();
-        tv_center_title.setText("机票订单详情");
-        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        setRightButtonResource(R.drawable.iv_back_white);
-    }
-
-    @Override
-    public void initListeners() {
-        super.initListeners();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            return;
+        }
+        if (data.hasExtra("pay_result")) {
+            Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
+            intent.putExtra("info", data.getExtras().getString("pay_result"));
+            LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
+            intent.putExtra("type", "unionPay");
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }
     }
 }

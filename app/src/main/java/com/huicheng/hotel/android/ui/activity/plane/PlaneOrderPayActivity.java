@@ -1,29 +1,24 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 
 /**
  * @auth kborid
  * @date 2017/12/7 0007.
  */
 
-public class PlaneOrderPayActivity extends BaseActivity {
+public class PlaneOrderPayActivity extends BaseAppActivity {
 
     private Button btn_pay;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_plane_orderpay_layout);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override
@@ -54,20 +49,5 @@ public class PlaneOrderPayActivity extends BaseActivity {
                 startActivity(intent);
                 break;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

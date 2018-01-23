@@ -2,7 +2,6 @@ package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -20,14 +19,15 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.FansHotelInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomCardStackViewPager;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.VerticalStackTransformer;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.Utils;
@@ -39,7 +39,7 @@ import java.util.List;
  * @author kborid
  * @date 2016/12/20 0020
  */
-public class UcFansHotelActivity extends BaseActivity {
+public class UcFansHotelActivity extends BaseAppActivity {
 
     private LinearLayout no_fans_lay, has_fans_lay;
     private Button btn_booking;
@@ -49,15 +49,14 @@ public class UcFansHotelActivity extends BaseActivity {
     private int positionIndex = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_fanshotel_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestVipHotelInfo();
-        }
+    protected void requestData() {
+        super.requestData();
+        requestVipHotelInfo();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_fanshotel);
     }
 
     @Override
@@ -153,21 +152,6 @@ public class UcFansHotelActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.VIP_HOTEL) {
@@ -235,7 +219,7 @@ public class UcFansHotelActivity extends BaseActivity {
                     HotelOrderManager.getInstance().reset();
                     HotelOrderManager.getInstance().setFansHotelInfoBean(bean);
                     HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(bean.provinceName, bean.cityName, "-"));
-                    Intent intent = new Intent(context, CalendarChooseActivity.class);
+                    Intent intent = new Intent(context, HotelCalendarChooseActivity.class);
                     intent.putExtra("isFansBooking", true);
                     startActivity(intent);
                 }

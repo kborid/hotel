@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,10 +25,10 @@ import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.BountyBaseInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.BountyDetailInfo;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -48,7 +47,7 @@ import java.util.Random;
  * @date 2017/12/8 0008.
  */
 
-public class UcBountyActivity extends BaseActivity {
+public class UcBountyActivity extends BaseAppActivity {
     private static final int PAGE_SIZE = 10;
     private int mPageIndex = 0;
     private BountyBaseInfo mBountyBaseInfo = null;
@@ -69,15 +68,14 @@ public class UcBountyActivity extends BaseActivity {
     private CustomSharePopup mCustomShareView = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_abcbounty_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestBountyBaseInfo();
-        }
+    protected void requestData() {
+        super.requestData();
+        requestBountyBaseInfo();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_bounty);
     }
 
     @Override
@@ -89,7 +87,7 @@ public class UcBountyActivity extends BaseActivity {
         tv_current = (TextView) header.findViewById(R.id.tv_current);
         tv_in = (TextView) header.findViewById(R.id.tv_in);
         tv_out = (TextView) header.findViewById(R.id.tv_out);
-        tv_friends = (TextView)header.findViewById(R.id.tv_friends);
+        tv_friends = (TextView) header.findViewById(R.id.tv_friends);
         listview = (ListView) findViewById(R.id.listview);
         tv_invite = (TextView) findViewById(R.id.tv_invite);
     }

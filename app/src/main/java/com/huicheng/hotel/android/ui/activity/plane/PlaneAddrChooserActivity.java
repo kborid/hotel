@@ -2,7 +2,6 @@ package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ import java.util.ArrayList;
  * @date 2017/11/23 0023.
  */
 
-public class PlaneAddrChooserActivity extends BaseActivity {
+public class PlaneAddrChooserActivity extends BaseAppActivity {
 
     private TextView tv_right;
     private ListView listview;
@@ -29,12 +28,8 @@ public class PlaneAddrChooserActivity extends BaseActivity {
     private AddressChooserAdapter addressChooserAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_plane_addrchooser_layout);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override
@@ -69,21 +64,6 @@ public class PlaneAddrChooserActivity extends BaseActivity {
                 startActivity(intent);
                 break;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     private class AddressChooserAdapter extends BaseAdapter {

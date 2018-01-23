@@ -3,13 +3,15 @@ package com.huicheng.hotel.android.permission;
 import android.Manifest;
 
 /**
- * @auth kborid
+ * @author kborid
  * @date 2017/9/27.
  */
 
 public class PermissionsDef {
 
     public static final int PERMISSION_REQ_CODE = 0x999;
+    public static final int PERMISSIONS_GRANTED = 0; // 权限授权
+    public static final int PERMISSIONS_DENIED = 1; // 权限拒绝
 
     //App启动所必需的权限
     public static final String[] LAUNCH_REQUIRE_PERMISSIONS = new String[]{
@@ -22,39 +24,27 @@ public class PermissionsDef {
             Manifest.permission.ACCESS_FINE_LOCATION,
 
             //电话权限
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.CALL_PHONE,
+//            Manifest.permission.READ_PHONE_STATE,
+//            Manifest.permission.CALL_PHONE,
 
             //联系人权限
-            Manifest.permission.READ_CONTACTS,//科大讯飞需要
+//            Manifest.permission.READ_CONTACTS,//科大讯飞需要
     };
 
+    //存储权限
     public static final String[] STORAGE_PERMISSION = new String[]{
-            //存储权限
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
 
+    //电话权限
     public static final String[] PHONE_PERMISSION = new String[]{
-            //电话权限
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.CALL_PHONE,
     };
 
+    //麦克风权限
     public static final String[] MIC_PERMISSION = new String[]{
-            //麦克风权限
-            Manifest.permission.RECORD_AUDIO,
-    };
-
-
-    public static final String[] ALL_PERMISSION = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
     };
 }

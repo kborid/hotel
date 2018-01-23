@@ -40,16 +40,16 @@ import com.huicheng.hotel.android.requestbuilder.bean.HotelSpaceTieCommentInfoBe
 import com.huicheng.hotel.android.requestbuilder.bean.HotelSpaceTieInfoBean;
 import com.huicheng.hotel.android.ui.activity.ImageScaleActivity;
 import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
-import com.huicheng.hotel.android.ui.adapter.MySpaceCommentAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.adapter.HotelSpaceCommentAdapter;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.FullscreenHolder;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -70,7 +70,7 @@ import java.util.List;
  * @author kborid
  * @date 2017/3/21 0021
  */
-public class HotelSpaceDetailActivity extends BaseActivity implements DataCallback {
+public class HotelSpaceDetailActivity extends BaseAppActivity implements DataCallback {
 
     private static final int PAGESIZE = 10;
     private WebView webview = null;
@@ -87,7 +87,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
 
     private SimpleRefreshListView replyListView;
     private List<HotelSpaceTieCommentInfoBean> replyList = new ArrayList<>();
-    private MySpaceCommentAdapter replyAdapter = null;
+    private HotelSpaceCommentAdapter replyAdapter = null;
 
     private HotelSpaceBasicInfoBean hotelSpaceBasicInfoBean = null;
     private HotelSpaceTieInfoBean hotelSpaceTieInfoBean = null;
@@ -101,19 +101,18 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     private CustomSharePopup mCustomShareView = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_spacedetail_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void requestData() {
+        super.requestData();
         if (null == hotelSpaceBasicInfoBean) {
-            if (null == savedInstanceState) {
-                requestHotelSpaceBasicInfo();
-            }
+            requestHotelSpaceBasicInfo();
         } else {
             replyListView.refreshingHeaderView();
         }
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_spacedetail);
     }
 
     @Override
@@ -170,7 +169,7 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
 
         //帖子回复列表
         replyListView = (SimpleRefreshListView) findViewById(R.id.listview);
-        replyAdapter = new MySpaceCommentAdapter(this, replyList);
+        replyAdapter = new HotelSpaceCommentAdapter(this, replyList);
         replyListView.setAdapter(replyAdapter);
         replyListView.addHeaderView(mHeaderView);
         replyListView.setPullRefreshEnable(true);

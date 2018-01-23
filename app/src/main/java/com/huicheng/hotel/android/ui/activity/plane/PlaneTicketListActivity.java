@@ -2,7 +2,6 @@ package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -21,9 +20,9 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
 import com.huicheng.hotel.android.ui.adapter.PlaneTicketVendorItemAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -42,7 +41,7 @@ import java.util.List;
  * @date 2017/11/22 0022.
  */
 
-public class PlaneTicketListActivity extends BaseActivity {
+public class PlaneTicketListActivity extends BaseAppActivity {
 
     private int status;
     private long mOffTime = 0;
@@ -63,15 +62,14 @@ public class PlaneTicketListActivity extends BaseActivity {
     private LinearLayout flight_server_lay;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_plane_ticketlist_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestPlaneTicketInfo(true);
-        }
+    }
+
+    @Override
+    protected void requestData() {
+        super.requestData();
+        requestPlaneTicketInfo(true);
     }
 
     @Override
@@ -241,16 +239,6 @@ public class PlaneTicketListActivity extends BaseActivity {
                 flight_server_lay.addView(tv_server);
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override

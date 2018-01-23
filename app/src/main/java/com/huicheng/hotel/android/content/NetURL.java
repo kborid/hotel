@@ -1,4 +1,4 @@
-package com.prj.sdk.app;
+package com.huicheng.hotel.android.content;
 
 import com.prj.sdk.util.SharedPreferenceUtil;
 
@@ -101,6 +101,8 @@ public final class NetURL {
 
     public static final String ORDER_PLANE = PORTAL + "pages/plain/pages/myplaneorder.html"; //机票订单详情
     public static final String PAY = PORTAL + "pay/to_payment.json"; //支付
+    public static final String PAY_UNION = PORTAL +"pay/to_ums_payment.json"; //银联支付
+    public static final String PAY_RESULT = PORTAL + "pay/search.json"; //支付结果查询
 
     // ----------------------------------------使用第三方登录绑定-------------------------------------
     public static final String BIND_CHECK = PORTAL + "user/getUserByToken.json"; //判断是否绑定

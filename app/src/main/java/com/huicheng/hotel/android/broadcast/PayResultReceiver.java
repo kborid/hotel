@@ -41,8 +41,8 @@ public class PayResultReceiver extends BroadcastReceiver {
     private void dealPayResult(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (null != bundle) {
-            String info = intent.getExtras().getString("info");
-            String type = intent.getExtras().getString("type");
+            String type = (null != bundle.getString("type")) ? bundle.getString("type") : "";
+            String info = (null != bundle.getString("info")) ? bundle.getString("info") : "";
             LogUtil.i(TAG, info);
             LogUtil.i(TAG, type);
 
@@ -59,6 +59,7 @@ public class PayResultReceiver extends BroadcastReceiver {
                         break;
                     case PayCommDef.WXPAY:
                     case PayCommDef.UNIONPAY:
+                    case PayCommDef.CUSTOMPAY:
                         retCode = info;
                         LogUtil.i(TAG, type + ":Code=" + info);
                         break;
@@ -68,9 +69,9 @@ public class PayResultReceiver extends BroadcastReceiver {
                 }
 
                 //整合支付宝、微信、银联支付结果码
-                if ("9000".equals(retCode) || "0".equals(retCode) || "success".equals(retCode) || PayCommDef.NOTPAY.equals(retCode)) {
+                if ("9000".equals(retCode) || "0".equals(retCode) || "success".equals(retCode) || PayCommDef.NOTPAY.equals(retCode) || "SUCCESS".equals(retCode)) {
                     ret = PayCommDef.err_success;
-                } else if ("4000".equals(retCode) || "-1".equals(retCode) || "fail".equals(retCode)) {
+                } else if ("4000".equals(retCode) || "-1".equals(retCode) || "fail".equals(retCode) || "ERROR".equals(retCode)) {
                     ret = PayCommDef.err_fail;
                 } else if ("6001".equals(retCode) || "-2".equals(retCode) || "cancel".equals(retCode)) {
                     ret = PayCommDef.err_cancel;

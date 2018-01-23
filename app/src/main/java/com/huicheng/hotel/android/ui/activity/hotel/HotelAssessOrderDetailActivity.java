@@ -22,14 +22,14 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AssessOrderDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.AssessOrderInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomRatingBar;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -53,7 +53,7 @@ import java.util.Set;
  * @author kborid
  * @date 2016/12/22 0022
  */
-public class HotelAssessDetailActivity extends BaseActivity {
+public class HotelAssessOrderDetailActivity extends BaseAppActivity {
 
     private LinearLayout root_lay;
     private RoundedAllImageView iv_background;
@@ -77,15 +77,14 @@ public class HotelAssessDetailActivity extends BaseActivity {
     private int selectedIndex = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotelassessesdetail_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestHotelDetailInfo();
-        }
+    protected void requestData() {
+        super.requestData();
+        requestHotelDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_assessorderdetail);
     }
 
     @Override
@@ -146,7 +145,7 @@ public class HotelAssessDetailActivity extends BaseActivity {
         flowlayout.setAdapter(new TagAdapter<String>(tagList) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
-                TextView tv_tag = (TextView) LayoutInflater.from(HotelAssessDetailActivity.this).inflate(R.layout.lv_tag_item, flowlayout, false);
+                TextView tv_tag = (TextView) LayoutInflater.from(HotelAssessOrderDetailActivity.this).inflate(R.layout.lv_tag_item, flowlayout, false);
                 tv_tag.setText(o);
                 return tv_tag;
             }
@@ -259,7 +258,7 @@ public class HotelAssessDetailActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.point_lay:
-                Intent intent = new Intent(this, HotelAssessesActivity.class);
+                Intent intent = new Intent(this, HotelCommendsActivity.class);
                 intent.putExtra("hotelId", hotelDetailBean.id);
                 startActivity(intent);
                 break;

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,8 +41,9 @@ import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.prj.sdk.activity.BaseActivity;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -64,7 +64,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BaseActivity extends AppCompatActivity implements OnClickListener, DataCallback {
+public abstract class BaseAppActivity extends BaseActivity implements OnClickListener, DataCallback {
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -82,15 +82,19 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     private TextView tv_right;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        LogUtil.d(TAG, "onCreate()");
-//        if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
+    protected void preOnCreate() {
+        super.preOnCreate();
+        //        if (SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0) == 1) {
 //            setTheme(R.style.AppTheme_femaleTheme);
 //        } else {
         setTheme(R.style.AppTheme_defaultTheme);
 //        }
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogUtil.d(TAG, "onCreate()");
         if (null != savedInstanceState && !isReStarted) {
             if (!SessionContext.isLogin()) {
                 SessionContext.initUserInfo();
@@ -155,8 +159,8 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
     }
 
     // 初始化组件
-    public void initViews() {
-        title_content_lay = (LinearLayout) findViewById(R.id.title_content_lay);
+    @Override
+    protected void initViews() {
         tv_center_title = (TextView) findViewById(R.id.tv_center_title);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         btn_right = (RelativeLayout) findViewById(R.id.btn_right);
@@ -164,11 +168,26 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         tv_right = (TextView) findViewById(R.id.tv_right);
     }
 
-    public void dealIntent() {
+    protected void dealIntent() {
     }
 
-    public void initParams() {
+    @Override
+    protected void initParams() {
         dealIntent();
+    }
+
+    // 监听设置
+    @Override
+    protected void initListeners() {
+        if (iv_back != null) {
+            iv_back.setOnClickListener(this);
+        }
+        if (btn_right != null) {
+            btn_right.setOnClickListener(this);
+        }
+        if (iv_right != null) {
+            iv_right.setOnClickListener(this);
+        }
     }
 
     public void setTitleContentView(View view) {
@@ -209,18 +228,6 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
 
     public void setRightButtonResource(String rightStr) {
         setRightButtonResource(rightStr, getResources().getColor(R.color.secColor));
-    }
-
-    public void initListeners() {
-        if (iv_back != null) {
-            iv_back.setOnClickListener(this);
-        }
-        if (btn_right != null) {
-            btn_right.setOnClickListener(this);
-        }
-        if (iv_right != null) {
-            iv_right.setOnClickListener(this);
-        }
     }
 
     @Override
@@ -278,9 +285,6 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         super.finish();
     }
 
-    /**
-     * 显示loading对话框
-     */
     public final void showProgressDialog(Context context) {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(context);
@@ -289,7 +293,6 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
     }
-
 
     public final boolean isProgressShowing() {
         return mProgressDialog != null && mProgressDialog.isShowing();
@@ -499,7 +502,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener, 
             if (mDialogVip != null) {
                 mDialogVip.dismiss();
             }
-            LogUtil.i("BaseActivity", "Json = " + response.body.toString());
+            LogUtil.i("BaseAppActivity", "Json = " + response.body.toString());
             isHotelVipRefresh = true;
             HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
             HotelOrderManager.getInstance().getHotelDetailInfo().isVip = true;

@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.ui.activity;
+package com.huicheng.hotel.android.ui.activity.hotel;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,16 +14,13 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelCityChooseActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelDetailActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelRoomOrderActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarSelectedListener;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarUtils;
 import com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarRecyclerView;
 import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -32,7 +29,7 @@ import com.prj.sdk.util.SharedPreferenceUtil;
  * @author kborid
  * @date 2016/11/17 0017
  */
-public class CalendarChooseActivity extends BaseActivity implements CalendarSelectedListener {
+public class HotelCalendarChooseActivity extends BaseAppActivity implements CalendarSelectedListener {
 
     private LinearLayout week_lay;
     private CustomCalendarRecyclerView calendar_lay;
@@ -48,12 +45,8 @@ public class CalendarChooseActivity extends BaseActivity implements CalendarSele
     private long beginTime, endTime;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_datechoose_layout);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override
@@ -84,6 +77,7 @@ public class CalendarChooseActivity extends BaseActivity implements CalendarSele
     public void initParams() {
         super.initParams();
         tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
+        tv_center_title.getPaint().setFakeBoldText(true);
         initWeekLayout();
         if (isTitleCanClick) {
             tv_center_title.setEnabled(true);

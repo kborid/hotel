@@ -16,12 +16,12 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class AttendPersonAdapter extends BaseAdapter {
+public class HotelAttendPersonAdapter extends BaseAdapter {
 
     private List<PersonInfo> mList;
     private Context mContext;
 
-    public AttendPersonAdapter(Context context, List<PersonInfo> list) {
+    public HotelAttendPersonAdapter(Context context, List<PersonInfo> list) {
         mList = list;
         mContext = context;
     }

@@ -126,7 +126,7 @@
                     android:layout_height="2dp"
                     android:background="@drawable/comm_line2" />
 
-                <com.huicheng.hotel.android.ui.custom.CustomInfoLayoutForHotel
+                <com.huicheng.hotel.android.ui.custom.CommonCustomInfoLayout
                     android:id="@+id/custom_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -396,7 +396,7 @@
                             android:id="@+id/switch_bounty"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="true"
+                            android:checked="false"
                             android:switchMinWidth="20dp"
                             android:textOff=""
                             android:textOn=""

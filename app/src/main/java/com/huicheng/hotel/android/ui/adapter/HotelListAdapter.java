@@ -28,7 +28,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.HotelInfoBean;
 import com.huicheng.hotel.android.ui.activity.HtmlActivity;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.huicheng.hotel.android.ui.mapoverlay.AMapUtil;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;

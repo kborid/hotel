@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,22 +17,25 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.chinaums.pppay.unify.UnifyUtils;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.broadcast.PayResultReceiver;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
+import com.huicheng.hotel.android.pay.PayCommDef;
 import com.huicheng.hotel.android.pay.alipay.AlipayUtil;
 import com.huicheng.hotel.android.pay.qmf.QmfPayHelper;
 import com.huicheng.hotel.android.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.OrderPayDetailInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonPayChannelLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -46,7 +51,7 @@ import java.util.Date;
  * @author kborid
  * @date 2017/3/7 0007
  */
-public class HotelOrderPayActivity extends BaseActivity {
+public class HotelOrderPayActivity extends BaseAppActivity {
 
     private PayResultReceiver mPayReceiver = new PayResultReceiver();
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
@@ -65,16 +70,17 @@ public class HotelOrderPayActivity extends BaseActivity {
     //qmf pay
     private QmfPayHelper qmfPayHelper = null;
 
+    private Handler myHandler = new Handler(Looper.getMainLooper());
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotel_orderpay_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestOrderDetailInfo();
-        }
+    protected void requestData() {
+        super.requestData();
+        requestOrderDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_orderpay);
     }
 
     @Override
@@ -128,14 +134,14 @@ public class HotelOrderPayActivity extends BaseActivity {
     }
 
     private void requestOrderPayInfo(String orderNo) {
+        LogUtil.i(TAG, "requestOrderPayInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("orderNo", orderNo);
         b.addBody("tradeType", "01"); // 01 酒店业务，02 机票业务
         b.addBody("payChannel", payChannelLay.getPayChannel());
 
         ResponseData d = b.syncRequest(b);
-//        d.path = NetURL.PAY;
-        d.path = "http://192.168.0.208:83/pay/toPayment.json";
+        d.path = NetURL.PAY;
         d.flag = AppConst.PAY;
 
         if (!isProgressShowing()) {
@@ -144,7 +150,35 @@ public class HotelOrderPayActivity extends BaseActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestOrderPayInfoByUnion(String orderNo) {
+        LogUtil.i(TAG, "requestOrderPayInfoByUnion()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("orderNo", orderNo);
+        b.addBody("tradeType", "01"); // 01 酒店业务，02 机票业务
+        b.addBody("payChannel", payChannelLay.getPayChannel());
+
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.PAY_UNION;
+        d.flag = AppConst.PAY_UNION;
+
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
+    private void requestPayResultStatus(String orderNo) {
+        LogUtil.i(TAG, "requestPayResultStatus()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("orderNo", orderNo);
+        ResponseData d = b.syncRequest(b);
+        d.flag = AppConst.PAY_RESULT;
+        d.path = NetURL.PAY_RESULT;
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     private void requestOrderDetailInfo() {
+        LogUtil.i(TAG, "requestOrderDetailInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("orderId", orderId);
         b.addBody("orderType", orderType); //1-酒店 2-机票
@@ -292,7 +326,14 @@ public class HotelOrderPayActivity extends BaseActivity {
                 dialog.setPositiveButton("去支付", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        requestOrderPayInfo(orderPayDetailInfoBean.orderNO);
+                        if (payChannelLay.getPayIndex() == 0 && !UnifyUtils.hasInstalledAlipayClient(PRJApplication.getInstance())) {
+                            CustomToast.show("没有安装支付宝", CustomToast.LENGTH_LONG);
+                            return;
+                        } else if (payChannelLay.getPayIndex() == 1 && !wxpay.isSupport()) {
+                            return;
+                        }
+//                        requestOrderPayInfo(orderPayDetailInfoBean.orderNO);
+                        requestOrderPayInfoByUnion(orderPayDetailInfoBean.orderNO);
                     }
                 });
                 dialog.show();
@@ -381,6 +422,10 @@ public class HotelOrderPayActivity extends BaseActivity {
         if (null != mPayReceiver) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mPayReceiver);
         }
+        if (myHandler != null) {
+            myHandler.removeCallbacksAndMessages(null);
+            myHandler = null;
+        }
     }
 
     @Override
@@ -391,11 +436,11 @@ public class HotelOrderPayActivity extends BaseActivity {
             return;
         }
         if (data.hasExtra("pay_result")) {
-            Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
-            intent.putExtra("info", data.getExtras().getString("pay_result"));
             LogUtil.i(TAG, "pay_result = " + data.getExtras().getString("pay_result"));
-            intent.putExtra("type", "unionPay");
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(
+                    new Intent(BroadCastConst.ACTION_PAY_STATUS)
+                            .putExtra("type", PayCommDef.UNIONPAY)
+                            .putExtra("info", data.getExtras().getString("pay_result")));
         }
     }
 
@@ -414,18 +459,71 @@ public class HotelOrderPayActivity extends BaseActivity {
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     JSONObject json = JSONObject.parseObject(response.body.toString());
                     if (json.containsKey("status") && json.getString("status").equals("noneedpay")) {
-                        Intent intent = new Intent(BroadCastConst.ACTION_PAY_STATUS);
-                        intent.putExtra("info", "noneedpay");
-                        intent.putExtra("type", "noneedpay");
-                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(
+                                new Intent(BroadCastConst.ACTION_PAY_STATUS)
+                                        .putExtra("type", "noneedpay")
+                                        .putExtra("info", "noneedpay"));
                     } else {
 //                        startPay(json);
                         startPayQmf(json.toString());
                     }
                 } else {
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent());
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(
+                            new Intent(BroadCastConst.ACTION_PAY_STATUS)
+                                    .putExtra("type", PayCommDef.CUSTOMPAY));
+                }
+            } else if (request.flag == AppConst.PAY_UNION) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                removeProgressDialog();
+                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
+                    JSONObject json = JSONObject.parseObject(response.body.toString());
+                    if (json.containsKey("status") && json.getString("status").equals("noneedpay")) {
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(
+                                new Intent(BroadCastConst.ACTION_PAY_STATUS)
+                                        .putExtra("type", "noneedpay")
+                                        .putExtra("info", "noneedpay"));
+                    } else {
+                        startPayQmf(json.toString());
+                        if (payChannelLay.getPayIndex() == 0) {
+                            retry = 0;
+                            myHandler.removeCallbacksAndMessages(null);
+                            myHandler.postDelayed(requestRunnable, QUERY_DURING_TIME);
+                        }
+                    }
+                } else {
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(
+                            new Intent(BroadCastConst.ACTION_PAY_STATUS)
+                                    .putExtra("type", PayCommDef.CUSTOMPAY));
+                }
+            } else if (request.flag == AppConst.PAY_RESULT) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                JSONObject json = JSONObject.parseObject(response.body.toString());
+                if (json.containsKey("status")) {
+                    myHandler.removeCallbacksAndMessages(null);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(
+                            new Intent(BroadCastConst.ACTION_PAY_STATUS)
+                                    .putExtra("type", PayCommDef.CUSTOMPAY)
+                                    .putExtra("info", json.getString("status")));
                 }
             }
         }
     }
+
+
+    private int retry = 0;
+    private static final int MAX_RETRY_TIMES = 40; //最大重试次数
+    private static final long QUERY_DURING_TIME = 3000; //重试间隔时间
+    private Runnable requestRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (null != orderPayDetailInfoBean) {
+                if (retry < MAX_RETRY_TIMES) {
+                    LogUtil.i(TAG, "------do retry " + retry + " times------");
+                    requestPayResultStatus(orderPayDetailInfoBean.orderNO);
+                    myHandler.postDelayed(requestRunnable, QUERY_DURING_TIME);
+                    retry++;
+                }
+            }
+        }
+    };
 }

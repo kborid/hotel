@@ -19,13 +19,13 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AssessCommendInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.AssessOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.ImageScaleActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -43,7 +43,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * @author kborid
  * @date 2017/1/13 0013
  */
-public class HotelAssessesActivity extends BaseActivity {
+public class HotelCommendsActivity extends BaseAppActivity {
 
     private static final int PAGESIZE = 10;
     private int pageIndex = 0;
@@ -59,22 +59,20 @@ public class HotelAssessesActivity extends BaseActivity {
     private List<AssessOrderDetailInfoBean> list = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotelassesses_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            listview.refreshingHeaderView();
-        }
+    protected void requestData() {
+        super.requestData();
+        listview.refreshingHeaderView();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_commends);
     }
 
     @Override
     public void initViews() {
         super.initViews();
         root_lay = (LinearLayout) findViewById(R.id.root_lay);
-        root_lay.setVisibility(View.GONE);
         root_lay.setLayoutAnimation(getAnimationController());
         tv_commend_count = (TextView) findViewById(R.id.tv_comment_count);
         if (tv_commend_count != null) {
@@ -144,6 +142,8 @@ public class HotelAssessesActivity extends BaseActivity {
                 e.printStackTrace();
             }
             assess_layout.setColorStars((int) grade);
+        } else {
+            root_lay.setVisibility(View.GONE);
         }
     }
 
@@ -199,7 +199,9 @@ public class HotelAssessesActivity extends BaseActivity {
                     adapter.notifyDataSetChanged();
                 } else {
                     pageIndex--;
-                    CustomToast.show("没有更多数据", CustomToast.LENGTH_SHORT);
+                    if (list.size() > 0) {
+                        CustomToast.show("没有更多数据", CustomToast.LENGTH_SHORT);
+                    }
                 }
                 listview.stopLoadMore();
                 listview.stopRefresh();

@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -24,10 +23,10 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
-import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -59,18 +58,9 @@ public class PlaneMainActivity extends BaseMainActivity {
     private int[] mOffLocation;
     private int[] mOnLocation;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        rootView = LayoutInflater.from(this).inflate(R.layout.layout_content_plane, null);
-        initContentLayout(rootView);
-        initViews();
-        initParams();
-        initListeners();
-    }
-
     public void initViews() {
         super.initViews();
+        initContentLayout(LayoutInflater.from(this).inflate(R.layout.layout_content_plane, null));
         tabs = (TabLayout) findViewById(R.id.tabs);
         off_land_city_info = (LinearLayout) findViewById(R.id.off_land_city_info);
         on_land_city_info = (LinearLayout) findViewById(R.id.on_land_city_info);
@@ -85,9 +75,7 @@ public class PlaneMainActivity extends BaseMainActivity {
         on_date_lay = (LinearLayout) findViewById(R.id.on_date_lay);
         tv_on_date = (TextView) findViewById(R.id.tv_on_date);
         tv_on_week = (TextView) findViewById(R.id.tv_on_week);
-
         iv_change = (ImageView) findViewById(R.id.iv_change);
-
         tv_next_search = (TextView) findViewById(R.id.tv_next_search);
     }
 
@@ -158,7 +146,7 @@ public class PlaneMainActivity extends BaseMainActivity {
         switch (v.getId()) {
             case R.id.off_date_lay:
             case R.id.on_date_lay: {
-                Intent resIntent = new Intent(this, CalendarChooseActivity.class);
+                Intent resIntent = new Intent(this, HotelCalendarChooseActivity.class);
                 resIntent.putExtra("isTitleCanClick", true);
 //                resIntent.putExtra("beginTime", beginTime);
 //                resIntent.putExtra("endTime", endTime);

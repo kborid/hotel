@@ -2,7 +2,6 @@ package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +10,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 
 import java.util.ArrayList;
 
 /**
  * @auth kborid
- * @date 2017/11/23 0023.
+ * @date 2017/11/23 00
  */
 
-public class PlaneAddrManagerActivity extends BaseActivity {
+public class PlaneAddrManagerActivity extends BaseAppActivity {
 
     private TextView tv_right;
     private ListView listview;
@@ -28,13 +27,14 @@ public class PlaneAddrManagerActivity extends BaseActivity {
     private AddressManagerAdapter addressManagerAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         overridePendingTransition(0, 0);
-        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_plane_addrmanager_layout);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override
@@ -69,21 +69,6 @@ public class PlaneAddrManagerActivity extends BaseActivity {
                 startActivity(intent);
                 break;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

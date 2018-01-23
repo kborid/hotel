@@ -16,9 +16,9 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HouHuiYaoDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.RoomConfirmInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -32,7 +32,7 @@ import java.util.Map;
  * @author kborid
  * @date 2017/1/11 0011
  */
-public class HotelHhyOrderDetailActivity extends BaseActivity {
+public class HotelHhyOrderDetailActivity extends BaseAppActivity {
 
     private LinearLayout root_lay;
     private TextView tv_hotel_name, tv_hotel_address, tv_hotel_phone, tv_hotel_detail;
@@ -47,15 +47,14 @@ public class HotelHhyOrderDetailActivity extends BaseActivity {
     private Map<String, RoomConfirmInfoBean> chooseServiceInfoMap = new HashMap<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hhyorderdetail_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestHouHuiYaoDetail();
-        }
+    protected void requestData() {
+        super.requestData();
+        requestHouHuiYaoDetail();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_hhyorderdetail);
     }
 
     @Override

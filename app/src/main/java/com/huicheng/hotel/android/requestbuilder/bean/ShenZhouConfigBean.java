@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.huicheng.hotel.android.R;
 import com.prj.sdk.algo.SHA1;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 
 import java.io.Serializable;
 

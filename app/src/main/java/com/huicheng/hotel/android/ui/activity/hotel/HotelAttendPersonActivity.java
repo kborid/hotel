@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.activity.hotel;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +12,11 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
-import com.huicheng.hotel.android.ui.adapter.AttendPersonAdapter;
+import com.huicheng.hotel.android.ui.adapter.HotelAttendPersonAdapter;
 import com.huicheng.hotel.android.ui.adapter.PersonInfo;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.Utils;
@@ -25,7 +24,7 @@ import com.prj.sdk.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelAttendPersonActivity extends BaseActivity {
+public class HotelAttendPersonActivity extends BaseAppActivity {
 
     private final static int PAGESIZE = 10;
     /**
@@ -35,27 +34,26 @@ public class HotelAttendPersonActivity extends BaseActivity {
 
     public static final String KEY_SELECTED = "selected";
     private ListView mListView;
-    private AttendPersonAdapter mAdapter;
+    private HotelAttendPersonAdapter mAdapter;
     private List<PersonInfo> list = new ArrayList<PersonInfo>();
     private int pageIndex = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_attendperson_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestAttendPersonList(pageIndex);
-        }
+    protected void requestData() {
+        super.requestData();
+        requestAttendPersonList(pageIndex);
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_attendperson);
     }
 
     @Override
     public void initViews() {
         super.initViews();
         mListView = (ListView) findViewById(R.id.lv);
-        mAdapter = new AttendPersonAdapter(this, list);
+        mAdapter = new HotelAttendPersonAdapter(this, list);
         mListView.setAdapter(mAdapter);
 
         //没有数据时，显示空view提示

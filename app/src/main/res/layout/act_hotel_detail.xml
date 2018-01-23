@@ -139,6 +139,8 @@
                             android:id="@+id/tv_hotel_add"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="2"
                             android:text="南山路清波街122號（近柳浪聞鶯）"
                             android:textColor="@color/lableColor"
                             android:textSize="@dimen/common_12sp" />

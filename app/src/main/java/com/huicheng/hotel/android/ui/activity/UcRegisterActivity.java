@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,10 +26,10 @@ import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -45,7 +44,7 @@ import java.util.Set;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-public class UcRegisterActivity extends BaseActivity {
+public class UcRegisterActivity extends BaseAppActivity {
 
     private TextView tv_right;
     private EditText et_phone, et_yzm, et_pwd, et_yqm;
@@ -64,14 +63,15 @@ public class UcRegisterActivity extends BaseActivity {
     private String recommendChannel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void preOnCreate() {
+        super.preOnCreate();
         initMainWindow();
         overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
-        setContentView(R.layout.act_register_layout);
-        initViews();
-        initParams();
-        initListeners();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_register);
     }
 
     @Override
@@ -162,9 +162,10 @@ public class UcRegisterActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 checkInputForActionBtnStatus();
-                if (s.length() == 11) {
-                    tv_yzm.performClick();
-                }
+                //输入11位电话号码之后，自动发送验证码
+//                if (s.length() == 11) {
+//                    tv_yzm.performClick();
+//                }
             }
         });
 

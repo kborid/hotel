@@ -17,11 +17,11 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
@@ -39,7 +39,7 @@ import java.util.List;
  * @date 2017/12/27 0027.
  */
 
-public class PlaneAirportChooserActivity extends BaseActivity {
+public class PlaneAirportChooserActivity extends BaseAppActivity {
 
     private List<CityAirportInfoBean> mList = new ArrayList<>();
 
@@ -60,18 +60,17 @@ public class PlaneAirportChooserActivity extends BaseActivity {
     private String airportType = "OFF";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_plane_airport_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            if (StringUtil.isEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.CITY_PLANE_JSON, "", false))) {
-                requestAirportInfo();
-            } else {
-                updateScreenInfo();
-            }
+    }
+
+    @Override
+    protected void requestData() {
+        super.requestData();
+        if (StringUtil.isEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.CITY_PLANE_JSON, "", false))) {
+            requestAirportInfo();
+        } else {
+            updateScreenInfo();
         }
     }
 

@@ -25,6 +25,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
+import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
@@ -32,12 +33,12 @@ import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.algo.MD5Tool;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.down.DownCallback;
@@ -57,7 +58,7 @@ import java.util.Map;
 /**
  * 欢迎页面
  */
-public class LauncherActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener, AMapLocationControl.MyLocationListener {
+public class LauncherActivity extends BaseAppActivity implements AppInstallListener, AppWakeUpListener, AMapLocationControl.MyLocationListener {
 
     private int mTagCount = 0;
     private Map<Integer, Integer> mTag = new HashMap<>();
@@ -68,10 +69,14 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
     private static final long AD_SHOWTIME = 1000;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initLaunchWindow();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_launcher_layout);
         mStartTime = System.currentTimeMillis();
         // 避免从桌面启动程序后，会重新实例化入口类的activity
         if (!this.isTaskRoot()) {
@@ -85,9 +90,11 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
             }
         }
         onNewIntent(getIntent());
-        initViews();
-        initParams();
-        initListeners();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_launcher);
     }
 
     @Override
@@ -187,6 +194,7 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
             SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
         }
         intent = new Intent(this, MainSwitcherActivity.class);
+//        intent = new Intent(this, HotelMainActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.launch_in, R.anim.launch_out);
@@ -408,7 +416,7 @@ public class LauncherActivity extends BaseActivity implements AppInstallListener
         super.onActivityResult(requestCode, resultCode, data);
         // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
         if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
-            if (resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+            if (resultCode == PermissionsDef.PERMISSIONS_DENIED) {
                 ActivityTack.getInstanse().exit();
                 SessionContext.destroy();
             }

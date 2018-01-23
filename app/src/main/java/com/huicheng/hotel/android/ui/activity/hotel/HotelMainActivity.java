@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
@@ -25,18 +24,17 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
-import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.UcBountyActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -71,18 +69,10 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     private boolean isAdShowed = false;
     private PopupWindow mAdHaiNanPopupWindow = null;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        rootView = LayoutInflater.from(this).inflate(R.layout.layout_content_hotel, null);
-        initContentLayout(rootView);
-        initViews();
-        initParams();
-        initListeners();
-    }
-
     public void initViews() {
         super.initViews();
+        initContentLayout(LayoutInflater.from(this).inflate(R.layout.layout_content_hotel, null));
+
         tv_city = (TextView) findViewById(R.id.tv_city);
         tv_next_search = (TextView) findViewById(R.id.tv_next_search);
 
@@ -393,7 +383,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 break;
             case R.id.tv_in_date:
             case R.id.tv_out_date: {
-                Intent resIntent = new Intent(this, CalendarChooseActivity.class);
+                Intent resIntent = new Intent(this, HotelCalendarChooseActivity.class);
                 resIntent.putExtra("isTitleCanClick", true);
 //                resIntent.putExtra("beginTime", beginTime);
 //                resIntent.putExtra("endTime", endTime);

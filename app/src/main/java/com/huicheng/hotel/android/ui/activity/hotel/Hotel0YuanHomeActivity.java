@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,12 @@ import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.FreeOneNightBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.BitmapUtils;
@@ -37,7 +36,7 @@ import java.util.HashMap;
  * @author kborid
  * @date 2016/11/14 0014
  */
-public class Hotel0YuanHomeActivity extends BaseActivity {
+public class Hotel0YuanHomeActivity extends BaseAppActivity {
 
     private Button btn_start;
     private RoundedAllImageView iv_share;
@@ -47,15 +46,14 @@ public class Hotel0YuanHomeActivity extends BaseActivity {
     private CustomSharePopup mCustomShareView = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_0yuanhome_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestCurrentHasFreeActive();
-        }
+    protected void requestData() {
+        super.requestData();
+        requestCurrentHasFreeActive();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_0yuanhome);
     }
 
     @Override

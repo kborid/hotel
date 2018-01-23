@@ -1,13 +1,16 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,10 +19,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
@@ -30,23 +33,25 @@ import com.prj.sdk.util.Utils;
 /**
  * 找回密码
  */
-public class UcForgetPwdActivity extends BaseActivity {
+public class UcForgetPwdActivity extends BaseAppActivity {
 
     private EditText et_phone, et_yzm, et_pwd;
     private TextView tv_yzm;
+    private CheckBox cb_pwd_status_check;
     private TextView tv_action;
     private CountDownTimer mCountDownTimer;
     private boolean isValid = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initMainWindow();
-        super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
-        setContentView(R.layout.act_forget_pwd_layout);
-        initViews();
-        initParams();
-        initListeners();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_forgetpwd);
     }
 
     @Override
@@ -56,6 +61,7 @@ public class UcForgetPwdActivity extends BaseActivity {
         et_yzm = (EditText) findViewById(R.id.et_yzm);
         et_pwd = (EditText) findViewById(R.id.et_pwd);
         tv_yzm = (TextView) findViewById(R.id.tv_yzm);
+        cb_pwd_status_check = (CheckBox) findViewById(R.id.cb_pwd_status_check);
         tv_action = (TextView) findViewById(R.id.tv_action);
     }
 
@@ -98,9 +104,9 @@ public class UcForgetPwdActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 checkInputForActionBtnStatus();
-                if (s.length() == 11) {
-                    tv_yzm.performClick();
-                }
+//                if (s.length() == 11) {
+//                    tv_yzm.performClick();
+//                }
             }
         });
 
@@ -118,6 +124,18 @@ public class UcForgetPwdActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 checkInputForActionBtnStatus();
+            }
+        });
+
+        cb_pwd_status_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    et_pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    et_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+                et_pwd.setSelection(et_pwd.getText().length());// 设置光标位置
             }
         });
 

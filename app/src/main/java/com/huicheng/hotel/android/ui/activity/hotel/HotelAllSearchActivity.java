@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity.hotel;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -24,20 +23,20 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.PermissionsActivity;
 import com.huicheng.hotel.android.ui.adapter.SearchResultAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -54,7 +53,7 @@ import java.util.List;
  * @date 2017/8/31.
  */
 
-public class HotelAllSearchActivity extends BaseActivity {
+public class HotelAllSearchActivity extends BaseAppActivity {
 
     private static final int PAGE_SIZE = 20;
 
@@ -62,6 +61,7 @@ public class HotelAllSearchActivity extends BaseActivity {
     private ImageView iv_all_rec;
     private TextView tv_cancel;
 
+    private RecognizerDialog mDialog = null;
     private String keyWorld;
 
     private List<HotelInfoBean> list = new ArrayList<>();
@@ -71,12 +71,8 @@ public class HotelAllSearchActivity extends BaseActivity {
     private TextView mHeaderView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_allsearch_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_allsearch);
     }
 
     @Override
@@ -199,29 +195,7 @@ public class HotelAllSearchActivity extends BaseActivity {
                     PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
                     return;
                 }
-                RecognizerDialog mDialog = new RecognizerDialog(this, null);
-                mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
-                mDialog.setParameter(SpeechConstant.ASR_SCH, "1");
-                mDialog.setParameter(SpeechConstant.NLP_VERSION, "3.0");
-                mDialog.setListener(new RecognizerDialogListener() {
-                    @Override
-                    public void onResult(RecognizerResult recognizerResult, boolean b) {
-                        if (b) {
-                            String jsonStr = recognizerResult.getResultString();
-                            JSONObject mJson = JSON.parseObject(jsonStr);
-                            if (mJson.containsKey("text")) {
-                                et_input.setText(mJson.getString("text"));
-                                et_input.setSelection(et_input.getText().length());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(SpeechError speechError) {
-                        LogUtil.e(TAG, "voice error code:" + speechError.getErrorCode() + ", " + speechError.getErrorDescription());
-                    }
-                });
-                mDialog.show();
+                showMicDialog();
                 break;
             case R.id.tv_cancel:
                 finish();
@@ -229,6 +203,34 @@ public class HotelAllSearchActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    private void showMicDialog() {
+        if (null == mDialog) {
+            mDialog = new RecognizerDialog(this, null);
+            mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
+            mDialog.setParameter(SpeechConstant.ASR_SCH, "1");
+            mDialog.setParameter(SpeechConstant.NLP_VERSION, "3.0");
+        }
+        mDialog.setListener(new RecognizerDialogListener() {
+            @Override
+            public void onResult(RecognizerResult recognizerResult, boolean b) {
+                if (b) {
+                    String jsonStr = recognizerResult.getResultString();
+                    JSONObject mJson = JSON.parseObject(jsonStr);
+                    if (mJson.containsKey("text")) {
+                        et_input.setText(mJson.getString("text"));
+                        et_input.setSelection(et_input.getText().length());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(SpeechError speechError) {
+                LogUtil.e(TAG, "voice error code:" + speechError.getErrorCode() + ", " + speechError.getErrorDescription());
+            }
+        });
+        mDialog.show();
     }
 
     private void requestAllSearch(String keyWorld) {
@@ -243,16 +245,6 @@ public class HotelAllSearchActivity extends BaseActivity {
         d.flag = AppConst.ALL_SEARCH_HOTEL;
 
         requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -276,13 +268,17 @@ public class HotelAllSearchActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == PermissionsDef.PERMISSIONS_GRANTED
+                && requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            showMicDialog();
+        }
     }
 }

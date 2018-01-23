@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.WeatherCommDef;
 import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.Utils;

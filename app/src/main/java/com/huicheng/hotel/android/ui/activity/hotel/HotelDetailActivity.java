@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.activity.hotel;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
@@ -28,23 +29,25 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
+import com.huicheng.hotel.android.permission.PermissionsActivity;
+import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.RoomDetailCheckResultInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.RoomListInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -60,7 +63,7 @@ import java.util.List;
  * @author kborid
  * @date 2017/1/1 0001
  */
-public class HotelDetailActivity extends BaseActivity {
+public class HotelDetailActivity extends BaseAppActivity {
 
     private static final int SELECTED_BAR_COUNT = 2;
     private LinearLayout root_lay;
@@ -95,10 +98,21 @@ public class HotelDetailActivity extends BaseActivity {
     private ImageView iv_ok;
     private CheckBox cb_check;
 
+    private CustomDialog mDialDialog = null;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hoteldetail_layout);
+    protected void requestData() {
+        super.requestData();
+        requestHotelDetailInfo();
+    }
+
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_detail);
+    }
+
+    @Override
+    protected void initTypeArrayAttributes() {
+        super.initTypeArrayAttributes();
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         mRoomPriceColorId = ta.getInt(R.styleable.MyTheme_roomItemPrice, getResources().getColor(R.color.indicatorColor));
         mRoomDetailSpaceId = ta.getDrawable(R.styleable.MyTheme_roomDetailSpace);
@@ -106,13 +120,6 @@ public class HotelDetailActivity extends BaseActivity {
         ygrRoomItemBackgroundId = ta.getResourceId(R.styleable.MyTheme_roomItemGradient, R.drawable.roomitem_ygr_gradient);
         indicatorSelId = ta.getResourceId(R.styleable.MyTheme_indicatorSel, R.drawable.indicator_sel);
         ta.recycle();
-
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestHotelDetailInfo();
-        }
     }
 
     @Override
@@ -614,7 +621,7 @@ public class HotelDetailActivity extends BaseActivity {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_center_title: {
-                Intent intentRes = new Intent(this, CalendarChooseActivity.class);
+                Intent intentRes = new Intent(this, HotelCalendarChooseActivity.class);
 //                intentRes.putExtra("beginTime", beginTime);
 //                intentRes.putExtra("endTime", endTime);
                 startActivityForResult(intentRes, 0x01);
@@ -634,12 +641,12 @@ public class HotelDetailActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_service:
-                if (hotelDetailInfoBean != null) {
-                    if (StringUtil.notEmpty(hotelDetailInfoBean.phone)) {
-                        Uri dialUri = Uri.parse("tel:" + hotelDetailInfoBean.phone);
-                        intent = new Intent(Intent.ACTION_DIAL, dialUri);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (hotelDetailInfoBean != null && StringUtil.notEmpty(hotelDetailInfoBean.phone)) {
+                    if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.PHONE_PERMISSION)) {
+                        PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.PHONE_PERMISSION);
+                        return;
                     }
+                    showDialDialog(hotelDetailInfoBean.phone);
                 }
                 break;
             case R.id.tv_view_comment:
@@ -651,7 +658,7 @@ public class HotelDetailActivity extends BaseActivity {
             case R.id.tv_comment:
             case R.id.tv_assess_point:
                 if (hotelDetailInfoBean != null) {
-                    intent = new Intent(this, HotelAssessesActivity.class);
+                    intent = new Intent(this, HotelCommendsActivity.class);
                     intent.putExtra("hotelId", HotelOrderManager.getInstance().getHotelDetailInfo().id);
                 }
                 break;
@@ -667,6 +674,30 @@ public class HotelDetailActivity extends BaseActivity {
         if (null != intent) {
             startActivity(intent);
         }
+    }
+
+    private void showDialDialog(final String number) {
+        if (null == mDialDialog) {
+            mDialDialog = new CustomDialog(this);
+        }
+        mDialDialog.setMessage(String.format("是否拨打客服电话%1$s", number));
+        mDialDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        mDialDialog.setPositiveButton("拨打", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Uri dialUri = Uri.parse("tel:" + number);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, dialUri);
+                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(callIntent);
+            }
+        });
+        mDialDialog.setCanceledOnTouchOutside(true);
+        mDialDialog.show();
     }
 
     private void initIndicatorLay(int count) {
@@ -717,6 +748,11 @@ public class HotelDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == PermissionsDef.PERMISSIONS_GRANTED
+                && requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            showDialDialog(hotelDetailInfoBean.phone);
+            return;
+        }
         if (resultCode != RESULT_OK) {
             return;
         }

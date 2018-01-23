@@ -1,4 +1,4 @@
-package com.prj.sdk.app;
+package com.huicheng.hotel.android.content;
 
 /**
  * @author kborid

@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,9 +13,9 @@ import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.control.DataCleanManager;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.Utils;
@@ -27,7 +26,7 @@ import java.io.File;
  * @author kborid
  * @date 2016/12/13 0013
  */
-public class UcSettingActivity extends BaseActivity {
+public class UcSettingActivity extends BaseAppActivity {
 
     private TextView tv_cache, tv_about, tv_version, tv_assess, tv_layer, tv_secret;
     private TextView tv_cache_size;
@@ -36,12 +35,8 @@ public class UcSettingActivity extends BaseActivity {
     private LinearLayout debug_lay;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_setting_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_setting);
     }
 
     @Override
@@ -191,10 +186,5 @@ public class UcSettingActivity extends BaseActivity {
         } else {
             debug_lay.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

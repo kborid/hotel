@@ -14,10 +14,10 @@ import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.OrdersSpendInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomCirclePieChart;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
@@ -28,7 +28,7 @@ import java.util.Calendar;
  * @author kborid
  * @date 2016/12/8 0008
  */
-public class UcCostDetailActivity extends BaseActivity {
+public class UcCostDetailActivity extends BaseAppActivity {
 
     private LinearLayout root_lay;
     private LinearLayout chart_lay;
@@ -45,19 +45,18 @@ public class UcCostDetailActivity extends BaseActivity {
     private TextView tv_year_count, tv_month_count, tv_week_count;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_costdetail_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void requestData() {
+        super.requestData();
         if (null == ordersSpendInfoBean) {
-            if (null == savedInstanceState) {
-                requestSpendRecorded();
-            }
+            requestSpendRecorded();
         } else {
             updateOrdersSpendInfo();
         }
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_costdetail);
     }
 
     @Override
@@ -158,11 +157,6 @@ public class UcCostDetailActivity extends BaseActivity {
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-    }
-
     private void requestSpendRecorded() {
         LogUtil.i(TAG, "requestSpendRecorded()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
@@ -178,11 +172,6 @@ public class UcCostDetailActivity extends BaseActivity {
         }
 
         requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     private void updateOrdersSpendInfo() {
@@ -206,11 +195,6 @@ public class UcCostDetailActivity extends BaseActivity {
             tv_week_count.setText(String.valueOf((int) ordersSpendInfoBean.thisweek));
             root_lay.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

@@ -13,9 +13,10 @@
     <permission android:name="android.permission.WRITE_APN_SETTINGS" />
     <!--获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!--讯飞语音所需权限，本app未使用该功能，故注释-->
+    <!--<uses-permission android:name="android.permission.READ_CONTACTS" />-->
+    <!--<uses-permission android:name="android.permission.CAMERA" />-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -28,8 +29,8 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.NFC" />
-
+    <!--未知，先注释-->
+    <!--<uses-permission android:name="android.permission.NFC" />-->
     <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!--银联支付权限-->
@@ -71,15 +72,29 @@
                 <data android:scheme="abcbooking" />
             </intent-filter>
         </activity>
+
+        <!--权限画面-->
         <activity
-            android:name=".ui.activity.PermissionsActivity"
+            android:name=".permission.PermissionsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PermissionTheme" />
+        <!--全文检索-->
         <activity
-            android:name=".ui.activity.MainSwitcherActivity"
-            android:launchMode="singleTask"
+            android:name=".ui.activity.hotel.HotelAllSearchActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <!-- 图片放大显示画面 -->
+        <activity
+            android:name=".ui.activity.ImageScaleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ImageTransparent" />
+        <!-- h5应用页面 -->
+        <activity
+            android:name=".ui.activity.HtmlActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
+
         <!--登录入口-->
         <activity
             android:name=".ui.activity.UcLoginMainActivity"
@@ -160,79 +175,14 @@
         <activity
             android:name=".ui.activity.UcCostDetailActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.hotel.HotelAllSearchActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
-        <!--日期选择画面-->
-        <activity
-            android:name=".ui.activity.CalendarChooseActivity"
-            android:screenOrientation="portrait" />
-        <!-- 图片放大显示画面 -->
-        <activity
-            android:name=".ui.activity.ImageScaleActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ImageTransparent" />
-        <!--支付方式画面-->
-        <activity
-            android:name=".ui.activity.hotel.HotelOrderPayActivity"
-            android:screenOrientation="portrait" />
-        <!--支付结果画面-->
-        <activity
-            android:name=".ui.activity.hotel.HotelOrderPaySuccessActivity"
-            android:screenOrientation="portrait" />
-        <!-- h5应用页面 -->
-        <activity
-            android:name=".ui.activity.HtmlActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
 
 
-        <!--机票-->
-        <!--机票入口main-->
+        <!--分流画面-->
         <activity
-            android:name=".ui.activity.plane.PlaneMainActivity"
+            android:name=".ui.activity.MainSwitcherActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <!--机场选择画面-->
-        <activity
-            android:name=".ui.activity.plane.PlaneAirportChooserActivity"
-            android:screenOrientation="portrait" />
-        <!--机票列表画面-->
-        <activity
-            android:name=".ui.activity.plane.PlaneFlightListActivity"
-            android:screenOrientation="portrait" />
-        <!--机票详情、航班列表画面-->
-        <activity
-            android:name=".ui.activity.plane.PlaneTicketListActivity"
-            android:screenOrientation="portrait" />
-        <!--机票订单确认画面-->
-        <activity
-            android:name=".ui.activity.plane.PlaneNewOrderActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <!--机票地址管理画面-->
-        <activity
-            android:name=".ui.activity.plane.PlaneAddrManagerActivity"
-            android:screenOrientation="portrait" />
-        <!--机票地址选择画面-->
-        <activity
-            android:name=".ui.activity.plane.PlaneAddrChooserActivity"
-            android:screenOrientation="portrait" />
-        <!--机票地址新增、编辑画面-->
-        <activity
-            android:name=".ui.activity.plane.PlaneAddrEditActivity"
-            android:screenOrientation="portrait" />
-        <!--机票支付画面-->
-        <activity
-            android:name=".ui.activity.plane.PlaneOrderPayActivity"
-            android:screenOrientation="portrait" />
-        <!--机票订单支付成功-->
-        <activity
-            android:name=".ui.activity.plane.PlaneOrderPaySuccessActivity"
-            android:screenOrientation="portrait" />
-
         <!--酒店-->
         <!--酒店入口main-->
         <activity
@@ -245,22 +195,14 @@
             android:name=".ui.activity.hotel.HotelOrderDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <!--机票订单详情-->
-        <activity
-            android:name=".ui.activity.plane.PlaneOrderDetailActivity"
-            android:screenOrientation="portrait" />
-        <!--订单评价-->
-        <activity
-            android:name=".ui.activity.hotel.HotelOrdersAssessActivity"
-            android:screenOrientation="portrait" />
         <!--评价详情-->
         <activity
-            android:name=".ui.activity.hotel.HotelAssessDetailActivity"
+            android:name=".ui.activity.hotel.HotelAssessOrderDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--评论列表画面-->
         <activity
-            android:name=".ui.activity.hotel.HotelAssessesActivity"
+            android:name=".ui.activity.UcAssessesActivity"
             android:screenOrientation="portrait" />
         <!--城市选择画面-->
         <activity
@@ -282,7 +224,7 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!--后悔药出售画面-->
         <activity
-            android:name=".ui.activity.hotel.HotelHhySaleActivity"
+            android:name=".ui.activity.hotel.HotelHhySellingActivity"
             android:screenOrientation="portrait" />
         <!--后悔药订单详情-->
         <activity
@@ -331,6 +273,68 @@
             android:name=".ui.activity.hotel.HotelInvoiceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--日期选择画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelCalendarChooseActivity"
+            android:screenOrientation="portrait" />
+        <!--支付方式画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelOrderPayActivity"
+            android:screenOrientation="portrait" />
+        <!--支付结果画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelOrderPaySuccessActivity"
+            android:screenOrientation="portrait" />
+
+
+        <!--机票-->
+        <!--机票入口main-->
+        <activity
+            android:name=".ui.activity.plane.PlaneMainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--机场选择画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneAirportChooserActivity"
+            android:screenOrientation="portrait" />
+        <!--机票列表画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneFlightListActivity"
+            android:screenOrientation="portrait" />
+        <!--机票详情、航班列表画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneTicketListActivity"
+            android:screenOrientation="portrait" />
+        <!--机票订单确认画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneNewOrderActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--机票地址管理画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneAddrManagerActivity"
+            android:screenOrientation="portrait" />
+        <!--机票地址选择画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneAddrChooserActivity"
+            android:screenOrientation="portrait" />
+        <!--机票地址新增、编辑画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneAddrEditActivity"
+            android:screenOrientation="portrait" />
+        <!--机票支付画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneOrderPayActivity"
+            android:screenOrientation="portrait" />
+        <!--机票订单支付成功-->
+        <activity
+            android:name=".ui.activity.plane.PlaneOrderPaySuccessActivity"
+            android:screenOrientation="portrait" />
+        <!--机票订单详情-->
+        <activity
+            android:name=".ui.activity.plane.PlaneOrderDetailActivity"
+            android:screenOrientation="portrait" />
 
 
         <receiver android:name=".pay.wxpay.AppRegister">

@@ -28,11 +28,11 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelSpaceTieCommentInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelSpaceTieInfoBean;
 import com.huicheng.hotel.android.ui.adapter.PersonInfo;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
@@ -49,7 +49,7 @@ import java.util.Map;
  * @author kborid
  * @date 2017/3/21 0021
  */
-public class HotelSpacePublishActivity extends BaseActivity {
+public class HotelSpacePublishActivity extends BaseAppActivity {
 
     private TextView tv_left, tv_right, tv_title;
     private ImageView iv_upload_pic, iv_picture;
@@ -63,12 +63,8 @@ public class HotelSpacePublishActivity extends BaseActivity {
     private int hotelId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_spacepublish_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_spacepublish);
     }
 
     @Override
@@ -137,11 +133,6 @@ public class HotelSpacePublishActivity extends BaseActivity {
             default:
                 break;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     private void choosePictureDialog() {
@@ -221,17 +212,6 @@ public class HotelSpacePublishActivity extends BaseActivity {
 
         requestID = DataLoader.getInstance().loadData(this, d);
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {

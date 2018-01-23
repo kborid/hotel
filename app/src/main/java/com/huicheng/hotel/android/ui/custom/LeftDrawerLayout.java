@@ -33,11 +33,11 @@ import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
 import com.huicheng.hotel.android.ui.activity.UcRegisterActivity;
 import com.huicheng.hotel.android.ui.activity.UcSettingActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelOrdersAssessActivity;
+import com.huicheng.hotel.android.ui.activity.UcAssessesActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
@@ -267,7 +267,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                 doActionIntent = new Intent(context, UcCouponsActivity.class);
                 break;
             case R.id.tv_assess:
-                doActionIntent = new Intent(context, HotelOrdersAssessActivity.class);
+                doActionIntent = new Intent(context, UcAssessesActivity.class);
                 break;
             case R.id.tv_vip:
                 doActionIntent = new Intent(context, UcFansHotelActivity.class);

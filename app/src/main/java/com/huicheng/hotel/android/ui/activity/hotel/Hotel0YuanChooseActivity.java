@@ -17,16 +17,15 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.CouponDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.FreeOneNightBean;
 import com.huicheng.hotel.android.ui.adapter.Hotel0YuanAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 
 import java.lang.ref.WeakReference;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -36,7 +35,7 @@ import java.util.TimerTask;
  * @author kborid
  * @date 2016/11/15 0015
  */
-public class Hotel0YuanChooseActivity extends BaseActivity /*implements AreaWheelDialog.AreaWheelCallback*/ {
+public class Hotel0YuanChooseActivity extends BaseAppActivity /*implements AreaWheelDialog.AreaWheelCallback*/ {
 
     private static final int ROW = 5;
     private static final int UPDATETIMER = 0x01;
@@ -61,15 +60,14 @@ public class Hotel0YuanChooseActivity extends BaseActivity /*implements AreaWhee
     private FreeOneNightBean bean = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_0yuanchoose_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestFreeActiveDetail(0);
-        }
+    protected void requestData() {
+        super.requestData();
+        requestFreeActiveDetail(0);
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_0yuanchoose);
     }
 
     @Override
@@ -192,11 +190,6 @@ public class Hotel0YuanChooseActivity extends BaseActivity /*implements AreaWhee
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         timer.cancel();
@@ -217,6 +210,7 @@ public class Hotel0YuanChooseActivity extends BaseActivity /*implements AreaWhee
 
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
         if (response != null && response.body != null) {
             if (request.flag == AppConst.FREE_ACTIVE_DETAIL) {
                 removeProgressDialog();
@@ -234,21 +228,6 @@ public class Hotel0YuanChooseActivity extends BaseActivity /*implements AreaWhee
                 requestFreeActiveDetail(0);
             }
         }
-    }
-
-    @Override
-    public void notifyError(ResponseData request, ResponseData response, Exception e) {
-        removeProgressDialog();
-        String message;
-        if (e != null && e instanceof ConnectException) {
-            message = getString(R.string.dialog_tip_net_error);
-        } else {
-            message = response != null && response.data != null ? response.data.toString() : getString(R.string.dialog_tip_null_error);
-            if (response != null) {
-                requestFreeActiveDetail(0);
-            }
-        }
-        CustomToast.show(message, CustomToast.LENGTH_SHORT);
     }
 
     class MyTimerTask extends TimerTask {

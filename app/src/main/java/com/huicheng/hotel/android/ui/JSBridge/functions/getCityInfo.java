@@ -1,7 +1,7 @@
 package com.huicheng.hotel.android.ui.JSBridge.functions;
 
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.SharedPreferenceUtil;
 
 import org.json.JSONObject;

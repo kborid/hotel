@@ -38,7 +38,7 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.RoomConfirmInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.RoomDetailInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.CustomNoAutoScrollBannerLayout;
@@ -47,8 +47,8 @@ import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.BitmapUtils;
@@ -71,7 +71,7 @@ import java.util.Map;
  * @author kborid
  * @date 2017/1/3 0003
  */
-public class HotelRoomDetailActivity extends BaseActivity {
+public class HotelRoomDetailActivity extends BaseAppActivity {
 
     private static final int SELECTED_BAR_COUNT = 2;
 
@@ -119,16 +119,14 @@ public class HotelRoomDetailActivity extends BaseActivity {
 
     private boolean isSetDefaultPrePay = false;
 
+    protected void requestData() {
+        super.requestData();
+        requestRoomDetailInfo();
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotelroomdetail_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestRoomDetailInfo();
-        }
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_roomdetail);
     }
 
     @Override
@@ -207,8 +205,7 @@ public class HotelRoomDetailActivity extends BaseActivity {
     @Override
     public void initParams() {
         super.initParams();
-        setBackButtonResource(R.drawable.iv_back_white);
-
+        setBackButtonResource(R.drawable.iv_new_black_back);
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
             iv_fans.setVisibility(View.VISIBLE);
@@ -557,7 +554,7 @@ public class HotelRoomDetailActivity extends BaseActivity {
                 }
                 break;
             case R.id.point_lay: {
-                Intent intent = new Intent(this, HotelAssessesActivity.class);
+                Intent intent = new Intent(this, HotelCommendsActivity.class);
                 intent.putExtra("hotelId", HotelOrderManager.getInstance().getHotelDetailInfo().id);
                 startActivity(intent);
                 break;

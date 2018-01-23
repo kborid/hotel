@@ -16,12 +16,12 @@ import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
@@ -32,7 +32,7 @@ import com.prj.sdk.util.StringUtil;
  * @author kborid
  * @date 2017/3/13 0013
  */
-public class HotelOrderPaySuccessActivity extends BaseActivity {
+public class HotelOrderPaySuccessActivity extends BaseAppActivity {
 
     private HotelDetailInfoBean hotelDetailInfoBean;
 
@@ -49,15 +49,14 @@ public class HotelOrderPaySuccessActivity extends BaseActivity {
     private boolean showTipsOrNot = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotel_paysuccess_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestHotelDetailInfo();
-        }
+    protected void requestData() {
+        super.requestData();
+        requestHotelDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_orderpaysuccess);
     }
 
     @Override
@@ -185,7 +184,7 @@ public class HotelOrderPaySuccessActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-//        super.onClick(v);
+        super.onClick(v);
         switch (v.getId()) {
             case R.id.iv_back:
                 startActivity(new Intent(this, HotelMainActivity.class));
@@ -198,21 +197,6 @@ public class HotelOrderPaySuccessActivity extends BaseActivity {
             default:
                 break;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +21,10 @@ import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlanePassengerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -41,7 +40,7 @@ import java.util.List;
  * @date 2017/11/22 0022.
  */
 
-public class PlaneNewOrderActivity extends BaseActivity {
+public class PlaneNewOrderActivity extends BaseAppActivity {
 
     private static final int TYPE_GO = 1;
     private static final int TYPE_BACK = 2;
@@ -72,22 +71,22 @@ public class PlaneNewOrderActivity extends BaseActivity {
     private int requestTagCount = 0;
     private HashMap<Integer, Integer> mTag = new HashMap<>();
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_plane_neworder_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            mBkInfo.clear();
-            mPassengers.clear();
-            requestTagCount = 0;
-            mTag.clear();
-            requestTicketBookingInfo(TYPE_GO, goFlightDetailInfo);
-            if (flightType == PlaneCommDef.FLIGHT_GOBACK) {
-                requestTicketBookingInfo(TYPE_BACK, backFlightDetailInfo);
-            }
+    }
+
+    @Override
+    protected void requestData() {
+        super.requestData();
+        mBkInfo.clear();
+        mPassengers.clear();
+        requestTagCount = 0;
+        mTag.clear();
+        requestTicketBookingInfo(TYPE_GO, goFlightDetailInfo);
+        if (flightType == PlaneCommDef.FLIGHT_GOBACK) {
+            requestTicketBookingInfo(TYPE_BACK, backFlightDetailInfo);
         }
     }
 
@@ -301,16 +300,6 @@ public class PlaneNewOrderActivity extends BaseActivity {
             showProgressDialog(this);
         }
         requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

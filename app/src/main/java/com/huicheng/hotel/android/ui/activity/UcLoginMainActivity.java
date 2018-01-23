@@ -1,32 +1,32 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 
 /**
  * @auth kborid
  * @date 2017/12/6 0006.
  */
 
-public class UcLoginMainActivity extends BaseActivity {
+public class UcLoginMainActivity extends BaseAppActivity {
 
     private TextView tv_right, tv_action, tv_action2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initMainWindow();
-        super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
-        setContentView(R.layout.act_login_main_layout);
-        initViews();
-        initParams();
-        initListeners();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_loginmain);
     }
 
     @Override
@@ -35,11 +35,6 @@ public class UcLoginMainActivity extends BaseActivity {
         tv_right = (TextView) findViewById(R.id.tv_right);
         tv_action = (TextView) findViewById(R.id.tv_action);
         tv_action2 = (TextView) findViewById(R.id.tv_action2);
-    }
-
-    @Override
-    public void initParams() {
-        super.initParams();
     }
 
     @Override
@@ -84,15 +79,5 @@ public class UcLoginMainActivity extends BaseActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.user_login_exit_in, R.anim.user_login_exit_out);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

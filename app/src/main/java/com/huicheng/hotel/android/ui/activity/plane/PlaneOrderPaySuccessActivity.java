@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,10 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.prj.sdk.util.BitmapUtils;
 
-public class PlaneOrderPaySuccessActivity extends BaseActivity {
+public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
 
     private ImageView iv_pay_success;
     private LinearLayout order_info_lay;
@@ -28,12 +27,8 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
     private TextView tv_plane_date, tv_plane_date_back;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_plane_paysuccess_layout);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override
@@ -93,21 +88,6 @@ public class PlaneOrderPaySuccessActivity extends BaseActivity {
                 break;
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

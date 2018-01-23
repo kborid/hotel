@@ -26,12 +26,12 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.activity.plane.PlaneMainActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -48,7 +48,7 @@ import java.io.File;
  * @author kborid
  * @date 2017/5/24 0024
  */
-public class MainSwitcherActivity extends BaseActivity implements LeftDrawerLayout.OnLeftDrawerListener {
+public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerLayout.OnLeftDrawerListener {
     private AppInfoBean mAppInfoBean = null;
     private long exitTime = 0;
     private LinearLayout hotel_lay, plane_lay, train_lay, taxi_lay;
@@ -65,14 +65,14 @@ public class MainSwitcherActivity extends BaseActivity implements LeftDrawerLayo
     private ImageView iv_logo_vertical;
     private ImageView iv_left;
 
+    protected void preOnCreate() {
+        super.preOnCreate();
+        initLaunchWindow();
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        initMainWindow();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_mainswitcher_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void setContentView() {
+        setContentView(R.layout.act_main_switcher);
     }
 
     @Override

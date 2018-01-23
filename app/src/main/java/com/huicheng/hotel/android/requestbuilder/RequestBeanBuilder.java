@@ -10,7 +10,7 @@ import com.prj.sdk.algo.Algorithm3DES;
 import com.prj.sdk.algo.AlgorithmData;
 import com.prj.sdk.algo.Base64;
 import com.prj.sdk.algo.MD5Tool;
-import com.prj.sdk.app.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.app.AppContext;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.constants.InfoType;

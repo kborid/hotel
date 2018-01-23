@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity.plane;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,15 +25,15 @@ import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.CalendarChooseActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightCalendarPriceAdapter;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightItemAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.plane.OnConsiderLayoutResultListener;
 import com.huicheng.hotel.android.ui.custom.plane.PlaneConsiderLayout;
-import com.prj.sdk.app.AppConst;
-import com.prj.sdk.app.NetURL;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -57,7 +56,7 @@ import java.util.List;
  * @date 2017/11/21 0021.
  */
 
-public class PlaneFlightListActivity extends BaseActivity {
+public class PlaneFlightListActivity extends BaseAppActivity {
 
     private int status;
     private String mOffPiny, mOnPiny;
@@ -84,17 +83,16 @@ public class PlaneFlightListActivity extends BaseActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_plane_flightlist_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestPlaneFlightInfo(true);
-            if (StringUtil.isEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.AIR_COMPANY_JSON, "", false))) {
-                requestAirCompaniesInfo();
-            }
+    }
+
+    @Override
+    protected void requestData() {
+        super.requestData();
+        requestPlaneFlightInfo(true);
+        if (StringUtil.isEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.AIR_COMPANY_JSON, "", false))) {
+            requestAirCompaniesInfo();
         }
     }
 
@@ -314,7 +312,7 @@ public class PlaneFlightListActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.calendar_lay:
-                Intent intent = new Intent(this, CalendarChooseActivity.class);
+                Intent intent = new Intent(this, HotelCalendarChooseActivity.class);
                 startActivityForResult(intent, 0x01);
                 break;
         }
@@ -352,16 +350,6 @@ public class PlaneFlightListActivity extends BaseActivity {
         lp.alpha = 0.5f;
         getWindow().setAttributes(lp);
         mPlaneConsiderPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override
