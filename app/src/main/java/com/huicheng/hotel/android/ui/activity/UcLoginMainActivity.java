@@ -1,32 +1,32 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 
 /**
  * @auth kborid
  * @date 2017/12/6 0006.
  */
 
-public class UcLoginMainActivity extends BaseActivity {
+public class UcLoginMainActivity extends BaseAppActivity {
 
     private TextView tv_right, tv_action, tv_action2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initMainWindow();
-        super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_uc_loginmain);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override

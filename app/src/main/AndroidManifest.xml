@@ -54,7 +54,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:theme,android:allowBackup,android:name">
         <activity
-            android:name=".ui.activity.WelcomeActivity"
+            android:name=".ui.activity.LauncherActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.WelTheme">

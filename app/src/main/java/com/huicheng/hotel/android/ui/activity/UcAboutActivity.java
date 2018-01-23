@@ -7,9 +7,9 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 
-public class UcAboutActivity extends BaseActivity {
+public class UcAboutActivity extends BaseAppActivity {
 
     public static final int STATEMENT = 1;
     public static final int WORK_CONDITION = 2;
@@ -22,12 +22,8 @@ public class UcAboutActivity extends BaseActivity {
     private TextView tv_iflytek_tips;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_uc_about);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override

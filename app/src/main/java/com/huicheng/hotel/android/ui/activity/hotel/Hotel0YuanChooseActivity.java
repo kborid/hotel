@@ -19,7 +19,7 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.CouponDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.FreeOneNightBean;
 import com.huicheng.hotel.android.ui.adapter.Hotel0YuanAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.AreaWheelDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
@@ -38,7 +38,7 @@ import java.util.TimerTask;
  * @author kborid
  * @date 2016/11/15 0015
  */
-public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelDialog.AreaWheelCallback {
+public class Hotel0YuanChooseActivity extends BaseAppActivity implements AreaWheelDialog.AreaWheelCallback {
 
     private static final int ROW = 5;
     private static final int UPDATETIMER = 0x01;
@@ -63,15 +63,14 @@ public class Hotel0YuanChooseActivity extends BaseActivity implements AreaWheelD
     private FreeOneNightBean bean = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_0yuanchoose_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestFreeActiveDetail(0);
-        }
+    protected void requestData() {
+        super.requestData();
+        requestFreeActiveDetail(0);
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_0yuanchoose);
     }
 
     @Override

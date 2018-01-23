@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.activity.hotel;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.adapter.HotelAttendPersonAdapter;
 import com.huicheng.hotel.android.ui.adapter.PersonInfo;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.Utils;
@@ -25,7 +24,7 @@ import com.prj.sdk.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelAttendPersonActivity extends BaseActivity {
+public class HotelAttendPersonActivity extends BaseAppActivity {
 
     private final static int PAGESIZE = 10;
     /**
@@ -40,15 +39,14 @@ public class HotelAttendPersonActivity extends BaseActivity {
     private int pageIndex = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        requestAttendPersonList(pageIndex);
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_attendperson);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestAttendPersonList(pageIndex);
-        }
     }
 
     @Override

@@ -30,7 +30,7 @@ import com.huicheng.hotel.android.net.bean.OrderDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomConfirmInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
 import com.huicheng.hotel.android.ui.custom.CommonCustomInfoLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
@@ -50,7 +50,7 @@ import java.util.Map;
  * @author kborid
  * @date 2017/1/5 0005
  */
-public class HotelRoomOrderActivity extends BaseActivity {
+public class HotelRoomOrderActivity extends BaseAppActivity {
 
     private RoomDetailInfoBean roomDetailInfoBean = null;
     //    private List<RoomConfirmInfoBean> roomConfirmList = new ArrayList<>();
@@ -93,17 +93,16 @@ public class HotelRoomOrderActivity extends BaseActivity {
     private boolean isCanUseYhq = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotel_roomorder);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            if (isCanUseYhq) {
-                requestCheckValidCoupon();
-            }
+    protected void requestData() {
+        super.requestData();
+        if (isCanUseYhq) {
+            requestCheckValidCoupon();
         }
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_roomorder);
     }
 
     @Override

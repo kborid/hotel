@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.net.bean.InvoiceDetailInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.StringUtil;
 
@@ -20,7 +20,7 @@ import com.prj.sdk.util.StringUtil;
  * @author kborid
  * @date 2017/1/7 0007
  */
-public class HotelInvoiceActivity extends BaseActivity {
+public class HotelInvoiceActivity extends BaseAppActivity {
     private Switch btn_switch;
     private TextView tv_status;
     private LinearLayout invoice_lay;
@@ -31,12 +31,8 @@ public class HotelInvoiceActivity extends BaseActivity {
     private boolean isInvoice = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_invoicedetail);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override

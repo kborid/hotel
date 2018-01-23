@@ -27,7 +27,7 @@ import com.huicheng.hotel.android.net.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
@@ -42,7 +42,7 @@ import java.util.Date;
  * @author kborid
  * @date 2016/12/8 0008
  */
-public class HotelOrderDetailActivity extends BaseActivity {
+public class HotelOrderDetailActivity extends BaseAppActivity {
 
     private String orderId, orderType;
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
@@ -70,15 +70,14 @@ public class HotelOrderDetailActivity extends BaseActivity {
     private int mScrollY;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        requestOrderDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_orderdetail_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestOrderDetailInfo();
-        }
     }
 
     @Override

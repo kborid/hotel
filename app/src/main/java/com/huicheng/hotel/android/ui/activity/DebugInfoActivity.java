@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,7 +9,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
@@ -18,17 +17,13 @@ import com.prj.sdk.util.StringUtil;
  * @author kborid
  * @date 2017/6/5 0005
  */
-public class DebugInfoActivity extends BaseActivity {
+public class DebugInfoActivity extends BaseAppActivity {
     private TextView tv_debugInfo;
     private TextView tv_changed, tv_js, tv_close;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_debuginfo_layout);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override

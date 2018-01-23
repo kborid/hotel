@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity.hotel;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,7 +20,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AssessOrderInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -40,7 +39,7 @@ import java.util.List;
  * @author kborid
  * @date 2016/12/14 0014
  */
-public class HotelAssessOrdersActivity extends BaseActivity {
+public class HotelAssessOrdersActivity extends BaseAppActivity {
 
     private static final int PAGESIZE = 10;
     private int pageIndex = 0;
@@ -52,23 +51,27 @@ public class HotelAssessOrdersActivity extends BaseActivity {
     private int mAssessHotelItemBgResId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listview.refreshingHeaderView();
+            }
+        }, 350);
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_accessorders);
+    }
+
+    @Override
+    protected void initTypeArrayAttributes() {
+        super.initTypeArrayAttributes();
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         mAssessHotelItemBgResId = ta.getResourceId(R.styleable.MyTheme_assessesItemBg, R.drawable.iv_assess_hotel);
         ta.recycle();
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    listview.refreshingHeaderView();
-                }
-            }, 350);
-        }
     }
 
     @Override

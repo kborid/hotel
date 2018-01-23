@@ -33,7 +33,7 @@ import com.huicheng.hotel.android.pay.alipay.AlipayUtil;
 import com.huicheng.hotel.android.pay.qmf.QmfPayHelper;
 import com.huicheng.hotel.android.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
@@ -51,7 +51,7 @@ import java.util.Date;
  * @author kborid
  * @date 2017/3/7 0007
  */
-public class HotelOrderPayActivity extends BaseActivity {
+public class HotelOrderPayActivity extends BaseAppActivity {
 
     private PayResultReceiver mPayReceiver = new PayResultReceiver();
     private OrderPayDetailInfoBean orderPayDetailInfoBean = null;
@@ -82,15 +82,14 @@ public class HotelOrderPayActivity extends BaseActivity {
     private Handler myHandler = new Handler(Looper.getMainLooper());
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        requestOrderDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_orderpay);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestOrderDetailInfo();
-        }
     }
 
     @Override

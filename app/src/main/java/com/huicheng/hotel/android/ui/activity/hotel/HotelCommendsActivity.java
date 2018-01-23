@@ -21,7 +21,7 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AssessCommendInfoBean;
 import com.huicheng.hotel.android.net.bean.AssessOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.ImageScaleActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -43,7 +43,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * @author kborid
  * @date 2017/1/13 0013
  */
-public class HotelCommendsActivity extends BaseActivity {
+public class HotelCommendsActivity extends BaseAppActivity {
 
     private static final int PAGESIZE = 10;
     private int pageIndex = 0;
@@ -59,15 +59,14 @@ public class HotelCommendsActivity extends BaseActivity {
     private List<AssessOrderDetailInfoBean> list = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        listview.refreshingHeaderView();
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_commends);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            listview.refreshingHeaderView();
-        }
     }
 
     @Override

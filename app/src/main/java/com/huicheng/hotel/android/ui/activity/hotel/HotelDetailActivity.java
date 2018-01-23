@@ -42,7 +42,7 @@ import com.huicheng.hotel.android.net.bean.RoomListInfoBean;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
@@ -63,7 +63,7 @@ import java.util.List;
  * @author kborid
  * @date 2017/1/1 0001
  */
-public class HotelDetailActivity extends BaseActivity {
+public class HotelDetailActivity extends BaseAppActivity {
 
     private static final int SELECTED_BAR_COUNT = 2;
     private LinearLayout root_lay;
@@ -101,9 +101,19 @@ public class HotelDetailActivity extends BaseActivity {
     private CustomDialog mDialDialog = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        requestHotelDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_detail);
+    }
+
+    @Override
+    protected void initTypeArrayAttributes() {
+        super.initTypeArrayAttributes();
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         mRoomPriceColorId = ta.getInt(R.styleable.MyTheme_roomItemPrice, getResources().getColor(R.color.indicatorColor));
         mRoomDetailSpaceId = ta.getDrawable(R.styleable.MyTheme_roomDetailSpace);
@@ -111,13 +121,6 @@ public class HotelDetailActivity extends BaseActivity {
         ygrRoomItemBackgroundId = ta.getResourceId(R.styleable.MyTheme_roomItemGradient, R.drawable.roomitem_ygr_gradient);
         indicatorSelId = ta.getResourceId(R.styleable.MyTheme_indicatorSel, R.drawable.indicator_sel);
         ta.recycle();
-
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestHotelDetailInfo();
-        }
     }
 
     @Override

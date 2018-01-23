@@ -22,7 +22,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.UserInfo;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
@@ -41,7 +41,7 @@ import cn.jpush.android.api.TagAliasCallback;
 /**
  * 手机绑定
  */
-public class UcBindPhoneActivity extends BaseActivity implements DialogInterface.OnCancelListener {
+public class UcBindPhoneActivity extends BaseAppActivity implements DialogInterface.OnCancelListener {
 
     private TextView tv_title_summary;
     private EditText et_phone, et_yzm;
@@ -56,14 +56,15 @@ public class UcBindPhoneActivity extends BaseActivity implements DialogInterface
     private String recommendChannel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initMainWindow();
-        super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_uc_bindphone);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override

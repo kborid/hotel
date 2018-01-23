@@ -43,7 +43,7 @@ import com.huicheng.hotel.android.net.bean.HotelSpaceTieInfoBean;
 import com.huicheng.hotel.android.ui.activity.ImageScaleActivity;
 import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
 import com.huicheng.hotel.android.ui.adapter.HotelSpaceCommentAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.FullscreenHolder;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
@@ -70,7 +70,7 @@ import java.util.List;
  * @author kborid
  * @date 2017/3/21 0021
  */
-public class HotelSpaceDetailActivity extends BaseActivity implements DataCallback {
+public class HotelSpaceDetailActivity extends BaseAppActivity implements DataCallback {
 
     private static final int PAGESIZE = 10;
     private WebView webview = null;
@@ -101,19 +101,18 @@ public class HotelSpaceDetailActivity extends BaseActivity implements DataCallba
     private CustomSharePopup mCustomShareView = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_spacedetail_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void requestData() {
+        super.requestData();
         if (null == hotelSpaceBasicInfoBean) {
-            if (null == savedInstanceState) {
-                requestHotelSpaceBasicInfo();
-            }
+            requestHotelSpaceBasicInfo();
         } else {
             replyListView.refreshingHeaderView();
         }
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_spacedetail);
     }
 
     @Override

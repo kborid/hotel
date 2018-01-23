@@ -22,7 +22,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
@@ -34,7 +34,7 @@ import com.prj.sdk.widget.webview.WebChromeClientCompat;
  * 中间件处理，加载html5应用数据
  */
 @SuppressLint("SetJavaScriptEnabled")
-public class HtmlActivity extends BaseActivity {
+public class HtmlActivity extends BaseAppActivity {
 
     private static final String CSS_STYLE = "<style>* {font-size:40px;padding:10px;}</style>";
     private WebView mWebView;
@@ -48,13 +48,14 @@ public class HtmlActivity extends BaseActivity {
     private boolean isJSTest = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initMainWindow();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ui_html_act);
-        initViews();
-        initParams();
-        initListeners();
         if (AppConst.ISDEVELOP) {
             if (isJSTest) {
                 mWebView.loadUrl("file:///android_asset/ExampleApp.html");
@@ -63,6 +64,11 @@ public class HtmlActivity extends BaseActivity {
                 mWebView.setLayoutParams(rlp);
             }
         }
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.ui_html_act);
     }
 
     public void initViews() {

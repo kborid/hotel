@@ -15,7 +15,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarSelectedListener;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarUtils;
 import com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarRecyclerView;
@@ -29,7 +29,7 @@ import com.prj.sdk.util.SharedPreferenceUtil;
  * @author kborid
  * @date 2016/11/17 0017
  */
-public class HotelCalendarChooseActivity extends BaseActivity implements CalendarSelectedListener {
+public class HotelCalendarChooseActivity extends BaseAppActivity implements CalendarSelectedListener {
 
     private LinearLayout week_lay;
     private CustomCalendarRecyclerView calendar_lay;
@@ -45,12 +45,8 @@ public class HotelCalendarChooseActivity extends BaseActivity implements Calenda
     private long beginTime, endTime;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_datechoose_layout);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,7 +21,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.pay.wxpay.MD5;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -34,7 +33,7 @@ import com.prj.sdk.util.Utils;
 /**
  * 找回密码
  */
-public class UcForgetPwdActivity extends BaseActivity {
+public class UcForgetPwdActivity extends BaseAppActivity {
 
     private EditText et_phone, et_yzm, et_pwd;
     private TextView tv_yzm;
@@ -44,14 +43,15 @@ public class UcForgetPwdActivity extends BaseActivity {
     private boolean isValid = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initMainWindow();
-        super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_uc_forgetpwd);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override

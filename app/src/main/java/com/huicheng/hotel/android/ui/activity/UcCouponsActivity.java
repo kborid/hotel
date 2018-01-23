@@ -26,7 +26,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.CouponInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.Hotel0YuanHomeActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.bean.ResponseData;
@@ -43,7 +43,7 @@ import java.util.List;
  * @date 2016/12/8 0008
  * @modify 2017/02/20
  */
-public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class UcCouponsActivity extends BaseAppActivity implements ViewPager.OnPageChangeListener {
 
     private static final int COUPON_FREE = 1;
     private static final int COUPON_UNION = 2;
@@ -62,19 +62,18 @@ public class UcCouponsActivity extends BaseActivity implements ViewPager.OnPageC
     private boolean isShowAll = true;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_uc_coupons);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            if (isShowAll) {
-                requestAllCoupons();
-            } else {
-                requestUsefulCoupons();
-            }
+    protected void requestData() {
+        super.requestData();
+        if (isShowAll) {
+            requestAllCoupons();
+        } else {
+            requestUsefulCoupons();
         }
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_coupons);
     }
 
     @Override

@@ -24,7 +24,7 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.AssessOrderDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.AssessOrderInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomRatingBar;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -53,7 +53,7 @@ import java.util.Set;
  * @author kborid
  * @date 2016/12/22 0022
  */
-public class HotelAssessOrderDetailActivity extends BaseActivity {
+public class HotelAssessOrderDetailActivity extends BaseAppActivity {
 
     private LinearLayout root_lay;
     private RoundedAllImageView iv_background;
@@ -77,15 +77,14 @@ public class HotelAssessOrderDetailActivity extends BaseActivity {
     private int selectedIndex = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        requestHotelDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_assessorderdetail);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestHotelDetailInfo();
-        }
     }
 
     @Override

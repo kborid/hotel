@@ -46,7 +46,7 @@ import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.UcBountyActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
@@ -71,7 +71,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class HotelMainActivity extends BaseActivity implements LeftDrawerLayout.OnLeftDrawerListener, AMapLocationControl.MyLocationListener {
+public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayout.OnLeftDrawerListener, AMapLocationControl.MyLocationListener {
 
     private static final int REQUEST_CODE_CITY = 0x01;
     private static final int REQUEST_CODE_DATE = 0x02;
@@ -121,18 +121,22 @@ public class HotelMainActivity extends BaseActivity implements LeftDrawerLayout.
     private LinearLayout curr_position;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initMainWindow();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotel_main);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            if (SessionContext.getBannerList().size() == 0) {
-                requestMainBannerInfo();
-            }
+    }
+
+    @Override
+    protected void requestData() {
+        super.requestData();
+        if (SessionContext.getBannerList().size() == 0) {
+            requestMainBannerInfo();
         }
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_main);
     }
 
     public void initViews() {

@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
@@ -21,7 +20,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.net.bean.AppInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.down.DownCallback;
@@ -37,21 +36,23 @@ import java.io.File;
  * @author kborid
  * @date 2017/5/24 0024
  */
-public class GuideSwitchActivity extends BaseActivity {
+public class GuideSwitchActivity extends BaseAppActivity {
     private AppInfoBean mAppInfoBean = null;
     private long exitTime = 0;
     private LinearLayout hotel_lay, plane_lay, train_lay, taxi_lay;
     private String[] tips = new String[4];
     private static Handler myHandler = new Handler(Looper.getMainLooper());
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initLaunchWindow();
-        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_guideswitch_layout);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override

@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForList;
 import com.huicheng.hotel.android.ui.custom.CustomSortLayout;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabAllDay;
@@ -46,7 +46,7 @@ import java.util.List;
  * @author kborid
  * @date 2016/11/1 0001
  */
-public class HotelListActivity extends BaseActivity {
+public class HotelListActivity extends BaseAppActivity {
 
     private int index = 0;
     private long beginTime, endTime;
@@ -70,12 +70,8 @@ public class HotelListActivity extends BaseActivity {
     private boolean isLandMark = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotellist_layout);
-        initViews();
-        initParams();
-        initListeners();
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_list);
     }
 
     @Override

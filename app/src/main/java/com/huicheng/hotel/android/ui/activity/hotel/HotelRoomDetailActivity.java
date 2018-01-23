@@ -40,7 +40,7 @@ import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomConfirmInfoBean;
 import com.huicheng.hotel.android.net.bean.RoomDetailInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
 import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.CustomNoAutoScrollBannerLayout;
@@ -70,7 +70,7 @@ import java.util.Map;
  * @author kborid
  * @date 2017/1/3 0003
  */
-public class HotelRoomDetailActivity extends BaseActivity {
+public class HotelRoomDetailActivity extends BaseAppActivity {
 
     private static final int SELECTED_BAR_COUNT = 2;
 
@@ -119,15 +119,14 @@ public class HotelRoomDetailActivity extends BaseActivity {
     private boolean isSetDefaultPrePay = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        requestRoomDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_roomdetail);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestRoomDetailInfo();
-        }
     }
 
     @Override

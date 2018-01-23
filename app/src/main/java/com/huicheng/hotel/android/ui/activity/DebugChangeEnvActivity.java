@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.ActivityTack;
@@ -31,7 +30,7 @@ import com.prj.sdk.util.StringUtil;
  * @date 2017/9/19.
  */
 
-public class DebugChangeEnvActivity extends BaseActivity {
+public class DebugChangeEnvActivity extends BaseAppActivity {
 
     private int oldIndex = 0;
     private String oldUrl = "";
@@ -42,12 +41,8 @@ public class DebugChangeEnvActivity extends BaseActivity {
     private Button btn_restart;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_change_env_layout);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override
@@ -154,7 +149,7 @@ public class DebugChangeEnvActivity extends BaseActivity {
                 }, 1000);
                 CustomToast.show(getString(R.string.change_success), CustomToast.LENGTH_SHORT);
 
-                Intent intent = new Intent(PRJApplication.getInstance(), WelcomeActivity.class);
+                Intent intent = new Intent(PRJApplication.getInstance(), LauncherActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 PendingIntent restartIntent = PendingIntent.getActivity(

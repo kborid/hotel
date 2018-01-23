@@ -2,7 +2,6 @@ package com.huicheng.hotel.android.ui.activity.hotel;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -20,7 +19,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.LogUtil;
@@ -37,7 +36,7 @@ import java.util.List;
  * @author kborid
  * @date 2017/1/17 0017
  */
-public class HotelCityChooseActivity extends BaseActivity {
+public class HotelCityChooseActivity extends BaseAppActivity {
 
     private Handler myHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -69,28 +68,27 @@ public class HotelCityChooseActivity extends BaseActivity {
     private String mProvince, mCity, mSiteId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotel_citychoose);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            if (null != SessionContext.getCityAreaList() && SessionContext.getCityAreaList().size() > 0
-                    && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
-                myHandler.sendEmptyMessage(0x01);
-            } else {
-                showProgressDialog(this);
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        CityParseUtils.initAreaJsonData(HotelCityChooseActivity.this);
-                        myHandler.sendEmptyMessage(0x01);
-                    }
-                }.start();
-            }
+    protected void requestData() {
+        super.requestData();
+        if (null != SessionContext.getCityAreaList() && SessionContext.getCityAreaList().size() > 0
+                && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
+            myHandler.sendEmptyMessage(0x01);
+        } else {
+            showProgressDialog(this);
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    CityParseUtils.initAreaJsonData(HotelCityChooseActivity.this);
+                    myHandler.sendEmptyMessage(0x01);
+                }
+            }.start();
         }
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_citychoose);
     }
 
     @Override

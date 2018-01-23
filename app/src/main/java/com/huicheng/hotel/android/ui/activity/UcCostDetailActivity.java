@@ -16,7 +16,7 @@ import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.OrdersSpendInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomCirclePieChart;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -28,7 +28,7 @@ import java.util.Calendar;
  * @author kborid
  * @date 2016/12/8 0008
  */
-public class UcCostDetailActivity extends BaseActivity {
+public class UcCostDetailActivity extends BaseAppActivity {
 
     private LinearLayout root_lay;
     private LinearLayout chart_lay;
@@ -45,19 +45,18 @@ public class UcCostDetailActivity extends BaseActivity {
     private TextView tv_year_count, tv_month_count, tv_week_count;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_uc_costdetail);
-        initViews();
-        initParams();
-        initListeners();
+    protected void requestData() {
+        super.requestData();
         if (null == ordersSpendInfoBean) {
-            if (null == savedInstanceState) {
-                requestSpendRecorded();
-            }
+            requestSpendRecorded();
         } else {
             updateOrdersSpendInfo();
         }
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_uc_costdetail);
     }
 
     @Override

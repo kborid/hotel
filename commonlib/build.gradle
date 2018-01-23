@@ -5,6 +5,13 @@ android {
     buildToolsVersion '25.0.2'
     useLibrary 'org.apache.http.legacy'
 
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0.0"
+    }
+
     sourceSets {
         main {
             manifest.srcFile 'src/main/AndroidManifest.xml'
@@ -28,4 +35,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
     compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
 }

@@ -32,7 +32,7 @@ import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.algo.MD5Tool;
@@ -54,7 +54,7 @@ import java.util.Map;
 /**
  * 欢迎页面
  */
-public class WelcomeActivity extends BaseActivity implements AppInstallListener, AppWakeUpListener {
+public class LauncherActivity extends BaseAppActivity implements AppInstallListener, AppWakeUpListener {
 
     private Map<Integer, Integer> mTag = new HashMap<>();
     private static HandlerThread mHandlerThread = null;
@@ -64,10 +64,14 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
     private static final long AD_SHOWTIME = 2000;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void preOnCreate() {
+        super.preOnCreate();
         initLaunchWindow();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_welcome_layout);
         mStartTime = System.currentTimeMillis();
         // 避免从桌面启动程序后，会重新实例化入口类的activity
         if (!this.isTaskRoot()) {
@@ -81,9 +85,11 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             }
         }
         onNewIntent(getIntent());
-        initViews();
-        initParams();
-        initListeners();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_launcher);
     }
 
     @Override
@@ -216,7 +222,7 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    CityParseUtils.initAreaJsonData(WelcomeActivity.this);
+                    CityParseUtils.initAreaJsonData(LauncherActivity.this);
                     requestHomeBannerInfo();
                     requestAppVersionInfo();
                 }
@@ -294,9 +300,9 @@ public class WelcomeActivity extends BaseActivity implements AppInstallListener,
         dialog.setPositiveButton(getString(R.string.update), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final CustomDialog pd = new CustomDialog(WelcomeActivity.this);
+                final CustomDialog pd = new CustomDialog(LauncherActivity.this);
                 pd.setTitle(R.string.download_ing);
-                View view = LayoutInflater.from(WelcomeActivity.this).inflate(R.layout.progress_download_layout, null);
+                View view = LayoutInflater.from(LauncherActivity.this).inflate(R.layout.progress_download_layout, null);
                 final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
                 final TextView tv_percent = (TextView) view.findViewById(R.id.tv_percent);
                 final TextView tv_size = (TextView) view.findViewById(R.id.tv_size);

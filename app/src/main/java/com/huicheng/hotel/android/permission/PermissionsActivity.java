@@ -14,7 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.activity.WelcomeActivity;
+import com.huicheng.hotel.android.ui.activity.LauncherActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.prj.sdk.util.LogUtil;
 
@@ -46,13 +46,13 @@ public class PermissionsActivity extends AppCompatActivity {
             throw new RuntimeException("PermissionsActivity需要使用静态startActivityForResult方法启动!");
         }
         if (null != savedInstanceState) {
-            LogUtil.i(TAG, "restart WelcomeActivity");
-            Intent intent = new Intent(this, WelcomeActivity.class);
+            LogUtil.i(TAG, "restart LauncherActivity");
+            Intent intent = new Intent(this, LauncherActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         }
-        setContentView(R.layout.act_permission_layout);
+        setContentView(R.layout.act_permission);
         isRequireCheck = true;
     }
 

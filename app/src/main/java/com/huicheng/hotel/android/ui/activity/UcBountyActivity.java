@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,7 +27,7 @@ import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.BountyBaseInfo;
 import com.huicheng.hotel.android.net.bean.BountyDetailInfo;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -48,7 +47,7 @@ import java.util.Random;
  * @date 2017/12/8 0008.
  */
 
-public class UcBountyActivity extends BaseActivity {
+public class UcBountyActivity extends BaseAppActivity {
     private static final int PAGE_SIZE = 10;
     private int mPageIndex = 0;
     private BountyBaseInfo mBountyBaseInfo = null;
@@ -69,15 +68,14 @@ public class UcBountyActivity extends BaseActivity {
     private CustomSharePopup mCustomShareView = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        requestBountyBaseInfo();
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_uc_bounty);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestBountyBaseInfo();
-        }
     }
 
     @Override

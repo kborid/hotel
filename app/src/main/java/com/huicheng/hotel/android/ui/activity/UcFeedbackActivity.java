@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +21,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
@@ -38,7 +37,7 @@ import java.io.IOException;
 /**
  * 意见反馈
  */
-public class UcFeedbackActivity extends BaseActivity {
+public class UcFeedbackActivity extends BaseAppActivity {
 
     private EditText et_content;
 
@@ -53,12 +52,8 @@ public class UcFeedbackActivity extends BaseActivity {
     private CustomDialog mDialog = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_uc_feedback);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override
@@ -270,11 +265,6 @@ public class UcFeedbackActivity extends BaseActivity {
             CustomToast.show("提交成功", CustomToast.LENGTH_SHORT);
             this.finish();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

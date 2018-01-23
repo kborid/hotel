@@ -18,7 +18,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
@@ -32,7 +32,7 @@ import com.prj.sdk.util.StringUtil;
  * @author kborid
  * @date 2017/3/13 0013
  */
-public class HotelOrderPaySuccessActivity extends BaseActivity {
+public class HotelOrderPaySuccessActivity extends BaseAppActivity {
 
     private HotelDetailInfoBean hotelDetailInfoBean;
 
@@ -49,15 +49,14 @@ public class HotelOrderPaySuccessActivity extends BaseActivity {
     private boolean showTipsOrNot = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void requestData() {
+        super.requestData();
+        requestHotelDetailInfo();
+    }
+
+    @Override
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_orderpaysuccess);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestHotelDetailInfo();
-        }
     }
 
     @Override

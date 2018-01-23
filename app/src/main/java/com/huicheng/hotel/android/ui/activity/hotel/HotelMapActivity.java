@@ -42,7 +42,7 @@ import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.ui.adapter.PinInfoWindowAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.mapoverlay.DrivingRouteOverlay;
@@ -60,7 +60,7 @@ import java.util.Map;
  * @date 2016/10/31 0031
  * @modify 2017/03/15
  */
-public class HotelMapActivity extends BaseActivity
+public class HotelMapActivity extends BaseAppActivity
         implements AMap.OnMarkerClickListener, RouteSearch.OnRouteSearchListener,
         LocationSource, AMapLocationControl.MyLocationListener {
 
@@ -98,15 +98,6 @@ public class HotelMapActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hotelmap_layout);
-        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
-        mPinId = ta.getResourceId(R.styleable.MyTheme_mapPinImage, R.drawable.iv_pin);
-        mPricePinId = ta.getResourceId(R.styleable.MyTheme_mapPricePinImage, R.drawable.iv_pin_price);
-        ta.recycle();
-
-        initViews();
-        initParams();
-        initListeners();
         //在activity执行onCreate时执行mapview.onCreate(savedInstanceState)，实现地图生命周期管理
         mapview.onCreate(savedInstanceState);
         refreshMapOverLayout(false);
@@ -117,6 +108,20 @@ public class HotelMapActivity extends BaseActivity
             isToMyLoc = true;
         }
         LogUtil.i(TAG, "isToMyLoc = " + isToMyLoc);
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_map);
+    }
+
+    @Override
+    protected void initTypeArrayAttributes() {
+        super.initTypeArrayAttributes();
+        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
+        mPinId = ta.getResourceId(R.styleable.MyTheme_mapPinImage, R.drawable.iv_pin);
+        mPricePinId = ta.getResourceId(R.styleable.MyTheme_mapPricePinImage, R.drawable.iv_pin_price);
+        ta.recycle();
     }
 
     @Override

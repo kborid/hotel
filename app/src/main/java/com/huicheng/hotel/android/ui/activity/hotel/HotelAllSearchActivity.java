@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity.hotel;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -32,7 +31,7 @@ import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.adapter.SearchResultAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -54,7 +53,7 @@ import java.util.List;
  * @date 2017/8/31.
  */
 
-public class HotelAllSearchActivity extends BaseActivity {
+public class HotelAllSearchActivity extends BaseAppActivity {
 
     private static final int PAGE_SIZE = 20;
 
@@ -72,12 +71,8 @@ public class HotelAllSearchActivity extends BaseActivity {
     private TextView mHeaderView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_hotel_allsearch);
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override

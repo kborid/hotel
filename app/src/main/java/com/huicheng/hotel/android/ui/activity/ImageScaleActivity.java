@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.SmoothImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
@@ -25,7 +24,7 @@ import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
  * @author kborid
  * @date 2017/3/30 0030
  */
-public class ImageScaleActivity extends BaseActivity {
+public class ImageScaleActivity extends BaseAppActivity {
 
     private String mUrl;
     private int mLocationX, mLocationY, mWidth, mHeight;
@@ -34,15 +33,17 @@ public class ImageScaleActivity extends BaseActivity {
     private boolean isError = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void preOnCreate() {
+        super.preOnCreate();
         initStatus();
         setTheme(R.style.AppTheme_ImageTransparent);
         overridePendingTransition(0, 0);
+    }
+
+    @Override
+    protected void setContentView() {
         iv_picture = new SmoothImageView(this);
         setContentView(iv_picture);
-        initParams();
-        initListeners();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
@@ -29,7 +28,7 @@ import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.MessageInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelSpaceDetailActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.bean.ResponseData;
@@ -48,7 +47,7 @@ import java.util.List;
  * @author kborid
  * @date 2016/12/19 0019
  */
-public class UcMessagesActivity extends BaseActivity {
+public class UcMessagesActivity extends BaseAppActivity {
 
     private static final String MESSAGE_TYPE_ALL = "";
     private static final String MESSAGE_TYPE_UNREAD = "01";
@@ -74,17 +73,16 @@ public class UcMessagesActivity extends BaseActivity {
     private int spinnerTypeBgResId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setContentView() {
         setContentView(R.layout.act_uc_messages);
+    }
+
+    @Override
+    protected void initTypeArrayAttributes() {
+        super.initTypeArrayAttributes();
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         spinnerTypeBgResId = ta.getResourceId(R.styleable.MyTheme_msgSpinnerBg, R.drawable.msg_spinner_mainwhite_withbound_bg);
         ta.recycle();
-
-        initViews();
-        initParams();
-        initListeners();
-//        listview.refreshingHeaderView();
     }
 
     @Override

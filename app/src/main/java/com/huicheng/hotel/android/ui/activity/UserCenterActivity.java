@@ -38,7 +38,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.net.RequestBeanBuilder;
 import com.huicheng.hotel.android.net.bean.UserInfo;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomRatingBar;
 import com.huicheng.hotel.android.ui.custom.RangeSeekBar;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -67,7 +67,7 @@ import java.util.Set;
  * @author kborid
  * @date 2016/11/30 0030
  */
-public class UserCenterActivity extends BaseActivity {
+public class UserCenterActivity extends BaseAppActivity {
 
     private Calendar calendar = Calendar.getInstance();
     private boolean isEdited = false;
@@ -117,10 +117,8 @@ public class UserCenterActivity extends BaseActivity {
     private int thumbId, thumbDisableId, settingId, settingOkId, leftImageId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_usercenter_layout);
-
+    protected void initTypeArrayAttributes() {
+        super.initTypeArrayAttributes();
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         lineSelectedColorId = ta.getInt(R.styleable.MyTheme_userCenterThumbText, getResources().getColor(R.color.mainColor));
         lineSelectedDisableColorId = ta.getInt(R.styleable.MyTheme_userCenterThumbTextDisable, getResources().getColor(R.color.indicatorColor));
@@ -130,10 +128,11 @@ public class UserCenterActivity extends BaseActivity {
         settingOkId = ta.getResourceId(R.styleable.MyTheme_settingOKButton, R.drawable.iv_setting_ok);
         leftImageId = ta.getResourceId(R.styleable.MyTheme_leftImage, R.drawable.iv_left);
         ta.recycle();
+    }
 
-        initViews();
-        initParams();
-        initListeners();
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_usercenter_layout);
     }
 
     @Override

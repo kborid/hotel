@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity.hotel;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -32,7 +31,7 @@ import com.huicheng.hotel.android.net.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceBasicInfoBean;
 import com.huicheng.hotel.android.net.bean.HotelSpaceTieInfoBean;
 import com.huicheng.hotel.android.ui.adapter.CommonGridViewPicsAdapter;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.FullscreenHolder;
 import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
@@ -53,7 +52,7 @@ import java.util.List;
  * @author kborid
  * @date 2017/3/20 0020
  */
-public class HotelSpaceHomeActivity extends BaseActivity {
+public class HotelSpaceHomeActivity extends BaseAppActivity {
     /**
      * 视频全屏参数
      */
@@ -75,15 +74,14 @@ public class HotelSpaceHomeActivity extends BaseActivity {
     private HotelDetailInfoBean hotelDetailInfoBean = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_spacehome_layout);
-        initViews();
-        initParams();
-        initListeners();
-        if (null == savedInstanceState) {
-            requestHotelSpaceBasicInfo();
-        }
+    protected void requestData() {
+        super.requestData();
+        requestHotelSpaceBasicInfo();
+    }
+
+    @Override
+    protected void setContentView() {
+        setContentView(R.layout.act_hotel_spacehome);
     }
 
     @Override

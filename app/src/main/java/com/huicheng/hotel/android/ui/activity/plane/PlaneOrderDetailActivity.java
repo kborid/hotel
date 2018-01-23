@@ -9,7 +9,7 @@ import android.webkit.WebView;
 
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.ui.base.BaseActivity;
+import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.custom.MyCommWebViewClient;
 import com.prj.sdk.constants.BroadCastConst;
@@ -20,7 +20,7 @@ import com.prj.sdk.util.Utils;
  * @author kborid
  * @date 2017/3/10 0010
  */
-public class PlaneOrderDetailActivity extends BaseActivity {
+public class PlaneOrderDetailActivity extends BaseAppActivity {
 
 
     private WebView mWebView;
@@ -29,16 +29,16 @@ public class PlaneOrderDetailActivity extends BaseActivity {
     private int mMainColorId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_plane_orderdetail_layout);
+    protected void setContentView() {
+        setContentView(R.layout.act_plane_orderdetail);
+    }
+
+    @Override
+    protected void initTypeArrayAttributes() {
+        super.initTypeArrayAttributes();
         TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
         mMainColorId = ta.getInt(R.styleable.MyTheme_mainColor, R.color.mainColor);
         ta.recycle();
-
-        initViews();
-        initParams();
-        initListeners();
     }
 
     @Override
