@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
-import com.huicheng.hotel.android.net.bean.HotelInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.HotelInfoBean;
 import com.prj.sdk.util.StringUtil;
 
 import java.util.ArrayList;

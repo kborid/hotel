@@ -9,7 +9,7 @@ import android.view.ViewParent;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.huicheng.hotel.android.net.bean.HomeBannerInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.ui.activity.HtmlActivity;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.util.StringUtil;

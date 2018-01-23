@@ -17,15 +17,15 @@ import com.huicheng.hotel.android.pay.alipay.AlipayUtil;
 import com.huicheng.hotel.android.pay.unionpay.UnionPayActivity;
 import com.huicheng.hotel.android.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
-import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 
 import java.net.ConnectException;
 

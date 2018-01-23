@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
-import com.huicheng.hotel.android.net.bean.CouponDetailInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.CouponDetailInfoBean;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.util.Utils;

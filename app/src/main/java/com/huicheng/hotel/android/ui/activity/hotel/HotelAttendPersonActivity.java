@@ -13,7 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.NetURL;
-import com.huicheng.hotel.android.net.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.adapter.HotelAttendPersonAdapter;
 import com.huicheng.hotel.android.ui.adapter.PersonInfo;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
