@@ -10,4 +10,5 @@
 /commonlib/build
 /captures
 .svn
+*.apk
 
