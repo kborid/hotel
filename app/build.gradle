@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 ext {
     appName = 'abc'
     currentDate = new Date().format('yyyyMMdd')
+    outputFileDir = "apk/" //本地apk存放目录
 }
 
 android {
@@ -96,7 +97,8 @@ android {
         variant.outputs.each { output ->
             if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
                 def apkFile = new File(
-                        output.outputFile.getParent(),
+//                        output.outputFile.getParent(),
+                        "${outputFileDir}",
                         "${appName}_v${variant.versionName}_${variant.versionCode}_${currentDate}_${variant.buildType.name}.apk")
                 output.outputFile = apkFile
                 //App名字_v版本号_版本代码_当天日期_构建类型.apk
