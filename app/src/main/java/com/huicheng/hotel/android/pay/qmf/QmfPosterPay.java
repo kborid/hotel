@@ -39,7 +39,6 @@ public class QmfPosterPay implements IQmfPayStrategy {
 
         Intent intent = new Intent(context, WelcomeActivity.class);
         intent.putExtra("extra_args", args);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 }

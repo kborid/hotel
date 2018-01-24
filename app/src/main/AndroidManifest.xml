@@ -65,10 +65,8 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="abcbooking" />
             </intent-filter>
         </activity>
@@ -183,6 +181,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+
+
         <!--酒店-->
         <!--酒店入口main-->
         <activity
@@ -455,9 +456,9 @@
             android:value="@string/amap_appkey" />
         <service android:name="com.amap.api.location.APSService" />
         <!--百度地图-->
-        <meta-data
+        <!--<meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="@string/baidu_appkey" />
+            android:value="@string/baidu_appkey" />-->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

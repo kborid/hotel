@@ -125,7 +125,7 @@ public class HotelOrderPayActivity extends BaseAppActivity {
         unionpay = new UnionPayUtil(this);
         alipay = new AlipayUtil(this);
         wxpay = new WXPayUtils(this);
-        qmfPayHelper = new QmfPayHelper();
+        qmfPayHelper = new QmfPayHelper(this);
 
         // 动态注册支付广播
         IntentFilter intentFilter = new IntentFilter();
@@ -418,7 +418,10 @@ public class HotelOrderPayActivity extends BaseAppActivity {
         wxpay = null;
         alipay = null;
         unionpay = null;
-        qmfPayHelper = null;
+        if (null != qmfPayHelper) {
+            qmfPayHelper.destroy();
+            qmfPayHelper = null;
+        }
         if (null != mPayReceiver) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mPayReceiver);
         }
