@@ -148,13 +148,15 @@
 # The support library contains references to newer platform versions.
 # Don't warn about those in case this app is linking against an older
 # platform version.  We know about them, and they are safe.
+-dontwarn android.support.**
+-keep class android.support.** {*;}
 #针对support-v4.jar，混淆策略
 #-libraryjars libs/android-support-v4.jar
-#-dontwarn android.support.v4.**
-#-keep class android.support.v4.** {*;}
-#-keep interface android.support.v4.app.** {*;}
-#-keep public class * extends android.support.v4.**
-#-keep public class * extends android.app.Fragment
+-dontwarn android.support.v4.**
+-keep class android.support.v4.** {*;}
+-keep interface android.support.v4.app.** {*;}
+-keep public class * extends android.support.v4.**
+-keep public class * extends android.app.Fragment
 
 -keep class org.apache.http.** { *; }
 -keep class android.net.http.** { *; }
