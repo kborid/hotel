@@ -6,7 +6,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Algorithm3DES {
-	
+
 	public static String ALGORITHM = "DESede";//采用3des算法
 	
 	public static int num = 168;//24字节
