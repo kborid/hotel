@@ -1,4 +1,4 @@
-package com.prj.sdk.net.bean;
+package com.prj.sdk.net.data;
 
 import java.util.Map;
 

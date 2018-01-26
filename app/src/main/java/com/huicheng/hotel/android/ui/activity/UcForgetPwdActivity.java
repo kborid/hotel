@@ -23,7 +23,7 @@ import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;

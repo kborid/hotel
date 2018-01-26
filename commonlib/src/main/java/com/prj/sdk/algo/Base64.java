@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.tools;
+package com.prj.sdk.algo;
 
 public class Base64 {
 	static final int		CHUNK_SIZE				= 76;

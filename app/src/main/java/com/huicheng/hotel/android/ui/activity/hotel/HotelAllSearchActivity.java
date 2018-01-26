@@ -38,7 +38,7 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;

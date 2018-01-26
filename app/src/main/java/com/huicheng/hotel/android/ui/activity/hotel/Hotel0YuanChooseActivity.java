@@ -22,7 +22,7 @@ import com.huicheng.hotel.android.ui.adapter.Hotel0YuanAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.AreaWheelDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;

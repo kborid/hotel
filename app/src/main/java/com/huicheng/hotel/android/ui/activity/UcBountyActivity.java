@@ -30,7 +30,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.BountyBaseInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.BountyDetailInfo;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;

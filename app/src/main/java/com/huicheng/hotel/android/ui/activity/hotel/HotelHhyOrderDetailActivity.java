@@ -19,7 +19,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HouHuiYaoDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.RoomConfirmInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;

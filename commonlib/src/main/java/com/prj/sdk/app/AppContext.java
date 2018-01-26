@@ -4,8 +4,6 @@ import android.content.Context;
 
 /**
  * 记录应用全局信息
- *
- * @author LiaoBo
  */
 public final class AppContext {
 

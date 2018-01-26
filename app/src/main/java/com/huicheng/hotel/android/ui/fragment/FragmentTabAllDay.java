@@ -30,7 +30,7 @@ import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
 import com.huicheng.hotel.android.ui.adapter.HotelListAdapter;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;

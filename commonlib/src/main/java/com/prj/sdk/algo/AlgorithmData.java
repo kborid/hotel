@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.tools;
+package com.prj.sdk.algo;
 
 public class AlgorithmData {
 	

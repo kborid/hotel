@@ -36,7 +36,7 @@ import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.algo.MD5Tool;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;

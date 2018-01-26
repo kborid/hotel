@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.tools;
+package com.prj.sdk.algo;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

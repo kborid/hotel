@@ -24,7 +24,7 @@ import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.BitmapUtils;
 import com.umeng.socialize.media.UMImage;

@@ -27,7 +27,7 @@ import com.huicheng.hotel.android.ui.activity.plane.PlaneOrderDetailActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.DateUtil;

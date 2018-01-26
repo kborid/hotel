@@ -31,7 +31,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;

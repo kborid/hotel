@@ -4,8 +4,6 @@ import com.prj.sdk.util.LogUtil;
 
 /**
  * 项目常量
- *
- * @author LiaoBo
  */
 public final class AppConst {
     public static final boolean ISDEVELOP = LogUtil.isDebug(); // 开发者模式

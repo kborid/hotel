@@ -28,7 +28,7 @@ import com.huicheng.hotel.android.ui.custom.CustomCardStackViewPager;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.VerticalStackTransformer;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.Utils;
 

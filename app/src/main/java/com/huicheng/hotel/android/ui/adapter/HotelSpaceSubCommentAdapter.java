@@ -27,7 +27,7 @@ import com.huicheng.hotel.android.ui.activity.hotel.HotelSpacePublishActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.bean.ResponseData;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.LogUtil;

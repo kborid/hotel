@@ -7,7 +7,6 @@ import android.os.Looper;
 import com.alibaba.fastjson.JSON;
 import com.prj.sdk.app.AppContext;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.bean.ResponseData;
 import com.prj.sdk.net.cache.DiskLruCache;
 import com.prj.sdk.net.cache.DiskLruCache.DiskCacheType;
 import com.prj.sdk.net.cache.LruCache;
