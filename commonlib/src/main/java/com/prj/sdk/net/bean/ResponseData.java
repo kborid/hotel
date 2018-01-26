@@ -4,9 +4,6 @@ import java.util.Map;
 
 /**
  * 服务器请求数据及返回
- * 
- * @author Liao
- * 
  */
 public class ResponseData {
 	public int					flag;
@@ -21,4 +18,9 @@ public class ResponseData {
 	public Object				body;
 	public Object				head;
 	public Object				data;		// 数据对象
+
+	public static class Head{
+		public String rtnMsg = "null";
+		public String rtnCode = "null";
+	}
 }

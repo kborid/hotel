@@ -293,7 +293,6 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
         dialog.setNegativeButton(getString(R.string.exit), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DataLoader.getInstance().clearRequests();
                 ActivityTack.getInstanse().exit();
             }
         });

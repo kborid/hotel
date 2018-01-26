@@ -390,7 +390,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.i(TAG, "onResume()");
         banner_lay.startBanner();
         //重置consider
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);

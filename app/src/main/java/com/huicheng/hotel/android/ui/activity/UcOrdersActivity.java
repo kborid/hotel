@@ -197,21 +197,11 @@ public class UcOrdersActivity extends BaseAppActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     private void updateOrdersSpendInfo() {
         if (ordersSpendInfoBean != null) {
             tv_spend_year.setText(String.valueOf((int) ordersSpendInfoBean.spend));
             tv_save_year.setText(String.valueOf((int) ordersSpendInfoBean.totalsave));
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

@@ -227,6 +227,13 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        LogUtil.d(TAG, "finish()");
+        DataLoader.getInstance().clearRequests();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         LogUtil.d(TAG, "onPause()");
@@ -241,7 +248,6 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         FixIMMLeaksTools.fixFocusedViewLeak(PRJApplication.getInstance());
         RefWatcher refWatcher = PRJApplication.getRefWatcher(this);
         refWatcher.watch(this);
-//        DataLoader.getInstance().clearRequests();
         ActivityTack.getInstanse().removeActivity(this);
     }
 
