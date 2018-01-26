@@ -20,10 +20,10 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.BountyBaseInfo;

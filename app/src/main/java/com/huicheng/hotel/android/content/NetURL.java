@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.common;
+package com.huicheng.hotel.android.content;
 
 import com.prj.sdk.util.SharedPreferenceUtil;
 

@@ -3,7 +3,7 @@ package com.huicheng.hotel.android.requestbuilder.bean;
 import android.content.Context;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.tools.SHA1;
 
 import java.io.Serializable;

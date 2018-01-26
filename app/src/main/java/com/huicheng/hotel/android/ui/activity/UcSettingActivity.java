@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;

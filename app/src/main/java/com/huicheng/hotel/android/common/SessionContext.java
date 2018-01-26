@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.fm.openinstall.model.AppData;
+import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;

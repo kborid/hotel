@@ -2,7 +2,7 @@ package com.huicheng.hotel.android.pay.unionpay;
 
 import android.content.Context;
 
-import com.huicheng.hotel.android.common.AppConst;
+import com.huicheng.hotel.android.content.AppConst;
 import com.unionpay.UPPayAssistEx;
 
 /**

@@ -9,9 +9,9 @@ import android.webkit.WebView;
 
 import com.fm.openinstall.OpenInstall;
 import com.huicheng.hotel.android.broadcast.UnLoginBroadcastReceiver;
-import com.huicheng.hotel.android.common.AppConst;
 import com.huicheng.hotel.android.common.CrashHandler;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.permission.PermissionsChecker;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;

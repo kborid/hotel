@@ -12,9 +12,9 @@ import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.AppConst;
-import com.huicheng.hotel.android.common.NetURL;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.bean.ShenZhouConfigBean;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.MyCommWebViewClient;
