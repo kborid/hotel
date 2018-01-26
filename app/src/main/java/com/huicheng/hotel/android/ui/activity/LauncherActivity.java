@@ -23,6 +23,8 @@ import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
@@ -37,10 +39,8 @@ import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.algo.MD5Tool;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
-import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
+import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
@@ -352,7 +352,6 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
         dialog.setNegativeButton(getString(R.string.exit), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DataLoader.getInstance().clearRequests();
                 ActivityTack.getInstanse().exit();
             }
         });

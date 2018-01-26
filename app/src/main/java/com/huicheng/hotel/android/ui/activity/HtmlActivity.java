@@ -18,13 +18,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.webview.ChooserFileController;

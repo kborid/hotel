@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,16 +22,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.BountyBaseInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.BountyDetailInfo;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
-import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
+import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
@@ -70,7 +71,10 @@ public class UcBountyActivity extends BaseAppActivity {
     @Override
     protected void requestData() {
         super.requestData();
-        requestBountyBaseInfo();
+        if (null == mBountyBaseInfo) {
+            requestBountyBaseInfo();
+        }
+        requestBountyDetailInfo(mPageIndex);
     }
 
     @Override
@@ -82,7 +86,7 @@ public class UcBountyActivity extends BaseAppActivity {
     public void initViews() {
         super.initViews();
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        header = LayoutInflater.from(this).inflate(R.layout.lv_balance_header, null);
+        header = LayoutInflater.from(this).inflate(R.layout.lv_lxb_detail_header, null);
         empty_lay = (LinearLayout) header.findViewById(R.id.empty_lay);
         tv_current = (TextView) header.findViewById(R.id.tv_current);
         tv_in = (TextView) header.findViewById(R.id.tv_in);
@@ -90,6 +94,15 @@ public class UcBountyActivity extends BaseAppActivity {
         tv_friends = (TextView) header.findViewById(R.id.tv_friends);
         listview = (ListView) findViewById(R.id.listview);
         tv_invite = (TextView) findViewById(R.id.tv_invite);
+    }
+
+    @Override
+    protected void dealIntent() {
+        super.dealIntent();
+        Bundle bundle = getIntent().getExtras();
+        if (null != bundle) {
+            mBountyBaseInfo = (BountyBaseInfo) bundle.getSerializable("bountyBaseInfo");
+        }
     }
 
     @Override
@@ -102,6 +115,7 @@ public class UcBountyActivity extends BaseAppActivity {
         adapter = new BalanceAdapter(this, mList);
         listview.setAdapter(adapter);
         listview.addHeaderView(header);
+        refreshBountyBaseInfo();
         isFirstLoad = true;
     }
 
@@ -127,8 +141,9 @@ public class UcBountyActivity extends BaseAppActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPageIndex = 0;
                 requestBountyBaseInfo();
+                mPageIndex = 0;
+                requestBountyDetailInfo(mPageIndex);
             }
         });
 
@@ -194,6 +209,7 @@ public class UcBountyActivity extends BaseAppActivity {
     }
 
     private void requestBountyBaseInfo() {
+        LogUtil.i(TAG, "requestBountyBaseInfo()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.BOUNTY_USER_BASE;
@@ -214,6 +230,10 @@ public class UcBountyActivity extends BaseAppActivity {
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.BOUNTY_USER_DETAIL;
         d.path = NetURL.BOUNTY_USER_DETAIL;
+        if (isFirstLoad && !isProgressShowing()) {
+            isFirstLoad = false;
+            showProgressDialog(this);
+        }
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -251,21 +271,6 @@ public class UcBountyActivity extends BaseAppActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     private class BalanceAdapter extends BaseAdapter {
 
         private Context context;
@@ -296,7 +301,7 @@ public class UcBountyActivity extends BaseAppActivity {
             ViewHolder viewHolder;
             if (null == convertView) {
                 viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(context).inflate(R.layout.lv_balance_item, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.lv_lxb_detail_item, null);
                 viewHolder.tv_balance_title = (TextView) convertView.findViewById(R.id.tv_balance_title);
                 viewHolder.tv_balance_price = (TextView) convertView.findViewById(R.id.tv_balance_price);
                 viewHolder.tv_balance_date = (TextView) convertView.findViewById(R.id.tv_balance_date);
@@ -316,7 +321,7 @@ public class UcBountyActivity extends BaseAppActivity {
                 viewHolder.tv_balance_price.setText("");
                 viewHolder.tv_balance_title.setText("旅行币");
             }
-            viewHolder.tv_balance_price.append(String.valueOf(list.get(position).amount));
+            viewHolder.tv_balance_price.append(String.valueOf((int) list.get(position).amount));
             viewHolder.tv_balance_date.setText(DateUtil.getDay("yyyy/MM/dd", list.get(position).createTime));
             viewHolder.tv_balance_user.setText(list.get(position).remark);
             return convertView;
@@ -338,7 +343,8 @@ public class UcBountyActivity extends BaseAppActivity {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 mBountyBaseInfo = JSONObject.parseObject(response.body.toString(), BountyBaseInfo.class);
                 refreshBountyBaseInfo();
-                requestBountyDetailInfo(mPageIndex);
+                removeProgressDialog();
+                swipeRefreshLayout.setRefreshing(false);
             } else if (request.flag == AppConst.BOUNTY_USER_DETAIL) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 swipeRefreshLayout.setRefreshing(false);

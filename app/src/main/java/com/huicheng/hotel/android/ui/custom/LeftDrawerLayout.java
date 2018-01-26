@@ -20,10 +20,12 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.activity.DebugInfoActivity;
 import com.huicheng.hotel.android.ui.activity.UcAboutActivity;
-import com.huicheng.hotel.android.ui.activity.UcBountyActivity;
+import com.huicheng.hotel.android.ui.activity.UcBountyMainActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcFansHotelActivity;
 import com.huicheng.hotel.android.ui.activity.UcFeedbackActivity;
@@ -36,12 +38,10 @@ import com.huicheng.hotel.android.ui.activity.UcSettingActivity;
 import com.huicheng.hotel.android.ui.activity.UcAssessesActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 
@@ -261,7 +261,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
                 doActionIntent = new Intent(context, UcMessagesActivity.class);
                 break;
             case R.id.tv_lxb:
-                doActionIntent = new Intent(context, UcBountyActivity.class);
+                doActionIntent = new Intent(context, UcBountyMainActivity.class);
                 break;
             case R.id.tv_yhq:
                 doActionIntent = new Intent(context, UcCouponsActivity.class);

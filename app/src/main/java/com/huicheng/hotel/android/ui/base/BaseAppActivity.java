@@ -27,6 +27,8 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.tools.FixIMMLeaksTools;
@@ -42,11 +44,9 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.activity.BaseActivity;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -168,8 +168,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         tv_right = (TextView) findViewById(R.id.tv_right);
     }
 
-    protected void dealIntent() {
-    }
+    protected void dealIntent(){}
 
     @Override
     protected void initParams() {
@@ -262,6 +261,13 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        LogUtil.d(TAG, "finish()");
+        DataLoader.getInstance().clearRequests();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         LogUtil.d(TAG, "onPause()");
@@ -276,13 +282,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         FixIMMLeaksTools.fixFocusedViewLeak(PRJApplication.getInstance());
         RefWatcher refWatcher = PRJApplication.getRefWatcher(this);
         refWatcher.watch(this);
-//        DataLoader.getInstance().clearRequests();
         ActivityTack.getInstanse().removeActivity(this);
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
     }
 
     public final void showProgressDialog(Context context) {

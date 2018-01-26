@@ -67,7 +67,7 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
 
     protected void preOnCreate() {
         super.preOnCreate();
-        initLaunchWindow();
+        initMainWindow();
     }
 
     @Override

@@ -23,6 +23,8 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.broadcast.PayResultReceiver;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.pay.PayCommDef;
 import com.huicheng.hotel.android.pay.alipay.AlipayUtil;
 import com.huicheng.hotel.android.pay.qmf.QmfPayHelper;
@@ -34,11 +36,9 @@ import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonPayChannelLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
+import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -467,8 +467,7 @@ public class HotelOrderPayActivity extends BaseAppActivity {
                                         .putExtra("type", "noneedpay")
                                         .putExtra("info", "noneedpay"));
                     } else {
-//                        startPay(json);
-                        startPayQmf(json.toString());
+                        startPay(json);
                     }
                 } else {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(

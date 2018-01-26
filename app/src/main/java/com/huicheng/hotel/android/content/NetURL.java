@@ -41,6 +41,7 @@ public final class NetURL {
     /*奖励金*/
     public static final String BOUNTY_USER_BASE = PORTAL + "user/bounty/meta"; //奖励金基本信息
     public static final String BOUNTY_USER_DETAIL = PORTAL + "user/bounty/page"; //奖励金明细
+    public static final String BOUNTY_ACTIVES = PORTAL + "activity/activityVaultPics.json"; //奖励金活动列表
 
     //---------------------------------个人中心------------------------------------------------------
     public static final String CENTER_USERINFO = PORTAL + "user/getUserPreferSetting.json"; //个人中心详细信息
@@ -101,7 +102,7 @@ public final class NetURL {
 
     public static final String ORDER_PLANE = PORTAL + "pages/plain/pages/myplaneorder.html"; //机票订单详情
     public static final String PAY = PORTAL + "pay/to_payment.json"; //支付
-    public static final String PAY_UNION = PORTAL +"pay/to_ums_payment.json"; //银联支付
+    public static final String PAY_UNION = PORTAL + "pay/to_ums_payment.json"; //银联支付
     public static final String PAY_RESULT = PORTAL + "pay/search.json"; //支付结果查询
 
     // ----------------------------------------使用第三方登录绑定-------------------------------------

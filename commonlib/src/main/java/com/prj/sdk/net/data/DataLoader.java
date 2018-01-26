@@ -15,9 +15,8 @@ import com.prj.sdk.net.http.OKHttpHelper;
 import com.prj.sdk.util.GUIDGenerator;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.NetworkUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.net.ConnectException;
@@ -27,7 +26,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 数据异步加载
@@ -62,14 +60,8 @@ public class DataLoader {
 
     }
 
-    /**
-     * 获得实例的唯一全局访问点
-     *
-     * @return
-     */
     public static DataLoader getInstance() {
         if (mInstance == null) {
-            // 增加类锁,保证只初始化一次
             synchronized (DataLoader.class) {
                 if (mInstance == null) {
                     mInstance = new DataLoader();
@@ -83,12 +75,6 @@ public class DataLoader {
         return loadData(callback, request, null);
     }
 
-    /**
-     * UI层调用 数据接口方法
-     *
-     * @param callback
-     * @param request
-     */
     public String loadData(DataCallback callback, ResponseData request, String id) {
         if (id == null || id.trim().equals("")) {
             id = GUIDGenerator.generate();
@@ -104,37 +90,18 @@ public class DataLoader {
     }
 
     public byte[] getCacheData(String mCacheUrl) {
-        byte[] data = null;
-        try {
-            data = mMemCache.get(mCacheUrl);
-            if (data == null) {
-                data = mDiskCache.get(mCacheUrl);
-            }
-            if (data != null) {
-                mMemCache.put(mCacheUrl, data);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return data;
+        return mMemCache.get(mCacheUrl);
     }
 
     public void removeCacheData(String mCacheUrl) {
         if (mCacheUrl == null)
             return;
-        try {
-            mMemCache.remove(mCacheUrl);
-            mDiskCache.remove(mCacheUrl);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean isHasTask(String id) {
-        return ids.contains(id);
+        mMemCache.remove(mCacheUrl);
+        mDiskCache.remove(mCacheUrl);
     }
 
     private synchronized void flushRequests() {
+        LogUtil.i(TAG, "flushRequests()");
         try {
             while (mActiveTaskCount < mMaxTaskCount && !mRequests.isEmpty()) {
                 mActiveTaskCount++;
@@ -151,14 +118,13 @@ public class DataLoader {
     }
 
     private void insertRequestQueue(Runnable request) {
+        LogUtil.i(TAG, "insertRequestQueue() id = " + ((RequestTask) request).id);
         mRequests.add(0, request);
         flushRequests();
     }
 
     /**
      * 和服务器交互线程
-     *
-     * @author Liao
      */
     private class RequestTask implements Runnable {
         public String id;
@@ -182,19 +148,17 @@ public class DataLoader {
                 if (ids.contains(id)) {
                     preExecute();
                 }
-
                 if (ids.contains(id)) {
                     doExecute();
                 }
-
-            } catch (final Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 mException = e;
             } finally {
                 if (ids.contains(id)) {
                     postExecute();
+                    clear(id);
                 }
-                clear(id);
             }
         }
 
@@ -202,36 +166,30 @@ public class DataLoader {
             mDataHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        if (callback != null) {
-                            callback.preExecute(request);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (callback != null) {
+                        callback.preExecute(request);
                     }
                 }
             });
         }
 
         private void doExecute() throws Exception {
-            String mCacheUrl = request.path;
+            String url = request.path;
             if (NetworkUtil.isNetworkAvailable()) {
-
-                LogUtil.d(TAG, "Request:" + mCacheUrl);
-                if (request.data != null) {
-                    LogUtil.d(TAG, "Request:" + request.data.toString());
-                }
+                LogUtil.d(TAG, "Request:" + url);
+                LogUtil.d(TAG, "Request:" + request.data.toString());
 
                 byte[] data = getDataFromNet();
 
                 if (data != null && data.length > 0) {
                     String json = new String(data, "UTF-8");
+                    LogUtil.d(TAG, "Response:" + url);
                     LogUtil.d(TAG, "Response:" + json);
                     response = JSON.parseObject(json, ResponseData.class);
 
                     String key = request.key;
-                    if (key == null || key.equals("")) {
-                        key = mCacheUrl;
+                    if (StringUtil.isEmpty(key)) {
+                        key = url;
                     }
                     if (mCacheUrls.contains(key)) {
                         mMemCache.put(key, data);
@@ -250,46 +208,36 @@ public class DataLoader {
             mDataHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        if (callback != null) {
-                            LogUtil.i(TAG, "notify response = " + response);
+                    if (callback != null) {
+                        try {
                             if (response != null && response.head != null) {
-                                JSONObject mJson = new JSONObject(response.head.toString());
-                                // 将错误code赋值给code，方便使用
-                                if (mJson.has("rtnCode")) {
-                                    response.code = mJson.getString("rtnCode");
-                                }
-                                // 将错误描述赋值给data，方便调用
-                                if (mJson.has("rtnMsg")) {
-                                    response.data = mJson.getString("rtnMsg");
-                                }
-                                LogUtil.i(TAG, "notify response.code = " + response.code);
-                                LogUtil.i(TAG, "notify response.data = " + response.data);
+                                ResponseData.Head head = JSON.parseObject(response.head.toString(), ResponseData.Head.class);
+                                response.code = head.rtnCode;
+                                response.data = head.rtnMsg;
 
-                                if ("000000".equals(response.code)) {
+                                if ("000000".equals(response.code)) {                                       //000000 请求成功
                                     callback.notifyMessage(request, response);
-                                    LogUtil.i(TAG, "callback.notify message " + response.code);
-                                } else {
-                                    if ("900902".equals(response.code) || "310001".equals(response.code)) {// 900902 票据失效
+                                } else {                                                                    //900902
+                                    if ("900902".equals(response.code) || "310001".equals(response.code)) { //310001 票据失效
                                         Intent intent = new Intent(BroadCastConst.UNLOGIN_ACTION);
                                         intent.putExtra("is_show_tip_dialog", true);
-                                        AppContext.mAppContext.sendBroadcast(intent);// 发送登录广播
+                                        AppContext.mAppContext.sendBroadcast(intent); //发送登录广播
                                         response.data = "登录超时,请重新登录";
+                                        callback.notifyMessage(request, response);
+                                    } else {                                                                //999999 业务处理异常
+                                        callback.notifyError(request, response, mException);
                                     }
-                                    callback.notifyError(request, response, mException);
-                                    LogUtil.e(TAG, "callback.notify error " + response.code);
                                 }
+                                LogUtil.i(TAG, "notify response data:" + response.data + ", code:" + response.code);
                             } else {
+                                LogUtil.i(TAG, "notify response = null || response.head = null");
                                 callback.notifyError(request, response, mException);
-                                LogUtil.e(TAG, "callback.notify else error");
                             }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        if (callback != null) {
-                            response.data = "数据解析异常";
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            response.data = "data parse error";
                             callback.notifyError(request, response, e);
-                            LogUtil.i(TAG, "callback.notify error:数据解析异常");
+                            LogUtil.i(TAG, "notify response data:data parse error");
                         }
                     }
                 }
@@ -313,15 +261,14 @@ public class DataLoader {
      * 清除请求队列中的任务
      */
     public void clearRequests() {
+        LogUtil.i(TAG, "clearRequests()");
         try {
-            Set<String> mRunningIds = mRunningRequests.keySet();
-            if (mRunningIds.size() > 0) {
-                for (String id : mRunningIds) {
-                    clear(id);
-                }
-            }
-            ids.clear();
+            LogUtil.i(TAG, "ids.size = " + ids.size() + ", requests.size = " + mRequests.size());
             mRequests.clear();
+            ids.clear();
+            mActiveTaskCount = 0;
+            mRunningRequests.clear();
+            flushRequests();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -329,21 +276,18 @@ public class DataLoader {
 
     /**
      * 取消任务
-     *
-     * @param id
      */
     public synchronized void clear(String id) {
         if (ids.contains(id)) {
             ids.remove(id);
             mActiveTaskCount--;
-            flushRequests();
 
             RequestTask request = (RequestTask) mRunningRequests.get(id);
             // 中断http数据请求
             if (request != null) {
                 mRunningRequests.remove(id);
             }
+            flushRequests();
         }
     }
-
 }
