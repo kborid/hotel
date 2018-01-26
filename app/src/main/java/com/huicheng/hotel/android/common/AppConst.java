@@ -153,4 +153,5 @@ public final class AppConst {
     public static final int MENUS_STATUS = CONST_HANDLE_FLAG + 70;
     public static final int PAY_UNION = CONST_HANDLE_FLAG + 71;
     public static final int PAY_RESULT = CONST_HANDLE_FLAG + 72;
+    public static final int BOUNTY_ACTIVES = CONST_HANDLE_FLAG + 73;
 }

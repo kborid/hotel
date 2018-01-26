@@ -43,7 +43,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.UcBountyActivity;
+import com.huicheng.hotel.android.ui.activity.UcBountyMainActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
@@ -709,7 +709,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                     return;
                 }
                 ((ImageView) findViewById(R.id.iv_bounty_icon)).setImageResource(R.drawable.iv_my_bounty_normal);
-                intent = new Intent(this, UcBountyActivity.class);
+                intent = new Intent(this, UcBountyMainActivity.class);
                 break;
             case R.id.tv_next_search:
                 if (StringUtil.isEmpty(tv_city.getText().toString())) {

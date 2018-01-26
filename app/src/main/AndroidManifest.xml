@@ -127,6 +127,10 @@
             android:name=".ui.activity.UcOrdersActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <!--我的旅行币新增首页-->
+        <activity
+            android:name=".ui.activity.UcBountyMainActivity"
+            android:screenOrientation="portrait" />
         <!--我的旅行币-->
         <activity
             android:name=".ui.activity.UcBountyActivity"

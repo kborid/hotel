@@ -206,18 +206,6 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         }
     }
 
-    //设置title的描述
-    public void setTitleSummaryString(String summary) {
-        if (null != tv_center_summary) {
-            if (StringUtil.notEmpty(summary)) {
-                tv_center_summary.setText(summary);
-                tv_center_summary.setVisibility(View.VISIBLE);
-            } else {
-                tv_center_summary.setVisibility(View.GONE);
-            }
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();

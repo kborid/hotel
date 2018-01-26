@@ -229,6 +229,7 @@ public class DataLoader {
                                         callback.notifyError(request, response, mException);
                                     }
                                 }
+                                LogUtil.i(TAG, "notify response data:" + response.data + ", code:" + response.code);
                             } else {
                                 LogUtil.i(TAG, "notify response = null || response.head = null");
                                 callback.notifyError(request, response, mException);
@@ -237,8 +238,8 @@ public class DataLoader {
                             e.printStackTrace();
                             response.data = "data parse error";
                             callback.notifyError(request, response, e);
+                            LogUtil.i(TAG, "notify response data:data parse error");
                         }
-                        LogUtil.i(TAG, "notify response data:" + response.data + ", code:" + response.code);
                     }
                 }
             });

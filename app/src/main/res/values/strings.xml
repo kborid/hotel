@@ -19,6 +19,8 @@
 
 
     <string name="yuan">元</string>
+    <string name="replace_yuan">%1$d 元</string>
+    <string name="lxb_util">%1$d 元</string>
     <string name="multipleSign">×</string>
     <string name="RMB">¥</string>
     <string name="totalRMB">共 ¥</string>

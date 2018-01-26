@@ -109,9 +109,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:paddingLeft="16dp"
-                    android:paddingBottom="16dp"
+                    android:paddingBottom="8dp"
                     android:paddingRight="14dp"
-                    android:paddingTop="14dp"
+                    android:paddingTop="8dp"
                     android:layout_weight="1"
                     android:gravity="center">
 
@@ -130,7 +130,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_title"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
