@@ -107,13 +107,23 @@ public class Utils {
         return hasNavigationBar;
     }
 
-    public static int dp2px(float dipValue) {
+    public static int dp2px(float dpValue) {
         final float scale = AppContext.mAppContext.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
+        return (int) (dpValue * scale + 0.5f);
     }
 
     public static int px2dp(float pxValue) {
         final float scale = AppContext.mAppContext.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    public static int sp2px(float spValue) {
+        final float scale = AppContext.mAppContext.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * scale + 0.5f);
+    }
+
+    public static int px2sp(float pxValue) {
+        final float scale = AppContext.mAppContext.getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / scale + 0.5f);
     }
 

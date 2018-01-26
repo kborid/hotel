@@ -6,9 +6,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Algorithm3DES {
-	
-//	private static final LogUtil logger = LogFactory.getLog(Algorithm3DES.class);
-	
+
 	public static String ALGORITHM = "DESede";//采用3des算法
 	
 	public static int num = 168;//24字节
@@ -36,13 +34,10 @@ public class Algorithm3DES {
 			data.setDataMi(getFormattedText(encoded));
 		}catch(java.security.NoSuchAlgorithmException e1){
 			e1.printStackTrace();
-//			logger.error("不存在对应的算法实现", e1);
 		}catch(javax.crypto.NoSuchPaddingException e){
 			e.printStackTrace();
-//			logger.error("对应的填充机制未提供", e2);
 		}catch(Exception e3){
 			e3.printStackTrace();
-//			logger.error("3DES加密产生异常", e3);
 		}
 	}
 	
@@ -65,13 +60,10 @@ public class Algorithm3DES {
 //			}
 			
 		}catch(java.security.NoSuchAlgorithmException e1){
-//			logger.error("不存在对应的算法实现", e1);
 			e1.printStackTrace();
 		}catch(javax.crypto.NoSuchPaddingException e2){
-//			logger.error("对应的填充机制未提供", e2);
 			e2.printStackTrace();
 		}catch(Exception e3){
-//			logger.error("3DES解密产生异常", e3);
 			e3.printStackTrace();
 		}
 	}

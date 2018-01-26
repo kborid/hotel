@@ -178,7 +178,7 @@ public class DateUtil {
         toCalendar.set(Calendar.SECOND, 0);
         toCalendar.set(Calendar.MILLISECOND, 0);
 
-        return (int) ((toCalendar.getTime().getTime() - fromCalendar.getTime().getTime()) / (1000 * 60 * 60 * 24));
+        return (int) ((toCalendar.getTimeInMillis() - fromCalendar.getTimeInMillis()) / (1000 * 60 * 60 * 24));
     }
 
     /**
@@ -272,7 +272,7 @@ public class DateUtil {
      * @return
      */
     public static String dateToWeek(Date date) {
-        String WEEK[] = {"星期日", "星期一 ", "星期二", "星期三 ", "星期四 ", "星期五 ", "星期六"};
+        String WEEK[] = {"日", "一", "二", "三", "四", "五", "六"};
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int dayIndex = calendar.get(Calendar.DAY_OF_WEEK);
@@ -284,7 +284,7 @@ public class DateUtil {
     }
 
     public static String dateToWeek2(Date date) {
-        String WEEK[] = {"周日", "周一 ", "周二", "周三 ", "周四 ", "周五 ", "周六"};
+        String WEEK[] = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int dayIndex = calendar.get(Calendar.DAY_OF_WEEK);

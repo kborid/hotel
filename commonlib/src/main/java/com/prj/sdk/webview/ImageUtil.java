@@ -1,4 +1,4 @@
-package com.prj.sdk.widget.webview;
+package com.prj.sdk.webview;
 
 import android.annotation.TargetApi;
 import android.content.ContentUris;

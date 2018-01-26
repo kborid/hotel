@@ -21,7 +21,7 @@ import com.huicheng.hotel.android.ui.custom.MyCommWebViewClient;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.webview.WebChromeClientCompat;
+import com.prj.sdk.webview.WebChromeClientCompat;
 
 import java.util.HashMap;
 

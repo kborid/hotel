@@ -298,7 +298,6 @@ public class ImageLoader {
      * @param request 请求参数
      */
     private void handleMessage(final ImageRequest request) {
-        // LoggerUtil.d(TAG, "图片请求返回:" + " url:" + request.url);
         mImageHandler.post(new Runnable() {
 
             @Override

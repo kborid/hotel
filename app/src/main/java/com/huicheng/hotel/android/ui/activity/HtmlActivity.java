@@ -27,8 +27,8 @@ import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.Utils;
-import com.prj.sdk.widget.webview.ChooserFileController;
-import com.prj.sdk.widget.webview.WebChromeClientCompat;
+import com.prj.sdk.webview.ChooserFileController;
+import com.prj.sdk.webview.WebChromeClientCompat;
 
 /**
  * 中间件处理，加载html5应用数据

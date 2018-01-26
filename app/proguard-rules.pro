@@ -173,8 +173,8 @@
 }
 
 #webview相关兼容扩展混淆
--dontwarn com.prj.sdk.widget.webview.**
--keep class com.prj.sdk.widget.webview.** { *; }
+-dontwarn com.prj.sdk.webview.**
+-keep class com.prj.sdk.webview.** { *; }
 
 #实体类，不需要混淆
 -keep class com.huicheng.hotel.android.net.bean.** {*;}
