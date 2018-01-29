@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/comm_title_rl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -29,19 +30,37 @@
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:gravity="center"
-            android:singleLine="true"
+            android:lines="1"
             android:textColor="@color/titleColor"
             android:textSize="@dimen/common_18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="通用标题" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_right"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:contentDescription="@string/app_name"
-        android:padding="12dp"
-        android:visibility="invisible"
-        android:scaleType="centerInside" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="45dp">
 
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:minWidth="45dp"
+            android:textColor="@color/secColor"
+            android:textSize="@dimen/common_14sp"
+            android:visibility="invisible"
+            tools:text="分享" />
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:contentDescription="@string/app_name"
+            android:minWidth="45dp"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/iv_viped"
+            android:visibility="invisible" />
+    </RelativeLayout>
 </LinearLayout>

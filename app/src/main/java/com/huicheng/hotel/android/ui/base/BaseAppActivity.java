@@ -74,6 +74,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     private LinearLayout title_content_lay;
     protected TextView tv_center_title;
     protected ImageView iv_back;
+    protected TextView tv_right;
     protected ImageView iv_right;
 
     @Override
@@ -159,6 +160,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         title_content_lay = (LinearLayout) findViewById(R.id.title_content_lay);
         tv_center_title = (TextView) findViewById(R.id.tv_center_title);
         iv_back = (ImageView) findViewById(R.id.iv_back);
+        tv_right = (TextView) findViewById(R.id.tv_right);
         iv_right = (ImageView) findViewById(R.id.iv_right);
     }
 
@@ -175,6 +177,9 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     protected void initListeners() {
         if (iv_back != null) {
             iv_back.setOnClickListener(this);
+        }
+        if (tv_right != null) {
+            tv_right.setOnClickListener(this);
         }
         if (iv_right != null) {
             iv_right.setOnClickListener(this);
@@ -198,8 +203,22 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
 
     public void setRightButtonResource(int rightResId) {
         if (null != iv_right && rightResId != -1) {
+            tv_right.setVisibility(View.INVISIBLE);
             iv_right.setVisibility(View.VISIBLE);
             iv_right.setImageResource(rightResId);
+        }
+    }
+
+    public void setRightButtonResource(String str) {
+        setRightButtonResource(str, getResources().getColor(R.color.secColor));
+    }
+
+    public void setRightButtonResource(String str, int colorId) {
+        if (null != tv_right && StringUtil.notEmpty(str) && colorId != -1) {
+            iv_right.setVisibility(View.INVISIBLE);
+            tv_right.setVisibility(View.VISIBLE);
+            tv_right.setText(str);
+            tv_right.setTextColor(colorId);
         }
     }
 
@@ -214,7 +233,6 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
                     //do nothing
                     LogUtil.i(TAG, "do nothing~~~");
                 } else {
-//                    finish();
                     LogUtil.i(TAG, "do onBackPressed()~~~");
                     onBackPressed();
                 }
