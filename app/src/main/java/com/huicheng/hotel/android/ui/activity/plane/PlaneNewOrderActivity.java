@@ -5,6 +5,7 @@ import android.support.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -48,6 +49,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private LinearLayout flight_layout;
     private LinearLayout flight_flag_layout;
     private CustomInfoLayoutForPlane custom_info_layout_plane;
+    private ImageView iv_customInfo_add;
 
     private Switch btn_invoice_switch;
     private LinearLayout invoice_lay;
@@ -98,6 +100,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         flight_flag_layout = (LinearLayout) findViewById(R.id.flight_flag_layout);
 
         custom_info_layout_plane = (CustomInfoLayoutForPlane) findViewById(R.id.custom_info_layout_plane);
+        iv_customInfo_add = (ImageView) findViewById(R.id.iv_customInfo_add);
 
         btn_invoice_switch = (Switch) findViewById(R.id.btn_invoice_switch);
         invoice_lay = (LinearLayout) findViewById(R.id.invoice_lay);
@@ -190,6 +193,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     @Override
     public void initListeners() {
         super.initListeners();
+        iv_customInfo_add.setOnClickListener(this);
         flight_flag_layout.setOnClickListener(this);
         rg_invoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -227,6 +231,11 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.iv_customInfo_add:
+                if (null != custom_info_layout_plane) {
+                    custom_info_layout_plane.addNewItem();
+                }
+                break;
             case R.id.flight_flag_layout: {
                 Intent intent = new Intent(this, PlaneOrderDetailActivity.class);
                 startActivity(intent);

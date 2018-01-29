@@ -16,13 +16,13 @@ import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
 import com.huicheng.hotel.android.ui.adapter.PlaneTicketVendorItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -99,6 +99,10 @@ public class PlaneTicketListActivity extends BaseAppActivity {
     @Override
     public void initParams() {
         super.initParams();
+        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
+        tv_center_title.setText(DateUtil.getDay("M月d日", mOffTime) + DateUtil.dateToWeek2(new Date(mOffTime)));
+        setRightButtonResource(R.drawable.iv_plane_share);
+
         swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
         swipeRefreshLayout.setDistanceToTriggerSync(200);
         swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
@@ -116,10 +120,6 @@ public class PlaneTicketListActivity extends BaseAppActivity {
 //            mOn3Code = mOff3Code;
 //            mOff3Code = tmp;
         }
-
-        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        tv_center_title.setText(DateUtil.getDay("M月d日", mOffTime) + DateUtil.dateToWeek2(new Date(mOffTime)));
-        setRightButtonResource(R.drawable.iv_plane_share);
 
         adapter = new PlaneTicketVendorItemAdapter(this, mVendorList);
         listview.setAdapter(adapter);

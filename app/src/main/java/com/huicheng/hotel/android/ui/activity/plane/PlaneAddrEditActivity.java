@@ -13,4 +13,12 @@ public class PlaneAddrEditActivity extends BaseAppActivity {
     protected void setContentView() {
         setContentView(R.layout.act_plane_addredit_layout);
     }
+
+    @Override
+    protected void initParams() {
+        super.initParams();
+        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
+        tv_center_title.setText("添加地址");
+        setRightButtonResource("保存", getResources().getColor(R.color.plane_mainColor));
+    }
 }

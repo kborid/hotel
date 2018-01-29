@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 public class PlaneAddrManagerActivity extends BaseAppActivity {
 
-    private TextView tv_right;
     private ListView listview;
     private ArrayList<String> list = new ArrayList<>();
     private AddressManagerAdapter addressManagerAdapter;
@@ -40,6 +39,9 @@ public class PlaneAddrManagerActivity extends BaseAppActivity {
     @Override
     public void initViews() {
         super.initViews();
+        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
+        tv_center_title.setText("管理地址");
+        setRightButtonResource("添加", getResources().getColor(R.color.plane_mainColor));
         tv_right = (TextView) findViewById(R.id.tv_right);
         listview = (ListView) findViewById(R.id.listview);
     }
@@ -57,7 +59,6 @@ public class PlaneAddrManagerActivity extends BaseAppActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        tv_right.setOnClickListener(this);
     }
 
     @Override

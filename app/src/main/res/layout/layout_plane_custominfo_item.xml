@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TableLayout
@@ -78,7 +78,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="证件号码"
                         android:textColor="#666666"
@@ -86,7 +86,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="乘机人生日"
                         android:textColor="#666666"
@@ -145,63 +145,10 @@
         </TableLayout>
 
         <ImageView
-            android:id="@+id/iv_add"
+            android:id="@+id/iv_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/iv_plane_custom_add" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:paddingLeft="22dp"
-        android:paddingRight="19dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="未成年旅客"
-            android:textColor="#666666"
-            android:textSize="@dimen/common_14sp"
-            android:textStyle="bold" />
-
-        <Switch
-            android:id="@+id/btn_custom_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:switchMinWidth="20dp"
-            android:textOff=""
-            android:textOn=""
-            android:thumb="@drawable/plane_switch_thumb"
-            android:thumbTextPadding="10dp"
-            android:track="@drawable/plane_switch_track" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/no_adult_layout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#e2e2e2" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="测试Layout"
-            android:textColor="#666666"
-            android:textSize="@dimen/common_18sp"
-            android:textStyle="bold" />
+            android:src="@drawable/plane_custominfo_sel" />
     </LinearLayout>
 </LinearLayout>

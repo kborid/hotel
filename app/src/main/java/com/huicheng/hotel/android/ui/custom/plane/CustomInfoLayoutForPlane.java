@@ -7,12 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
@@ -96,36 +94,29 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        final Switch isAdult = (Switch) itemView.findViewById(R.id.btn_custom_switch);
-        final LinearLayout noAdultLayout = (LinearLayout) itemView.findViewById(R.id.no_adult_layout);
-        final ImageView iv_add = (ImageView) itemView.findViewById(R.id.iv_add);
-//        final ImageView iv_remove = (ImageView) view.findViewById(R.id.iv_remove);
-        isAdult.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    noAdultLayout.setVisibility(VISIBLE);
-                } else {
-                    noAdultLayout.setVisibility(GONE);
-                }
-            }
-        });
-        iv_add.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addView(getNewItemView());
-                updateButtonStatus(getChildCount());
-            }
-        });
-//        iv_remove.setOnClickListener(new OnClickListener() {
+//        final ImageView iv_add = (ImageView) itemView.findViewById(R.id.iv_add);
+        final ImageView iv_sub = (ImageView) itemView.findViewById(R.id.iv_sub);
+//        iv_add.setOnClickListener(new OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                removeView(view);
+//                addView(getNewItemView());
 //                updateButtonStatus(getChildCount());
 //            }
 //        });
+        iv_sub.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeView(itemView);
+                updateButtonStatus(getChildCount());
+            }
+        });
 
         return itemView;
+    }
+
+    public void addNewItem() {
+        addView(getNewItemView());
+        updateButtonStatus(getChildCount());
     }
 
     public boolean isEditViewEmpty() {
@@ -207,16 +198,10 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
     private void updateButtonStatus(int count) {
         LogUtil.i("CommonCustomInfoLayout", "updateButtonStatus() count = " + count);
         //刷新状态
-//        if (count == 1) {
-//            getChildAt(0).findViewById(R.id.iv_remove).setEnabled(false);
-//            getChildAt(0).findViewById(R.id.iv_remove).setAlpha(0.5f);
-//            getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
-//            getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
-//        } else if (count > 1) {
-//            getChildAt(0).findViewById(R.id.iv_remove).setEnabled(true);
-//            getChildAt(0).findViewById(R.id.iv_remove).setAlpha(1.0f);
-//            getChildAt(0).findViewById(R.id.iv_add).setEnabled(true);
-//            getChildAt(0).findViewById(R.id.iv_add).setAlpha(1f);
-//        }
+        if (count == 1) {
+            getChildAt(0).findViewById(R.id.iv_sub).setEnabled(false);
+        } else if (count > 1) {
+            getChildAt(0).findViewById(R.id.iv_sub).setEnabled(true);
+        }
     }
 }

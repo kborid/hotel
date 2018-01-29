@@ -65,8 +65,10 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="abcbooking" />
             </intent-filter>
         </activity>
@@ -91,7 +93,6 @@
             android:name=".ui.activity.HtmlActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-
 
         <!--登录入口-->
         <activity
@@ -178,6 +179,10 @@
             android:name=".ui.activity.UcCostDetailActivity"
             android:screenOrientation="portrait" />
 
+        <!--分流画面-->
+        <activity
+            android:name=".ui.activity.MainSwitcherActivity"
+            android:screenOrientation="portrait" />
 
         <!--酒店-->
         <!--酒店入口main-->

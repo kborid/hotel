@@ -42,6 +42,9 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
     @Override
     public void initParams() {
         super.initParams();
+        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
+        tv_center_title.setText("选择地址");
+        setRightButtonResource("管理", getResources().getColor(R.color.plane_mainColor));
         for (int i = 0; i < 10; i++) {
             list.add(String.valueOf(i));
         }
@@ -52,7 +55,6 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        tv_right.setOnClickListener(this);
     }
 
     @Override
