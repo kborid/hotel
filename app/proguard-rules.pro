@@ -289,7 +289,6 @@ public <fields>;
 -keep class cn.jiguang.** { *; }
 #jpush混淆end
 
-
 #支付宝start
 -keep class com.alipay.android.app.IAlixPay{*;}
 -keep class com.alipay.android.app.IAlixPay$Stub{*;}

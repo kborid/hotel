@@ -193,18 +193,18 @@ public class HotelSpaceDetailActivity extends BaseAppActivity implements DataCal
     public void initParams() {
         super.initParams();
         tv_center_title.setText("帖子详情");
-        btn_right.setImageResource(R.drawable.iv_vippp);
+        setRightButtonResource(R.drawable.iv_vippp);
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         // 会员按钮显示状态
         if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
-            btn_right.setVisibility(View.VISIBLE);
+            right_lay.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isVip) {
-                btn_right.setImageResource(R.drawable.iv_viped);
+                setRightButtonResource(R.drawable.iv_viped);
             } else {
-                btn_right.setImageResource(R.drawable.iv_vippp);
+                setRightButtonResource(R.drawable.iv_vippp);
             }
         } else {
-            btn_right.setVisibility(View.INVISIBLE);
+            right_lay.setVisibility(View.INVISIBLE);
         }
 
         if (!SessionContext.isLogin()) {
@@ -262,7 +262,6 @@ public class HotelSpaceDetailActivity extends BaseAppActivity implements DataCal
     @Override
     public void initListeners() {
         super.initListeners();
-        btn_right.setOnClickListener(this);
         tv_share.setOnClickListener(this);
         tv_comment.setOnClickListener(this);
         tv_support.setOnClickListener(this);
@@ -314,7 +313,7 @@ public class HotelSpaceDetailActivity extends BaseAppActivity implements DataCal
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_right:
+            case R.id.right_lay:
                 if (null != hotelDetailInfoBean && !hotelDetailInfoBean.isVip) {
                     showAddVipDialog(this, hotelDetailInfoBean);
                 }
@@ -386,7 +385,7 @@ public class HotelSpaceDetailActivity extends BaseAppActivity implements DataCal
             mSharePopupWindow = new PopupWindow(mCustomShareView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         }
         mSharePopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        mSharePopupWindow.setAnimationStyle(R.style.share_anmi);
+        mSharePopupWindow.setAnimationStyle(R.style.share_anim);
         mSharePopupWindow.setBackgroundDrawable(new ColorDrawable(0));
         mSharePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -585,7 +584,8 @@ public class HotelSpaceDetailActivity extends BaseAppActivity implements DataCal
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         replyListView.stopRefresh();
     }
 

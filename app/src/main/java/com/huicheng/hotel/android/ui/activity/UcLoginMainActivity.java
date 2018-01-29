@@ -38,11 +38,6 @@ public class UcLoginMainActivity extends BaseAppActivity {
     }
 
     @Override
-    public void initParams() {
-        super.initParams();
-    }
-
-    @Override
     public void initListeners() {
         super.initListeners();
         tv_right.setOnClickListener(this);
@@ -84,15 +79,5 @@ public class UcLoginMainActivity extends BaseAppActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.user_login_exit_in, R.anim.user_login_exit_out);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

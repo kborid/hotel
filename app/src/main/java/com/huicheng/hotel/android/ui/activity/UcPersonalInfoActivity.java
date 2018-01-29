@@ -67,7 +67,7 @@ import java.util.Set;
  * @author kborid
  * @date 2016/11/30 0030
  */
-public class UserCenterActivity extends BaseAppActivity {
+public class UcPersonalInfoActivity extends BaseAppActivity {
 
     private Calendar calendar = Calendar.getInstance();
     private boolean isEdited = false;
@@ -132,7 +132,7 @@ public class UserCenterActivity extends BaseAppActivity {
 
     @Override
     protected void setContentView() {
-        setContentView(R.layout.act_usercenter_layout);
+        setContentView(R.layout.act_uc_personalinfo);
     }
 
     @Override
@@ -185,7 +185,7 @@ public class UserCenterActivity extends BaseAppActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_back.setImageResource(R.drawable.iv_back_white);
+        setRightButtonResource(R.drawable.iv_back_white);
         setCountDownTimer(60 * 1000, 1000);
         scroll_view.getBackground().mutate().setAlpha((int) (0.8 * 255));
 
@@ -336,7 +336,7 @@ public class UserCenterActivity extends BaseAppActivity {
         flowlayout.setAdapter(new TagAdapter<String>(tagList) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
-                TextView tv_tag = (TextView) LayoutInflater.from(UserCenterActivity.this).inflate(R.layout.lv_tag_item, flowlayout, false);
+                TextView tv_tag = (TextView) LayoutInflater.from(UcPersonalInfoActivity.this).inflate(R.layout.lv_tag_item, flowlayout, false);
                 tv_tag.setText(o);
                 return tv_tag;
             }
@@ -459,7 +459,7 @@ public class UserCenterActivity extends BaseAppActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_back:
+            case R.id.iv_back:
                 Intent intent = new Intent(this, HotelMainActivity.class);
                 startActivity(intent);
                 break;
@@ -564,7 +564,7 @@ public class UserCenterActivity extends BaseAppActivity {
                 break;
             case R.id.tv_birthday:
                 if (isEdited) {
-                    new DatePickerDialog(UserCenterActivity.this, R.style.MyMaterialDialog,
+                    new DatePickerDialog(this, R.style.MyMaterialDialog,
                             mDateSetListener, mYear, mMonth - 1, mDay).show();
                 }
                 break;
@@ -903,7 +903,7 @@ public class UserCenterActivity extends BaseAppActivity {
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
 //                int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
 //                if (oldSkinIndex != newSkinIndex) {
-//                    Intent intent = new Intent(this, UserCenterActivity.class);
+//                    Intent intent = new Intent(this, UcPersonalInfoActivity.class);
 //                    intent.putExtra("scrollY", scroll_view.getScrollY());
 //                    startActivity(intent);
 //                    overridePendingTransition(R.anim.act_restart, R.anim.act_restop);
@@ -914,7 +914,8 @@ public class UserCenterActivity extends BaseAppActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         if (request.flag == AppConst.CHECK_YZM) {
             isValid = false;
         }

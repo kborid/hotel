@@ -66,7 +66,7 @@ public class Hotel0YuanHomeActivity extends BaseAppActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_back.setImageResource(R.drawable.iv_back_white);
+        setBackButtonResource(R.drawable.iv_back_white);
         Bitmap bm = BitmapUtils.getGrayBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.iv_share));
         iv_share.setImageBitmap(bm);
         iv_share.setEnabled(false);
@@ -84,7 +84,7 @@ public class Hotel0YuanHomeActivity extends BaseAppActivity {
             mSharePopupWindow = new PopupWindow(mCustomShareView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         }
         mSharePopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        mSharePopupWindow.setAnimationStyle(R.style.share_anmi);
+        mSharePopupWindow.setAnimationStyle(R.style.share_anim);
         mSharePopupWindow.setBackgroundDrawable(new ColorDrawable(0));
         mSharePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override

@@ -135,11 +135,6 @@ public class HotelSpacePublishActivity extends BaseAppActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     private void choosePictureDialog() {
         CustomDialog dialog = new CustomDialog(this);
         dialog.setMessage("请选择图片获取方式");
@@ -217,17 +212,6 @@ public class HotelSpacePublishActivity extends BaseAppActivity {
 
         requestID = DataLoader.getInstance().loadData(this, d);
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {

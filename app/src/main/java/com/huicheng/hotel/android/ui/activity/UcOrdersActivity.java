@@ -232,7 +232,8 @@ public class UcOrdersActivity extends BaseAppActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         listview.stopRefresh();
         listview.stopLoadMore();
     }

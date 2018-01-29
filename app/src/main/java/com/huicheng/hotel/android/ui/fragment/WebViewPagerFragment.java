@@ -18,6 +18,8 @@ import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.bean.ShenZhouConfigBean;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.MyCommWebViewClient;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;

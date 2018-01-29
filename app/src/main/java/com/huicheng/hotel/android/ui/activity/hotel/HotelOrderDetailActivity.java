@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -27,6 +26,7 @@ import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
+import com.huicheng.hotel.android.ui.activity.UcAssessesActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -63,7 +63,7 @@ public class HotelOrderDetailActivity extends BaseAppActivity {
     private TextView tv_order_num;
     private View name_line, phone_line;
 
-    private Button /*btn_hhy, */btn_pay, btn_cancel, btn_modify, btn_booking_again, btn_assess, btn_confirm;
+    private TextView tv_pay, tv_hhy, tv_cancel, tv_modify, tv_confirm, tv_assess, tv_booking;
 
     private Handler myHandler = new Handler();
     private ScrollView scroll_view;
@@ -77,7 +77,7 @@ public class HotelOrderDetailActivity extends BaseAppActivity {
 
     @Override
     protected void setContentView() {
-        setContentView(R.layout.act_hotel_orderdetail_layout);
+        setContentView(R.layout.act_hotel_orderdetail);
     }
 
     @Override
@@ -105,13 +105,13 @@ public class HotelOrderDetailActivity extends BaseAppActivity {
         et_require = (EditText) findViewById(R.id.et_require);
         tv_invoice_info = (TextView) findViewById(R.id.tv_invoice_info);
 
-//        btn_hhy = (Button) findViewById(R.id.btn_hhy);
-        btn_pay = (Button) findViewById(R.id.btn_pay);
-        btn_assess = (Button) findViewById(R.id.btn_assess);
-        btn_booking_again = (Button) findViewById(R.id.btn_booking_again);
-        btn_cancel = (Button) findViewById(R.id.btn_cancel);
-        btn_modify = (Button) findViewById(R.id.btn_modify);
-        btn_confirm = (Button) findViewById(R.id.btn_confirm);
+//        tv_hhy = (TextView) findViewById(R.id.tv_hhy);
+        tv_pay = (TextView) findViewById(R.id.tv_pay);
+        tv_cancel = (TextView) findViewById(R.id.tv_cancel);
+        tv_modify = (TextView) findViewById(R.id.tv_modify);
+        tv_confirm = (TextView) findViewById(R.id.tv_confirm);
+        tv_assess = (TextView) findViewById(R.id.tv_assess);
+        tv_booking = (TextView) findViewById(R.id.tv_booking);
 
         scroll_view = (ScrollView) findViewById(R.id.scroll_view);
     }
@@ -227,43 +227,43 @@ public class HotelOrderDetailActivity extends BaseAppActivity {
     private void updateButtonStatus(int status) {
         switch (status) {
             case HotelCommDef.WaitPay:
-                btn_pay.setVisibility(View.VISIBLE);
-//                btn_hhy.setVisibility(View.GONE);
-                btn_cancel.setEnabled(true);
-                btn_modify.setEnabled(true);
-                btn_assess.setEnabled(false);
+                tv_pay.setVisibility(View.VISIBLE);
+//                tv_hhy.setVisibility(View.GONE);
+                tv_cancel.setEnabled(true);
+                tv_modify.setEnabled(true);
+                tv_assess.setEnabled(false);
                 break;
             case HotelCommDef.WaitConfirm:
-                btn_pay.setVisibility(View.GONE);
-//                btn_hhy.setVisibility(View.GONE);
-                btn_cancel.setEnabled(true);
-                btn_modify.setEnabled(true);
-                btn_assess.setEnabled(false);
+                tv_pay.setVisibility(View.GONE);
+//                tv_hhy.setVisibility(View.GONE);
+                tv_cancel.setEnabled(true);
+                tv_modify.setEnabled(true);
+                tv_assess.setEnabled(false);
                 break;
             case HotelCommDef.Confirmed:
-                btn_pay.setVisibility(View.GONE);
+                tv_pay.setVisibility(View.GONE);
 //                if (orderPayDetailInfoBean.payWay == 1) {
-//                    btn_hhy.setVisibility(View.GONE);
+//                    tv_hhy.setVisibility(View.GONE);
 //                } else {
-//                    btn_hhy.setVisibility(View.VISIBLE);
+//                    tv_hhy.setVisibility(View.VISIBLE);
 //                }
-                btn_cancel.setEnabled(false);
-                btn_modify.setEnabled(false);
-                btn_assess.setEnabled(false);
+                tv_cancel.setEnabled(false);
+                tv_modify.setEnabled(false);
+                tv_assess.setEnabled(false);
                 break;
             case HotelCommDef.Finished:
-                btn_pay.setVisibility(View.GONE);
-//                btn_hhy.setVisibility(View.GONE);
-                btn_cancel.setEnabled(false);
-                btn_modify.setEnabled(false);
-                btn_assess.setEnabled(true);
+                tv_pay.setVisibility(View.GONE);
+//                tv_hhy.setVisibility(View.GONE);
+                tv_cancel.setEnabled(false);
+                tv_modify.setEnabled(false);
+                tv_assess.setEnabled(true);
                 break;
             default:
-                btn_pay.setVisibility(View.GONE);
-//                btn_hhy.setVisibility(View.GONE);
-                btn_cancel.setEnabled(false);
-                btn_modify.setEnabled(false);
-                btn_assess.setEnabled(false);
+                tv_pay.setVisibility(View.GONE);
+//                tv_hhy.setVisibility(View.GONE);
+                tv_cancel.setEnabled(false);
+                tv_modify.setEnabled(false);
+                tv_assess.setEnabled(false);
                 break;
         }
     }
@@ -271,15 +271,15 @@ public class HotelOrderDetailActivity extends BaseAppActivity {
     @Override
     public void initListeners() {
         super.initListeners();
+        tv_pay.setOnClickListener(this);
+//        tv_hhy.setOnClickListener(this);
+        tv_cancel.setOnClickListener(this);
+        tv_modify.setOnClickListener(this);
+        tv_assess.setOnClickListener(this);
+        tv_booking.setOnClickListener(this);
+        tv_confirm.setOnClickListener(this);
         tv_hotel_position.setOnClickListener(this);
         tv_hotel_phone.setOnClickListener(this);
-        btn_pay.setOnClickListener(this);
-//        btn_hhy.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
-        btn_modify.setOnClickListener(this);
-        btn_assess.setOnClickListener(this);
-        btn_booking_again.setOnClickListener(this);
-        btn_confirm.setOnClickListener(this);
     }
 
     @Override
@@ -333,26 +333,26 @@ public class HotelOrderDetailActivity extends BaseAppActivity {
                 intent.putExtra("orderId", orderId);
                 intent.putExtra("orderType", orderType);
                 break;
-//            case R.id.btn_hhy:
+//            case R.id.tv_hhy:
 //                intent = new Intent(this, HotelHhyOrderDetailActivity.class);
 //                intent.putExtra("regretOrderid", orderPayDetailInfoBean.orderID);
 //                String dateStr = DateUtil.getDay("M.dd", orderPayDetailInfoBean.timeStart) + DateUtil.dateToWeek2(new Date(orderPayDetailInfoBean.timeStart)) + " - " + DateUtil.getDay("M.dd", orderPayDetailInfoBean.timeEnd) + DateUtil.dateToWeek2(new Date(orderPayDetailInfoBean.timeEnd));
 //                intent.putExtra("date", dateStr);
 //                break;
-            case R.id.btn_cancel:
+            case R.id.tv_cancel:
                 requestCancelOrder();
                 break;
-            case R.id.btn_modify:
+            case R.id.tv_modify:
                 modifyEnableOrderInfo(true);
                 break;
-            case R.id.btn_confirm:
+            case R.id.tv_confirm:
                 requestModifyOrderInfo();
                 break;
-            case R.id.btn_assess:
-                intent = new Intent(this, HotelAssessOrdersActivity.class);
+            case R.id.tv_assess:
+                intent = new Intent(this, UcAssessesActivity.class);
                 break;
             case R.id.tv_hotel_name:
-            case R.id.btn_booking_again:
+            case R.id.tv_booking:
                 HotelOrderManager.getInstance().reset();
                 HotelOrderManager.getInstance().setOrderPayDetailInfoBean(orderPayDetailInfoBean);
                 HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(orderPayDetailInfoBean.province, orderPayDetailInfoBean.location, "-"));
@@ -419,11 +419,11 @@ public class HotelOrderDetailActivity extends BaseAppActivity {
             et_require.setEnabled(true);
             et_require.setBackground(getResources().getDrawable(R.drawable.orderdetail_edit_require_bg));
 
-            btn_confirm.setVisibility(View.VISIBLE);
-            btn_confirm.setEnabled(true);
-            btn_modify.setVisibility(View.GONE);
-            btn_cancel.setEnabled(false);
-            btn_booking_again.setEnabled(false);
+            tv_confirm.setVisibility(View.VISIBLE);
+            tv_confirm.setEnabled(true);
+            tv_modify.setVisibility(View.GONE);
+            tv_cancel.setEnabled(false);
+            tv_booking.setEnabled(false);
         } else {
             et_name.setEnabled(false);
             name_line.setVisibility(View.INVISIBLE);
@@ -432,11 +432,11 @@ public class HotelOrderDetailActivity extends BaseAppActivity {
             et_require.setEnabled(false);
             et_require.setBackground(null);
 
-            btn_modify.setVisibility(View.VISIBLE);
-            btn_confirm.setVisibility(View.GONE);
-            btn_confirm.setEnabled(false);
-            btn_cancel.setEnabled(true);
-            btn_booking_again.setEnabled(true);
+            tv_modify.setVisibility(View.VISIBLE);
+            tv_confirm.setVisibility(View.GONE);
+            tv_confirm.setEnabled(false);
+            tv_cancel.setEnabled(true);
+            tv_booking.setEnabled(true);
         }
     }
 

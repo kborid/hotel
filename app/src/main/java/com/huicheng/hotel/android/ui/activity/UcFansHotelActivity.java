@@ -152,21 +152,6 @@ public class UcFansHotelActivity extends BaseAppActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void preExecute(ResponseData request) {
-
-    }
-
-    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.VIP_HOTEL) {
@@ -182,9 +167,8 @@ public class UcFansHotelActivity extends BaseAppActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
-        removeProgressDialog();
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         refreshFansHotelLayout();
     }
 

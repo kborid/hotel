@@ -47,6 +47,7 @@ import com.huicheng.hotel.android.ui.custom.CustomNoAutoScrollBannerLayout;
 import com.huicheng.hotel.android.ui.custom.CustomSharePopup;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
@@ -205,8 +206,7 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_back.setImageResource(R.drawable.iv_new_black_back);
-
+        setBackButtonResource(R.drawable.iv_new_black_back);
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
             iv_fans.setVisibility(View.VISIBLE);
@@ -304,7 +304,7 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
             mSharePopupWindow = new PopupWindow(mCustomShareView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         }
         mSharePopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        mSharePopupWindow.setAnimationStyle(R.style.share_anmi);
+        mSharePopupWindow.setAnimationStyle(R.style.share_anim);
         mSharePopupWindow.setBackgroundDrawable(new ColorDrawable(0));
         mSharePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -809,9 +809,10 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         if (request.flag == AppConst.ROOM_DETAIL) {
+            CustomToast.show(response.data.toString(), CustomToast.LENGTH_SHORT);
             this.finish();
         }
     }

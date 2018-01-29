@@ -157,11 +157,6 @@ public class UcCostDetailActivity extends BaseAppActivity {
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-    }
-
     private void requestSpendRecorded() {
         LogUtil.i(TAG, "requestSpendRecorded()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
@@ -177,11 +172,6 @@ public class UcCostDetailActivity extends BaseAppActivity {
         }
 
         requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     private void updateOrdersSpendInfo() {
@@ -205,11 +195,6 @@ public class UcCostDetailActivity extends BaseAppActivity {
             tv_week_count.setText(String.valueOf((int) ordersSpendInfoBean.thisweek));
             root_lay.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

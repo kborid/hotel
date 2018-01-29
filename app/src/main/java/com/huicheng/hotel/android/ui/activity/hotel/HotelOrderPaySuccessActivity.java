@@ -184,9 +184,9 @@ public class HotelOrderPaySuccessActivity extends BaseAppActivity {
 
     @Override
     public void onClick(View v) {
-//        super.onClick(v);
+        super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_back:
+            case R.id.iv_back:
                 startActivity(new Intent(this, HotelMainActivity.class));
                 break;
             case R.id.btn_vip:
@@ -200,24 +200,9 @@ public class HotelOrderPaySuccessActivity extends BaseAppActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
-            btn_back.performClick();
+            iv_back.performClick();
             return true;
         }
         return super.onKeyDown(keyCode, event);

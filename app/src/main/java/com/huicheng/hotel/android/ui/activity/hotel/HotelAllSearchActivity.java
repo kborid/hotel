@@ -198,8 +198,7 @@ public class HotelAllSearchActivity extends BaseAppActivity {
                 showMicDialog();
                 break;
             case R.id.tv_cancel:
-                this.finish();
-                overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
+                finish();
                 break;
             default:
                 break;
@@ -249,16 +248,6 @@ public class HotelAllSearchActivity extends BaseAppActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         super.onNotifyMessage(request, response);
         if (response != null && response.body != null) {
@@ -279,17 +268,9 @@ public class HotelAllSearchActivity extends BaseAppActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            tv_cancel.performClick();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.alpha_fade_in, R.anim.alpha_fade_out);
     }
 
     @Override

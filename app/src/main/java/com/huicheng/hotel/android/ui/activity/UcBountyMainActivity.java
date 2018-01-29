@@ -153,8 +153,8 @@ public class UcBountyMainActivity extends BaseAppActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
+    protected void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         swipeRefreshLayout.setRefreshing(false);
     }
 }

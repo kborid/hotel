@@ -62,7 +62,7 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_back.setImageResource(R.drawable.iv_back_white);
+        setBackButtonResource(R.drawable.iv_back_white);
 
         WebSettings webSetting = mWebView.getSettings();
         webSetting.setJavaScriptEnabled(true);

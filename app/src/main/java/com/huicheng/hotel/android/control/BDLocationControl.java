@@ -48,7 +48,7 @@ public class BDLocationControl {
     private BDLocationListener listener = new BDLocationListener() {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
-            LogUtil.i(TAG, "onLocationChanged()");
+            LogUtil.i(TAG, "onReceiveLocation()");
             if (null != bdLocation) {
                 //定位成功回调信息，设置相关消息
                 mLocationClient.stop();

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,8 +17,10 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.WeatherCommDef;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
+import com.prj.sdk.util.Utils;
 
 import java.util.Date;
 
@@ -29,9 +32,11 @@ import java.util.Date;
 public class CustomWeatherLayout extends RelativeLayout {
     private Context context;
 
+    private RelativeLayout weather_content_lay;
     private ImageView iv_weather_bg;
+
     private RelativeLayout weather_info_lay;
-    private LinearLayout logo_xc_lay;
+    private ImageView iv_xc;
     private TextView tv_temp;
     private TextView tv_weather;
     private TextView tv_loc;
@@ -114,9 +119,15 @@ public class CustomWeatherLayout extends RelativeLayout {
 
 
     private void init() {
-        LayoutInflater.from(context).inflate(R.layout.layout_weather_banner, this);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_weather_banner, this);
+        LinearLayout.LayoutParams rootRlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        rootRlp.width = Utils.mScreenWidth;
+        rootRlp.height = (int) ((float) rootRlp.width / 750 * 400);
+        view.setLayoutParams(rootRlp);
+        weather_content_lay = (RelativeLayout) findViewById(R.id.weather_content_lay);
+        weather_content_lay.setPadding(0, Utils.mStatusBarHeight, 0, 0);
         iv_weather_bg = (ImageView) findViewById(R.id.iv_weather_bg);
-        logo_xc_lay = (LinearLayout) findViewById(R.id.logo_xc_lay);
+        iv_xc = (ImageView) findViewById(R.id.iv_xc);
         weather_info_lay = (RelativeLayout) findViewById(R.id.weather_info_lay);
         tv_temp = (TextView) findViewById(R.id.tv_temp);
         tv_weather = (TextView) findViewById(R.id.tv_weather);
@@ -128,7 +139,7 @@ public class CustomWeatherLayout extends RelativeLayout {
     public void refreshWeatherInfo(long timeStamp, WeatherInfoBean bean) {
         if (null != bean) {
             hideLayoutAnim(weather_info_lay, false);
-            hideLayoutAnim(logo_xc_lay, false);
+            hideLayoutAnim(iv_xc, false);
             tv_temp.setText(String.format(context.getString(R.string.homeTemperatureStr), bean.day_air_temperature) + "~" + String.format(context.getString(R.string.homeTemperatureStr), bean.night_air_temperature));
             int weatherBgId, weatherIconId;
             String weather;
@@ -151,8 +162,8 @@ public class CustomWeatherLayout extends RelativeLayout {
         } else {
             iv_weather_bg.setImageResource(R.drawable.bg_weather_sun);
             hideLayoutAnim(weather_info_lay, false);
-            if (!logo_xc_lay.isShown()) {
-                showLayoutAnim(logo_xc_lay, true);
+            if (!iv_xc.isShown()) {
+                showLayoutAnim(iv_xc, true);
             }
         }
     }

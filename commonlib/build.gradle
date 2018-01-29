@@ -3,6 +3,8 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
+
+    //从API 23开始标准Android SDK就不再包含，需手动添加该library
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
@@ -20,6 +22,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
     lintOptions {
         abortOnError false
     }
@@ -35,5 +38,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
     compile 'com.squareup.okio:okio:1.6.0'
+    //logger
+    compile 'com.orhanobut:logger:1.8'
     compile 'com.android.support:appcompat-v7:25.3.1'
 }

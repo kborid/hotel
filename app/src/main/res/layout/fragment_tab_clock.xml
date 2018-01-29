@@ -28,5 +28,4 @@
                 android:textSize="@dimen/common_18sp" />
         </RelativeLayout>
     </FrameLayout>
-
 </android.support.v4.widget.SwipeRefreshLayout>

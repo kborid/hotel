@@ -126,7 +126,7 @@
                     android:layout_height="2dp"
                     android:background="@drawable/comm_line2" />
 
-                <com.huicheng.hotel.android.ui.custom.CommonCustomInfoLayout
+                <com.huicheng.hotel.android.ui.custom.CustomInfoLayoutForHotel
                     android:id="@+id/custom_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

@@ -34,115 +34,19 @@
     <color name="black">#000000</color>
 
     <!--common-->
+    <color name="titleColor">#4a4a4a</color>
+    <color name="titleSummaryColor">#808080</color>
+
     <color name="secColor">#4a4a4a</color>
     <color name="secColorShadow">#334a4a4a</color>
     <color name="tabDefaultColor">@color/secColorShadow</color>
-
-    <color name="guideLauncherColor">#565656</color>
-    <color name="citySelColor">#f3f3f3</color>
 
     <color name="hintColor">#e6e6e6</color>
     <color name="lineColor">#646260</color>
     <color name="lineColor2">#cfcfcf</color>
     <color name="lineShadowColor">#fffefd</color>
 
-    <color name="titleColor">#4a4a4a</color>
-    <color name="titleSummaryColor">#808080</color>
-
-    <color name="calendarTextColor">#4d4d4d</color>
-
     <color name="wxColor">#2dc100</color>
     <color name="qqColor">#0896ff</color>
-
-    <color name="offInfoColor1">#9aca40</color>
-    <color name="offInfoColor2">@color/indicatorColor</color>
-    <color name="offInfoColor3">#ef5669</color>
-
-    <color name="commonHintColor">#cccccc</color>
-    <color name="vipAddressColor">#a7a7a7</color>
-    <color name="vipHotelNameColor">@color/commonHintColor</color>
-    <color name="vipDialogInputColor">#f2f2f2</color>
-    <color name="vipDilaogInputBoundColor">@color/unselectedBarColor</color>
-    <color name="selectedBarColor">#535353</color>
-    <color name="unselectedBarColor">#d7d7d7</color>
-    <color name="unSelectedTextColor">#464646</color>
-
-    <color name="roomHotelNameColor">#636363</color>
-
-    <color name="spaceLabelColor">#929292</color>
-    <color name="spaceDateLabelColor">#333333</color>
-    <color name="spaceContentColor">#636363</color>
-    <color name="spacePublishHintColor">@color/commonHintColor</color>
-
-    <color name="noDiscountColor">#a7a7a7</color>
-    <color name="lableColor">#808080</color>
-
-    <color name="payLableColor">#DCDCDC</color>
-    <color name="payPriceColor">#9aca40</color>
-    <color name="pinTextColor">#1a1a1a</color>
-    <color name="serviceDetailTitle">#1d1d1d</color>
-    <color name="serviceDetailContent">@color/calendarTextColor</color>
-    <color name="searchHintColor">#c8c8c8</color>
-    <color name="airTicketColor">#1565b0</color>
-    <color name="hotelColor">#009fda</color>
-
-
-    <!--default color-->
-    <color name="defaultBG">#f5f5f5</color>
-    <color name="mainColor">#00276a</color>
-    <color name="mainColorDark">#0f3c75</color>
-    <color name="mainColorShadow">#8800276a</color>
-    <color name="tabHotelColor">#9aca40</color>
-    <color name="tabTrainColor">#0d47a1</color>
-    <color name="tabPlaneColor">#42a5f5</color>
-    <color name="tabTaxiColor">#fcb819</color>
-    <color name="ygrStartColor">#29c2f5</color>
-    <color name="ygrEndColor">#3175cc</color>
-    <color name="hhyMainTextColor">#3d82cf</color>
-    <color name="indicatorColor">#fec31e</color>
-    <color name="indicatorDisColor">#40fcb819</color>
-    <color name="cityIndexSelColor">@color/mainColor</color>
-    <color name="commBottom">#e9e9e9</color>
-    <color name="commBottomPress">#c8c8c8</color>
-    <color name="commBottomText">@color/secColor</color>
-    <color name="hotelListTab">@color/mainColor</color>
-    <color name="hotelItemDelPrice">@color/mainColor</color>
-    <color name="hotelItemPrice">@color/mainColor</color>
-    <color name="currentDayCircle">@color/indicatorColor</color>
-    <color name="selDayBackground">@color/mainColor</color>
-    <color name="considerText">@color/indicatorColor</color>
-    <color name="considerFab">@color/indicatorColor</color>
-    <color name="considerBackground">@color/transparent5</color>
-    <color name="considerShadow">@color/black</color>
-    <color name="roomMainText">@color/mainColor</color>
-
-    <!--female color-->
-    <color name="female_defaultBG">#fbf3f2</color>
-    <color name="female_mainColor">#671c0b</color>
-    <color name="female_mainColorDark">#561809</color>
-    <color name="female_mainColorShadow">#88671c0b</color>
-    <color name="female_tabHotelColor">#eed0ce</color>
-    <color name="female_tabTrainColor">#eed0ce</color>
-    <color name="female_tabPlaneColor">#eed0ce</color>
-    <color name="female_tabTaxiColor">#eed0ce</color>
-    <color name="female_ygrStartColor">#f2cac7</color>
-    <color name="female_ygrEndColor">#ea898b</color>
-    <color name="female_hhyMainTextColor">@color/female_indicatorColor</color>
-    <color name="female_indicatorColor">#a78757</color>
-    <color name="female_indicatorDisColor">#40a78757</color>
-    <color name="female_cityIndexSelColor">@color/female_mainColor</color>
-    <color name="female_commBottom">#efd1cf</color>
-    <color name="female_commBottomPress">#EAB8B5</color>
-    <color name="female_commBottomText">@color/white</color>
-    <color name="female_hotelListTab">#d39fa0</color>
-    <color name="female_hotelItemDelPrice">@color/female_mainColor</color>
-    <color name="female_hotelItemPrice">@color/female_indicatorColor</color>
-    <color name="female_currentDayCircle">@color/female_hotelListTab</color>
-    <color name="female_selDayBackground">@color/female_hotelItemPrice</color>
-    <color name="female_considerText">@color/female_indicatorColor</color>
-    <color name="female_considerFab">@color/female_considerText</color>
-    <color name="female_considerBackground">#fcf3f3</color>
-    <color name="female_considerShadow">#efd1cf</color>
-    <color name="female_roomMainText">@color/female_mainColor</color>
 
 </resources>

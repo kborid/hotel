@@ -24,7 +24,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     private IWXAPI api;
 
     private WXPayResultListener listener = null;
-    private void setListener(WXPayResultListener listener){
+
+    private void setListener(WXPayResultListener listener) {
         this.listener = listener;
     }
 

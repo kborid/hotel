@@ -44,7 +44,6 @@ public class HotelInvoiceActivity extends BaseAppActivity {
         et_company_name = (EditText) findViewById(R.id.et_company_name);
         et_id = (EditText) findViewById(R.id.et_id);
         et_email = (EditText) findViewById(R.id.et_email);
-
         tv_confirm = (TextView) findViewById(R.id.tv_confirm);
     }
 
@@ -68,7 +67,6 @@ public class HotelInvoiceActivity extends BaseAppActivity {
         tv_center_title.setText("发票");
         btn_switch.setChecked(isInvoice);
         invoice_lay.setVisibility(View.GONE);
-
         updateInvoiceInfo();
     }
 
@@ -87,7 +85,6 @@ public class HotelInvoiceActivity extends BaseAppActivity {
         }
     }
 
-
     @Override
     public void initListeners() {
         super.initListeners();
@@ -105,14 +102,14 @@ public class HotelInvoiceActivity extends BaseAppActivity {
             }
         });
         tv_confirm.setOnClickListener(this);
-        btn_back.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_back:
+            case R.id.iv_back:
                 if (!btn_switch.isChecked()) {
                     Intent data1 = new Intent();
                     data1.putExtra("isInvoice", btn_switch.isChecked());
@@ -153,21 +150,10 @@ public class HotelInvoiceActivity extends BaseAppActivity {
         }
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            btn_back.performClick();
+            iv_back.performClick();
             return true;
         }
         return super.onKeyDown(keyCode, event);

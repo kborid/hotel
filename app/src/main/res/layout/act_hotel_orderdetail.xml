@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/iv_hotel_logo_large" />
 
         <ScrollView
@@ -34,10 +35,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="20dp">
+                android:padding="20dp">
 
+                <!--入住日期、时间-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,6 +100,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!--入住房间信息-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -135,12 +136,14 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
+                <!--选购服务信息-->
                 <LinearLayout
                     android:id="@+id/service_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
 
+                <!--订单总价-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -174,6 +177,7 @@
                     android:background="@drawable/orderdetail_line_bg"
                     android:layerType="software" />
 
+                <!--入住酒店的地址、电话信息-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -223,6 +227,7 @@
                     android:background="@drawable/orderdetail_line_bg"
                     android:layerType="software" />
 
+                <!--入住人信息-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -333,35 +338,42 @@
                         android:layout_marginTop="12dp"
                         android:textColor="#333333"
                         android:textSize="@dimen/common_15sp" />
+                </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="14dp"
-                        android:background="@drawable/orderdetail_line_bg"
-                        android:layerType="software" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/orderdetail_line_bg"
+                    android:layerType="software" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                     <!--button-->
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp">
 
-                        <Button
-                            android:id="@+id/btn_pay"
+                        <TextView
+                            android:id="@+id/tv_pay"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:background="@drawable/orderdetail_btn_sel"
+                            android:gravity="center"
                             android:text="@string/od_btn_pay"
                             android:textColor="@color/orderdetail_text_sel"
                             android:textSize="@dimen/common_18sp"
                             android:visibility="gone" />
 
-                        <Button
-                            android:id="@+id/btn_hhy"
+                        <TextView
+                            android:id="@+id/tv_hhy"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:background="@drawable/orderdetail_btn_sel"
+                            android:gravity="center"
                             android:text="@string/od_btn_houhuiyao"
                             android:textColor="@color/orderdetail_text_sel"
                             android:textSize="@dimen/common_18sp"
@@ -374,13 +386,14 @@
                         android:layout_marginTop="6dp"
                         android:orientation="horizontal">
 
-                        <Button
-                            android:id="@+id/btn_cancel"
+                        <TextView
+                            android:id="@+id/tv_cancel"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_weight="1"
                             android:background="@drawable/orderdetail_btn_sel"
                             android:enabled="false"
+                            android:gravity="center"
                             android:text="@string/od_btn_order_cancel"
                             android:textColor="@color/orderdetail_text_sel"
                             android:textSize="@dimen/common_18sp" />
@@ -391,22 +404,24 @@
                             android:layout_marginLeft="20dp"
                             android:layout_weight="1">
 
-                            <Button
-                                android:id="@+id/btn_modify"
+                            <TextView
+                                android:id="@+id/tv_modify"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
                                 android:background="@drawable/orderdetail_btn_sel"
                                 android:enabled="false"
+                                android:gravity="center"
                                 android:text="@string/od_btn_order_modify"
                                 android:textColor="@color/orderdetail_text_sel"
                                 android:textSize="@dimen/common_18sp" />
 
-                            <Button
-                                android:id="@+id/btn_confirm"
+                            <TextView
+                                android:id="@+id/tv_confirm"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
                                 android:background="@drawable/orderdetail_book_btn_sel"
                                 android:enabled="false"
+                                android:gravity="center"
                                 android:text="@string/od_btn_order_confirm"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/common_18sp"
@@ -414,29 +429,29 @@
                         </FrameLayout>
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btn_assess"
+                    <TextView
+                        android:id="@+id/tv_assess"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginTop="6dp"
                         android:background="@drawable/orderdetail_btn_sel"
+                        android:gravity="center"
                         android:text="@string/od_btn_assess"
                         android:textColor="@color/orderdetail_text_sel"
                         android:textSize="@dimen/common_18sp" />
 
-                    <Button
-                        android:id="@+id/btn_booking_again"
+                    <TextView
+                        android:id="@+id/tv_booking"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:layout_marginBottom="20dp"
                         android:layout_marginTop="6dp"
                         android:background="@drawable/orderdetail_book_btn_sel"
+                        android:gravity="center"
                         android:text="@string/od_btn_rebook"
                         android:textColor="@color/white"
                         android:textSize="@dimen/common_18sp" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-
     </RelativeLayout>
 </LinearLayout>

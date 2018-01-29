@@ -20,6 +20,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.SharedPreferenceUtil;

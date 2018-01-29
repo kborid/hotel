@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.amap.api.location.AMapLocation;
 import com.fm.openinstall.OpenInstall;
 import com.fm.openinstall.listener.AppInstallListener;
 import com.fm.openinstall.listener.AppWakeUpListener;
@@ -24,6 +25,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
+import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
@@ -47,6 +49,7 @@ import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,14 +57,15 @@ import java.util.Map;
 /**
  * 欢迎页面
  */
-public class LauncherActivity extends BaseAppActivity implements AppInstallListener, AppWakeUpListener {
+public class LauncherActivity extends BaseAppActivity implements AppInstallListener, AppWakeUpListener, AMapLocationControl.MyLocationListener {
 
+    private int mTagCount = 0;
     private Map<Integer, Integer> mTag = new HashMap<>();
     private static HandlerThread mHandlerThread = null;
     private static Handler mHandler = null;
 
     private static long mStartTime = 0;
-    private static final long AD_SHOWTIME = 2000;
+    private static final long AD_SHOWTIME = 1000;
 
     @Override
     protected void preOnCreate() {
@@ -113,16 +117,7 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
         }
         Utils.initScreenSize(this);// 设置手机屏幕大小
         SessionContext.initUserInfo();
-    }
-
-    private void requestAppVersionInfo() {
-        LogUtil.i(TAG, "requestAppVersionInfo()");
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("contype", "0"); // 0:android, 1:ios
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.APP_INFO;
-        d.flag = AppConst.APP_INFO;
-        requestID = DataLoader.getInstance().loadData(this, d);
+        mTagCount = 0; //初始化接口请求个数
     }
 
     private void requestGDTInterface() {
@@ -135,6 +130,17 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestAppVersionInfo() {
+        LogUtil.i(TAG, "requestAppVersionInfo()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        b.addBody("contype", "0"); // 0:android, 1:ios
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.APP_INFO;
+        d.flag = AppConst.APP_INFO;
+        requestID = DataLoader.getInstance().loadData(this, d);
+        mTagCount++;
+    }
+
     private void requestHomeBannerInfo() {
         LogUtil.i(TAG, "requestHotelBanner()");
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
@@ -142,6 +148,7 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
         d.path = NetURL.HOTEL_BANNER;
         d.flag = AppConst.HOTEL_BANNER;
         requestID = DataLoader.getInstance().loadData(this, d);
+        mTagCount++;
     }
 
     public void doLastAction() {
@@ -214,7 +221,7 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             requestGDTInterface();
         }
-
+        AMapLocationControl.getInstance().startLocationOnce(this);
         if (null == mHandlerThread) {
             mHandlerThread = new HandlerThread("dealJsonReqThread");
             mHandlerThread.start();
@@ -268,16 +275,17 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
                 LogUtil.i(TAG, "json = " + response.body.toString());
             }
 
-            if (mTag.size() == 2) {
+            if (mTag.size() == mTagCount) {
                 doLastAction();
             }
         }
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         mTag.put(request.flag, request.flag);
-        if (mTag.size() == 2) {
+        if (mTag.size() == mTagCount) {
             doLastAction();
         }
     }
@@ -361,6 +369,22 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
                 SessionContext.destroy();
             }
             mStartTime = System.currentTimeMillis();
+        }
+    }
+
+    //启动时设置一次定位信息
+    @Override
+    public void onLocation(boolean isSuccess, AMapLocation aMapLocation) {
+        LogUtil.i(TAG, "onLocation()");
+        if (isSuccess && null != aMapLocation) {
+            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
+            String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
+            String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
+            String siteId = String.valueOf(aMapLocation.getAdCode());
+            SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
+            SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
         }
     }
 }

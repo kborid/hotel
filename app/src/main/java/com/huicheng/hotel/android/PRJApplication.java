@@ -18,6 +18,7 @@ import com.iflytek.cloud.SpeechUtility;
 import com.prj.sdk.app.AppContext;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.LoggerUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
@@ -45,7 +46,8 @@ public class PRJApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LogUtil.i(TAG, "The App Start--->>> onCreate()");
+        LogUtil.i(TAG, "Application Start--->>> onCreate()");
+        LoggerUtil.init();
         AppContext.init(this);
 //        Collections.addAll(DataLoader.getInstance().mCacheUrls, NetURL.CACHE_URL);
 //        BDLocationControl.getInstance().startLocationOnce();
@@ -73,24 +75,22 @@ public class PRJApplication extends Application {
         //科大讯飞语音识别初始化
         SpeechUtility.createUtility(this, SpeechConstant.APPID + "=" + getResources().getString(R.string.iflytek_appid));
 
-        //动态注册未登录广播
+        //动态注册未登录广播(静态注册，部分OPPO手机无法接收广播)
         UnLoginBroadcastReceiver unLoginBroadcastReceiver = new UnLoginBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BroadCastConst.UNLOGIN_ACTION);
         registerReceiver(unLoginBroadcastReceiver, intentFilter);
 
         // Debug模式下打开webView debug开关
-        if (AppConst.ISDEVELOP) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                WebView.setWebContentsDebuggingEnabled(true);
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(AppConst.ISDEVELOP);
         }
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        LogUtil.i(TAG, "The App attach base context--->>> attachBaseContext()");
+        LogUtil.i(TAG, "Application attach base context--->>> attachBaseContext()");
         MultiDex.install(this);
     }
 

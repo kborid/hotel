@@ -32,7 +32,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.RoomDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonAddSubLayout;
-import com.huicheng.hotel.android.ui.custom.CommonCustomInfoLayout;
+import com.huicheng.hotel.android.ui.custom.CustomInfoLayoutForHotel;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
@@ -85,7 +85,7 @@ public class HotelRoomOrderActivity extends BaseAppActivity {
     private int hotelId, roomId = -1;
     private StringBuilder serviceIds = new StringBuilder();
     private StringBuilder serviceCounts = new StringBuilder();
-    private CommonCustomInfoLayout custom_lay;
+    private CustomInfoLayoutForHotel custom_lay;
     private boolean isYgr = false;
 
     private int mBountyPrice = 0;
@@ -125,7 +125,7 @@ public class HotelRoomOrderActivity extends BaseAppActivity {
         tv_coupon_info = (TextView) findViewById(R.id.tv_coupon_info);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
         tv_submit.getPaint().setFakeBoldText(true);
-        custom_lay = (CommonCustomInfoLayout) findViewById(R.id.custom_lay);
+        custom_lay = (CustomInfoLayoutForHotel) findViewById(R.id.custom_lay);
         bounty_lay = (LinearLayout) findViewById(R.id.bounty_lay);
         tv_bounty_info = (TextView) findViewById(R.id.tv_bounty_info);
         switch_bounty = (Switch) findViewById(R.id.switch_bounty);

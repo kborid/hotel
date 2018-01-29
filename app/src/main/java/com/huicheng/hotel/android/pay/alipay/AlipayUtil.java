@@ -9,8 +9,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.Gson;
 import com.huicheng.hotel.android.R;
-import com.prj.sdk.constants.BroadCastConst;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.prj.sdk.constants.BroadCastConst;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;

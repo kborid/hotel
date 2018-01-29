@@ -29,6 +29,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.HotelInfoBean;
 import com.huicheng.hotel.android.ui.activity.HtmlActivity;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.huicheng.hotel.android.ui.mapoverlay.AMapUtil;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
@@ -200,7 +201,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                     holder.tv_real_price.setText(price);
                     break;
                 case HotelCommDef.TYPE_CLOCK:
-                    holder.tv_platform_price.setVisibility(View.GONE);
+                    holder.tv_platform_price.setVisibility(View.INVISIBLE);
                     if (bean.clockPrice != 0) { //价格为0时判断处理
                         price = String.valueOf(bean.clockPrice);
                         holder.tv_price_unit.setVisibility(View.VISIBLE);

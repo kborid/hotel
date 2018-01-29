@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="200dp">
 
@@ -11,101 +12,104 @@
         android:src="@drawable/bg_weather_sun" />
 
     <RelativeLayout
-        android:id="@+id/weather_info_lay"
+        android:id="@+id/weather_content_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="28dp"
-        android:visibility="gone">
+        android:paddingTop="28dp">
+        <!--品牌宣传logo-->
+        <ImageView
+            android:id="@+id/iv_xc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/iv_white_xc_logo"
+            android:visibility="visible" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <!--天气信息layout-->
+        <RelativeLayout
+            android:id="@+id/weather_info_lay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/tv_loc"
+            <!--天气text信息-->
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="45dp"
                 android:gravity="center"
-                android:text="成都"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_18sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:background="@color/white" />
+                <TextView
+                    android:id="@+id/tv_loc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="成都"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_18sp"
+                    android:textStyle="bold" />
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_temp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="-28°"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/common_16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_weather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="晴"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/common_16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--天气icon信息-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_temp"
+                <ImageView
+                    android:id="@+id/iv_weather"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="-28°"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/common_16sp"
-                    android:textStyle="bold" />
+                    android:src="@drawable/iv_weather_icon_sun_day" />
 
                 <TextView
-                    android:id="@+id/tv_weather"
+                    android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="晴"
+                    android:layout_marginTop="9dp"
+                    android:text="10月19日"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/common_16sp"
+                    android:textSize="@dimen/common_20sp"
                     android:textStyle="bold" />
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingTop="28dp">
-
-            <ImageView
-                android:id="@+id/iv_weather"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/iv_weather_icon_sun_day" />
-
-            <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:text="10月19日"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/logo_xc_lay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingTop="28dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iv_white_xc_logo" />
-    </LinearLayout>
 
 </RelativeLayout>

@@ -249,12 +249,12 @@
         <item name="android:shadowRadius">0</item>
     </style>
 
-    <style name="consider_anmi" parent="@android:style/Animation">
+    <style name="consider_anim" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/consider_open</item>
         <item name="android:windowExitAnimation">@anim/consider_close</item>
     </style>
 
-    <style name="share_anmi" parent="@android:style/Animation">
+    <style name="share_anim" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/push_up_in</item>
         <item name="android:windowExitAnimation">@anim/push_up_out</item>
     </style>
@@ -262,7 +262,7 @@
     <style name="tabTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">@dimen/common_16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#ada9a4</item>
+        <item name="android:textColor">#9b9b9b</item>
     </style>
 
     <style name="MyProgressBar" parent="Base.Widget.AppCompat.ProgressBar" />

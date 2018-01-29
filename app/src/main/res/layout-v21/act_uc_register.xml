@@ -169,7 +169,7 @@
 
                 <CheckBox
                     android:id="@+id/cb_pwd_status_check"
-                    style="@style/userPwdCheckBoxStyle"
+                    android:button="@drawable/cb_user_pwd_status_selector"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical" />
@@ -247,7 +247,7 @@
 
         <CheckBox
             android:id="@+id/cb_agreement_check"
-            style="@style/userAgreementCheckBoxStyle"
+            android:button="@drawable/cb_user_agreement_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true" />

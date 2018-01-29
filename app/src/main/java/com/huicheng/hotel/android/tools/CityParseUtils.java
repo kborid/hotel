@@ -4,17 +4,20 @@ import android.content.Context;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.google.gson.Gson;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
+import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @auth kborid
@@ -80,8 +83,8 @@ public class CityParseUtils {
         return sb.replace(4, 6, "00").toString();
     }
 
-    public static void initAreaJsonData(Context context) {
-        LogUtil.i(TAG, "initJsonData() begin....");
+    private static String parseJsonFileAssets(Context context) {
+        LogUtil.i(TAG, "parseJsonFileAssets()");
         try {
             InputStreamReader inputReader = new InputStreamReader(context.getResources().getAssets().open("area.json"));
             BufferedReader bufReader = new BufferedReader(inputReader);
@@ -92,34 +95,57 @@ public class CityParseUtils {
             }
             inputReader.close();
             bufReader.close();
+            String finalRet = "";
             JSONObject mJsonObject = JSONObject.parseObject(result.toString());
             if (mJsonObject != null && mJsonObject.containsKey("citylist")) {
-                List<CityAreaInfoBean> temp = JSON.parseArray(mJsonObject.getString("citylist"), CityAreaInfoBean.class);
-                if (temp != null && temp.size() > 0) {
-                    SessionContext.setCityAreaList(temp);
-                }
+                finalRet = mJsonObject.getString("citylist");
             }
+            SharedPreferenceUtil.getInstance().setString(AppConst.CITY_HOTEL_JSON_FILE, finalRet, false);
+            return finalRet;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
+    }
 
-        Map<String, List<CityAreaInfoBean>> cityAreaInfoBeanMap = new HashMap<>();
+    public static void initAreaJsonData(Context context) {
+        LogUtil.i(TAG, "initJsonData() begin....");
+        String cityListJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON_FILE, "", false);
+        boolean isFocusParse = false;
+        if (StringUtil.isEmpty(cityListJsonStr)) {
+            isFocusParse = true;
+            cityListJsonStr = parseJsonFileAssets(context);
+        }
+        LogUtil.i(TAG, "cityListJsonStr = " + cityListJsonStr);
+        List<CityAreaInfoBean> tmpCityAreaList = JSON.parseArray(cityListJsonStr, CityAreaInfoBean.class);
+        SessionContext.setCityAreaList(tmpCityAreaList);
 
-        for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
-            for (int j = 0; j < SessionContext.getCityAreaList().get(i).list.size(); j++) {
-                String shortName = SessionContext.getCityAreaList().get(i).list.get(j).shortName;
-                String str = SessionContext.getFirstSpellChat(shortName).toUpperCase(); //转大写
-                List<CityAreaInfoBean> tmp;
-                if (!cityAreaInfoBeanMap.containsKey(str)) {
-                    tmp = new ArrayList<>();
-                } else {
-                    tmp = cityAreaInfoBeanMap.get(str);
+        String cityMapJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON, "", false);
+        if (StringUtil.notEmpty(cityListJsonStr) && (isFocusParse || StringUtil.isEmpty(cityMapJsonStr))) {
+            if (tmpCityAreaList.size() > 0) {
+                HashMap<String, List<CityAreaInfoBean>> cityAreaMap = new HashMap<>();
+                for (int i = 0; i < tmpCityAreaList.size(); i++) {
+                    for (int j = 0; j < tmpCityAreaList.get(i).list.size(); j++) {
+                        String shortName = tmpCityAreaList.get(i).list.get(j).shortName;
+                        String str = SessionContext.getFirstSpellChat(shortName).toUpperCase(); //转大写
+                        List<CityAreaInfoBean> tmp;
+                        if (!cityAreaMap.containsKey(str)) {
+                            tmp = new ArrayList<>();
+                        } else {
+                            tmp = cityAreaMap.get(str);
+                        }
+                        tmp.add(tmpCityAreaList.get(i).list.get(j));
+                        cityAreaMap.put(str, tmp);
+                    }
                 }
-                tmp.add(SessionContext.getCityAreaList().get(i).list.get(j));
-                cityAreaInfoBeanMap.put(str, tmp);
+                cityMapJsonStr = new Gson().toJson(cityAreaMap);
+                SharedPreferenceUtil.getInstance().setString(AppConst.CITY_HOTEL_JSON, cityMapJsonStr, false);
             }
         }
-        SessionContext.setCityAreaMap(cityAreaInfoBeanMap);
+        HashMap<String, List<CityAreaInfoBean>> cityAreaMap = JSON.parseObject(cityMapJsonStr, new TypeReference<HashMap<String, List<CityAreaInfoBean>>>() {
+        });
+        SessionContext.setCityAreaMap(cityAreaMap);
+        LogUtil.i(TAG, "cityMapJsonStr = " + cityMapJsonStr);
         LogUtil.i(TAG, "initJsonData() end....");
     }
 }

@@ -53,8 +53,8 @@ import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
@@ -196,7 +196,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
             }
         });
         mConsiderPopupWindow = new PopupWindow(mConsiderLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mConsiderPopupWindow.setAnimationStyle(R.style.share_anmi);
+        mConsiderPopupWindow.setAnimationStyle(R.style.share_anim);
         mConsiderPopupWindow.setFocusable(true);
         mConsiderPopupWindow.setOutsideTouchable(true);
         mConsiderPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
@@ -879,9 +879,8 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
-        super.onNotifyError(request);
-        removeProgressDialog();
+    protected void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         if (request.flag == AppConst.WEATHER) {
 //            weather_lay.refreshWeatherInfo(beginTime, null);
             banner_lay.updateWeatherInfo(beginTime, null);

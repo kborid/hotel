@@ -8,7 +8,7 @@ package com.huicheng.hotel.android.content;
 enum ServerDomain {
     DOMAIN_UAT("http://uat.abcbooking.cn/"),
     DOMAIN_RELEASE("http://pro.abcbooking.cn/"),
-    DOMAIN_DEVELOP("https://dev.abcbooking.cn/"),
+    DOMAIN_DEVELOP("https://dev.abcbooking.cn:82/"),
     DOMAIN_DEMO("http://show.abcbooking.cn/"),;
 
     private String value = "";

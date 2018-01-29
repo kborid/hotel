@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
@@ -25,11 +26,11 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.widget.wheel.adapters.CityAreaInfoBean;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -44,12 +45,15 @@ public class HotelCityChooseActivity extends BaseAppActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0x01:
-                    initData();
+                    initCityListData();
                     removeProgressDialog();
                     break;
             }
         }
     };
+
+    private List<CityAreaInfoBean> mList = new ArrayList<>();
+    private HashMap<String, List<CityAreaInfoBean>> mMap = new HashMap<>();
 
     private TextView tv_search_input;
     private List<String> mHistoryList = new ArrayList<>();
@@ -70,8 +74,8 @@ public class HotelCityChooseActivity extends BaseAppActivity {
     @Override
     protected void requestData() {
         super.requestData();
-        if (null != SessionContext.getCityAreaList() && SessionContext.getCityAreaList().size() > 0
-                && null != SessionContext.getCityAreaMap() && SessionContext.getCityAreaMap().size() > 0) {
+        if (StringUtil.notEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON_FILE, "", false))
+                && StringUtil.notEmpty(SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON, "", false))) {
             myHandler.sendEmptyMessage(0x01);
         } else {
             showProgressDialog(this);
@@ -113,7 +117,6 @@ public class HotelCityChooseActivity extends BaseAppActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText("选择目的地");
-        String cityStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
         //历史记录
         String historyCity = SharedPreferenceUtil.getInstance().getString(AppConst.HISTORY, "", false);
         if (StringUtil.notEmpty(historyCity)) {
@@ -130,18 +133,20 @@ public class HotelCityChooseActivity extends BaseAppActivity {
         tv_city_index.setText("A");
     }
 
-    private void initData() {
-        cityIndexList.clear();
+    private void initCityListData() {
+        mList = SessionContext.getCityAreaList();
+        mMap = SessionContext.getCityAreaMap();
 
         List<String> tmp = new ArrayList<>();
-        for (String key : SessionContext.getCityAreaMap().keySet()) {
+        for (String key : mMap.keySet()) {
             tmp.add(key);
         }
         Collections.sort(tmp);
+        cityIndexList.clear();
         cityIndexList.addAll(tmp);
         cityIndexAdapter.notifyDataSetChanged();
         cityList.clear();
-        cityList.addAll(SessionContext.getCityAreaMap().get(tv_city_index.getText().toString()));
+        cityList.addAll(mMap.get(tv_city_index.getText().toString()));
         cityListAdapter.notifyDataSetChanged();
     }
 
@@ -155,7 +160,7 @@ public class HotelCityChooseActivity extends BaseAppActivity {
                 String selectedChar = cityIndexList.get(position);
                 tv_city_index.setText(selectedChar);
                 cityList.clear();
-                cityList.addAll(SessionContext.getCityAreaMap().get(selectedChar));
+                cityList.addAll(mMap.get(selectedChar));
                 cityListAdapter.notifyDataSetChanged();
                 listView.setSelectionAfterHeaderView();
                 cityIndexAdapter.setSelectedIndex(position);
@@ -165,74 +170,39 @@ public class HotelCityChooseActivity extends BaseAppActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-                String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-                String siteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
-
-                CityAreaInfoBean item = cityList.get(position);
-                mCity = item.shortName;
-                LogUtil.i(TAG, "[Info:]" + item.toString());
-                for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
-                    if (SessionContext.getCityAreaList().get(i).id.equals(item.parentId)) {
-                        mProvince = SessionContext.getCityAreaList().get(i).shortName;
-                        if (mProvince.equals(item.shortName)) {
-                            mSiteId = SessionContext.getCityAreaList().get(i).id;
-                        } else {
-                            mSiteId = item.id;
-                        }
-                        break;
-                    }
+                mCity = cityList.get(position).shortName;
+                CityAreaInfoBean item = findCityBeanByCityString(mCity);
+                //增加历史记录
+                addHistory(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+                if (item != null) {
+                    LogUtil.i(TAG, "========================================");
+                    LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
+                    LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
+                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
+                    setResult(RESULT_OK, new Intent());
+                    finish();
+                } else {
+                    CustomToast.show("暂未收录该城市", CustomToast.LENGTH_SHORT);
                 }
-
-                LogUtil.i(TAG, "========= line == line == line =========");
-                LogUtil.i(TAG, "mSiteId = " + mSiteId);
-                LogUtil.i(TAG, "mProvince = " + mProvince);
-                LogUtil.i(TAG, "mCity = " + mCity);
-
-                SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
-                SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
-
-                addHistory(city);
-
-                setResult(RESULT_OK, new Intent());
-                finish();
             }
         });
 
         gv_history.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-                String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-                String siteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
-
                 mCity = mHistoryList.get(position);
-                CityAreaInfoBean item = null;
-                for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
-                    for (int j = 0; j < SessionContext.getCityAreaList().get(i).list.size(); j++) {
-                        if (SessionContext.getCityAreaList().get(i).list.get(j).shortName.equals(mCity)) {
-                            item = SessionContext.getCityAreaList().get(i).list.get(j);
-
-                            mProvince = SessionContext.getCityAreaList().get(i).shortName;
-                            if (mProvince.equals(item.shortName)) {
-                                mSiteId = SessionContext.getCityAreaList().get(i).id;
-                            } else {
-                                mSiteId = item.id;
-                            }
-
-                            break;
-                        }
-                    }
-                }
-
-                addHistory(city);
-
+                CityAreaInfoBean item = findCityBeanByCityString(mCity);
+                //增加历史记录
+                addHistory(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
                 if (item != null) {
+                    LogUtil.i(TAG, "========================================");
+                    LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
+                    LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
                     SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
-
                     setResult(RESULT_OK, new Intent());
                     finish();
                 } else {
@@ -244,36 +214,17 @@ public class HotelCityChooseActivity extends BaseAppActivity {
         gv_hot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-                String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-                String siteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
-
                 mCity = mHotCityList.get(position);
-                CityAreaInfoBean item = null;
-                for (int i = 0; i < SessionContext.getCityAreaList().size(); i++) {
-                    for (int j = 0; j < SessionContext.getCityAreaList().get(i).list.size(); j++) {
-                        if (SessionContext.getCityAreaList().get(i).list.get(j).shortName.equals(mCity)) {
-                            item = SessionContext.getCityAreaList().get(i).list.get(j);
-
-                            mProvince = SessionContext.getCityAreaList().get(i).shortName;
-                            if (mProvince.equals(item.shortName)) {
-                                mSiteId = SessionContext.getCityAreaList().get(i).id;
-                            } else {
-                                mSiteId = item.id;
-                            }
-
-                            break;
-                        }
-                    }
-                }
-
-                addHistory(city);
-
+                CityAreaInfoBean item = findCityBeanByCityString(mCity);
+                //增加历史记录
+                addHistory(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
                 if (item != null) {
+                    LogUtil.i(TAG, "========================================");
+                    LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
+                    LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
                     SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
                     SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
-
                     setResult(RESULT_OK, new Intent());
                     finish();
                 } else {
@@ -283,9 +234,33 @@ public class HotelCityChooseActivity extends BaseAppActivity {
         });
     }
 
+    private CityAreaInfoBean findCityBeanByCityString(String cityStr) {
+        LogUtil.i(TAG, "---begin---findCityBeanByCityString() cityStr = " + cityStr);
+        CityAreaInfoBean item = null;
+        if (StringUtil.notEmpty(cityStr)) {
+            for (int i = 0; i < mList.size(); i++) {
+                for (int j = 0; j < mList.get(i).list.size(); j++) {
+                    if (mList.get(i).list.get(j).shortName.equals(cityStr)) {
+                        item = mList.get(i).list.get(j);
+                        mProvince = mList.get(i).shortName;
+//                        if (mProvince.equals(item.shortName)) {
+//                            mSiteId = mList.get(i).id;
+//                        } else {
+                        mSiteId = item.id;
+//                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+        LogUtil.i(TAG, "---enddd---findCityBeanByCityString()");
+        return item;
+    }
 
     //更新历史记录，最大显示5条，超过替换最早一条，去重处理
     private void addHistory(String city) {
+        LogUtil.i(TAG, "---begin---addHistory() city = " + city);
         int index = 0;
         if (mHistoryList.contains(city)) {
             index = mHistoryList.indexOf(city);
@@ -301,6 +276,7 @@ public class HotelCityChooseActivity extends BaseAppActivity {
             String jsonStr = JSON.toJSONString(mHistoryList);
             SharedPreferenceUtil.getInstance().setString(AppConst.HISTORY, jsonStr, false);
         }
+        LogUtil.i(TAG, "---enddd---addHistory()");
     }
 
     @Override

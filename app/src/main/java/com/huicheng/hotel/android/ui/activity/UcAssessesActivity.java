@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.ui.activity.hotel;
+package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -16,6 +16,7 @@ import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AssessOrderInfoBean;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelAssessOrderDetailActivity;
 import com.huicheng.hotel.android.ui.adapter.HotelAssessOrdersAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
@@ -33,7 +34,7 @@ import java.util.List;
  * @author kborid
  * @date 2016/12/14 0014
  */
-public class HotelAssessOrdersActivity extends BaseAppActivity {
+public class UcAssessesActivity extends BaseAppActivity {
 
     private static final int PAGESIZE = 10;
     private int pageIndex = 0;
@@ -57,7 +58,7 @@ public class HotelAssessOrdersActivity extends BaseAppActivity {
 
     @Override
     protected void setContentView() {
-        setContentView(R.layout.act_hotel_accessorders);
+        setContentView(R.layout.act_uc_assesses);
     }
 
     @Override
@@ -104,7 +105,7 @@ public class HotelAssessOrdersActivity extends BaseAppActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(HotelAssessOrdersActivity.this, HotelAssessOrderDetailActivity.class);
+                Intent intent = new Intent(UcAssessesActivity.this, HotelAssessOrderDetailActivity.class);
                 intent.putExtra("order", (AssessOrderInfoBean) parent.getAdapter().getItem(position));
                 startActivityForResult(intent, 0x01);
             }

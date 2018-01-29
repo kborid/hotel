@@ -35,13 +35,13 @@
             android:id="@+id/btn_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusable="true"
             android:switchMinWidth="20dp"
             android:textOff=""
             android:textOn=""
             android:thumb="@drawable/hotel_switch_thumb"
             android:thumbTextPadding="10dp"
-            android:track="@drawable/hotel_switch_track"
-            android:focusable="true" />
+            android:track="@drawable/hotel_switch_track" />
     </LinearLayout>
 
     <LinearLayout
@@ -153,8 +153,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@null"
-                    android:inputType="textEmailAddress"
                     android:hint="请输入电子邮件地址"
+                    android:inputType="textEmailAddress"
                     android:textColor="?attr/indicatorColor"
                     android:textColorHint="#e1e1e1"
                     android:textSize="@dimen/common_18sp"

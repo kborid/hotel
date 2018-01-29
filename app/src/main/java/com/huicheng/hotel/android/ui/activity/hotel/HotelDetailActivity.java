@@ -170,8 +170,7 @@ public class HotelDetailActivity extends BaseAppActivity {
     @Override
     public void initParams() {
         super.initParams();
-        btn_right.setImageResource(R.drawable.iv_vippp);
-
+        setRightButtonResource(R.drawable.iv_vippp);
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         beginTime = HotelOrderManager.getInstance().getBeginTime();
         endTime = HotelOrderManager.getInstance().getEndTime();
@@ -205,7 +204,6 @@ public class HotelDetailActivity extends BaseAppActivity {
     public void initListeners() {
         super.initListeners();
         tv_center_title.setOnClickListener(this);
-        btn_right.setOnClickListener(this);
         tv_map.setOnClickListener(this);
         tv_service.setOnClickListener(this);
         tv_view_comment.setOnClickListener(this);
@@ -266,11 +264,11 @@ public class HotelDetailActivity extends BaseAppActivity {
         if (null != hotelDetailInfoBean) {
             // 会员按钮显示状态
             if (hotelDetailInfoBean.isSupportVip) {
-                btn_right.setVisibility(View.VISIBLE);
+                right_lay.setVisibility(View.VISIBLE);
                 if (hotelDetailInfoBean.isVip) {
-                    btn_right.setImageResource(R.drawable.iv_viped);
+                    setRightButtonResource(R.drawable.iv_viped);
                 } else {
-                    btn_right.setImageResource(R.drawable.iv_vippp);
+                    setRightButtonResource(R.drawable.iv_vippp);
                     if (!SharedPreferenceUtil.getInstance().getBoolean(AppConst.HAS_SHOW_VIP_TIPS, false)) {
                         vip_layout.setVisibility(View.VISIBLE);
                     } else {
@@ -278,7 +276,7 @@ public class HotelDetailActivity extends BaseAppActivity {
                     }
                 }
             } else {
-                btn_right.setVisibility(View.INVISIBLE);
+                right_lay.setVisibility(View.INVISIBLE);
             }
 
             //设置 title
@@ -629,7 +627,7 @@ public class HotelDetailActivity extends BaseAppActivity {
                 startActivityForResult(intentRes, 0x01);
             }
             break;
-            case R.id.btn_right:
+            case R.id.right_lay:
                 LogUtil.i(TAG, "right button onclick");
                 if (hotelDetailInfoBean != null && !hotelDetailInfoBean.isVip) {
                     showAddVipDialog(this, hotelDetailInfoBean);

@@ -90,6 +90,11 @@ public class CustomConsiderLayoutForList extends RelativeLayout implements View.
         LogUtil.i(TAG, "pointIndex = " + pointIndex + ", gradeIndex = " + gradeIndex + ", typeIndex = " + typeIndex + ", priceIndex = " + priceIndex);
     }
 
+    public void clearPointConditionConfig() {
+        pointIndex = pointLay.resetSelectedIndex();
+        SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_POINT, pointIndex);
+    }
+
     public void resetConsiderConfig() {
         LogUtil.i(TAG, "resetRestoreConfig()");
         pointIndex = pointLay.resetSelectedIndex();

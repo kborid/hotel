@@ -16,6 +16,7 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -77,6 +78,9 @@ public class HotelListActivity extends BaseAppActivity {
     @Override
     public void initViews() {
         super.initViews();
+        View searchView = LayoutInflater.from(this).inflate(R.layout.layout_hotellist_search, null);
+        setTitleContentView(searchView);
+        setRightButtonResource(R.drawable.iv_map);
         date_lay = (LinearLayout) findViewById(R.id.date_lay);
         tv_in_date = (TextView) findViewById(R.id.tv_in_date);
         tv_out_date = (TextView) findViewById(R.id.tv_out_date);
@@ -128,7 +132,7 @@ public class HotelListActivity extends BaseAppActivity {
         });
 
         mConsiderWindow = new PopupWindow(customConsiderLayoutForList, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mConsiderWindow.setAnimationStyle(R.style.consider_anmi);
+        mConsiderWindow.setAnimationStyle(R.style.consider_anim);
         mConsiderWindow.setFocusable(true);
         mConsiderWindow.setOutsideTouchable(true);
         mConsiderWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
@@ -157,7 +161,7 @@ public class HotelListActivity extends BaseAppActivity {
             }
         });
         mSortPopupWindow = new PopupWindow(customSortLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mSortPopupWindow.setAnimationStyle(R.style.consider_anmi);
+        mSortPopupWindow.setAnimationStyle(R.style.consider_anim);
         mSortPopupWindow.setFocusable(true);
         mSortPopupWindow.setOutsideTouchable(true);
         mSortPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
@@ -201,8 +205,6 @@ public class HotelListActivity extends BaseAppActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        btn_back.setOnClickListener(this);
-        btn_right.setOnClickListener(this);
         date_lay.setOnClickListener(this);
         search_lay.setOnClickListener(this);
         sort_lay.setOnClickListener(this);
@@ -247,6 +249,15 @@ public class HotelListActivity extends BaseAppActivity {
         HotelOrderManager.getInstance().setDateStr(hotelDateStr);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != customConsiderLayoutForList) {
+            customConsiderLayoutForList.clearPointConditionConfig();
+            customConsiderLayoutForList = null;
+        }
+    }
+
     private void showSortPopupWindow() {
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getWindow().getAttributes();
@@ -274,11 +285,9 @@ public class HotelListActivity extends BaseAppActivity {
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_back:
-                finish();
-                break;
-            case R.id.btn_right:
+            case R.id.right_lay:
                 Intent intent = new Intent(this, HotelMapActivity.class);
                 intent.putExtra("index", index);
                 startActivity(intent);

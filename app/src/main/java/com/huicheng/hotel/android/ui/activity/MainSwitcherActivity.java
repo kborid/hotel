@@ -3,26 +3,37 @@ package com.huicheng.hotel.android.ui.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.control.DataCleanManager;
+import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
+import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
@@ -36,23 +47,31 @@ import java.io.File;
  * @author kborid
  * @date 2017/5/24 0024
  */
-public class GuideSwitchActivity extends BaseAppActivity {
+public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerLayout.OnLeftDrawerListener {
     private AppInfoBean mAppInfoBean = null;
     private long exitTime = 0;
     private LinearLayout hotel_lay, plane_lay, train_lay, taxi_lay;
     private String[] tips = new String[4];
     private static Handler myHandler = new Handler(Looper.getMainLooper());
+    private boolean isNeedCloseLeftDrawer = false;
+    private boolean isFirstLaunch = false;
 
+    private DrawerLayout drawer_layout;
+    private LeftDrawerLayout left_layout;
 
-    @Override
+    private RelativeLayout blur_lay;
+    private ImageView iv_blur;
+    private ImageView iv_logo_vertical;
+    private ImageView iv_left;
+
     protected void preOnCreate() {
         super.preOnCreate();
-        initLaunchWindow();
+        initMainWindow();
     }
 
     @Override
     protected void setContentView() {
-        setContentView(R.layout.act_guideswitch_layout);
+        setContentView(R.layout.act_main_switcher);
     }
 
     @Override
@@ -62,12 +81,34 @@ public class GuideSwitchActivity extends BaseAppActivity {
         plane_lay = (LinearLayout) findViewById(R.id.plane_lay);
         train_lay = (LinearLayout) findViewById(R.id.train_lay);
         taxi_lay = (LinearLayout) findViewById(R.id.taxi_lay);
+
+        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (null != drawer_layout) {
+            drawer_layout.setScrimColor(getResources().getColor(R.color.transparent50));
+        }
+        left_layout = (LeftDrawerLayout) findViewById(R.id.left_layout);
+
+        blur_lay = (RelativeLayout) findViewById(R.id.blur_lay);
+        iv_blur = (ImageView) findViewById(R.id.iv_blur);
+        iv_logo_vertical = (ImageView) findViewById(R.id.iv_logo_vertical);
+        iv_left = (ImageView) findViewById(R.id.iv_left);
+    }
+
+    @Override
+    public void dealIntent() {
+        super.dealIntent();
+        Bundle bundle = getIntent().getExtras();
+        if (null != bundle) {
+            isNeedCloseLeftDrawer = bundle.getBoolean("isClosed");
+        }
     }
 
     @Override
     public void initParams() {
         super.initParams();
+        isFirstLaunch = true;
         tips = getResources().getStringArray(R.array.MainTabTips);
+        //app更新提示
         String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
         if (StringUtil.notEmpty(appInfo)) {
             mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
@@ -83,6 +124,9 @@ public class GuideSwitchActivity extends BaseAppActivity {
                 }
             }, 1000);
         }
+
+        //更新用户中心
+        left_layout.updateUserInfo();
     }
 
     @Override
@@ -92,15 +136,45 @@ public class GuideSwitchActivity extends BaseAppActivity {
         plane_lay.setOnClickListener(this);
         train_lay.setOnClickListener(this);
         taxi_lay.setOnClickListener(this);
+
+        left_layout.setOnLeftDrawerListener(this);
+        drawer_layout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                iv_blur.setAlpha(slideOffset * 1f);
+                iv_logo_vertical.setAlpha(slideOffset);
+                iv_left.setAlpha(slideOffset);
+                if (slideOffset > 0) {
+                    blur_lay.setVisibility(View.VISIBLE);
+                } else {
+                    blur_lay.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         int index = 0;
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.hotel_lay:
                 index = 0;
+                intent = new Intent(this, HotelMainActivity.class);
+                intent.putExtra("index", index);
                 break;
             case R.id.plane_lay:
                 index = 1;
@@ -112,7 +186,7 @@ public class GuideSwitchActivity extends BaseAppActivity {
                 index = 3;
                 break;
         }
-        if (index == 2) {
+        if (index == 1 || index == 2 || index == 3) {
             CustomDialog dialog = new CustomDialog(this);
             dialog.setMessage(tips[index]);
             dialog.setNegativeButton(getString(R.string.iknown), new DialogInterface.OnClickListener() {
@@ -124,20 +198,53 @@ public class GuideSwitchActivity extends BaseAppActivity {
             dialog.setCanceledOnTouchOutside(true);
             dialog.show();
         } else {
-            Intent intent = new Intent(this, HotelMainActivity.class);
-            intent.putExtra("index", index);
-            startActivity(intent);
+            if (null != intent) {
+                startActivity(intent);
+            }
         }
+    }
+
+    private void requestMessageCount() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.MESSAGE_COUNT;
+        d.flag = AppConst.MESSAGE_COUNT;
+        DataLoader.getInstance().loadData(this, d);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (SessionContext.getOpenInstallAppData() != null) {
-            myHandler.removeCallbacksAndMessages(null);
-            Intent intent = new Intent(this, HotelMainActivity.class);
-            intent.putExtra("index", 0);
-            startActivity(intent);
+        if (isFirstLaunch) {
+            isFirstLaunch = false;
+            if (SessionContext.getOpenInstallAppData() != null) {
+                myHandler.removeCallbacksAndMessages(null);
+                Intent intent = new Intent(this, HotelMainActivity.class);
+                intent.putExtra("index", 0);
+                startActivity(intent);
+            }
+        }
+
+        //每次启动时，如果用户未登录，则显示侧滑
+        if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
+            if (!SessionContext.isLogin()) {
+//                myHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        drawer_layout.openDrawer(left_layout, true);
+//                    }
+//                }, 300);
+                sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+            }
+        }
+
+        if (SessionContext.isLogin()) {
+            requestMessageCount();
+        }
+
+        if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
+            isNeedCloseLeftDrawer = false;
+            drawer_layout.closeDrawers();
         }
     }
 
@@ -158,9 +265,9 @@ public class GuideSwitchActivity extends BaseAppActivity {
         dialog.setPositiveButton(getString(R.string.update_todo), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final CustomDialog pd = new CustomDialog(GuideSwitchActivity.this);
+                final CustomDialog pd = new CustomDialog(MainSwitcherActivity.this);
                 pd.setTitle(R.string.download_ing);
-                View view = LayoutInflater.from(GuideSwitchActivity.this).inflate(R.layout.progress_download_layout, null);
+                View view = LayoutInflater.from(MainSwitcherActivity.this).inflate(R.layout.progress_download_layout, null);
                 final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
                 final TextView tv_percent = (TextView) view.findViewById(R.id.tv_percent);
                 final TextView tv_size = (TextView) view.findViewById(R.id.tv_size);
@@ -211,23 +318,62 @@ public class GuideSwitchActivity extends BaseAppActivity {
     }
 
     @Override
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
+        if (null != response && response.body != null) {
+            if (request.flag == AppConst.MESSAGE_COUNT) {
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                boolean hasMsg = left_layout.updateMsgCount(mJson.getString("count"));
+//                if (hasMsg) {
+//                    iv_user.setImageResource(R.drawable.iv_home_user2);
+//                } else {
+//                    iv_user.setImageResource(R.drawable.iv_home_user);
+//                }
+            }
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        SessionContext.cleanLocationInfo();
+        left_layout.unregisterBroadReceiver();
     }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (drawer_layout.isDrawerOpen(left_layout)) {
+                drawer_layout.closeDrawers();
+                return true;
+            }
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                 CustomToast.show(getString(R.string.exit_tip), CustomToast.LENGTH_SHORT);
                 exitTime = System.currentTimeMillis();
             } else {
-                SessionContext.destroy();
                 MobclickAgent.onKillProcess(this);
                 ActivityTack.getInstanse().exit();
             }
             return true;
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public void closeDrawer() {
+        if (null != drawer_layout) {
+            drawer_layout.closeDrawers();
+        }
+    }
+
+    @Override
+    public void doQmhAction() {
+        //全民化插件 platCode生产2003，测试8000
+//        Intent intent = new Intent(HotelMainActivity.this, IOUAppVerifyActivity.class);
+//        intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
+//        intent.putExtra("token", SessionContext.getTicket());
+//        intent.putExtra("platCode", "2003");
+//        intent.putExtra("isShowGuide", "true");
+//        startActivityForResult(intent, REQUEST_CODE_QMH);
     }
 }

@@ -208,12 +208,6 @@ public class UcCouponsActivity extends BaseAppActivity implements ViewPager.OnPa
         }
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {

@@ -24,5 +24,4 @@ public class PayCommDef {
     public static final int err_fail = -1;
     public static final int err_cancel = -2;
     public static final int err_error = -3;
-    public static final int err_unknown = -4;
 }

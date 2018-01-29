@@ -298,7 +298,8 @@ public class UcForgetPwdActivity extends BaseAppActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request) {
+    public void onNotifyError(ResponseData request, ResponseData response) {
+        super.onNotifyError(request, response);
         if (request.flag == AppConst.CHECK_YZM) {
             isValid = false;
         }

@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.base;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,7 +33,7 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.tools.FixIMMLeaksTools;
 import com.huicheng.hotel.android.ui.activity.LauncherActivity;
-import com.huicheng.hotel.android.ui.activity.UserCenterActivity;
+import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelInvoiceActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPaySuccessActivity;
@@ -42,9 +42,9 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.activity.BaseActivity;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -66,15 +66,18 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
 
     protected final String TAG = getClass().getSimpleName();
 
-    private CustomDialog mDialogVip;
     protected static boolean isHotelVipRefresh = false;
-
-    private ProgressDialog mProgressDialog;
-    protected TextView tv_center_title, tv_center_summary;
-    protected ImageView btn_back, iv_back, btn_right;
-    protected static String requestID;
-
     protected static boolean isReStarted = false;
+    protected static String requestID;
+    private ProgressDialog mProgressDialog;
+    private CustomDialog mDialogVip;
+
+    private LinearLayout title_content_lay;
+    protected TextView tv_center_title;
+    protected ImageView iv_back;
+    protected RelativeLayout right_lay;
+    private ImageView iv_right;
+    private TextView tv_right;
 
     @Override
     protected void preOnCreate() {
@@ -156,17 +159,16 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     // 初始化组件
     @Override
     protected void initViews() {
+        title_content_lay = (LinearLayout) findViewById(R.id.title_content_lay);
         tv_center_title = (TextView) findViewById(R.id.tv_center_title);
-        if (null != tv_center_title) {
-            tv_center_title.setTypeface(Typeface.DEFAULT_BOLD);
-        }
-        tv_center_summary = (TextView) findViewById(R.id.tv_center_summary);
         iv_back = (ImageView) findViewById(R.id.iv_back);
-        btn_back = (ImageView) findViewById(R.id.btn_back);
-        btn_right = (ImageView) findViewById(R.id.btn_right);
+        right_lay = (RelativeLayout) findViewById(R.id.right_lay);
+        iv_right = (ImageView) findViewById(R.id.iv_right);
+        tv_right = (TextView) findViewById(R.id.tv_right);
     }
 
-    protected void dealIntent(){}
+    protected void dealIntent() {
+    }
 
     @Override
     protected void initParams() {
@@ -176,23 +178,68 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     // 监听设置
     @Override
     protected void initListeners() {
-        if (btn_back != null) {
-            btn_back.setOnClickListener(this);
-        }
         if (iv_back != null) {
             iv_back.setOnClickListener(this);
         }
+        if (right_lay != null) {
+            right_lay.setOnClickListener(this);
+        }
+        if (iv_right != null) {
+            iv_right.setOnClickListener(this);
+        }
+        if (tv_right != null) {
+            tv_right.setOnClickListener(this);
+        }
+    }
+
+    public void setTitleContentView(View view) {
+        if (null != title_content_lay) {
+            if (null != view) {
+                title_content_lay.removeAllViews();
+                title_content_lay.addView(view);
+            }
+        }
+    }
+
+    public void setBackButtonResource(int backResId) {
+        if (null != iv_back && backResId != -1) {
+            iv_back.setImageResource(backResId);
+        }
+    }
+
+    public void setRightButtonResource(int rightResId) {
+        if (null != iv_right) {
+            if (rightResId != -1) {
+                tv_right.setVisibility(View.GONE);
+                iv_right.setVisibility(View.VISIBLE);
+                iv_right.setImageResource(rightResId);
+            }
+        }
+    }
+
+    public void setRightButtonResource(String rightStr, int textColor) {
+        if (null != tv_right) {
+            if (StringUtil.notEmpty(rightStr)) {
+                iv_right.setVisibility(View.GONE);
+                tv_right.setVisibility(View.VISIBLE);
+                tv_right.setText(rightStr);
+                tv_right.setTextColor(textColor);
+            }
+        }
+    }
+
+    public void setRightButtonResource(String rightStr) {
+        setRightButtonResource(rightStr, getResources().getColor(R.color.secColor));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-            case R.id.btn_back:
-                if (getClass().equals(HotelInvoiceActivity.class)
+                if (getClass().equals(UcPersonalInfoActivity.class)
+                        || getClass().equals(HotelInvoiceActivity.class)
                         || getClass().equals(HotelOrderPayActivity.class)
-                        || getClass().equals(HotelOrderPaySuccessActivity.class)
-                        || getClass().equals(UserCenterActivity.class)) {
+                        || getClass().equals(HotelOrderPaySuccessActivity.class)) {
                     //do nothing
                     LogUtil.i(TAG, "do nothing~~~");
                 } else {
@@ -258,9 +305,6 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         }
     }
 
-    /**
-     * 隐藏虚拟按键，并且全屏
-     */
     protected void hideBottomAndStatusBar() {
         //隐藏虚拟按键，并且全屏
         if (Build.VERSION.SDK_INT < 19) { // lower api
@@ -463,8 +507,8 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
             isHotelVipRefresh = true;
             HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
             HotelOrderManager.getInstance().getHotelDetailInfo().isVip = true;
-            btn_right.setVisibility(View.VISIBLE);
-            btn_right.setImageResource(R.drawable.iv_viped);
+            right_lay.setVisibility(View.VISIBLE);
+            setRightButtonResource(R.drawable.iv_viped);
             refreshScreenInfoVipPrice();
             CustomToast.show(getString(R.string.isViped), CustomToast.LENGTH_SHORT);
         }
@@ -474,24 +518,36 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
-        if (request.flag == AppConst.AD_GDT_IF) {
-            return;
-        }
-        String message;
-        if (e != null && e instanceof ConnectException) {
-            message = getString(R.string.dialog_tip_net_error);
+        String msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", "-1", getString(R.string.dialog_tip_null_error));
+        if (null != response && null != response.data) {
+            msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", response.code, response.data.toString());
         } else {
-            message = response != null && response.data != null ? response.data.toString() : getString(R.string.dialog_tip_null_error);
+            if (e != null && e instanceof ConnectException) {
+                msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", "-2", getString(R.string.dialog_tip_net_error));
+            }
         }
-        CustomToast.show(message, CustomToast.LENGTH_LONG);
-        onNotifyError(request);
+        LogUtil.e(TAG, msg);
+        if (isCheckException(request, response)) {
+            onNotifyOverrideMessage(request, response);
+        } else {
+            CustomToast.show(msg, CustomToast.LENGTH_LONG);
+            onNotifyError(request, response);
+        }
     }
 
-    public void onNotifyMessage(ResponseData request, ResponseData response) {
-        LogUtil.d(TAG, "onNotifyMessage()");
+    protected boolean isCheckException(ResponseData request, ResponseData response) {
+        return false;
     }
 
-    public void onNotifyError(ResponseData request) {
-        LogUtil.d(TAG, "onNotifyError()");
+    protected void onNotifyMessage(ResponseData request, ResponseData response) {
+        LogUtil.i(TAG, "onNotifyMessage()");
+    }
+
+    protected void onNotifyOverrideMessage(ResponseData request, ResponseData response) {
+        LogUtil.w(TAG, "onNotifyOverrideMessage()");
+    }
+
+    protected void onNotifyError(ResponseData request, ResponseData response) {
+        LogUtil.e(TAG, "onNotifyError()");
     }
 }
