@@ -122,14 +122,14 @@ public class HotelSpaceHomeActivity extends BaseAppActivity {
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         // 会员按钮显示状态
         if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
-            right_lay.setVisibility(View.VISIBLE);
+            iv_right.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isVip) {
                 setRightButtonResource(R.drawable.iv_viped);
             } else {
                 setRightButtonResource(R.drawable.iv_vippp);
             }
         } else {
-            right_lay.setVisibility(View.INVISIBLE);
+            iv_right.setVisibility(View.INVISIBLE);
         }
 
         //根据宽高比设置cardview大小，适配不同尺寸的屏幕
@@ -160,7 +160,7 @@ public class HotelSpaceHomeActivity extends BaseAppActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.right_lay:
+            case R.id.iv_right:
                 if (null != hotelDetailInfoBean && !hotelDetailInfoBean.isVip) {
                     showAddVipDialog(this, hotelDetailInfoBean);
                 }

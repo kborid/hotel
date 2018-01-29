@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -75,9 +74,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     private LinearLayout title_content_lay;
     protected TextView tv_center_title;
     protected ImageView iv_back;
-    protected RelativeLayout right_lay;
-    private ImageView iv_right;
-    private TextView tv_right;
+    protected ImageView iv_right;
 
     @Override
     protected void preOnCreate() {
@@ -162,9 +159,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         title_content_lay = (LinearLayout) findViewById(R.id.title_content_lay);
         tv_center_title = (TextView) findViewById(R.id.tv_center_title);
         iv_back = (ImageView) findViewById(R.id.iv_back);
-        right_lay = (RelativeLayout) findViewById(R.id.right_lay);
         iv_right = (ImageView) findViewById(R.id.iv_right);
-        tv_right = (TextView) findViewById(R.id.tv_right);
     }
 
     protected void dealIntent() {
@@ -181,14 +176,8 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         if (iv_back != null) {
             iv_back.setOnClickListener(this);
         }
-        if (right_lay != null) {
-            right_lay.setOnClickListener(this);
-        }
         if (iv_right != null) {
             iv_right.setOnClickListener(this);
-        }
-        if (tv_right != null) {
-            tv_right.setOnClickListener(this);
         }
     }
 
@@ -208,28 +197,10 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     }
 
     public void setRightButtonResource(int rightResId) {
-        if (null != iv_right) {
-            if (rightResId != -1) {
-                tv_right.setVisibility(View.GONE);
-                iv_right.setVisibility(View.VISIBLE);
-                iv_right.setImageResource(rightResId);
-            }
+        if (null != iv_right && rightResId != -1) {
+            iv_right.setVisibility(View.VISIBLE);
+            iv_right.setImageResource(rightResId);
         }
-    }
-
-    public void setRightButtonResource(String rightStr, int textColor) {
-        if (null != tv_right) {
-            if (StringUtil.notEmpty(rightStr)) {
-                iv_right.setVisibility(View.GONE);
-                tv_right.setVisibility(View.VISIBLE);
-                tv_right.setText(rightStr);
-                tv_right.setTextColor(textColor);
-            }
-        }
-    }
-
-    public void setRightButtonResource(String rightStr) {
-        setRightButtonResource(rightStr, getResources().getColor(R.color.secColor));
     }
 
     @Override
@@ -507,7 +478,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
             isHotelVipRefresh = true;
             HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
             HotelOrderManager.getInstance().getHotelDetailInfo().isVip = true;
-            right_lay.setVisibility(View.VISIBLE);
+            iv_right.setVisibility(View.VISIBLE);
             setRightButtonResource(R.drawable.iv_viped);
             refreshScreenInfoVipPrice();
             CustomToast.show(getString(R.string.isViped), CustomToast.LENGTH_SHORT);

@@ -264,7 +264,7 @@ public class HotelDetailActivity extends BaseAppActivity {
         if (null != hotelDetailInfoBean) {
             // 会员按钮显示状态
             if (hotelDetailInfoBean.isSupportVip) {
-                right_lay.setVisibility(View.VISIBLE);
+                iv_right.setVisibility(View.VISIBLE);
                 if (hotelDetailInfoBean.isVip) {
                     setRightButtonResource(R.drawable.iv_viped);
                 } else {
@@ -276,7 +276,7 @@ public class HotelDetailActivity extends BaseAppActivity {
                     }
                 }
             } else {
-                right_lay.setVisibility(View.INVISIBLE);
+                iv_right.setVisibility(View.INVISIBLE);
             }
 
             //设置 title
@@ -627,7 +627,7 @@ public class HotelDetailActivity extends BaseAppActivity {
                 startActivityForResult(intentRes, 0x01);
             }
             break;
-            case R.id.right_lay:
+            case R.id.iv_right:
                 LogUtil.i(TAG, "right button onclick");
                 if (hotelDetailInfoBean != null && !hotelDetailInfoBean.isVip) {
                     showAddVipDialog(this, hotelDetailInfoBean);

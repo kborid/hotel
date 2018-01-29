@@ -35,31 +35,13 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/right_lay"
+    <ImageView
+        android:id="@+id/iv_right"
         android:layout_width="45dp"
-        android:layout_height="45dp">
-
-        <TextView
-            android:id="@+id/tv_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="分享"
-            android:textColor="@color/titleSummaryColor"
-            android:textSize="@dimen/common_14sp"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/iv_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/app_name"
-            android:padding="12dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/iv_map"
-            android:visibility="gone" />
-    </RelativeLayout>
+        android:layout_height="45dp"
+        android:contentDescription="@string/app_name"
+        android:padding="12dp"
+        android:visibility="invisible"
+        android:scaleType="centerInside" />
 
 </LinearLayout>

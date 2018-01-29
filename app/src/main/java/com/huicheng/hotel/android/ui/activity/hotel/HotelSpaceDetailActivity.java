@@ -197,14 +197,14 @@ public class HotelSpaceDetailActivity extends BaseAppActivity implements DataCal
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         // 会员按钮显示状态
         if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
-            right_lay.setVisibility(View.VISIBLE);
+            iv_right.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isVip) {
                 setRightButtonResource(R.drawable.iv_viped);
             } else {
                 setRightButtonResource(R.drawable.iv_vippp);
             }
         } else {
-            right_lay.setVisibility(View.INVISIBLE);
+            iv_right.setVisibility(View.INVISIBLE);
         }
 
         if (!SessionContext.isLogin()) {
@@ -313,7 +313,7 @@ public class HotelSpaceDetailActivity extends BaseAppActivity implements DataCal
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.right_lay:
+            case R.id.iv_right:
                 if (null != hotelDetailInfoBean && !hotelDetailInfoBean.isVip) {
                     showAddVipDialog(this, hotelDetailInfoBean);
                 }
