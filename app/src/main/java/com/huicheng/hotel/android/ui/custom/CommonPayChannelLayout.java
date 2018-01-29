@@ -23,7 +23,7 @@ public class CommonPayChannelLayout extends LinearLayout {
             R.drawable.iv_pay_weixin,
             R.drawable.iv_pay_union
     };
-    private String[] payChannel = new String[]{"支付宝", "微信", "银联"};
+    private String[] payChannel = new String[]{"支付宝", "微信"/*, "银联"*/};
     private LinearLayout payListLay;
     private int payIndex = 0;
 
