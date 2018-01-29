@@ -9,6 +9,7 @@ import android.view.ViewParent;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.ui.activity.HtmlActivity;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
@@ -52,6 +53,7 @@ public class BannerImageAdapter extends PagerAdapter {
         view.setScaleType(ImageView.ScaleType.FIT_XY);
         Glide.with(context)
                 .load(new CustomReqURLFormatModelImpl(bean.url))
+                .placeholder(context.getResources().getColor(R.color.hintColor))
                 .crossFade()
                 .override(750, 480)
                 .into(view);

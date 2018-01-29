@@ -22,22 +22,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!--天气预报-->
-                <!--<com.huicheng.hotel.android.ui.custom.CustomWeatherLayout
-                    android:id="@+id/weather_lay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />-->
                 <!--banner-->
                 <com.huicheng.hotel.android.ui.custom.CommonBannerLayout
                     android:id="@+id/banner_lay"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="200dp"
+                    android:background="@color/hintColor" />
 
                 <RelativeLayout
                     android:id="@+id/user_lay"
                     android:layout_width="wrap_content"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/iv_user"
@@ -53,17 +49,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="20dp">
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
+                <!--城市-->
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="28dp"
+                    android:paddingRight="28dp"
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:id="@+id/tv_city_label"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="城市"
@@ -75,41 +75,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_city_label"
-                        android:gravity="center"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="12dp"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center_vertical"
                         android:textColor="#3c3c3c"
                         android:textColorHint="#9b9b9b"
                         android:textSize="@dimen/common_24sp"
                         tools:text="绍兴" />
 
                     <!--当前位置layout-->
-                    <LinearLayout
-                        android:id="@+id/curr_position"
+                    <TextView
+                        android:id="@+id/tv_curr_position"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/tv_city"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="20dp"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/iv_curr_position" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="当前城市"
-                            android:textColor="#061954"
-                            android:textSize="@dimen/common_9sp" />
-                    </LinearLayout>
+                        android:drawablePadding="2dp"
+                        android:drawableTop="@drawable/iv_curr_position"
+                        android:text="当前城市"
+                        android:textColor="#3c3c3c"
+                        android:textSize="@dimen/common_10sp" />
                 </RelativeLayout>
 
                 <View
@@ -117,23 +101,26 @@
                     android:layout_height="0.5dp"
                     android:background="#dedede" />
 
+                <!--入住、离店-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="6dp">
+                    android:paddingBottom="14dp"
+                    android:paddingLeft="28dp"
+                    android:paddingRight="28dp"
+                    android:paddingTop="14dp">
 
+                    <!--入住-->
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
                             android:text="入住"
                             android:textColor="#9b9b9b"
                             android:textSize="@dimen/common_12sp" />
@@ -142,43 +129,45 @@
                             android:id="@+id/tv_in_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingTop="11dp"
-                            android:text="9月21日"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center_vertical"
+                            android:text="9月21日 周八"
                             android:textColor="#3f3f3f"
                             android:textSize="@dimen/common_14sp" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_days"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
                         android:text="8晚"
                         android:textColor="#9b9b9b"
                         android:textSize="@dimen/common_12sp" />
 
+                    <!--离店-->
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
                             android:text="离店"
                             android:textColor="#9b9b9b"
                             android:textSize="@dimen/common_12sp" />
 
                         <TextView
                             android:id="@+id/tv_out_date"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingTop="11dp"
-                            android:text="9月28日"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center_vertical"
+                            android:text="9月28日 周七"
                             android:textColor="#3f3f3f"
                             android:textSize="@dimen/common_14sp" />
                     </LinearLayout>
@@ -189,47 +178,40 @@
                     android:layout_height="0.5dp"
                     android:background="#dedede" />
 
-                <!--关键词-->
-                <LinearLayout
+                <!--城市、区域、位置、酒店-->
+                <TextView
+                    android:id="@+id/tv_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_search"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:hint="@string/search_tips"
-                        android:paddingBottom="12dp"
-                        android:paddingTop="15dp"
-                        android:textColor="#3f3f3f"
-                        android:textColorHint="#9b9b9b"
-                        android:textSize="@dimen/common_16sp" />
-                </LinearLayout>
+                    android:gravity="center_vertical"
+                    android:hint="@string/search_tips"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="28dp"
+                    android:paddingRight="28dp"
+                    android:paddingTop="12dp"
+                    android:textColor="#3f3f3f"
+                    android:textColorHint="#9b9b9b"
+                    android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="#dedede" />
 
-                <LinearLayout
+                <!--价格、星级、类型-->
+                <TextView
+                    android:id="@+id/tv_consider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_consider"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:hint="@string/consider_hotel_tips"
-                        android:paddingBottom="12dp"
-                        android:paddingTop="15dp"
-                        android:textColor="#3f3f3f"
-                        android:textColorHint="#9b9b9b"
-                        android:textSize="@dimen/common_16sp" />
-                </LinearLayout>
+                    android:gravity="center_vertical"
+                    android:hint="@string/consider_hotel_tips"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="28dp"
+                    android:paddingRight="28dp"
+                    android:paddingTop="12dp"
+                    android:textColor="#3f3f3f"
+                    android:textColorHint="#9b9b9b"
+                    android:textSize="@dimen/common_16sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -237,26 +219,35 @@
                     android:background="#dedede" />
 
                 <!--搜索酒店-->
-                <TextView
-                    android:id="@+id/tv_next_search"
-                    android:layout_width="323dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="22dp"
-                    android:background="@drawable/main_hotel_btn_sel"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="搜索酒店"
-                    android:textColor="#3f3f3f"
-                    android:textSize="@dimen/common_15sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_next_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@drawable/main_hotel_btn_sel"
+                        android:gravity="center"
+                        android:text="搜索酒店"
+                        android:textColor="#3f3f3f"
+                        android:textSize="@dimen/common_15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
             </LinearLayout>
 
+            <!--首页快捷入口-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="28dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
                 android:gravity="center"

@@ -116,7 +116,9 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     private boolean isAdShowed = false;
     private PopupWindow mAdHaiNanPopupWindow = null;
 
-    private LinearLayout curr_position;
+    private boolean isMyLoc = false;
+    private TextView tv_curr_position;
+    private AMapLocation aMapLocation = null;
 
     @Override
     protected void preOnCreate() {
@@ -235,7 +237,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
             }
         }
 
-        curr_position = (LinearLayout) findViewById(R.id.curr_position);
+        tv_curr_position = (TextView) findViewById(R.id.tv_curr_position);
     }
 
     @Override
@@ -257,8 +259,8 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
 
         //初始化时间，今天到明天 1晚
         initCurrentTodayTime();
-        tv_in_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", beginTime)));
-        tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
+        tv_in_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日 ", beginTime) + DateUtil.dateToWeek2(new Date(beginTime))));
+        tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日 ", endTime) + DateUtil.dateToWeek2(new Date(endTime))));
         tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
 
         //地点信息
@@ -583,7 +585,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         bounty_lay.setOnClickListener(this);
         tv_search.setOnClickListener(this);
         tv_consider.setOnClickListener(this);
-        curr_position.setOnClickListener(this);
+        tv_curr_position.setOnClickListener(this);
     }
 
     @Override
@@ -684,6 +686,13 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 intent = new Intent(this, HotelListActivity.class);
                 intent.putExtra("index", 0);
                 intent.putExtra("keyword", "");
+                if (isMyLoc && null != aMapLocation) {
+                    intent.putExtra("landmark", aMapLocation.getAoiName());
+                    intent.putExtra("isLandMark", true);
+                    intent.putExtra("lonLat", String.format("%1$f|%2$f", aMapLocation.getLatitude(), aMapLocation.getLongitude()));
+                    intent.putExtra("siteId", aMapLocation.getAdCode());
+                }
+
                 break;
             case R.id.tv_in_date:
             case R.id.tv_out_date: {
@@ -706,8 +715,9 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
             case R.id.tv_consider:
                 showConsiderPopupWindow();
                 break;
-            case R.id.curr_position:
+            case R.id.tv_curr_position:
                 tv_city.setText("");
+                isMyLoc = true;
                 AMapLocationControl.getInstance().startLocationOnce(this);
                 break;
         }
@@ -725,6 +735,8 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         }
 
         if (requestCode == REQUEST_CODE_CITY) {
+            isMyLoc = false;
+            aMapLocation = null;
             mProvince = data.getStringExtra(AppConst.PROVINCE);
             mCity = data.getStringExtra(AppConst.CITY);
             mSiteId = data.getStringExtra(AppConst.SITEID);
@@ -739,8 +751,8 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
                 HotelOrderManager.getInstance().setEndTime(endTime);
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
-                tv_in_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", beginTime)));
-                tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
+                tv_in_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日 ", beginTime) + DateUtil.dateToWeek2(new Date(beginTime))));
+                tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日 ", endTime) + DateUtil.dateToWeek2(new Date(endTime))));
                 tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
             }
             mProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
@@ -758,10 +770,11 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
 
     private SpannableString formatDateForBigDay(String date) {
         if (StringUtil.notEmpty(date)) {
-            int startIndex = date.indexOf("月");
-            int endIndex = date.indexOf("日");
+//            int startIndex = date.indexOf("月");
+//            int endIndex = date.indexOf("日");
+            int endIndex = date.indexOf("周");
             SpannableString ss = new SpannableString(date);
-            ss.setSpan(new AbsoluteSizeSpan(21, true), startIndex + 1, endIndex,
+            ss.setSpan(new AbsoluteSizeSpan(21, true), 0, endIndex,
                     Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             return ss;
         }
@@ -825,7 +838,13 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
             SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
             SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
             SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
-            tv_city.setText(CityParseUtils.getCityString(city));
+            String tmp = CityParseUtils.getCityString(city);
+            LogUtil.i(aMapLocation.toString().replace("#", "\n"));
+            if (isMyLoc) {
+                this.aMapLocation = aMapLocation;
+                tmp = aMapLocation.getAoiName();
+            }
+            tv_city.setText(tmp);
             HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
             requestWeatherInfo(beginTime);
             showHaiNanAd(province);
