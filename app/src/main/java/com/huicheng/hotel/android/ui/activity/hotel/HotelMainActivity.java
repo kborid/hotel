@@ -77,12 +77,13 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     private static final int REQUEST_CODE_DATE = 0x02;
     private static final int REQUEST_CODE_QMH = 0x03;
 
+    private String mProvince, mCity, mSiteId;
+
     private static Handler myHandler = new Handler(Looper.getMainLooper());
     private AppInfoBean mAppInfoBean = null;
 
     private DrawerLayout drawer_layout;
     private LeftDrawerLayout left_layout;
-    //    private CustomWeatherLayout weather_lay;
     private CommonBannerLayout banner_lay;
 
     private RelativeLayout blur_lay;
@@ -98,9 +99,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     private TextView tv_city;
     private TextView tv_next_search;
     private TextView tv_in_date, tv_days, tv_out_date;
-    //    private EditText et_keyword;
-//    private ImageView iv_reset;
-//    private ImageView iv_voice;
     private TextView tv_search;
     private TextView tv_consider;
 
@@ -146,7 +144,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
             drawer_layout.setScrimColor(getResources().getColor(R.color.transparent50));
         }
         left_layout = (LeftDrawerLayout) findViewById(R.id.left_layout);
-//        weather_lay = (CustomWeatherLayout) findViewById(R.id.weather_lay);
         banner_lay = (CommonBannerLayout) findViewById(R.id.banner_lay);
 
         blur_lay = (RelativeLayout) findViewById(R.id.blur_lay);
@@ -167,10 +164,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         tv_days = (TextView) findViewById(R.id.tv_days);
         tv_out_date = (TextView) findViewById(R.id.tv_out_date);
 
-//        et_keyword = (EditText) findViewById(R.id.et_keyword);
-//        iv_reset = (ImageView) findViewById(R.id.iv_reset);
-//        iv_reset.setEnabled(false);
-//        iv_voice = (ImageView) findViewById(R.id.iv_voice);
         tv_search = (TextView) findViewById(R.id.tv_search);
         tv_consider = (TextView) findViewById(R.id.tv_consider);
 
@@ -256,7 +249,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         RelativeLayout.LayoutParams weatherRlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         weatherRlp.width = Utils.mScreenWidth;
         weatherRlp.height = (int) ((float) weatherRlp.width / 750 * 400);
-//        weather_lay.setLayoutParams(weatherRlp);
         banner_lay.setLayoutParams(weatherRlp);
         if (SessionContext.getBannerList().size() > 0) {
             banner_lay.setImageResource(SessionContext.getBannerList());
@@ -300,9 +292,9 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     private void requestWeatherInfo(long timeStamp) {
         LogUtil.i(TAG, "requestWeatherInfo() timeStamp = " + timeStamp);
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("cityname", SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+        b.addBody("cityname", mCity);
         b.addBody("date", DateUtil.getDay("yyyyMMdd", timeStamp));
-        b.addBody("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
+        b.addBody("siteid", mSiteId);
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.WEATHER;
         d.flag = AppConst.WEATHER;
@@ -390,6 +382,10 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     @Override
     public void onResume() {
         super.onResume();
+        mProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+        mCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+        mSiteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
+
         banner_lay.startBanner();
         //重置consider
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
@@ -413,18 +409,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
 //            }, 450);
             sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
         }
-
-        //搜索地标，设置城市返回后刷新显示
-//        String cacheCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-//        if (StringUtil.notEmpty(cacheCity)) {
-//            if (!tv_city.getText().toString().equals(cacheCity)) {
-//                tv_city.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
-//                if (!isAdShowed) {
-//                    showHaiNanAd(SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
-//                }
-//                requestWeatherInfo(beginTime);
-//            }
-//        }
 
         if (SessionContext.isLogin()) {
             requestMessageCount();
@@ -597,35 +581,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         coupon_lay.setOnClickListener(this);
         order_lay.setOnClickListener(this);
         bounty_lay.setOnClickListener(this);
-//        iv_reset.setOnClickListener(this);
-//        iv_voice.setOnClickListener(this);
-//        et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-//                    tv_next_search.performClick();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//
-//        et_keyword.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                iv_reset.setEnabled(StringUtil.notEmpty(s));
-//            }
-//        });
         tv_search.setOnClickListener(this);
         tv_consider.setOnClickListener(this);
         curr_position.setOnClickListener(this);
@@ -661,6 +616,9 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         super.onDestroy();
         SessionContext.cleanLocationInfo();
         left_layout.unregisterBroadReceiver();
+        SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
+        SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
+        SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
     }
 
     private void initCurrentTodayTime() {
@@ -736,40 +694,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 startActivityForResult(resIntent, REQUEST_CODE_DATE);
                 break;
             }
-//            case R.id.iv_voice:
-//                if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.MIC_PERMISSION)) {
-//                    PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.MIC_PERMISSION);
-//                    return;
-//                }
-//                RecognizerDialog mDialog = new RecognizerDialog(this, null);
-//                mDialog.setParameter(SpeechConstant.ASR_PTT, "0");
-//                mDialog.setParameter(SpeechConstant.ASR_SCH, "1");
-//                mDialog.setParameter(SpeechConstant.NLP_VERSION, "3.0");
-//                mDialog.setListener(new RecognizerDialogListener() {
-//                    @Override
-//                    public void onResult(RecognizerResult recognizerResult, boolean b) {
-//                        if (b) {
-//                            String jsonStr = recognizerResult.getResultString();
-//                            JSONObject mJson = JSON.parseObject(jsonStr);
-//                            if (mJson.containsKey("text")) {
-//                                et_keyword.setText(mJson.getString("text"));
-//                                et_keyword.setSelection(et_keyword.getText().length());
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(SpeechError speechError) {
-//                        LogUtil.e(TAG, "voice error code:" + speechError.getErrorCode() + ", " + speechError.getErrorDescription());
-//                    }
-//                });
-//                mDialog.show();
-//                break;
-//            case R.id.iv_reset:
-//                et_keyword.setText("");
-//                et_keyword.setFocusable(false);
-//                et_keyword.setFocusableInTouchMode(true);
-//                break;
             case R.id.tv_search:
                 if (!isSelectedDate) {
                     initCurrentTodayTime();
@@ -801,13 +725,9 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         }
 
         if (requestCode == REQUEST_CODE_CITY) {
-            final String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-            String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-            HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(tempProvince, tempCity, "-"));
-            tv_city.setText(CityParseUtils.getCityString(tempCity));
-            if (!isAdShowed) {
-                showHaiNanAd(tempProvince);
-            }
+            mProvince = data.getStringExtra(AppConst.PROVINCE);
+            mCity = data.getStringExtra(AppConst.CITY);
+            mSiteId = data.getStringExtra(AppConst.SITEID);
             if (AMapLocationControl.getInstance().isStart()) {
                 AMapLocationControl.getInstance().stopLocation();
             }
@@ -823,7 +743,16 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日", endTime)));
                 tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
             }
+            mProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+            mCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+            mSiteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
         }
+        HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(mProvince, mCity, "-"));
+        tv_city.setText(CityParseUtils.getCityString(mCity));
+        if (!isAdShowed) {
+            showHaiNanAd(mProvince);
+        }
+
         requestWeatherInfo(beginTime);
     }
 
@@ -856,10 +785,8 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
-//                    weather_lay.refreshWeatherInfo(beginTime, bean);
                     banner_lay.updateWeatherInfo(beginTime, bean);
                 } else {
-//                    weather_lay.refreshWeatherInfo(beginTime, null);
                     banner_lay.updateWeatherInfo(beginTime, null);
                 }
             } else if (request.flag == AppConst.HOTEL_BANNER) {
@@ -882,7 +809,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     protected void onNotifyError(ResponseData request, ResponseData response) {
         super.onNotifyError(request, response);
         if (request.flag == AppConst.WEATHER) {
-//            weather_lay.refreshWeatherInfo(beginTime, null);
             banner_lay.updateWeatherInfo(beginTime, null);
         }
     }

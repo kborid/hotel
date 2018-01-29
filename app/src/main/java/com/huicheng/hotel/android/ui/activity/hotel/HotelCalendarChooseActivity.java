@@ -21,7 +21,6 @@ import com.huicheng.hotel.android.ui.custom.calendar.CalendarUtils;
 import com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarRecyclerView;
 import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -44,6 +43,7 @@ public class HotelCalendarChooseActivity extends BaseAppActivity implements Cale
     private boolean isCouponBooking = false;
 
     private long beginTime, endTime;
+    private String mProvince, mCity, mSiteId;
 
     @Override
     protected void setContentView() {
@@ -90,6 +90,10 @@ public class HotelCalendarChooseActivity extends BaseAppActivity implements Cale
             tv_end.setText(DateUtil.getDay("M月d日", endTime));
             btn_next.setEnabled(true);
         }
+
+        mProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
+        mCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
+        mSiteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
     }
 
     @Override
@@ -158,12 +162,19 @@ public class HotelCalendarChooseActivity extends BaseAppActivity implements Cale
             return;
         }
         if (requestCode == 0x01) {
-            String tempProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-            String tempCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-            String cityStr = CityParseUtils.getProvinceCityString(tempProvince, tempCity, "-");
+            mProvince = data.getStringExtra(AppConst.PROVINCE);
+            mCity = data.getStringExtra(AppConst.CITY);
+            mSiteId = data.getStringExtra(AppConst.SITEID);
+
+            String cityStr = CityParseUtils.getProvinceCityString(mProvince, mCity, "-");
             HotelOrderManager.getInstance().setCityStr(cityStr);
             tv_center_title.setText(cityStr);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     private void initWeekLayout() {

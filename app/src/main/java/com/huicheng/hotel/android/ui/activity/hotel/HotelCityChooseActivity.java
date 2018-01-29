@@ -178,10 +178,11 @@ public class HotelCityChooseActivity extends BaseAppActivity {
                     LogUtil.i(TAG, "========================================");
                     LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
                     LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
-                    setResult(RESULT_OK, new Intent());
+                    Intent data = new Intent();
+                    data.putExtra(AppConst.PROVINCE, mProvince);
+                    data.putExtra(AppConst.CITY, mCity);
+                    data.putExtra(AppConst.SITEID, mSiteId);
+                    setResult(RESULT_OK, data);
                     finish();
                 } else {
                     CustomToast.show("暂未收录该城市", CustomToast.LENGTH_SHORT);
@@ -200,10 +201,11 @@ public class HotelCityChooseActivity extends BaseAppActivity {
                     LogUtil.i(TAG, "========================================");
                     LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
                     LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
-                    setResult(RESULT_OK, new Intent());
+                    Intent data = new Intent();
+                    data.putExtra(AppConst.PROVINCE, mProvince);
+                    data.putExtra(AppConst.CITY, mCity);
+                    data.putExtra(AppConst.SITEID, mSiteId);
+                    setResult(RESULT_OK, data);
                     finish();
                 } else {
                     CustomToast.show("暂未收录该城市", CustomToast.LENGTH_SHORT);
@@ -222,10 +224,11 @@ public class HotelCityChooseActivity extends BaseAppActivity {
                     LogUtil.i(TAG, "========================================");
                     LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
                     LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
-                    SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
-                    setResult(RESULT_OK, new Intent());
+                    Intent data = new Intent();
+                    data.putExtra(AppConst.PROVINCE, mProvince);
+                    data.putExtra(AppConst.CITY, mCity);
+                    data.putExtra(AppConst.SITEID, mSiteId);
+                    setResult(RESULT_OK, data);
                     finish();
                 } else {
                     CustomToast.show("暂未收录该城市", CustomToast.LENGTH_SHORT);
@@ -294,13 +297,11 @@ public class HotelCityChooseActivity extends BaseAppActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+        SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
+        SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
+        SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
     }
 
     private class QuickSelCityAdapter extends BaseAdapter {
