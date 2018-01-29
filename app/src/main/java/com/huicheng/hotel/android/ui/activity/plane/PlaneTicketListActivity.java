@@ -144,7 +144,6 @@ public class PlaneTicketListActivity extends BaseAppActivity {
                 startActivity(intent);
             }
         });
-        btn_right.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -157,11 +156,6 @@ public class PlaneTicketListActivity extends BaseAppActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()) {
-            case R.id.btn_right:
-                LogUtil.i(TAG, "right button click~~~");
-                break;
-        }
     }
 
     private void requestPlaneTicketInfo(boolean isBusy) {
