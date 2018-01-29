@@ -44,9 +44,9 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.dialog.ProgressDialog;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.activity.BaseActivity;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -76,10 +76,8 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
 
     private LinearLayout title_content_lay;
     protected TextView tv_center_title;
-    protected RelativeLayout btn_right;
     protected ImageView iv_back;
-    private ImageView iv_right;
-    private TextView tv_right;
+    protected ImageView iv_right;
 
     @Override
     protected void preOnCreate() {
@@ -161,14 +159,14 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     // 初始化组件
     @Override
     protected void initViews() {
+        title_content_lay = (LinearLayout) findViewById(R.id.title_content_lay);
         tv_center_title = (TextView) findViewById(R.id.tv_center_title);
         iv_back = (ImageView) findViewById(R.id.iv_back);
-        btn_right = (RelativeLayout) findViewById(R.id.btn_right);
         iv_right = (ImageView) findViewById(R.id.iv_right);
-        tv_right = (TextView) findViewById(R.id.tv_right);
     }
 
-    protected void dealIntent(){}
+    protected void dealIntent() {
+    }
 
     @Override
     protected void initParams() {
@@ -180,9 +178,6 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     protected void initListeners() {
         if (iv_back != null) {
             iv_back.setOnClickListener(this);
-        }
-        if (btn_right != null) {
-            btn_right.setOnClickListener(this);
         }
         if (iv_right != null) {
             iv_right.setOnClickListener(this);
@@ -205,28 +200,10 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     }
 
     public void setRightButtonResource(int rightResId) {
-        if (null != iv_right) {
-            if (rightResId != -1) {
-                tv_right.setVisibility(View.GONE);
-                iv_right.setVisibility(View.VISIBLE);
-                iv_right.setImageResource(rightResId);
-            }
+        if (null != iv_right && rightResId != -1) {
+            iv_right.setVisibility(View.VISIBLE);
+            iv_right.setImageResource(rightResId);
         }
-    }
-
-    public void setRightButtonResource(String rightStr, int textColor) {
-        if (null != tv_right) {
-            if (StringUtil.notEmpty(rightStr)) {
-                iv_right.setVisibility(View.GONE);
-                tv_right.setVisibility(View.VISIBLE);
-                tv_right.setText(rightStr);
-                tv_right.setTextColor(textColor);
-            }
-        }
-    }
-
-    public void setRightButtonResource(String rightStr) {
-        setRightButtonResource(rightStr, getResources().getColor(R.color.secColor));
     }
 
     @Override
@@ -506,7 +483,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
             isHotelVipRefresh = true;
             HotelOrderManager.getInstance().getHotelDetailInfo().isPopup = false;
             HotelOrderManager.getInstance().getHotelDetailInfo().isVip = true;
-            btn_right.setVisibility(View.VISIBLE);
+            iv_right.setVisibility(View.VISIBLE);
             setRightButtonResource(R.drawable.iv_viped);
             refreshScreenInfoVipPrice();
             CustomToast.show(getString(R.string.isViped), CustomToast.LENGTH_SHORT);

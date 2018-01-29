@@ -212,6 +212,31 @@
         <!--城市选择画面-->
         <activity
             android:name=".ui.activity.hotel.HotelCityChooseActivity"
+            android:name=".ui.activity.hotel.HotelMainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--酒店订单详情-->
+        <activity
+            android:name=".ui.activity.hotel.HotelOrderDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--评价详情-->
+        <activity
+            android:name=".ui.activity.hotel.HotelAssessOrderDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!--评论列表画面-->
+        <activity
+            android:name=".ui.activity.UcAssessesActivity"
+            android:screenOrientation="portrait" />
+        <!--酒店评论画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelCommendsActivity"
+            android:screenOrientation="portrait" />
+        <!--城市选择画面-->
+        <activity
+            android:name=".ui.activity.hotel.HotelCityChooseActivity"
             android:screenOrientation="portrait" />
         <!--0元住首页画面-->
         <activity
@@ -295,6 +320,7 @@
         <!--机票-->
         <!--机票入口main-->
         <activity
+            android:name=".ui.activity.plane.PlaneOrderDetailActivity"
             android:name=".ui.activity.plane.PlaneMainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -303,6 +329,7 @@
         <activity
             android:name=".ui.activity.plane.PlaneAirportChooserActivity"
             android:screenOrientation="portrait" />
+
         <!--机票列表画面-->
         <activity
             android:name=".ui.activity.plane.PlaneFlightListActivity"

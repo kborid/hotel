@@ -36,8 +36,8 @@ import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -55,9 +55,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     private TextView tv_city;
     private TextView tv_next_search;
     private TextView tv_in_date, tv_days, tv_out_date;
-    //    private EditText et_keyword;
-//    private ImageView iv_reset;
-//    private ImageView iv_voice;
     private TextView tv_search;
     private TextView tv_consider;
 
@@ -83,11 +80,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         coupon_lay = (LinearLayout) findViewById(R.id.coupon_lay);
         order_lay = (LinearLayout) findViewById(R.id.order_lay);
         bounty_lay = (LinearLayout) findViewById(R.id.bounty_lay);
-
-//        et_keyword = (EditText) findViewById(R.id.et_keyword);
-//        iv_reset = (ImageView) findViewById(R.id.iv_reset);
-//        iv_reset.setEnabled(false);
-//        iv_voice = (ImageView) findViewById(R.id.iv_voice);
         tv_search = (TextView) findViewById(R.id.tv_search);
         tv_consider = (TextView) findViewById(R.id.tv_consider);
 
@@ -196,17 +188,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         //重置consider
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
 
-        //搜索地标，设置城市返回后刷新显示
-//        String cacheCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-//        if (StringUtil.notEmpty(cacheCity)) {
-//            if (!tv_city.getText().toString().equals(cacheCity)) {
-//                tv_city.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
-//                if (!isAdShowed) {
-//                    showHaiNanAd(SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
-//                }
-//                requestWeatherInfo(beginTime);
-//            }
-//        }
         //OpenInstall Event 分发
         dispatchOpenInstallEvent();
     }

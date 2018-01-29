@@ -20,7 +20,7 @@
 
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/plane_mainColor" />
+            <solid android:color="#0077db" />
             <size
                 android:width="10dp"
                 android:height="10dp" />

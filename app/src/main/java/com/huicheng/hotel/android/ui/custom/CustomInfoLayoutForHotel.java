@@ -43,7 +43,7 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
     }
 
     private void init() {
-        setClickListeners();
+        setOrientation(LinearLayout.VERTICAL);
         initializeLayoutItem();
     }
 
@@ -177,10 +177,6 @@ public class CustomInfoLayoutForHotel extends LinearLayout {
         removeAllViews();
         addView(getNewItemView());
         updateButtonStatus(getChildCount());
-    }
-
-    private void setClickListeners() {
-
     }
 
     private void updateButtonStatus(int count) {

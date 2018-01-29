@@ -287,7 +287,7 @@ public class HotelListActivity extends BaseAppActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_right:
+            case R.id.iv_right:
                 Intent intent = new Intent(this, HotelMapActivity.class);
                 intent.putExtra("index", index);
                 startActivity(intent);

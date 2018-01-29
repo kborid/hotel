@@ -204,7 +204,6 @@ public class HotelDetailActivity extends BaseAppActivity {
     public void initListeners() {
         super.initListeners();
         tv_center_title.setOnClickListener(this);
-        btn_right.setOnClickListener(this);
         tv_map.setOnClickListener(this);
         tv_service.setOnClickListener(this);
         tv_view_comment.setOnClickListener(this);
@@ -265,7 +264,7 @@ public class HotelDetailActivity extends BaseAppActivity {
         if (null != hotelDetailInfoBean) {
             // 会员按钮显示状态
             if (hotelDetailInfoBean.isSupportVip) {
-                btn_right.setVisibility(View.VISIBLE);
+                iv_right.setVisibility(View.VISIBLE);
                 if (hotelDetailInfoBean.isVip) {
                     setRightButtonResource(R.drawable.iv_viped);
                 } else {
@@ -277,7 +276,7 @@ public class HotelDetailActivity extends BaseAppActivity {
                     }
                 }
             } else {
-                btn_right.setVisibility(View.INVISIBLE);
+                iv_right.setVisibility(View.INVISIBLE);
             }
 
             //设置 title
@@ -628,7 +627,7 @@ public class HotelDetailActivity extends BaseAppActivity {
                 startActivityForResult(intentRes, 0x01);
             }
             break;
-            case R.id.btn_right:
+            case R.id.iv_right:
                 LogUtil.i(TAG, "right button onclick");
                 if (hotelDetailInfoBean != null && !hotelDetailInfoBean.isVip) {
                     showAddVipDialog(this, hotelDetailInfoBean);

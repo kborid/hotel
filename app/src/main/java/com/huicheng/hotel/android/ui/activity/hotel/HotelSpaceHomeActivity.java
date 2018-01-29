@@ -37,8 +37,8 @@ import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 import com.huicheng.hotel.android.ui.custom.NoScrollGridView;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
@@ -122,14 +122,14 @@ public class HotelSpaceHomeActivity extends BaseAppActivity {
         hotelDetailInfoBean = HotelOrderManager.getInstance().getHotelDetailInfo();
         // 会员按钮显示状态
         if (null != hotelDetailInfoBean && hotelDetailInfoBean.isSupportVip) {
-            btn_right.setVisibility(View.VISIBLE);
+            iv_right.setVisibility(View.VISIBLE);
             if (hotelDetailInfoBean.isVip) {
                 setRightButtonResource(R.drawable.iv_viped);
             } else {
                 setRightButtonResource(R.drawable.iv_vippp);
             }
         } else {
-            btn_right.setVisibility(View.INVISIBLE);
+            iv_right.setVisibility(View.INVISIBLE);
         }
 
         //根据宽高比设置cardview大小，适配不同尺寸的屏幕
@@ -143,7 +143,6 @@ public class HotelSpaceHomeActivity extends BaseAppActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        btn_right.setOnClickListener(this);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -161,7 +160,7 @@ public class HotelSpaceHomeActivity extends BaseAppActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_right:
+            case R.id.iv_right:
                 if (null != hotelDetailInfoBean && !hotelDetailInfoBean.isVip) {
                     showAddVipDialog(this, hotelDetailInfoBean);
                 }
