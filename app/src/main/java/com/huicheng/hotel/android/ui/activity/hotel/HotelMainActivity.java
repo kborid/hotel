@@ -686,8 +686,8 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 intent = new Intent(this, HotelListActivity.class);
                 intent.putExtra("index", 0);
                 intent.putExtra("keyword", "");
-                if (isMyLoc && null != aMapLocation) {
-                    intent.putExtra("landmark", aMapLocation.getAoiName());
+                if (isMyLoc && null != aMapLocation && aMapLocation.getLatitude() > 0 && aMapLocation.getLongitude() > 0) {
+                    intent.putExtra("landmark", tv_city.getText().toString());
                     intent.putExtra("isLandMark", true);
                     intent.putExtra("lonLat", String.format("%1$f|%2$f", aMapLocation.getLatitude(), aMapLocation.getLongitude()));
                     intent.putExtra("siteId", aMapLocation.getAdCode());
@@ -716,6 +716,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 showConsiderPopupWindow();
                 break;
             case R.id.tv_curr_position:
+                tv_city.setHint("正在获取当前位置");
                 tv_city.setText("");
                 isMyLoc = true;
                 AMapLocationControl.getInstance().startLocationOnce(this);
@@ -735,6 +736,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         }
 
         if (requestCode == REQUEST_CODE_CITY) {
+            tv_city.setHint("正在定位当前城市");
             isMyLoc = false;
             aMapLocation = null;
             mProvince = data.getStringExtra(AppConst.PROVINCE);
@@ -839,10 +841,13 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
             SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
             SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
             String tmp = CityParseUtils.getCityString(city);
-            LogUtil.i(aMapLocation.toString().replace("#", "\n"));
+            LogUtil.i("\n" + aMapLocation.toString().replace("#", "\n"));
             if (isMyLoc) {
                 this.aMapLocation = aMapLocation;
-                tmp = aMapLocation.getAoiName();
+                tmp = aMapLocation.getPoiName();
+                if (StringUtil.isEmpty(tmp)) {
+                    tmp = aMapLocation.getStreet() + aMapLocation.getStreetNum();
+                }
             }
             tv_city.setText(tmp);
             HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
