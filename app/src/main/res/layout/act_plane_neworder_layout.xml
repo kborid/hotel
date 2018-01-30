@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f8f8f8"
@@ -124,7 +125,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
                     <com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane
                         android:id="@+id/custom_info_layout_plane"
@@ -259,14 +261,15 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_express_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@id/tv_invoice_label"
-                            android:text="(邮费¥10)"
+                            android:text="@string/expressPrice"
                             android:textColor="#666666"
-                            android:textSize="@dimen/common_14sp" />
+                            android:textSize="@dimen/common_12sp" />
 
                         <Switch
                             android:id="@+id/btn_invoice_switch"
@@ -305,58 +308,17 @@
                         android:orientation="vertical"
                         android:visibility="visible">
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
+                        <!--发票类型-->
+                        <TextView
+                            android:id="@+id/tv_invoice_type"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="行程单"
-                                android:textColor="#666666"
-                                android:textSize="@dimen/common_14sp"
-                                android:textStyle="bold" />
-
-                            <CheckBox
-                                style="@style/planeCommonCBStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_margin="6dp" />
-                        </RelativeLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="#e2e2e2" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="保险发票（电子发票，个人抬头）"
-                                android:textColor="#666666"
-                                android:textSize="@dimen/common_14sp"
-                                android:textStyle="bold" />
-
-                            <CheckBox
-                                style="@style/planeCommonCBStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_margin="6dp" />
-                        </RelativeLayout>
+                            android:paddingBottom="8dp"
+                            android:paddingTop="10dp"
+                            android:textColor="#666666"
+                            android:textSize="@dimen/common_14sp"
+                            android:textStyle="bold"
+                            tools:text="行程单" />
 
                         <View
                             android:layout_width="match_parent"
@@ -370,8 +332,11 @@
                             android:focusableInTouchMode="true"
                             android:orientation="vertical">
 
-                            <!--发票信息-->
-                            <TableRow android:layout_marginTop="10dp">
+                            <!--发票抬头-->
+                            <TableRow
+                                android:id="@+id/tr_invoice_header"
+                                android:layout_marginTop="10dp"
+                                android:visibility="gone">
 
                                 <TextView
                                     android:layout_width="95dp"
@@ -389,37 +354,8 @@
                                         android:id="@+id/rg_invoice"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:checkedButton="@+id/rb_personal"
                                         android:orientation="horizontal"
-                                        android:padding="8dp">
-
-                                        <RadioButton
-                                            android:id="@+id/rb_personal"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/plane_invoice_type_bg_sel"
-                                            android:button="@null"
-                                            android:gravity="center"
-                                            android:padding="5dp"
-                                            android:text="个人"
-                                            android:textColor="@color/plane_invoice_type_text_sel"
-                                            android:textSize="@dimen/common_12sp" />
-
-                                        <RadioButton
-                                            android:id="@+id/rb_company"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="10dp"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/plane_invoice_type_bg_sel"
-                                            android:button="@null"
-                                            android:gravity="center"
-                                            android:padding="5dp"
-                                            android:text="公司"
-                                            android:textColor="@color/plane_invoice_type_text_sel"
-                                            android:textSize="@dimen/common_12sp" />
-                                    </RadioGroup>
+                                        android:padding="8dp" />
 
                                     <TextView
                                         android:id="@+id/tv_personal_invoice"
@@ -470,10 +406,12 @@
                             </TableRow>
 
                             <View
+                                android:id="@+id/line_invoice_header"
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
-                                android:background="#e2e2e2" />
-                            <!--收货地址-->
+                                android:background="#e2e2e2"
+                                android:visibility="gone" />
+                            <!--发票邮寄地址-->
                             <TableRow android:layout_marginTop="14dp">
 
                                 <TextView

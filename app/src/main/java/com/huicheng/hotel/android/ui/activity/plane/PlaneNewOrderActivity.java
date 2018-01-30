@@ -2,20 +2,28 @@ package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
 import android.support.annotation.IdRes;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneErrorDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
@@ -24,14 +32,14 @@ import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,9 +59,13 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private CustomInfoLayoutForPlane custom_info_layout_plane;
     private ImageView iv_customInfo_add;
 
+    private TextView tv_express_price;
     private Switch btn_invoice_switch;
     private LinearLayout invoice_lay;
     private TextView tv_invoice_tips;
+    private TextView tv_invoice_type;
+    private TableRow tr_invoice_header;
+    private View line_invoice_header;
     private RadioGroup rg_invoice;
     private TextView tv_personal_invoice;
     private LinearLayout company_invoice;
@@ -102,9 +114,13 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         custom_info_layout_plane = (CustomInfoLayoutForPlane) findViewById(R.id.custom_info_layout_plane);
         iv_customInfo_add = (ImageView) findViewById(R.id.iv_customInfo_add);
 
+        tv_express_price = (TextView) findViewById(R.id.tv_express_price);
         btn_invoice_switch = (Switch) findViewById(R.id.btn_invoice_switch);
         invoice_lay = (LinearLayout) findViewById(R.id.invoice_lay);
         tv_invoice_tips = (TextView) findViewById(R.id.tv_invoice_tips);
+        tv_invoice_type = (TextView) findViewById(R.id.tv_invoice_type);
+        tr_invoice_header = (TableRow) findViewById(R.id.tr_invoice_header);
+        line_invoice_header = findViewById(R.id.line_invoice_header);
         rg_invoice = (RadioGroup) findViewById(R.id.rg_invoice);
         tv_personal_invoice = (TextView) findViewById(R.id.tv_personal_invoice);
         company_invoice = (LinearLayout) findViewById(R.id.company_invoice);
@@ -185,8 +201,10 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
 
         //initialize
+        tv_express_price.setVisibility(View.GONE);
         btn_invoice_switch.setChecked(false);
         tv_invoice_tips.setVisibility(View.VISIBLE);
+        tv_invoice_type.setVisibility(View.GONE);
         invoice_lay.setVisibility(View.GONE);
     }
 
@@ -195,28 +213,12 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         super.initListeners();
         iv_customInfo_add.setOnClickListener(this);
         flight_flag_layout.setOnClickListener(this);
-        rg_invoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_personal:
-                        tv_personal_invoice.setVisibility(View.VISIBLE);
-                        company_invoice.setVisibility(View.GONE);
-                        break;
-                    case R.id.rb_company:
-                        tv_personal_invoice.setVisibility(View.GONE);
-                        company_invoice.setVisibility(View.VISIBLE);
-                        break;
-                }
-            }
-        });
         btn_invoice_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     tv_invoice_tips.setVisibility(View.GONE);
                     invoice_lay.setVisibility(View.VISIBLE);
-                    rg_invoice.check(R.id.rb_personal);
                 } else {
                     tv_invoice_tips.setVisibility(View.VISIBLE);
                     invoice_lay.setVisibility(View.GONE);
@@ -255,9 +257,69 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void refreshScreenInfo() {
+        if (goFlightBookingInfo != null) {
+            //邮费信息
+            tv_express_price.setVisibility(View.VISIBLE);
+            tv_express_price.setText(String.format(getString(R.string.expressPrice), goFlightBookingInfo.expressInfo.price));
+
+            //发票类型
+            JSONObject invoiceTypeJson = goFlightBookingInfo.expressInfo.invoiceType;
+            if (invoiceTypeJson != null) {
+                tv_invoice_type.setVisibility(View.VISIBLE);
+                if (invoiceTypeJson.containsKey("2")) {
+                    tv_invoice_type.setText(invoiceTypeJson.getString("2"));
+                    tr_invoice_header.setVisibility(View.GONE);
+                    line_invoice_header.setVisibility(View.GONE);
+                } else if (invoiceTypeJson.containsKey("1")) {
+                    tv_invoice_type.setText(invoiceTypeJson.getString("1"));
+                    tr_invoice_header.setVisibility(View.VISIBLE);
+                    line_invoice_header.setVisibility(View.VISIBLE);
+                } else {
+                    LogUtil.i(TAG, "未定义类型：" + invoiceTypeJson.toString());
+                    tv_invoice_type.setText(invoiceTypeJson.toString());
+                    tr_invoice_header.setVisibility(View.GONE);
+                    line_invoice_header.setVisibility(View.GONE);
+                }
+            }
+
+            //发票支持抬头信息
+            rg_invoice.removeAllViews();
+            JSONObject invoiceHeaderJson = goFlightBookingInfo.expressInfo.receiverType;
+            if (invoiceHeaderJson != null) {
+                ArrayList<String> keyList = new ArrayList<>();
+                keyList.addAll(invoiceHeaderJson.keySet());
+                Collections.sort(keyList);
+                for (String key : keyList) {
+                    RadioButton rb = new RadioButton(this);
+                    RadioGroup.LayoutParams glp = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    glp.weight = 1;
+                    glp.setMargins(Utils.dp2px(2), Utils.dp2px(2), Utils.dp2px(2), Utils.dp2px(2));
+                    rb.setPadding(Utils.dp2px(5), Utils.dp2px(5), Utils.dp2px(5), Utils.dp2px(5));
+                    rb.setGravity(Gravity.CENTER);
+                    rb.setBackgroundDrawable(getResources().getDrawable(R.drawable.plane_invoice_type_bg_sel));
+                    rb.setButtonDrawable(null);
+                    rb.setText(invoiceHeaderJson.getString(key));
+                    rb.setTextColor(getResources().getColorStateList(R.color.plane_invoice_type_text_sel));
+                    rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    rg_invoice.addView(rb, glp);
+                }
+                rg_invoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                        RadioButton rb = (RadioButton) findViewById(checkedId);
+                        if ("个人".equals(rb.getText().toString())) {
+                            tv_personal_invoice.setVisibility(View.VISIBLE);
+                            company_invoice.setVisibility(View.GONE);
+                        } else {
+                            tv_personal_invoice.setVisibility(View.GONE);
+                            company_invoice.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+                rg_invoice.check(rg_invoice.getChildAt(0).getId());
+            }
+        }
     }
 
     private void requestTicketBookingInfo(int type, FlightDetailInfo info) {
@@ -318,20 +380,19 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             LogUtil.i(TAG, "flag = " + request.flag);
             if (request.flag == (AppConst.PLANE_BOOKING_INFO << TYPE_GO)) {
                 mTag.put(request.flag, request.flag);
-                if (mTag.size() == requestTagCount) {
-                    removeProgressDialog();
-                }
                 LogUtil.i(TAG, "go booking info json = " + response.body.toString());
                 goFlightBookingInfo = JSON.parseObject(response.body.toString(), PlaneBookingInfo.class);
                 mBkInfo.add(goFlightBookingInfo);
             } else if (request.flag == (AppConst.PLANE_BOOKING_INFO << TYPE_BACK)) {
                 mTag.put(request.flag, request.flag);
-                if (mTag.size() == requestTagCount) {
-                    removeProgressDialog();
-                }
                 LogUtil.i(TAG, "back booking info json = " + response.body.toString());
                 backFlightBookingInfo = JSON.parseObject(response.body.toString(), PlaneBookingInfo.class);
                 mBkInfo.add(backFlightBookingInfo);
+            }
+
+            if (mTag.size() == requestTagCount) {
+                removeProgressDialog();
+                refreshScreenInfo();
             }
         }
     }
@@ -344,22 +405,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             }
         }
         return super.isCheckException(request, response);
-    }
-
-    @Override
-    public void onNotifyOverrideMessage(ResponseData request, ResponseData response) {
-        super.onNotifyOverrideMessage(request, response);
-        if (mTag.size() == requestTagCount) {
-            removeProgressDialog();
-        }
-    }
-
-    @Override
-    public void onNotifyError(ResponseData request, ResponseData response) {
-        super.onNotifyError(request, response);
-        if (mTag.size() == requestTagCount) {
-            removeProgressDialog();
-        }
     }
 
     private class FlightDetailInfo {

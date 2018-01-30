@@ -94,7 +94,9 @@ public class PlaneTicketVendorItemAdapter extends BaseAdapter {
             discount_cabin = (discount <= 0f) ? "" : String.format("%1$.1f折", discount);
         }
         viewHolder.tv_discount_cabin.setText(discount_cabin);
-        viewHolder.tv_discount_cabin.append(cabinMap.get(vendorInfo.cabinType));
+        if (StringUtil.notEmpty(cabinMap.get(vendorInfo.cabinType))) {
+            viewHolder.tv_discount_cabin.append(cabinMap.get(vendorInfo.cabinType));
+        }
         if (StringUtil.notEmpty(com)) {
             viewHolder.tv_air_company.setText(com);
         }
