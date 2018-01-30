@@ -510,19 +510,23 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
-        String msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", "-1", getString(R.string.dialog_tip_null_error));
+        String msgFormat = "ErrMsg:%2$s[%1$s]";
+        String info = getString(R.string.dialog_tip_null_error);
+        String msg = String.format(msgFormat, "-1", info);
         if (null != response && null != response.data) {
-            msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", response.code, response.data.toString());
+            info = response.data.toString();
+            msg = String.format(msgFormat, response.code, info);
         } else {
             if (e != null && e instanceof ConnectException) {
-                msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", "-2", getString(R.string.dialog_tip_net_error));
+                info = getString(R.string.dialog_tip_net_error);
+                msg = String.format(msgFormat, "-2", info);
             }
         }
         LogUtil.e(TAG, msg);
         if (isCheckException(request, response)) {
             onNotifyOverrideMessage(request, response);
         } else {
-            CustomToast.show(msg, CustomToast.LENGTH_LONG);
+            CustomToast.show(info, CustomToast.LENGTH_LONG);
             onNotifyError(request, response);
         }
     }

@@ -35,8 +35,8 @@ import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -452,11 +452,8 @@ public class UcLoginActivity extends BaseAppActivity {
      * 登录前检查用户状态
      */
     private void requestCheckUserStatus() {
-        String userName = et_phone.getText().toString();
-
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("login", userName);
-
+        b.addBody("login", et_phone.getText().toString());
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.CHECK_USER;
         d.flag = AppConst.CHECK_USER;
@@ -464,7 +461,6 @@ public class UcLoginActivity extends BaseAppActivity {
         if (!isProgressShowing()) {
             showProgressDialog(this);
         }
-
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -472,17 +468,16 @@ public class UcLoginActivity extends BaseAppActivity {
      * 登录
      */
     private void requestLogin() {
-        String userName = et_phone.getText().toString();
-        String pwd = et_pwd.getText().toString();
-
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("login", userName);
-        b.addBody("password", MD5.getMessageDigest(pwd.getBytes()));
-
+        b.addBody("login", et_phone.getText().toString());
+        b.addBody("password", MD5.getMessageDigest(et_pwd.getText().toString().getBytes()));
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.LOGIN;
         d.flag = AppConst.LOGIN;
 
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -506,97 +501,101 @@ public class UcLoginActivity extends BaseAppActivity {
     /**
      * 获取用户信息
      */
-    private void getUserInfo(String ticket) {
-        LogUtil.i(TAG, "getUserInfo() ticket = " + ticket);
+    private void requestUserInfo(String ticket) {
+        LogUtil.i(TAG, "requestUserInfo() ticket = " + ticket);
         RequestBeanBuilder builder = RequestBeanBuilder.create(true);
-
         ResponseData data = builder.syncRequest(builder);
         data.path = NetURL.CENTER_USERINFO;
         data.flag = AppConst.CENTER_USERINFO;
+
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
         requestID = DataLoader.getInstance().loadData(this, data);
     }
 
     @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
-        if (request.flag == AppConst.CHECK_USER) {
-            JSONObject mJson = JSON.parseObject(response.body.toString());
-            if (mJson.containsKey("status")) {
-                if (mJson.getString("status").equals("1")) {
-                    requestLogin();
+        if (response != null && response.body != null) {
+            if (request.flag == AppConst.CHECK_USER) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                if (mJson.containsKey("status")) {
+                    if (mJson.getString("status").equals("1")) {
+                        requestLogin();
+                    } else {
+                        removeProgressDialog();
+                        CustomToast.show(mJson.getString("message"), CustomToast.LENGTH_SHORT);
+                    }
+                }
+            } else if (request.flag == AppConst.LOGIN) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                if (mJson.containsKey("status")) {
+                    if (mJson.getString("status").equals("1")) {
+                        String ticket = mJson.getString("accessTicket");
+                        SharedPreferenceUtil.getInstance().setString(AppConst.ACCESS_TICKET, ticket, true);
+                        SessionContext.setTicket(ticket);
+                        requestUserInfo(ticket);
+                    } else {
+                        removeProgressDialog();
+                        CustomToast.show(mJson.getString("message"), CustomToast.LENGTH_SHORT);
+                    }
+                }
+            } else if (request.flag == AppConst.CENTER_USERINFO) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                if ("{}".equals(response.body.toString())) {
+                    CustomToast.show("获取用户信息失败，请重试", 0);
+                    return;
+                }
+                SessionContext.mUser = JSON.parseObject(response.body.toString(), UserInfo.class);
+
+                //缓存用户信息
+                SharedPreferenceUtil.getInstance().setString(AppConst.USERNAME, et_phone.getText().toString(), true);// 保存用户名
+                SharedPreferenceUtil.getInstance().setString(AppConst.LAST_LOGIN_DATE, DateUtil.getCurDateStr(null), false);// 保存登录时间
+                SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
+                SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
+                JPushInterface.setAliasAndTags(PRJApplication.getInstance(), SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
+                    @Override
+                    public void gotResult(int i, String s, Set<String> set) {
+                        LogUtil.i(TAG, ((i == 0) ? "设置成功" : "设置失败") + ", Alias = " + s + ", Tag = " + set);
+                    }
+                });
+                removeProgressDialog();
+                CustomToast.show("登录成功", CustomToast.LENGTH_LONG);
+                sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
+
+                //登录成功，根据性别设置主题
+                int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
+                SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
+                finish();
+            } else if (request.flag == AppConst.BIND_CHECK) {// 如果绑定，直接获取用户信息，没有绑定到绑定页面
+                removeProgressDialog();
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                int flag = mJson.getInteger("flag");
+                if (flag == 1) {// flag:0-未绑定 ，1-已绑定，当flag=1时，还返回accessTicket
+                    String accessTicket = mJson.getString("accessTicket");
+                    SharedPreferenceUtil.getInstance().setString(AppConst.ACCESS_TICKET, accessTicket, true);// 保存ticket
+                    SessionContext.setTicket(accessTicket);
+                    requestUserInfo(accessTicket);
                 } else {
-                    removeProgressDialog();
-                    CustomToast.show(mJson.getString("message"), CustomToast.LENGTH_SHORT);
-                }
-            }
-        } else if (request.flag == AppConst.LOGIN) {
-            JSONObject mJson = JSON.parseObject(response.body.toString());
-            if (mJson.containsKey("status")) {
-                if (mJson.getString("status").equals("1")) {
-                    String ticket = mJson.getString("accessTicket");
-                    SharedPreferenceUtil.getInstance().setString(AppConst.ACCESS_TICKET, ticket, true);
-                    SessionContext.setTicket(ticket);
-                    getUserInfo(ticket);
-                } else {
-                    removeProgressDialog();
-                    CustomToast.show(mJson.getString("message"), CustomToast.LENGTH_SHORT);
-                }
-            }
-        } else if (request.flag == AppConst.CENTER_USERINFO) {
-            removeProgressDialog();
-            if (StringUtil.isEmpty(response.body.toString()) || response.body.toString().equals("{}")) {
-                CustomToast.show("获取用户信息失败，请重试", 0);
-                return;
-            }
-            SessionContext.mUser = JSON.parseObject(response.body.toString(), UserInfo.class);
-            LogUtil.i(TAG, response.body.toString());
-
-            if (SessionContext.mUser == null || StringUtil.isEmpty(SessionContext.mUser)) {
-                CustomToast.show("获取用户信息失败，请重试", 0);
-                return;
-            }
-
-            String userName = et_phone.getText().toString();
-            SharedPreferenceUtil.getInstance().setString(AppConst.USERNAME, userName, true);// 保存用户名
-            SharedPreferenceUtil.getInstance().setString(AppConst.LAST_LOGIN_DATE, DateUtil.getCurDateStr(null), false);// 保存登录时间
-            SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
-            SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
-            CustomToast.show("登录成功", 0);
-            JPushInterface.setAliasAndTags(PRJApplication.getInstance(), SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
-                @Override
-                public void gotResult(int i, String s, Set<String> set) {
-                    LogUtil.i(TAG, ((i == 0) ? "设置成功" : "设置失败") + ", Alias = " + s + ", Tag = " + set);
-                }
-            });
-            sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
-
-            //登录成功，根据性别设置主题
-            int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
-            SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
-            finish();
-        } else if (request.flag == AppConst.BIND_CHECK) {// 如果绑定，直接获取用户信息，没有绑定到绑定页面
-            removeProgressDialog();
-            JSONObject mJson = JSON.parseObject(response.body.toString());
-            int flag = mJson.getInteger("flag");
-            if (flag == 1) {// flag:0-未绑定 ，1-已绑定，当flag=1时，还返回accessTicket
-                String accessTicket = mJson.getString("accessTicket");
-                SharedPreferenceUtil.getInstance().setString(AppConst.ACCESS_TICKET, accessTicket, true);// 保存ticket
-                SessionContext.setTicket(accessTicket);
-                getUserInfo(accessTicket);
-            } else {
-                Intent intent = new Intent(this, UcBindPhoneActivity.class);
-                intent.putExtra("thirdpartusername", thirdpartusername);
-                intent.putExtra("thirdpartuserheadphotourl", thirdpartuserheadphotourl);
-                intent.putExtra("openid", openid);
-                intent.putExtra("platform", mPlatform);
-                intent.putExtra("usertoken", usertoken);
+                    Intent intent = new Intent(this, UcBindPhoneActivity.class);
+                    intent.putExtra("thirdpartusername", thirdpartusername);
+                    intent.putExtra("thirdpartuserheadphotourl", thirdpartuserheadphotourl);
+                    intent.putExtra("openid", openid);
+                    intent.putExtra("platform", mPlatform);
+                    intent.putExtra("usertoken", usertoken);
+                    startActivity(intent);
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
 //                            new Pair<View, String>(et_phone, "share_phone"),
 //                            new Pair<View, String>(tv_action, "share_action")).toBundle());
 //                } else {
-                startActivity(intent);
+//                        startActivity(intent);
 //                    overridePendingTransition(0, 0);
 //                }
+                }
             }
         }
     }

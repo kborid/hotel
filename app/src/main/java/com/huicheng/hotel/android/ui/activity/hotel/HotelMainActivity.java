@@ -821,11 +821,14 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     }
 
     @Override
-    protected void onNotifyError(ResponseData request, ResponseData response) {
-        super.onNotifyError(request, response);
-        if (request.flag == AppConst.WEATHER) {
-            banner_lay.updateWeatherInfo(beginTime, null);
+    protected boolean isCheckException(ResponseData request, ResponseData response) {
+        if (response != null && response.data != null) {
+            if (request.flag == AppConst.WEATHER) {
+                banner_lay.updateWeatherInfo(beginTime, null);
+                return true;
+            }
         }
+        return super.isCheckException(request, response);
     }
 
     @Override

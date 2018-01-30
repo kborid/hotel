@@ -822,15 +822,6 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
         return super.isCheckException(request, response);
     }
 
-    @Override
-    public void onNotifyError(ResponseData request, ResponseData response) {
-        super.onNotifyError(request, response);
-        if (request.flag == AppConst.ROOM_DETAIL) {
-            CustomToast.show(response.data.toString(), CustomToast.LENGTH_SHORT);
-            this.finish();
-        }
-    }
-
     private class MyPagerAdapter extends PagerAdapter {
         private Context context;
         private List<String> list = new ArrayList<>();
