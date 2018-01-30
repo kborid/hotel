@@ -30,6 +30,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
+import com.huicheng.hotel.android.common.HotelErrorDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
@@ -49,8 +50,8 @@ import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -118,6 +119,8 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
     private CustomSharePopup mCustomShareView = null;
 
     private boolean isSetDefaultPrePay = false;
+
+    private WeakReferenceHandler<HotelRoomDetailActivity> myHandle = new WeakReferenceHandler<HotelRoomDetailActivity>(this);
 
     @Override
     protected void requestData() {
@@ -787,12 +790,11 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
             tabHost.clearAllTabs();
             tabHost = null;
         }
+        if (myHandle != null) {
+            myHandle.removeCallbacksAndMessages(null);
+            myHandle = null;
+        }
         ShareControl.getInstance().destroy();
-    }
-
-    @Override
-    public void preExecute(ResponseData request) {
-
     }
 
     @Override
@@ -806,6 +808,18 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
                 refreshRoomDetailInfo();
             }
         }
+    }
+
+    @Override
+    protected boolean isCheckException(ResponseData request, ResponseData response) {
+        if (response != null && response.data != null) {
+            if (HotelErrorDef.ERR_HOTEL_ROOM_OFF.equals(response.code)) { //006001 房型下架
+                CustomToast.show(response.data.toString(), CustomToast.LENGTH_LONG);
+                myHandle.sendEmptyMessageDelayed(WeakReferenceHandler.CODE_FINISH, 2000);
+                return true;
+            }
+        }
+        return super.isCheckException(request, response);
     }
 
     @Override

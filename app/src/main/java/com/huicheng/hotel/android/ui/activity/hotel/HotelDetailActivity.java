@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
+import com.huicheng.hotel.android.common.HotelErrorDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
@@ -47,9 +48,10 @@ import com.huicheng.hotel.android.ui.custom.CommonAssessStarsLayout;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -99,6 +101,7 @@ public class HotelDetailActivity extends BaseAppActivity {
     private CheckBox cb_check;
 
     private CustomDialog mDialDialog = null;
+    private WeakReferenceHandler<HotelDetailActivity> myHandle = new WeakReferenceHandler<HotelDetailActivity>(this);
 
     @Override
     protected void requestData() {
@@ -743,6 +746,10 @@ public class HotelDetailActivity extends BaseAppActivity {
             tabHost.clearAllTabs();
             tabHost = null;
         }
+        if (myHandle != null) {
+            myHandle.removeCallbacksAndMessages(null);
+            myHandle = null;
+        }
     }
 
     @Override
@@ -847,6 +854,18 @@ public class HotelDetailActivity extends BaseAppActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected boolean isCheckException(ResponseData request, ResponseData response) {
+        if (response != null && response.data != null) {
+            if (HotelErrorDef.ERR_HOTEL_HOTEL_OFF.equals(response.code)) { //006000 酒店下架
+                CustomToast.show(response.data.toString(), CustomToast.LENGTH_LONG);
+                myHandle.sendEmptyMessageDelayed(WeakReferenceHandler.CODE_FINISH, 2000);
+                return true;
+            }
+        }
+        return super.isCheckException(request, response);
     }
 
     private class MyRecommendRoomListAdapter extends BaseAdapter {
