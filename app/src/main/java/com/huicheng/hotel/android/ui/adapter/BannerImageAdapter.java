@@ -66,7 +66,7 @@ public class BannerImageAdapter extends PagerAdapter {
                 if (!StringUtil.isEmpty(intentUrl)) {
                     Intent intent = new Intent(context, HtmlActivity.class);
                     intent.putExtra("path", intentUrl);
-                    intent.putExtra("title", bean.bnname);
+                    intent.putExtra("title", bean.activiName);
                     context.startActivity(intent);
                 }
             }
