@@ -13,4 +13,6 @@ public class PlaneBookingInfoBase {
     public List<PlaneBookingInfo_FlightInfo> flightInfo;
     public PlaneBookingInfo_PriceInfo priceInfo;
     public boolean trip;
+    public int etAccidePrice;   //意外险
+    public int etDelayPrice;    //延误险
 }

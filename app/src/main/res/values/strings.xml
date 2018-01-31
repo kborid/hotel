@@ -25,6 +25,7 @@
     <string name="RMB">¥</string>
     <string name="totalRMB">共 ¥</string>
     <string name="rmbStr"> ¥ %1$s </string>
+    <string name="rmbStr2">¥%1$d</string>
     <string name="titleCityDateStr">%1$s(%2$s)</string>
     <string name="duringDayStr">%1$d天</string>
     <string name="duringNightStr">%1$d晚</string>
@@ -230,6 +231,7 @@
     <string name="plane_single">单程</string>
     <string name="plane_double">往返</string>
     <string name="expressPrice">(邮费¥%1$d)</string>
+    <string name="passengersStr">(共%1$d人)</string>
 
     <string-array name="PlaneConditionItem">
         <item>起飞时段</item>

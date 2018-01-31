@@ -160,9 +160,11 @@
                         android:orientation="horizontal">
 
                         <CheckBox
+                            android:id="@+id/cb_accident"
                             style="@style/planeOrderAgreeCBStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="false"
                             android:textSize="@dimen/common_14sp" />
 
                         <TextView
@@ -182,12 +184,13 @@
                             android:textSize="@dimen/common_12sp" />
 
                         <TextView
+                            android:id="@+id/tv_accident_price"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="¥30"
+                            android:text="¥0"
                             android:textColor="@color/plane_mainColor"
                             android:textSize="@dimen/common_18sp"
                             android:textStyle="bold" />
@@ -200,9 +203,11 @@
                         android:orientation="horizontal">
 
                         <CheckBox
+                            android:id="@+id/cb_delay"
                             style="@style/planeOrderAgreeCBStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="false"
                             android:textSize="@dimen/common_14sp" />
 
                         <TextView
@@ -222,12 +227,13 @@
                             android:textSize="@dimen/common_12sp" />
 
                         <TextView
+                            android:id="@+id/tv_delay_price"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="¥20"
+                            android:text="¥0"
                             android:textColor="@color/plane_mainColor"
                             android:textSize="@dimen/common_18sp"
                             android:textStyle="bold" />
@@ -565,21 +571,23 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="¥19800"
+                        android:text="——"
                         android:textColor="@color/plane_mainColor"
                         android:textSize="@dimen/common_18sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_passenger"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="(共1人)"
                         android:textColor="#cccccc"
                         android:textSize="@dimen/common_12sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="(共1人)" />
                 </LinearLayout>
 
                 <TextView

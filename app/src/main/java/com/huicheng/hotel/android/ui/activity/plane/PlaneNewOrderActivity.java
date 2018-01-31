@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +33,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane;
+import com.huicheng.hotel.android.ui.custom.plane.ICustomInfoLayoutPlaneCountListener;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -70,6 +72,13 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private TextView tv_personal_invoice;
     private LinearLayout company_invoice;
 
+    private CheckBox cb_accident;
+    private TextView tv_accident_price;
+    private CheckBox cb_delay;
+    private TextView tv_delay_price;
+
+    private TextView tv_amount;
+    private TextView tv_passenger;
     private TextView tv_chooser;
     private TextView tv_submit;
 
@@ -84,6 +93,16 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
 
     private int requestTagCount = 0;
     private HashMap<Integer, Integer> mTag = new HashMap<>();
+
+    private int mTicketPrice = 0; //单人机票价格
+    private int mTotalTicketPrice = 0; //机票总价格
+    private int mAccidentPrice = 0; //单人意外险价格
+    private int mDelayPrice = 0; //单人延误险价格
+    private int mSafePrice = 0; //单人保险价格
+    private int mTotalSafePrice = 0; //保险总价格
+    private int mPassengerCount = 0; //乘机人个数
+    private int mExpressPrice = 0; //邮费价格
+    private int mAmount = 0; //最终支付价格
 
 
     @Override
@@ -125,6 +144,13 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         tv_personal_invoice = (TextView) findViewById(R.id.tv_personal_invoice);
         company_invoice = (LinearLayout) findViewById(R.id.company_invoice);
 
+        cb_accident = (CheckBox) findViewById(R.id.cb_accident);
+        tv_accident_price = (TextView) findViewById(R.id.tv_accident_price);
+        cb_delay = (CheckBox) findViewById(R.id.cb_delay);
+        tv_delay_price = (TextView) findViewById(R.id.tv_delay_price);
+
+        tv_amount = (TextView) findViewById(R.id.tv_amount);
+        tv_passenger = (TextView) findViewById(R.id.tv_passenger);
         tv_chooser = (TextView) findViewById(R.id.tv_chooser);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
 
@@ -176,6 +202,8 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         go_tv_cabin.setText(PlaneCommDef.getCabinString(goVendorInfo.cabinType));
         go_tv_price.setText(String.valueOf((int) goVendorInfo.barePrice));
 
+        mTicketPrice += goVendorInfo.barePrice;
+
         // 如果往返航班，则增加返程航班信息显示
         if (PlaneOrderManager.instance.isFlightGoBack()) {
             View backPlaneOrder = LayoutInflater.from(this).inflate(R.layout.layout_plane_order_item, null);
@@ -198,6 +226,8 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             PlaneTicketInfoBean.VendorInfo backVendorInfo = PlaneOrderManager.instance.getBackVendorInfo();
             back_tv_cabin.setText(PlaneCommDef.getCabinString(backVendorInfo.cabinType));
             back_tv_price.setText(String.valueOf((int) backVendorInfo.barePrice));
+
+            mTicketPrice += backVendorInfo.barePrice;
         }
 
         //initialize
@@ -206,13 +236,42 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         tv_invoice_tips.setVisibility(View.VISIBLE);
         tv_invoice_type.setVisibility(View.GONE);
         invoice_lay.setVisibility(View.GONE);
+        mPassengerCount = custom_info_layout_plane.getChildCount();
+        mTotalSafePrice = calculateSafePrice(mPassengerCount);
+        calculateAmount(mPassengerCount);
     }
 
     @Override
     public void initListeners() {
         super.initListeners();
+        custom_info_layout_plane.setICustomInfoLayoutPlaneCountListener(new ICustomInfoLayoutPlaneCountListener() {
+            @Override
+            public void onCountChanged(int count) {
+                mPassengerCount = count;
+                mTotalSafePrice = calculateSafePrice(mPassengerCount);
+                calculateAmount(mPassengerCount);
+            }
+        });
         iv_customInfo_add.setOnClickListener(this);
         flight_flag_layout.setOnClickListener(this);
+        cb_accident.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mSafePrice += isChecked ? mAccidentPrice : -mAccidentPrice;
+                mSafePrice = mSafePrice < 0 ? 0 : mSafePrice;
+                mTotalSafePrice = calculateSafePrice(mPassengerCount);
+                calculateAmount(mPassengerCount);
+            }
+        });
+        cb_delay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mSafePrice += isChecked ? mDelayPrice : -mDelayPrice;
+                mSafePrice = mSafePrice < 0 ? 0 : mSafePrice;
+                mTotalSafePrice = calculateSafePrice(mPassengerCount);
+                calculateAmount(mPassengerCount);
+            }
+        });
         btn_invoice_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -223,6 +282,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                     tv_invoice_tips.setVisibility(View.VISIBLE);
                     invoice_lay.setVisibility(View.GONE);
                 }
+                calculateAmount(mPassengerCount);
             }
         });
         tv_chooser.setOnClickListener(this);
@@ -257,11 +317,32 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
     }
 
+    private int calculateSafePrice(int passengers) {
+        return passengers * mSafePrice;
+    }
+
+    private int calculateAmount(int passengers) {
+        LogUtil.i(TAG, "calculateAmount passengers = " + passengers);
+        mTotalTicketPrice = passengers * mTicketPrice;
+        mAmount = mTotalTicketPrice + mTotalSafePrice + (btn_invoice_switch.isChecked() ? mExpressPrice : 0);
+        tv_amount.setText(String.format(getString(R.string.RMB) + "%1$d", mAmount));
+        tv_passenger.setText(String.format(getString(R.string.passengersStr), passengers));
+        return mAmount;
+    }
+
     private void refreshScreenInfo() {
-        if (goFlightBookingInfo != null) {
+        if (null != goFlightBookingInfo) {
+
+            //保险信息
+            mAccidentPrice = goFlightBookingInfo.etAccidePrice;
+            tv_accident_price.setText(String.format(getString(R.string.rmbStr2), mAccidentPrice));
+            mDelayPrice = goFlightBookingInfo.etDelayPrice;
+            tv_delay_price.setText(String.format(getString(R.string.rmbStr2), mDelayPrice));
+
             //邮费信息
             tv_express_price.setVisibility(View.VISIBLE);
-            tv_express_price.setText(String.format(getString(R.string.expressPrice), goFlightBookingInfo.expressInfo.price));
+            mExpressPrice = goFlightBookingInfo.expressInfo.price;
+            tv_express_price.setText(String.format(getString(R.string.expressPrice), mExpressPrice));
 
             //发票类型
             JSONObject invoiceTypeJson = goFlightBookingInfo.expressInfo.invoiceType;

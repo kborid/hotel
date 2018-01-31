@@ -64,6 +64,9 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
             updateButtonStatus(getChildCount());
         }
         updateButtonStatus(getChildCount());
+        if (null != countListener) {
+            countListener.onCountChanged(getChildCount());
+        }
         return temp.size();
     }
 
@@ -94,20 +97,15 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-//        final ImageView iv_add = (ImageView) itemView.findViewById(R.id.iv_add);
         final ImageView iv_sub = (ImageView) itemView.findViewById(R.id.iv_sub);
-//        iv_add.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                addView(getNewItemView());
-//                updateButtonStatus(getChildCount());
-//            }
-//        });
         iv_sub.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 removeView(itemView);
                 updateButtonStatus(getChildCount());
+                if (null != countListener) {
+                    countListener.onCountChanged(getChildCount());
+                }
             }
         });
 
@@ -117,6 +115,9 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
     public void addNewItem() {
         addView(getNewItemView());
         updateButtonStatus(getChildCount());
+        if (null != countListener) {
+            countListener.onCountChanged(getChildCount());
+        }
     }
 
     public boolean isEditViewEmpty() {
@@ -191,8 +192,7 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
 
     private void initializeFirstLayoutItem() {
         removeAllViews();
-        addView(getNewItemView());
-        updateButtonStatus(getChildCount());
+        addNewItem();
     }
 
     private void updateButtonStatus(int count) {
@@ -203,5 +203,11 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
         } else if (count > 1) {
             getChildAt(0).findViewById(R.id.iv_sub).setEnabled(true);
         }
+    }
+
+    private ICustomInfoLayoutPlaneCountListener countListener = null;
+
+    public void setICustomInfoLayoutPlaneCountListener(ICustomInfoLayoutPlaneCountListener countListener) {
+        this.countListener = countListener;
     }
 }
