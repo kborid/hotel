@@ -38,10 +38,9 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
@@ -171,19 +170,6 @@ public class HotelAllSearchActivity extends BaseAppActivity {
                 }
             }
         });
-    }
-
-    private void setLocationInfo(String tempProvince, String tempCity, String tempSiteId) {
-        LogUtil.i(TAG, "setLocationInfo()");
-        LogUtil.i(TAG, tempProvince + ", " + tempCity + ", " + tempSiteId);
-        if (StringUtil.notEmpty(tempProvince) && StringUtil.notEmpty(tempCity) && StringUtil.notEmpty(tempSiteId)) {
-            String province = CityParseUtils.getProvinceString(tempProvince);
-            String city = CityParseUtils.getCityString(tempCity);
-            String siteId = CityParseUtils.getSiteIdString(tempSiteId);
-            SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
-            SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
-            SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
-        }
     }
 
     @Override

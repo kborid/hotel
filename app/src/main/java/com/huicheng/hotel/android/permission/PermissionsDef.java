@@ -20,8 +20,8 @@ public class PermissionsDef {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
 
             //位置权限
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
+//            Manifest.permission.ACCESS_COARSE_LOCATION,
+//            Manifest.permission.ACCESS_FINE_LOCATION,
 
             //电话权限
 //            Manifest.permission.READ_PHONE_STATE,
@@ -29,6 +29,10 @@ public class PermissionsDef {
 
             //联系人权限
 //            Manifest.permission.READ_CONTACTS,//科大讯飞需要
+    };
+    //位置权限
+    public static final String[] LOCATION_PERMISSION = new String[]{
+            Manifest.permission.ACCESS_COARSE_LOCATION,
     };
 
     //存储权限

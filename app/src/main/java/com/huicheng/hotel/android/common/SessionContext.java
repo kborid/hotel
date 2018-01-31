@@ -29,9 +29,9 @@ public class SessionContext {
 
     private static final String TAG = "SessionContext";
 
-    public static UserInfo mUser;                // 用户信息
-    private static String mTicket;               // 票据信息
-    private static AppData mAppData;          // OpenInstall数据
+    public static UserInfo mUser;                   // 用户信息
+    private static String mTicket;                  // 票据信息
+    private static AppData mAppData;                // OpenInstall数据
 
     private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
     private static List<CityAreaInfoBean> mCityAreaList = new ArrayList<>();
@@ -178,20 +178,10 @@ public class SessionContext {
     }
 
     /**
-     * 清除定位信息
-     */
-    public static void cleanLocationInfo() {
-        SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, "", false);
-        SharedPreferenceUtil.getInstance().setString(AppConst.CITY, "", false);
-        SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, "", false);
-    }
-
-    /**
      * 销毁数据
      */
     public static void destroy() {
         cleanUserInfo();
-        cleanLocationInfo();
     }
 
     /**

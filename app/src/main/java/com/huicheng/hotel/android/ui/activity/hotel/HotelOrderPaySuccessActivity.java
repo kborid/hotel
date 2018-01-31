@@ -16,16 +16,16 @@ import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
 /**
@@ -130,8 +130,7 @@ public class HotelOrderPaySuccessActivity extends BaseAppActivity {
             }
         }
         if (isPrePaySuccess && showTipsOrNot) {
-            String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-            if ("海南省".contains(province)) {
+            if ("海南省".contains(LocationInfo.instance.getProvince())) {
                 showBookingAirTicketDialog();
             }
         }

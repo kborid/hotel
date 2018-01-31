@@ -42,6 +42,7 @@ public class PermissionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.user_login_enter_in, R.anim.user_login_enter_out);
         if (getIntent() == null || !getIntent().hasExtra(EXTRA_PERMISSIONS)) {
             throw new RuntimeException("PermissionsActivity需要使用静态startActivityForResult方法启动!");
         }
@@ -151,6 +152,12 @@ public class PermissionsActivity extends AppCompatActivity {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse(PACKAGE_URL_SCHEME + getPackageName()));
         startActivity(intent);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.user_login_exit_in, R.anim.user_login_exit_out);
     }
 }
 

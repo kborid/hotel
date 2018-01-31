@@ -25,6 +25,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
@@ -355,7 +356,7 @@ public class UcRegisterActivity extends BaseAppActivity {
         b.addBody("mobile", et_phone.getText().toString());
         b.addBody("code", et_yzm.getText().toString());
         b.addBody("password", MD5.getMessageDigest(et_pwd.getText().toString().getBytes()));
-        b.addBody("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
+        b.addBody("siteid", LocationInfo.instance.getCityCode());
         b.addBody("channelid", "00"); //注册渠道：00-app, 01-web
         b.addBody("ip", "");
         b.addBody("invitermobile", et_yqm.getText().toString());

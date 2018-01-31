@@ -15,11 +15,9 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.WeatherCommDef;
-import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
-import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.DateUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.Date;
@@ -154,7 +152,7 @@ public class CustomWeatherLayout extends RelativeLayout {
             }
 
             tv_weather.setText(weather);
-            tv_loc.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+            tv_loc.setText(LocationInfo.instance.getCity());
             tv_date.setText(DateUtil.getDay("MM月dd日", timeStamp));
             iv_weather.setImageResource(weatherIconId);
             iv_weather_bg.setImageResource(weatherBgId);

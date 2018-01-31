@@ -30,6 +30,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amap.api.location.AMapLocation;
 import com.huicheng.hotel.android.BuildConfig;
+import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
@@ -38,6 +39,9 @@ import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
+import com.huicheng.hotel.android.control.LocationInfo;
+import com.huicheng.hotel.android.permission.PermissionsActivity;
+import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
@@ -77,8 +81,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     private static final int REQUEST_CODE_DATE = 0x02;
     private static final int REQUEST_CODE_QMH = 0x03;
 
-    private String mProvince, mCity, mSiteId;
-
     private static Handler myHandler = new Handler(Looper.getMainLooper());
     private AppInfoBean mAppInfoBean = null;
 
@@ -116,7 +118,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     private boolean isAdShowed = false;
     private PopupWindow mAdHaiNanPopupWindow = null;
 
-    private boolean isMyLoc = false;
     private TextView tv_curr_position;
     private AMapLocation aMapLocation = null;
 
@@ -263,10 +264,6 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日 ", endTime) + DateUtil.dateToWeek2(new Date(endTime))));
         tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
 
-        //地点信息
-        tv_city.setHint("正在定位当前城市");
-        AMapLocationControl.getInstance().startLocationOnce(this);
-
         //更新用户中心
         left_layout.updateUserInfo();
         oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
@@ -289,14 +286,24 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 }
             }, 500);
         }
+
+        //地点信息
+        tv_city.setHint("正在定位当前城市");
+        if (!LocationInfo.instance.isLocated()) {
+            if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.LOCATION_PERMISSION)) {
+                PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LOCATION_PERMISSION);
+                return;
+            }
+            AMapLocationControl.getInstance().startLocationOnce(this);
+        }
     }
 
     private void requestWeatherInfo(long timeStamp) {
         LogUtil.i(TAG, "requestWeatherInfo() timeStamp = " + timeStamp);
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("cityname", mCity);
+        b.addBody("cityname", LocationInfo.instance.getCity());
+        b.addBody("siteid", LocationInfo.instance.getCityCode());
         b.addBody("date", DateUtil.getDay("yyyyMMdd", timeStamp));
-        b.addBody("siteid", mSiteId);
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.WEATHER;
         d.flag = AppConst.WEATHER;
@@ -384,11 +391,11 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     @Override
     public void onResume() {
         super.onResume();
-        mProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-        mCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        mSiteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
-
         banner_lay.startBanner();
+        //如果已经定位且定位的不是当前位置，则显示当前定位城市；否则，不做任何处理
+        if (LocationInfo.instance.isLocated() && !LocationInfo.instance.isMyLoc()) {
+            refreshCityDisplay(LocationInfo.instance.getCity());
+        }
         //重置consider
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
         //男性女性界面初始化
@@ -402,16 +409,10 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         //第每次启动时，如果用户未登录，则显示侧滑
         if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName()) &&
                 !SessionContext.isLogin()) {
-//            myHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    drawer_layout.openDrawer(left_layout, true);
-//                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-//                }
-//            }, 450);
             sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
         }
 
+        //如果登录状态，则获取用户当前消息、状态等
         if (SessionContext.isLogin()) {
             requestMessageCount();
             requestUserMenusStatus();
@@ -421,6 +422,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
             isNeedCloseLeftDrawer = false;
             drawer_layout.closeDrawers();
         }
+
         //OpenInstall Event 分发
         dispatchOpenInstallEvent();
     }
@@ -616,11 +618,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SessionContext.cleanLocationInfo();
         left_layout.unregisterBroadReceiver();
-        SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
-        SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
-        SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
     }
 
     private void initCurrentTodayTime() {
@@ -686,7 +684,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 intent = new Intent(this, HotelListActivity.class);
                 intent.putExtra("index", 0);
                 intent.putExtra("keyword", "");
-                if (isMyLoc && null != aMapLocation && aMapLocation.getLatitude() > 0 && aMapLocation.getLongitude() > 0) {
+                if (LocationInfo.instance.isMyLoc() && null != aMapLocation && aMapLocation.getLatitude() > 0 && aMapLocation.getLongitude() > 0) {
                     intent.putExtra("landmark", tv_city.getText().toString());
                     intent.putExtra("isLandMark", true);
                     intent.putExtra("lonLat", String.format("%1$f|%2$f", aMapLocation.getLatitude(), aMapLocation.getLongitude()));
@@ -718,7 +716,12 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
             case R.id.tv_curr_position:
                 tv_city.setHint("正在获取当前位置");
                 tv_city.setText("");
-                isMyLoc = true;
+                LocationInfo.instance.setIsMyLoc(true);
+                //权限检查
+                if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.LOCATION_PERMISSION)) {
+                    PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LOCATION_PERMISSION);
+                    return;
+                }
                 AMapLocationControl.getInstance().startLocationOnce(this);
                 break;
         }
@@ -727,21 +730,39 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         }
     }
 
+    private void refreshCityDisplay(String city) {
+        String tempProvince = LocationInfo.instance.getProvince();
+        HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(tempProvince, city, "-"));
+        tv_city.setText(CityParseUtils.getCityString(city));
+        if (!isAdShowed) {
+            showHaiNanAd(tempProvince);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
+
+        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            if (resultCode == PermissionsDef.PERMISSIONS_GRANTED) {
+                //地点信息
+                tv_city.setHint("正在定位当前城市");
+                AMapLocationControl.getInstance().startLocationOnce(this);
+            } else {
+                tv_city.setHint("城市定位失败");
+            }
+        }
+
         if (Activity.RESULT_OK != resultCode) {
             return;
         }
 
         if (requestCode == REQUEST_CODE_CITY) {
             tv_city.setHint("正在定位当前城市");
-            isMyLoc = false;
+            LocationInfo.instance.setIsMyLoc(false);
             aMapLocation = null;
-            mProvince = data.getStringExtra(AppConst.PROVINCE);
-            mCity = data.getStringExtra(AppConst.CITY);
-            mSiteId = data.getStringExtra(AppConst.SITEID);
+            refreshCityDisplay(LocationInfo.instance.getCity());
             if (AMapLocationControl.getInstance().isStart()) {
                 AMapLocationControl.getInstance().stopLocation();
             }
@@ -757,16 +778,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                 tv_out_date.setText(formatDateForBigDay(DateUtil.getDay("M月d日 ", endTime) + DateUtil.dateToWeek2(new Date(endTime))));
                 tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
             }
-            mProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-            mCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-            mSiteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
         }
-        HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(mProvince, mCity, "-"));
-        tv_city.setText(CityParseUtils.getCityString(mCity));
-        if (!isAdShowed) {
-            showHaiNanAd(mProvince);
-        }
-
         requestWeatherInfo(beginTime);
     }
 
@@ -835,27 +847,22 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     public void onLocation(boolean isSuccess, AMapLocation aMapLocation) {
         LogUtil.i(TAG, "onLocation()");
         if (isSuccess && aMapLocation != null) {
-            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
-            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-            String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
-            String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
-            String siteId = String.valueOf(aMapLocation.getAdCode());
-            SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
-            SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
-            SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
-            String tmp = CityParseUtils.getCityString(city);
+            LocationInfo.instance.init(String.valueOf(aMapLocation.getLongitude()),
+                    String.valueOf(aMapLocation.getLatitude()),
+                    CityParseUtils.getProvinceString(aMapLocation.getProvince()),
+                    CityParseUtils.getProvinceString(aMapLocation.getCity()),
+                    String.valueOf(aMapLocation.getAdCode()));
+            String tmp = CityParseUtils.getCityString(LocationInfo.instance.getCity());
             LogUtil.i("\n" + aMapLocation.toString().replace("#", "\n"));
-            if (isMyLoc) {
+            if (LocationInfo.instance.isMyLoc()) {
                 this.aMapLocation = aMapLocation;
                 tmp = aMapLocation.getPoiName();
                 if (StringUtil.isEmpty(tmp)) {
                     tmp = aMapLocation.getStreet() + aMapLocation.getStreetNum();
                 }
             }
-            tv_city.setText(tmp);
-            HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(province, city, "-"));
+            refreshCityDisplay(tmp);
             requestWeatherInfo(beginTime);
-            showHaiNanAd(province);
         } else {
             tv_city.setHint("城市定位失败");
         }

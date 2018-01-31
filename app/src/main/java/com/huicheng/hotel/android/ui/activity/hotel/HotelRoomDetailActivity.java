@@ -36,6 +36,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.control.ShareControl;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
@@ -55,7 +56,6 @@ import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.BitmapUtils;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 import com.umeng.socialize.media.UMImage;
@@ -345,8 +345,7 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
 
             isSetDefaultPrePay = false;
             if (roomDetailInfoBean.showTipsOrNot) {
-                String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-                if ("海南省".contains(province)) {
+                if ("海南省".contains(LocationInfo.instance.getProvince())) {
                     isSetDefaultPrePay = true;
                     iv_qtips_active.setVisibility(View.VISIBLE);
                 }

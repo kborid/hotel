@@ -19,10 +19,9 @@ import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HouHuiYaoDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.RoomConfirmInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -88,7 +87,7 @@ public class HotelHhyOrderDetailActivity extends BaseAppActivity {
 
     @Override
     public void initParams() {
-        tv_center_title.setText(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false) + "·" + SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false));
+        tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
         super.initParams();
     }
 

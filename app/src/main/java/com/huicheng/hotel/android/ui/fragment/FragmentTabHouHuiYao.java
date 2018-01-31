@@ -20,6 +20,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HouHuiYaoInfoBean;
@@ -30,12 +31,11 @@ import com.huicheng.hotel.android.ui.custom.MyListViewWidget;
 import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
 import java.net.ConnectException;
@@ -115,12 +115,11 @@ public class FragmentTabHouHuiYao extends BaseFragment implements DataCallback, 
     }
 
     private void requestHouHuiYaoOrderList(String keyword) {
-        String cityCode = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
         String beginDate = String.valueOf(HotelOrderManager.getInstance().getBeginTime());
         String endDate = String.valueOf(HotelOrderManager.getInstance().getEndTime());
 
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("cityCode", cityCode);
+        b.addBody("cityCode", LocationInfo.instance.getCityCode());
         b.addBody("beginDate", beginDate);
         b.addBody("endDate", endDate);
         b.addBody("pageIndex", String.valueOf(0));

@@ -52,14 +52,6 @@ public class BDLocationControl {
             if (null != bdLocation) {
                 //定位成功回调信息，设置相关消息
                 mLocationClient.stop();
-//                System.out.println("bdLocation = " + bdLocation.getLocType());
-//                System.out.println("bdLocation = " + bdLocation.getLocTypeDescription());
-//                System.out.println("bdLocation = " + bdLocation.getLongitude());
-//                System.out.println("bdLocation = " + bdLocation.getLatitude());
-//                System.out.println("bdLocation = " + bdLocation.getProvince());
-//                System.out.println("bdLocation = " + bdLocation.getCity());
-//                System.out.println("bdLocation = " + bdLocation.getAddrStr());
-//                System.out.println("bdLocation = " + bdLocation.getCityCode());
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 LogUtil.e(TAG, "location Error");

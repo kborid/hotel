@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.prj.sdk.algo.Algorithm3DES;
 import com.prj.sdk.algo.AlgorithmData;
 import com.prj.sdk.algo.Base64;
@@ -16,7 +17,6 @@ import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.constants.InfoType;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
 import java.util.HashMap;
@@ -99,7 +99,7 @@ public class RequestBeanBuilder {
         head.put("appid", AppConst.APPID);
         head.put("sign", sign());
         head.put("version", AppConst.VERSION);
-        head.put("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
+        head.put("siteid", LocationInfo.instance.getCityCode());
         head.put("appversion", BuildConfig.VERSION_NAME);
 
         return new Gson().toJson(json);
