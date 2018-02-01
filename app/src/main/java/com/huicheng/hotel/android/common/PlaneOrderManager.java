@@ -23,14 +23,13 @@ public enum PlaneOrderManager {
     private long goOffDate = 0;
     private long backOffDate = 0;
 
+    //航班机票信息
     private PlaneFlightInfoBean goFlightInfo;
     private PlaneTicketInfoBean goTicketInfo;
     private PlaneTicketInfoBean.VendorInfo goVendorInfo;
-
     private PlaneFlightInfoBean backFlightInfo;
     private PlaneTicketInfoBean backTicketInfo;
     private PlaneTicketInfoBean.VendorInfo backVendorInfo;
-
 
     public int getFlightType() {
         return flightType;

@@ -17,7 +17,7 @@
                                   \n－ “房型＋服务”订房模式，效率倍增
     </string>
 
-
+    <string name="birthdayStr">%1$d-%2$02d-%3$02d</string>
     <string name="yuan">元</string>
     <string name="replace_yuan">%1$d 元</string>
     <string name="lxb_util">%1$d 元</string>
@@ -259,6 +259,11 @@
         <item>身份证</item>
         <item>护照</item>
         <item>其他</item>
+    </string-array>
+
+    <string-array name="sex">
+        <item>男</item>
+        <item>女</item>
     </string-array>
 
     <!--debug info-->

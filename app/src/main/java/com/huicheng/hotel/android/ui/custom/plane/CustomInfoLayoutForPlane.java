@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.custom.plane;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -7,19 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.requestbuilder.bean.InPersonalInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlanePassengerInfoBean;
+import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
-import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -28,6 +32,8 @@ import java.util.List;
  */
 
 public class CustomInfoLayoutForPlane extends LinearLayout {
+    private static final int SEX_FEMALE = 0;
+    private static final int SEX_MALE = 1;
     private Context context;
 
     public CustomInfoLayoutForPlane(Context context) {
@@ -49,18 +55,45 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
         initializeFirstLayoutItem();
     }
 
-    public int setPersonInfos(String json) {
-        List<InPersonalInfoBean> temp = JSON.parseArray(json, InPersonalInfoBean.class);
+    public int setPersonInfo(String json) {
+        final List<PlanePassengerInfoBean> temp = JSON.parseArray(json, PlanePassengerInfoBean.class);
         removeAllViews();
         for (int i = 0; i < temp.size(); i++) {
-            View customChildView = getNewItemView();
-            EditText et_last = (EditText) customChildView.findViewById(R.id.et_last);
-            EditText et_first = (EditText) customChildView.findViewById(R.id.et_first);
-            EditText et_phone = (EditText) customChildView.findViewById(R.id.et_phone);
-            et_last.setText(temp.get(i).lastName);
-            et_first.setText(temp.get(i).firstName);
-            et_phone.setText(temp.get(i).phone);
-            addView(customChildView, i);
+            final View itemView = getNewItemView();
+            final EditText ed_custom_name = (EditText) itemView.findViewById(R.id.ed_custom_name);
+            final Spinner spinner_cardType = (Spinner) itemView.findViewById(R.id.spinner_cardType);
+            final EditText et_card_number = (EditText) itemView.findViewById(R.id.et_card_number);
+            final TextView tv_birthday = (TextView) itemView.findViewById(R.id.tv_birthday);
+            final Spinner spinner_sex = (Spinner) itemView.findViewById(R.id.spinner_sex);
+            ed_custom_name.setText(temp.get(i).name);
+            final int finalI = i;
+            spinner_cardType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position != 0) {
+                        itemView.findViewById(R.id.line_birthday).setVisibility(VISIBLE);
+                        itemView.findViewById(R.id.row_birthday).setVisibility(VISIBLE);
+                        tv_birthday.setText(temp.get(finalI).birthday);
+                        itemView.findViewById(R.id.line_sex).setVisibility(VISIBLE);
+                        itemView.findViewById(R.id.row_sex).setVisibility(VISIBLE);
+                    } else {
+                        itemView.findViewById(R.id.line_birthday).setVisibility(GONE);
+                        itemView.findViewById(R.id.row_birthday).setVisibility(GONE);
+                        tv_birthday.setText("");
+                        itemView.findViewById(R.id.line_sex).setVisibility(GONE);
+                        itemView.findViewById(R.id.row_sex).setVisibility(GONE);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+            spinner_cardType.setSelection(convert2IntCartType(temp.get(i).cardType));
+            et_card_number.setText(temp.get(i).cardNo);
+            spinner_sex.setSelection(convertValue2SexSpinnerSelection(temp.get(i).sex));
+
+            addView(itemView, i);
             updateButtonStatus(getChildCount());
         }
         updateButtonStatus(getChildCount());
@@ -70,26 +103,69 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
         return temp.size();
     }
 
+    private int convert2IntCartType(String type) {
+        int typeInt = 0;
+        switch (type) {
+            case "NI":
+                typeInt = 1;
+                break;
+            case "PP":
+                typeInt = 0;
+                break;
+            case "ID":
+                typeInt = 2;
+                break;
+        }
+        return typeInt;
+    }
+
+    private String convert2StringCartType(int type) {
+        String typeString = "PP";
+        switch (type) {
+            case 0:
+                typeString = "PP";
+                break;
+            case 1:
+                typeString = "NI";
+                break;
+            case 2:
+                typeString = "ID";
+                break;
+        }
+        return typeString;
+    }
+
+    private int convertSexSpinnerSelection2Value(int position) {
+        LogUtil.i("convertSexSpinnerSelection2Value() position = " + position);
+        return position == 0 ? SEX_MALE : SEX_FEMALE;
+    }
+
+    private int convertValue2SexSpinnerSelection(int sex) {
+        LogUtil.i("convertValue2SexSpinnerSelection() sex = " + sex);
+        return sex == SEX_MALE ? 0 : 1;
+    }
+
     private View getNewItemView() {
         final View itemView = LayoutInflater.from(context).inflate(R.layout.layout_plane_custominfo_item, null);
-        final EditText ed_custom_name = (EditText) itemView.findViewById(R.id.ed_custom_name);
-        final EditText et_card_number = (EditText) itemView.findViewById(R.id.et_card_number);
-        final Spinner spinner_card_type = (Spinner) itemView.findViewById(R.id.spinner_card_type);
-        // 建立Adapter并且绑定数据源
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.layout_plane_custominfo_item_cardtype_item, context.getResources().getStringArray(R.array.cardType));
-        adapter.setDropDownViewResource(R.layout.layout_plane_custominfo_item_cardtype_item);
-        spinner_card_type.setAdapter(adapter);
-        spinner_card_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final Spinner spinner_cardType = (Spinner) itemView.findViewById(R.id.spinner_cardType);
+        ArrayAdapter<String> adapterCardType = new ArrayAdapter<>(context, R.layout.layout_plane_custominfo_item_cardtype_item, context.getResources().getStringArray(R.array.cardType));
+        adapterCardType.setDropDownViewResource(R.layout.layout_plane_custominfo_item_cardtype_item);
+        spinner_cardType.setAdapter(adapterCardType);
+        spinner_cardType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    et_card_number.setHint("请输入证件号码");
-                    itemView.findViewById(R.id.line_birthday_for_hz).setVisibility(GONE);
-                    itemView.findViewById(R.id.row_birthday_for_hz).setVisibility(GONE);
+                    ((EditText) itemView.findViewById(R.id.et_card_number)).setHint("请输入证件号码");
+                    itemView.findViewById(R.id.line_birthday).setVisibility(GONE);
+                    itemView.findViewById(R.id.row_birthday).setVisibility(GONE);
+                    itemView.findViewById(R.id.line_sex).setVisibility(GONE);
+                    itemView.findViewById(R.id.row_sex).setVisibility(GONE);
                 } else {
-                    et_card_number.setHint("必须和乘机人一致");
-                    itemView.findViewById(R.id.line_birthday_for_hz).setVisibility(VISIBLE);
-                    itemView.findViewById(R.id.row_birthday_for_hz).setVisibility(VISIBLE);
+                    ((EditText) itemView.findViewById(R.id.et_card_number)).setHint("必须和乘机人一致");
+                    itemView.findViewById(R.id.line_birthday).setVisibility(VISIBLE);
+                    itemView.findViewById(R.id.row_birthday).setVisibility(VISIBLE);
+                    itemView.findViewById(R.id.line_sex).setVisibility(VISIBLE);
+                    itemView.findViewById(R.id.row_sex).setVisibility(VISIBLE);
                 }
             }
 
@@ -97,6 +173,42 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        final TextView tv_birthday = (TextView) itemView.findViewById(R.id.tv_birthday);
+        tv_birthday.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int year, month, day;
+                Calendar calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH) + 1;
+                day = calendar.get(Calendar.DATE);
+                LogUtil.i("current year = " + year + ", month = " + month + ", day = " + day);
+                String birthday = tv_birthday.getText().toString();
+                if (StringUtil.notEmpty(birthday)) {
+                    LogUtil.i("not empty birthday = " + birthday);
+                    calendar = DateUtil.str2Calendar(birthday, "yyyy-MM-dd");
+                    if (null != calendar) {
+                        year = calendar.get(Calendar.YEAR);
+                        month = calendar.get(Calendar.MONTH) + 1;
+                        day = calendar.get(Calendar.DATE);
+                    }
+                    LogUtil.i("not empty year = " + year + ", month = " + month + ", day = " + day);
+                }
+
+                new DatePickerDialog(context, R.style.MyMaterialDialog,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                LogUtil.i("year = " + year + ", month = " + month + ", day = " + dayOfMonth);
+                                tv_birthday.setText(String.format(context.getString(R.string.birthdayStr), year, month + 1, dayOfMonth));
+                            }
+                        }, year, month - 1, day).show();
+            }
+        });
+        final Spinner spinner_sex = (Spinner) itemView.findViewById(R.id.spinner_sex);
+        ArrayAdapter<String> adapterSex = new ArrayAdapter<>(context, R.layout.layout_plane_custominfo_item_cardtype_item, context.getResources().getStringArray(R.array.sex));
+        adapterSex.setDropDownViewResource(R.layout.layout_plane_custominfo_item_cardtype_item);
+        spinner_sex.setAdapter(adapterSex);
         final ImageView iv_sub = (ImageView) itemView.findViewById(R.id.iv_sub);
         iv_sub.setOnClickListener(new OnClickListener() {
             @Override
@@ -120,74 +232,27 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
         }
     }
 
-    public boolean isEditViewEmpty() {
+    public String getCustomInfoJsonString(int safeType) {
+        List<PlanePassengerInfoBean> temp = new ArrayList<>();
         for (int i = 0; i < getChildCount(); i++) {
-            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
-            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
-            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
-            if (StringUtil.isEmpty(et_last.getText().toString()) || StringUtil.isEmpty(et_first.getText().toString()) || StringUtil.isEmpty(et_phone.getText().toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
+            final EditText ed_custom_name = (EditText) getChildAt(i).findViewById(R.id.ed_custom_name);
+            final Spinner spinner_cardType = (Spinner) getChildAt(i).findViewById(R.id.spinner_cardType);
+            final EditText et_card_number = (EditText) getChildAt(i).findViewById(R.id.et_card_number);
+            final TextView tv_birthday = (TextView) getChildAt(i).findViewById(R.id.tv_birthday);
+            final Spinner spinner_sex = (Spinner) getChildAt(i).findViewById(R.id.spinner_sex);
 
-    public boolean isValidPhoneNumber() {
-        for (int i = 0; i < getChildCount(); i++) {
-//            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
-//            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
-            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
-            if (!Utils.isMobile(et_phone.getText().toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
+            PlanePassengerInfoBean bean = new PlanePassengerInfoBean(
+                    ed_custom_name.getText().toString(),
+                    convert2StringCartType(spinner_cardType.getSelectedItemPosition()),
+                    et_card_number.getText().toString(),
+                    tv_birthday.getText().toString(),
+                    convertSexSpinnerSelection2Value(spinner_sex.getSelectedItemPosition()),
+                    safeType
 
-    public String getCustomInfoJsonString() {
-        List<InPersonalInfoBean> temp = new ArrayList<>();
-        for (int i = 0; i < getChildCount(); i++) {
-            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
-            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
-            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
-
-            InPersonalInfoBean bean = new InPersonalInfoBean();
-            bean.lastName = et_last.getText().toString();
-            bean.firstName = et_first.getText().toString();
-            bean.phone = et_phone.getText().toString();
+            );
             temp.add(bean);
         }
         return JSON.toJSON(temp).toString();
-    }
-
-    public String getCustomUserNames() {
-        String nameStr = "";
-        for (int i = 0; i < getChildCount(); i++) {
-            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
-            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
-//            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
-
-            nameStr += (et_last.getText().toString() + et_first.getText().toString());
-            if (i < getChildCount() - 1) {
-                nameStr += "|";
-            }
-        }
-        return nameStr;
-    }
-
-    public String getCustomUserPhones() {
-        String phoneStr = "";
-        for (int i = 0; i < getChildCount(); i++) {
-//            EditText et_last = (EditText) getChildAt(i).findViewById(R.id.et_last);
-//            EditText et_first = (EditText) getChildAt(i).findViewById(R.id.et_first);
-            EditText et_phone = (EditText) getChildAt(i).findViewById(R.id.et_phone);
-
-            phoneStr += et_phone.getText().toString();
-            if (i < getChildCount() - 1) {
-                phoneStr += "|";
-            }
-        }
-        return phoneStr;
     }
 
     private void initializeFirstLayoutItem() {

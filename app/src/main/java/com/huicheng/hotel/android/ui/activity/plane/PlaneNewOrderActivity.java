@@ -28,7 +28,7 @@ import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
-import com.huicheng.hotel.android.requestbuilder.bean.PlanePassengerInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneInvoiceTaxInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
@@ -89,19 +89,19 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private PlaneBookingInfo backFlightBookingInfo = null;
 
     private List<PlaneBookingInfo> mBkInfo = new ArrayList<>();
-    private List<PlanePassengerInfoBean> mPassengers = new ArrayList<>();
+    private PlaneInvoiceTaxInfoBean invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean();
 
     private int requestTagCount = 0;
     private HashMap<Integer, Integer> mTag = new HashMap<>();
 
-    private int mTicketPrice = 0; //单人机票价格
-    private int mTotalTicketPrice = 0; //机票总价格
-    private int mAccidentPrice = 0; //单人意外险价格
-    private int mDelayPrice = 0; //单人延误险价格
-    private int mSafePrice = 0; //单人保险价格
-    private int mTotalSafePrice = 0; //保险总价格
-    private int mPassengerCount = 0; //乘机人个数
+    private int mAccidentPrice = 0; //意外险价格
+    private int mDelayPrice = 0; //延误险价格
     private int mExpressPrice = 0; //邮费价格
+
+    private int mTicketPrice = 0; //单人机票价格
+    private int safeType = PlaneCommDef.SAFE_BUY_NON;
+    private int mSafePrice = 0; //保险价格
+    private int mPassengerCount = 0; //乘机人个数
     private int mAmount = 0; //最终支付价格
 
 
@@ -114,7 +114,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     protected void requestData() {
         super.requestData();
         mBkInfo.clear();
-        mPassengers.clear();
         requestTagCount = 0;
         mTag.clear();
         requestTicketBookingInfo(TYPE_GO, goFlightDetailInfo);
@@ -237,7 +236,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         tv_invoice_type.setVisibility(View.GONE);
         invoice_lay.setVisibility(View.GONE);
         mPassengerCount = custom_info_layout_plane.getChildCount();
-        mTotalSafePrice = calculateSafePrice(mPassengerCount);
         calculateAmount(mPassengerCount);
     }
 
@@ -248,7 +246,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             @Override
             public void onCountChanged(int count) {
                 mPassengerCount = count;
-                mTotalSafePrice = calculateSafePrice(mPassengerCount);
                 calculateAmount(mPassengerCount);
             }
         });
@@ -257,18 +254,12 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         cb_accident.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSafePrice += isChecked ? mAccidentPrice : -mAccidentPrice;
-                mSafePrice = mSafePrice < 0 ? 0 : mSafePrice;
-                mTotalSafePrice = calculateSafePrice(mPassengerCount);
                 calculateAmount(mPassengerCount);
             }
         });
         cb_delay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSafePrice += isChecked ? mDelayPrice : -mDelayPrice;
-                mSafePrice = mSafePrice < 0 ? 0 : mSafePrice;
-                mTotalSafePrice = calculateSafePrice(mPassengerCount);
                 calculateAmount(mPassengerCount);
             }
         });
@@ -309,7 +300,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 break;
             }
             case R.id.tv_submit: {
-//                requestSubmitOrderInfo();
+                requestSubmitOrderInfo();
                 Intent intent = new Intent(this, PlaneOrderPayActivity.class);
                 startActivity(intent);
                 break;
@@ -317,14 +308,32 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
     }
 
-    private int calculateSafePrice(int passengers) {
-        return passengers * mSafePrice;
+    private int calculateSafePriceSingle() {
+        int safePrice = 0;
+        //如果是往返航班，则一个人需要支付两份保险的价钱
+        int params = (flightType == PlaneCommDef.FLIGHT_GOBACK) ? 2 : 1;
+        if (cb_delay.isChecked() && cb_accident.isChecked()) {
+            safeType = PlaneCommDef.SAFE_BUY_ALL;
+            safePrice = mDelayPrice + mAccidentPrice;
+        } else if (cb_delay.isChecked()) {
+            safeType = PlaneCommDef.SAFE_BUY_DEL;
+            safePrice = mDelayPrice;
+        } else if (cb_accident.isChecked()) {
+            safeType = PlaneCommDef.SAFE_BUY_YII;
+            safePrice = mAccidentPrice;
+        } else {
+            safeType = PlaneCommDef.SAFE_BUY_NON;
+            safePrice = 0;
+        }
+        return safePrice * params;
     }
 
     private int calculateAmount(int passengers) {
         LogUtil.i(TAG, "calculateAmount passengers = " + passengers);
-        mTotalTicketPrice = passengers * mTicketPrice;
-        mAmount = mTotalTicketPrice + mTotalSafePrice + (btn_invoice_switch.isChecked() ? mExpressPrice : 0);
+        int totalTicketPrice = passengers * mTicketPrice;
+        mSafePrice = calculateSafePriceSingle();
+        int totalSafePrice = passengers * mSafePrice;
+        mAmount = totalTicketPrice + totalSafePrice + (btn_invoice_switch.isChecked() ? mExpressPrice : 0);
         tv_amount.setText(String.format(getString(R.string.RMB) + "%1$d", mAmount));
         tv_passenger.setText(String.format(getString(R.string.passengersStr), passengers));
         return mAmount;
@@ -332,7 +341,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
 
     private void refreshScreenInfo() {
         if (null != goFlightBookingInfo) {
-
             //保险信息
             mAccidentPrice = goFlightBookingInfo.etAccidePrice;
             tv_accident_price.setText(String.format(getString(R.string.rmbStr2), mAccidentPrice));
@@ -342,63 +350,86 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             //邮费信息
             tv_express_price.setVisibility(View.VISIBLE);
             mExpressPrice = goFlightBookingInfo.expressInfo.price;
+            if (null != backFlightBookingInfo) {
+                int tmpPrice = backFlightBookingInfo.expressInfo.price;
+                mExpressPrice = (mExpressPrice >= tmpPrice) ? mExpressPrice : tmpPrice; //如果往返航班，则取邮费最大值
+            }
             tv_express_price.setText(String.format(getString(R.string.expressPrice), mExpressPrice));
 
             //发票类型
-            JSONObject invoiceTypeJson = goFlightBookingInfo.expressInfo.invoiceType;
-            if (invoiceTypeJson != null) {
+            boolean isShowInvoiceHeader = false;
+            JSONObject goInvoiceTypeJson = goFlightBookingInfo.expressInfo.invoiceType;
+            //如果单程，backInvoiceTypeJson等于goInvoiceTypeJson
+            //如果往返，backInvoiceTypeJson等于backFlightBookingInfo.expressInfo.invoiceType
+            JSONObject backInvoiceTypeJson = (null != backFlightBookingInfo) ? backFlightBookingInfo.expressInfo.invoiceType : goFlightBookingInfo.expressInfo.invoiceType;
+            if (goInvoiceTypeJson != null && backInvoiceTypeJson != null) {
                 tv_invoice_type.setVisibility(View.VISIBLE);
-                if (invoiceTypeJson.containsKey("2")) {
-                    tv_invoice_type.setText(invoiceTypeJson.getString("2"));
+                if (goInvoiceTypeJson.containsKey("2") && backInvoiceTypeJson.containsKey("2")) { //如果同时包含2，则按照行程单差额发票开票
+                    tv_invoice_type.setText(goInvoiceTypeJson.getString("2"));
                     tr_invoice_header.setVisibility(View.GONE);
                     line_invoice_header.setVisibility(View.GONE);
-                } else if (invoiceTypeJson.containsKey("1")) {
-                    tv_invoice_type.setText(invoiceTypeJson.getString("1"));
+                } else if (goInvoiceTypeJson.containsKey("1") || backInvoiceTypeJson.containsKey("1")) { //如果至少一个包含1，则按照全额发票开票
+                    isShowInvoiceHeader = true;
+                    String invoiceText = (goInvoiceTypeJson.containsKey("1") ? goInvoiceTypeJson.getString("1") : "");
+                    invoiceText = (backInvoiceTypeJson.containsKey("1") ? backInvoiceTypeJson.getString("1") : invoiceText);
+                    tv_invoice_type.setText(invoiceText);
                     tr_invoice_header.setVisibility(View.VISIBLE);
                     line_invoice_header.setVisibility(View.VISIBLE);
-                } else {
-                    LogUtil.i(TAG, "未定义类型：" + invoiceTypeJson.toString());
-                    tv_invoice_type.setText(invoiceTypeJson.toString());
+                } else { //如果都不包含，则暂时不显示
+                    LogUtil.i(TAG, "未定义类型：" + goInvoiceTypeJson.toString());
+                    tv_invoice_type.setText(goInvoiceTypeJson.toString());
                     tr_invoice_header.setVisibility(View.GONE);
                     line_invoice_header.setVisibility(View.GONE);
                 }
             }
 
             //发票支持抬头信息
-            rg_invoice.removeAllViews();
-            JSONObject invoiceHeaderJson = goFlightBookingInfo.expressInfo.receiverType;
-            if (invoiceHeaderJson != null) {
-                ArrayList<String> keyList = new ArrayList<>();
-                keyList.addAll(invoiceHeaderJson.keySet());
-                Collections.sort(keyList);
-                for (String key : keyList) {
-                    RadioButton rb = new RadioButton(this);
-                    RadioGroup.LayoutParams glp = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    glp.weight = 1;
-                    glp.setMargins(Utils.dp2px(2), Utils.dp2px(2), Utils.dp2px(2), Utils.dp2px(2));
-                    rb.setPadding(Utils.dp2px(5), Utils.dp2px(5), Utils.dp2px(5), Utils.dp2px(5));
-                    rb.setGravity(Gravity.CENTER);
-                    rb.setBackgroundDrawable(getResources().getDrawable(R.drawable.plane_invoice_type_bg_sel));
-                    rb.setButtonDrawable(null);
-                    rb.setText(invoiceHeaderJson.getString(key));
-                    rb.setTextColor(getResources().getColorStateList(R.color.plane_invoice_type_text_sel));
-                    rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                    rg_invoice.addView(rb, glp);
-                }
-                rg_invoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                        RadioButton rb = (RadioButton) findViewById(checkedId);
-                        if ("个人".equals(rb.getText().toString())) {
-                            tv_personal_invoice.setVisibility(View.VISIBLE);
-                            company_invoice.setVisibility(View.GONE);
-                        } else {
-                            tv_personal_invoice.setVisibility(View.GONE);
-                            company_invoice.setVisibility(View.VISIBLE);
+            if (isShowInvoiceHeader) {
+                rg_invoice.removeAllViews();
+                JSONObject goInvoiceHeaderJson = goFlightBookingInfo.expressInfo.receiverType;
+                //如果单程，backInvoiceHeaderJson等于goInvoiceHeaderJson
+                //如果往返，backInvoiceHeaderJson等于backFlightBookingInfo.expressInfo.receiverType
+                JSONObject backInvoiceHeaderJson = (null != backFlightBookingInfo) ? backFlightBookingInfo.expressInfo.receiverType : goInvoiceHeaderJson;
+                if (goInvoiceHeaderJson != null && backInvoiceHeaderJson != null) {
+                    ArrayList<String> keyList = new ArrayList<>();
+                    //获取往返航班同时包含的receiverType
+                    for (String goKey : goInvoiceHeaderJson.keySet()) {
+                        for (String backKey : backInvoiceHeaderJson.keySet()) {
+                            if (goKey.equals(backKey)) {
+                                keyList.add(goKey);
+                            }
                         }
                     }
-                });
-                rg_invoice.check(rg_invoice.getChildAt(0).getId());
+                    Collections.sort(keyList);
+                    for (String key : keyList) {
+                        RadioButton rb = new RadioButton(this);
+                        RadioGroup.LayoutParams glp = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        glp.weight = 1;
+                        glp.setMargins(Utils.dp2px(2), Utils.dp2px(2), Utils.dp2px(2), Utils.dp2px(2));
+                        rb.setPadding(Utils.dp2px(5), Utils.dp2px(5), Utils.dp2px(5), Utils.dp2px(5));
+                        rb.setGravity(Gravity.CENTER);
+                        rb.setBackgroundDrawable(getResources().getDrawable(R.drawable.plane_invoice_type_bg_sel));
+                        rb.setButtonDrawable(null);
+                        rb.setText(goInvoiceHeaderJson.getString(key));
+                        rb.setTextColor(getResources().getColorStateList(R.color.plane_invoice_type_text_sel));
+                        rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                        rg_invoice.addView(rb, glp);
+                    }
+                    rg_invoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                            RadioButton rb = (RadioButton) findViewById(checkedId);
+                            if ("个人".equals(rb.getText().toString())) {
+                                tv_personal_invoice.setVisibility(View.VISIBLE);
+                                company_invoice.setVisibility(View.GONE);
+                            } else {
+                                tv_personal_invoice.setVisibility(View.GONE);
+                                company_invoice.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+                    rg_invoice.check(rg_invoice.getChildAt(0).getId());
+                }
             }
         }
     }
@@ -434,7 +465,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         if (!isProgressShowing()) {
             showProgressDialog(this);
         }
-
         requestID = DataLoader.getInstance().loadData(this, d);
         requestTagCount++;
     }
@@ -442,8 +472,10 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private void requestSubmitOrderInfo() {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("bKInfo", JSON.toJSONString(mBkInfo));
-        b.addBody("invoiceTax", "");
-        b.addBody("passengers", JSON.toJSONString(mPassengers));
+        b.addBody("invoiceTax", JSON.toJSONString(invoiceTaxInfoBean));
+        String passenger = custom_info_layout_plane.getCustomInfoJsonString(safeType);
+        LogUtil.i(TAG, passenger);
+        b.addBody("passengers", passenger);
 
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_NEW_ORDER;

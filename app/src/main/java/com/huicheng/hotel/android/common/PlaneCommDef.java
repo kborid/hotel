@@ -51,6 +51,12 @@ public class PlaneCommDef {
         return cabin;
     }
 
+    //自定保险购买类型
+    public static final int SAFE_BUY_NON = 0; //一个都不买
+    public static final int SAFE_BUY_YII = 1; //只买意外险
+    public static final int SAFE_BUY_DEL = 2; //只买延误险
+    public static final int SAFE_BUY_ALL = 3; //全买
+
     public static HashMap<String, String> AIR_COMPANY_CODE = new HashMap<String, String>();
     public static HashMap<String, Integer> AIR_ICON_CODE = new HashMap<String, Integer>() {
         {
