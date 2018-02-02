@@ -57,6 +57,18 @@ public class PlaneCommDef {
     public static final int SAFE_BUY_DEL = 2; //只买延误险
     public static final int SAFE_BUY_ALL = 3; //全买
 
+    //发票类型
+    public static final int INVOICE_INVALID = 0;
+    public static final int INVOICE_ALL = 1; //全额发票
+    public static final int INVOICE_XCD = 2; //行程单
+
+    //抬头类型
+    public static final int RECEIVE_INVALID = 0;
+    public static final int RECEIVE_DANWEII = 1;  //单位
+    public static final int RECEIVE_PERSONAL = 2; //个人
+    public static final int RECEIVE_BUSINESS = 3; //企业
+    public static final int RECEIVE_OFFICIAL = 4; //政府
+
     public static HashMap<String, String> AIR_COMPANY_CODE = new HashMap<String, String>();
     public static HashMap<String, Integer> AIR_ICON_CODE = new HashMap<String, Integer>() {
         {

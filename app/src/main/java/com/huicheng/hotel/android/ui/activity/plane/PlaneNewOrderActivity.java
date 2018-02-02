@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -23,6 +24,7 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneErrorDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
@@ -58,6 +60,9 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     //预订航班信息
     private LinearLayout flight_layout;
     private LinearLayout flight_flag_layout;
+    //联系人信息
+    private EditText et_contact, et_contactMob;
+    //乘机人信息
     private CustomInfoLayoutForPlane custom_info_layout_plane;
     private ImageView iv_customInfo_add;
 
@@ -68,6 +73,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private TextView tv_invoice_type;
     private TableRow tr_invoice_header;
     private View line_invoice_header;
+    private EditText et_receive_title, et_receive_number;
     private RadioGroup rg_invoice;
     private TextView tv_personal_invoice;
     private LinearLayout company_invoice;
@@ -89,7 +95,9 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private PlaneBookingInfo backFlightBookingInfo = null;
 
     private List<PlaneBookingInfo> mBkInfo = new ArrayList<>();
-    private PlaneInvoiceTaxInfoBean invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean();
+    private PlaneInvoiceTaxInfoBean invoiceTaxInfoBean = null;
+    private int invoiceType = PlaneCommDef.INVOICE_INVALID;
+    private int receiverType = PlaneCommDef.RECEIVE_INVALID;
 
     private int requestTagCount = 0;
     private HashMap<Integer, Integer> mTag = new HashMap<>();
@@ -128,6 +136,8 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         flightType = PlaneOrderManager.instance.getFlightType();
         flight_layout = (LinearLayout) findViewById(R.id.flight_layout);
         flight_flag_layout = (LinearLayout) findViewById(R.id.flight_flag_layout);
+        et_contact = (EditText) findViewById(R.id.et_contact);
+        et_contactMob = (EditText) findViewById(R.id.et_contactMob);
 
         custom_info_layout_plane = (CustomInfoLayoutForPlane) findViewById(R.id.custom_info_layout_plane);
         iv_customInfo_add = (ImageView) findViewById(R.id.iv_customInfo_add);
@@ -142,6 +152,8 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         rg_invoice = (RadioGroup) findViewById(R.id.rg_invoice);
         tv_personal_invoice = (TextView) findViewById(R.id.tv_personal_invoice);
         company_invoice = (LinearLayout) findViewById(R.id.company_invoice);
+        et_receive_title = (EditText) findViewById(R.id.et_receive_title);
+        et_receive_number = (EditText) findViewById(R.id.et_receive_number);
 
         cb_accident = (CheckBox) findViewById(R.id.cb_accident);
         tv_accident_price = (TextView) findViewById(R.id.tv_accident_price);
@@ -267,6 +279,11 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean(
+                            et_contact.getText().toString(),
+                            et_contactMob.getText().toString(),
+                            SessionContext.mUser.user.userid
+                    );
                     tv_invoice_tips.setVisibility(View.GONE);
                     invoice_lay.setVisibility(View.VISIBLE);
                 } else {
@@ -300,6 +317,19 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 break;
             }
             case R.id.tv_submit: {
+                if (btn_invoice_switch.isChecked()) {
+                    invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean(
+                            et_contact.getText().toString(),
+                            et_contactMob.getText().toString(),
+                            SessionContext.mUser.user.userid
+                    );
+                    invoiceTaxInfoBean.setInvoiceType(invoiceType);
+                    invoiceTaxInfoBean.setReceiverType(receiverType);
+                    String receiveTitle = tr_invoice_header.isShown() ? et_receive_title.getText().toString() : null;
+                    invoiceTaxInfoBean.setReceiverTitle(receiveTitle);
+                } else {
+                    invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean();
+                }
                 requestSubmitOrderInfo();
                 Intent intent = new Intent(this, PlaneOrderPayActivity.class);
                 startActivity(intent);
@@ -365,10 +395,12 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             if (goInvoiceTypeJson != null && backInvoiceTypeJson != null) {
                 tv_invoice_type.setVisibility(View.VISIBLE);
                 if (goInvoiceTypeJson.containsKey("2") && backInvoiceTypeJson.containsKey("2")) { //如果同时包含2，则按照行程单差额发票开票
+                    invoiceType = PlaneCommDef.INVOICE_XCD;
                     tv_invoice_type.setText(goInvoiceTypeJson.getString("2"));
                     tr_invoice_header.setVisibility(View.GONE);
                     line_invoice_header.setVisibility(View.GONE);
                 } else if (goInvoiceTypeJson.containsKey("1") || backInvoiceTypeJson.containsKey("1")) { //如果至少一个包含1，则按照全额发票开票
+                    invoiceType = PlaneCommDef.INVOICE_ALL;
                     isShowInvoiceHeader = true;
                     String invoiceText = (goInvoiceTypeJson.containsKey("1") ? goInvoiceTypeJson.getString("1") : "");
                     invoiceText = (backInvoiceTypeJson.containsKey("1") ? backInvoiceTypeJson.getString("1") : invoiceText);
@@ -376,6 +408,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                     tr_invoice_header.setVisibility(View.VISIBLE);
                     line_invoice_header.setVisibility(View.VISIBLE);
                 } else { //如果都不包含，则暂时不显示
+                    invoiceType = PlaneCommDef.INVOICE_INVALID;
                     LogUtil.i(TAG, "未定义类型：" + goInvoiceTypeJson.toString());
                     tv_invoice_type.setText(goInvoiceTypeJson.toString());
                     tr_invoice_header.setVisibility(View.GONE);
@@ -410,6 +443,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                         rb.setGravity(Gravity.CENTER);
                         rb.setBackgroundDrawable(getResources().getDrawable(R.drawable.plane_invoice_type_bg_sel));
                         rb.setButtonDrawable(null);
+                        rb.setTag(key);
                         rb.setText(goInvoiceHeaderJson.getString(key));
                         rb.setTextColor(getResources().getColorStateList(R.color.plane_invoice_type_text_sel));
                         rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
@@ -419,7 +453,11 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                         @Override
                         public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                             RadioButton rb = (RadioButton) findViewById(checkedId);
-                            if ("个人".equals(rb.getText().toString())) {
+                            receiverType = Integer.valueOf((String) rb.getTag());
+                            if (PlaneCommDef.RECEIVE_DANWEII == receiverType) {
+                                receiverType = PlaneCommDef.RECEIVE_BUSINESS;
+                            }
+                            if (PlaneCommDef.RECEIVE_PERSONAL == receiverType) {
                                 tv_personal_invoice.setVisibility(View.VISIBLE);
                                 company_invoice.setVisibility(View.GONE);
                             } else {
@@ -472,18 +510,20 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private void requestSubmitOrderInfo() {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("bKInfo", JSON.toJSONString(mBkInfo));
-        b.addBody("invoiceTax", JSON.toJSONString(invoiceTaxInfoBean));
+        String invoiceTax = JSON.toJSONString(invoiceTaxInfoBean);
+        LogUtil.i(TAG, invoiceTax);
+        b.addBody("invoiceTax", invoiceTax);
         String passenger = custom_info_layout_plane.getCustomInfoJsonString(safeType);
         LogUtil.i(TAG, passenger);
         b.addBody("passengers", passenger);
 
-        ResponseData d = b.syncRequest(b);
-        d.flag = AppConst.PLANE_NEW_ORDER;
-        d.path = NetURL.PLANE_NEW_ORDER;
-        if (!isProgressShowing()) {
-            showProgressDialog(this);
-        }
-        requestID = DataLoader.getInstance().loadData(this, d);
+//        ResponseData d = b.syncRequest(b);
+//        d.flag = AppConst.PLANE_NEW_ORDER;
+//        d.path = NetURL.PLANE_NEW_ORDER;
+//        if (!isProgressShowing()) {
+//            showProgressDialog(this);
+//        }
+//        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     @Override

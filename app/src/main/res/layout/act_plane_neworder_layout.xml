@@ -80,6 +80,7 @@
                             android:textSize="@dimen/common_14sp" />
 
                         <EditText
+                            android:id="@+id/et_contact"
                             android:layout_width="match_parent"
                             android:layout_height="44dp"
                             android:layout_weight="1"
@@ -108,7 +109,7 @@
                             android:textSize="@dimen/common_14sp" />
 
                         <EditText
-                            android:id="@+id/et_phone"
+                            android:id="@+id/et_contactMob"
                             android:layout_width="match_parent"
                             android:layout_height="44dp"
                             android:layout_weight="1"
@@ -382,6 +383,7 @@
                                         android:visibility="gone">
 
                                         <EditText
+                                            android:id="@+id/et_receive_title"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:background="@null"
@@ -398,6 +400,7 @@
                                             android:background="#e2e2e2" />
 
                                         <EditText
+                                            android:id="@+id/et_receive_number"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:background="@null"

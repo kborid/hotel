@@ -1,5 +1,7 @@
 package com.huicheng.hotel.android.requestbuilder.bean;
 
+import com.huicheng.hotel.android.common.PlaneCommDef;
+
 /**
  * @author kborid
  * @date 2018/2/1 0001.
@@ -19,6 +21,17 @@ public class PlaneInvoiceTaxInfoBean {
     private String sjr;                 //发票邮寄收件人
     private String sjrPhone;            //发票邮寄收件人联系电话
     private String userId;              //当前登陆用户ID
+
+    public PlaneInvoiceTaxInfoBean() {
+        this.invoiceType = PlaneCommDef.INVOICE_INVALID;
+    }
+
+    public PlaneInvoiceTaxInfoBean(String contact, String contactMob, String userId) {
+        this.contact = contact;
+        this.contactMob = contactMob;
+        this.contactPreNum = "86";
+        this.userId = userId;
+    }
 
     public String getAddress() {
         return address;
