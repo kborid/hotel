@@ -377,7 +377,7 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
     public void onLocation(boolean isSuccess, AMapLocation aMapLocation) {
         LogUtil.i(TAG, "onLocation()");
         if (isSuccess && null != aMapLocation) {
-            LocationInfo.instance.init(String.valueOf(aMapLocation.getLongitude()),
+            LocationInfo.instance.setInfo(String.valueOf(aMapLocation.getLongitude()),
                     String.valueOf(aMapLocation.getLatitude()),
                     CityParseUtils.getProvinceString(aMapLocation.getProvince()),
                     CityParseUtils.getProvinceString(aMapLocation.getCity()),

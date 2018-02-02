@@ -7,8 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -81,7 +79,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     private static final int REQUEST_CODE_DATE = 0x02;
     private static final int REQUEST_CODE_QMH = 0x03;
 
-    private static Handler myHandler = new Handler(Looper.getMainLooper());
+    private WeakReferenceHandler<HotelMainActivity> myHandler = new WeakReferenceHandler<HotelMainActivity>(this);
     private AppInfoBean mAppInfoBean = null;
 
     private DrawerLayout drawer_layout;
@@ -120,6 +118,9 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
 
     private TextView tv_curr_position;
     private AMapLocation aMapLocation = null;
+    private boolean isRequestPermission = false;
+    private boolean hasRejectPermission = false;
+    private boolean isOnPause = false;
 
     @Override
     protected void preOnCreate() {
@@ -269,33 +270,26 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
 
         //app更新提示
-        String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
-        if (StringUtil.notEmpty(appInfo)) {
-            mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
-            myHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    String ignoreVersion = SharedPreferenceUtil.getInstance().getString(AppConst.IGNORE_UPDATE_VERSION, "", false);
-                    String versionSer = mAppInfoBean.upid.split("（")[0];
-                    String versionLoc = BuildConfig.VERSION_NAME.split("（")[0];
-                    if ((1 <= SessionContext.VersionComparison(versionSer, versionLoc)) && !mAppInfoBean.upid.equals(ignoreVersion)) {
-                        if (SessionContext.getOpenInstallAppData() == null) {
+        if (SessionContext.getOpenInstallAppData() == null) {
+            String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
+            if (StringUtil.notEmpty(appInfo)) {
+                mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
+                myHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        String ignoreVersion = SharedPreferenceUtil.getInstance().getString(AppConst.IGNORE_UPDATE_VERSION, "", false);
+                        String versionSer = mAppInfoBean.upid.split("（")[0];
+                        String versionLoc = BuildConfig.VERSION_NAME.split("（")[0];
+                        if ((1 <= SessionContext.VersionComparison(versionSer, versionLoc)) && !mAppInfoBean.upid.equals(ignoreVersion)) {
                             showUpdateDialog(mAppInfoBean);
                         }
                     }
-                }
-            }, 500);
+                }, 500);
+            }
         }
 
         //地点信息
         tv_city.setHint("正在定位当前城市");
-        if (!LocationInfo.instance.isLocated()) {
-            if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.LOCATION_PERMISSION)) {
-                PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LOCATION_PERMISSION);
-                return;
-            }
-            AMapLocationControl.getInstance().startLocationOnce(this);
-        }
     }
 
     private void requestWeatherInfo(long timeStamp) {
@@ -391,11 +385,9 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     @Override
     public void onResume() {
         super.onResume();
+        isOnPause = false;
         banner_lay.startBanner();
-        //如果已经定位且定位的不是当前位置，则显示当前定位城市；否则，不做任何处理
-        if (LocationInfo.instance.isLocated() && !LocationInfo.instance.isMyLoc()) {
-            refreshCityDisplay(LocationInfo.instance.getCity());
-        }
+
         //重置consider
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
         //男性女性界面初始化
@@ -424,10 +416,36 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         }
 
         //OpenInstall Event 分发
-        dispatchOpenInstallEvent();
+        boolean jump = dispatchOpenInstallEvent();
+
+        //如果画面跳转，则不定位，也不获取权限
+        if (!jump && !isRequestPermission && !hasRejectPermission) {
+            //如果已经定位且定位的不是当前位置，则显示当前定位城市；否则，不做任何处理
+            if (LocationInfo.instance.isLocated() && !LocationInfo.instance.isMyLoc()) {
+                refreshCityDisplay(LocationInfo.instance.getCity());
+            } else if (!LocationInfo.instance.isLocated() && StringUtil.isEmpty(tv_city.getText().toString())) {
+                myHandler.postDelayed(requestPermissionRunnable, 500);
+            }
+        }
     }
 
-    private void dispatchOpenInstallEvent() {
+    private Runnable requestPermissionRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!isOnPause) {
+                myHandler.removeCallbacksAndMessages(null);
+                if (PRJApplication.getPermissionsChecker(HotelMainActivity.this).lacksPermissions(PermissionsDef.LOCATION_PERMISSION)) {
+                    PermissionsActivity.startActivityForResult(HotelMainActivity.this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LOCATION_PERMISSION);
+                    return;
+                }
+                AMapLocationControl.getInstance().startLocationOnce(HotelMainActivity.this);
+            } else {
+                myHandler.postDelayed(requestPermissionRunnable, 500);
+            }
+        }
+    };
+
+    private boolean dispatchOpenInstallEvent() {
         LogUtil.i(TAG, "dispatchOpenInstallEvent()");
         if (SessionContext.getOpenInstallAppData() != null) {
             JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
@@ -442,6 +460,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     startActivity(intent);
                     SessionContext.setOpenInstallAppData(null);
+                    return true;
                 } else if (ShareTypeDef.SHARE_ROOM.equals(channel)) {
                     long beginDate = Long.valueOf(mJson.getString("beginDate"));
                     long endDate = Long.valueOf(mJson.getString("endDate"));
@@ -453,21 +472,27 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
                     intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
                     startActivity(intent);
                     SessionContext.setOpenInstallAppData(null);
+                    return true;
                 } else if (ShareTypeDef.SHARE_FREE.equals(channel)) {
                     Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
                     startActivity(intent);
                     SessionContext.setOpenInstallAppData(null);
+                    return true;
                 } else if (ShareTypeDef.SHARE_TIE.equals(channel)) {
                     Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
                     startActivity(intent);
                     SessionContext.setOpenInstallAppData(null);
+                    return true;
                 } else {
                     LogUtil.d("HotelMainActivity", "warning~~~");
+                    return false;
                 }
             }
+            return false;
         }
+        return false;
     }
 
     private void showHaiNanAdPopupWindow() {
@@ -612,6 +637,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     @Override
     public void onPause() {
         super.onPause();
+        isOnPause = true;
         banner_lay.stopBanner();
     }
 
@@ -619,6 +645,11 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     protected void onDestroy() {
         super.onDestroy();
         left_layout.unregisterBroadReceiver();
+        LocationInfo.instance.reset();
+        if (myHandler != null) {
+            myHandler.removeCallbacksAndMessages(null);
+            myHandler = null;
+        }
     }
 
     private void initCurrentTodayTime() {
@@ -745,11 +776,14 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
         LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
 
         if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            isRequestPermission = true;
             if (resultCode == PermissionsDef.PERMISSIONS_GRANTED) {
+                hasRejectPermission = false;
                 //地点信息
                 tv_city.setHint("正在定位当前城市");
                 AMapLocationControl.getInstance().startLocationOnce(this);
             } else {
+                hasRejectPermission = true;
                 tv_city.setHint("城市定位失败");
             }
         }
@@ -847,7 +881,7 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
     public void onLocation(boolean isSuccess, AMapLocation aMapLocation) {
         LogUtil.i(TAG, "onLocation()");
         if (isSuccess && aMapLocation != null) {
-            LocationInfo.instance.init(String.valueOf(aMapLocation.getLongitude()),
+            LocationInfo.instance.setInfo(String.valueOf(aMapLocation.getLongitude()),
                     String.valueOf(aMapLocation.getLatitude()),
                     CityParseUtils.getProvinceString(aMapLocation.getProvince()),
                     CityParseUtils.getProvinceString(aMapLocation.getCity()),

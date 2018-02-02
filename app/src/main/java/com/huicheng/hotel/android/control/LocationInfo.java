@@ -15,7 +15,17 @@ public enum LocationInfo {
     private String city;
     private String cityCode;
 
-    public void init(String lon, String lat, String province, String city, String cityCode) {
+    public void reset() {
+        isLocated = false;
+        isMyLoc = false;
+        lon = "";
+        lat = "";
+        province = "";
+        city = "";
+        cityCode = "";
+    }
+
+    public void setInfo(String lon, String lat, String province, String city, String cityCode) {
         this.isLocated = true;
         this.lon = lon;
         this.lat = lat;
@@ -34,11 +44,11 @@ public enum LocationInfo {
         return isLocated;
     }
 
-    public void setIsMyLoc(boolean flag){
+    public void setIsMyLoc(boolean flag) {
         this.isMyLoc = flag;
     }
 
-    public boolean isMyLoc(){
+    public boolean isMyLoc() {
         return isMyLoc;
     }
 

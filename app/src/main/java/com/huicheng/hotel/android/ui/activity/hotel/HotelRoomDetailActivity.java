@@ -812,7 +812,8 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
     @Override
     protected boolean isCheckException(ResponseData request, ResponseData response) {
         if (response != null && response.data != null) {
-            if (HotelErrorDef.ERR_HOTEL_ROOM_OFF.equals(response.code)) { //006001 房型下架
+            if (HotelErrorDef.ERR_HOTEL_ROOM_OFF.equals(response.code)              //006001 房型下架
+                    || HotelErrorDef.ERR_HOTEL_HOTEL_OFF.equals(response.code)) {   //006000 酒店下架
                 CustomToast.show(response.data.toString(), CustomToast.LENGTH_LONG);
                 myHandle.sendEmptyMessageDelayed(WeakReferenceHandler.CODE_FINISH, 2000);
                 return true;
