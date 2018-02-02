@@ -24,8 +24,8 @@ public class PermissionsDef {
 //            Manifest.permission.ACCESS_FINE_LOCATION,
 
             //电话权限
-//            Manifest.permission.READ_PHONE_STATE,
-//            Manifest.permission.CALL_PHONE,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.CALL_PHONE,
 
             //联系人权限
 //            Manifest.permission.READ_CONTACTS,//科大讯飞需要

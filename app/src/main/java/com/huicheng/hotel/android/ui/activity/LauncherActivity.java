@@ -282,6 +282,14 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
     }
 
     @Override
+    protected boolean isCheckException(ResponseData request, ResponseData response) {
+        if (request.flag == AppConst.AD_GDT_IF) {
+            return true;
+        }
+        return super.isCheckException(request, response);
+    }
+
+    @Override
     public void onNotifyError(ResponseData request, ResponseData response) {
         super.onNotifyError(request, response);
         mTag.put(request.flag, request.flag);

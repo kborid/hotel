@@ -208,6 +208,7 @@ public class Utils {
                 android_id = android.provider.Settings.System.getString(AppContext.mAppContext.getContentResolver(), "android_id");
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return android_id;
     }

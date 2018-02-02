@@ -452,20 +452,20 @@ public class HotelMainActivity extends BaseAppActivity implements LeftDrawerLayo
             if (null != mJson && mJson.containsKey("channel")) {
                 String channel = mJson.getString("channel");
                 if (ShareTypeDef.SHARE_HOTEL.equals(channel)) {
-                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
-                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    HotelOrderManager.getInstance().setBeginTime(beginDate);
-                    HotelOrderManager.getInstance().setEndTime(endDate);
+//                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
+//                    long endDate = Long.valueOf(mJson.getString("endDate"));
+                    HotelOrderManager.getInstance().setBeginTime(beginTime);
+                    HotelOrderManager.getInstance().setEndTime(endTime);
                     Intent intent = new Intent(this, HotelDetailActivity.class);
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     startActivity(intent);
                     SessionContext.setOpenInstallAppData(null);
                     return true;
                 } else if (ShareTypeDef.SHARE_ROOM.equals(channel)) {
-                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
-                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    HotelOrderManager.getInstance().setBeginTime(beginDate);
-                    HotelOrderManager.getInstance().setEndTime(endDate);
+//                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
+//                    long endDate = Long.valueOf(mJson.getString("endDate"));
+                    HotelOrderManager.getInstance().setBeginTime(beginTime);
+                    HotelOrderManager.getInstance().setEndTime(endTime);
                     Intent intent = new Intent(this, HotelRoomDetailActivity.class);
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
