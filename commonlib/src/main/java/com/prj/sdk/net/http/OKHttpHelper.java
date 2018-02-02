@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.prj.sdk.constants.InfoType;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.StringUtil;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import okhttp3.Request;
@@ -27,6 +27,10 @@ public class OKHttpHelper {
         ResponseBody mResponseBody = null;
         try {
             response = getResponse(url, httpType, header, mEntity, isForm);
+            LogUtil.i(TAG, "ReqType[" + httpType + "]:response = " + response);
+            if (null != response) {
+                LogUtil.i(TAG, response.toString());
+            }
             mResponseBody = response != null && response.isSuccessful() ? response.body() : null;
             return mResponseBody != null ? mResponseBody.bytes() : null;
         } catch (Exception e) {
@@ -55,20 +59,23 @@ public class OKHttpHelper {
                         mJson = (JSONObject) mEntity;
                     }
                     if (null != mJson) {
-                        StringBuilder params = new StringBuilder();
-                        for (String key : mJson.keySet()) {
-                            params.append(key).append("=").append(mJson.getString(key) != null ? mJson.getString(key) : "").append("&");
-                        }
-                        if (StringUtil.notEmpty(url)) {
-                            if (url.contains("?")) {
-                                if (url.endsWith("&")) {
-                                    url += params.toString();
-                                } else {
-                                    url += "&" + params.toString();
-                                }
+                        Iterator<String> it = mJson.keySet().iterator();
+                        StringBuffer sb = null;
+                        while (it.hasNext()) {
+                            String key = it.next();
+                            String value = mJson.getString(key);
+                            if (sb == null) {
+                                sb = new StringBuffer();
+                                sb.append("?");
                             } else {
-                                url += "?" + params.toString();
+                                sb.append("&");
                             }
+                            sb.append(key);
+                            sb.append("=");
+                            sb.append(value);
+                        }
+                        if (sb != null) {
+                            url += sb.toString();
                         }
                     }
                 }
