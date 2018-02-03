@@ -179,9 +179,10 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
             public void onClick(View v) {
                 int year, month, day;
                 Calendar calendar = Calendar.getInstance();
-                year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH) + 1;
                 day = calendar.get(Calendar.DATE);
+                calendar.set(Calendar.YEAR, 1990);
+                year = calendar.get(Calendar.YEAR);
                 LogUtil.i("current year = " + year + ", month = " + month + ", day = " + day);
                 String birthday = tv_birthday.getText().toString();
                 if (StringUtil.notEmpty(birthday)) {

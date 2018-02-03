@@ -117,6 +117,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     debugCompile project(path: ':commonlib', configuration: 'debug')
     releaseCompile project(path: ':commonlib', configuration: 'release')
+    debugCompile project(path: ':citypickerview', configuration: 'debug')
+    releaseCompile project(path: ':citypickerview', configuration: 'release')
     //android support library
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -64,7 +64,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class BaseAppActivity extends BaseActivity implements OnClickListener, DataCallback {
+public abstract class BaseAppActivity extends BaseActivity implements OnClickListener, DataCallback, SwipeRefreshLayout.OnRefreshListener {
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -79,6 +79,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     protected ImageView iv_back;
     protected TextView tv_right;
     protected ImageView iv_right;
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void preOnCreate() {
@@ -165,6 +166,13 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         iv_back = (ImageView) findViewById(R.id.iv_back);
         tv_right = (TextView) findViewById(R.id.tv_right);
         iv_right = (ImageView) findViewById(R.id.iv_right);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        if (null != swipeRefreshLayout){
+//            swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
+            swipeRefreshLayout.setDistanceToTriggerSync(200);
+            swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
+            swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        }
     }
 
     protected void dealIntent() {
@@ -178,14 +186,17 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     // 监听设置
     @Override
     protected void initListeners() {
-        if (iv_back != null) {
+        if (null != iv_back) {
             iv_back.setOnClickListener(this);
         }
-        if (tv_right != null) {
+        if (null != tv_right) {
             tv_right.setOnClickListener(this);
         }
-        if (iv_right != null) {
+        if (null != iv_right) {
             iv_right.setOnClickListener(this);
+        }
+        if (null != swipeRefreshLayout) {
+            swipeRefreshLayout.setOnRefreshListener(this);
         }
     }
 
@@ -245,6 +256,10 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
     }
 
     @Override
@@ -512,6 +527,9 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
+        if (null != swipeRefreshLayout){
+            swipeRefreshLayout.setRefreshing(false);
+        }
         String msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", "-1", getString(R.string.dialog_tip_null_error));
         if (null != response && null != response.data) {
             msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", response.code, response.data.toString());

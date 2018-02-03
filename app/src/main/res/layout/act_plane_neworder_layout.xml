@@ -127,7 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane
                         android:id="@+id/custom_info_layout_plane"
@@ -438,26 +438,54 @@
                                     android:orientation="vertical">
 
                                     <TextView
+                                        android:id="@+id/tv_express_tips"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="请选择邮寄地址"
+                                        android:textColorHint="#cccccc"
+                                        android:textSize="@dimen/common_12sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_express_addr"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="@string/test_short"
                                         android:textColor="#666666"
-                                        android:textSize="@dimen/common_12sp" />
+                                        android:textSize="@dimen/common_12sp"
+                                        android:visibility="gone" />
 
-                                    <TextView
+                                    <LinearLayout
+                                        android:id="@+id/express_contact_lay"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
-                                        android:text="小田  12222222222"
-                                        android:textColor="#666666"
-                                        android:textSize="@dimen/common_12sp" />
+                                        android:orientation="horizontal"
+                                        android:visibility="gone">
+
+                                        <TextView
+                                            android:id="@+id/tv_express_name"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="小田"
+                                            android:textColor="#666666"
+                                            android:textSize="@dimen/common_12sp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_express_phone"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="10dp"
+                                            android:text="15682568778"
+                                            android:textColor="#666666"
+                                            android:textSize="@dimen/common_12sp" />
+                                    </LinearLayout>
                                 </LinearLayout>
 
                                 <TextView
-                                    android:id="@+id/tv_chooser"
+                                    android:id="@+id/tv_express_chooser"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginLeft="20dp"
                                     android:gravity="center_vertical"
                                     android:text="更改"
                                     android:textColor="@color/plane_mainColor"
@@ -482,6 +510,7 @@
                     android:orientation="horizontal">
 
                     <CheckBox
+                        android:id="@+id/cb_agreement_plane"
                         style="@style/planeOrderAgreeCBStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -514,6 +543,7 @@
                     android:orientation="horizontal">
 
                     <CheckBox
+                        android:id="@+id/cb_agreement_abc"
                         style="@style/planeOrderAgreeCBStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

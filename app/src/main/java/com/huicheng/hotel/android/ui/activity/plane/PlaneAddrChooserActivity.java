@@ -1,17 +1,18 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
-import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
+import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.ui.adapter.AddressChooserAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
+import com.prj.sdk.util.LogUtil;
 
 import java.util.ArrayList;
 
@@ -22,21 +23,26 @@ import java.util.ArrayList;
 
 public class PlaneAddrChooserActivity extends BaseAppActivity {
 
-    private TextView tv_right;
-    private ListView listview;
+    private ListView listView;
     private ArrayList<String> list = new ArrayList<>();
     private AddressChooserAdapter addressChooserAdapter;
 
     @Override
+    protected void requestData() {
+        super.requestData();
+        swipeRefreshLayout.setRefreshing(true);
+        requestAddressList();
+    }
+
+    @Override
     protected void setContentView() {
-        setContentView(R.layout.act_plane_addrchooser_layout);
+        setContentView(R.layout.act_plane_addresslist);
     }
 
     @Override
     public void initViews() {
         super.initViews();
-        tv_right = (TextView) findViewById(R.id.tv_right);
-        listview = (ListView) findViewById(R.id.listview);
+        listView = (ListView) findViewById(R.id.listView);
     }
 
     @Override
@@ -45,11 +51,16 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText("选择地址");
         setRightButtonResource("管理", getResources().getColor(R.color.plane_mainColor));
-        for (int i = 0; i < 10; i++) {
-            list.add(String.valueOf(i));
-        }
+        swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
         addressChooserAdapter = new AddressChooserAdapter(this, list);
-        listview.setAdapter(addressChooserAdapter);
+        listView.setAdapter(addressChooserAdapter);
+        listView.setEmptyView(findViewById(R.id.tv_empty));
+    }
+
+    @Override
+    public void onRefresh() {
+        super.onRefresh();
+        requestData();
     }
 
     @Override
@@ -63,73 +74,51 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
         switch (v.getId()) {
             case R.id.tv_right:
                 Intent intent = new Intent(this, PlaneAddrManagerActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 0x01);
+                break;
+            default:
                 break;
         }
     }
 
-    private class AddressChooserAdapter extends BaseAdapter {
-        private Context context;
-        private ArrayList<String> mList = new ArrayList<>();
-        private int mSelectedIndex;
+    private void requestAddressList() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        ResponseData d = b.syncRequest(b);
+        d.flag = AppConst.ADDRESS_LIST;
+        d.path = NetURL.ADDRESS_LIST;
+//        if (!isProgressShowing()) {
+//            showProgressDialog(this);
+//        }
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
 
-        AddressChooserAdapter(Context context, ArrayList<String> list) {
-            this.context = context;
-            this.mList = list;
-            mSelectedIndex = -1;
-        }
-
-        @Override
-        public int getCount() {
-            return mList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            final ViewHolder viewHolder;
-            if (null == convertView) {
-                viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_address_item, null);
-                viewHolder.iv_flag = (ImageView) convertView.findViewById(R.id.iv_flag);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+    @Override
+    protected void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
+        if (response != null && response.body != null) {
+            if (request.flag == AppConst.ADDRESS_LIST) {
+                removeProgressDialog();
+                swipeRefreshLayout.setRefreshing(false);
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                addressChooserAdapter.notifyDataSetChanged();
             }
-            convertView.findViewById(R.id.action_lay).setVisibility(View.GONE);
+        }
+    }
 
-            if (position == mSelectedIndex) {
-                viewHolder.iv_flag.setSelected(true);
-            } else {
-                viewHolder.iv_flag.setSelected(false);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        if (requestCode == 0x01) {
+            boolean isRefresh = false;
+            if (null != data) {
+                isRefresh = data.getBooleanExtra("isRefresh", false);
             }
-
-            viewHolder.iv_flag.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setSelectedIndex(v.isSelected() ? -1 : position);
-                }
-            });
-
-            return convertView;
-        }
-
-        public void setSelectedIndex(int index) {
-            this.mSelectedIndex = index;
-            notifyDataSetChanged();
-        }
-
-        class ViewHolder {
-            ImageView iv_flag;
+            if (isRefresh) {
+                requestData();
+            }
         }
     }
 }

@@ -336,6 +336,11 @@ public <fields>;
 -keep class net.sourceforge.pinyin4j.format.**{*;}
 -keep class net.sourceforge.pinyin4j.format.exception.**{*;}
 
+#省市区三级联动
+-keep class com.kborid.**{
+	*;
+}
+
 #------open install-------
 #忽略警告
 -dontwarn com.fm.openinstall.**

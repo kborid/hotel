@@ -36,6 +36,7 @@ import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane;
 import com.huicheng.hotel.android.ui.custom.plane.ICustomInfoLayoutPlaneCountListener;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -83,9 +84,11 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private CheckBox cb_delay;
     private TextView tv_delay_price;
 
+    private TextView tv_express_addr, tv_express_name, tv_express_phone, tv_express_chooser;
+    private CheckBox cb_agreement_plane, cb_agreement_abc;
+
     private TextView tv_amount;
     private TextView tv_passenger;
-    private TextView tv_chooser;
     private TextView tv_submit;
 
     private int flightType = PlaneCommDef.FLIGHT_SINGLE;
@@ -128,6 +131,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         if (flightType == PlaneCommDef.FLIGHT_GOBACK) {
             requestTicketBookingInfo(TYPE_BACK, backFlightDetailInfo);
         }
+        requestDefaultAddressInfo();
     }
 
     @Override
@@ -160,10 +164,30 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         cb_delay = (CheckBox) findViewById(R.id.cb_delay);
         tv_delay_price = (TextView) findViewById(R.id.tv_delay_price);
 
+        tv_express_addr = (TextView) findViewById(R.id.tv_express_addr);
+        tv_express_name = (TextView) findViewById(R.id.tv_express_name);
+        tv_express_phone = (TextView) findViewById(R.id.tv_express_phone);
+        tv_express_chooser = (TextView) findViewById(R.id.tv_express_chooser);
+
+        cb_agreement_plane = (CheckBox) findViewById(R.id.cb_agreement_plane);
+        cb_agreement_abc = (CheckBox) findViewById(R.id.cb_agreement_abc);
+
         tv_amount = (TextView) findViewById(R.id.tv_amount);
         tv_passenger = (TextView) findViewById(R.id.tv_passenger);
-        tv_chooser = (TextView) findViewById(R.id.tv_chooser);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
+    }
+
+    @Override
+    public void initParams() {
+        super.initParams();
+        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
+        tv_center_title.setText(
+                CityParseUtils.getPlaneOffOnCity(
+                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityname,
+                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityname,
+                        "→"
+                )
+        );
 
         goFlightDetailInfo = new FlightDetailInfo(
                 "GO",
@@ -179,19 +203,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                     PlaneOrderManager.instance.getBackVendorInfo()
             );
         }
-    }
-
-    @Override
-    public void initParams() {
-        super.initParams();
-        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        tv_center_title.setText(
-                CityParseUtils.getPlaneOffOnCity(
-                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityname,
-                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityname,
-                        "→"
-                )
-        );
 
         // 刷新去程航班信息显示
         flight_flag_layout.removeAllViews();
@@ -293,7 +304,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 calculateAmount(mPassengerCount);
             }
         });
-        tv_chooser.setOnClickListener(this);
+        tv_express_chooser.setOnClickListener(this);
         tv_submit.setOnClickListener(this);
     }
 
@@ -311,7 +322,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 startActivity(intent);
                 break;
             }
-            case R.id.tv_chooser: {
+            case R.id.tv_express_chooser: {
                 Intent intent = new Intent(this, PlaneAddrChooserActivity.class);
                 startActivity(intent);
                 break;
@@ -329,6 +340,14 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                     invoiceTaxInfoBean.setReceiverTitle(receiveTitle);
                 } else {
                     invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean();
+                }
+                if (!cb_agreement_plane.isChecked()) {
+                    CustomToast.show("请先阅读机票购票须知", CustomToast.LENGTH_SHORT);
+                    return;
+                }
+                if (!cb_agreement_abc.isChecked()) {
+                    CustomToast.show("请先阅读ABC旅行预订会员服务协议", CustomToast.LENGTH_SHORT);
+                    return;
                 }
                 requestSubmitOrderInfo();
                 Intent intent = new Intent(this, PlaneOrderPayActivity.class);
@@ -369,7 +388,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         return mAmount;
     }
 
-    private void refreshScreenInfo() {
+    private void updatePlaneOrderInfo() {
         if (null != goFlightBookingInfo) {
             //保险信息
             mAccidentPrice = goFlightBookingInfo.etAccidePrice;
@@ -472,6 +491,21 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
     }
 
+    private void updateExpressAddressDisplayInfo() {
+        LogUtil.i(TAG, "updateExpressAddressDisplayInfo()");
+    }
+
+    private void requestDefaultAddressInfo() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        ResponseData d = b.syncRequest(b);
+        d.flag = AppConst.ADDRESS_GET_DEFAULT;
+        d.path = NetURL.ADDRESS_GET_DEFAULT;
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     private void requestTicketBookingInfo(int type, FlightDetailInfo info) {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("barePrice", info.vendorInfo.barePrice);
@@ -541,11 +575,14 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 LogUtil.i(TAG, "back booking info json = " + response.body.toString());
                 backFlightBookingInfo = JSON.parseObject(response.body.toString(), PlaneBookingInfo.class);
                 mBkInfo.add(backFlightBookingInfo);
+            } else if (request.flag == AppConst.ADDRESS_GET_DEFAULT) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                updateExpressAddressDisplayInfo();
             }
 
             if (mTag.size() == requestTagCount) {
                 removeProgressDialog();
-                refreshScreenInfo();
+                updatePlaneOrderInfo();
             }
         }
     }
@@ -558,6 +595,19 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             }
         }
         return super.isCheckException(request, response);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        if (requestCode == 0x01) {
+            if (null != data) {
+                updateExpressAddressDisplayInfo();
+            }
+        }
     }
 
     private class FlightDetailInfo {

@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <!--标题栏-->
-    <include layout="@layout/comm_title"/>
+    <include layout="@layout/comm_title" />
 
     <View
         android:layout_width="match_parent"
@@ -48,6 +48,7 @@
                     android:textSize="@dimen/common_16sp" />
 
                 <EditText
+                    android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -125,6 +126,7 @@
                     android:textSize="@dimen/common_16sp" />
 
                 <TextView
+                    android:id="@+id/tv_pca"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -157,7 +159,7 @@
                     android:textSize="@dimen/common_16sp" />
 
                 <EditText
-                    android:id="@+id/et_addr"
+                    android:id="@+id/et_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -191,10 +193,12 @@
                 android:textSize="@dimen/common_16sp" />
 
             <Switch
+                android:id="@+id/switch_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:checked="false"
                 android:switchMinWidth="20dp"
                 android:textOff=""
                 android:textOn=""

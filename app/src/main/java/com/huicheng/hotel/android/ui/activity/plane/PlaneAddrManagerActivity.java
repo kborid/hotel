@@ -1,16 +1,14 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
-import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.ui.adapter.AddressManagerAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.prj.sdk.util.LogUtil;
 
 import java.util.ArrayList;
 
@@ -21,44 +19,44 @@ import java.util.ArrayList;
 
 public class PlaneAddrManagerActivity extends BaseAppActivity {
 
-    private ListView listview;
+    private ListView listView;
     private ArrayList<String> list = new ArrayList<>();
     private AddressManagerAdapter addressManagerAdapter;
 
     @Override
-    protected void preOnCreate() {
-        super.preOnCreate();
-        overridePendingTransition(0, 0);
-    }
-
-    @Override
     protected void setContentView() {
-        setContentView(R.layout.act_plane_addrmanager_layout);
+        setContentView(R.layout.act_plane_addresslist);
     }
 
     @Override
     public void initViews() {
         super.initViews();
-        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        tv_center_title.setText("管理地址");
-        setRightButtonResource("添加", getResources().getColor(R.color.plane_mainColor));
-        tv_right = (TextView) findViewById(R.id.tv_right);
-        listview = (ListView) findViewById(R.id.listview);
+        listView = (ListView) findViewById(R.id.listView);
     }
 
     @Override
     public void initParams() {
         super.initParams();
-        for (int i = 0; i < 10; i++) {
-            list.add(String.valueOf(i));
-        }
+        findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
+        tv_center_title.setText("管理地址");
+        setRightButtonResource("添加", getResources().getColor(R.color.plane_mainColor));
+        swipeRefreshLayout.setEnabled(false);
         addressManagerAdapter = new AddressManagerAdapter(this, list);
-        listview.setAdapter(addressManagerAdapter);
+        listView.setAdapter(addressManagerAdapter);
+        listView.setEmptyView(findViewById(R.id.tv_empty));
     }
 
     @Override
     public void initListeners() {
         super.initListeners();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LogUtil.i(TAG, "listView onitemclick!!!!");
+                setResult(RESULT_OK, new Intent().putExtra("isRefresh", true));
+                finish();
+            }
+        });
     }
 
     @Override
@@ -67,48 +65,27 @@ public class PlaneAddrManagerActivity extends BaseAppActivity {
         switch (v.getId()) {
             case R.id.tv_right:
                 Intent intent = new Intent(this, PlaneAddrEditActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 0x02);
+                break;
+            default:
                 break;
         }
     }
 
     @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(0, 0);
-    }
-
-    private class AddressManagerAdapter extends BaseAdapter {
-        private Context context;
-        private ArrayList<String> mList = new ArrayList<>();
-
-        AddressManagerAdapter(Context context, ArrayList<String> list) {
-            this.context = context;
-            this.mList = list;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
         }
-
-        @Override
-        public int getCount() {
-            return mList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (null == convertView) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.lv_plane_address_item, null);
+        if (requestCode == 0x02) {
+            boolean isRefresh = false;
+            if (null != data) {
+                isRefresh = data.getBooleanExtra("isRefresh", false);
             }
-            convertView.findViewById(R.id.flag_lay).setVisibility(View.INVISIBLE);
-            return convertView;
+            if (isRefresh) {
+                addressManagerAdapter.notifyDataSetChanged();
+            }
         }
     }
 }

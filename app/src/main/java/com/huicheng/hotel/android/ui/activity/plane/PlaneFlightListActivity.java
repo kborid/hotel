@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity.plane;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -20,6 +19,8 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
@@ -32,8 +33,6 @@ import com.huicheng.hotel.android.ui.adapter.PlaneFlightItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.plane.OnConsiderLayoutResultListener;
 import com.huicheng.hotel.android.ui.custom.plane.PlaneConsiderLayout;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -79,8 +78,6 @@ public class PlaneFlightListActivity extends BaseAppActivity {
     //筛选
     private PopupWindow mPlaneConsiderPopupWindow = null;
     private PlaneConsiderLayout mPlaneConsiderLayout = null;
-
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void setContentView() {
@@ -136,17 +133,12 @@ public class PlaneFlightListActivity extends BaseAppActivity {
                 mPlaneConsiderLayout.cancelConfig();
             }
         });
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
     }
 
     @Override
     public void initParams() {
         super.initParams();
         swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
-        swipeRefreshLayout.setDistanceToTriggerSync(200);
-        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
-        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         status = PlaneOrderManager.instance.getStatus();
         LogUtil.i(TAG, "FlightType = " + PlaneOrderManager.instance.getFlightType() + ", FlowStatus = " + status);
@@ -230,15 +222,15 @@ public class PlaneFlightListActivity extends BaseAppActivity {
     }
 
     @Override
+    public void onRefresh() {
+        super.onRefresh();
+        swipeRefreshLayout.setRefreshing(true);
+        requestPlaneFlightInfo(false);
+    }
+
+    @Override
     public void initListeners() {
         super.initListeners();
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
-                requestPlaneFlightInfo(false);
-            }
-        });
         calendar_lay.setOnClickListener(this);
         planeFlightCalendarPriceAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
             @Override
@@ -406,7 +398,6 @@ public class PlaneFlightListActivity extends BaseAppActivity {
     @Override
     public void onNotifyError(ResponseData request, ResponseData response) {
         super.onNotifyError(request, response);
-        swipeRefreshLayout.setRefreshing(false);
         if (mFlightList.size() <= 0) {
             tv_empty.setVisibility(View.VISIBLE);
         } else {
