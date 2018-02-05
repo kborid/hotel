@@ -23,17 +23,15 @@ public class AddressChooserAdapter extends BaseAdapter {
     private Context context;
     private List<AddressInfoBean> mList = new ArrayList<>();
     private int mSelectedIndex;
-    private int defaultIndex;
 
     public AddressChooserAdapter(Context context, List<AddressInfoBean> list) {
         this.context = context;
         this.mList = list;
         mSelectedIndex = -1;
-        defaultIndex = -1;
     }
 
-    public int getDefaultIndex() {
-        return defaultIndex;
+    public int getSelectedIndex() {
+        return mSelectedIndex;
     }
 
     @Override
@@ -68,28 +66,20 @@ public class AddressChooserAdapter extends BaseAdapter {
         convertView.findViewById(R.id.action_lay).setVisibility(View.GONE);
 
         AddressInfoBean bean = mList.get(position);
-
-        //如果有默认，则显示勾选默认flag
-        defaultIndex = bean.isdefault ? position : -1;
-        //首次显示列表时，设置默认勾选flag;如果没有默认，则都不勾选
-        if (mSelectedIndex == -1) {
-            mSelectedIndex = defaultIndex;
-        }
-
+        viewHolder.tv_name.setText(bean.name);
+        viewHolder.tv_phone.setText(bean.phone);
+        viewHolder.tv_address.setText(bean.province + bean.city + bean.area + bean.address);
+        mSelectedIndex = bean.isdefault ? position : -1;
         if (position == mSelectedIndex) {
             viewHolder.iv_flag.setSelected(true);
         } else {
             viewHolder.iv_flag.setSelected(false);
         }
 
-        viewHolder.tv_name.setText(bean.name);
-        viewHolder.tv_phone.setText(bean.phone);
-        viewHolder.tv_address.setText(bean.province + bean.city + bean.area + bean.address);
-
         viewHolder.iv_flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSelectedIndex(v.isSelected() ? -1 : position);
+                mSelectedIndex = position;
                 if (null != listener) {
                     listener.onCheck(position);
                 }

@@ -77,10 +77,8 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
         addressChooserAdapter.setOnFlagCheckedListener(new AddressChooserAdapter.OnFlagCheckedListener() {
             @Override
             public void onCheck(int position) {
-                System.out.println("position = " + position);
                 mBean = list.get(position);
                 mId = mBean.id;
-                System.out.println("id = " + mId);
                 if (StringUtil.notEmpty(mId)) {
                     requestSetDefault(mId);
                 }
@@ -133,7 +131,7 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
                 list.clear();
                 list.addAll(tmp);
                 addressChooserAdapter.notifyDataSetChanged();
-                int defaultIndex = addressChooserAdapter.getDefaultIndex();
+                int defaultIndex = addressChooserAdapter.getSelectedIndex();
                 if (defaultIndex != -1) {
                     mBean = list.get(defaultIndex);
                     mId = mBean.id;
