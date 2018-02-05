@@ -186,7 +186,6 @@
         <item>昆明</item>
     </string-array>
 
-
     <string name="iflytek_tips">语音技术由科大讯飞提供</string>
     <string name="test">不应当急于求成，应当去熟悉自己的研究对象，锲而不舍，时间会成全一切。凡事开始最难，然而更难的是何以善终。——莎士比亚</string>
     <string name="test_short">天才是百分之一的灵感加百分之九十九的汗水。——爱迪生</string>
@@ -265,6 +264,8 @@
         <item>男</item>
         <item>女</item>
     </string-array>
+
+    <string name="current_position">当前位置</string>
 
     <!--debug info-->
     <string name="debug_menu">Debug Menu</string>

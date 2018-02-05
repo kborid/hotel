@@ -91,12 +91,6 @@ public class PlaneMainActivity extends BaseMainActivity {
         setIndicator(tabs, 54, 54);
         refreshPlaneStateAndInfo(PlaneCommDef.FLIGHT_SINGLE);
         PlaneOrderManager.instance.setFlightType(PlaneCommDef.FLIGHT_SINGLE);
-        //地点信息
-        String province = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-        String city = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        if (StringUtil.notEmpty(province) || StringUtil.notEmpty(city)) {
-            requestWeatherInfo(beginTime);
-        }
         //初始化起飞
         PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
         PlaneOrderManager.instance.setBackFlightOffDate(endTime);

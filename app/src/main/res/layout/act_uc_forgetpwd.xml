@@ -171,6 +171,7 @@
                     android:button="@drawable/cb_user_pwd_status_selector"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_gravity="center_vertical" />
             </LinearLayout>
         </LinearLayout>

@@ -24,14 +24,12 @@ import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelInfoBean;
 import com.huicheng.hotel.android.ui.activity.HtmlActivity;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.huicheng.hotel.android.ui.mapoverlay.AMapUtil;
-import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
 import java.text.DecimalFormat;
@@ -223,8 +221,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                     lat = Float.valueOf(pos[0]);
                     landMarkStr = "距离" + landmark;
                 } else {
-                    lon = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "0", false));
-                    lat = Float.parseFloat(SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "0", false));
+                    lon = Float.parseFloat(LocationInfo.instance.getLon());
+                    lat = Float.parseFloat(LocationInfo.instance.getLat());
                 }
                 if (lon != 0 && lat != 0 && StringUtil.notEmpty(bean.hotelCoordinate)) {
                     start = new LatLng(lat, lon);

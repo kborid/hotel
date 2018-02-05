@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.common.HotelOrderManager;
-import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.calendar.CalendarSelectedListener;
@@ -24,7 +24,6 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
 
 /**
  * @author kborid
@@ -44,7 +43,6 @@ public class HotelCalendarChooseActivity extends BaseAppActivity implements Cale
     private boolean isCouponBooking = false;
 
     private long beginTime, endTime;
-    private String mProvince, mCity, mSiteId;
 
     @Override
     protected void setContentView() {
@@ -91,10 +89,6 @@ public class HotelCalendarChooseActivity extends BaseAppActivity implements Cale
             tv_end.setText(DateUtil.getDay("M月d日", endTime));
             btn_next.setEnabled(true);
         }
-
-        mProvince = SharedPreferenceUtil.getInstance().getString(AppConst.PROVINCE, "", false);
-        mCity = SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false);
-        mSiteId = SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false);
     }
 
     @Override
@@ -163,11 +157,10 @@ public class HotelCalendarChooseActivity extends BaseAppActivity implements Cale
             return;
         }
         if (requestCode == 0x01) {
-            mProvince = data.getStringExtra(AppConst.PROVINCE);
-            mCity = data.getStringExtra(AppConst.CITY);
-            mSiteId = data.getStringExtra(AppConst.SITEID);
-
-            String cityStr = CityParseUtils.getProvinceCityString(mProvince, mCity, "-");
+            LocationInfo.instance.setIsMyLoc(false);
+            String province = LocationInfo.instance.getProvince();
+            String city = LocationInfo.instance.getCity();
+            String cityStr = CityParseUtils.getProvinceCityString(province, city, "-");
             HotelOrderManager.getInstance().setCityStr(cityStr);
             tv_center_title.setText(cityStr);
         }

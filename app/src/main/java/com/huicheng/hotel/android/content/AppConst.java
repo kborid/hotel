@@ -29,14 +29,9 @@ public final class AppConst {
     public static final String USERNAME = "username"; // 用户名
     public static final String USER_PHOTO_URL = "user_photo_url"; // 用户头像地址
     public static final String USER_INFO = "user_info"; // 用户信息
-    public static final String LOCATION_LON = "location_lon";
-    public static final String LOCATION_LAT = "location_lat";
 
     public static final String HISTORY = "history";
     public static final String AIRPORT_HISTORY = "airport_history";
-    public static final String PROVINCE = "province";
-    public static final String CITY = "city";
-    public static final String SITEID = "siteid"; // site id
 
     //粉丝申请用户信息缓存
     public static final String FANS_NAME = "fans_name";

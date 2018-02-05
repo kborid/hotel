@@ -74,14 +74,14 @@ public class BountyLxbActiveAdapter extends BaseAdapter {
                 .crossFade()
                 .override(1080, 312)
                 .into(viewHolder.iv_bg);
-        viewHolder.tv_title.setText(bean.bnname);
+        viewHolder.tv_title.setText(bean.activiName);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!StringUtil.isEmpty(bean.target)) {
                     Intent intent = new Intent(context, HtmlActivity.class);
                     intent.putExtra("path", bean.target);
-                    intent.putExtra("title", bean.bnname);
+                    intent.putExtra("title", bean.activiName);
                     context.startActivity(intent);
                 }
             }

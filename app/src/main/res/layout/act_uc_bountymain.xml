@@ -22,7 +22,6 @@
             android:headerDividersEnabled="false"
             android:listSelector="@color/transparent"
             android:scrollbarThumbVertical="@drawable/p3016_scrollbar" />
-
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

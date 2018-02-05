@@ -27,6 +27,7 @@ import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.AMapLocationControl;
 import com.huicheng.hotel.android.control.DataCleanManager;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
@@ -39,8 +40,8 @@ import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.algo.MD5Tool;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
@@ -243,7 +244,7 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             requestGDTInterface();
         }
-        AMapLocationControl.getInstance().startLocationOnce(this);
+//        AMapLocationControl.getInstance().startLocationOnce(this);
         if (null == mHandlerThread) {
             mHandlerThread = new HandlerThread("dealJsonReqThread");
             mHandlerThread.start();
@@ -330,6 +331,14 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
                 doLastAction();
             }
         }
+    }
+
+    @Override
+    protected boolean isCheckException(ResponseData request, ResponseData response) {
+        if (request.flag == AppConst.AD_GDT_IF) {
+            return true;
+        }
+        return super.isCheckException(request, response);
     }
 
     @Override
@@ -428,14 +437,11 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
     public void onLocation(boolean isSuccess, AMapLocation aMapLocation) {
         LogUtil.i(TAG, "onLocation()");
         if (isSuccess && null != aMapLocation) {
-            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LON, String.valueOf(aMapLocation.getLongitude()), false);
-            SharedPreferenceUtil.getInstance().setString(AppConst.LOCATION_LAT, String.valueOf(aMapLocation.getLatitude()), false);
-            String province = CityParseUtils.getProvinceString(aMapLocation.getProvince());
-            String city = CityParseUtils.getProvinceString(aMapLocation.getCity());
-            String siteId = String.valueOf(aMapLocation.getAdCode());
-            SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, province, false);
-            SharedPreferenceUtil.getInstance().setString(AppConst.CITY, city, false);
-            SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, siteId, false);
+            LocationInfo.instance.setInfo(String.valueOf(aMapLocation.getLongitude()),
+                    String.valueOf(aMapLocation.getLatitude()),
+                    CityParseUtils.getProvinceString(aMapLocation.getProvince()),
+                    CityParseUtils.getProvinceString(aMapLocation.getCity()),
+                    String.valueOf(aMapLocation.getAdCode()));
         }
     }
 }

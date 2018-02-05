@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,6 +62,7 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
+import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -534,19 +537,23 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         if (null != swipeRefreshLayout){
             swipeRefreshLayout.setRefreshing(false);
         }
-        String msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", "-1", getString(R.string.dialog_tip_null_error));
+        String msgFormat = "ErrMsg:%2$s[%1$s]";
+        String info = getString(R.string.dialog_tip_null_error);
+        String msg = String.format(msgFormat, "-1", info);
         if (null != response && null != response.data) {
-            msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", response.code, response.data.toString());
+            info = response.data.toString();
+            msg = String.format(msgFormat, response.code, info);
         } else {
             if (e != null && e instanceof ConnectException) {
-                msg = String.format("ErrorCode:%1$s, ErrorMsg:%2$s", "-2", getString(R.string.dialog_tip_net_error));
+                info = getString(R.string.dialog_tip_net_error);
+                msg = String.format(msgFormat, "-2", info);
             }
         }
         LogUtil.e(TAG, msg);
         if (isCheckException(request, response)) {
             onNotifyOverrideMessage(request, response);
         } else {
-            CustomToast.show(msg, CustomToast.LENGTH_LONG);
+            CustomToast.show(info, CustomToast.LENGTH_LONG);
             onNotifyError(request, response);
         }
     }
@@ -565,5 +572,24 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
 
     protected void onNotifyError(ResponseData request, ResponseData response) {
         LogUtil.e(TAG, "onNotifyError()");
+    }
+
+    protected final static class WeakReferenceHandler<T> extends Handler {
+        public static final int CODE_FINISH = 0x01;
+        private WeakReference<T> weakReference;
+
+        public WeakReferenceHandler(T weakReference) {
+            this.weakReference = new WeakReference<T>(weakReference);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case CODE_FINISH:
+                    ((BaseAppActivity) weakReference.get()).finish();
+                    break;
+            }
+        }
     }
 }

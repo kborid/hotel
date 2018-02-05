@@ -1,8 +1,7 @@
 package com.huicheng.hotel.android.ui.JSBridge.functions;
 
-import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
-import com.prj.sdk.util.SharedPreferenceUtil;
 
 import org.json.JSONObject;
 
@@ -20,8 +19,8 @@ public class getCityInfo implements WVJBWebViewClient.WVJBHandler {
             if (callback != null) {
                 //{“cityCode”:”500000”,”cityName”:”重庆"}
                 JSONObject mJson = new JSONObject();
-                mJson.put("cityCode", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
-                mJson.put("cityName", SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+                mJson.put("cityCode", LocationInfo.instance.getCityCode());
+                mJson.put("cityName", LocationInfo.instance.getCity());
                 callback.callback(mJson.toString());
             }
         } catch (Exception e) {

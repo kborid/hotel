@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
@@ -145,9 +146,9 @@ public class BaseMainActivity extends BaseAppActivity {
 
     public void requestWeatherInfo(long timeStamp) {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("cityname", SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
+        b.addBody("cityname", LocationInfo.instance.getCity());
+        b.addBody("siteid", LocationInfo.instance.getCityCode());
         b.addBody("date", DateUtil.getDay("yyyyMMdd", timeStamp));
-        b.addBody("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.WEATHER;

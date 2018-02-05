@@ -22,6 +22,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelMapInfoBean;
@@ -30,9 +31,9 @@ import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
 import com.huicheng.hotel.android.ui.adapter.HotelListAdapter;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
@@ -245,12 +246,12 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
         b.addBody("showAd", "1");//用于后台区分旧版本不支持广告模块的flag
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
-        b.addBody("cityCode", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
+        b.addBody("cityCode", LocationInfo.instance.getCityCode());
         b.addBody("category", String.valueOf(HotelCommDef.TYPE_CLOCK));
         b.addBody("pageIndex", String.valueOf(pageIndex));
         b.addBody("pageSize", String.valueOf(PAGESIZE));
-        b.addBody("longitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "", false));
-        b.addBody("latitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "", false));
+        b.addBody("longitude", LocationInfo.instance.getLon());
+        b.addBody("latitude", LocationInfo.instance.getLat());
 
         //地标信息
         String searchType = HotelCommDef.TYPE_HOTEL;
@@ -260,8 +261,8 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
             b.addBody("cityCode", bundle.getString("siteId"));
             String lonLat = bundle.getString("lonLat");
             if (StringUtil.isEmpty(lonLat)) {
-                b.addBody("longitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LON, "", false));
-                b.addBody("latitude", SharedPreferenceUtil.getInstance().getString(AppConst.LOCATION_LAT, "", false));
+                b.addBody("longitude", LocationInfo.instance.getLon());
+                b.addBody("latitude", LocationInfo.instance.getLat());
             } else {
                 String[] pos = lonLat.split("\\|");
                 b.addBody("longitude", pos[1]);

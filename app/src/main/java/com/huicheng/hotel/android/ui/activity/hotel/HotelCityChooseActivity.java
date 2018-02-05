@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
@@ -172,21 +173,7 @@ public class HotelCityChooseActivity extends BaseAppActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCity = cityList.get(position).shortName;
                 CityAreaInfoBean item = findCityBeanByCityString(mCity);
-                //增加历史记录
-                addHistory(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
-                if (item != null) {
-                    LogUtil.i(TAG, "========================================");
-                    LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
-                    LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
-                    Intent data = new Intent();
-                    data.putExtra(AppConst.PROVINCE, mProvince);
-                    data.putExtra(AppConst.CITY, mCity);
-                    data.putExtra(AppConst.SITEID, mSiteId);
-                    setResult(RESULT_OK, data);
-                    finish();
-                } else {
-                    CustomToast.show("暂未收录该城市", CustomToast.LENGTH_SHORT);
-                }
+                actionResult(item);
             }
         });
 
@@ -195,21 +182,7 @@ public class HotelCityChooseActivity extends BaseAppActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCity = mHistoryList.get(position);
                 CityAreaInfoBean item = findCityBeanByCityString(mCity);
-                //增加历史记录
-                addHistory(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
-                if (item != null) {
-                    LogUtil.i(TAG, "========================================");
-                    LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
-                    LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
-                    Intent data = new Intent();
-                    data.putExtra(AppConst.PROVINCE, mProvince);
-                    data.putExtra(AppConst.CITY, mCity);
-                    data.putExtra(AppConst.SITEID, mSiteId);
-                    setResult(RESULT_OK, data);
-                    finish();
-                } else {
-                    CustomToast.show("暂未收录该城市", CustomToast.LENGTH_SHORT);
-                }
+                actionResult(item);
             }
         });
 
@@ -218,21 +191,7 @@ public class HotelCityChooseActivity extends BaseAppActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCity = mHotCityList.get(position);
                 CityAreaInfoBean item = findCityBeanByCityString(mCity);
-                //增加历史记录
-                addHistory(SharedPreferenceUtil.getInstance().getString(AppConst.CITY, "", false));
-                if (item != null) {
-                    LogUtil.i(TAG, "========================================");
-                    LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
-                    LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
-                    Intent data = new Intent();
-                    data.putExtra(AppConst.PROVINCE, mProvince);
-                    data.putExtra(AppConst.CITY, mCity);
-                    data.putExtra(AppConst.SITEID, mSiteId);
-                    setResult(RESULT_OK, data);
-                    finish();
-                } else {
-                    CustomToast.show("暂未收录该城市", CustomToast.LENGTH_SHORT);
-                }
+                actionResult(item);
             }
         });
     }
@@ -259,6 +218,21 @@ public class HotelCityChooseActivity extends BaseAppActivity {
         }
         LogUtil.i(TAG, "---enddd---findCityBeanByCityString()");
         return item;
+    }
+
+    private void actionResult(CityAreaInfoBean item) {
+        //增加历史记录
+        addHistory(LocationInfo.instance.getCity());
+        if (item != null) {
+            LogUtil.i(TAG, "========================================");
+            LogUtil.i(TAG, "[Find Result Info:]" + item.toString());
+            LogUtil.i(TAG, "[Save CtyBen Info:]" + "mSiteId:" + mSiteId + ", mProvince:" + mProvince + ", mCity:" + mCity);
+            LocationInfo.instance.resetCity(mProvince, mCity, mSiteId);
+            setResult(RESULT_OK, new Intent());
+            finish();
+        } else {
+            CustomToast.show("暂未收录该城市", CustomToast.LENGTH_SHORT);
+        }
     }
 
     //更新历史记录，最大显示5条，超过替换最早一条，去重处理
@@ -294,14 +268,6 @@ public class HotelCityChooseActivity extends BaseAppActivity {
             default:
                 break;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SharedPreferenceUtil.getInstance().setString(AppConst.PROVINCE, mProvince, false);
-        SharedPreferenceUtil.getInstance().setString(AppConst.CITY, mCity, false);
-        SharedPreferenceUtil.getInstance().setString(AppConst.SITEID, mSiteId, false);
     }
 
     private class QuickSelCityAdapter extends BaseAdapter {

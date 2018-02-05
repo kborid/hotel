@@ -339,7 +339,6 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SessionContext.cleanLocationInfo();
         left_layout.unregisterBroadReceiver();
     }
 

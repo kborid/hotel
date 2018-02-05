@@ -109,7 +109,7 @@ public final class NetURL {
     public static final String BIND_CHECK = PORTAL + "user/getUserByToken.json"; //判断是否绑定
     public static final String BIND = PORTAL + "user/bindThirdPartUser.json"; //绑定
     public static final String VALIDATE_TICKET = PORTAL + "user/CW1014";// 判断票据是否过期
-    public static final String AD_GDT_IF = "http://pro.abcbooking.cn/hmp_website/widePointAd/conversion.json"; //广点通统计接口
+    public static final String AD_GDT_IF =  PORTAL + "widePointAd/conversion.json"; //广点通统计接口
 
     // -------------------------------------------app信息（强制升级、邀请信息等）、广告-----------------
     public static final String APP_INFO = PORTAL + "system/getappversion.json"; //app版本信息

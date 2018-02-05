@@ -25,14 +25,15 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.pay.wxpay.MD5;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -355,16 +356,17 @@ public class UcRegisterActivity extends BaseAppActivity {
         b.addBody("mobile", et_phone.getText().toString());
         b.addBody("code", et_yzm.getText().toString());
         b.addBody("password", MD5.getMessageDigest(et_pwd.getText().toString().getBytes()));
-        b.addBody("siteid", SharedPreferenceUtil.getInstance().getString(AppConst.SITEID, "", false));
+        b.addBody("siteid", LocationInfo.instance.getCityCode());
         b.addBody("channelid", "00"); //注册渠道：00-app, 01-web
         b.addBody("ip", "");
         b.addBody("invitermobile", et_yqm.getText().toString());
 
-
         ResponseData data = b.syncRequest(b);
         data.path = NetURL.REGISTER;
         data.flag = AppConst.REGISTER;
-
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
         requestID = DataLoader.getInstance().loadData(this, data);
     }
 
@@ -372,28 +374,29 @@ public class UcRegisterActivity extends BaseAppActivity {
      * 登录
      */
     private void requestLogin() {
-        String userName = et_phone.getText().toString();
-        String pwd = et_pwd.getText().toString();
-
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("login", userName);
-        b.addBody("password", MD5.getMessageDigest(pwd.getBytes()));
+        b.addBody("login", et_phone.getText().toString());
+        b.addBody("password", MD5.getMessageDigest(et_pwd.getText().toString().getBytes()));
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.LOGIN;
         d.flag = AppConst.LOGIN;
-
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     private void requestUserInfo(String ticket) {
-        LogUtil.i(TAG, "getUserInfo() ticket = " + ticket);
-        RequestBeanBuilder builder = RequestBeanBuilder.create(true);
-
-        ResponseData data = builder.syncRequest(builder);
-        data.path = NetURL.CENTER_USERINFO;
-        data.flag = AppConst.CENTER_USERINFO;
-        requestID = DataLoader.getInstance().loadData(this, data);
+        LogUtil.i(TAG, "requestUserInfo() ticket = " + ticket);
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.CENTER_USERINFO;
+        d.flag = AppConst.CENTER_USERINFO;
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     private void requestSaveRecommandData() {
@@ -475,9 +478,11 @@ public class UcRegisterActivity extends BaseAppActivity {
                     }
                 }
             } else if (request.flag == AppConst.REGISTER) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 CustomToast.show("注册成功", CustomToast.LENGTH_SHORT);
                 requestLogin();
             } else if (request.flag == AppConst.LOGIN) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 JSONObject mJson = JSON.parseObject(response.body.toString());
                 if (mJson.containsKey("status")) {
                     if (mJson.getString("status").equals("1")) {
@@ -491,30 +496,26 @@ public class UcRegisterActivity extends BaseAppActivity {
                     }
                 }
             } else if (request.flag == AppConst.CENTER_USERINFO) {
-                if (StringUtil.isEmpty(response.body.toString()) || response.body.toString().equals("{}")) {
-                    CustomToast.show("获取用户信息失败，请重试", 0);
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                if ("{}".equals(response.body.toString())) {
+                    CustomToast.show("获取用户信息失败，请重试", CustomToast.LENGTH_LONG);
                     return;
                 }
                 SessionContext.mUser = JSON.parseObject(response.body.toString(), UserInfo.class);
-                LogUtil.i(TAG, response.body.toString());
 
-                if (SessionContext.mUser == null || StringUtil.isEmpty(SessionContext.mUser)) {
-                    CustomToast.show("获取用户信息失败，请重试", 0);
-                    return;
-                }
-
-                String userName = et_phone.getText().toString();
-                SharedPreferenceUtil.getInstance().setString(AppConst.USERNAME, userName, true);// 保存用户名
+                //缓存用户信息
+                SharedPreferenceUtil.getInstance().setString(AppConst.USERNAME, et_phone.getText().toString(), true);// 保存用户名
                 SharedPreferenceUtil.getInstance().setString(AppConst.LAST_LOGIN_DATE, DateUtil.getCurDateStr(null), false);// 保存登录时间
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_PHOTO_URL, SessionContext.mUser != null ? SessionContext.mUser.user.headphotourl : "", false);
                 SharedPreferenceUtil.getInstance().setString(AppConst.USER_INFO, response.body.toString(), true);
-                CustomToast.show("登录成功", 0);
                 JPushInterface.setAliasAndTags(PRJApplication.getInstance(), SessionContext.mUser.user.mobile, null, new TagAliasCallback() {
                     @Override
                     public void gotResult(int i, String s, Set<String> set) {
                         LogUtil.i(TAG, ((i == 0) ? "设置成功" : "设置失败") + ", Alias = " + s + ", Tag = " + set);
                     }
                 });
+
+                CustomToast.show("登录成功", CustomToast.LENGTH_LONG);
                 sendBroadcast(new Intent(BroadCastConst.UPDATE_USERINFO));
 
                 //注册成功，自动登录，根据性别设置主题
@@ -529,6 +530,7 @@ public class UcRegisterActivity extends BaseAppActivity {
                     finish();
                 }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
                 SessionContext.setOpenInstallAppData(null);
                 removeProgressDialog();
                 finish();
