@@ -1,31 +1,34 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.Build;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
+import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.List;
 
@@ -39,13 +42,18 @@ public class BaseMainActivity extends BaseAppActivity {
     protected static final int REQUEST_CODE_CITY = 0x02;
     protected static final int REQUEST_CODE_AIRPORT = 0x03;
 
-    protected static Handler myHandler = new Handler(Looper.getMainLooper());
-    protected long beginTime, endTime;
     private CommonBannerLayout banner_lay;
     private LinearLayout contentLay;
+
+    //    private int oldSkinIndex = 0;
+    protected WeakReferenceHandler<BaseMainActivity> myHandler = new WeakReferenceHandler<>(this);
+    protected long beginTime, endTime;
     protected boolean isSelectedDate = false;
 
-//    private int oldSkinIndex = 0;
+    // 海南诚信广告Popup
+    protected boolean isAdShowed = false;
+    private PopupWindow mAdHaiNanPopupWindow = null;
+    private View mAdHaiNanView = null;
 
     @Override
     protected void preOnCreate() {
@@ -64,6 +72,41 @@ public class BaseMainActivity extends BaseAppActivity {
 //        oldSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
         banner_lay = (CommonBannerLayout) findViewById(R.id.banner_lay);
         contentLay = (LinearLayout) findViewById(R.id.content_lay);
+
+        //海南诚信认证广告
+        if (null == mAdHaiNanView) {
+            mAdHaiNanView = LayoutInflater.from(this).inflate(R.layout.pw_ad_hainan_layout, null);
+            if (null == mAdHaiNanPopupWindow) {
+                mAdHaiNanPopupWindow = new PopupWindow(mAdHaiNanView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                mAdHaiNanPopupWindow.getContentView().findViewById(R.id.iv_ad_close).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAdHaiNanPopupWindow.dismiss();
+                    }
+                });
+                mAdHaiNanPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+                    @Override
+                    public void onDismiss() {
+                        //重置consider
+                        WindowManager.LayoutParams lp = getWindow().getAttributes();
+                        lp.alpha = 1f;
+                        getWindow().setAttributes(lp);
+                    }
+                });
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int option = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
+                    mAdHaiNanPopupWindow.setSoftInputMode(option);
+                    try {
+                        Field mLayoutInScreen = PopupWindow.class.getDeclaredField("mLayoutInScreen");
+                        mLayoutInScreen.setAccessible(true);
+                        mLayoutInScreen.set(mAdHaiNanPopupWindow, true);
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -127,6 +170,26 @@ public class BaseMainActivity extends BaseAppActivity {
 //            isReStarted = true;
 //            recreate();
 //        }
+    }
+
+    private void showHaiNanAdPopupWindow() {
+        // 设置背景颜色变暗
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.35f;
+        getWindow().setAttributes(lp);
+        mAdHaiNanPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+    }
+
+    public void showHaiNanAd(String province) {
+        if (province.contains("海南")) {
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isAdShowed = true;
+                    showHaiNanAdPopupWindow();
+                }
+            }, 500);
+        }
     }
 
     @Override

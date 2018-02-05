@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity.hotel;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
@@ -47,12 +46,9 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
-import java.lang.reflect.Field;
 import java.util.Date;
 
 public class HotelMainActivity extends BaseMainActivity implements AMapLocationControl.MyLocationListener {
-
-    private WeakReferenceHandler<HotelMainActivity> myHandler = new WeakReferenceHandler<HotelMainActivity>(this);
 
     private LinearLayout coupon_lay;
     private LinearLayout order_lay;
@@ -67,10 +63,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     private CustomConsiderLayoutForHome mConsiderLayout = null;
     private PopupWindow mConsiderPopupWindow = null;
     private int typeIndex = -1, gradeIndex = -1, priceIndex = -1;
-
-    // 海南诚信广告Popup
-    private boolean isAdShowed = false;
-    private PopupWindow mAdHaiNanPopupWindow = null;
 
     private TextView tv_curr_position;
     private AMapLocation aMapLocation = null;
@@ -132,37 +124,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 getWindow().setAttributes(lp);
             }
         });
-
-        //海南诚信认证广告
-        View adView = LayoutInflater.from(this).inflate(R.layout.pw_ad_hainan_layout, null);
-        mAdHaiNanPopupWindow = new PopupWindow(adView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mAdHaiNanPopupWindow.getContentView().findViewById(R.id.iv_ad_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdHaiNanPopupWindow.dismiss();
-            }
-        });
-        mAdHaiNanPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-
-            @Override
-            public void onDismiss() {
-                //重置consider
-                WindowManager.LayoutParams lp = getWindow().getAttributes();
-                lp.alpha = 1f;
-                getWindow().setAttributes(lp);
-            }
-        });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int option = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
-            mAdHaiNanPopupWindow.setSoftInputMode(option);
-            try {
-                Field mLayoutInScreen = PopupWindow.class.getDeclaredField("mLayoutInScreen");
-                mLayoutInScreen.setAccessible(true);
-                mLayoutInScreen.set(mAdHaiNanPopupWindow, true);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
 
         tv_curr_position = (TextView) findViewById(R.id.tv_curr_position);
     }
@@ -313,26 +274,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         ((ImageView) findViewById(R.id.iv_bounty_icon)).setImageResource(bountyResId);
     }
 
-    private void showHaiNanAdPopupWindow() {
-        // 设置背景颜色变暗
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.35f;
-        getWindow().setAttributes(lp);
-        mAdHaiNanPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-    }
-
-    private void showHaiNanAd(String province) {
-        if (province.contains("海南")) {
-            myHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    isAdShowed = true;
-                    showHaiNanAdPopupWindow();
-                }
-            }, 500);
-        }
-    }
-
     private void showConsiderPopupWindow() {
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
         // 设置背景颜色变暗
@@ -366,6 +307,11 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LocationInfo.instance.reset();
+        if (myHandler != null) {
+            myHandler.removeCallbacksAndMessages(null);
+            myHandler = null;
+        }
     }
 
     @Override
