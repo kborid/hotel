@@ -37,8 +37,8 @@ import com.huicheng.hotel.android.ui.custom.CommonPayChannelLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -225,7 +225,7 @@ public class HotelOrderPayActivity extends BaseAppActivity {
 
     @Override
     public void onClick(View v) {
-//        super.onClick(v);
+        super.onClick(v);
         switch (v.getId()) {
             case R.id.tv_detail: {
                 final CustomDialog dialog = new CustomDialog(this);

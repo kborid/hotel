@@ -127,7 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane
                         android:id="@+id/custom_info_layout_plane"

@@ -171,6 +171,8 @@ public final class AppConst {
 
     public static final int ADDRESS_GET_DEFAULT = PLANE_HANDLE_FLAG + 7;
     public static final int ADDRESS_LIST = PLANE_HANDLE_FLAG + 8;
-    public static final int ADDRESS_ADDNEW = PLANE_HANDLE_FLAG + 9;
-    public static final int ADDRESS_UPDATE = PLANE_HANDLE_FLAG + 10;
+    public static final int ADDRESS_ADD = PLANE_HANDLE_FLAG + 9;
+    public static final int ADDRESS_EDIT = PLANE_HANDLE_FLAG + 10;
+    public static final int ADDRESS_DEFAULT = PLANE_HANDLE_FLAG + 11;
+    public static final int ADDRESS_DELETE = PLANE_HANDLE_FLAG + 12;
 }

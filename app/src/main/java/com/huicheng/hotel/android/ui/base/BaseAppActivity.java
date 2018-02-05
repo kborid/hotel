@@ -37,6 +37,7 @@ import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelInvoiceActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPaySuccessActivity;
+import com.huicheng.hotel.android.ui.activity.plane.PlaneAddrManagerActivity;
 import com.huicheng.hotel.android.ui.activity.plane.PlaneOrderPayActivity;
 import com.huicheng.hotel.android.ui.activity.plane.PlaneOrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -245,7 +246,8 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
                         || getClass().equals(HotelOrderPayActivity.class)
                         || getClass().equals(HotelOrderPaySuccessActivity.class)
                         || getClass().equals(PlaneOrderPayActivity.class)
-                        || getClass().equals(PlaneOrderPaySuccessActivity.class)) {
+                        || getClass().equals(PlaneOrderPaySuccessActivity.class)
+                        || getClass().equals(PlaneAddrManagerActivity.class)) {
                     //do nothing
                     LogUtil.i(TAG, "do nothing~~~");
                 } else {

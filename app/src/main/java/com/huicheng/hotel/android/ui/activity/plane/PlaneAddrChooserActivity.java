@@ -4,17 +4,22 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ListView;
 
+import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.RequestCodeDef;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.AddressInfoBean;
 import com.huicheng.hotel.android.ui.adapter.AddressChooserAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @auth kborid
@@ -24,8 +29,11 @@ import java.util.ArrayList;
 public class PlaneAddrChooserActivity extends BaseAppActivity {
 
     private ListView listView;
-    private ArrayList<String> list = new ArrayList<>();
+    private List<AddressInfoBean> list = new ArrayList<>();
     private AddressChooserAdapter addressChooserAdapter;
+
+    private AddressInfoBean mBean = null;
+    private String mId = "";
 
     @Override
     protected void requestData() {
@@ -66,6 +74,18 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
     @Override
     public void initListeners() {
         super.initListeners();
+        addressChooserAdapter.setOnFlagCheckedListener(new AddressChooserAdapter.OnFlagCheckedListener() {
+            @Override
+            public void onCheck(int position) {
+                System.out.println("position = " + position);
+                mBean = list.get(position);
+                mId = mBean.id;
+                System.out.println("id = " + mId);
+                if (StringUtil.notEmpty(mId)) {
+                    requestSetDefault(mId);
+                }
+            }
+        });
     }
 
     @Override
@@ -74,7 +94,7 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
         switch (v.getId()) {
             case R.id.tv_right:
                 Intent intent = new Intent(this, PlaneAddrManagerActivity.class);
-                startActivityForResult(intent, 0x01);
+                startActivityForResult(intent, RequestCodeDef.REQ_CODE_ADDRESS_MANAGER);
                 break;
             default:
                 break;
@@ -86,9 +106,18 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.ADDRESS_LIST;
         d.path = NetURL.ADDRESS_LIST;
-//        if (!isProgressShowing()) {
-//            showProgressDialog(this);
-//        }
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
+    private void requestSetDefault(String id) {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("id", id);
+        ResponseData d = b.syncRequest(b);
+        d.flag = AppConst.ADDRESS_DEFAULT;
+        d.path = NetURL.ADDRESS_DEFAULT;
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -100,7 +129,20 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
                 removeProgressDialog();
                 swipeRefreshLayout.setRefreshing(false);
                 LogUtil.i(TAG, "json = " + response.body.toString());
+                List<AddressInfoBean> tmp = JSON.parseArray(response.body.toString(), AddressInfoBean.class);
+                list.clear();
+                list.addAll(tmp);
                 addressChooserAdapter.notifyDataSetChanged();
+                int defaultIndex = addressChooserAdapter.getDefaultIndex();
+                if (defaultIndex != -1) {
+                    mBean = list.get(defaultIndex);
+                    mId = mBean.id;
+                }
+            } else if (request.flag == AppConst.ADDRESS_DEFAULT) {
+                removeProgressDialog();
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                setResult(RESULT_OK, new Intent().putExtra("address", mBean));
+                finish();
             }
         }
     }
@@ -111,10 +153,10 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
         if (resultCode != RESULT_OK) {
             return;
         }
-        if (requestCode == 0x01) {
+        if (requestCode == RequestCodeDef.REQ_CODE_ADDRESS_MANAGER) {
             boolean isRefresh = false;
             if (null != data) {
-                isRefresh = data.getBooleanExtra("isRefresh", false);
+                isRefresh = data.getBooleanExtra("needRefresh", false);
             }
             if (isRefresh) {
                 requestData();

@@ -137,8 +137,10 @@ public final class NetURL {
     //-------------------------------------地址管理--------------------------------------------------
     public static final String ADDRESS_GET_DEFAULT = PORTAL + "user/getdefaultaddress.json";
     public static final String ADDRESS_LIST = PORTAL + "user/addresslist.json";
-    public static final String ADDRESS_ADDNEW = PORTAL + "user/addaddress.json";
-    public static final String ADDRESS_UPDATE = PORTAL + "user/updateaddress.json";
+    public static final String ADDRESS_ADD = PORTAL + "user/addaddress.json";
+    public static final String ADDRESS_EDIT = PORTAL + "user/updateaddress.json";
+    public static final String ADDRESS_DEFAULT = PORTAL + "user/setdefaultaddress.json";
+    public static final String ADDRESS_DELETE = PORTAL + "user/deleteaddress.json";
 
     // --------------------------------------------设置缓存的URL-------------------------------------
     public static final String[] CACHE_URL = {};

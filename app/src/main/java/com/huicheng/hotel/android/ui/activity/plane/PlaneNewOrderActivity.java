@@ -24,10 +24,12 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneErrorDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.common.RequestCodeDef;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.AddressInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneInvoiceTaxInfoBean;
@@ -41,6 +43,7 @@ import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
@@ -324,7 +327,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             }
             case R.id.tv_express_chooser: {
                 Intent intent = new Intent(this, PlaneAddrChooserActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, RequestCodeDef.REQ_CODE_ADDRESS_SET_DEFAULT);
                 break;
             }
             case R.id.tv_submit: {
@@ -491,8 +494,20 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
     }
 
-    private void updateExpressAddressDisplayInfo() {
+    private void updateExpressAddressDisplayInfo(AddressInfoBean bean) {
         LogUtil.i(TAG, "updateExpressAddressDisplayInfo()");
+        if (null != bean) {
+            findViewById(R.id.tv_express_tips).setVisibility(View.GONE);
+            tv_express_addr.setVisibility(View.VISIBLE);
+            findViewById(R.id.express_contact_lay).setVisibility(View.VISIBLE);
+            tv_express_addr.setText(bean.province + bean.city + bean.area + bean.address);
+            tv_express_name.setText(bean.name);
+            tv_express_phone.setText(bean.phone);
+        } else {
+            findViewById(R.id.tv_express_tips).setVisibility(View.VISIBLE);
+            tv_express_addr.setVisibility(View.GONE);
+            findViewById(R.id.express_contact_lay).setVisibility(View.GONE);
+        }
     }
 
     private void requestDefaultAddressInfo() {
@@ -577,7 +592,14 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 mBkInfo.add(backFlightBookingInfo);
             } else if (request.flag == AppConst.ADDRESS_GET_DEFAULT) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
-                updateExpressAddressDisplayInfo();
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                if (mJson.containsKey("address")) {
+                    String address = mJson.getString("address");
+                    if (StringUtil.notEmpty(address)) {
+                        AddressInfoBean bean = JSON.parseObject(address, AddressInfoBean.class);
+                        updateExpressAddressDisplayInfo(bean);
+                    }
+                }
             }
 
             if (mTag.size() == requestTagCount) {
@@ -603,9 +625,10 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         if (resultCode != RESULT_OK) {
             return;
         }
-        if (requestCode == 0x01) {
+        if (requestCode == RequestCodeDef.REQ_CODE_ADDRESS_SET_DEFAULT) {
             if (null != data) {
-                updateExpressAddressDisplayInfo();
+                AddressInfoBean bean = (AddressInfoBean) data.getSerializableExtra("address");
+                updateExpressAddressDisplayInfo(bean);
             }
         }
     }
