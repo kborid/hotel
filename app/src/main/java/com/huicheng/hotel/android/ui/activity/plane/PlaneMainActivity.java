@@ -23,10 +23,13 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.common.RequestCodeDef;
 import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.requestbuilder.bean.AddressInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -138,6 +141,14 @@ public class PlaneMainActivity extends BaseMainActivity {
         off_date_lay.setOnClickListener(this);
         on_date_lay.setOnClickListener(this);
         tv_next_search.setOnClickListener(this);
+        tv_next_search.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(PlaneMainActivity.this, PlaneAddrChooserActivity.class);
+                startActivityForResult(intent, RequestCodeDef.REQ_CODE_ADDRESS_MANAGER);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -312,6 +323,12 @@ public class PlaneMainActivity extends BaseMainActivity {
         LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
         if (Activity.RESULT_OK != resultCode) {
             return;
+        }
+        if (requestCode == RequestCodeDef.REQ_CODE_ADDRESS_SET_DEFAULT) {
+            if (null != data) {
+                AddressInfoBean bean = (AddressInfoBean) data.getSerializableExtra("address");
+                CustomToast.show(bean.province + bean.city + bean.area + bean.address, CustomToast.LENGTH_LONG);
+            }
         }
         if (requestCode == REQUEST_CODE_DATE) {
             if (null != data) {

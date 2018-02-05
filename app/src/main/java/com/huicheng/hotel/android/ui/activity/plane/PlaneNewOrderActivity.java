@@ -105,6 +105,8 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private int invoiceType = PlaneCommDef.INVOICE_INVALID;
     private int receiverType = PlaneCommDef.RECEIVE_INVALID;
 
+    private AddressInfoBean mBean = null;
+
     private int requestTagCount = 0;
     private HashMap<Integer, Integer> mTag = new HashMap<>();
 
@@ -327,6 +329,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             }
             case R.id.tv_express_chooser: {
                 Intent intent = new Intent(this, PlaneAddrChooserActivity.class);
+                intent.putExtra("addressBean", mBean);
                 startActivityForResult(intent, RequestCodeDef.REQ_CODE_ADDRESS_SET_DEFAULT);
                 break;
             }
@@ -596,8 +599,8 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 if (mJson.containsKey("address")) {
                     String address = mJson.getString("address");
                     if (StringUtil.notEmpty(address)) {
-                        AddressInfoBean bean = JSON.parseObject(address, AddressInfoBean.class);
-                        updateExpressAddressDisplayInfo(bean);
+                        mBean = JSON.parseObject(address, AddressInfoBean.class);
+                        updateExpressAddressDisplayInfo(mBean);
                     }
                 }
             }
@@ -626,10 +629,8 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             return;
         }
         if (requestCode == RequestCodeDef.REQ_CODE_ADDRESS_SET_DEFAULT) {
-            if (null != data) {
-                AddressInfoBean bean = (AddressInfoBean) data.getSerializableExtra("address");
-                updateExpressAddressDisplayInfo(bean);
-            }
+            mBean = null != data ? (AddressInfoBean) data.getSerializableExtra("address") : null;
+            updateExpressAddressDisplayInfo(mBean);
         }
     }
 

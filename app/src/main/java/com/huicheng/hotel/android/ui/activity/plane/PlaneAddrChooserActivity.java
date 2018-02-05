@@ -1,6 +1,8 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
 
@@ -48,6 +50,15 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
     }
 
     @Override
+    protected void dealIntent() {
+        super.dealIntent();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.getSerializable("addressBean") != null) {
+            mBean = (AddressInfoBean) bundle.getSerializable("addressBean");
+        }
+    }
+
+    @Override
     public void initViews() {
         super.initViews();
         listView = (ListView) findViewById(R.id.listView);
@@ -90,6 +101,10 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.iv_back:
+                setResult(RESULT_OK, new Intent().putExtra("address", mBean));
+                finish();
+                break;
             case R.id.tv_right:
                 Intent intent = new Intent(this, PlaneAddrManagerActivity.class);
                 startActivityForResult(intent, RequestCodeDef.REQ_CODE_ADDRESS_MANAGER);
@@ -97,6 +112,15 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == keyCode) {
+            iv_back.performClick();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private void requestAddressList() {
@@ -135,6 +159,8 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
                 if (defaultIndex != -1) {
                     mBean = list.get(defaultIndex);
                     mId = mBean.id;
+                } else {
+                    mBean = null;
                 }
             } else if (request.flag == AppConst.ADDRESS_DEFAULT) {
                 removeProgressDialog();
