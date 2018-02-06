@@ -1,8 +1,10 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -23,6 +25,8 @@ import com.kborid.style.citypickerview.CityPickerView;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.StringUtil;
+import com.prj.sdk.util.Utils;
 
 /**
  * @auth kborid
@@ -83,9 +87,14 @@ public class PlaneAddrEditActivity extends BaseAppActivity {
         tv_center_title.setText("添加地址");
         setRightButtonResource("保存", getResources().getColor(R.color.plane_mainColor));
         mCityConfig = new CityConfig.Builder()
-                .confirmText("完成")
-                .confirTextColor("#0077db")
                 .cancelText("")
+                .title("")
+                .confirmText("完成")
+                .titleBackgroundColor("#ffffff")
+                .confirTextColor("#0077db")
+                .setLineColor("#e9eaed")
+                .setCustomItemLayout(R.layout.layout_city_wheel_item)
+                .setCustomItemTextViewId(R.id.item_city_name_tv)
                 .build();
         if (isEdit && null != mBean) {
             et_name.setText(mBean.name);
@@ -157,11 +166,13 @@ public class PlaneAddrEditActivity extends BaseAppActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.tv_right:
-//                setResult(RESULT_OK, new Intent().putExtra("isRefresh", true));
-//                finish();
-                requestUpdateAddressInfo();
+                if (checkRequestParamsValid()) {
+                    requestUpdateAddressInfo();
+                }
                 break;
             case R.id.tv_pca:
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 mCityConfig.setDefaultProvinceName(mProvince);
                 mCityConfig.setDefaultCityName(mCity);
                 mCityConfig.setDefaultDistrict(mArea);
@@ -173,6 +184,24 @@ public class PlaneAddrEditActivity extends BaseAppActivity {
         }
     }
 
+    private boolean checkRequestParamsValid() {
+        boolean isValid = false;
+        if (StringUtil.isEmpty(et_name.getText().toString())) {
+            CustomToast.show("请输入收件人姓名", CustomToast.LENGTH_SHORT);
+        } else if (StringUtil.isEmpty(et_phone.getText().toString())) {
+            CustomToast.show("请输入收件人联系电话", CustomToast.LENGTH_SHORT);
+        } else if (!Utils.isMobile(et_phone.getText().toString())) {
+            CustomToast.show("请输入正确的联系电话", CustomToast.LENGTH_SHORT);
+        } else if (StringUtil.isEmpty(tv_pca.getText().toString())) {
+            CustomToast.show("请选择所在地区", CustomToast.LENGTH_SHORT);
+        } else if (StringUtil.isEmpty(et_address.getText().toString())) {
+            CustomToast.show("请输入收件人详细地址", CustomToast.LENGTH_SHORT);
+        } else {
+            isValid = true;
+        }
+        return isValid;
+    }
+
     private void requestUpdateAddressInfo() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("name", et_name.getText().toString());
@@ -181,9 +210,8 @@ public class PlaneAddrEditActivity extends BaseAppActivity {
         b.addBody("isdefault", switch_default.isChecked() ? "1" : "0");
         b.addBody("province", mProvince);
         b.addBody("provincecode", mProvinceId);
-        if (isEdit) {
-            if (null != mBean)
-                b.addBody("id", mBean.id);
+        if (isEdit && null != mBean) {
+            b.addBody("id", mBean.id);
         }
         b.addBody("city", mCity);
         b.addBody("citycode", mCityId);

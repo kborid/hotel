@@ -1,20 +1,23 @@
 package com.huicheng.hotel.android.tools;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,27 +92,25 @@ public class CityParseUtils {
 
     private static String parseJsonFileAssets(Context context) {
         LogUtil.i(TAG, "parseJsonFileAssets()");
+        StringBuilder stringBuilder = new StringBuilder();
         try {
-            InputStreamReader inputReader = new InputStreamReader(context.getResources().getAssets().open("area.json"));
-            BufferedReader bufReader = new BufferedReader(inputReader);
-            String line = "";
-            StringBuilder result = new StringBuilder();
-            while ((line = bufReader.readLine()) != null) {
-                result.append(line);
+            AssetManager assetManager = context.getAssets();
+            BufferedReader bf = new BufferedReader(new InputStreamReader(assetManager.open("area.json")));
+            String line;
+            while ((line = bf.readLine()) != null) {
+                stringBuilder.append(line);
             }
-            inputReader.close();
-            bufReader.close();
-            String finalRet = "";
-            JSONObject mJsonObject = JSONObject.parseObject(result.toString());
-            if (mJsonObject != null && mJsonObject.containsKey("citylist")) {
-                finalRet = mJsonObject.getString("citylist");
-            }
-            SharedPreferenceUtil.getInstance().setString(AppConst.CITY_HOTEL_JSON_FILE, finalRet, false);
-            return finalRet;
-        } catch (Exception e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        String finalRet = "";
+        JSONObject mJsonObject = JSONObject.parseObject(stringBuilder.toString());
+        if (mJsonObject != null && mJsonObject.containsKey("citylist")) {
+            finalRet = mJsonObject.getString("citylist");
+        }
+        SharedPreferenceUtil.getInstance().setString(AppConst.CITY_HOTEL_JSON_FILE, finalRet, false);
+        return finalRet;
     }
 
     public static void initAreaJsonData(Context context) {
@@ -146,8 +147,9 @@ public class CityParseUtils {
                 SharedPreferenceUtil.getInstance().setString(AppConst.CITY_HOTEL_JSON, cityMapJsonStr, false);
             }
         }
-        HashMap<String, List<CityAreaInfoBean>> cityAreaMap = JSON.parseObject(cityMapJsonStr, new TypeReference<HashMap<String, List<CityAreaInfoBean>>>() {
-        });
+        Type type = new TypeToken<HashMap<String, List<CityAreaInfoBean>>>() {
+        }.getType();
+        HashMap<String, List<CityAreaInfoBean>> cityAreaMap = JSON.parseObject(cityMapJsonStr, type);
         SessionContext.setCityAreaMap(cityAreaMap);
         LogUtil.i(TAG, "cityMapJsonStr = " + cityMapJsonStr);
         LogUtil.i(TAG, "initJsonData() end....");

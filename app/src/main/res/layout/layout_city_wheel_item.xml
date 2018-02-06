@@ -8,11 +8,10 @@
         android:id="@+id/item_city_name_tv"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@drawable/city_bg_l"
+        android:background="@color/white"
         android:gravity="center"
         android:padding="10dp"
         android:text="hello"
         android:textColor="#3c3c3c"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textSize="14sp" />
 </LinearLayout>

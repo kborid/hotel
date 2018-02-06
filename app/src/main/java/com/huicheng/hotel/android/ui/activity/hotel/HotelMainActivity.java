@@ -157,12 +157,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
 //            recreate();
 //        }
 
-        //第每次启动时，如果用户未登录，则显示侧滑
-        if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName()) &&
-                !SessionContext.isLogin()) {
-            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-        }
-
         //如果登录状态，则获取用户当前消息、状态等
         if (SessionContext.isLogin()) {
             requestUserMenusStatus();
