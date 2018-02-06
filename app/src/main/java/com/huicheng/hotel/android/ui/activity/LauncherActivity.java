@@ -26,6 +26,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.AMapLocationControl;
+import com.huicheng.hotel.android.control.CityListDataManager;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
@@ -252,9 +253,10 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    CityParseUtils.initAreaJsonData(LauncherActivity.this);
                     requestHomeBannerInfo();
                     requestAppVersionInfo();
+                    //初始化城市列表
+                    CityListDataManager.getInstance().initCityList(null);
                     //初始化机场信息
                     String airportJson = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_PLANE_JSON, "", false);
                     if (StringUtil.isEmpty(airportJson)) {

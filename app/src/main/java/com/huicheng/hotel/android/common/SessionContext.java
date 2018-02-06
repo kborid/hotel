@@ -10,7 +10,6 @@ import com.fm.openinstall.model.AppData;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
-import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelMapInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.UserInfo;
@@ -36,8 +35,6 @@ public class SessionContext {
     private static AppData mAppData;                // OpenInstall数据
 
     private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
-    private static List<CityAreaInfoBean> mCityAreaList = new ArrayList<>();
-    private static HashMap<String, List<CityAreaInfoBean>> mCityAreaMap = new HashMap<>();
     private static List<CityAirportInfoBean> airportList = new ArrayList<>(); //机场列表
     private static HashMap<String, AirCompanyInfoBean> airCompanyMap = new HashMap<>(); //航司Map
 
@@ -139,26 +136,6 @@ public class SessionContext {
     public static void setHhyList(List<HotelMapInfoBean> list) {
         if (null != list) {
             hhyList = list;
-        }
-    }
-
-    public static List<CityAreaInfoBean> getCityAreaList() {
-        return mCityAreaList;
-    }
-
-    public static void setCityAreaList(List<CityAreaInfoBean> list) {
-        if (null != list) {
-            mCityAreaList = list;
-        }
-    }
-
-    public static HashMap<String, List<CityAreaInfoBean>> getCityAreaMap() {
-        return mCityAreaMap;
-    }
-
-    public static void setCityAreaMap(HashMap<String, List<CityAreaInfoBean>> list) {
-        if (null != list) {
-            mCityAreaMap = list;
         }
     }
 

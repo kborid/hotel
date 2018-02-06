@@ -16,11 +16,10 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.control.CityListDataManager;
 import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAreaInfoBean;
-import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -84,8 +83,14 @@ public class HotelCityChooseActivity extends BaseAppActivity {
                 @Override
                 public void run() {
                     super.run();
-                    CityParseUtils.initAreaJsonData(HotelCityChooseActivity.this);
-                    myHandler.sendEmptyMessage(0x01);
+                    CityListDataManager.getInstance().initCityList(new CityListDataManager.OnCityParseCompleteListener() {
+                        @Override
+                        public void onComplete(boolean isSuccess) {
+                            if (isSuccess) {
+                                myHandler.sendEmptyMessage(0x01);
+                            }
+                        }
+                    });
                 }
             }.start();
         }
@@ -135,8 +140,8 @@ public class HotelCityChooseActivity extends BaseAppActivity {
     }
 
     private void initCityListData() {
-        mList = SessionContext.getCityAreaList();
-        mMap = SessionContext.getCityAreaMap();
+        mList = CityListDataManager.mCityAreaList;
+        mMap = CityListDataManager.mCityAreaMap;
 
         List<String> tmp = new ArrayList<>();
         for (String key : mMap.keySet()) {
