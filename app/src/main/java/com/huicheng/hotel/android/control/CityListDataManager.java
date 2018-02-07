@@ -120,10 +120,9 @@ public class CityListDataManager {
                         LogUtil.i(TAG, "cityList version：local = " + localVersion + ", server = " + serverVersion);
                         if (localVersion.compareTo(serverVersion) < 0) {
                             SharedPreferenceUtil.getInstance().setString(AppConst.CITY_LIST_JSON_VERSION, serverVersion, false);
-                            JSONObject mJsonObject = JSONObject.parseObject(response.body.toString());
-                            if (mJsonObject != null && mJsonObject.containsKey("citylist")) {
-                                SharedPreferenceUtil.getInstance().setString(AppConst.CITY_HOTEL_JSON_FILE, mJsonObject.getString("citylist"), false);
-                                jsonStr = mJsonObject.getString("citylist");
+                            if (mJson.containsKey("citylist")) {
+                                SharedPreferenceUtil.getInstance().setString(AppConst.CITY_HOTEL_JSON_FILE, mJson.getString("citylist"), false);
+                                jsonStr = mJson.getString("citylist");
                             }
                         }
                     }
@@ -134,9 +133,8 @@ public class CityListDataManager {
 
         @Override
         public void notifyError(ResponseData request, ResponseData response, Exception e) {
-            if (null != listener) {
-                listener.onComplete(false);
-            }
+            String localCityJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.CITY_HOTEL_JSON_FILE, "", false);
+            initAreaJsonFromNet(localCityJsonStr);
         }
     };
 

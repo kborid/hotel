@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
@@ -50,15 +49,6 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
     }
 
     @Override
-    protected void dealIntent() {
-        super.dealIntent();
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null && bundle.getSerializable("addressBean") != null) {
-            mBean = (AddressInfoBean) bundle.getSerializable("addressBean");
-        }
-    }
-
-    @Override
     public void initViews() {
         super.initViews();
         listView = (ListView) findViewById(R.id.listView);
@@ -102,7 +92,7 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.iv_back:
-                setResult(RESULT_OK, new Intent().putExtra("address", mBean));
+                setResult(RESULT_OK, new Intent().putExtra("addressBean", mBean));
                 finish();
                 break;
             case R.id.tv_right:
@@ -155,17 +145,18 @@ public class PlaneAddrChooserActivity extends BaseAppActivity {
                 list.clear();
                 list.addAll(tmp);
                 addressChooserAdapter.notifyDataSetChanged();
-                int defaultIndex = addressChooserAdapter.getSelectedIndex();
-                if (defaultIndex != -1) {
-                    mBean = list.get(defaultIndex);
-                    mId = mBean.id;
-                } else {
-                    mBean = null;
+                mBean = null;
+                for (AddressInfoBean bean : list) {
+                    if (bean.isdefault) {
+                        mBean = bean;
+                        mId = mBean.id;
+                        break;
+                    }
                 }
             } else if (request.flag == AppConst.ADDRESS_DEFAULT) {
                 removeProgressDialog();
                 LogUtil.i(TAG, "json = " + response.body.toString());
-                setResult(RESULT_OK, new Intent().putExtra("address", mBean));
+                setResult(RESULT_OK, new Intent().putExtra("addressBean", mBean));
                 finish();
             }
         }

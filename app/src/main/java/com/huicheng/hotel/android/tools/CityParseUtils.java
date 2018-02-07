@@ -57,8 +57,8 @@ public class CityParseUtils {
         if (StringUtil.notEmpty(city)) {
             if (city.endsWith("市")) {
                 city = city.replace("市", "");
-            } else if (city.endsWith("区")) {
-                city = city.replace("区", "");
+//            } else if (city.endsWith("区")) {
+//                city = city.replace("区", "");
             }
             tempStr += city;
         }

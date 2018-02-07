@@ -329,7 +329,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             }
             case R.id.tv_express_chooser: {
                 Intent intent = new Intent(this, PlaneAddrChooserActivity.class);
-                intent.putExtra("addressBean", mBean);
                 startActivityForResult(intent, RequestCodeDef.REQ_CODE_ADDRESS_SET_DEFAULT);
                 break;
             }
@@ -629,8 +628,10 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             return;
         }
         if (requestCode == RequestCodeDef.REQ_CODE_ADDRESS_SET_DEFAULT) {
-            mBean = null != data ? (AddressInfoBean) data.getSerializableExtra("address") : null;
-            updateExpressAddressDisplayInfo(mBean);
+            if (null != data) {
+                mBean = (AddressInfoBean) data.getSerializableExtra("addressBean");
+                updateExpressAddressDisplayInfo(mBean);
+            }
         }
     }
 

@@ -142,11 +142,11 @@ public class HotelCityChooseActivity extends BaseAppActivity {
     private void initCityListData() {
         mList = CityListDataManager.mCityAreaList;
         mMap = CityListDataManager.mCityAreaMap;
-
-        List<String> tmp = new ArrayList<>();
-        for (String key : mMap.keySet()) {
-            tmp.add(key);
+        if (mList.size() == 0 || mMap.size() == 0) {
+            return;
         }
+
+        List<String> tmp = new ArrayList<>(mMap.keySet());
         Collections.sort(tmp);
         cityIndexList.clear();
         cityIndexList.addAll(tmp);
