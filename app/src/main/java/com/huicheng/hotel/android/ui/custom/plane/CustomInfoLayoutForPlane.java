@@ -36,6 +36,22 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
     private static final int SEX_MALE = 1;
     private Context context;
 
+    private enum CardType {
+        NI("NI"),   //身份证
+        PP("PP"),   //护照
+        ID("ID"),;  //其他
+
+        String value;
+
+        CardType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     public CustomInfoLayoutForPlane(Context context) {
         this(context, null);
     }
@@ -89,7 +105,7 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-            spinner_cardType.setSelection(convert2IntCartType(temp.get(i).cardType));
+            spinner_cardType.setSelection(CardType.valueOf(temp.get(i).cardType).ordinal());
             et_card_number.setText(temp.get(i).cardNo);
             spinner_sex.setSelection(convertValue2SexSpinnerSelection(temp.get(i).sex));
 
@@ -101,38 +117,6 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
             countListener.onCountChanged(getChildCount());
         }
         return temp.size();
-    }
-
-    private int convert2IntCartType(String type) {
-        int typeInt = 0;
-        switch (type) {
-            case "NI":
-                typeInt = 1;
-                break;
-            case "PP":
-                typeInt = 0;
-                break;
-            case "ID":
-                typeInt = 2;
-                break;
-        }
-        return typeInt;
-    }
-
-    private String convert2StringCartType(int type) {
-        String typeString = "PP";
-        switch (type) {
-            case 0:
-                typeString = "PP";
-                break;
-            case 1:
-                typeString = "NI";
-                break;
-            case 2:
-                typeString = "ID";
-                break;
-        }
-        return typeString;
     }
 
     private int convertSexSpinnerSelection2Value(int position) {
@@ -244,7 +228,7 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
 
             PlanePassengerInfoBean bean = new PlanePassengerInfoBean(
                     ed_custom_name.getText().toString(),
-                    convert2StringCartType(spinner_cardType.getSelectedItemPosition()),
+                    CardType.values()[spinner_cardType.getSelectedItemPosition()].getValue(),
                     et_card_number.getText().toString(),
                     tv_birthday.getText().toString(),
                     convertSexSpinnerSelection2Value(spinner_sex.getSelectedItemPosition()),

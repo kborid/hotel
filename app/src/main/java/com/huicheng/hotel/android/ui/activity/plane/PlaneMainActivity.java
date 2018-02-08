@@ -24,7 +24,6 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.common.RequestCodeDef;
-import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.requestbuilder.bean.AddressInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
@@ -32,8 +31,6 @@ import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.SharedPreferenceUtil;
-import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.lang.reflect.Field;

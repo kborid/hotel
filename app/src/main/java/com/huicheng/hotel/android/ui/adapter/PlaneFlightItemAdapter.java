@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
@@ -83,14 +82,7 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
                         .into(viewHolder.iv_flight_icon);
             } else {
                 viewHolder.tv_flight_carrier.setText(bean.carrier);
-                if (StringUtil.notEmpty(bean.carrier)
-                        && PlaneCommDef.AIR_ICON_CODE.containsKey(bean.carrier)
-                        && PlaneCommDef.AIR_ICON_CODE.get(bean.carrier) != 0) {
-                    viewHolder.iv_flight_icon.setVisibility(View.VISIBLE);
-                    viewHolder.iv_flight_icon.setImageResource(PlaneCommDef.AIR_ICON_CODE.get(bean.carrier));
-                } else {
-                    viewHolder.iv_flight_icon.setVisibility(View.GONE);
-                }
+                viewHolder.iv_flight_icon.setVisibility(View.GONE);
             }
         } else {
             viewHolder.iv_flight_icon.setVisibility(View.GONE);

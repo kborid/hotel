@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
@@ -23,6 +24,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
 import com.huicheng.hotel.android.ui.adapter.PlaneTicketVendorItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -132,16 +134,18 @@ public class PlaneTicketListActivity extends BaseAppActivity {
         adapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
-                Intent intent;
                 PlaneOrderManager.instance.setTicketInfo(mTicketBean);
                 PlaneOrderManager.instance.setVendorInfo(mVendorList.get(position));
                 if (PlaneOrderManager.instance.isGoBookingTypeForGoBack()) {
                     PlaneOrderManager.instance.setStatus(PlaneCommDef.STATUS_BACK);
-                    intent = new Intent(PlaneTicketListActivity.this, PlaneFlightListActivity.class);
+                    startActivity(new Intent(PlaneTicketListActivity.this, PlaneFlightListActivity.class));
                 } else {
-                    intent = new Intent(PlaneTicketListActivity.this, PlaneNewOrderActivity.class);
+                    if (!SessionContext.isLogin()) {
+                        sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                        return;
+                    }
+                    startActivity(new Intent(PlaneTicketListActivity.this, PlaneNewOrderActivity.class));
                 }
-                startActivity(intent);
             }
         });
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

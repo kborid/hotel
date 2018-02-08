@@ -25,7 +25,6 @@ import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneErrorDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.common.RequestCodeDef;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
@@ -88,7 +87,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private TextView tv_delay_price;
 
     private TextView tv_express_addr, tv_express_name, tv_express_phone, tv_express_chooser;
-    private CheckBox cb_agreement_plane, cb_agreement_abc;
 
     private TextView tv_amount;
     private TextView tv_passenger;
@@ -101,9 +99,9 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private PlaneBookingInfo backFlightBookingInfo = null;
 
     private List<PlaneBookingInfo> mBkInfo = new ArrayList<>();
-    private PlaneInvoiceTaxInfoBean invoiceTaxInfoBean = null;
+    private PlaneInvoiceTaxInfoBean invoiceTaxInfoBean;
     private int invoiceType = PlaneCommDef.INVOICE_INVALID;
-    private int receiverType = PlaneCommDef.RECEIVE_INVALID;
+    private int receiverType = PlaneCommDef.RECEIVE_PERSONAL;
 
     private AddressInfoBean mBean = null;
 
@@ -174,9 +172,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         tv_express_phone = (TextView) findViewById(R.id.tv_express_phone);
         tv_express_chooser = (TextView) findViewById(R.id.tv_express_chooser);
 
-        cb_agreement_plane = (CheckBox) findViewById(R.id.cb_agreement_plane);
-        cb_agreement_abc = (CheckBox) findViewById(R.id.cb_agreement_abc);
-
         tv_amount = (TextView) findViewById(R.id.tv_amount);
         tv_passenger = (TextView) findViewById(R.id.tv_passenger);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
@@ -226,7 +221,11 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         go_tv_airport.setText(String.format("%1$s%2$s - %3$s%4$s", goFlightInfo.dptAirport, goFlightInfo.dptTerminal, goFlightInfo.arrAirport, goFlightInfo.arrTerminal));
         go_tv_offdate.append("  " + goFlightInfo.dptTime);
         PlaneTicketInfoBean.VendorInfo goVendorInfo = PlaneOrderManager.instance.getGoVendorInfo();
-        go_tv_cabin.setText(PlaneCommDef.getCabinString(goVendorInfo.cabinType));
+        int goCabinType = 0;
+        if (goVendorInfo.cabinType >= 0 && goVendorInfo.cabinType <= 2) {
+            goCabinType = goVendorInfo.cabinType;
+        }
+        go_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[goCabinType].getValue());
         go_tv_price.setText(String.valueOf((int) goVendorInfo.barePrice));
 
         mTicketPrice += goVendorInfo.barePrice;
@@ -251,7 +250,11 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             back_tv_airport.setText(String.format("%1$s%2$s - %3$s%4$s", backFlightInfo.dptAirport, backFlightInfo.dptTerminal, backFlightInfo.arrAirport, backFlightInfo.arrTerminal));
             back_tv_offdate.append("  " + backFlightInfo.dptTime);
             PlaneTicketInfoBean.VendorInfo backVendorInfo = PlaneOrderManager.instance.getBackVendorInfo();
-            back_tv_cabin.setText(PlaneCommDef.getCabinString(backVendorInfo.cabinType));
+            int backCabinType = 0;
+            if (backVendorInfo.cabinType >= 0 && backVendorInfo.cabinType <= 2) {
+                backCabinType = backVendorInfo.cabinType;
+            }
+            back_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[backCabinType].getValue());
             back_tv_price.setText(String.valueOf((int) backVendorInfo.barePrice));
 
             mTicketPrice += backVendorInfo.barePrice;
@@ -263,6 +266,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         tv_invoice_tips.setVisibility(View.VISIBLE);
         tv_invoice_type.setVisibility(View.GONE);
         invoice_lay.setVisibility(View.GONE);
+        invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean();
         mPassengerCount = custom_info_layout_plane.getChildCount();
         calculateAmount(mPassengerCount);
     }
@@ -295,11 +299,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean(
-                            et_contact.getText().toString(),
-                            et_contactMob.getText().toString(),
-                            SessionContext.mUser.user.userid
-                    );
                     tv_invoice_tips.setVisibility(View.GONE);
                     invoice_lay.setVisibility(View.VISIBLE);
                 } else {
@@ -333,33 +332,52 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 break;
             }
             case R.id.tv_submit: {
+                //发票相关
                 if (btn_invoice_switch.isChecked()) {
-                    invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean(
-                            et_contact.getText().toString(),
-                            et_contactMob.getText().toString(),
-                            SessionContext.mUser.user.userid
-                    );
+                    invoiceTaxInfoBean.setExpressAmount(mExpressPrice);
                     invoiceTaxInfoBean.setInvoiceType(invoiceType);
                     invoiceTaxInfoBean.setReceiverType(receiverType);
-                    String receiveTitle = tr_invoice_header.isShown() ? et_receive_title.getText().toString() : null;
+                    String receiveTitle = tr_invoice_header.isShown() ? et_receive_title.getText().toString() : "";
                     invoiceTaxInfoBean.setReceiverTitle(receiveTitle);
+                    if (findViewById(R.id.tv_express_tips).isShown()
+                            || !findViewById(R.id.express_contact_lay).isShown()
+                            || null == mBean) {
+                        CustomToast.show("请选择收货地址", CustomToast.LENGTH_SHORT);
+                        return;
+                    }
+                    invoiceTaxInfoBean.setAddress(mBean.province + mBean.city + mBean.area + mBean.address);
+                    invoiceTaxInfoBean.setSjr(mBean.name);
+                    invoiceTaxInfoBean.setSjrPhone(mBean.phone);
                 } else {
                     invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean();
                 }
-                if (!cb_agreement_plane.isChecked()) {
-                    CustomToast.show("请先阅读机票购票须知", CustomToast.LENGTH_SHORT);
-                    return;
+                //联系人信息，必填（无论需不需要发票）
+                if (checkRequestParamsValid()) {
+                    invoiceTaxInfoBean.setContact(et_contact.getText().toString());
+                    invoiceTaxInfoBean.setContactMob(et_contactMob.getText().toString());
+                    requestSubmitOrderInfo();
                 }
-                if (!cb_agreement_abc.isChecked()) {
-                    CustomToast.show("请先阅读ABC旅行预订会员服务协议", CustomToast.LENGTH_SHORT);
-                    return;
-                }
-                requestSubmitOrderInfo();
-                Intent intent = new Intent(this, PlaneOrderPayActivity.class);
-                startActivity(intent);
                 break;
             }
         }
+    }
+
+    private boolean checkRequestParamsValid() {
+        boolean isValid = false;
+        if (StringUtil.isEmpty(et_contact.getText().toString())) {
+            CustomToast.show("请输入联系人姓名", CustomToast.LENGTH_SHORT);
+        } else if (StringUtil.isEmpty(et_contactMob.getText().toString())) {
+            CustomToast.show("请输入联系人手机号码", CustomToast.LENGTH_SHORT);
+        } else if (!Utils.isMobile(et_contactMob.getText().toString())) {
+            CustomToast.show("请输入正确的手机号码", CustomToast.LENGTH_SHORT);
+        } else if (!((CheckBox) findViewById(R.id.cb_agreement_plane)).isChecked()) {
+            CustomToast.show("请先阅读机票购票须知", CustomToast.LENGTH_SHORT);
+        } else if (!((CheckBox) findViewById(R.id.cb_agreement_abc)).isChecked()) {
+            CustomToast.show("请先阅读ABC旅行预订会员服务协议", CustomToast.LENGTH_SHORT);
+        } else {
+            isValid = true;
+        }
+        return isValid;
     }
 
     private int calculateSafePriceSingle() {
@@ -562,19 +580,19 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         RequestBeanBuilder b = RequestBeanBuilder.create(false);
         b.addBody("bKInfo", JSON.toJSONString(mBkInfo));
         String invoiceTax = JSON.toJSONString(invoiceTaxInfoBean);
-        LogUtil.i(TAG, invoiceTax);
+        LogUtil.i(TAG, "invoiceTax:" + invoiceTax);
         b.addBody("invoiceTax", invoiceTax);
         String passenger = custom_info_layout_plane.getCustomInfoJsonString(safeType);
-        LogUtil.i(TAG, passenger);
+        LogUtil.i(TAG, "passengers:" + passenger);
         b.addBody("passengers", passenger);
 
-//        ResponseData d = b.syncRequest(b);
-//        d.flag = AppConst.PLANE_NEW_ORDER;
-//        d.path = NetURL.PLANE_NEW_ORDER;
-//        if (!isProgressShowing()) {
-//            showProgressDialog(this);
-//        }
-//        requestID = DataLoader.getInstance().loadData(this, d);
+        ResponseData d = b.syncRequest(b);
+        d.flag = AppConst.PLANE_NEW_ORDER;
+        d.path = NetURL.PLANE_NEW_ORDER;
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     @Override
@@ -602,6 +620,11 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                         updateExpressAddressDisplayInfo(mBean);
                     }
                 }
+            } else if (request.flag == AppConst.PLANE_NEW_ORDER) {
+                removeProgressDialog();
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                Intent intent = new Intent(this, PlaneOrderPayActivity.class);
+                startActivity(intent);
             }
 
             if (mTag.size() == requestTagCount) {

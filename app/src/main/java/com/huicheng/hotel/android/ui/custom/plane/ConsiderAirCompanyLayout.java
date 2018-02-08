@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
@@ -97,17 +96,10 @@ public class ConsiderAirCompanyLayout extends BaseConsiderAirLayout {
                                 .into(iv_air_logo);
                     } else {
                         tv_name.setText(name);
-                        if (StringUtil.notEmpty(name)
-                                && PlaneCommDef.AIR_ICON_CODE.containsKey(name)
-                                && PlaneCommDef.AIR_ICON_CODE.get(name) != 0) {
-                            iv_air_logo.setVisibility(View.VISIBLE);
-                            iv_air_logo.setImageResource(PlaneCommDef.AIR_ICON_CODE.get(name));
+                        if (i == 0) {
+                            iv_air_logo.setVisibility(GONE);
                         } else {
-                            if (i == 0) {
-                                iv_air_logo.setVisibility(GONE);
-                            } else {
-                                iv_air_logo.setVisibility(View.INVISIBLE);
-                            }
+                            iv_air_logo.setVisibility(View.INVISIBLE);
                         }
                     }
                 } else {

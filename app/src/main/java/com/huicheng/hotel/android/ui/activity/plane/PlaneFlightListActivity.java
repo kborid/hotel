@@ -589,9 +589,6 @@ public class PlaneFlightListActivity extends BaseAppActivity {
                     int[] airTypes = mPlaneConsiderLayout.getConsiderAirLayout(considerName[3]).getFlightConditionValue();
                     if (airTypes != null && airTypes.length > 0) {
                         switch (airTypes[0]) {
-                            case PlaneCommDef.FLIGHT_TYPE_ALL:
-                                //do nothing
-                                break;
                             case PlaneCommDef.FLIGHT_TYPE_BIG:
                                 if (!bean.flightTypeFullName.contains("大") && !bean.flightTypeFullName.contains("宽")) {
                                     continue;
@@ -607,6 +604,10 @@ public class PlaneFlightListActivity extends BaseAppActivity {
                                     continue;
                                 }
                                 break;
+                            default:
+                                //do nothing
+                                break;
+
                         }
                     }
                 }
@@ -615,23 +616,23 @@ public class PlaneFlightListActivity extends BaseAppActivity {
                     int[] airCangs = mPlaneConsiderLayout.getConsiderAirLayout(considerName[4]).getFlightConditionValue();
                     if (airCangs != null && airCangs.length > 0) {
                         switch (airCangs[0]) {
-                            case PlaneCommDef.FLIGHT_CANG_ALL:
-                                //do nothing
-                                break;
                             case PlaneCommDef.FLIGHT_CANG_JINGJI:
-                                if (bean.positionLevel == PlaneCommDef.CABIN_SHANGWU || bean.positionLevel == PlaneCommDef.CABIN_TOUDENG) {
+                                if (bean.positionLevel != PlaneCommDef.CabinLevel.CABIN_JINGJI.ordinal()) {
                                     continue;
                                 }
                                 break;
                             case PlaneCommDef.FLIGHT_CANG_TOUDENG:
-                                if (bean.positionLevel != PlaneCommDef.CABIN_TOUDENG) {
+                                if (bean.positionLevel != PlaneCommDef.CabinLevel.CABIN_TOUDENG.ordinal()) {
                                     continue;
                                 }
                                 break;
                             case PlaneCommDef.FLIGHT_CANG_SHANGWU:
-                                if (bean.positionLevel != PlaneCommDef.CABIN_SHANGWU) {
+                                if (bean.positionLevel != PlaneCommDef.CabinLevel.CABIN_SHANGWU.ordinal()) {
                                     continue;
                                 }
+                                break;
+                            default:
+                                // do nothing
                                 break;
                         }
                     }

@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.custom;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.activity.DebugInfoActivity;
 import com.huicheng.hotel.android.ui.activity.UcAboutActivity;
+import com.huicheng.hotel.android.ui.activity.UcAssessesActivity;
 import com.huicheng.hotel.android.ui.activity.UcBountyMainActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcFansHotelActivity;
@@ -35,13 +37,12 @@ import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.activity.UcPersonalInfoActivity;
 import com.huicheng.hotel.android.ui.activity.UcRegisterActivity;
 import com.huicheng.hotel.android.ui.activity.UcSettingActivity;
-import com.huicheng.hotel.android.ui.activity.UcAssessesActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.constants.BroadCastConst;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 
@@ -140,6 +141,7 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         tv_private = (TextView) findViewById(R.id.tv_private);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setListeners() {
         btn_login.setOnClickListener(this);
         btn_register.setOnClickListener(this);

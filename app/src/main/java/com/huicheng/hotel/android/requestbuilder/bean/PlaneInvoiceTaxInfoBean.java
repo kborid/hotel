@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.requestbuilder.bean;
 
 import com.huicheng.hotel.android.common.PlaneCommDef;
+import com.huicheng.hotel.android.common.SessionContext;
 
 /**
  * @author kborid
@@ -10,7 +11,7 @@ import com.huicheng.hotel.android.common.PlaneCommDef;
 public class PlaneInvoiceTaxInfoBean {
     //    private int coAmount;
     //    private int discountAmount;
-    //    private int expressAmount;
+    private int expressAmount;          //快递费用
     private String address;             //发票邮寄地址
     private String contact;             //订单联系人
     private String contactMob;          //订单联系电话
@@ -24,13 +25,17 @@ public class PlaneInvoiceTaxInfoBean {
 
     public PlaneInvoiceTaxInfoBean() {
         this.invoiceType = PlaneCommDef.INVOICE_INVALID;
+        this.receiverType = PlaneCommDef.RECEIVE_PERSONAL;
+        this.contactPreNum = "86";
+        this.userId = SessionContext.mUser.user.userid;
     }
 
-    public PlaneInvoiceTaxInfoBean(String contact, String contactMob, String userId) {
-        this.contact = contact;
-        this.contactMob = contactMob;
-        this.contactPreNum = "86";
-        this.userId = userId;
+    public int getExpressAmount() {
+        return expressAmount;
+    }
+
+    public void setExpressAmount(int expressAmount) {
+        this.expressAmount = expressAmount;
     }
 
     public String getAddress() {
