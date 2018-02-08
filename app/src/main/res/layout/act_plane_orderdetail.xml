@@ -23,7 +23,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/iv_hotel_logo_large" />
+            android:src="@drawable/iv_plane_logo_large" />
 
         <ScrollView
             android:id="@+id/scroll_view"
