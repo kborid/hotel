@@ -74,23 +74,60 @@
                 android:textSize="@dimen/common_12sp" />
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="15dp"
-            android:text="¥"
-            android:textColor="@color/plane_mainColor"
-            android:textSize="@dimen/common_18sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="15dp"
-            android:text="9900"
-            android:textColor="@color/plane_mainColor"
-            android:textSize="@dimen/common_18sp"
-            android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="15dp"
+                    android:text="¥"
+                    android:textColor="@color/plane_mainColor"
+                    android:textSize="@dimen/common_18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="15dp"
+                    android:text="9900"
+                    android:textColor="@color/plane_mainColor"
+                    android:textSize="@dimen/common_18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="15dp"
+                    android:text="机建燃油"
+                    android:textColor="#989898"
+                    android:textSize="@dimen/common_10sp" />
+
+                <TextView
+                    android:id="@+id/tv_jj_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:drawablePadding="15dp"
+                    android:text="¥50"
+                    android:textColor="#989898"
+                    android:textSize="@dimen/common_10sp" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

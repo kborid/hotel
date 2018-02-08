@@ -112,7 +112,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private int mDelayPrice = 0; //延误险价格
     private int mExpressPrice = 0; //邮费价格
 
-    private int mTicketPrice = 0; //单人机票价格
+    private int mTicketPrice = 0; //单人机票价格(包含基建和燃油费用)
     private int safeType = PlaneCommDef.SAFE_BUY_NON;
     private int mSafePrice = 0; //保险价格
     private int mPassengerCount = 0; //乘机人个数
@@ -214,6 +214,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         TextView go_tv_cabin = (TextView) goPlaneOrder.findViewById(R.id.tv_cabin);
         TextView go_tv_airport = (TextView) goPlaneOrder.findViewById(R.id.tv_airport);
         TextView go_tv_price = (TextView) goPlaneOrder.findViewById(R.id.tv_price);
+        TextView go_tv_jj_price = (TextView) goPlaneOrder.findViewById(R.id.tv_jj_price);
         long goOffDate = PlaneOrderManager.instance.getGoFlightOffDate();
         go_tv_offdate.setText(DateUtil.getDay("MM-dd  ", goOffDate));
         go_tv_offdate.append(DateUtil.dateToWeek2(new Date(goOffDate)));
@@ -227,8 +228,9 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
         go_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[goCabinType].getValue());
         go_tv_price.setText(String.valueOf((int) goVendorInfo.barePrice));
+        go_tv_jj_price.setText(String.format(getString(R.string.rmbStr2), (goFlightInfo.arf + goFlightInfo.tof)));
 
-        mTicketPrice += goVendorInfo.barePrice;
+        mTicketPrice += goVendorInfo.barePrice + goFlightInfo.arf + goFlightInfo.tof;
 
         // 如果往返航班，则增加返程航班信息显示
         if (PlaneOrderManager.instance.isFlightGoBack()) {
@@ -239,6 +241,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             TextView back_tv_cabin = (TextView) backPlaneOrder.findViewById(R.id.tv_cabin);
             TextView back_tv_airport = (TextView) backPlaneOrder.findViewById(R.id.tv_airport);
             TextView back_tv_price = (TextView) backPlaneOrder.findViewById(R.id.tv_price);
+            TextView back_tv_jj_price = (TextView) backPlaneOrder.findViewById(R.id.tv_jj_price);
             go_tv_flag.setVisibility(View.VISIBLE);
             go_tv_flag.setText("去程：");
             back_tv_flag.setVisibility(View.VISIBLE);
@@ -256,8 +259,9 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             }
             back_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[backCabinType].getValue());
             back_tv_price.setText(String.valueOf((int) backVendorInfo.barePrice));
+            back_tv_jj_price.setText(String.format(getString(R.string.rmbStr2), (backFlightInfo.arf + backFlightInfo.tof)));
 
-            mTicketPrice += backVendorInfo.barePrice;
+            mTicketPrice += backVendorInfo.barePrice + backFlightInfo.arf + backFlightInfo.tof;
         }
 
         //initialize
