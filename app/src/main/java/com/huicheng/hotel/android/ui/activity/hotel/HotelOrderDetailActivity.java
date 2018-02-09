@@ -30,8 +30,8 @@ import com.huicheng.hotel.android.ui.activity.UcAssessesActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
@@ -328,7 +328,7 @@ public class HotelOrderDetailActivity extends BaseAppActivity {
                     showDialDialog(orderPayDetailInfoBean.name, orderPayDetailInfoBean.hotelPhone);
                 }
                 break;
-            case R.id.btn_pay:
+            case R.id.tv_pay:
                 intent = new Intent(this, HotelOrderPayActivity.class);
                 intent.putExtra("orderId", orderId);
                 intent.putExtra("orderType", orderType);
