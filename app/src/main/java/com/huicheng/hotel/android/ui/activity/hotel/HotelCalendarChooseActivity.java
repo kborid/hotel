@@ -21,7 +21,6 @@ import com.huicheng.hotel.android.ui.custom.calendar.CalendarUtils;
 import com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarRecyclerView;
 import com.huicheng.hotel.android.ui.custom.calendar.SimpleMonthAdapter;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.huicheng.hotel.android.content.AppConst;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 
