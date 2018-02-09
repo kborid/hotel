@@ -6,196 +6,57 @@
     android:layout_height="match_parent">
 
     <!--正文内容-->
-    <FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.activity.MainSwitcherActivity">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="50dp"
-            android:paddingTop="50dp">
-
-            <LinearLayout
-                android:id="@+id/hotel_lay"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="4">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/tabHotelColor" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="30dp"
-                    android:src="@drawable/iv_gs_hotel" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="30dp"
-                    android:text="酒店"
-                    android:textColor="@color/tabHotelColor"
-                    android:textSize="@dimen/common_24sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/plane_lay"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="4">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/tabPlaneColor" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="30dp"
-                    android:src="@drawable/iv_gs_plane" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="30dp"
-                    android:text="机票"
-                    android:textColor="@color/tabPlaneColor"
-                    android:textSize="@dimen/common_24sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/train_lay"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="4">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/tabTrainColor" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="30dp"
-                    android:src="@drawable/iv_gs_train" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="30dp"
-                    android:text="火车票"
-                    android:textColor="@color/tabTrainColor"
-                    android:textSize="@dimen/common_24sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/taxi_lay"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="4">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/tabTaxiColor" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="30dp"
-                    android:src="@drawable/iv_gs_taxi" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="30dp"
-                    android:text="出租车"
-                    android:textColor="@color/tabTaxiColor"
-                    android:textSize="@dimen/common_24sp" />
-            </LinearLayout>
-        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="20dp"
-            android:paddingLeft="40dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
+            <!--banner-->
+            <com.huicheng.hotel.android.ui.custom.CommonBannerLayout
+                android:id="@+id/banner_lay"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/hintColor" />
+
+            <RelativeLayout
+                android:id="@+id/user_lay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:src="@drawable/iv_logo_horizontal" />
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/iv_user"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/iv_home_user" />
+            </RelativeLayout>
+
         </RelativeLayout>
-    </FrameLayout>
 
-    <!--毛玻璃背景-->
-    <RelativeLayout
-        android:id="@+id/blur_lay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/iv_blur"
+        <!--switcher tab-->
+        <LinearLayout
+            android:id="@+id/tab_title_lay"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/iv_logo_vertical"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/iv_logo_vertical" />
+            android:layout_marginTop="-8dp"
+            android:background="@drawable/main_switcher_tab_bg"
+            android:orientation="horizontal"
+            android:padding="10dp" />
 
-        <ImageView
-            android:id="@+id/iv_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="50dp"
-            android:layout_marginRight="24dp"
-            android:src="@drawable/iv_left" />
-    </RelativeLayout>
+        <!--switcher content-->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/tab_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/main_switcher_content_bg" />
+    </LinearLayout>
 
     <!--侧滑内容-->
     <com.huicheng.hotel.android.ui.custom.LeftDrawerLayout

@@ -1,4 +1,4 @@
-package com.huicheng.hotel.android.ui.activity.plane;
+package com.huicheng.hotel.android.ui.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -7,9 +7,12 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,24 +26,35 @@ import android.widget.TextView;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
-import com.huicheng.hotel.android.common.RequestCodeDef;
-import com.huicheng.hotel.android.requestbuilder.bean.AddressInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
-import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.activity.plane.PlaneAirportChooserActivity;
+import com.huicheng.hotel.android.ui.activity.plane.PlaneFlightListActivity;
+import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
 import java.util.Date;
 
-public class PlaneMainActivity extends BaseMainActivity {
+/**
+ * @author kborid
+ * @date 2018/2/9 0009.
+ */
+
+public class FragmentSwitcherPlane extends BaseFragment implements View.OnClickListener {
+    private static final int REQUEST_CODE_DATE = 0x01;
+    private static final int REQUEST_CODE_AIRPORT = 0x03;
+    public static boolean isFirstLoad = false;
+    private Bundle bundle = null;
 
     private WindowManager mWindowManager;
     private TabLayout tabs;
-    private int selectedIndex = 0;
+    private int mFlightType = PlaneCommDef.FLIGHT_SINGLE;
+    private boolean isSelectedDate = false;
+    private long beginTime, endTime;
 
     private ImageView iv_change;
     private CityAirportInfoBean off, on;
@@ -58,39 +72,76 @@ public class PlaneMainActivity extends BaseMainActivity {
     private int[] mOffLocation;
     private int[] mOnLocation;
 
-    public void initViews() {
-        super.initViews();
-        initContentLayout(LayoutInflater.from(this).inflate(R.layout.layout_content_plane, null));
-        tabs = (TabLayout) findViewById(R.id.tabs);
-        off_land_city_info = (LinearLayout) findViewById(R.id.off_land_city_info);
-        on_land_city_info = (LinearLayout) findViewById(R.id.on_land_city_info);
-        tv_off_city = (TextView) findViewById(R.id.tv_off_city);
-        tv_off_piny = (TextView) findViewById(R.id.tv_off_piny);
-        tv_on_city = (TextView) findViewById(R.id.tv_on_city);
-        tv_on_piny = (TextView) findViewById(R.id.tv_on_piny);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        isFirstLoad = true;
+        bundle = getArguments();
+        View view = inflater.inflate(R.layout.layout_content_plane, container, false);
+        initTypedArrayValue();
+        initViews(view);
+        initParams();
+        initListeners();
+        return view;
+    }
 
-        off_date_lay = (LinearLayout) findViewById(R.id.off_date_lay);
-        tv_off_date = (TextView) findViewById(R.id.tv_off_date);
-        tv_off_week = (TextView) findViewById(R.id.tv_off_week);
-        on_date_lay = (LinearLayout) findViewById(R.id.on_date_lay);
-        tv_on_date = (TextView) findViewById(R.id.tv_on_date);
-        tv_on_week = (TextView) findViewById(R.id.tv_on_week);
-        iv_change = (ImageView) findViewById(R.id.iv_change);
-        tv_plane_search = (TextView) findViewById(R.id.tv_plane_search);
+    public static Fragment newInstance() {
+        Fragment fragment = new FragmentSwitcherPlane();
+        return fragment;
     }
 
     @Override
-    public void initParams() {
+    protected void onVisible() {
+        super.onVisible();
+        if (isFirstLoad) {
+            isFirstLoad = false;
+        }
+    }
+
+    @Override
+    protected void onInvisible() {
+        super.onInvisible();
+    }
+
+    @Override
+    protected void initTypedArrayValue() {
+        super.initTypedArrayValue();
+        TypedArray ta = getActivity().obtainStyledAttributes(R.styleable.MyTheme);
+        mMainColor = ta.getResourceId(R.styleable.MyTheme_mainColor, R.color.plane_mainColor);
+        mSwipeRefreshColor = ta.getResourceId(R.styleable.MyTheme_hotelRefreshColor, mMainColor);
+        ta.recycle();
+    }
+
+    @Override
+    protected void initViews(View view) {
+        super.initViews(view);
+        tabs = (TabLayout) view.findViewById(R.id.tabs);
+        off_land_city_info = (LinearLayout) view.findViewById(R.id.off_land_city_info);
+        on_land_city_info = (LinearLayout) view.findViewById(R.id.on_land_city_info);
+        tv_off_city = (TextView) view.findViewById(R.id.tv_off_city);
+        tv_off_piny = (TextView) view.findViewById(R.id.tv_off_piny);
+        tv_on_city = (TextView) view.findViewById(R.id.tv_on_city);
+        tv_on_piny = (TextView) view.findViewById(R.id.tv_on_piny);
+
+        off_date_lay = (LinearLayout) view.findViewById(R.id.off_date_lay);
+        tv_off_date = (TextView) view.findViewById(R.id.tv_off_date);
+        tv_off_week = (TextView) view.findViewById(R.id.tv_off_week);
+        on_date_lay = (LinearLayout) view.findViewById(R.id.on_date_lay);
+        tv_on_date = (TextView) view.findViewById(R.id.tv_on_date);
+        tv_on_week = (TextView) view.findViewById(R.id.tv_on_week);
+        iv_change = (ImageView) view.findViewById(R.id.iv_change);
+        tv_plane_search = (TextView) view.findViewById(R.id.tv_plane_search);
+    }
+
+    @Override
+    protected void initParams() {
         super.initParams();
-        mWindowManager = getWindowManager();
+        height = off_land_city_info.getHeight();
+        mWindowManager = getActivity().getWindowManager();
         tabs.addTab(tabs.newTab().setText(getString(R.string.plane_single)), PlaneCommDef.FLIGHT_SINGLE, true);
         tabs.addTab(tabs.newTab().setText(getString(R.string.plane_double)), PlaneCommDef.FLIGHT_GOBACK, false);
         setIndicator(tabs, 54, 54);
-        refreshPlaneStateAndInfo(PlaneCommDef.FLIGHT_SINGLE);
-        PlaneOrderManager.instance.setFlightType(PlaneCommDef.FLIGHT_SINGLE);
-        //初始化起飞
-        PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
-        PlaneOrderManager.instance.setBackFlightOffDate(endTime);
+        updateBeginTimeEndTime();
+        refreshPlaneStateAndInfo(mFlightType);
         //test
         off = new CityAirportInfoBean();
         off.cityname = "上海";
@@ -101,21 +152,23 @@ public class PlaneMainActivity extends BaseMainActivity {
         PlaneOrderManager.instance.setFlightOnAirportInfo(on);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        LogUtil.i(TAG, "onWindowFocusChanged()");
-        height = off_land_city_info.getHeight();
+    private void updateBeginTimeEndTime() {
+        if (!isSelectedDate) {
+            Calendar calendar = Calendar.getInstance();
+            beginTime = calendar.getTime().getTime();
+            calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
+            endTime = calendar.getTime().getTime();
+        }
     }
 
     @Override
-    public void initListeners() {
+    protected void initListeners() {
         super.initListeners();
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                selectedIndex = tab.getPosition();
-                refreshPlaneStateAndInfo(selectedIndex);
+                mFlightType = tab.getPosition();
+                refreshPlaneStateAndInfo(mFlightType);
             }
 
             @Override
@@ -136,11 +189,10 @@ public class PlaneMainActivity extends BaseMainActivity {
 
     @Override
     public void onClick(View v) {
-        super.onClick(v);
         switch (v.getId()) {
             case R.id.off_date_lay:
             case R.id.on_date_lay: {
-                Intent resIntent = new Intent(this, HotelCalendarChooseActivity.class);
+                Intent resIntent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
                 resIntent.putExtra("isTitleCanClick", true);
 //                resIntent.putExtra("beginTime", beginTime);
 //                resIntent.putExtra("endTime", endTime);
@@ -150,21 +202,21 @@ public class PlaneMainActivity extends BaseMainActivity {
             case R.id.tv_plane_search:
                 PlaneOrderManager.instance.reset();
                 updateBeginTimeEndTime();
-                PlaneOrderManager.instance.setFlightType((selectedIndex == 0) ? PlaneCommDef.FLIGHT_SINGLE : PlaneCommDef.FLIGHT_GOBACK);
+                PlaneOrderManager.instance.setFlightType(mFlightType);
                 PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
                 PlaneOrderManager.instance.setBackFlightOffDate(endTime);
                 PlaneOrderManager.instance.setFlightOffAirportInfo(off);
                 PlaneOrderManager.instance.setFlightOnAirportInfo(on);
-                Intent nextIntent = new Intent(this, PlaneFlightListActivity.class);
+                Intent nextIntent = new Intent(getActivity(), PlaneFlightListActivity.class);
                 startActivity(nextIntent);
                 break;
             case R.id.off_land_city_info:
-                Intent offIntent = new Intent(this, PlaneAirportChooserActivity.class);
+                Intent offIntent = new Intent(getActivity(), PlaneAirportChooserActivity.class);
                 offIntent.putExtra("type", "OFF");
                 startActivityForResult(offIntent, REQUEST_CODE_AIRPORT);
                 break;
             case R.id.on_land_city_info:
-                Intent onIntent = new Intent(this, PlaneAirportChooserActivity.class);
+                Intent onIntent = new Intent(getActivity(), PlaneAirportChooserActivity.class);
                 onIntent.putExtra("type", "ON");
                 startActivityForResult(onIntent, REQUEST_CODE_AIRPORT);
                 break;
@@ -286,32 +338,11 @@ public class PlaneMainActivity extends BaseMainActivity {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
         if (Activity.RESULT_OK != resultCode) {
             return;
-        }
-        if (requestCode == RequestCodeDef.REQ_CODE_ADDRESS_SET_DEFAULT) {
-            if (null != data) {
-                AddressInfoBean bean = (AddressInfoBean) data.getSerializableExtra("address");
-                CustomToast.show(bean.province + bean.city + bean.area + bean.address, CustomToast.LENGTH_LONG);
-            }
         }
         if (requestCode == REQUEST_CODE_DATE) {
             if (null != data) {
@@ -320,7 +351,7 @@ public class PlaneMainActivity extends BaseMainActivity {
                 endTime = data.getLongExtra("endTime", endTime);
                 PlaneOrderManager.instance.setGoFlightOffDate(beginTime);
                 PlaneOrderManager.instance.setBackFlightOffDate(endTime);
-                refreshPlaneStateAndInfo(selectedIndex);
+                refreshPlaneStateAndInfo(mFlightType);
             }
         } else if (requestCode == REQUEST_CODE_AIRPORT) {
             String airport = data.getStringExtra("type");
@@ -332,7 +363,8 @@ public class PlaneMainActivity extends BaseMainActivity {
             }
             refreshTextDisplay();
         }
-        requestWeatherInfo(beginTime);
+        //TODO
+//        requestWeatherInfo(beginTime);
     }
 
     private void refreshTextDisplay() {
@@ -346,9 +378,6 @@ public class PlaneMainActivity extends BaseMainActivity {
         }
     }
 
-    /**
-     * 通过反射设置TabLayout的Indicator的宽度
-     */
     private void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
         Class<?> tabLayout = tabs.getClass();
         Field tabStrip = null;
@@ -382,9 +411,6 @@ public class PlaneMainActivity extends BaseMainActivity {
         }
     }
 
-    /**
-     * 创建镜像view
-     */
     private ImageView createCopyView(int x, int y, Bitmap bitmap) {
         WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.format = PixelFormat.TRANSLUCENT; //图片之外其他地方透明
@@ -396,15 +422,12 @@ public class PlaneMainActivity extends BaseMainActivity {
         mLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-        ImageView copyView = new ImageView(this);
+        ImageView copyView = new ImageView(getActivity());
         copyView.setImageBitmap(bitmap);
         mWindowManager.addView(copyView, mLayoutParams); //添加该View到window
         return copyView;
     }
 
-    /**
-     * 创建镜像view
-     */
     private void createCopyView() {
         mOffLocation = new int[2];
         mOnLocation = new int[2];

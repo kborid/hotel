@@ -5,261 +5,277 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--选项卡-->
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabBackground="@drawable/common_item_selector_bg"
+        app:tabIndicatorColor="@color/plane_mainColor"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="#3c3c3c"
+        app:tabTextAppearance="@style/tabTextAppearance" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#e6e6e6" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <!--选项卡-->
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="25dp"
-            app:tabBackground="@drawable/common_item_selector_bg"
-            app:tabIndicatorColor="@color/plane_mainColor"
-            app:tabIndicatorHeight="3dp"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="#3c3c3c"
-            app:tabTextAppearance="@style/tabTextAppearance" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#e6e6e6" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_weight="1"
             android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!--起飞 icon-->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="26dp"
+                    android:paddingTop="9dp"
+                    android:src="@drawable/iv_plane_off" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#e6e6e6" />
+
+                <!--着陆 icon-->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="26dp"
+                    android:paddingTop="9dp"
+                    android:src="@drawable/iv_plane_on" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
+                <!--起飞信息-->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/off_land_city_info"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="9dp">
 
-                    <!--起飞 icon-->
-                    <ImageView
+                    <TextView
+                        android:id="@+id/tv_off_city"
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"
-                        android:paddingLeft="24dp"
-                        android:paddingRight="26dp"
-                        android:src="@drawable/iv_plane_off" />
+                        android:layout_height="wrap_content"
+                        android:text="上海"
+                        android:textColor="#3c3c3c"
+                        android:textSize="@dimen/common_20sp" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="#e6e6e6" />
-
-                    <!--着陆 icon-->
-                    <ImageView
+                    <TextView
+                        android:id="@+id/tv_off_airport"
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"
-                        android:paddingLeft="24dp"
-                        android:paddingRight="26dp"
-                        android:src="@drawable/iv_plane_on" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:text="虹桥机场"
+                        android:textColor="#9b9b9b"
+                        android:textSize="@dimen/common_14sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_off_piny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:text="SHANGHAI"
+                        android:textColor="#9b9b9b"
+                        android:textSize="@dimen/common_14sp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#e6e6e6" />
+
+                <!--着陆信息-->
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/on_land_city_info"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="9dp">
 
-                    <!--起飞信息-->
-                    <LinearLayout
-                        android:id="@+id/off_land_city_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_on_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="北京"
+                        android:textColor="#3c3c3c"
+                        android:textSize="@dimen/common_20sp" />
 
-                        <TextView
-                            android:id="@+id/tv_off_city"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="上海"
-                            android:textColor="#3c3c3c"
-                            android:textSize="@dimen/common_20sp" />
+                    <TextView
+                        android:id="@+id/tv_on_airport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:text="首都机场"
+                        android:textColor="#9b9b9b"
+                        android:textSize="@dimen/common_14sp"
+                        android:visibility="gone" />
 
-                        <TextView
-                            android:id="@+id/tv_off_airport"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="6dp"
-                            android:text="虹桥机场"
-                            android:textColor="#9b9b9b"
-                            android:textSize="@dimen/common_14sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/tv_off_piny"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="6dp"
-                            android:text="SHANGHAI"
-                            android:textColor="#9b9b9b"
-                            android:textSize="@dimen/common_14sp"
-                            android:visibility="gone" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="#e6e6e6" />
-
-                    <!--着陆信息-->
-                    <LinearLayout
-                        android:id="@+id/on_land_city_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_on_city"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="北京"
-                            android:textColor="#3c3c3c"
-                            android:textSize="@dimen/common_20sp" />
-
-                        <TextView
-                            android:id="@+id/tv_on_airport"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="6dp"
-                            android:text="首都机场"
-                            android:textColor="#9b9b9b"
-                            android:textSize="@dimen/common_14sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/tv_on_piny"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="6dp"
-                            android:text="PEK"
-                            android:textColor="#9b9b9b"
-                            android:textSize="@dimen/common_14sp"
-                            android:visibility="gone" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_on_piny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:text="PEK"
+                        android:textColor="#9b9b9b"
+                        android:textSize="@dimen/common_14sp"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
 
-            <!--交换button-->
+        <!--交换button-->
+        <ImageView
+            android:id="@+id/iv_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:src="@drawable/iv_plane_change" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#e6e6e6" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/off_date_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="15dp">
+
             <ImageView
-                android:id="@+id/iv_change"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:src="@drawable/iv_plane_change" />
+                android:src="@drawable/iv_plane_off_date" />
+
+            <TextView
+                android:id="@+id/tv_off_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:text="9月21日"
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_18sp" />
+
+            <TextView
+                android:id="@+id/tv_off_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="3dp"
+                android:text="周四"
+                android:textColor="#9b9b9b"
+                android:textSize="@dimen/common_12sp" />
         </LinearLayout>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
             android:background="#e6e6e6" />
 
         <LinearLayout
+            android:id="@+id/on_date_lay"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="15dp">
 
-            <LinearLayout
-                android:id="@+id/off_date_lay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="24dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iv_plane_on_date" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/iv_plane_off_date" />
+            <TextView
+                android:id="@+id/tv_on_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="9月23日"
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_18sp" />
 
-                <TextView
-                    android:id="@+id/tv_off_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:gravity="center"
-                    android:text="9月21日"
-                    android:textColor="#3c3c3c"
-                    android:textSize="@dimen/common_18sp" />
-
-                <TextView
-                    android:id="@+id/tv_off_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="3dp"
-                    android:text="周四"
-                    android:textColor="#9b9b9b"
-                    android:textSize="@dimen/common_12sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="match_parent"
-                android:background="#e6e6e6" />
-
-            <LinearLayout
-                android:id="@+id/on_date_lay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="24dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/iv_plane_on_date" />
-
-                <TextView
-                    android:id="@+id/tv_on_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="9月23日"
-                    android:textColor="#3c3c3c"
-                    android:textSize="@dimen/common_18sp" />
-
-                <TextView
-                    android:id="@+id/tv_on_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="3dp"
-                    android:text="周六"
-                    android:textColor="#9b9b9b"
-                    android:textSize="@dimen/common_12sp" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_on_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="3dp"
+                android:text="周六"
+                android:textColor="#9b9b9b"
+                android:textSize="@dimen/common_12sp" />
         </LinearLayout>
+    </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#e6e6e6" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#e6e6e6" />
 
-        <!--搜索-->
+    <!--搜索-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp">
+
         <TextView
-            android:id="@+id/tv_next_search"
-            android:layout_width="323dp"
+            android:id="@+id/tv_plane_search"
+            android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_gravity="center"
-            android:layout_marginTop="68dp"
             android:background="@drawable/main_hotel_btn_sel"
             android:gravity="center"
             android:text="搜索"

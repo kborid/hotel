@@ -4,12 +4,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -20,51 +22,71 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.common.ShareTypeDef;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.DataCleanManager;
+import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
+import com.huicheng.hotel.android.ui.activity.hotel.Hotel0YuanHomeActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelDetailActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
-import com.huicheng.hotel.android.ui.activity.plane.PlaneMainActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelRoomDetailActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelSpaceDetailActivity;
+import com.huicheng.hotel.android.ui.adapter.SwitcherContentAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
+import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
+import com.prj.sdk.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author kborid
  * @date 2017/5/24 0024
  */
 public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerLayout.OnLeftDrawerListener {
-    private AppInfoBean mAppInfoBean = null;
-    private long exitTime = 0;
-    private LinearLayout hotel_lay, plane_lay, train_lay, taxi_lay;
-    private String[] tips = new String[4];
-    private static Handler myHandler = new Handler(Looper.getMainLooper());
-    private boolean isNeedCloseLeftDrawer = false;
-    private boolean isFirstLaunch = false;
+    private static final int REQUEST_CODE_DATE = 0x01;
+    private static final int REQUEST_CODE_CITY = 0x02;
+    private static final int REQUEST_CODE_AIRPORT = 0x03;
+
+    private static final String[] tabTitle = {"酒店", "机票", "行程"};
+    private static final int[] tabResId = {R.drawable.mainswitcher_hotel_sel, R.drawable.mainswitcher_plane_sel, R.drawable.mainswitcher_trace_sel};
 
     private DrawerLayout drawer_layout;
     private LeftDrawerLayout left_layout;
+    private CommonBannerLayout banner_lay;
+    private RelativeLayout user_lay;
+    private ImageView iv_user;
+    private LinearLayout tab_title_lay;
+    private ViewPager tab_viewPager;
 
-    private RelativeLayout blur_lay;
-    private ImageView iv_blur;
-    private ImageView iv_logo_vertical;
-    private ImageView iv_left;
+    private WeakReferenceHandler<MainSwitcherActivity> myHandler = new WeakReferenceHandler<>(this);
+    private AppInfoBean mAppInfoBean = null;
+    private boolean isFirstLaunch = false;
+    private long exitTime = 0;
+    private boolean isSelectedDate = false;
+    private long beginTime, endTime;
+    private boolean isNeedCloseLeftDrawer = false;
 
+    @Override
     protected void preOnCreate() {
         super.preOnCreate();
         initMainWindow();
@@ -76,23 +98,69 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     }
 
     @Override
+    protected void requestData() {
+        super.requestData();
+        if (SessionContext.getBannerList().size() == 0) {
+            requestHomeBannerInfo();
+        }
+    }
+
+    @Override
     public void initViews() {
         super.initViews();
-        hotel_lay = (LinearLayout) findViewById(R.id.hotel_lay);
-        plane_lay = (LinearLayout) findViewById(R.id.plane_lay);
-        train_lay = (LinearLayout) findViewById(R.id.train_lay);
-        taxi_lay = (LinearLayout) findViewById(R.id.taxi_lay);
-
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (null != drawer_layout) {
-            drawer_layout.setScrimColor(getResources().getColor(R.color.transparent50));
-        }
+        drawer_layout.setScrimColor(getResources().getColor(R.color.transparent50));
         left_layout = (LeftDrawerLayout) findViewById(R.id.left_layout);
+        banner_lay = (CommonBannerLayout) findViewById(R.id.banner_lay);
+        user_lay = (RelativeLayout) findViewById(R.id.user_lay);
+        iv_user = (ImageView) findViewById(R.id.iv_user);
+        tab_title_lay = (LinearLayout) findViewById(R.id.tab_title_lay);
+        tab_viewPager = (ViewPager) findViewById(R.id.tab_viewPager);
+        tab_viewPager.setOffscreenPageLimit(3);
+        tab_viewPager.setAdapter(new SwitcherContentAdapter(getSupportFragmentManager(), tabTitle));
 
-        blur_lay = (RelativeLayout) findViewById(R.id.blur_lay);
-        iv_blur = (ImageView) findViewById(R.id.iv_blur);
-        iv_logo_vertical = (ImageView) findViewById(R.id.iv_logo_vertical);
-        iv_left = (ImageView) findViewById(R.id.iv_left);
+        //user relayout
+        RelativeLayout.LayoutParams ucRlp = (RelativeLayout.LayoutParams) user_lay.getLayoutParams();
+        ucRlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        user_lay.setPadding(Utils.dp2px(20), Utils.mStatusBarHeight + Utils.dp2px(10), Utils.dp2px(20), Utils.dp2px(10));
+        user_lay.setLayoutParams(ucRlp);
+        //banner & weather relayout
+        RelativeLayout.LayoutParams weatherRlp = (RelativeLayout.LayoutParams) banner_lay.getLayoutParams();
+        weatherRlp.width = Utils.mScreenWidth;
+        weatherRlp.height = (int) ((float) weatherRlp.width / 750 * 400);
+        banner_lay.setLayoutParams(weatherRlp);
+
+        tab_title_lay.removeAllViews();
+        for (int i = 0; i < tabTitle.length; i++) {
+            TextView tv_tab = new TextView(this);
+            tv_tab.setGravity(Gravity.CENTER);
+            tv_tab.setText(tabTitle[i]);
+            tv_tab.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            tv_tab.setTextColor(getResources().getColorStateList(R.color.main_switcher_color_sel));
+            tv_tab.setCompoundDrawablePadding(Utils.dp2px(6));
+            tv_tab.setCompoundDrawablesWithIntrinsicBounds(0, tabResId[i], 0, 0);
+            LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            llp.weight = 1;
+            tab_title_lay.addView(tv_tab, llp);
+            final int finalI = i;
+            tv_tab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (finalI == 2) {
+                        if (!SessionContext.isLogin()) {
+                            sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                            return;
+                        }
+                    }
+                    tab_title_lay.dispatchSetSelected(false);
+                    v.setSelected(true);
+                    tab_viewPager.setCurrentItem(finalI, true);
+                }
+            });
+        }
+
+        tab_title_lay.getChildAt(0).setSelected(true);
+        tab_viewPager.setCurrentItem(0);
     }
 
     @Override
@@ -104,64 +172,69 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         }
     }
 
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        LogUtil.i(TAG, "onNewIntent()");
+        // Note that getIntent() still returns the original Intent. You can use setIntent(Intent) to update it to this new Intent.
+        setIntent(intent);
+        dealIntent();
+        isReStarted = true;
+    }
+
     @Override
     public void initParams() {
         super.initParams();
         isFirstLaunch = true;
-        tips = getResources().getStringArray(R.array.MainTabTips);
-        //app更新提示
-        String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
-        if (StringUtil.notEmpty(appInfo)) {
-            mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
-            myHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    String ignoreVersion = SharedPreferenceUtil.getInstance().getString(AppConst.IGNORE_UPDATE_VERSION, "", false);
-                    String versionSer = mAppInfoBean.upid.split("（")[0];
-                    String versionLoc = BuildConfig.VERSION_NAME.split("（")[0];
-                    if ((1 <= SessionContext.VersionComparison(versionSer, versionLoc)) && !mAppInfoBean.upid.equals(ignoreVersion)) {
-                        showUpdateDialog(mAppInfoBean);
-                    }
-                }
-            }, 1000);
-        }
+        left_layout.updateUserInfo(); //更新用户中心
+        banner_lay.setImageResource(SessionContext.getBannerList());
+        banner_lay.setWeatherInfoLayoutMargin(Utils.dp2px(11), Utils.mStatusBarHeight + Utils.dp2px(10), 0, 0);
+        banner_lay.setIndicatorLayoutMarginBottom(Utils.dp2px(8));
 
-        //更新用户中心
-        left_layout.updateUserInfo();
+        //app更新提示
+        if (SessionContext.getOpenInstallAppData() == null) {
+            String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
+            if (StringUtil.notEmpty(appInfo)) {
+                mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
+                myHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        String ignoreVersion = SharedPreferenceUtil.getInstance().getString(AppConst.IGNORE_UPDATE_VERSION, "", false);
+                        String versionSer = mAppInfoBean.upid.split("（")[0];
+                        String versionLoc = BuildConfig.VERSION_NAME.split("（")[0];
+                        if ((1 <= SessionContext.VersionComparison(versionSer, versionLoc)) && !mAppInfoBean.upid.equals(ignoreVersion)) {
+                            showUpdateDialog(mAppInfoBean);
+                        }
+                    }
+                }, 500);
+            }
+        }
     }
 
     @Override
     public void initListeners() {
         super.initListeners();
-        hotel_lay.setOnClickListener(this);
-        plane_lay.setOnClickListener(this);
-        train_lay.setOnClickListener(this);
-        taxi_lay.setOnClickListener(this);
-
         left_layout.setOnLeftDrawerListener(this);
-        drawer_layout.addDrawerListener(new DrawerLayout.DrawerListener() {
+        user_lay.setOnClickListener(this);
+        tab_viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                iv_blur.setAlpha(slideOffset * 1f);
-                iv_logo_vertical.setAlpha(slideOffset);
-                iv_left.setAlpha(slideOffset);
-                if (slideOffset > 0) {
-                    blur_lay.setVisibility(View.VISIBLE);
-                } else {
-                    blur_lay.setVisibility(View.GONE);
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 2) {
+                    if (!SessionContext.isLogin()) {
+                        sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                        tab_viewPager.setCurrentItem(1);
+                        return;
+                    }
                 }
+                tab_title_lay.dispatchSetSelected(false);
+                tab_title_lay.getChildAt(position).setSelected(true);
             }
 
             @Override
-            public void onDrawerOpened(View drawerView) {
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
+            public void onPageScrollStateChanged(int state) {
             }
         });
     }
@@ -169,55 +242,19 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        int index = 0;
-        Intent intent = null;
         switch (v.getId()) {
-            case R.id.hotel_lay:
-                index = 0;
-                intent = new Intent(this, HotelMainActivity.class);
-                intent.putExtra("index", index);
+            case R.id.user_lay:
+                drawer_layout.openDrawer(left_layout);
                 break;
-            case R.id.plane_lay:
-                index = 1;
-                intent = new Intent(this, PlaneMainActivity.class);
-                intent.putExtra("index", index);
-                break;
-            case R.id.train_lay:
-                index = 2;
-                break;
-            case R.id.taxi_lay:
-                index = 3;
+            default:
                 break;
         }
-        if (index == 2 || index == 3) {
-            CustomDialog dialog = new CustomDialog(this);
-            dialog.setMessage(tips[index]);
-            dialog.setNegativeButton(getString(R.string.iknown), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.show();
-        } else {
-            if (null != intent) {
-                startActivity(intent);
-            }
-        }
-    }
-
-    private void requestMessageCount() {
-        RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.MESSAGE_COUNT;
-        d.flag = AppConst.MESSAGE_COUNT;
-        DataLoader.getInstance().loadData(this, d);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        banner_lay.startBanner();
         if (isFirstLaunch) {
             isFirstLaunch = false;
             if (SessionContext.getOpenInstallAppData() != null) {
@@ -228,27 +265,89 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
             }
         }
 
-        //每次启动时，如果用户未登录，则显示侧滑
-        if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
-            if (!SessionContext.isLogin()) {
-//                myHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        drawer_layout.openDrawer(left_layout, true);
-//                    }
-//                }, 300);
-                sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-            }
-        }
-
         if (SessionContext.isLogin()) {
             requestMessageCount();
+        } else {
+            //每次启动时，如果用户未登录，则显示侧滑
+            if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
+                sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+            }
         }
 
         if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
             isNeedCloseLeftDrawer = false;
             drawer_layout.closeDrawers();
         }
+
+        //OpenInstall Event 分发
+        boolean jump = dispatchOpenInstallEvent();
+    }
+
+    private boolean dispatchOpenInstallEvent() {
+        LogUtil.i(TAG, "dispatchOpenInstallEvent()");
+        if (SessionContext.getOpenInstallAppData() != null) {
+            JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
+            if (null != mJson && mJson.containsKey("channel")) {
+                String channel = mJson.getString("channel");
+                if (ShareTypeDef.SHARE_HOTEL.equals(channel)) {
+//                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
+//                    long endDate = Long.valueOf(mJson.getString("endDate"));
+                    HotelOrderManager.getInstance().setBeginTime(beginTime);
+                    HotelOrderManager.getInstance().setEndTime(endTime);
+                    Intent intent = new Intent(this, HotelDetailActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                    startActivity(intent);
+                    SessionContext.setOpenInstallAppData(null);
+                    return true;
+                } else if (ShareTypeDef.SHARE_ROOM.equals(channel)) {
+//                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
+//                    long endDate = Long.valueOf(mJson.getString("endDate"));
+                    HotelOrderManager.getInstance().setBeginTime(beginTime);
+                    HotelOrderManager.getInstance().setEndTime(endTime);
+                    Intent intent = new Intent(this, HotelRoomDetailActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                    intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
+                    intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
+                    startActivity(intent);
+                    SessionContext.setOpenInstallAppData(null);
+                    return true;
+                } else if (ShareTypeDef.SHARE_FREE.equals(channel)) {
+                    Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
+                    startActivity(intent);
+                    SessionContext.setOpenInstallAppData(null);
+                    return true;
+                } else if (ShareTypeDef.SHARE_TIE.equals(channel)) {
+                    Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
+                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
+                    intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
+                    startActivity(intent);
+                    SessionContext.setOpenInstallAppData(null);
+                    return true;
+                } else {
+                    LogUtil.d("HotelMainActivity", "warning~~~");
+                    return false;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
+    private void requestMessageCount() {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.MESSAGE_COUNT;
+        d.flag = AppConst.MESSAGE_COUNT;
+        DataLoader.getInstance().loadData(this, d);
+    }
+
+    private void requestHomeBannerInfo() {
+        LogUtil.i(TAG, "requestHotelBanner()");
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.HOTEL_BANNER;
+        d.flag = AppConst.HOTEL_BANNER;
+        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     private void showUpdateDialog(final AppInfoBean bean) {
@@ -321,25 +420,20 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     }
 
     @Override
-    public void onNotifyMessage(ResponseData request, ResponseData response) {
-        super.onNotifyMessage(request, response);
-        if (null != response && response.body != null) {
-            if (request.flag == AppConst.MESSAGE_COUNT) {
-                JSONObject mJson = JSON.parseObject(response.body.toString());
-                boolean hasMsg = left_layout.updateMsgCount(mJson.getString("count"));
-//                if (hasMsg) {
-//                    iv_user.setImageResource(R.drawable.iv_home_user2);
-//                } else {
-//                    iv_user.setImageResource(R.drawable.iv_home_user);
-//                }
-            }
-        }
+    protected void onPause() {
+        super.onPause();
+        banner_lay.stopBanner();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         left_layout.unregisterBroadReceiver();
+        LocationInfo.instance.reset();
+        if (myHandler != null) {
+            myHandler.removeCallbacksAndMessages(null);
+            myHandler = null;
+        }
     }
 
     @Override
@@ -370,12 +464,30 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
 
     @Override
     public void doQmhAction() {
-        //全民化插件 platCode生产2003，测试8000
+//////////全民化插件 platCode生产2003，测试8000///////////
 //        Intent intent = new Intent(HotelMainActivity.this, IOUAppVerifyActivity.class);
 //        intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
 //        intent.putExtra("token", SessionContext.getTicket());
 //        intent.putExtra("platCode", "2003");
 //        intent.putExtra("isShowGuide", "true");
 //        startActivityForResult(intent, REQUEST_CODE_QMH);
+    }
+
+    @Override
+    public void onNotifyMessage(ResponseData request, ResponseData response) {
+        super.onNotifyMessage(request, response);
+        if (null != response && response.body != null) {
+            if (request.flag == AppConst.MESSAGE_COUNT) {
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                boolean hasMsg = left_layout.updateMsgCount(mJson.getString("count"));
+                int userResId = hasMsg ? R.drawable.iv_home_user2 : R.drawable.iv_home_user;
+                iv_user.setImageResource(userResId);
+            } else if (request.flag == AppConst.HOTEL_BANNER) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
+                SessionContext.setBannerList(temp);
+                banner_lay.setImageResource(temp);
+            }
+        }
     }
 }

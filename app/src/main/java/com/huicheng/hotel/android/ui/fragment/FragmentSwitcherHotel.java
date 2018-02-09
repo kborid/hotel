@@ -1,8 +1,13 @@
-package com.huicheng.hotel.android.ui.activity.hotel;
+package com.huicheng.hotel.android.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
@@ -23,7 +28,6 @@ import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.AMapLocationControl;
@@ -31,15 +35,20 @@ import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.BaseMainActivity;
 import com.huicheng.hotel.android.ui.activity.UcBountyMainActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
-import com.huicheng.hotel.android.ui.activity.plane.PlaneMainActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelAllSearchActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelCityChooseActivity;
+import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
+import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
+import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -47,9 +56,23 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
+import java.lang.reflect.Field;
+import java.util.Calendar;
 import java.util.Date;
 
-public class HotelMainActivity extends BaseMainActivity implements AMapLocationControl.MyLocationListener {
+/**
+ * @author kborid
+ * @date 2018/2/9 0009.
+ */
+
+public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickListener, DataCallback, AMapLocationControl.MyLocationListener {
+    private static final int REQUEST_CODE_DATE = 0x01;
+    private static final int REQUEST_CODE_CITY = 0x02;
+
+    public static boolean isFirstLoad = false;
+    private Bundle bundle = null;
+    private boolean isSelectedDate = false;
+    private long beginTime, endTime;
 
     private LinearLayout coupon_lay;
     private LinearLayout order_lay;
@@ -60,37 +83,95 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     private TextView tv_in_date, tv_days, tv_out_date;
     private TextView tv_search;
     private TextView tv_consider;
+    private TextView tv_curr_position;
 
+    //酒店首页筛选
     private CustomConsiderLayoutForHome mConsiderLayout = null;
     private PopupWindow mConsiderPopupWindow = null;
     private int typeIndex = -1, gradeIndex = -1, priceIndex = -1;
 
-    private TextView tv_curr_position;
+    //海南诚信广告Popup
+    protected boolean isAdShowed = false;
+    private View mAdHaiNanView = null;
+    private PopupWindow mAdHaiNanPopupWindow = null;
+
+    private static Handler myHandler = new Handler(Looper.getMainLooper());
     private AMapLocation aMapLocation = null;
     private boolean isRequestPermission = false;
     private boolean hasRejectPermission = false;
-    private boolean isOnPause = false;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        isFirstLoad = true;
+        bundle = getArguments();
+        View view = inflater.inflate(R.layout.layout_content_hotel, container, false);
+        initTypedArrayValue();
+        initViews(view);
+        initParams();
+        initListeners();
+        initPopupWindows();
+        return view;
+    }
+
+    public static Fragment newInstance() {
+        Fragment fragment = new FragmentSwitcherHotel();
+        return fragment;
+    }
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        if (isFirstLoad) {
+            isFirstLoad = false;
+            //如果画面跳转，则不定位，也不获取权限
+            if (!isRequestPermission && !hasRejectPermission) {
+                if (!LocationInfo.instance.isLocated()) {
+                    myHandler.postDelayed(requestPermissionRunnable, 500);
+                }
+            }
+        }
+    }
+
+    private Runnable requestPermissionRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isVisible) {
+                myHandler.removeCallbacksAndMessages(null);
+                if (PRJApplication.getPermissionsChecker(getActivity()).lacksPermissions(PermissionsDef.LOCATION_PERMISSION)) {
+                    PermissionsActivity.startActivityForResult(getActivity(), PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LOCATION_PERMISSION);
+                    return;
+                }
+                AMapLocationControl.getInstance().startLocationOnce(FragmentSwitcherHotel.this);
+            } else {
+                myHandler.postDelayed(requestPermissionRunnable, 500);
+            }
+        }
+    };
 
 
-    public void initViews() {
-        super.initViews();
-        initContentLayout(LayoutInflater.from(this).inflate(R.layout.layout_content_hotel, null));
+    @Override
+    protected void onInvisible() {
+        super.onInvisible();
+    }
 
-        tv_city = (TextView) findViewById(R.id.tv_city);
-        tv_hotel_search = (TextView) findViewById(R.id.tv_hotel_search);
+    @Override
+    protected void initViews(View view) {
+        super.initViews(view);
+        tv_city = (TextView) view.findViewById(R.id.tv_city);
+        tv_hotel_search = (TextView) view.findViewById(R.id.tv_hotel_search);
 
-        tv_in_date = (TextView) findViewById(R.id.tv_in_date);
-        tv_days = (TextView) findViewById(R.id.tv_days);
-        tv_out_date = (TextView) findViewById(R.id.tv_out_date);
+        tv_in_date = (TextView) view.findViewById(R.id.tv_in_date);
+        tv_days = (TextView) view.findViewById(R.id.tv_days);
+        tv_out_date = (TextView) view.findViewById(R.id.tv_out_date);
 
-        coupon_lay = (LinearLayout) findViewById(R.id.coupon_lay);
-        order_lay = (LinearLayout) findViewById(R.id.order_lay);
-        bounty_lay = (LinearLayout) findViewById(R.id.bounty_lay);
-        tv_search = (TextView) findViewById(R.id.tv_search);
-        tv_consider = (TextView) findViewById(R.id.tv_consider);
+        coupon_lay = (LinearLayout) view.findViewById(R.id.coupon_lay);
+        order_lay = (LinearLayout) view.findViewById(R.id.order_lay);
+        bounty_lay = (LinearLayout) view.findViewById(R.id.bounty_lay);
+        tv_search = (TextView) view.findViewById(R.id.tv_search);
+        tv_consider = (TextView) view.findViewById(R.id.tv_consider);
 
         //首页筛选菜单
-        mConsiderLayout = new CustomConsiderLayoutForHome(this);
+        mConsiderLayout = new CustomConsiderLayoutForHome(getActivity());
         mConsiderLayout.initConsiderConfig();
         //评分筛选条件初始化
         SharedPreferenceUtil.getInstance().setInt(AppConst.CONSIDER_POINT, -1);
@@ -120,18 +201,19 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
             @Override
             public void onDismiss() {
                 //重置consider
-                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
                 lp.alpha = 1f;
-                getWindow().setAttributes(lp);
+                getActivity().getWindow().setAttributes(lp);
             }
         });
 
-        tv_curr_position = (TextView) findViewById(R.id.tv_curr_position);
+        tv_curr_position = (TextView) view.findViewById(R.id.tv_curr_position);
     }
 
     @Override
-    public void initParams() {
+    protected void initParams() {
         super.initParams();
+        updateBeginTimeEndTime(); //初始化时间，1晚，今天到明天
         HotelOrderManager.getInstance().setBeginTime(beginTime);
         HotelOrderManager.getInstance().setEndTime(endTime);
         HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
@@ -143,107 +225,70 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         tv_city.setHint("正在定位当前城市");
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        isOnPause = false;
+    private void initPopupWindows() {
+        //海南诚信认证广告
+        if (null == mAdHaiNanView) {
+            mAdHaiNanView = LayoutInflater.from(getActivity()).inflate(R.layout.pw_ad_hainan_layout, null);
+            if (null == mAdHaiNanPopupWindow) {
+                mAdHaiNanPopupWindow = new PopupWindow(mAdHaiNanView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                mAdHaiNanPopupWindow.getContentView().findViewById(R.id.iv_ad_close).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAdHaiNanPopupWindow.dismiss();
+                    }
+                });
+                mAdHaiNanPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
-        //重置consider
-        mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
-        //男性女性界面初始化
-//        int newSkinIndex = SharedPreferenceUtil.getInstance().getInt(AppConst.SKIN_INDEX, 0);
-//        if (oldSkinIndex != newSkinIndex) {
-//            oldSkinIndex = newSkinIndex;
-//            isReStarted = true;
-//            recreate();
-//        }
-
-        //如果登录状态，则获取用户当前消息、状态等
-        if (SessionContext.isLogin()) {
-            requestUserMenusStatus();
-        }
-
-        //重置consider
-        mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
-
-        //OpenInstall Event 分发
-        boolean jump = dispatchOpenInstallEvent();
-
-        //如果画面跳转，则不定位，也不获取权限
-        if (!jump && !isRequestPermission && !hasRejectPermission) {
-            //如果已经定位且定位的不是当前位置，则显示当前定位城市；否则，不做任何处理
-            if (LocationInfo.instance.isLocated() && !LocationInfo.instance.isMyLoc()) {
-                refreshCityDisplay(LocationInfo.instance.getCity());
-            } else if (!LocationInfo.instance.isLocated() && StringUtil.isEmpty(tv_city.getText().toString())) {
-                myHandler.postDelayed(requestPermissionRunnable, 500);
+                    @Override
+                    public void onDismiss() {
+                        //重置consider
+                        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                        lp.alpha = 1f;
+                        getActivity().getWindow().setAttributes(lp);
+                    }
+                });
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int option = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
+                    mAdHaiNanPopupWindow.setSoftInputMode(option);
+                    try {
+                        Field mLayoutInScreen = PopupWindow.class.getDeclaredField("mLayoutInScreen");
+                        mLayoutInScreen.setAccessible(true);
+                        mLayoutInScreen.set(mAdHaiNanPopupWindow, true);
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
 
-    private Runnable requestPermissionRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (!isOnPause) {
-                myHandler.removeCallbacksAndMessages(null);
-                if (PRJApplication.getPermissionsChecker(HotelMainActivity.this).lacksPermissions(PermissionsDef.LOCATION_PERMISSION)) {
-                    PermissionsActivity.startActivityForResult(HotelMainActivity.this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LOCATION_PERMISSION);
-                    return;
-                }
-                AMapLocationControl.getInstance().startLocationOnce(HotelMainActivity.this);
-            } else {
-                myHandler.postDelayed(requestPermissionRunnable, 500);
-            }
-        }
-    };
+    private void showHaiNanAdPopupWindow() {
+        // 设置背景颜色变暗
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = 0.35f;
+        getActivity().getWindow().setAttributes(lp);
+        mAdHaiNanPopupWindow.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+    }
 
-    private boolean dispatchOpenInstallEvent() {
-        LogUtil.i(TAG, "dispatchOpenInstallEvent()");
-        if (SessionContext.getOpenInstallAppData() != null) {
-            JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
-            if (null != mJson && mJson.containsKey("channel")) {
-                String channel = mJson.getString("channel");
-                if (ShareTypeDef.SHARE_HOTEL.equals(channel)) {
-//                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
-//                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    HotelOrderManager.getInstance().setBeginTime(beginTime);
-                    HotelOrderManager.getInstance().setEndTime(endTime);
-                    Intent intent = new Intent(this, HotelDetailActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                    startActivity(intent);
-                    SessionContext.setOpenInstallAppData(null);
-                    return true;
-                } else if (ShareTypeDef.SHARE_ROOM.equals(channel)) {
-//                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
-//                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    HotelOrderManager.getInstance().setBeginTime(beginTime);
-                    HotelOrderManager.getInstance().setEndTime(endTime);
-                    Intent intent = new Intent(this, HotelRoomDetailActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                    intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
-                    intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
-                    startActivity(intent);
-                    SessionContext.setOpenInstallAppData(null);
-                    return true;
-                } else if (ShareTypeDef.SHARE_FREE.equals(channel)) {
-                    Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
-                    startActivity(intent);
-                    SessionContext.setOpenInstallAppData(null);
-                    return true;
-                } else if (ShareTypeDef.SHARE_TIE.equals(channel)) {
-                    Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                    intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
-                    startActivity(intent);
-                    SessionContext.setOpenInstallAppData(null);
-                    return true;
-                } else {
-                    LogUtil.d("HotelMainActivity", "warning~~~");
-                    return false;
+    public void showHaiNanAd(String province) {
+        if (province.contains("海南")) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isAdShowed = true;
+                    showHaiNanAdPopupWindow();
                 }
-            }
-            return false;
+            }, 500);
         }
-        return false;
+    }
+
+    private void updateBeginTimeEndTime() {
+        if (!isSelectedDate) {
+            Calendar calendar = Calendar.getInstance();
+            beginTime = calendar.getTime().getTime();
+            calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
+            endTime = calendar.getTime().getTime();
+        }
     }
 
     private void requestUserMenusStatus() {
@@ -258,28 +303,28 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         JSONObject mJson = JSON.parseObject(str);
         boolean couponflag = mJson.containsKey("couponflag") ? mJson.getBoolean("couponflag") : false;
         int couponResId = couponflag ? R.drawable.iv_my_coupon_red : R.drawable.iv_my_coupon_normal;
-        ((ImageView) findViewById(R.id.iv_coupon_icon)).setImageResource(couponResId);
+        ((ImageView) coupon_lay.findViewById(R.id.iv_coupon_icon)).setImageResource(couponResId);
 
         boolean orderflag = mJson.containsKey("orderflag") ? mJson.getBoolean("orderflag") : false;
         int orderResId = orderflag ? R.drawable.iv_my_order_red : R.drawable.iv_my_order_normal;
-        ((ImageView) findViewById(R.id.iv_order_icon)).setImageResource(orderResId);
+        ((ImageView) order_lay.findViewById(R.id.iv_order_icon)).setImageResource(orderResId);
 
         boolean bountyflag = mJson.containsKey("bountyflag") ? mJson.getBoolean("bountyflag") : false;
         int bountyResId = bountyflag ? R.drawable.iv_my_bounty_red : R.drawable.iv_my_bounty_normal;
-        ((ImageView) findViewById(R.id.iv_bounty_icon)).setImageResource(bountyResId);
+        ((ImageView) bounty_lay.findViewById(R.id.iv_bounty_icon)).setImageResource(bountyResId);
     }
 
     private void showConsiderPopupWindow() {
         mConsiderLayout.reloadConsiderConfig(typeIndex, gradeIndex, priceIndex);
         // 设置背景颜色变暗
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
         lp.alpha = 0.5f;
-        getWindow().setAttributes(lp);
-        mConsiderPopupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        getActivity().getWindow().setAttributes(lp);
+        mConsiderPopupWindow.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
     }
 
     @Override
-    public void initListeners() {
+    protected void initListeners() {
         super.initListeners();
         tv_city.setOnClickListener(this);
         tv_in_date.setOnClickListener(this);
@@ -291,68 +336,43 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         tv_search.setOnClickListener(this);
         tv_consider.setOnClickListener(this);
         tv_curr_position.setOnClickListener(this);
-        tv_hotel_search.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Intent intent = new Intent(HotelMainActivity.this, PlaneMainActivity.class);
-                startActivity(intent);
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        isOnPause = true;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        LocationInfo.instance.reset();
-        if (myHandler != null) {
-            myHandler.removeCallbacksAndMessages(null);
-            myHandler = null;
-        }
     }
 
     @Override
     public void onClick(View v) {
-        super.onClick(v);
         Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_city: {
                 updateBeginTimeEndTime();
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
                 HotelOrderManager.getInstance().setEndTime(endTime);
-                Intent resIntent = new Intent(this, HotelCityChooseActivity.class);
+                Intent resIntent = new Intent(getActivity(), HotelCityChooseActivity.class);
                 startActivityForResult(resIntent, REQUEST_CODE_CITY);
                 break;
             }
             case R.id.coupon_lay:
                 if (!SessionContext.isLogin()) {
-                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    getActivity().sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                     return;
                 }
-                ((ImageView) findViewById(R.id.iv_coupon_icon)).setImageResource(R.drawable.iv_my_coupon_normal);
-                intent = new Intent(this, UcCouponsActivity.class);
+                ((ImageView) coupon_lay.findViewById(R.id.iv_coupon_icon)).setImageResource(R.drawable.iv_my_coupon_normal);
+                intent = new Intent(getActivity(), UcCouponsActivity.class);
                 break;
             case R.id.order_lay:
                 if (!SessionContext.isLogin()) {
-                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    getActivity().sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                     return;
                 }
-                ((ImageView) findViewById(R.id.iv_order_icon)).setImageResource(R.drawable.iv_my_order_normal);
-                intent = new Intent(this, UcOrdersActivity.class);
+                ((ImageView) order_lay.findViewById(R.id.iv_order_icon)).setImageResource(R.drawable.iv_my_order_normal);
+                intent = new Intent(getActivity(), UcOrdersActivity.class);
                 break;
             case R.id.bounty_lay:
                 if (!SessionContext.isLogin()) {
-                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                    getActivity().sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
                     return;
                 }
-                ((ImageView) findViewById(R.id.iv_bounty_icon)).setImageResource(R.drawable.iv_my_bounty_normal);
-                intent = new Intent(this, UcBountyMainActivity.class);
+                ((ImageView) bounty_lay.findViewById(R.id.iv_bounty_icon)).setImageResource(R.drawable.iv_my_bounty_normal);
+                intent = new Intent(getActivity(), UcBountyMainActivity.class);
                 break;
             case R.id.tv_hotel_search:
                 if (StringUtil.isEmpty(tv_city.getText().toString())) {
@@ -364,7 +384,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
                 HotelOrderManager.getInstance().setEndTime(endTime);
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
-                intent = new Intent(this, HotelListActivity.class);
+                intent = new Intent(getActivity(), HotelListActivity.class);
                 intent.putExtra("index", 0);
                 intent.putExtra("keyword", "");
                 if (LocationInfo.instance.isMyLoc() && null != aMapLocation && aMapLocation.getLatitude() > 0 && aMapLocation.getLongitude() > 0) {
@@ -377,7 +397,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 break;
             case R.id.tv_in_date:
             case R.id.tv_out_date: {
-                Intent resIntent = new Intent(this, HotelCalendarChooseActivity.class);
+                Intent resIntent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
                 resIntent.putExtra("isTitleCanClick", true);
 //                resIntent.putExtra("beginTime", beginTime);
 //                resIntent.putExtra("endTime", endTime);
@@ -389,7 +409,7 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 HotelOrderManager.getInstance().setBeginTime(beginTime);
                 HotelOrderManager.getInstance().setEndTime(endTime);
                 HotelOrderManager.getInstance().setDateStr(DateUtil.getDay("M.d", beginTime) + " - " + DateUtil.getDay("M.d", endTime));
-                intent = new Intent(this, HotelAllSearchActivity.class);
+                intent = new Intent(getActivity(), HotelAllSearchActivity.class);
                 break;
             case R.id.tv_consider:
                 showConsiderPopupWindow();
@@ -399,8 +419,8 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
                 tv_city.setText("");
                 LocationInfo.instance.setIsMyLoc(true);
                 //权限检查
-                if (PRJApplication.getPermissionsChecker(this).lacksPermissions(PermissionsDef.LOCATION_PERMISSION)) {
-                    PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LOCATION_PERMISSION);
+                if (PRJApplication.getPermissionsChecker(getActivity()).lacksPermissions(PermissionsDef.LOCATION_PERMISSION)) {
+                    PermissionsActivity.startActivityForResult(getActivity(), PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LOCATION_PERMISSION);
                     return;
                 }
                 AMapLocationControl.getInstance().startLocationOnce(this);
@@ -409,6 +429,17 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
         if (null != intent) {
             startActivity(intent);
         }
+    }
+
+    private void requestWeatherInfo(long timeStamp) {
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        b.addBody("cityname", LocationInfo.instance.getCity());
+        b.addBody("siteid", LocationInfo.instance.getCityCode());
+        b.addBody("date", DateUtil.getDay("yyyyMMdd", timeStamp));
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.WEATHER;
+        d.flag = AppConst.WEATHER;
+        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     private void refreshCityDisplay(String city) {
@@ -421,20 +452,12 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
     }
 
     @Override
-    public void onNotifyMessage(ResponseData request, ResponseData response) {
-        super.onNotifyMessage(request, response);
-        if (response != null && response.body != null) {
-            if (request.flag == AppConst.MENUS_STATUS) {
-                LogUtil.i(TAG, "json = " + response.body.toString());
-                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
-                    updateUserMenuStatus(response.body.toString());
-                }
-            }
-        }
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
 
@@ -481,8 +504,6 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
 
     private SpannableString formatDateForBigDay(String date) {
         if (StringUtil.notEmpty(date)) {
-//            int startIndex = date.indexOf("月");
-//            int endIndex = date.indexOf("日");
             int endIndex = date.indexOf("周");
             SpannableString ss = new SpannableString(date);
             ss.setSpan(new AbsoluteSizeSpan(21, true), 0, endIndex,
@@ -514,6 +535,40 @@ public class HotelMainActivity extends BaseMainActivity implements AMapLocationC
             requestWeatherInfo(beginTime);
         } else {
             tv_city.setHint("城市定位失败");
+        }
+    }
+
+    @Override
+    public void preExecute(ResponseData request) {
+
+    }
+
+    @Override
+    public void notifyMessage(ResponseData request, ResponseData response) throws Exception {
+        if (response != null && response.body != null) {
+            if (request.flag == AppConst.MENUS_STATUS) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
+                    updateUserMenuStatus(response.body.toString());
+                }
+            } else if (request.flag == AppConst.WEATHER) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
+                    WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
+//                    banner_lay.updateWeatherInfo(beginTime, bean);
+                } else {
+//                    banner_lay.updateWeatherInfo(beginTime, null);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void notifyError(ResponseData request, ResponseData response, Exception e) {
+        if (response != null && response.data != null) {
+            if (request.flag == AppConst.WEATHER) {
+//                banner_lay.updateWeatherInfo(beginTime, null);
+            }
         }
     }
 }

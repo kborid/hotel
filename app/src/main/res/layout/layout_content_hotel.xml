@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="城市"
+                android:text="目的地"
                 android:textColor="#9b9b9b"
                 android:textSize="@dimen/common_12sp" />
 
@@ -178,20 +178,20 @@
             android:layout_height="0.5dp"
             android:background="#dedede" />
 
-        <!--搜索酒店-->
+        <!--搜索-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp">
 
             <TextView
-                android:id="@+id/tv_next_search"
+                android:id="@+id/tv_hotel_search"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
                 android:background="@drawable/main_hotel_btn_sel"
                 android:gravity="center"
                 android:text="搜索酒店"
@@ -207,9 +207,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
+        android:layout_marginBottom="15dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -218,9 +216,9 @@
             android:id="@+id/coupon_lay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/iv_coupon_icon"
@@ -239,10 +237,10 @@
                 android:textSize="@dimen/common_12sp" />
         </LinearLayout>
 
-        <View
+        <!--<View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:background="#969696" />
+            android:background="#969696" />-->
 
         <!--我的行程-->
         <LinearLayout
@@ -252,7 +250,9 @@
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_order_icon"
@@ -271,10 +271,10 @@
                 android:textSize="@dimen/common_12sp" />
         </LinearLayout>
 
-        <View
+        <!--<View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:background="#969696" />
+            android:background="#969696" />-->
 
         <!--旅行币-->
         <LinearLayout
@@ -282,7 +282,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/iv_bounty_icon"

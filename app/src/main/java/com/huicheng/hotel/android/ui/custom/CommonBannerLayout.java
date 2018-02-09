@@ -164,6 +164,14 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
         }
     }
 
+    public void setIndicatorLayoutMarginBottom(int bottom) {
+        if (null != indicator_lay) {
+            LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) indicator_lay.getLayoutParams();
+            llp.bottomMargin = bottom;
+            indicator_lay.setLayoutParams(llp);
+        }
+    }
+
     public void updateWeatherInfo(long timeStamp, WeatherInfoBean bean) {
         if (null != bean) {
             weather_layout.setVisibility(VISIBLE);
