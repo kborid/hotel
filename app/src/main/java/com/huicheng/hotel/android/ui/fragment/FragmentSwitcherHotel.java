@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,6 +130,9 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
                 if (!LocationInfo.instance.isLocated()) {
                     myHandler.postDelayed(requestPermissionRunnable, 500);
                 }
+            }
+            if (SessionContext.isLogin()) {
+                requestUserMenusStatus();
             }
         }
     }
@@ -507,6 +512,8 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
             int endIndex = date.indexOf("周");
             SpannableString ss = new SpannableString(date);
             ss.setSpan(new AbsoluteSizeSpan(21, true), 0, endIndex,
+                    Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#989898")), endIndex, date.length(),
                     Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             return ss;
         }

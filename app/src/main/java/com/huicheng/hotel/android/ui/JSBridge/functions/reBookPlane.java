@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
+import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 
 /**
  * @author kborid
@@ -19,8 +19,7 @@ public class reBookPlane implements WVJBWebViewClient.WVJBHandler {
 
     @Override
     public void request(Object data, WVJBWebViewClient.WVJBResponseCallback callback) {
-        Intent intent = new Intent(mContext, HotelMainActivity.class);
-        intent.putExtra("index", 1);
+        Intent intent = new Intent(mContext, MainSwitcherActivity.class);
         intent.putExtra("isClosed", true);
         intent.putExtra("isReload", true);
         mContext.startActivity(intent);

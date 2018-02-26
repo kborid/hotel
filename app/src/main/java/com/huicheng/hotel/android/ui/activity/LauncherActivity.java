@@ -37,7 +37,6 @@ import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -196,11 +195,9 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
         if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
             SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
         }
-//        intent = new Intent(this, MainSwitcherActivity.class);
-        intent = new Intent(this, HotelMainActivity.class);
+        intent = new Intent(this, MainSwitcherActivity.class);
         startActivity(intent);
         finish();
-        overridePendingTransition(R.anim.launch_in, R.anim.launch_out);
     }
 
     @Override

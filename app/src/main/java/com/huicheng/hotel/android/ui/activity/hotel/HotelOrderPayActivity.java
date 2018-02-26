@@ -32,6 +32,7 @@ import com.huicheng.hotel.android.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.OrderPayDetailInfoBean;
+import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonPayChannelLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -355,9 +356,8 @@ public class HotelOrderPayActivity extends BaseAppActivity {
                         if (ActivityTack.getInstanse().isExitActivity(HotelListActivity.class)) {
                             startActivity(new Intent(HotelOrderPayActivity.this, HotelListActivity.class));
                         } else if (ActivityTack.getInstanse().isExitActivity(HotelRoomOrderActivity.class)) {
-                            Intent intent = new Intent(HotelOrderPayActivity.this, HotelMainActivity.class);
+                            Intent intent = new Intent(HotelOrderPayActivity.this, MainSwitcherActivity.class);
                             intent.putExtra("isClosed", true);
-                            intent.putExtra("index", 0);
                             startActivity(intent);
                         } else {
                             finish();

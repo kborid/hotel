@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.prj.sdk.util.BitmapUtils;
@@ -79,11 +80,11 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
             case R.id.iv_back:
             case R.id.tv_right:
             case R.id.tv_gohome: {
-                startActivity(new Intent(this, PlaneMainActivity.class));
+                startActivity(new Intent(this, MainSwitcherActivity.class));
                 break;
             }
             case R.id.tv_myorder: {
-                startActivity(new Intent(this, PlaneMainActivity.class));
+                startActivity(new Intent(this, MainSwitcherActivity.class));
                 startActivity(new Intent(this, UcOrdersActivity.class));
                 break;
             }

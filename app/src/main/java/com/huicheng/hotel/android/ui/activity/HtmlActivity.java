@@ -21,7 +21,6 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -180,7 +179,7 @@ public class HtmlActivity extends BaseAppActivity {
      */
     public void goBack() {
         if (getIntent().getExtras() != null && getIntent().getExtras().getString("goBack") != null) {
-            Intent intent = new Intent(this, HotelMainActivity.class);
+            Intent intent = new Intent(this, MainSwitcherActivity.class);
             startActivity(intent);
         } else {
             this.finish();

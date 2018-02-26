@@ -19,6 +19,7 @@ import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelDetailInfoBean;
+import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
@@ -142,7 +143,7 @@ public class HotelOrderPaySuccessActivity extends BaseAppActivity {
         dialog.setNegativeButton(getString(R.string.active_go), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(HotelOrderPaySuccessActivity.this, HotelMainActivity.class);
+                Intent intent = new Intent(HotelOrderPaySuccessActivity.this, MainSwitcherActivity.class);
                 intent.putExtra("index", 1);
                 startActivity(intent);
             }
@@ -186,7 +187,7 @@ public class HotelOrderPaySuccessActivity extends BaseAppActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.iv_back:
-                startActivity(new Intent(this, HotelMainActivity.class));
+                startActivity(new Intent(this, MainSwitcherActivity.class));
                 break;
             case R.id.btn_vip:
                 if (hotelDetailInfoBean != null) {

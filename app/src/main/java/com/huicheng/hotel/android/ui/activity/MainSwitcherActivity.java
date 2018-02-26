@@ -34,7 +34,6 @@ import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.Hotel0YuanHomeActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelDetailActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelRoomDetailActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelSpaceDetailActivity;
 import com.huicheng.hotel.android.ui.adapter.SwitcherContentAdapter;
@@ -56,6 +55,7 @@ import com.prj.sdk.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -63,10 +63,7 @@ import java.util.List;
  * @date 2017/5/24 0024
  */
 public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerLayout.OnLeftDrawerListener {
-    private static final int REQUEST_CODE_DATE = 0x01;
-    private static final int REQUEST_CODE_CITY = 0x02;
-    private static final int REQUEST_CODE_AIRPORT = 0x03;
-
+    private WeakReferenceHandler<MainSwitcherActivity> myHandler = new WeakReferenceHandler<>(this);
     private static final String[] tabTitle = {"酒店", "机票", "行程"};
     private static final int[] tabResId = {R.drawable.mainswitcher_hotel_sel, R.drawable.mainswitcher_plane_sel, R.drawable.mainswitcher_trace_sel};
 
@@ -78,12 +75,9 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     private LinearLayout tab_title_lay;
     private ViewPager tab_viewPager;
 
-    private WeakReferenceHandler<MainSwitcherActivity> myHandler = new WeakReferenceHandler<>(this);
     private AppInfoBean mAppInfoBean = null;
     private boolean isFirstLaunch = false;
     private long exitTime = 0;
-    private boolean isSelectedDate = false;
-    private long beginTime, endTime;
     private boolean isNeedCloseLeftDrawer = false;
 
     @Override
@@ -255,32 +249,31 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     protected void onResume() {
         super.onResume();
         banner_lay.startBanner();
+        boolean jump = false;
         if (isFirstLaunch) {
             isFirstLaunch = false;
             if (SessionContext.getOpenInstallAppData() != null) {
                 myHandler.removeCallbacksAndMessages(null);
-                Intent intent = new Intent(this, HotelMainActivity.class);
-                intent.putExtra("index", 0);
-                startActivity(intent);
+                //OpenInstall Event 分发
+                jump = dispatchOpenInstallEvent();
             }
         }
 
-        if (SessionContext.isLogin()) {
-            requestMessageCount();
-        } else {
-            //每次启动时，如果用户未登录，则显示侧滑
-            if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
-                sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+        if (!jump) {
+            if (SessionContext.isLogin()) {
+                requestMessageCount();
+            } else {
+                //每次启动时，如果用户未登录，则显示侧滑
+                if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
+                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
+                }
+            }
+
+            if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
+                isNeedCloseLeftDrawer = false;
+                drawer_layout.closeDrawers();
             }
         }
-
-        if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
-            isNeedCloseLeftDrawer = false;
-            drawer_layout.closeDrawers();
-        }
-
-        //OpenInstall Event 分发
-        boolean jump = dispatchOpenInstallEvent();
     }
 
     private boolean dispatchOpenInstallEvent() {
@@ -292,8 +285,12 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
                 if (ShareTypeDef.SHARE_HOTEL.equals(channel)) {
 //                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
 //                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    HotelOrderManager.getInstance().setBeginTime(beginTime);
-                    HotelOrderManager.getInstance().setEndTime(endTime);
+                    Calendar calendar = Calendar.getInstance();
+                    long beginDate = calendar.getTime().getTime();
+                    calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
+                    long endDate = calendar.getTime().getTime();
+                    HotelOrderManager.getInstance().setBeginTime(beginDate);
+                    HotelOrderManager.getInstance().setEndTime(endDate);
                     Intent intent = new Intent(this, HotelDetailActivity.class);
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     startActivity(intent);
@@ -302,8 +299,12 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
                 } else if (ShareTypeDef.SHARE_ROOM.equals(channel)) {
 //                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
 //                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    HotelOrderManager.getInstance().setBeginTime(beginTime);
-                    HotelOrderManager.getInstance().setEndTime(endTime);
+                    Calendar calendar = Calendar.getInstance();
+                    long beginDate = calendar.getTime().getTime();
+                    calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
+                    long endDate = calendar.getTime().getTime();
+                    HotelOrderManager.getInstance().setBeginTime(beginDate);
+                    HotelOrderManager.getInstance().setEndTime(endDate);
                     Intent intent = new Intent(this, HotelRoomDetailActivity.class);
                     intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
                     intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));

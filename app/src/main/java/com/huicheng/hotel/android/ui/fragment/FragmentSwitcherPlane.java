@@ -11,6 +11,8 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
@@ -135,7 +137,6 @@ public class FragmentSwitcherPlane extends BaseFragment implements View.OnClickL
     @Override
     protected void initParams() {
         super.initParams();
-        height = off_land_city_info.getHeight();
         mWindowManager = getActivity().getWindowManager();
         tabs.addTab(tabs.newTab().setText(getString(R.string.plane_single)), PlaneCommDef.FLIGHT_SINGLE, true);
         tabs.addTab(tabs.newTab().setText(getString(R.string.plane_double)), PlaneCommDef.FLIGHT_GOBACK, false);
@@ -150,6 +151,13 @@ public class FragmentSwitcherPlane extends BaseFragment implements View.OnClickL
         on.cityname = "北京";
         on.pinyin = "BEIJING";
         PlaneOrderManager.instance.setFlightOnAirportInfo(on);
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                height = off_land_city_info.getHeight();
+            }
+        });
     }
 
     private void updateBeginTimeEndTime() {

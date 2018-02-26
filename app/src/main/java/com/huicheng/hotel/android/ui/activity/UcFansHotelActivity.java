@@ -22,14 +22,13 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.FansHotelInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelMainActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomCardStackViewPager;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.VerticalStackTransformer;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
@@ -114,9 +113,8 @@ public class UcFansHotelActivity extends BaseAppActivity {
         switch (v.getId()) {
             case R.id.btn_booking:
                 HotelOrderManager.getInstance().reset();
-                Intent intent = new Intent(UcFansHotelActivity.this, HotelMainActivity.class);
+                Intent intent = new Intent(UcFansHotelActivity.this, MainSwitcherActivity.class);
                 intent.putExtra("isClosed", true);
-                intent.putExtra("index", 0);
                 startActivity(intent);
                 break;
             default:

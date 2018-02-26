@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -172,7 +172,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         tv_right = (TextView) findViewById(R.id.tv_right);
         iv_right = (ImageView) findViewById(R.id.iv_right);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        if (null != swipeRefreshLayout){
+        if (null != swipeRefreshLayout) {
 //            swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
             swipeRefreshLayout.setDistanceToTriggerSync(200);
             swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
@@ -281,6 +281,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     public void finish() {
         super.finish();
         LogUtil.d(TAG, "finish()");
+        overridePendingTransition(R.anim.launch_in, R.anim.launch_out);
         DataLoader.getInstance().clearRequests();
     }
 
@@ -534,7 +535,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
         removeProgressDialog();
-        if (null != swipeRefreshLayout){
+        if (null != swipeRefreshLayout) {
             swipeRefreshLayout.setRefreshing(false);
         }
         String msgFormat = "ErrMsg:%2$s[%1$s]";
