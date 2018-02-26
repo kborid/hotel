@@ -281,7 +281,6 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
     public void finish() {
         super.finish();
         LogUtil.d(TAG, "finish()");
-        overridePendingTransition(R.anim.launch_in, R.anim.launch_out);
         DataLoader.getInstance().clearRequests();
     }
 

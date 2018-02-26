@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.huicheng.hotel.android.ui.fragment.FragmentSwitcherHotel;
+import com.huicheng.hotel.android.ui.fragment.FragmentSwitcherOrder;
 import com.huicheng.hotel.android.ui.fragment.FragmentSwitcherPlane;
+import com.huicheng.hotel.android.ui.listener.MainScreenCallback;
 
 /**
  * @author kborid
@@ -14,22 +16,24 @@ import com.huicheng.hotel.android.ui.fragment.FragmentSwitcherPlane;
 
 public class SwitcherContentAdapter extends FragmentPagerAdapter {
 
-    private String[] mTitle;
+    private MainScreenCallback callback = null;
+    private String[] title;
 
-    public SwitcherContentAdapter(FragmentManager fm, String[] title) {
+    public SwitcherContentAdapter(FragmentManager fm, String[] title, MainScreenCallback callback) {
         super(fm);
-        mTitle = title;
+        this.title = title;
+        this.callback = callback;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return FragmentSwitcherHotel.newInstance();
+                return FragmentSwitcherHotel.newInstance(callback);
             case 1:
                 return FragmentSwitcherPlane.newInstance();
             case 2:
-                return FragmentSwitcherPlane.newInstance();
+                return FragmentSwitcherOrder.newInstance();
             default:
                 return null;
         }
@@ -37,11 +41,11 @@ public class SwitcherContentAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return mTitle.length;
+        return title.length;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTitle[position];
+        return title[position];
     }
 }

@@ -37,7 +37,6 @@ import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
-import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.UcBountyMainActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
@@ -49,6 +48,7 @@ import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.listener.MainScreenCallback;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
@@ -102,6 +102,8 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
     private boolean isRequestPermission = false;
     private boolean hasRejectPermission = false;
 
+    private static MainScreenCallback listener = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isFirstLoad = true;
@@ -115,8 +117,10 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
         return view;
     }
 
-    public static Fragment newInstance() {
+    public static Fragment newInstance(MainScreenCallback l) {
+        listener = l;
         Fragment fragment = new FragmentSwitcherHotel();
+        fragment.setArguments(null);
         return fragment;
     }
 
@@ -436,17 +440,6 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
         }
     }
 
-    private void requestWeatherInfo(long timeStamp) {
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("cityname", LocationInfo.instance.getCity());
-        b.addBody("siteid", LocationInfo.instance.getCityCode());
-        b.addBody("date", DateUtil.getDay("yyyyMMdd", timeStamp));
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.WEATHER;
-        d.flag = AppConst.WEATHER;
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
     private void refreshCityDisplay(String city) {
         String tempProvince = LocationInfo.instance.getProvince();
         HotelOrderManager.getInstance().setCityStr(CityParseUtils.getProvinceCityString(tempProvince, city, "-"));
@@ -504,7 +497,9 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
                 tv_days.setText(String.format(getString(R.string.duringNightStr), DateUtil.getGapCount(new Date(beginTime), new Date(endTime))));
             }
         }
-        requestWeatherInfo(beginTime);
+        if (null != listener) {
+            listener.requestWeather(beginTime);
+        }
     }
 
     private SpannableString formatDateForBigDay(String date) {
@@ -539,7 +534,9 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
                 }
             }
             refreshCityDisplay(tmp);
-            requestWeatherInfo(beginTime);
+            if (null != listener) {
+                listener.requestWeather(beginTime);
+            }
         } else {
             tv_city.setHint("城市定位失败");
         }
@@ -547,7 +544,6 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
 
     @Override
     public void preExecute(ResponseData request) {
-
     }
 
     @Override
@@ -558,24 +554,11 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
                 if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
                     updateUserMenuStatus(response.body.toString());
                 }
-            } else if (request.flag == AppConst.WEATHER) {
-                LogUtil.i(TAG, "json = " + response.body.toString());
-                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
-                    WeatherInfoBean bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
-//                    banner_lay.updateWeatherInfo(beginTime, bean);
-                } else {
-//                    banner_lay.updateWeatherInfo(beginTime, null);
-                }
             }
         }
     }
 
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
-        if (response != null && response.data != null) {
-            if (request.flag == AppConst.WEATHER) {
-//                banner_lay.updateWeatherInfo(beginTime, null);
-            }
-        }
     }
 }

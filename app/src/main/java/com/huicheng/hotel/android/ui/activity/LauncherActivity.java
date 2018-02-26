@@ -201,6 +201,12 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.launch_in, R.anim.launch_out);
+    }
+
+    @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         return event.getKeyCode() == KeyEvent.KEYCODE_BACK || super.dispatchKeyEvent(event);
     }

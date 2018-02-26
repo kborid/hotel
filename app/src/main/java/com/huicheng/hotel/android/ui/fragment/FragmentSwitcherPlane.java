@@ -88,6 +88,7 @@ public class FragmentSwitcherPlane extends BaseFragment implements View.OnClickL
 
     public static Fragment newInstance() {
         Fragment fragment = new FragmentSwitcherPlane();
+        fragment.setArguments(null);
         return fragment;
     }
 

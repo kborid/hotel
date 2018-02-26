@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/iv_plane_card_bg">
+
+        <!--内容-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="7dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!--名称-->
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="上海 - 北京"
+                    android:textColor="#3c3c3c"
+                    android:textSize="@dimen/common_16sp"
+                    android:textStyle="bold" />
+                <!--日期-->
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="3月25日"
+                    android:textColor="#797979"
+                    android:textSize="@dimen/common_12sp" />
+            </LinearLayout>
+
+            <!--起飞时间-->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="vertical">
+
+                <TableRow>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="22:20"
+                            android:textColor="#3c3c3c"
+                            android:textSize="@dimen/common_20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_airport_off"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="虹桥机场"
+                            android:textColor="#797979"
+                            android:textSize="@dimen/common_12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/iv_order_plane_icon" />
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="23:50"
+                            android:textColor="#3c3c3c"
+                            android:textSize="@dimen/common_20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_airport_on"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="虹桥机场"
+                            android:textColor="#797979"
+                            android:textSize="@dimen/common_12sp" />
+                    </LinearLayout>
+                </TableRow>
+
+            </TableLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/line_plane_listitem"
+                android:layerType="software" />
+
+            <!--乘机信息-->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="7dp"
+                android:paddingRight="7dp">
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="航班"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_10sp" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="登机人"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_10sp" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="距离起飞时间"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_10sp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/tv_flight"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="CZ6429"
+                        android:textColor="#3c3c3c"
+                        android:textSize="@dimen/common_16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_passenger"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="段伟"
+                        android:textColor="#3c3c3c"
+                        android:textSize="@dimen/common_16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="1小时39分"
+                        android:textColor="#3c3c3c"
+                        android:textSize="@dimen/common_16sp" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!--背景icon-->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/iv_hotel_logo_small" />
+
+        <!--状态-->
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="7dp"
+            android:text="已出票"
+            android:textColor="@color/mainColor"
+            android:textSize="@dimen/common_16sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+</LinearLayout>

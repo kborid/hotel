@@ -292,7 +292,6 @@ public class FragmentTabAllDay extends BaseFragment implements DataCallback, Hot
 
     @Override
     public void preExecute(ResponseData request) {
-
     }
 
     @Override

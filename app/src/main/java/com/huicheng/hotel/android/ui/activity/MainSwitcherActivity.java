@@ -32,6 +32,7 @@ import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.Hotel0YuanHomeActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelDetailActivity;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelRoomDetailActivity;
@@ -42,12 +43,14 @@ import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.listener.MainScreenCallback;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
+import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
@@ -79,6 +82,7 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     private boolean isFirstLaunch = false;
     private long exitTime = 0;
     private boolean isNeedCloseLeftDrawer = false;
+    private long weatherTimestamp = 0;
 
     @Override
     protected void preOnCreate() {
@@ -111,7 +115,7 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         tab_title_lay = (LinearLayout) findViewById(R.id.tab_title_lay);
         tab_viewPager = (ViewPager) findViewById(R.id.tab_viewPager);
         tab_viewPager.setOffscreenPageLimit(3);
-        tab_viewPager.setAdapter(new SwitcherContentAdapter(getSupportFragmentManager(), tabTitle));
+        tab_viewPager.setAdapter(new SwitcherContentAdapter(getSupportFragmentManager(), tabTitle, mainScreenCallback));
 
         //user relayout
         RelativeLayout.LayoutParams ucRlp = (RelativeLayout.LayoutParams) user_lay.getLayoutParams();
@@ -351,6 +355,17 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestWeatherInfo(long timeStamp) {
+        RequestBeanBuilder b = RequestBeanBuilder.create(false);
+        b.addBody("cityname", LocationInfo.instance.getCity());
+        b.addBody("siteid", LocationInfo.instance.getCityCode());
+        b.addBody("date", DateUtil.getDay("yyyyMMdd", timeStamp));
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.WEATHER;
+        d.flag = AppConst.WEATHER;
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     private void showUpdateDialog(final AppInfoBean bean) {
         final CustomDialog dialog = new CustomDialog(this);
         String title = getString(R.string.update_tips);
@@ -488,7 +503,22 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
                 List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
                 SessionContext.setBannerList(temp);
                 banner_lay.setImageResource(temp);
+            } else if (request.flag == AppConst.WEATHER) {
+                LogUtil.i(TAG, "json = " + response.body.toString());
+                WeatherInfoBean bean = null;
+                if (StringUtil.notEmpty(response.body.toString()) && !"{}".equals(response.body.toString())) {
+                    bean = JSON.parseObject(response.body.toString(), WeatherInfoBean.class);
+                }
+                banner_lay.updateWeatherInfo(weatherTimestamp, bean);
             }
         }
     }
+
+    private MainScreenCallback mainScreenCallback = new MainScreenCallback() {
+        @Override
+        public void requestWeather(long timestamp) {
+            weatherTimestamp = timestamp;
+            requestWeatherInfo(weatherTimestamp);
+        }
+    };
 }
