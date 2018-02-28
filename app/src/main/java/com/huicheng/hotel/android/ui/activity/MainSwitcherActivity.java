@@ -29,6 +29,7 @@ import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.DataCleanManager;
 import com.huicheng.hotel.android.control.LocationInfo;
+import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
@@ -44,6 +45,7 @@ import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.listener.MainScreenCallback;
+import com.huicheng.hotel.android.ui.listener.OnUpdateSwitcherListener;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -58,6 +60,7 @@ import com.prj.sdk.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -521,4 +524,29 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
             requestWeatherInfo(weatherTimestamp);
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
+        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
+            for (OnUpdateSwitcherListener listener : onUpdateSwitcherListeners) {
+                listener.permissionResult(resultCode == PermissionsDef.PERMISSIONS_GRANTED);
+            }
+        }
+    }
+
+    private static List<OnUpdateSwitcherListener> onUpdateSwitcherListeners = new ArrayList<>();
+
+    public static void registerPermissionListener(OnUpdateSwitcherListener listener) {
+        if (!onUpdateSwitcherListeners.contains(listener)) {
+            onUpdateSwitcherListeners.add(listener);
+        }
+    }
+
+    public static void unRegisterPermissionListener(OnUpdateSwitcherListener listener) {
+        if (onUpdateSwitcherListeners.contains(listener)) {
+            onUpdateSwitcherListeners.remove(listener);
+        }
+    }
 }

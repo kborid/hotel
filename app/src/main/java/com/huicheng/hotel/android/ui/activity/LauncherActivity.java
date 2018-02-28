@@ -343,8 +343,20 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
     protected boolean isCheckException(ResponseData request, ResponseData response) {
         if (request.flag == AppConst.AD_GDT_IF) {
             return true;
+        } else if (request.flag == AppConst.PLANE_AIRPORT_LIST
+                || request.flag == AppConst.PLANE_COMPANY_LIST) {
+            mTag.put(request.flag, request.flag);
+            return true;
         }
         return super.isCheckException(request, response);
+    }
+
+    @Override
+    protected void onNotifyOverrideMessage(ResponseData request, ResponseData response) {
+        super.onNotifyOverrideMessage(request, response);
+        if (mTag.size() == mTagCount) {
+            doLastAction();
+        }
     }
 
     @Override

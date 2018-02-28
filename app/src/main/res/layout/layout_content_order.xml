@@ -12,7 +12,8 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="3dp" />
+            android:paddingTop="3dp"
+            android:background="@drawable/main_switcher_content_bg" />
 
         <RelativeLayout
             android:id="@+id/empty_lay"

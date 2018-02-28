@@ -37,7 +37,7 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolder = new MainOrderAdapter.HotelOrderViewHolder(LayoutInflater.from(context).inflate(R.layout.lv_hotelorder_item, parent, false));
                 break;
             case TYPE_PLANE:
-                viewHolder = new MainOrderAdapter.HotelOrderViewHolder(LayoutInflater.from(context).inflate(R.layout.lv_planeorder_item, parent, false));
+                viewHolder = new MainOrderAdapter.PlaneOrderViewHolder(LayoutInflater.from(context).inflate(R.layout.lv_planeorder_item, parent, false));
                 break;
         }
 //        viewHolder.setIsRecyclable(true);
@@ -65,13 +65,13 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     class HotelOrderViewHolder extends RecyclerView.ViewHolder {
-        public HotelOrderViewHolder(View itemView) {
+        HotelOrderViewHolder(View itemView) {
             super(itemView);
         }
     }
 
     class PlaneOrderViewHolder extends RecyclerView.ViewHolder {
-        public PlaneOrderViewHolder(View itemView) {
+        PlaneOrderViewHolder(View itemView) {
             super(itemView);
         }
     }

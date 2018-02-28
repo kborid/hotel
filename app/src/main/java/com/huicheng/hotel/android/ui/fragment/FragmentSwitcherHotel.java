@@ -38,6 +38,7 @@ import com.huicheng.hotel.android.permission.PermissionsActivity;
 import com.huicheng.hotel.android.permission.PermissionsDef;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.tools.CityParseUtils;
+import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.activity.UcBountyMainActivity;
 import com.huicheng.hotel.android.ui.activity.UcCouponsActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
@@ -49,6 +50,7 @@ import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.custom.CustomConsiderLayoutForHome;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.listener.MainScreenCallback;
+import com.huicheng.hotel.android.ui.listener.OnUpdateSwitcherListener;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
@@ -67,7 +69,7 @@ import java.util.Date;
  * @date 2018/2/9 0009.
  */
 
-public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickListener, DataCallback, AMapLocationControl.MyLocationListener {
+public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickListener, DataCallback, AMapLocationControl.MyLocationListener, OnUpdateSwitcherListener {
     private static final int REQUEST_CODE_DATE = 0x01;
     private static final int REQUEST_CODE_CITY = 0x02;
 
@@ -99,8 +101,6 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
 
     private static Handler myHandler = new Handler(Looper.getMainLooper());
     private AMapLocation aMapLocation = null;
-    private boolean isRequestPermission = false;
-    private boolean hasRejectPermission = false;
 
     private static MainScreenCallback listener = null;
 
@@ -130,10 +130,8 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
         if (isFirstLoad) {
             isFirstLoad = false;
             //如果画面跳转，则不定位，也不获取权限
-            if (!isRequestPermission && !hasRejectPermission) {
-                if (!LocationInfo.instance.isLocated()) {
-                    myHandler.postDelayed(requestPermissionRunnable, 500);
-                }
+            if (!LocationInfo.instance.isLocated()) {
+                myHandler.postDelayed(requestPermissionRunnable, 500);
             }
             if (SessionContext.isLogin()) {
                 requestUserMenusStatus();
@@ -345,6 +343,7 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
         tv_search.setOnClickListener(this);
         tv_consider.setOnClickListener(this);
         tv_curr_position.setOnClickListener(this);
+        MainSwitcherActivity.registerPermissionListener(this);
     }
 
     @Override
@@ -427,12 +426,7 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
                 tv_city.setHint("正在获取当前位置");
                 tv_city.setText("");
                 LocationInfo.instance.setIsMyLoc(true);
-                //权限检查
-                if (PRJApplication.getPermissionsChecker(getActivity()).lacksPermissions(PermissionsDef.LOCATION_PERMISSION)) {
-                    PermissionsActivity.startActivityForResult(getActivity(), PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LOCATION_PERMISSION);
-                    return;
-                }
-                AMapLocationControl.getInstance().startLocationOnce(this);
+                myHandler.post(requestPermissionRunnable);
                 break;
         }
         if (null != intent) {
@@ -452,25 +446,13 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
     @Override
     public void onDestroy() {
         super.onDestroy();
+        MainSwitcherActivity.unRegisterPermissionListener(this);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtil.i(TAG, "onActivityResult() " + requestCode + ", " + resultCode);
-
-        if (requestCode == PermissionsDef.PERMISSION_REQ_CODE) {
-            isRequestPermission = true;
-            if (resultCode == PermissionsDef.PERMISSIONS_GRANTED) {
-                hasRejectPermission = false;
-                //地点信息
-                tv_city.setHint("正在定位当前城市");
-                AMapLocationControl.getInstance().startLocationOnce(this);
-            } else {
-                hasRejectPermission = true;
-                tv_city.setHint("城市定位失败");
-            }
-        }
 
         if (Activity.RESULT_OK != resultCode) {
             return;
@@ -560,5 +542,15 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
 
     @Override
     public void notifyError(ResponseData request, ResponseData response, Exception e) {
+    }
+
+    @Override
+    public void permissionResult(boolean ret) {
+        if (ret) {
+            tv_city.setHint("正在定位当前城市");
+            myHandler.post(requestPermissionRunnable);
+        } else {
+            tv_city.setHint("城市定位失败");
+        }
     }
 }

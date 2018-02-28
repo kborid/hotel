@@ -3,6 +3,7 @@ package com.huicheng.hotel.android.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.OrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.adapter.MainOrderAdapter;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
@@ -87,6 +87,7 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        //test
         for (int i = 0; i < 10; i++) {
             OrderDetailInfoBean bean = new OrderDetailInfoBean();
             bean.type = i % 2;
@@ -123,9 +124,15 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
 
     private void requestUserOrders() {
         LogUtil.i(TAG, "requestUserOrders()");
-        RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        ResponseData d = b.syncRequest(b);
+//        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+//        ResponseData d = b.syncRequest(b);
 //        DataLoader.getInstance().loadData(this, d);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
     }
 
     @Override
