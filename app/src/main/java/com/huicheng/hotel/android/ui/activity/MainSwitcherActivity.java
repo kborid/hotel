@@ -44,6 +44,7 @@ import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
 import com.huicheng.hotel.android.ui.custom.LeftDrawerLayout;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.listener.CustomOnPageChangeListener;
 import com.huicheng.hotel.android.ui.listener.MainScreenCallback;
 import com.huicheng.hotel.android.ui.listener.OnUpdateSwitcherListener;
 import com.prj.sdk.constants.BroadCastConst;
@@ -216,13 +217,10 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         super.initListeners();
         left_layout.setOnLeftDrawerListener(this);
         user_lay.setOnClickListener(this);
-        tab_viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
+        tab_viewPager.addOnPageChangeListener(new CustomOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                super.onPageSelected(position);
                 if (position == 2) {
                     if (!SessionContext.isLogin()) {
                         sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
@@ -232,10 +230,6 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
                 }
                 tab_title_lay.dispatchSetSelected(false);
                 tab_title_lay.getChildAt(position).setSelected(true);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
             }
         });
     }

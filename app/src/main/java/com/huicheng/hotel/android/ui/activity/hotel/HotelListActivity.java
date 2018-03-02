@@ -36,6 +36,7 @@ import com.huicheng.hotel.android.ui.custom.CustomSortLayout;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabAllDay;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabClock;
 import com.huicheng.hotel.android.ui.fragment.FragmentTabYeGuiRen;
+import com.huicheng.hotel.android.ui.listener.CustomOnPageChangeListener;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 
@@ -94,20 +95,11 @@ public class HotelListActivity extends BaseAppActivity {
             pager.setOffscreenPageLimit(3);
             pager.setAdapter(new myPagerAdapter(getSupportFragmentManager()));
             pager.setCurrentItem(index);
-            pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
+            pager.addOnPageChangeListener(new CustomOnPageChangeListener() {
                 @Override
                 public void onPageSelected(int position) {
+                    super.onPageSelected(position);
                     index = position;
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
                 }
             });
             //向ViewPager绑定PagerSlidingTabStrip
@@ -119,6 +111,7 @@ public class HotelListActivity extends BaseAppActivity {
 
         //筛选框Popup Window
         customConsiderLayoutForList = new CustomConsiderLayoutForList(this);
+        customConsiderLayoutForList.reloadConsiderConfig();
         customConsiderLayoutForList.setOnConsiderLayoutListener(new CustomConsiderLayoutForList.OnConsiderLayoutListener() {
             @Override
             public void onDismiss() {

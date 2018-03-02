@@ -29,8 +29,9 @@ import com.huicheng.hotel.android.ui.activity.hotel.Hotel0YuanHomeActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
+import com.huicheng.hotel.android.ui.listener.CustomOnPageChangeListener;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
@@ -43,7 +44,7 @@ import java.util.List;
  * @date 2016/12/8 0008
  * @modify 2017/02/20
  */
-public class UcCouponsActivity extends BaseAppActivity implements ViewPager.OnPageChangeListener {
+public class UcCouponsActivity extends BaseAppActivity {
 
     private static final int COUPON_FREE = 1;
     private static final int COUPON_UNION = 2;
@@ -86,7 +87,6 @@ public class UcCouponsActivity extends BaseAppActivity implements ViewPager.OnPa
         hasDiscountLayout = (LinearLayout) findViewById(R.id.has_discount_lay);
         tv_summary = (TextView) findViewById(R.id.tv_summary);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPager.addOnPageChangeListener(this);
         indicator_lay = (LinearLayout) findViewById(R.id.indicator_lay);
         btn_use = (Button) findViewById(R.id.btn_use);
     }
@@ -183,6 +183,16 @@ public class UcCouponsActivity extends BaseAppActivity implements ViewPager.OnPa
         super.initListeners();
         btn_use.setOnClickListener(this);
         active_lay.setOnClickListener(this);
+        viewPager.addOnPageChangeListener(new CustomOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                indicator_lay.getChildAt(position).setEnabled(true);
+                indicator_lay.getChildAt(positionIndex).setEnabled(false);
+                positionIndex = position;
+                refreshCouponInfoAndStatus(position);
+            }
+        });
     }
 
     @Override
@@ -264,22 +274,6 @@ public class UcCouponsActivity extends BaseAppActivity implements ViewPager.OnPa
                 }
             }
         }
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        indicator_lay.getChildAt(position).setEnabled(true);
-        indicator_lay.getChildAt(positionIndex).setEnabled(false);
-        positionIndex = position;
-        refreshCouponInfoAndStatus(position);
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int arg0) {
     }
 
     /**

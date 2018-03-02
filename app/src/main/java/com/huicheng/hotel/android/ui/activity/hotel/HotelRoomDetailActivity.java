@@ -51,6 +51,7 @@ import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
+import com.huicheng.hotel.android.ui.listener.CustomOnPageChangeListener;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.BitmapUtils;
@@ -239,23 +240,13 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new CustomOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                super.onPageSelected(position);
                 indicator_lay.getChildAt(position).setEnabled(true);
                 indicator_lay.getChildAt(positionIndex).setEnabled(false);
                 positionIndex = position;
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                if (viewPagerContainer != null) {
-//                    viewPagerContainer.invalidate();
-//                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
             }
         });
 

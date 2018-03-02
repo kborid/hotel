@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
+import com.huicheng.hotel.android.ui.listener.CustomOnPageChangeListener;
 import com.prj.sdk.util.Utils;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
  * @author kborid
  * @date 2016/8/15
  */
-public class CustomNoAutoScrollBannerLayout extends RelativeLayout implements ViewPager.OnPageChangeListener {
+public class CustomNoAutoScrollBannerLayout extends RelativeLayout {
 
     private Context context;
     private ViewPager viewpager;
@@ -50,7 +51,15 @@ public class CustomNoAutoScrollBannerLayout extends RelativeLayout implements Vi
     }
 
     private void initListener() {
-        viewpager.addOnPageChangeListener(this);
+        viewpager.addOnPageChangeListener(new CustomOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                indicator_lay.getChildAt(position).setEnabled(true);
+                indicator_lay.getChildAt(positionIndex).setEnabled(false);
+                positionIndex = position;
+            }
+        });
     }
 
     private void findViews() {
@@ -83,21 +92,6 @@ public class CustomNoAutoScrollBannerLayout extends RelativeLayout implements Vi
             }
             indicator_lay.getChildAt(positionIndex).setEnabled(true);
         }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int arg0) {
-    }
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        indicator_lay.getChildAt(position).setEnabled(true);
-        indicator_lay.getChildAt(positionIndex).setEnabled(false);
-        positionIndex = position;
     }
 
     private class CustomPagerAdapter extends PagerAdapter {

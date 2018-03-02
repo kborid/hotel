@@ -133,9 +133,9 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
             if (!LocationInfo.instance.isLocated()) {
                 myHandler.postDelayed(requestPermissionRunnable, 500);
             }
-            if (SessionContext.isLogin()) {
-                requestUserMenusStatus();
-            }
+        }
+        if (SessionContext.isLogin()) {
+            requestUserMenusStatus();
         }
     }
 

@@ -18,6 +18,7 @@ import com.huicheng.hotel.android.common.WeatherCommDef;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
 import com.huicheng.hotel.android.ui.adapter.BannerImageAdapter;
+import com.huicheng.hotel.android.ui.listener.CustomOnPageChangeListener;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.Utils;
 
@@ -29,7 +30,7 @@ import java.util.List;
  * @author kborid
  * @date 2016/8/15
  */
-public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPageChangeListener {
+public class CommonBannerLayout extends RelativeLayout {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -70,7 +71,20 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
     }
 
     private void initListener() {
-        viewpager.addOnPageChangeListener(this);
+        viewpager.addOnPageChangeListener(new CustomOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                int newPosition = position % mList.size();
+                if (null != indicator_lay && indicator_lay.getChildCount() > 1) {
+                    indicator_lay.getChildAt(newPosition).setEnabled(true);
+                    if (positionIndex != newPosition) {
+                        indicator_lay.getChildAt(positionIndex).setEnabled(false);
+                        positionIndex = newPosition;
+                    }
+                }
+            }
+        });
     }
 
     private void findViews() {
@@ -133,26 +147,6 @@ public class CommonBannerLayout extends RelativeLayout implements ViewPager.OnPa
                 indicator_lay.addView(view);
             }
             indicator_lay.getChildAt(positionIndex).setEnabled(true);
-        }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int arg0) {
-    }
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        int newPosition = position % mList.size();
-        if (null != indicator_lay && indicator_lay.getChildCount() > 1) {
-            indicator_lay.getChildAt(newPosition).setEnabled(true);
-            if (positionIndex != newPosition) {
-                indicator_lay.getChildAt(positionIndex).setEnabled(false);
-                positionIndex = newPosition;
-            }
         }
     }
 

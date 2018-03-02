@@ -50,6 +50,7 @@ import com.huicheng.hotel.android.ui.custom.RoundedLeftImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
+import com.huicheng.hotel.android.ui.listener.CustomOnPageChangeListener;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -210,9 +211,10 @@ public class HotelDetailActivity extends BaseAppActivity {
         tv_map.setOnClickListener(this);
         tv_service.setOnClickListener(this);
         tv_view_comment.setOnClickListener(this);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new CustomOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                super.onPageSelected(position);
                 int newPosition = position % hotelDetailInfoBean.picPath.size();
                 if (null != indicator_lay && indicator_lay.getChildCount() > 1) {
                     indicator_lay.getChildAt(newPosition).setEnabled(true);
@@ -221,14 +223,6 @@ public class HotelDetailActivity extends BaseAppActivity {
                         positionIndex = newPosition;
                     }
                 }
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
             }
         });
 

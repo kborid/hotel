@@ -3,7 +3,6 @@ package com.huicheng.hotel.android.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,7 @@ import com.huicheng.hotel.android.ui.custom.CustomCardStackViewPager;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.custom.VerticalStackTransformer;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
+import com.huicheng.hotel.android.ui.listener.CustomOnPageChangeListener;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.Utils;
@@ -85,24 +85,15 @@ public class UcFansHotelActivity extends BaseAppActivity {
     public void initListeners() {
         super.initListeners();
         btn_booking.setOnClickListener(this);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
+        viewPager.setOnPageChangeListener(new CustomOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                super.onPageSelected(position);
                 int newPosition = position % fanHotelList.size();
                 tv_count.setText(newPosition + 1 + " / " + fanHotelList.size());
                 if (positionIndex != newPosition) {
                     positionIndex = newPosition;
                 }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
