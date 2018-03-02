@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.Utils;
 
@@ -106,9 +107,9 @@ public class PlaneFlightCalendarPriceAdapter extends RecyclerView.Adapter<PlaneF
         }
     }
 
-    private OnItemRecycleViewClickListener listener = null;
+    private OnRecycleViewItemClickListener listener = null;
 
-    public void setOnItemRecycleViewClickListener(OnItemRecycleViewClickListener listener) {
+    public void setOnRecycleViewItemClickListener(OnRecycleViewItemClickListener listener) {
         this.listener = listener;
     }
 }

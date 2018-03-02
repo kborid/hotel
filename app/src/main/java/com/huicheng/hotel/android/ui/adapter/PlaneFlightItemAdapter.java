@@ -16,6 +16,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
+import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
@@ -161,9 +162,9 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
         }
     }
 
-    private OnItemRecycleViewClickListener listener = null;
+    private OnRecycleViewItemClickListener listener = null;
 
-    public void setOnItemRecycleViewClickListener(OnItemRecycleViewClickListener listener) {
+    public void setOnRecycleViewItemClickListener(OnRecycleViewItemClickListener listener) {
         this.listener = listener;
     }
 }

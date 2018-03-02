@@ -27,12 +27,12 @@ import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
-import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightCalendarPriceAdapter;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.plane.OnConsiderLayoutResultListener;
 import com.huicheng.hotel.android.ui.custom.plane.PlaneConsiderLayout;
+import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
@@ -232,7 +232,7 @@ public class PlaneFlightListActivity extends BaseAppActivity {
     public void initListeners() {
         super.initListeners();
         calendar_lay.setOnClickListener(this);
-        planeFlightCalendarPriceAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
+        planeFlightCalendarPriceAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
                 if (selectedIndex == position) {
@@ -245,7 +245,7 @@ public class PlaneFlightListActivity extends BaseAppActivity {
                 requestPlaneFlightInfo(true);
             }
         });
-        planeFlightItemAdapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
+        planeFlightItemAdapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
                 if (PlaneOrderManager.instance.isBackBookingTypeForGoBack()) {
@@ -428,10 +428,12 @@ public class PlaneFlightListActivity extends BaseAppActivity {
                 planeFlightItemAdapter.updateMinFlightItemInfo(min);
                 minPrice = (int) min.barePrice;
 
+
                 //刷新数据
+                List<PlaneFlightInfoBean> temp = checkConditionsResult(allList);
+                Collections.sort(temp, mComparator);
                 mFlightList.clear();
-                mFlightList.addAll(checkConditionsResult(allList));
-                Collections.sort(mFlightList, mComparator);
+                mFlightList.addAll(temp);
             }
             LogUtil.i(TAG, "flight count = " + mFlightList.size());
             return null;

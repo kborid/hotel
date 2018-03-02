@@ -21,9 +21,9 @@ import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
-import com.huicheng.hotel.android.ui.adapter.OnItemRecycleViewClickListener;
 import com.huicheng.hotel.android.ui.adapter.PlaneTicketVendorItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -131,7 +131,7 @@ public class PlaneTicketListActivity extends BaseAppActivity {
     @Override
     public void initListeners() {
         super.initListeners();
-        adapter.setOnItemRecycleViewClickListener(new OnItemRecycleViewClickListener() {
+        adapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void OnItemClick(View v, int position) {
                 PlaneOrderManager.instance.setTicketInfo(mTicketBean);

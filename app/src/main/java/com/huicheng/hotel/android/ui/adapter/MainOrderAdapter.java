@@ -5,9 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.requestbuilder.bean.OrderDetailInfoBean;
+import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
+import com.prj.sdk.util.DateUtil;
 
 import java.util.List;
 
@@ -45,9 +49,25 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         switch (holder.getItemViewType()) {
             case TYPE_HOTEL:
+                OrderDetailInfoBean hotelOrderDetailBean = list.get(position);
+                HotelOrderViewHolder hotelOrderViewHolder = (HotelOrderViewHolder) holder;
+                hotelOrderViewHolder.tv_name.setText(hotelOrderDetailBean.hotelName);
+                hotelOrderViewHolder.tv_in_date.setText(DateUtil.getDay("M月d日", hotelOrderDetailBean.beginDate));
+                hotelOrderViewHolder.tv_out_date.setText(DateUtil.getDay("M月d日", hotelOrderDetailBean.endDate));
+                hotelOrderViewHolder.tv_position.setText(hotelOrderDetailBean.hotelAddress);
+                hotelOrderViewHolder.tv_phone.setText(hotelOrderDetailBean.hotelPhone);
+                hotelOrderViewHolder.tv_status.setText(hotelOrderDetailBean.orderStatusName);
+                hotelOrderViewHolder.root.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (null != listener) {
+                            listener.OnItemClick(v, position);
+                        }
+                    }
+                });
                 break;
             case TYPE_PLANE:
                 break;
@@ -65,8 +85,23 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     class HotelOrderViewHolder extends RecyclerView.ViewHolder {
+        FrameLayout root;
+        TextView tv_name;
+        TextView tv_in_date;
+        TextView tv_out_date;
+        TextView tv_position;
+        TextView tv_phone;
+        TextView tv_status;
+
         HotelOrderViewHolder(View itemView) {
             super(itemView);
+            root = (FrameLayout) itemView.findViewById(R.id.root);
+            tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            tv_in_date = (TextView) itemView.findViewById(R.id.tv_in_date);
+            tv_out_date = (TextView) itemView.findViewById(R.id.tv_out_date);
+            tv_position = (TextView) itemView.findViewById(R.id.tv_position);
+            tv_phone = (TextView) itemView.findViewById(R.id.tv_phone);
+            tv_status = (TextView) itemView.findViewById(R.id.tv_status);
         }
     }
 
@@ -74,5 +109,11 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         PlaneOrderViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    private OnRecycleViewItemClickListener listener = null;
+
+    public void setOnRecycleViewItemClickListener(OnRecycleViewItemClickListener listener) {
+        this.listener = listener;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
+import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.util.StringUtil;
 
 import java.util.ArrayList;
@@ -126,9 +127,9 @@ public class PlaneTicketVendorItemAdapter extends BaseAdapter {
         TextView tv_order;
     }
 
-    private OnItemRecycleViewClickListener listener = null;
+    private OnRecycleViewItemClickListener listener = null;
 
-    public void setOnItemRecycleViewClickListener(OnItemRecycleViewClickListener listener) {
+    public void setOnRecycleViewItemClickListener(OnRecycleViewItemClickListener listener) {
         this.listener = listener;
     }
 }

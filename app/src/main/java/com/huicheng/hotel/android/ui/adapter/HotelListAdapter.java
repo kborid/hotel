@@ -28,6 +28,7 @@ import com.huicheng.hotel.android.control.LocationInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.HotelInfoBean;
 import com.huicheng.hotel.android.ui.activity.HtmlActivity;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
+import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.huicheng.hotel.android.ui.mapoverlay.AMapUtil;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.StringUtil;
@@ -351,13 +352,9 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         }
     }
 
-    public interface OnItemClickListener {
-        void OnItemClick(View view, int position);
-    }
+    private OnRecycleViewItemClickListener listener = null;
 
-    private HotelListAdapter.OnItemClickListener listener = null;
-
-    public void setOnItemClickListener(HotelListAdapter.OnItemClickListener listener) {
+    public void setOnRecycleViewItemClickListener(OnRecycleViewItemClickListener listener) {
         this.listener = listener;
     }
 }

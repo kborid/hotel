@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <FrameLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/iv_plane_card_bg">
@@ -41,6 +42,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_in_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3月15日"
@@ -70,6 +72,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_out_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3月25日"

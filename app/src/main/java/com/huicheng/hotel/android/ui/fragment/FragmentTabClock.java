@@ -31,6 +31,7 @@ import com.huicheng.hotel.android.ui.activity.hotel.HotelListActivity;
 import com.huicheng.hotel.android.ui.adapter.HotelListAdapter;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.net.data.DataCallback;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -176,7 +177,7 @@ public class FragmentTabClock extends BaseFragment implements DataCallback, Hote
             }
         });
 
-        adapter.setOnItemClickListener(new HotelListAdapter.OnItemClickListener() {
+        adapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
                 HotelOrderManager.getInstance().setHotelType(HotelCommDef.TYPE_CLOCK);
