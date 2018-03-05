@@ -29,12 +29,14 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.plane.PlaneAirportChooserActivity;
+import com.huicheng.hotel.android.ui.activity.plane.PlaneCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.activity.plane.PlaneFlightListActivity;
 import com.huicheng.hotel.android.ui.base.BaseFragment;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.lang.reflect.Field;
@@ -177,6 +179,7 @@ public class FragmentSwitcherPlane extends BaseFragment implements View.OnClickL
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mFlightType = tab.getPosition();
+                PlaneOrderManager.instance.setFlightType(mFlightType);
                 refreshPlaneStateAndInfo(mFlightType);
             }
 
@@ -201,7 +204,7 @@ public class FragmentSwitcherPlane extends BaseFragment implements View.OnClickL
         switch (v.getId()) {
             case R.id.off_date_lay:
             case R.id.on_date_lay: {
-                Intent resIntent = new Intent(getActivity(), HotelCalendarChooseActivity.class);
+                Intent resIntent = new Intent(getActivity(), PlaneCalendarChooseActivity.class);
                 resIntent.putExtra("isTitleCanClick", true);
 //                resIntent.putExtra("beginTime", beginTime);
 //                resIntent.putExtra("endTime", endTime);
@@ -209,6 +212,11 @@ public class FragmentSwitcherPlane extends BaseFragment implements View.OnClickL
                 break;
             }
             case R.id.tv_plane_search:
+                if (PlaneOrderManager.instance.isFlightGoBack()
+                        && (StringUtil.isEmpty(tv_on_date.getText().toString()) || "— —".equals(tv_on_week.getText().toString()))) {
+                    CustomToast.show("请选择返程日期", CustomToast.LENGTH_SHORT);
+                    return;
+                }
                 PlaneOrderManager.instance.reset();
                 updateBeginTimeEndTime();
                 PlaneOrderManager.instance.setFlightType(mFlightType);
@@ -247,8 +255,13 @@ public class FragmentSwitcherPlane extends BaseFragment implements View.OnClickL
             tv_off_date.setText(DateUtil.getDay("M月d日", beginTime));
             tv_off_week.setText(DateUtil.dateToWeek2(new Date(beginTime)));
             on_date_lay.setEnabled(true);
-            tv_on_date.setText(DateUtil.getDay("M月d日", endTime));
-            tv_on_week.setText(DateUtil.dateToWeek2(new Date(endTime)));
+            if (endTime > beginTime) {
+                tv_on_date.setText(DateUtil.getDay("M月d日", endTime));
+                tv_on_week.setText(DateUtil.dateToWeek2(new Date(endTime)));
+            } else {
+                tv_on_date.setText("");
+                tv_on_week.setText("— —");
+            }
         }
     }
 

@@ -23,6 +23,10 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 
     private final String TAG = getClass().getSimpleName();
 
+    public static final int SELECTED_SINGLE = 0;
+    public static final int SELECTED_DOUBLE = 1;
+    private boolean isSingleSelected = false;
+
     protected static final int MONTHS_IN_YEAR = 12;
     private static final int SHOW_MONTHS = 6;
 
@@ -38,6 +42,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         selectedDays = new SelectedDays<>();
         mContext = context;
         mController = datePickerController;
+        isSingleSelected = false;
         init();
     }
 
@@ -129,34 +134,43 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     }
 
     public void setSelectedDay(CalendarDay calendarDay) {
-        if (selectedDays.getFirst() != null && selectedDays.getLast() == null) {
-            if (selectedDays.getFirst().year == calendarDay.year
-                    && selectedDays.getFirst().month == calendarDay.month
-                    && selectedDays.getFirst().day == calendarDay.day) {
-                LogUtil.i(TAG, "selectedDays.equal(calendarDay) return!");
-                return;
-            }
-            LogUtil.d(TAG, "selectedDays.getFirst() = " + selectedDays.getFirst().year + ", " + selectedDays.getFirst().month + ", " + selectedDays.getFirst().day);
-            LogUtil.d(TAG, "setSelectedDay() calendarday = " + calendarDay.year + ", " + calendarDay.month + ", " + calendarDay.day);
-            if (!CalendarUtils.isSortBeginLast(selectedDays.getFirst(), calendarDay)) {
-                selectedDays.setFirst(calendarDay);
-            } else {
-                selectedDays.setLast(calendarDay);
-            }
+        if (!isSingleSelected) {
+            if (selectedDays.getFirst() != null && selectedDays.getLast() == null) {
+                if (selectedDays.getFirst().year == calendarDay.year
+                        && selectedDays.getFirst().month == calendarDay.month
+                        && selectedDays.getFirst().day == calendarDay.day) {
+                    LogUtil.i(TAG, "selectedDays.equal(calendarDay) return!");
+                    return;
+                }
+                LogUtil.d(TAG, "selectedDays.getFirst() = " + selectedDays.getFirst().year + ", " + selectedDays.getFirst().month + ", " + selectedDays.getFirst().day);
+                LogUtil.d(TAG, "setSelectedDay() calendarday = " + calendarDay.year + ", " + calendarDay.month + ", " + calendarDay.day);
+                if (!CalendarUtils.isSortBeginLast(selectedDays.getFirst(), calendarDay)) {
+                    selectedDays.setFirst(calendarDay);
+                } else {
+                    selectedDays.setLast(calendarDay);
+                }
 
-            if (selectedDays.getFirst().month < calendarDay.month) {
-                for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
-                    mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
+                if (selectedDays.getFirst().month < calendarDay.month) {
+                    for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
+                        mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
+                }
+                mController.onDateRangeSelected(selectedDays);
+            } else if (selectedDays.getLast() != null) {
+                selectedDays.setFirst(calendarDay);
+                selectedDays.setLast(null);
+            } else {
+                selectedDays.setFirst(calendarDay);
             }
-            mController.onDateRangeSelected(selectedDays);
-        } else if (selectedDays.getLast() != null) {
-            selectedDays.setFirst(calendarDay);
-            selectedDays.setLast(null);
         } else {
             selectedDays.setFirst(calendarDay);
+            selectedDays.setLast(null);
         }
 
         notifyDataSetChanged();
+    }
+
+    public void setSelectedType(int type) {
+        isSingleSelected = SELECTED_SINGLE == type;
     }
 
     public void setBeginAndEndCalendarDay(CalendarDay beginDay, CalendarDay endDay) {

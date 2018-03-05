@@ -80,6 +80,10 @@ public class CustomCalendarRecyclerView extends RecyclerView {
         setFadingEdgeLength(0);
     }
 
+    public void setSelectedType(int type){
+        mAdapter.setSelectedType(type);
+    }
+
     public void setBeginAndEndDays(long beginTime, long endTime) {
         mAdapter.setBeginAndEndCalendarDay(new SimpleMonthAdapter.CalendarDay(beginTime), new SimpleMonthAdapter.CalendarDay(endTime));
     }

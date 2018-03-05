@@ -45,7 +45,7 @@ public class HotelCalendarChooseActivity extends BaseAppActivity implements Cale
 
     @Override
     protected void setContentView() {
-        setContentView(R.layout.act_datechoose_layout);
+        setContentView(R.layout.act_hotel_calendarchooser);
     }
 
     @Override
@@ -76,18 +76,13 @@ public class HotelCalendarChooseActivity extends BaseAppActivity implements Cale
     public void initParams() {
         super.initParams();
         tv_center_title.setText(HotelOrderManager.getInstance().getCityStr());
-        tv_center_title.getPaint().setFakeBoldText(true);
         initWeekLayout();
-        if (isTitleCanClick) {
-            tv_center_title.setEnabled(true);
-        } else {
-            tv_center_title.setEnabled(false);
-        }
-        if (0 != beginTime && 0 != endTime) {
-            tv_begin.setText(DateUtil.getDay("M月d日", beginTime));
-            tv_end.setText(DateUtil.getDay("M月d日", endTime));
-            btn_next.setEnabled(true);
-        }
+        tv_center_title.setEnabled(isTitleCanClick);
+//        if (0 != beginTime && 0 != endTime) {
+//            tv_begin.setText(DateUtil.getDay("M月d日", beginTime));
+//            tv_end.setText(DateUtil.getDay("M月d日", endTime));
+//            btn_next.setEnabled(true);
+//        }
     }
 
     @Override

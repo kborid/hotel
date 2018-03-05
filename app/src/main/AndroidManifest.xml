@@ -293,7 +293,10 @@
         <activity
             android:name=".ui.activity.plane.PlaneAirportChooserActivity"
             android:screenOrientation="portrait" />
-
+        <!--机票日期选择画面-->
+        <activity
+            android:name=".ui.activity.plane.PlaneCalendarChooseActivity"
+            android:screenOrientation="portrait" />
         <!--机票列表画面-->
         <activity
             android:name=".ui.activity.plane.PlaneFlightListActivity"

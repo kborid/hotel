@@ -26,7 +26,6 @@ import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelCalendarChooseActivity;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightCalendarPriceAdapter;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
@@ -304,7 +303,7 @@ public class PlaneFlightListActivity extends BaseAppActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.calendar_lay:
-                Intent intent = new Intent(this, HotelCalendarChooseActivity.class);
+                Intent intent = new Intent(this, PlaneCalendarChooseActivity.class);
                 startActivityForResult(intent, 0x01);
                 break;
         }

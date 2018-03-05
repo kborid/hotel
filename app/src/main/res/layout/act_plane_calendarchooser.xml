@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white"
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e0e0e0" />
+
+    <LinearLayout
+        android:id="@+id/week_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#e0e0e0" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.huicheng.hotel.android.ui.custom.calendar.CustomCalendarRecyclerView xmlns:calendar="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/calendar_lay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            calendar:calendarHeight="400dp"
+            calendar:colorCurrentDay="#3c3c3c"
+            calendar:colorCurrentDayCircle="#9b9b9b"
+            calendar:colorMonthName="#757575"
+            calendar:colorNormalDay="#3c3c3c"
+            calendar:colorSelectedDayBackground="@color/plane_mainColor"
+            calendar:colorSelectedDayText="@color/white"
+            calendar:enablePreviousDay="false" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bottom_btn_bg"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="24dp">
+
+            <TextView
+                android:id="@+id/tv_go_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="去程："
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_back_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:text="返程："
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/plane_calendar_btn_sel"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/iv_plane_calendar_next" />
+    </LinearLayout>
+</LinearLayout>
