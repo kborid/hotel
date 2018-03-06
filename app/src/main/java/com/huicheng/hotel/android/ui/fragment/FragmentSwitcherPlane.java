@@ -11,8 +11,6 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
@@ -155,7 +153,7 @@ public class FragmentSwitcherPlane extends BaseFragment implements View.OnClickL
         on.pinyin = "BEIJING";
         PlaneOrderManager.instance.setFlightOnAirportInfo(on);
 
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        off_land_city_info.post(new Runnable() {
             @Override
             public void run() {
                 height = off_land_city_info.getHeight();

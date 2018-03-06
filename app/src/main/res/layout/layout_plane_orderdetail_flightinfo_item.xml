@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="18dp"
-    android:paddingRight="20dp"
-    android:paddingTop="20dp">
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="15dp">
 
     <!--航班方向、时间、价钱-->
     <LinearLayout
@@ -14,6 +14,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_flag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="去程"
@@ -22,6 +23,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -40,6 +42,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -59,12 +62,13 @@
         <TableRow android:gravity="center">
 
             <ImageView
+                android:id="@+id/iv_flight_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@drawable/air_ca_gjhk" />
+                android:scaleType="center" />
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -73,6 +77,7 @@
                 android:textSize="@dimen/common_14sp" />
 
             <TextView
+                android:id="@+id/tv_code"
                 android:layout_marginLeft="27dp"
                 android:text="MU9157"
                 android:textColor="#666666"
@@ -123,14 +128,16 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:orientation="vertical">
 
         <TableRow android:gravity="center">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_off_time"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="22：22"
                 android:textColor="#666666"
@@ -140,13 +147,13 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
                 android:src="@drawable/iv_plane_orderdetail_flag" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_on_time"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="22：22"
                 android:textColor="#666666"
@@ -159,14 +166,17 @@
             android:gravity="center">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_off_airport"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="虹桥机场"
                 android:textColor="#797979"
                 android:textSize="@dimen/common_12sp" />
 
             <TextView
+                android:id="@+id/tv_during"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -176,9 +186,10 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_on_airport"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="虹桥机场"
                 android:textColor="#797979"
@@ -189,7 +200,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/line_plane_listitem"
         android:layerType="software" />
 
