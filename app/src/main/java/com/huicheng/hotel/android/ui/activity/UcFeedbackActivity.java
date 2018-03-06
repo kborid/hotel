@@ -24,8 +24,8 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.ThumbnailUtil;
@@ -286,7 +286,7 @@ public class UcFeedbackActivity extends BaseAppActivity {
                 if (imageUri != null) {
                     filePath = ThumbnailUtil.getPicPath(this, imageUri);
                     LogUtil.i(TAG, "filepath image = " + filePath);
-                    bgPath = Utils.getFolderDir("pic") + "_temp_compress.jpg";
+                    bgPath = Utils.getFolderDir("pic") + File.separator + "_temp_compress.jpg";
                     String newFilePath = ThumbnailUtil.compressImage(filePath, bgPath);
                     if (StringUtil.notEmpty(newFilePath)) {
                         uploadImage(new File(newFilePath));
@@ -298,8 +298,8 @@ public class UcFeedbackActivity extends BaseAppActivity {
                 }
                 break;
             case AppConst.ACTIVITY_IMAGE_CAPTURE:
-                filePath = Utils.getFolderDir("pic") + "_temp.jpg";
-                bgPath = Utils.getFolderDir("pic") + "_temp_compress.jpg";
+                filePath = Utils.getFolderDir("pic") + File.separator + "_temp.jpg";
+                bgPath = Utils.getFolderDir("pic") + File.separator + "_temp_compress.jpg";
                 String newFilePath = ThumbnailUtil.compressImage(filePath, bgPath);
                 if (StringUtil.notEmpty(newFilePath)) {
                     uploadImage(new File(newFilePath));
