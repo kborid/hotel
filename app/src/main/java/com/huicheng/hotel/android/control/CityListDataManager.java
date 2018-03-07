@@ -1,5 +1,7 @@
 package com.huicheng.hotel.android.control;
 
+import android.util.ArrayMap;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
@@ -30,7 +32,7 @@ public class CityListDataManager {
     private static final String TAG = "CityListDataManager";
     private static CityListDataManager instance = new CityListDataManager();
     public static List<CityAreaInfoBean> mCityAreaList = new ArrayList<>();
-    public static HashMap<String, List<CityAreaInfoBean>> mCityAreaMap = new HashMap<>();
+    public static ArrayMap<String, List<CityAreaInfoBean>> mCityAreaMap = new ArrayMap<>();
 
     public static CityListDataManager getInstance() {
         return instance;
@@ -79,7 +81,7 @@ public class CityListDataManager {
                     SharedPreferenceUtil.getInstance().setString(AppConst.CITY_HOTEL_JSON, cityMapJsonStr, false);
                 }
             }
-            Type type = new TypeToken<HashMap<String, List<CityAreaInfoBean>>>() {
+            Type type = new TypeToken<ArrayMap<String, List<CityAreaInfoBean>>>() {
             }.getType();
             mCityAreaMap = JSON.parseObject(cityMapJsonStr, type);
             LogUtil.i(TAG, "cityMapJsonStr = " + cityMapJsonStr);

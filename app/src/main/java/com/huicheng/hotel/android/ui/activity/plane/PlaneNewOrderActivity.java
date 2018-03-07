@@ -211,63 +211,70 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
 
         // 刷新去程航班信息显示
-        flight_flag_layout.removeAllViews();
-        View goPlaneOrder = LayoutInflater.from(this).inflate(R.layout.layout_plane_order_item, null);
-        flight_flag_layout.addView(goPlaneOrder);
-        TextView go_tv_flag = (TextView) goPlaneOrder.findViewById(R.id.tv_flag);
-        go_tv_flag.setVisibility(View.GONE);
-        TextView go_tv_offdate = (TextView) goPlaneOrder.findViewById(R.id.tv_offdate);
-        TextView go_tv_cabin = (TextView) goPlaneOrder.findViewById(R.id.tv_cabin);
-        TextView go_tv_airport = (TextView) goPlaneOrder.findViewById(R.id.tv_airport);
-        TextView go_tv_price = (TextView) goPlaneOrder.findViewById(R.id.tv_price);
-        TextView go_tv_jj_price = (TextView) goPlaneOrder.findViewById(R.id.tv_jj_price);
-        long goOffDate = PlaneOrderManager.instance.getGoFlightOffDate();
-        go_tv_offdate.setText(DateUtil.getDay("MM-dd  ", goOffDate));
-        go_tv_offdate.append(DateUtil.dateToWeek2(new Date(goOffDate)));
-        PlaneFlightInfoBean goFlightInfo = goFlightDetailInfo.flightInfo;
-        go_tv_airport.setText(String.format("%1$s%2$s - %3$s%4$s", goFlightInfo.dptAirport, goFlightInfo.dptTerminal, goFlightInfo.arrAirport, goFlightInfo.arrTerminal));
-        go_tv_offdate.append("  " + goFlightInfo.dptTime);
-        PlaneTicketInfoBean.VendorInfo goVendorInfo = goFlightDetailInfo.vendorInfo;
-        int goCabinType = 0;
-        if (goVendorInfo.cabinType >= 0 && goVendorInfo.cabinType <= 2) {
-            goCabinType = goVendorInfo.cabinType;
-        }
-        go_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[goCabinType].getValue());
-        go_tv_price.setText(String.valueOf((int) goVendorInfo.barePrice));
-        go_tv_jj_price.setText(String.format(getString(R.string.rmbStr2), (goFlightInfo.arf + goFlightInfo.tof)));
+        {
+            flight_flag_layout.removeAllViews();
+            View goPlaneOrder = LayoutInflater.from(this).inflate(R.layout.layout_plane_order_item, null);
+            flight_flag_layout.addView(goPlaneOrder);
+            TextView go_tv_flag = (TextView) goPlaneOrder.findViewById(R.id.tv_flag);
+            go_tv_flag.setVisibility(View.GONE);
+            TextView go_tv_offdate = (TextView) goPlaneOrder.findViewById(R.id.tv_offdate);
+            TextView go_tv_cabin = (TextView) goPlaneOrder.findViewById(R.id.tv_cabin);
+            TextView go_tv_airport = (TextView) goPlaneOrder.findViewById(R.id.tv_airport);
+            TextView go_tv_price = (TextView) goPlaneOrder.findViewById(R.id.tv_price);
+            TextView go_tv_jj_price = (TextView) goPlaneOrder.findViewById(R.id.tv_jj_price);
 
-        mTicketPrice += goVendorInfo.barePrice + goFlightInfo.arf + goFlightInfo.tof;
-
-        // 如果往返航班，则增加返程航班信息显示
-        if (PlaneOrderManager.instance.isFlightGoBack() && null != backFlightDetailInfo) {
-            View backPlaneOrder = LayoutInflater.from(this).inflate(R.layout.layout_plane_order_item, null);
-            flight_flag_layout.addView(backPlaneOrder);
-            TextView back_tv_flag = (TextView) backPlaneOrder.findViewById(R.id.tv_flag);
-            TextView back_tv_offdate = (TextView) backPlaneOrder.findViewById(R.id.tv_offdate);
-            TextView back_tv_cabin = (TextView) backPlaneOrder.findViewById(R.id.tv_cabin);
-            TextView back_tv_airport = (TextView) backPlaneOrder.findViewById(R.id.tv_airport);
-            TextView back_tv_price = (TextView) backPlaneOrder.findViewById(R.id.tv_price);
-            TextView back_tv_jj_price = (TextView) backPlaneOrder.findViewById(R.id.tv_jj_price);
-            go_tv_flag.setVisibility(View.VISIBLE);
-            go_tv_flag.setText("去程：");
-            back_tv_flag.setVisibility(View.VISIBLE);
-            back_tv_flag.setText("返程：");
-            long backOffDate = PlaneOrderManager.instance.getBackFlightOffDate();
-            back_tv_offdate.setText(DateUtil.getDay("MM-dd  ", backOffDate));
-            back_tv_offdate.append(DateUtil.dateToWeek2(new Date(backOffDate)));
-            PlaneFlightInfoBean backFlightInfo = backFlightDetailInfo.flightInfo;
-            back_tv_airport.setText(String.format("%1$s%2$s - %3$s%4$s", backFlightInfo.dptAirport, backFlightInfo.dptTerminal, backFlightInfo.arrAirport, backFlightInfo.arrTerminal));
-            back_tv_offdate.append("  " + backFlightInfo.dptTime);
-            PlaneTicketInfoBean.VendorInfo backVendorInfo = backFlightDetailInfo.vendorInfo;
-            int backCabinType = 0;
-            if (backVendorInfo.cabinType >= 0 && backVendorInfo.cabinType <= 2) {
-                backCabinType = backVendorInfo.cabinType;
+            Date go_date = DateUtil.str2Date(goFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd");
+            go_tv_offdate.setText(DateUtil.getDay("MM-dd  ", go_date.getTime()));
+            go_tv_offdate.append(DateUtil.dateToWeek2(go_date));
+            go_tv_offdate.append("  " + goFlightDetailInfo.ticketInfo.btime);
+            go_tv_airport.setText(String.format("%1$s%2$s - %3$s%4$s",
+                    goFlightDetailInfo.ticketInfo.depAirport,
+                    goFlightDetailInfo.ticketInfo.depTerminal,
+                    goFlightDetailInfo.ticketInfo.arrAirport,
+                    goFlightDetailInfo.ticketInfo.arrTerminal));
+            int goCabinType = 0;
+            if (goFlightDetailInfo.vendorInfo.cabinType >= 0 && goFlightDetailInfo.vendorInfo.cabinType <= 2) {
+                goCabinType = goFlightDetailInfo.vendorInfo.cabinType;
             }
-            back_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[backCabinType].getValue());
-            back_tv_price.setText(String.valueOf((int) backVendorInfo.barePrice));
-            back_tv_jj_price.setText(String.format(getString(R.string.rmbStr2), (backFlightInfo.arf + backFlightInfo.tof)));
+            go_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[goCabinType].getValue());
+            go_tv_price.setText(String.valueOf((int) goFlightDetailInfo.vendorInfo.barePrice));
+            go_tv_jj_price.setText(String.format(getString(R.string.rmbStr2), (goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof)));
 
-            mTicketPrice += backVendorInfo.barePrice + backFlightInfo.arf + backFlightInfo.tof;
+            mTicketPrice += goFlightDetailInfo.vendorInfo.barePrice + goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof;
+
+            // 如果往返航班，则增加返程航班信息显示
+            if (PlaneOrderManager.instance.isFlightGoBack() && null != backFlightDetailInfo) {
+                View backPlaneOrder = LayoutInflater.from(this).inflate(R.layout.layout_plane_order_item, null);
+                flight_flag_layout.addView(backPlaneOrder);
+                TextView back_tv_flag = (TextView) backPlaneOrder.findViewById(R.id.tv_flag);
+                TextView back_tv_offdate = (TextView) backPlaneOrder.findViewById(R.id.tv_offdate);
+                TextView back_tv_cabin = (TextView) backPlaneOrder.findViewById(R.id.tv_cabin);
+                TextView back_tv_airport = (TextView) backPlaneOrder.findViewById(R.id.tv_airport);
+                TextView back_tv_price = (TextView) backPlaneOrder.findViewById(R.id.tv_price);
+                TextView back_tv_jj_price = (TextView) backPlaneOrder.findViewById(R.id.tv_jj_price);
+                go_tv_flag.setVisibility(View.VISIBLE);
+                go_tv_flag.setText("去程：");
+                back_tv_flag.setVisibility(View.VISIBLE);
+                back_tv_flag.setText("返程：");
+                Date back_date = DateUtil.str2Date(backFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd");
+                go_tv_offdate.setText(DateUtil.getDay("MM-dd  ", go_date.getTime()));
+                go_tv_offdate.append(DateUtil.dateToWeek2(go_date));
+                go_tv_offdate.append("  " + backFlightDetailInfo.ticketInfo.btime);
+                go_tv_airport.setText(String.format("%1$s%2$s - %3$s%4$s",
+                        backFlightDetailInfo.ticketInfo.depAirport,
+                        backFlightDetailInfo.ticketInfo.depTerminal,
+                        backFlightDetailInfo.ticketInfo.arrAirport,
+                        backFlightDetailInfo.ticketInfo.arrTerminal));
+                int backCabinType = 0;
+                if (backFlightDetailInfo.vendorInfo.cabinType >= 0 && backFlightDetailInfo.vendorInfo.cabinType <= 2) {
+                    backCabinType = backFlightDetailInfo.vendorInfo.cabinType;
+                }
+                back_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[backCabinType].getValue());
+                back_tv_price.setText(String.valueOf((int) backFlightDetailInfo.vendorInfo.barePrice));
+                back_tv_jj_price.setText(String.format(getString(R.string.rmbStr2), (backFlightDetailInfo.flightInfo.arf + backFlightDetailInfo.flightInfo.tof)));
+
+                mTicketPrice += backFlightDetailInfo.vendorInfo.barePrice + backFlightDetailInfo.flightInfo.arf + backFlightDetailInfo.flightInfo.tof;
+            }
         }
 
         //initialize

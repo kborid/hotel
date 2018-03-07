@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,6 @@ import com.prj.sdk.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -53,7 +53,7 @@ public class HotelCityChooseActivity extends BaseAppActivity {
     };
 
     private List<CityAreaInfoBean> mList = new ArrayList<>();
-    private HashMap<String, List<CityAreaInfoBean>> mMap = new HashMap<>();
+    private ArrayMap<String, List<CityAreaInfoBean>> mMap = new ArrayMap<>();
 
     private TextView tv_search_input;
     private List<String> mHistoryList = new ArrayList<>();

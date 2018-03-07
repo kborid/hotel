@@ -102,7 +102,6 @@ public class PlaneTicketListActivity extends BaseAppActivity {
     public void initParams() {
         super.initParams();
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        tv_center_title.setText(DateUtil.getDay("M月d日", mOffTime) + DateUtil.dateToWeek2(new Date(mOffTime)));
         setRightButtonResource(R.drawable.iv_plane_share);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
@@ -122,6 +121,7 @@ public class PlaneTicketListActivity extends BaseAppActivity {
 //            mOn3Code = mOff3Code;
 //            mOff3Code = tmp;
         }
+        tv_center_title.setText(DateUtil.getDay("M月d日", mOffTime) + DateUtil.dateToWeek2(new Date(mOffTime)));
 
         adapter = new PlaneTicketVendorItemAdapter(this, mVendorList);
         listview.setAdapter(adapter);

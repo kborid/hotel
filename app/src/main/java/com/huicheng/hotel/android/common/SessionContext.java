@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 
 import com.alibaba.fastjson.JSON;
 import com.fm.openinstall.model.AppData;
@@ -36,7 +37,7 @@ public class SessionContext {
 
     private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
     private static List<CityAirportInfoBean> airportList = new ArrayList<>(); //机场列表
-    private static HashMap<String, AirCompanyInfoBean> airCompanyMap = new HashMap<>(); //航司Map
+    private static ArrayMap<String, AirCompanyInfoBean> airCompanyMap = new ArrayMap<>(); //航司ArrayMap
 
     private static List<HotelMapInfoBean> allDayList = new ArrayList<>();
     private static List<HotelMapInfoBean> clockList = new ArrayList<>();
@@ -148,7 +149,7 @@ public class SessionContext {
         }
     }
 
-    public static HashMap<String, AirCompanyInfoBean> getAirCompanyMap() {
+    public static ArrayMap<String, AirCompanyInfoBean> getAirCompanyMap() {
         return airCompanyMap;
     }
 
