@@ -257,10 +257,10 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 back_tv_flag.setVisibility(View.VISIBLE);
                 back_tv_flag.setText("返程：");
                 Date back_date = DateUtil.str2Date(backFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd");
-                go_tv_offdate.setText(DateUtil.getDay("MM-dd  ", go_date.getTime()));
-                go_tv_offdate.append(DateUtil.dateToWeek2(go_date));
-                go_tv_offdate.append("  " + backFlightDetailInfo.ticketInfo.btime);
-                go_tv_airport.setText(String.format("%1$s%2$s - %3$s%4$s",
+                back_tv_offdate.setText(DateUtil.getDay("MM-dd  ", back_date.getTime()));
+                back_tv_offdate.append(DateUtil.dateToWeek2(back_date));
+                back_tv_offdate.append("  " + backFlightDetailInfo.ticketInfo.btime);
+                back_tv_airport.setText(String.format("%1$s%2$s - %3$s%4$s",
                         backFlightDetailInfo.ticketInfo.depAirport,
                         backFlightDetailInfo.ticketInfo.depTerminal,
                         backFlightDetailInfo.ticketInfo.arrAirport,
