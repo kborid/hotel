@@ -32,6 +32,7 @@ import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AddressInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneInvoiceTaxInfoBean;
@@ -50,6 +51,7 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -97,6 +99,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private TextView tv_amount;
     private TextView tv_passenger;
     private TextView tv_submit;
+    private LinearLayout order_detail_layout;
 
     private int flightType = PlaneCommDef.FLIGHT_SINGLE;
     private FlightDetailInfo goFlightDetailInfo = null;
@@ -181,6 +184,8 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         tv_amount = (TextView) findViewById(R.id.tv_amount);
         tv_passenger = (TextView) findViewById(R.id.tv_passenger);
         tv_submit = (TextView) findViewById(R.id.tv_submit);
+
+        order_detail_layout = (LinearLayout) findViewById(R.id.order_detail_layout);
     }
 
     @Override
@@ -327,6 +332,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         });
         tv_express_chooser.setOnClickListener(this);
         tv_submit.setOnClickListener(this);
+        order_detail_layout.setOnClickListener(this);
     }
 
     @Override
@@ -365,6 +371,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                             TextView tv_name = (TextView) goFlightView.findViewById(R.id.tv_name);
                             TextView tv_code = (TextView) goFlightView.findViewById(R.id.tv_code);
                             ImageView iv_flight_icon = (ImageView) goFlightView.findViewById(R.id.iv_flight_icon);
+                            TextView tv_jjry_price = (TextView) goFlightView.findViewById(R.id.tv_jjry_price);
 
                             tv_flag.setText("去程");
                             Date date = DateUtil.str2Date(goFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd");
@@ -375,13 +382,26 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                             tv_during.setText(goFlightDetailInfo.flightInfo.flightTimes);
                             tv_off_airport.setText(goFlightDetailInfo.ticketInfo.depAirport + goFlightDetailInfo.ticketInfo.depTerminal);
                             tv_on_airport.setText(goFlightDetailInfo.ticketInfo.arrAirport + goFlightDetailInfo.ticketInfo.arrTerminal);
-                            tv_name.setText(SessionContext.getAirCompanyMap().get(goFlightDetailInfo.flightInfo.carrier).company);
                             tv_code.setText(goFlightDetailInfo.flightInfo.flightNum);
-                            Glide.with(this)
-                                    .load(new CustomReqURLFormatModelImpl(SessionContext.getAirCompanyMap().get(goFlightDetailInfo.flightInfo.carrier).logourl))
-                                    .fitCenter()
-                                    .override(Utils.dp2px(15), Utils.dp2px(15))
-                                    .into(iv_flight_icon);
+                            if (StringUtil.notEmpty(goFlightDetailInfo.flightInfo.carrier)) {
+                                if (SessionContext.getAirCompanyMap().size() > 0
+                                        && SessionContext.getAirCompanyMap().containsKey(goFlightDetailInfo.flightInfo.carrier)) {
+                                    AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(goFlightDetailInfo.flightInfo.carrier);
+                                    tv_name.setText(companyInfoBean.company);
+                                    iv_flight_icon.setVisibility(View.VISIBLE);
+                                    Glide.with(this)
+                                            .load(new CustomReqURLFormatModelImpl(companyInfoBean.logourl))
+                                            .fitCenter()
+                                            .override(Utils.dp2px(15), Utils.dp2px(15))
+                                            .into(iv_flight_icon);
+                                } else {
+                                    tv_name.setText(goFlightDetailInfo.flightInfo.carrier);
+                                    iv_flight_icon.setVisibility(View.INVISIBLE);
+                                }
+                            } else {
+                                iv_flight_icon.setVisibility(View.INVISIBLE);
+                            }
+                            tv_jjry_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
                         }
 
                         //返程信息
@@ -400,6 +420,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                                 TextView tv_name = (TextView) backFlightView.findViewById(R.id.tv_name);
                                 TextView tv_code = (TextView) backFlightView.findViewById(R.id.tv_code);
                                 ImageView iv_flight_icon = (ImageView) backFlightView.findViewById(R.id.iv_flight_icon);
+                                TextView tv_jjry_price = (TextView) backFlightView.findViewById(R.id.tv_jjry_price);
 
                                 tv_flag.setText("返程");
                                 Date date = DateUtil.str2Date(backFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd");
@@ -410,13 +431,26 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                                 tv_during.setText(backFlightDetailInfo.flightInfo.flightTimes);
                                 tv_off_airport.setText(backFlightDetailInfo.ticketInfo.depAirport + backFlightDetailInfo.ticketInfo.depTerminal);
                                 tv_on_airport.setText(backFlightDetailInfo.ticketInfo.arrAirport + backFlightDetailInfo.ticketInfo.arrTerminal);
-                                tv_name.setText(SessionContext.getAirCompanyMap().get(backFlightDetailInfo.flightInfo.carrier).company);
                                 tv_code.setText(backFlightDetailInfo.flightInfo.flightNum);
-                                Glide.with(this)
-                                        .load(new CustomReqURLFormatModelImpl(SessionContext.getAirCompanyMap().get(backFlightDetailInfo.flightInfo.carrier).logourl))
-                                        .fitCenter()
-                                        .override(Utils.dp2px(15), Utils.dp2px(15))
-                                        .into(iv_flight_icon);
+                                if (StringUtil.notEmpty(backFlightDetailInfo.flightInfo.carrier)) {
+                                    if (SessionContext.getAirCompanyMap().size() > 0
+                                            && SessionContext.getAirCompanyMap().containsKey(backFlightDetailInfo.flightInfo.carrier)) {
+                                        AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(backFlightDetailInfo.flightInfo.carrier);
+                                        tv_name.setText(companyInfoBean.company);
+                                        iv_flight_icon.setVisibility(View.VISIBLE);
+                                        Glide.with(this)
+                                                .load(new CustomReqURLFormatModelImpl(companyInfoBean.logourl))
+                                                .fitCenter()
+                                                .override(Utils.dp2px(15), Utils.dp2px(15))
+                                                .into(iv_flight_icon);
+                                    } else {
+                                        tv_name.setText(backFlightDetailInfo.flightInfo.carrier);
+                                        iv_flight_icon.setVisibility(View.INVISIBLE);
+                                    }
+                                } else {
+                                    iv_flight_icon.setVisibility(View.INVISIBLE);
+                                }
+                                tv_jjry_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
                             }
                         }
                     }
@@ -465,6 +499,12 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 }
                 break;
             }
+            case R.id.order_detail_layout:
+                Intent intent = new Intent(this, PlaneOrderDetailActivity.class);
+                intent.putExtra("goFlightDetailInfo", goFlightDetailInfo);
+                intent.putExtra("backFlightDetailInfo", backFlightDetailInfo);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -764,13 +804,13 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
     }
 
-    private class FlightDetailInfo {
-        String tag;
-        PlaneFlightInfoBean flightInfo;
-        PlaneTicketInfoBean ticketInfo;
-        PlaneTicketInfoBean.VendorInfo vendorInfo;
+    public static class FlightDetailInfo implements Serializable {
+        public String tag;
+        public PlaneFlightInfoBean flightInfo;
+        public PlaneTicketInfoBean ticketInfo;
+        public PlaneTicketInfoBean.VendorInfo vendorInfo;
 
-        FlightDetailInfo(String tag, PlaneFlightInfoBean flightInfo, PlaneTicketInfoBean ticketInfo, PlaneTicketInfoBean.VendorInfo vendorInfo) {
+        public FlightDetailInfo(String tag, PlaneFlightInfoBean flightInfo, PlaneTicketInfoBean ticketInfo, PlaneTicketInfoBean.VendorInfo vendorInfo) {
             this.tag = tag;
             this.flightInfo = flightInfo;
             this.ticketInfo = ticketInfo;
@@ -778,3 +818,4 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
     }
 }
+

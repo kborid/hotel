@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.requestbuilder.bean;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @date 2017/12/27 0027.
  */
 
-public class PlaneTicketInfoBean {
+public class PlaneTicketInfoBean implements Serializable {
     public String actCode;
     public int arf;
     public String arrAirport;
@@ -42,7 +43,7 @@ public class PlaneTicketInfoBean {
     public boolean zhiji;
     public String correct;
 
-    public static class VendorInfo implements Comparable<VendorInfo> {
+    public static class VendorInfo implements Comparable<VendorInfo>, Serializable {
         public String afee;
         public int barePrice;
         public int basePrice;

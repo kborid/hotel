@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.requestbuilder.bean;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Comparator;
  * @date 2017/12/22 0022.
  */
 
-public class PlaneFlightInfoBean implements Comparator<PlaneFlightInfoBean> {
+public class PlaneFlightInfoBean implements Comparator<PlaneFlightInfoBean>, Serializable {
     public String stopCityName;
     public String arr;
     public String bfTag;

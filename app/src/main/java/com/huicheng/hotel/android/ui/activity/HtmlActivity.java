@@ -23,7 +23,6 @@ import com.huicheng.hotel.android.ui.JSBridge.RegisterHandler;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonLoadingWidget;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.Utils;
 import com.prj.sdk.webview.ChooserFileController;
@@ -219,9 +218,6 @@ public class HtmlActivity extends BaseAppActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            if (StringUtil.notEmpty(mTitle)) {
-//                tv_center_title.setText(mTitle);
-//            }
             mWebView.setEnabled(false);
         }
 
@@ -255,7 +251,6 @@ public class HtmlActivity extends BaseAppActivity {
         }
 
         public void onReceivedError(WebView webview, int errorCode, String description, String failingUrl) {
-            // super.onReceivedError(webview, errorCode, description, failingUrl);
             try {
                 webview.stopLoading();
             } catch (Exception e) {
@@ -269,15 +264,9 @@ public class HtmlActivity extends BaseAppActivity {
             }
         }
 
-        // 当load有ssl层的https页面时，如果这个网站的安全证书在Android无法得到认证，WebView就会变成一个空白页，而并不会像PC浏览器中那样跳出一个风险提示框
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            // 忽略证书的错误继续Load页面内容
-            CustomToast.show("已忽略证书信息继续加载", 0);
-            handler.proceed();// 忽略证书信息继续加载
-            // handler.cancel(); // Android默认的处理方式
-            // handleMessage(Message msg); // 进行其他处理
-            // super.onReceivedSslError(view, handler, error);
+            handler.proceed();
         }
     }
 

@@ -84,15 +84,36 @@
                 android:textSize="@dimen/common_18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/ticket_count_layout"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:text="成人×2"
-                android:textColor="#666666"
-                android:textSize="@dimen/common_14sp" />
+                android:orientation="horizontal"
+                android:visibility="invisible">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="成人"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/common_14sp" />
+
+                <TextView
+                    android:id="@+id/tv_ticket_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:text="×2"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/common_14sp" />
+            </LinearLayout>
+
         </TableRow>
 
         <TableRow
+            android:id="@+id/row_zj"
+            android:visibility="gone"
             android:layout_marginTop="2dp"
             android:gravity="center">
 
@@ -111,6 +132,7 @@
                 android:textSize="@dimen/common_14sp" />
 
             <TextView
+                android:id="@+id/tv_zj"
                 android:layout_marginLeft="27dp"
                 android:text="C656"
                 android:textColor="#666666"
@@ -214,6 +236,7 @@
         android:paddingTop="7dp">
 
         <LinearLayout
+            android:id="@+id/jjry_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -221,11 +244,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="机建燃油×2"
+                android:text="机建燃油"
                 android:textColor="#3c3c3c"
                 android:textSize="@dimen/common_16sp" />
 
             <TextView
+                android:id="@+id/tv_jjry_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="×2"
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_16sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_jjry_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
@@ -244,6 +277,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_jjry_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -254,19 +288,31 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/baoxian_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="延误险×2"
+                android:text="延误险"
                 android:textColor="#3c3c3c"
                 android:textSize="@dimen/common_16sp" />
 
             <TextView
+                android:id="@+id/tv_baoxian_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="×2"
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_16sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_baoxian_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
@@ -285,6 +331,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_baoxian_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"

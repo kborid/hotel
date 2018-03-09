@@ -42,16 +42,12 @@
 
                 <!--航班信息-->
                 <LinearLayout
+                    android:id="@+id/flight_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="visible">
-
-                    <include layout="@layout/layout_plane_orderdetail_flightinfo_item" />
-
-                    <include layout="@layout/layout_plane_orderdetail_flightinfo_item" />
-                </LinearLayout>
+                    android:visibility="visible" />
 
                 <!--订单信息-->
                 <LinearLayout

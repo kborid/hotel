@@ -633,21 +633,29 @@
             </LinearLayout>
 
             <!--订单明细-->
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/order_detail_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical|right">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
-                    android:drawableRight="@drawable/iv_accessory_black_alpha3"
                     android:text="明细"
                     android:textColor="#cccccc"
                     android:textSize="@dimen/common_12sp" />
-            </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_detail_accessory"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:rotation="-90"
+                    android:src="@drawable/iv_accessory_black_alpha3" />
+            </LinearLayout>
         </LinearLayout>
 
         <!--提交订单 btn-->
