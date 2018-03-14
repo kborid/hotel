@@ -27,11 +27,12 @@ public class OKHttpHelper {
         ResponseBody mResponseBody = null;
         try {
             response = getResponse(url, httpType, header, mEntity, isForm);
-            LogUtil.i(TAG, "ReqType[" + httpType + "]:response = " + response);
-            if (null != response) {
-                LogUtil.i(TAG, response.toString());
+            if (response != null) {
+                LogUtil.i(TAG, "Res:" + response.toString());
+                if (response.isSuccessful()) {
+                    mResponseBody = response.body();
+                }
             }
-            mResponseBody = response != null && response.isSuccessful() ? response.body() : null;
             return mResponseBody != null ? mResponseBody.bytes() : null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,6 +107,9 @@ public class OKHttpHelper {
                 LogUtil.d(TAG, "warning: not define " + httpType);
             }
 
+            if (null != request) {
+                LogUtil.i(TAG, "Req:" + request.toString());
+            }
             return OkHttpClientControl.getInstance().sync(request);
         } catch (Exception e) {
             e.printStackTrace();
