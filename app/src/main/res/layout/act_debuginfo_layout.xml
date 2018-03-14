@@ -24,30 +24,29 @@
 
 
         <TextView
-            android:id="@+id/tv_changed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="环境切换"
+            android:onClick="environmentChanged"
             android:textColor="@color/common_color_selector"
             android:textSize="@dimen/common_15sp" />
 
-
         <TextView
-            android:id="@+id/tv_js"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
+            android:onClick="jsTestMain"
             android:text="JS测试"
             android:textColor="@color/common_color_selector"
             android:textSize="@dimen/common_15sp" />
 
 
         <TextView
-            android:id="@+id/tv_close"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
+            android:onClick="closeDebugMenu"
             android:text="关闭Debug菜单"
             android:textColor="@color/common_color_selector"
             android:textSize="@dimen/common_15sp" />

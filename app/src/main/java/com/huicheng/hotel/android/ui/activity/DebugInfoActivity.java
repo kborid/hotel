@@ -10,8 +10,6 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
@@ -20,8 +18,6 @@ import com.prj.sdk.util.StringUtil;
  * @date 2017/6/5 0005
  */
 public class DebugInfoActivity extends BaseAppActivity {
-    private TextView tv_debugInfo;
-    private TextView tv_changed, tv_js, tv_close;
 
     @Override
     protected void setContentView() {
@@ -29,19 +25,9 @@ public class DebugInfoActivity extends BaseAppActivity {
     }
 
     @Override
-    public void initViews() {
-        super.initViews();
-        tv_debugInfo = (TextView) findViewById(R.id.tv_debuginfo);
-        tv_changed = (TextView) findViewById(R.id.tv_changed);
-        tv_js = (TextView) findViewById(R.id.tv_js);
-        tv_close = (TextView) findViewById(R.id.tv_close);
-    }
-
-    @Override
     public void initParams() {
         super.initParams();
         tv_center_title.setText(getString(R.string.debug_menu));
-
         StringBuilder sb = new StringBuilder();
         sb.append("PackageName : ").append(BuildConfig.APPLICATION_ID);
         sb.append("\nVersionName : ").append(BuildConfig.VERSION_NAME);
@@ -56,38 +42,22 @@ public class DebugInfoActivity extends BaseAppActivity {
         sb.append("\nFlavor : ").append(StringUtil.notEmpty(BuildConfig.FLAVOR) ? BuildConfig.FLAVOR : "无");
         sb.append("\nUMENG Channel : ").append(SessionContext.getAppMetaData(this, "UMENG_CHANNEL"));
 
-        tv_debugInfo.setText(sb.toString());
+        ((TextView) findViewById(R.id.tv_debuginfo)).setText(sb.toString());
     }
 
-    @Override
-    public void initListeners() {
-        super.initListeners();
-        tv_changed.setOnClickListener(this);
-        tv_js.setOnClickListener(this);
-        tv_close.setOnClickListener(this);
+    public void environmentChanged(View v) {
+        startActivity(new Intent(this, DebugChangeEnvActivity.class));
     }
 
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        Intent mIntent = null;
-        switch (v.getId()) {
-            case R.id.tv_changed:
-                mIntent = new Intent(this, DebugChangeEnvActivity.class);
-                break;
-            case R.id.tv_js:
-                mIntent = new Intent(this, HtmlActivity.class);
-                mIntent.putExtra("ISJS", AppConst.ISDEVELOP);
-                mIntent.putExtra("title", "JS测试");
-                break;
-            case R.id.tv_close:
-                SharedPreferenceUtil.getInstance().setBoolean("isShowDebug", false);
-                finish();
-                break;
-        }
+    public void jsTestMain(View v) {
+        Intent intent = new Intent(this, HtmlActivity.class);
+        intent.putExtra("ISJS", AppConst.ISDEVELOP);
+        intent.putExtra("title", "JS测试");
+        startActivity(intent);
+    }
 
-        if (null != mIntent) {
-            startActivity(mIntent);
-        }
+    public void closeDebugMenu(View v) {
+        SharedPreferenceUtil.getInstance().setBoolean("isShowDebug", false);
+        finish();
     }
 }
