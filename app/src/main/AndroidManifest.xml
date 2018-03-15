@@ -471,6 +471,13 @@
             android:name="UMENG_CHANNEL"
             android:value="Develop_Test" />
 
+        <activity android:name=".ui.mvp.MvpTestActivity">
+            <intent-filter>
+                <action android:name="kborid.test.mvp"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

@@ -12,14 +12,43 @@
         android:textColor="#9b9b9b"
         android:textSize="@dimen/common_14sp" />
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="田孃孃"
-        android:textColor="#3c3c3c"
-        android:textSize="@dimen/common_18sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="2dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="田孃孃"
+            android:textColor="#3c3c3c"
+            android:textSize="@dimen/common_18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:padding="1dp"
+            android:layout_toRightOf="@id/tv_name"
+            android:background="@drawable/plane_detail_book_btn_bg"
+            android:text="已改签"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_10sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="改签详情"
+            android:textColor="@color/plane_mainColor"
+            android:textSize="@dimen/common_12sp" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"

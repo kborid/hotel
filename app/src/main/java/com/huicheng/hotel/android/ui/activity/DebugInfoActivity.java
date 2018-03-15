@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 
@@ -54,6 +56,17 @@ public class DebugInfoActivity extends BaseAppActivity {
         intent.putExtra("ISJS", AppConst.ISDEVELOP);
         intent.putExtra("title", "JS测试");
         startActivity(intent);
+    }
+
+    public void mvpTestMain(View v) {
+        Intent intent = new Intent();
+        intent.setAction("kborid.test.mvp");
+        ComponentName componentName = intent.resolveActivity(getPackageManager());
+        if (null != componentName) {
+            startActivity(intent);
+        } else {
+            CustomToast.show("未找到相关内容", CustomToast.LENGTH_SHORT);
+        }
     }
 
     public void closeDebugMenu(View v) {

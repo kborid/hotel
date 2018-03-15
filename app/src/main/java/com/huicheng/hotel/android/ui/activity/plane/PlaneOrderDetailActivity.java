@@ -50,7 +50,6 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
         tv_center_title.setText("订单详情");
         LinearLayout flight_layout = (LinearLayout) findViewById(R.id.flight_layout);
         if (null != goFlightDetailInfo) {
-            //刷新dialog信息
             flight_layout.removeAllViews();
             {
                 //去程信息
@@ -107,7 +106,20 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                         iv_flight_icon.setVisibility(View.INVISIBLE);
                     }
                     tv_jjry_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
+
+                    //去程乘机人信息
+                    {
+                        View goPassengerActionLayout = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_passenger_action_item, null);
+                        flight_layout.addView(goPassengerActionLayout);
+                        LinearLayout goPassengerLayout = (LinearLayout) goPassengerActionLayout.findViewById(R.id.passenger_lay);
+                        goPassengerLayout.removeAllViews();
+                        View goPassenger1 = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_personinfo_item, null);
+                        View goPassenger2 = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_personinfo_item, null);
+                        goPassengerLayout.addView(goPassenger1);
+                        goPassengerLayout.addView(goPassenger2);
+                    }
                 }
+
 
                 //返程信息
                 {
@@ -164,6 +176,18 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                             iv_flight_icon.setVisibility(View.INVISIBLE);
                         }
                         tv_jjry_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
+                    }
+
+                    //返程乘机人信息
+                    {
+                        View backPassengerActionLayout = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_passenger_action_item, null);
+                        flight_layout.addView(backPassengerActionLayout);
+                        LinearLayout backPassengerLayout = (LinearLayout) backPassengerActionLayout.findViewById(R.id.passenger_lay);
+                        backPassengerLayout.removeAllViews();
+                        View backPassenger1 = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_personinfo_item, null);
+                        View backPassenger2 = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_personinfo_item, null);
+                        backPassengerLayout.addView(backPassenger1);
+                        backPassengerLayout.addView(backPassenger2);
                     }
                 }
             }
