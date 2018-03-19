@@ -36,8 +36,8 @@ import com.huicheng.hotel.android.ui.custom.CustomInfoLayoutForHotel;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -355,6 +355,7 @@ public class HotelRoomOrderActivity extends BaseAppActivity {
             case R.id.tv_coupon_info:
                 Intent intent1 = new Intent(this, UcCouponsActivity.class);
                 intent1.putExtra("showUsefulCoupon", true);
+                intent1.putExtra("couponCheckMoney", finalPrice);
                 startActivityForResult(intent1, 0x02);
                 break;
             case R.id.tv_submit:

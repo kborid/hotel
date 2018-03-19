@@ -29,8 +29,8 @@ import com.huicheng.hotel.android.ui.activity.hotel.Hotel0YuanHomeActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
@@ -60,6 +60,8 @@ public class UcCouponsActivity extends BaseAppActivity implements ViewPager.OnPa
     private Button btn_use;
 
     private boolean isShowAll = true;
+
+    private int mMoney = 0;
 
     @Override
     protected void requestData() {
@@ -104,6 +106,7 @@ public class UcCouponsActivity extends BaseAppActivity implements ViewPager.OnPa
         if (null != bundle) {
             boolean showUsefulCoupon = bundle.getBoolean("showUsefulCoupon");
             isShowAll = !showUsefulCoupon;
+            mMoney = bundle.getInt("couponCheckMoney");
         }
     }
 
@@ -123,6 +126,7 @@ public class UcCouponsActivity extends BaseAppActivity implements ViewPager.OnPa
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
         b.addBody("hotelid", String.valueOf(HotelOrderManager.getInstance().getHotelDetailInfo().id));
+        b.addBody("money",String.valueOf(mMoney));
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.COUPON_USEFUL_LIST;
