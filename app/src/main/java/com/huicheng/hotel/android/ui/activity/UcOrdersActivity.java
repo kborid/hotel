@@ -1,13 +1,9 @@
 package com.huicheng.hotel.android.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,21 +20,20 @@ import com.huicheng.hotel.android.requestbuilder.bean.OrderDetailInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.OrdersSpendInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderDetailActivity;
 import com.huicheng.hotel.android.ui.activity.plane.PlaneOrderDetailActivity;
+import com.huicheng.hotel.android.ui.adapter.MainOrderAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
-import com.huicheng.hotel.android.ui.custom.SimpleRefreshListView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
+import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
-import com.prj.sdk.util.BitmapUtils;
-import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author kborid
@@ -48,20 +43,28 @@ public class UcOrdersActivity extends BaseAppActivity {
 
     private static final int PAGESIZE = 10;
 
-    private SimpleRefreshListView listview;
-    private MyOrderAdapter adapter;
+    @BindView(R.id.iv_hotel)
+    ImageView ivHotel;
+    @BindView(R.id.iv_plane)
+    ImageView ivPlane;
+    @BindView(R.id.iv_trace)
+    ImageView ivTrace;
+    @BindView(R.id.tv_spend_year)
+    TextView tvSpendYear;
+    @BindView(R.id.tv_save_year)
+    TextView tvSaveYear;
+    @BindView(R.id.consumption_lay)
+    LinearLayout consumptionLay;
+
     private OrdersSpendInfoBean ordersSpendInfoBean = null;
     private List<OrderDetailInfoBean> list = new ArrayList<>();
-    private LinearLayout consumption_lay;
-    private ImageView iv_accessory;
-    private TextView tv_spend_year, tv_save_year;
+    private MainOrderAdapter adapter;
+    private RecyclerView recyclerView;
+    private RelativeLayout empty_lay;
 
-    private int dateSelectorIndex = 0;
     private int pageIndex = 0;
     private String orderType;
     private boolean isLoadMore = false;
-    private int mMainColorId;
-    private int mOrderHotelItemBgResId, mOrderPlaneItemBgResId;
 
     @Override
     protected void setContentView() {
@@ -69,70 +72,45 @@ public class UcOrdersActivity extends BaseAppActivity {
     }
 
     @Override
-    protected void initTypeArrayAttributes() {
-        super.initTypeArrayAttributes();
-        TypedArray ta = obtainStyledAttributes(R.styleable.MyTheme);
-        mMainColorId = ta.getColor(R.styleable.MyTheme_mainColor, getResources().getColor(R.color.mainColor));
-        mOrderHotelItemBgResId = ta.getResourceId(R.styleable.MyTheme_orderHotelItemBg, R.drawable.iv_order_hotel);
-        mOrderPlaneItemBgResId = ta.getResourceId(R.styleable.MyTheme_orderPlaneItemBg, R.drawable.iv_order_plane);
-        ta.recycle();
-    }
-
-    @Override
     protected void requestData() {
         super.requestData();
-        listview.refreshingHeaderView();
+        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                requestMyOrdersList(orderType, pageIndex);
+                requestSpendyearly();
+            }
+        }, 500);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        listview.refreshingHeaderView();
+        requestData();
     }
 
     @Override
     public void initViews() {
         super.initViews();
-        tv_spend_year = (TextView) findViewById(R.id.tv_spend_year);
-        tv_save_year = (TextView) findViewById(R.id.tv_save_year);
-        iv_accessory = (ImageView) findViewById(R.id.iv_accessory);
-
-        listview = (SimpleRefreshListView) findViewById(R.id.listview);
-        if (listview != null) {
-            listview.setPullRefreshEnable(true);
-            listview.setPullLoadEnable(true);
-        }
-
-        adapter = new MyOrderAdapter(this, list);
-        listview.setAdapter(adapter);
-        consumption_lay = (LinearLayout) findViewById(R.id.consumption_lay);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MainOrderAdapter(this, list);
+        recyclerView.setAdapter(adapter);
+        empty_lay = (RelativeLayout) findViewById(R.id.empty_lay);
     }
 
     @Override
     public void initParams() {
         super.initParams();
+        orderType = "";
+        refreshOrderTypeStatus(orderType);
+    }
 
-        tv_center_title.setText("我的行程");
-        iv_accessory.setImageBitmap(BitmapUtils.getAlphaBitmap(getResources().getDrawable(R.drawable.iv_accessory_blue), mMainColorId));
-
-        //没有数据时，显示空view提示
-        TextView emptyView = new TextView(this);
-        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        emptyView.setText("暂无订单信息");
-        emptyView.setPadding(0, Utils.dp2px(50), 0, Utils.dp2px(50));
-        emptyView.setGravity(Gravity.CENTER);
-        emptyView.setTextColor(getResources().getColor(R.color.searchHintColor));
-        emptyView.setVisibility(View.GONE);
-        emptyView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listview.refreshingHeaderView();
-            }
-        });
-        ((ViewGroup) listview.getParent()).addView(emptyView);
-        listview.setEmptyView(emptyView);
-
-        orderType = HotelCommDef.Order_Hotel;
+    private void refreshOrderTypeStatus(String type) {
+        ivHotel.setSelected(HotelCommDef.Order_Hotel.equals(type));
+        ivPlane.setSelected(HotelCommDef.Order_Plane.equals(type));
+        ivTrace.setSelected("".equals(type));
     }
 
     private void requestMyOrdersList(String orderType, int pageIndex) {
@@ -148,59 +126,59 @@ public class UcOrdersActivity extends BaseAppActivity {
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.ORDER_LIST;
         d.flag = AppConst.ORDER_LIST;
-
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    private void requestSpendyearly(String startYear, String endYear) {
+    private void requestSpendyearly() {
         LogUtil.i(TAG, "requestSpendyearly()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("startYear", startYear);
-        b.addBody("endYear", endYear);
+        b.addBody("startYear", "");
+        b.addBody("endYear", "");
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.ORDER_SPEND;
         d.flag = AppConst.ORDER_SPEND;
-
         requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
+    @Override
+    public void onRefresh() {
+        super.onRefresh();
+        swipeRefreshLayout.setRefreshing(true);
+        pageIndex = 0;
+        isLoadMore = false;
+        requestData();
     }
 
     @Override
     public void initListeners() {
         super.initListeners();
 
-        listview.setXListViewListener(new SimpleRefreshListView.OnRefreshListener() {
+        adapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
-            public void onRefresh() {
-                pageIndex = 0;
-                isLoadMore = false;
-                requestMyOrdersList(orderType, pageIndex);
-                requestSpendyearly("", "");
-            }
-
-            @Override
-            public void onLoadMore() {
-                isLoadMore = true;
-                requestMyOrdersList(orderType, ++pageIndex);
-            }
-        });
-        consumption_lay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UcOrdersActivity.this, UcCostDetailActivity.class);
-                intent.putExtra("ordersSpendInfoBean", ordersSpendInfoBean);
-                intent.putExtra("startYear", "");
-                intent.putExtra("endYear", "");
-                intent.putExtra("selectorIndex", dateSelectorIndex);
-                startActivity(intent);
+            public void OnItemClick(View view, int position) {
+                OrderDetailInfoBean bean = list.get(position);
+                if (HotelCommDef.Order_Hotel.equals(bean.orderType)) {
+                    Intent intent = new Intent(UcOrdersActivity.this, HotelOrderDetailActivity.class);
+                    intent.putExtra("orderId", bean.orderId);
+                    intent.putExtra("orderType", bean.orderType);
+                    startActivityForResult(intent, 0x01);
+                } else if (HotelCommDef.Order_Plane.equals(bean.orderType)) {
+                    Intent intent = new Intent(UcOrdersActivity.this, PlaneOrderDetailActivity.class);
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("orderId", bean.orderId);
+                    params.put("orderType", bean.orderType);
+                    intent.putExtra("path", SessionContext.getUrl(NetURL.ORDER_PLANE, params));
+                    startActivityForResult(intent, 0x01);
+                }
             }
         });
     }
 
     private void updateOrdersSpendInfo() {
         if (ordersSpendInfoBean != null) {
-            tv_spend_year.setText(String.valueOf((int) ordersSpendInfoBean.spend));
-            tv_save_year.setText(String.valueOf((int) ordersSpendInfoBean.totalsave));
+            tvSpendYear.setText(String.valueOf((int) ordersSpendInfoBean.spend));
+            tvSaveYear.setText(String.valueOf((int) ordersSpendInfoBean.totalsave));
         }
     }
 
@@ -208,19 +186,16 @@ public class UcOrdersActivity extends BaseAppActivity {
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         if (response != null && response.body != null) {
             if (request.flag == AppConst.ORDER_LIST) {
+                swipeRefreshLayout.setRefreshing(false);
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 List<OrderDetailInfoBean> temp = JSON.parseArray(response.body.toString(), OrderDetailInfoBean.class);
                 if (!isLoadMore) {
-                    listview.setRefreshTime(DateUtil.getSecond(Calendar.getInstance().getTimeInMillis()));
                     list.clear();
                 }
                 if (temp.size() <= 0) {
                     pageIndex--;
                     CustomToast.show("没有更多数据", CustomToast.LENGTH_SHORT);
                 }
-
-                listview.stopLoadMore();
-                listview.stopRefresh();
                 list.addAll(temp);
                 adapter.notifyDataSetChanged();
             } else if (request.flag == AppConst.ORDER_SPEND) {
@@ -232,132 +207,39 @@ public class UcOrdersActivity extends BaseAppActivity {
     }
 
     @Override
-    public void onNotifyError(ResponseData request, ResponseData response) {
-        super.onNotifyError(request, response);
-        listview.stopRefresh();
-        listview.stopLoadMore();
-    }
-
-    private class MyOrderAdapter extends BaseAdapter {
-        private Context context;
-        private List<OrderDetailInfoBean> list = new ArrayList<>();
-
-        MyOrderAdapter(Context context, List<OrderDetailInfoBean> list) {
-            this.context = context;
-            this.list = list;
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (null == convertView) {
-                viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(context).inflate(R.layout.lv_item_order, null);
-                viewHolder.flag_lay = (RelativeLayout) convertView.findViewById(R.id.flag_lay);
-                viewHolder.flag_date_lay = (LinearLayout) convertView.findViewById(R.id.flag_date_lay);
-                viewHolder.tv_flag_year = (TextView) convertView.findViewById(R.id.tv_flag_year);
-                viewHolder.tv_flag_date = (TextView) convertView.findViewById(R.id.tv_flag_date);
-                viewHolder.item_lay = (RelativeLayout) convertView.findViewById(R.id.item_lay);
-                viewHolder.tv_item_name = (TextView) convertView.findViewById(R.id.tv_item_name);
-                viewHolder.tv_item_date = (TextView) convertView.findViewById(R.id.tv_item_date);
-                viewHolder.tv_item_position = (TextView) convertView.findViewById(R.id.tv_item_position);
-                viewHolder.tv_item_phone = (TextView) convertView.findViewById(R.id.tv_item_phone);
-                viewHolder.iv_item_type = (ImageView) convertView.findViewById(R.id.iv_item_type);
-                viewHolder.tv_item_status = (TextView) convertView.findViewById(R.id.tv_item_status);
-
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-
-            final OrderDetailInfoBean item = list.get(position);
-            String currBeginDateStr = DateUtil.getDay("yyyyMMdd", item.beginDate);
-
-            if (0 == position) {
-                viewHolder.flag_date_lay.setVisibility(View.VISIBLE);
-                viewHolder.item_lay.setBackground(context.getResources().getDrawable(R.drawable.iv_order_item_arrow_bg));
-            } else {
-                String lastBeginDateStr = DateUtil.getDay("yyyyMMdd", list.get(position - 1).beginDate);
-                if (lastBeginDateStr.equals(currBeginDateStr)) {
-                    viewHolder.flag_date_lay.setVisibility(View.GONE);
-                    viewHolder.item_lay.setBackground(context.getResources().getDrawable(R.drawable.iv_order_item_normal_bg));
-                } else {
-                    viewHolder.flag_date_lay.setVisibility(View.VISIBLE);
-                    viewHolder.item_lay.setBackground(context.getResources().getDrawable(R.drawable.iv_order_item_arrow_bg));
-                }
-            }
-
-            viewHolder.tv_flag_year.setText(DateUtil.getDay("yyyy", item.beginDate));
-            viewHolder.tv_flag_date.setText(DateUtil.getDay("MM/dd", item.beginDate));
-            viewHolder.tv_item_name.setText(item.hotelName);
-            viewHolder.tv_item_date.setText(String.format(context.getString(R.string.orderListItemDateStr),
-                    DateUtil.getDay("MM月dd日", item.beginDate),
-                    DateUtil.getDay("MM月dd日", item.endDate),
-                    DateUtil.getGapCount(new Date(item.beginDate), new Date(item.endDate))));
-            viewHolder.tv_item_position.setText(item.hotelAddress);
-            viewHolder.tv_item_phone.setText(item.hotelPhone);
-            viewHolder.tv_item_status.setText(item.orderStatusName);
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (HotelCommDef.Order_Hotel.equals(item.orderType)) {
-                        Intent intent = new Intent(context, HotelOrderDetailActivity.class);
-                        intent.putExtra("orderId", item.orderId);
-                        intent.putExtra("orderType", item.orderType);
-                        startActivityForResult(intent, 0x01);
-                    } else {
-                        Intent intent = new Intent(context, PlaneOrderDetailActivity.class);
-                        HashMap<String, String> params = new HashMap<>();
-                        params.put("orderId", item.orderId);
-                        params.put("orderType", item.orderType);
-                        intent.putExtra("path", SessionContext.getUrl(NetURL.ORDER_PLANE, params));
-                        startActivityForResult(intent, 0x01);
-                    }
-                }
-            });
-
-            return convertView;
-        }
-
-        class ViewHolder {
-            RelativeLayout flag_lay;
-            LinearLayout flag_date_lay;
-            TextView tv_flag_year;
-            TextView tv_flag_date;
-            RelativeLayout item_lay;
-            TextView tv_item_name;
-            TextView tv_item_date;
-            TextView tv_item_position;
-            TextView tv_item_phone;
-            ImageView iv_item_type;
-            TextView tv_item_status;
-        }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (RESULT_OK != resultCode) {
             return;
         }
         if (requestCode == 0x01) {
-            listview.refreshingHeaderView();
+            requestData();
+        }
+    }
+
+    @OnClick({R.id.iv_hotel, R.id.iv_plane, R.id.iv_trace, R.id.consumption_lay})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_hotel:
+                orderType = HotelCommDef.Order_Hotel;
+                refreshOrderTypeStatus(orderType);
+                requestData();
+                break;
+            case R.id.iv_plane:
+                orderType = HotelCommDef.Order_Plane;
+                refreshOrderTypeStatus(orderType);
+                requestData();
+                break;
+            case R.id.iv_trace:
+                orderType = "";
+                refreshOrderTypeStatus(orderType);
+                requestData();
+                break;
+            case R.id.consumption_lay:
+                Intent intent = new Intent(UcOrdersActivity.this, UcCostDetailActivity.class);
+                intent.putExtra("ordersSpendInfoBean", ordersSpendInfoBean);
+                startActivity(intent);
+                break;
         }
     }
 }

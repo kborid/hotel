@@ -1,7 +1,6 @@
 package com.huicheng.hotel.android.ui.activity;
 
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,10 +17,9 @@ import com.huicheng.hotel.android.requestbuilder.bean.BountyBaseInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.ui.adapter.BountyLxbActiveAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
-import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +34,6 @@ public class UcBountyMainActivity extends BaseAppActivity {
     private boolean isFirstLoad = false;
     private BountyBaseInfo mBountyBaseInfo = null;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout current_lxb_lay;
     private TextView tv_current_lxb;
     private ListView listview;
@@ -51,7 +48,6 @@ public class UcBountyMainActivity extends BaseAppActivity {
     @Override
     protected void initViews() {
         super.initViews();
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         View header = LayoutInflater.from(this).inflate(R.layout.lv_lxb_main_header, null);
         current_lxb_lay = (LinearLayout) header.findViewById(R.id.current_lxb_lay);
         tv_current_lxb = (TextView) header.findViewById(R.id.tv_current_lxb);
@@ -64,10 +60,6 @@ public class UcBountyMainActivity extends BaseAppActivity {
         super.initParams();
         tv_center_title.setText(getString(R.string.side_lxb));
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        swipeRefreshLayout.setColorSchemeResources(R.color.mainColor);
-        swipeRefreshLayout.setDistanceToTriggerSync(200);
-        swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
-        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         isFirstLoad = true;
         tv_current_lxb.setText(String.format(getString(R.string.lxb_util), 0));
         adapter = new BountyLxbActiveAdapter(this, mList);
@@ -77,14 +69,6 @@ public class UcBountyMainActivity extends BaseAppActivity {
     @Override
     protected void initListeners() {
         super.initListeners();
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
-                requestBountyBaseInfo();
-                requestBountyActive();
-            }
-        });
         current_lxb_lay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +77,14 @@ public class UcBountyMainActivity extends BaseAppActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        super.onRefresh();
+        swipeRefreshLayout.setRefreshing(true);
+        requestBountyBaseInfo();
+        requestBountyActive();
     }
 
     @Override

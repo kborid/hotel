@@ -334,6 +334,10 @@
         <activity
             android:name=".ui.activity.plane.PlaneOrderDetailActivity"
             android:screenOrientation="portrait" />
+        <!--退票-->
+        <activity
+            android:name=".ui.activity.plane.PlaneBackTicketActivity"
+            android:screenOrientation="portrait" />
 
 
         <receiver android:name=".pay.wxpay.AppRegister">
@@ -473,8 +477,8 @@
 
         <activity android:name=".ui.mvp.MvpTestActivity">
             <intent-filter>
-                <action android:name="kborid.test.mvp"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="kborid.test.mvp" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 

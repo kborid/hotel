@@ -159,4 +159,7 @@ dependencies {
     //compile 'com.github.DgonLam:RefreshLayout:1.0.3'
     //添加阴影工具类
     compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.2'
+    //ButterKnife zelezny
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }

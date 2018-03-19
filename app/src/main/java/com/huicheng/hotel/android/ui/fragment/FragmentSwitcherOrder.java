@@ -80,8 +80,8 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    requestMyOrdersList(HotelCommDef.Order_Hotel);
-                    requestSpendyearly("", "");
+                    requestMyOrdersList();
+//                    requestSpendyearly();
                 }
             }, 500);
         }
@@ -120,8 +120,8 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestMyOrdersList(HotelCommDef.Order_Hotel);
-                requestSpendyearly("", "");
+                requestMyOrdersList();
+//                requestSpendyearly();
             }
         });
         adapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
@@ -133,7 +133,7 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
                     intent.putExtra("orderId", bean.orderId);
                     intent.putExtra("orderType", bean.orderType);
                     startActivityForResult(intent, 0x01);
-                } else {
+                } else if (HotelCommDef.Order_Plane.equals(bean.orderType)) {
                     Intent intent = new Intent(getActivity(), PlaneOrderDetailActivity.class);
                     HashMap<String, String> params = new HashMap<>();
                     params.put("orderId", bean.orderId);
@@ -149,15 +149,15 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
     public void onClick(View v) {
     }
 
-    private void requestMyOrdersList(String orderType) {
+    private void requestMyOrdersList() {
         LogUtil.i(TAG, "requestMyOrdersList()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("orderType", orderType);
+        b.addBody("orderType", "");
         b.addBody("status", "");
         b.addBody("startYear", "");
         b.addBody("endYear", "");
         b.addBody("pageIndex", "0");
-        b.addBody("pageSize", "10");
+        b.addBody("pageSize", "30");
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.ORDER_LIST;
@@ -166,11 +166,11 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    private void requestSpendyearly(String startYear, String endYear) {
+    private void requestSpendyearly() {
         LogUtil.i(TAG, "requestSpendyearly()");
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("startYear", startYear);
-        b.addBody("endYear", endYear);
+        b.addBody("startYear", "");
+        b.addBody("endYear", "");
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.ORDER_SPEND;

@@ -18,8 +18,8 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.OrdersSpendInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CustomCirclePieChart;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
 
 import java.util.Calendar;
@@ -86,15 +86,8 @@ public class UcCostDetailActivity extends BaseAppActivity {
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
-            selectorIndex = bundle.getInt("selectorIndex");
             if (bundle.get("ordersSpendInfoBean") != null) {
                 ordersSpendInfoBean = (OrdersSpendInfoBean) bundle.get("ordersSpendInfoBean");
-            }
-            if (null != bundle.getString("startYear")) {
-                startYear = bundle.getString("startYear");
-            }
-            if (null != bundle.getString("endYear")) {
-                endYear = bundle.getString("endYear");
             }
         }
     }

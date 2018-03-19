@@ -69,6 +69,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import butterknife.ButterKnife;
+
 public abstract class BaseAppActivity extends BaseActivity implements OnClickListener, DataCallback, SwipeRefreshLayout.OnRefreshListener {
 
     protected final String TAG = getClass().getSimpleName();
@@ -173,7 +175,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         iv_right = (ImageView) findViewById(R.id.iv_right);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         if (null != swipeRefreshLayout) {
-//            swipeRefreshLayout.setColorSchemeResources(R.color.plane_mainColor);
+            swipeRefreshLayout.setColorSchemeResources(R.color.mainColor);
             swipeRefreshLayout.setDistanceToTriggerSync(200);
             swipeRefreshLayout.setProgressViewOffset(true, 0, Utils.dp2px(20));
             swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
@@ -185,6 +187,7 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
 
     @Override
     protected void initParams() {
+        ButterKnife.bind(this);
         dealIntent();
     }
 

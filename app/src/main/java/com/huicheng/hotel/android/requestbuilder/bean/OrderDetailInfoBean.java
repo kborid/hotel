@@ -34,4 +34,12 @@ public class OrderDetailInfoBean implements Serializable {
     public String checkInAndOutDate;
     public String hotelAddress;
     public String hotelPhone;
+
+    public String sTime;
+    public String eTime;
+    public String sAirport;
+    public String eAirport;
+    public String flightNo;
+    public String passengerNames;
+    public long toFlyTime;
 }

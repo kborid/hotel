@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <FrameLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/iv_plane_card_bg">
@@ -55,6 +56,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_off_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -64,7 +66,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_airport_off"
+                            android:id="@+id/tv_off_airport"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -84,6 +86,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_on_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -93,7 +96,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_airport_on"
+                            android:id="@+id/tv_on_airport"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -117,20 +120,19 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="7dp"
-                android:paddingRight="7dp">
+                android:orientation="vertical">
 
                 <TableRow>
 
                     <TextView
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
                         android:gravity="center"
                         android:text="航班"
                         android:textColor="#666666"
                         android:textSize="@dimen/common_10sp" />
 
                     <TextView
+                        android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="登机人"
@@ -138,6 +140,7 @@
                         android:textSize="@dimen/common_10sp" />
 
                     <TextView
+                        android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="距离起飞时间"
@@ -149,24 +152,34 @@
 
                     <TextView
                         android:id="@+id/tv_flight"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:ellipsize="end"
                         android:gravity="center"
+                        android:lines="1"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
                         android:text="CZ6429"
                         android:textColor="#3c3c3c"
                         android:textSize="@dimen/common_16sp" />
 
                     <TextView
                         android:id="@+id/tv_passenger"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:ellipsize="end"
                         android:gravity="center"
+                        android:lines="1"
                         android:text="段伟"
                         android:textColor="#3c3c3c"
                         android:textSize="@dimen/common_16sp" />
 
                     <TextView
-                        android:id="@+id/tv_time"
+                        android:id="@+id/tv_tofly"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:ellipsize="end"
                         android:gravity="center"
+                        android:lines="1"
                         android:text="1小时39分"
                         android:textColor="#3c3c3c"
                         android:textSize="@dimen/common_16sp" />

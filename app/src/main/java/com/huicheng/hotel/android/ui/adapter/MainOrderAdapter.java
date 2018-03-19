@@ -22,8 +22,11 @@ import java.util.List;
 
 public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TYPE_HOTEL = 0;
-    private static final int TYPE_PLANE = 1;
+    private static final int TYPE_HOTEL = 1;
+    private static final int TYPE_PLANE = 2;
+    private static final int ONE_MINUTE = 1000 * 60;
+    private static final int ONE_HOUR = ONE_MINUTE * 60;
+    private static final int ONE_DAY = ONE_HOUR * 24;
 
     private Context context;
     private List<OrderDetailInfoBean> list;
@@ -44,23 +47,22 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolder = new MainOrderAdapter.PlaneOrderViewHolder(LayoutInflater.from(context).inflate(R.layout.lv_planeorder_item, parent, false));
                 break;
         }
-//        viewHolder.setIsRecyclable(true);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        OrderDetailInfoBean orderDetailBean = list.get(position);
         switch (holder.getItemViewType()) {
             case TYPE_HOTEL:
-                OrderDetailInfoBean hotelOrderDetailBean = list.get(position);
-                HotelOrderViewHolder hotelOrderViewHolder = (HotelOrderViewHolder) holder;
-                hotelOrderViewHolder.tv_name.setText(hotelOrderDetailBean.hotelName);
-                hotelOrderViewHolder.tv_in_date.setText(DateUtil.getDay("M月d日", hotelOrderDetailBean.beginDate));
-                hotelOrderViewHolder.tv_out_date.setText(DateUtil.getDay("M月d日", hotelOrderDetailBean.endDate));
-                hotelOrderViewHolder.tv_position.setText(hotelOrderDetailBean.hotelAddress);
-                hotelOrderViewHolder.tv_phone.setText(hotelOrderDetailBean.hotelPhone);
-                hotelOrderViewHolder.tv_status.setText(hotelOrderDetailBean.orderStatusName);
-                hotelOrderViewHolder.root.setOnClickListener(new View.OnClickListener() {
+                HotelOrderViewHolder hotelOVH = (HotelOrderViewHolder) holder;
+                hotelOVH.tv_name.setText(orderDetailBean.hotelName);
+                hotelOVH.tv_in_date.setText(DateUtil.getDay("M月d日", orderDetailBean.beginDate));
+                hotelOVH.tv_out_date.setText(DateUtil.getDay("M月d日", orderDetailBean.endDate));
+                hotelOVH.tv_position.setText(orderDetailBean.hotelAddress);
+                hotelOVH.tv_phone.setText(orderDetailBean.hotelPhone);
+                hotelOVH.tv_status.setText(orderDetailBean.orderStatusName);
+                hotelOVH.root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (null != listener) {
@@ -70,6 +72,36 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 });
                 break;
             case TYPE_PLANE:
+                PlaneOrderViewHolder planeOVH = (PlaneOrderViewHolder) holder;
+                planeOVH.tv_name.setText(orderDetailBean.hotelName);
+                planeOVH.tv_date.setText(DateUtil.getDay("M月d日", orderDetailBean.flydate));
+                planeOVH.tv_off_time.setText(orderDetailBean.sTime);
+                planeOVH.tv_on_time.setText(orderDetailBean.eTime);
+                planeOVH.tv_off_airport.setText(orderDetailBean.sAirport);
+                planeOVH.tv_on_airport.setText(orderDetailBean.eAirport);
+                planeOVH.tv_flight.setText(orderDetailBean.flightNo);
+                planeOVH.tv_passenger.setText(orderDetailBean.passengerNames);
+                if (orderDetailBean.toFlyTime > 0) {
+                    int day = (int) orderDetailBean.toFlyTime / ONE_DAY;
+                    int hour = (int) (orderDetailBean.toFlyTime - day * ONE_DAY) / ONE_HOUR;
+                    int min = (int) (orderDetailBean.toFlyTime - day * ONE_DAY - hour * ONE_HOUR) / ONE_MINUTE;
+                    if (day > 0) {
+                        planeOVH.tv_tofly.setText(String.format("%1$d天%2$d时%3$d分", day, hour, min));
+                    } else {
+                        planeOVH.tv_tofly.setText(String.format("%1$d时%2$d分", hour, min));
+                    }
+                } else {
+                    planeOVH.tv_tofly.setText("已起飞");
+                }
+                planeOVH.tv_status.setText(orderDetailBean.orderStatusName);
+                planeOVH.root.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (null != listener) {
+                            listener.OnItemClick(v, position);
+                        }
+                    }
+                });
                 break;
         }
     }
@@ -81,10 +113,10 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        return list.get(position).type;
+        return Integer.valueOf(list.get(position).orderType);
     }
 
-    class HotelOrderViewHolder extends RecyclerView.ViewHolder {
+    static class HotelOrderViewHolder extends RecyclerView.ViewHolder {
         FrameLayout root;
         TextView tv_name;
         TextView tv_in_date;
@@ -105,9 +137,32 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    class PlaneOrderViewHolder extends RecyclerView.ViewHolder {
+    static class PlaneOrderViewHolder extends RecyclerView.ViewHolder {
+        FrameLayout root;
+        TextView tv_name;
+        TextView tv_date;
+        TextView tv_off_time;
+        TextView tv_off_airport;
+        TextView tv_on_time;
+        TextView tv_on_airport;
+        TextView tv_flight;
+        TextView tv_passenger;
+        TextView tv_tofly;
+        TextView tv_status;
+
         PlaneOrderViewHolder(View itemView) {
             super(itemView);
+            root = (FrameLayout) itemView.findViewById(R.id.root);
+            tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            tv_date = (TextView) itemView.findViewById(R.id.tv_date);
+            tv_off_time = (TextView) itemView.findViewById(R.id.tv_off_time);
+            tv_on_time = (TextView) itemView.findViewById(R.id.tv_on_time);
+            tv_off_airport = (TextView) itemView.findViewById(R.id.tv_off_airport);
+            tv_on_airport = (TextView) itemView.findViewById(R.id.tv_on_airport);
+            tv_flight = (TextView) itemView.findViewById(R.id.tv_flight);
+            tv_passenger = (TextView) itemView.findViewById(R.id.tv_passenger);
+            tv_tofly = (TextView) itemView.findViewById(R.id.tv_tofly);
+            tv_status = (TextView) itemView.findViewById(R.id.tv_status);
         }
     }
 

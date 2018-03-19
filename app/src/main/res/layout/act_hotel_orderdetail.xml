@@ -7,22 +7,9 @@
 
     <include layout="@layout/comm_title" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#999999" />
-
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/iv_hotel_logo_large" />
 
         <ScrollView
             android:id="@+id/scroll_view"
@@ -453,5 +440,18 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-    </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/shadow_title_bottom" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/iv_hotel_logo_large" />
+
+    </FrameLayout>
 </LinearLayout>

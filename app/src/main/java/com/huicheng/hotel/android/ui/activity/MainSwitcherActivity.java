@@ -82,6 +82,7 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     private LinearLayout tab_title_lay;
     private ViewPager tab_viewPager;
 
+    private int viewPagerIndex = 0;
     private AppInfoBean mAppInfoBean = null;
     private boolean isFirstLaunch = false;
     private long exitTime = 0;
@@ -161,8 +162,8 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
             });
         }
 
-        tab_title_lay.getChildAt(0).setSelected(true);
-        tab_viewPager.setCurrentItem(0);
+        tab_title_lay.getChildAt(viewPagerIndex).setSelected(true);
+        tab_viewPager.setCurrentItem(viewPagerIndex);
     }
 
     @Override
@@ -171,6 +172,7 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
             isNeedCloseLeftDrawer = bundle.getBoolean("isClosed");
+            viewPagerIndex = bundle.getInt("index");
         }
     }
 

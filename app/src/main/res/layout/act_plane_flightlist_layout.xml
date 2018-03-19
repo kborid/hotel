@@ -2,139 +2,142 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f8f8f8"
     android:orientation="vertical">
 
     <include layout="@layout/comm_title" />
 
-    <!--title shadow-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@drawable/shadow_title_bottom" />
-    <!--日期选择layout-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="82dp"
-        android:layout_marginTop="-3dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/calendarRecycleView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1" />
-
-        <RelativeLayout
-            android:id="@+id/calendar_lay"
-            android:layout_width="64dp"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="6dp"
-                android:drawableTop="@drawable/iv_plane_list_date"
-                android:gravity="center"
-                android:text="日期"
-                android:textColor="#666666"
-                android:textSize="@dimen/common_10sp" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#e0e0e0" />
-
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-        <!--机票列表-->
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="49dp">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:id="@+id/tv_empty"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/empty_flight_list"
-                    android:textColor="@color/secColorShadow"
-                    android:textSize="@dimen/common_18sp"
-                    android:visibility="gone" />
-            </FrameLayout>
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <!--筛选栏-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+            <!--日期选择layout-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/calendarRecycleView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1" />
+
+                <RelativeLayout
+                    android:id="@+id/calendar_lay"
+                    android:layout_width="64dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="6dp"
+                        android:drawableTop="@drawable/iv_plane_list_date"
+                        android:gravity="center"
+                        android:text="日期"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/common_10sp" />
+                </RelativeLayout>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@drawable/shadow_bottombar_top" />
+                android:layout_height="0.5dp"
+                android:background="#e0e0e0" />
 
-            <LinearLayout
-                android:id="@+id/consider_lay"
+            <!--机票列表-->
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:padding="6dp">
+                android:layout_height="match_parent">
 
-                <TextView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:drawablePadding="1dp"
-                    android:drawableTop="@drawable/plane_consider_logo_sel"
-                    android:gravity="center"
-                    android:text="筛选"
-                    android:textColor="@color/plane_flight_bottom_text_sel"
-                    android:textSize="@dimen/common_10sp" />
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:drawablePadding="1dp"
-                    android:drawableTop="@drawable/plane_consider_time_sel"
-                    android:gravity="center"
-                    android:text="时间"
-                    android:textColor="@color/plane_flight_bottom_text_sel"
-                    android:textSize="@dimen/common_10sp" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:drawablePadding="1dp"
-                    android:drawableTop="@drawable/plane_consider_price_sel"
-                    android:gravity="center"
-                    android:text="价格"
-                    android:textColor="@color/plane_flight_bottom_text_sel"
-                    android:textSize="@dimen/common_10sp" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/empty_flight_list"
+                        android:textColor="@color/secColorShadow"
+                        android:textSize="@dimen/common_18sp"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
         </LinearLayout>
-    </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/shadow_title_bottom" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/shadow_bottombar_top" />
+    </FrameLayout>
+    <!--筛选栏-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/consider_lay"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="1dp"
+                android:drawableTop="@drawable/plane_consider_logo_sel"
+                android:gravity="center"
+                android:text="筛选"
+                android:textColor="@color/plane_flight_bottom_text_sel"
+                android:textSize="@dimen/common_10sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="1dp"
+                android:drawableTop="@drawable/plane_consider_time_sel"
+                android:gravity="center"
+                android:text="时间"
+                android:textColor="@color/plane_flight_bottom_text_sel"
+                android:textSize="@dimen/common_10sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="1dp"
+                android:drawableTop="@drawable/plane_consider_price_sel"
+                android:gravity="center"
+                android:text="价格"
+                android:textColor="@color/plane_flight_bottom_text_sel"
+                android:textSize="@dimen/common_10sp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
