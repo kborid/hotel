@@ -53,9 +53,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/tab_viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/main_switcher_content_bg" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <!--侧滑内容-->

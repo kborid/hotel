@@ -55,12 +55,13 @@ public class UcOrdersActivity extends BaseAppActivity {
     TextView tvSaveYear;
     @BindView(R.id.consumption_lay)
     LinearLayout consumptionLay;
+    @BindView(R.id.empty_lay)
+    RelativeLayout emptyLay;
 
     private OrdersSpendInfoBean ordersSpendInfoBean = null;
     private List<OrderDetailInfoBean> list = new ArrayList<>();
     private MainOrderAdapter adapter;
     private RecyclerView recyclerView;
-    private RelativeLayout empty_lay;
 
     private int pageIndex = 0;
     private String orderType;
@@ -97,7 +98,6 @@ public class UcOrdersActivity extends BaseAppActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MainOrderAdapter(this, list);
         recyclerView.setAdapter(adapter);
-        empty_lay = (RelativeLayout) findViewById(R.id.empty_lay);
     }
 
     @Override
@@ -198,6 +198,12 @@ public class UcOrdersActivity extends BaseAppActivity {
                 }
                 list.addAll(temp);
                 adapter.notifyDataSetChanged();
+                recyclerView.scrollToPosition(0);
+                if (list.size() <= 0) {
+                    emptyLay.setVisibility(View.VISIBLE);
+                } else {
+                    emptyLay.setVisibility(View.GONE);
+                }
             } else if (request.flag == AppConst.ORDER_SPEND) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 ordersSpendInfoBean = JSON.parseObject(response.body.toString(), OrdersSpendInfoBean.class);
