@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
+import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.requestbuilder.bean.PlanePassengerInfoBean;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
@@ -35,22 +36,6 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
     private static final int SEX_FEMALE = 0;
     private static final int SEX_MALE = 1;
     private Context context;
-
-    private enum CardType {
-        NI("NI"),   //身份证
-        PP("PP"),   //护照
-        ID("ID"),;  //其他
-
-        String value;
-
-        CardType(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
 
     public CustomInfoLayoutForPlane(Context context) {
         this(context, null);
@@ -105,7 +90,7 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-            spinner_cardType.setSelection(CardType.valueOf(temp.get(i).cardType).ordinal());
+            spinner_cardType.setSelection(PlaneCommDef.CardType.valueOf(temp.get(i).cardType).ordinal());
             et_card_number.setText(temp.get(i).cardNo);
             spinner_sex.setSelection(convertValue2SexSpinnerSelection(temp.get(i).sex));
 
@@ -228,7 +213,7 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
 
             PlanePassengerInfoBean bean = new PlanePassengerInfoBean(
                     ed_custom_name.getText().toString(),
-                    CardType.values()[spinner_cardType.getSelectedItemPosition()].getValue(),
+                    PlaneCommDef.CardType.values()[spinner_cardType.getSelectedItemPosition()].getValueId(),
                     et_card_number.getText().toString(),
                     tv_birthday.getText().toString(),
                     convertSexSpinnerSelection2Value(spinner_sex.getSelectedItemPosition()),

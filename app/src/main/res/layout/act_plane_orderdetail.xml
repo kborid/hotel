@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -13,6 +12,7 @@
 
         <ScrollView
             android:id="@+id/scroll_view"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
@@ -99,6 +99,7 @@
                             android:textSize="@dimen/common_14sp" />
 
                         <TextView
+                            android:id="@+id/tv_contacts_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
@@ -116,6 +117,7 @@
                             android:textSize="@dimen/common_14sp" />
 
                         <TextView
+                            android:id="@+id/tv_contacts_mobile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
@@ -133,14 +135,12 @@
 
                     <!--机票订单信息-->
                     <LinearLayout
+                        android:id="@+id/order_timeinfo_lay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingBottom="12dp"
-                        android:paddingTop="12dp">
-
-                        <include layout="@layout/layout_plane_orderdetail_orderinfo_item" />
-                    </LinearLayout>
+                        android:paddingTop="12dp"/>
 
                     <View
                         android:layout_width="match_parent"

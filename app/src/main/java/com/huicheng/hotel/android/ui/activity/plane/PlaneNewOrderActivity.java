@@ -368,10 +368,10 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                             TextView tv_during = (TextView) goFlightView.findViewById(R.id.tv_during);
                             TextView tv_off_airport = (TextView) goFlightView.findViewById(R.id.tv_off_airport);
                             TextView tv_on_airport = (TextView) goFlightView.findViewById(R.id.tv_on_airport);
-                            TextView tv_name = (TextView) goFlightView.findViewById(R.id.tv_name);
+                            TextView tv_company = (TextView) goFlightView.findViewById(R.id.tv_company);
                             TextView tv_code = (TextView) goFlightView.findViewById(R.id.tv_code);
                             ImageView iv_flight_icon = (ImageView) goFlightView.findViewById(R.id.iv_flight_icon);
-                            TextView tv_jjry_price = (TextView) goFlightView.findViewById(R.id.tv_jjry_price);
+                            TextView tv_build_price = (TextView) goFlightView.findViewById(R.id.tv_build_price);
 
                             tv_flag.setText("去程");
                             Date date = DateUtil.str2Date(goFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd");
@@ -387,7 +387,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                                 if (SessionContext.getAirCompanyMap().size() > 0
                                         && SessionContext.getAirCompanyMap().containsKey(goFlightDetailInfo.flightInfo.carrier)) {
                                     AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(goFlightDetailInfo.flightInfo.carrier);
-                                    tv_name.setText(companyInfoBean.company);
+                                    tv_company.setText(companyInfoBean.company);
                                     iv_flight_icon.setVisibility(View.VISIBLE);
                                     Glide.with(this)
                                             .load(new CustomReqURLFormatModelImpl(companyInfoBean.logourl))
@@ -395,13 +395,13 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                                             .override(Utils.dp2px(15), Utils.dp2px(15))
                                             .into(iv_flight_icon);
                                 } else {
-                                    tv_name.setText(goFlightDetailInfo.flightInfo.carrier);
+                                    tv_company.setText(goFlightDetailInfo.flightInfo.carrier);
                                     iv_flight_icon.setVisibility(View.INVISIBLE);
                                 }
                             } else {
                                 iv_flight_icon.setVisibility(View.INVISIBLE);
                             }
-                            tv_jjry_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
+                            tv_build_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
                         }
 
                         //返程信息
@@ -417,10 +417,10 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                                 TextView tv_during = (TextView) backFlightView.findViewById(R.id.tv_during);
                                 TextView tv_off_airport = (TextView) backFlightView.findViewById(R.id.tv_off_airport);
                                 TextView tv_on_airport = (TextView) backFlightView.findViewById(R.id.tv_on_airport);
-                                TextView tv_name = (TextView) backFlightView.findViewById(R.id.tv_name);
+                                TextView tv_company = (TextView) backFlightView.findViewById(R.id.tv_company);
                                 TextView tv_code = (TextView) backFlightView.findViewById(R.id.tv_code);
                                 ImageView iv_flight_icon = (ImageView) backFlightView.findViewById(R.id.iv_flight_icon);
-                                TextView tv_jjry_price = (TextView) backFlightView.findViewById(R.id.tv_jjry_price);
+                                TextView tv_build_price = (TextView) backFlightView.findViewById(R.id.tv_build_price);
 
                                 tv_flag.setText("返程");
                                 Date date = DateUtil.str2Date(backFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd");
@@ -436,7 +436,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                                     if (SessionContext.getAirCompanyMap().size() > 0
                                             && SessionContext.getAirCompanyMap().containsKey(backFlightDetailInfo.flightInfo.carrier)) {
                                         AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(backFlightDetailInfo.flightInfo.carrier);
-                                        tv_name.setText(companyInfoBean.company);
+                                        tv_company.setText(companyInfoBean.company);
                                         iv_flight_icon.setVisibility(View.VISIBLE);
                                         Glide.with(this)
                                                 .load(new CustomReqURLFormatModelImpl(companyInfoBean.logourl))
@@ -444,13 +444,13 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                                                 .override(Utils.dp2px(15), Utils.dp2px(15))
                                                 .into(iv_flight_icon);
                                     } else {
-                                        tv_name.setText(backFlightDetailInfo.flightInfo.carrier);
+                                        tv_company.setText(backFlightDetailInfo.flightInfo.carrier);
                                         iv_flight_icon.setVisibility(View.INVISIBLE);
                                     }
                                 } else {
                                     iv_flight_icon.setVisibility(View.INVISIBLE);
                                 }
-                                tv_jjry_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
+                                tv_build_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
                             }
                         }
                     }

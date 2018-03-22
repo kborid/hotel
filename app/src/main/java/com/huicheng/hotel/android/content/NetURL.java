@@ -134,6 +134,7 @@ public final class NetURL {
     public static final String PLANE_COMPANY_LIST = PORTAL + "search/getaircompanys.json"; //查询航司列表
     public static final String PLANE_BOOKING_INFO = PORTAL + "booking.json"; //机票booking预留信息
     public static final String PLANE_NEW_ORDER = PORTAL + "order.json"; //机票下单
+    public static final String PLANE_ORDER_DETAIL = PORTAL + "search/order/detail.json";
 
     //-------------------------------------地址管理--------------------------------------------------
     public static final String ADDRESS_GET_DEFAULT = PORTAL + "user/getdefaultaddress.json";

@@ -68,7 +68,7 @@
                 android:scaleType="center" />
 
             <TextView
-                android:id="@+id/tv_name"
+                android:id="@+id/tv_company"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -105,6 +105,7 @@
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:text="×2"
+                    android:visibility="gone"
                     android:textColor="#666666"
                     android:textSize="@dimen/common_14sp" />
             </LinearLayout>
@@ -237,7 +238,7 @@
         android:paddingTop="7dp">
 
         <LinearLayout
-            android:id="@+id/jjry_layout"
+            android:id="@+id/build_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -250,7 +251,7 @@
                 android:textSize="@dimen/common_16sp" />
 
             <TextView
-                android:id="@+id/tv_jjry_count"
+                android:id="@+id/tv_build_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="×2"
@@ -259,7 +260,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/tv_jjry_detail"
+                android:id="@+id/tv_build_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
@@ -278,7 +279,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_jjry_price"
+                android:id="@+id/tv_build_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -289,7 +290,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/baoxian_layout"
+            android:id="@+id/yanwu_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
@@ -304,7 +305,7 @@
                 android:textSize="@dimen/common_16sp" />
 
             <TextView
-                android:id="@+id/tv_baoxian_count"
+                android:id="@+id/tv_yanwu_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="×2"
@@ -313,7 +314,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/tv_baoxian_detail"
+                android:id="@+id/tv_yanwu_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
@@ -332,7 +333,60 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_baoxian_price"
+                android:id="@+id/tv_yanwu_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="20"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/yiwai_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="意外险"
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_16sp" />
+
+            <TextView
+                android:id="@+id/tv_yiwai_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="×2"
+                android:textColor="#3c3c3c"
+                android:textSize="@dimen/common_16sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_yiwai_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="详细信息"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_10sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/RMB"
+                android:textColor="@color/plane_mainColor"
+                android:textSize="@dimen/common_18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_yiwai_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"

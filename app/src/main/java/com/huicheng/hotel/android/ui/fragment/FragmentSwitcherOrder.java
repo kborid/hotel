@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
@@ -33,7 +32,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -81,7 +79,7 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
                 @Override
                 public void run() {
                     requestMyOrdersList();
-//                    requestSpendyearly();
+                    requestSpendyearly();
                 }
             }, 500);
         }
@@ -135,10 +133,8 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
                     startActivityForResult(intent, 0x01);
                 } else if (HotelCommDef.Order_Plane.equals(bean.orderType)) {
                     Intent intent = new Intent(getActivity(), PlaneOrderDetailActivity.class);
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("orderId", bean.orderId);
-                    params.put("orderType", bean.orderType);
-                    intent.putExtra("path", SessionContext.getUrl(NetURL.ORDER_PLANE, params));
+                    intent.putExtra("planeOrderNo", bean.orderNo);
+                    intent.putExtra("planeOrderType", bean.type);
                     startActivityForResult(intent, 0x01);
                 }
             }
@@ -157,7 +153,7 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
         b.addBody("startYear", "");
         b.addBody("endYear", "");
         b.addBody("pageIndex", "0");
-        b.addBody("pageSize", "30");
+        b.addBody("pageSize", "5");
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.ORDER_LIST;

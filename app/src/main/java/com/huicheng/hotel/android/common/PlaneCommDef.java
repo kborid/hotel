@@ -59,4 +59,66 @@ public class PlaneCommDef {
     public static final int RECEIVE_PERSONAL = 2;       //个人
     public static final int RECEIVE_BUSINESS = 3;       //企业
     public static final int RECEIVE_OFFICIAL = 4;       //政府
+
+    //证件类型
+    public enum CardType {
+        NI("NI", "身份证"),   //身份证
+        PP("PP", "护照"),   //护照
+        ID("ID", "其他"),;  //其他
+
+        String valueId, valueName;
+
+        CardType(String valueId, String valueName) {
+            this.valueId = valueId;
+            this.valueName = valueName;
+        }
+
+        public String getValueId() {
+            return valueId;
+        }
+
+        public String getValueName() {
+            return valueName;
+        }
+    }
+
+    //机票订单状态
+    public enum TicketStatus {
+        Outing("00", "出票中"),
+        Outed("02", "已出票"),
+        Changing("10", "改签中"),
+        Wait_Paying("11", "待支付"),
+        Changed_Success("12", "已改签"),
+        Changed_Failed("13", "改签失败"),
+        Backing("20", "退票中"),
+        Backed_Success("22", "退票完成"),
+        Backed_Failed("23", "退票失败"),
+        Canceled("30", "已取消"),;
+
+        String statusCode, statusMsg;
+
+        TicketStatus(String statusCode, String statusMsg) {
+            this.statusCode = statusCode;
+            this.statusMsg = statusMsg;
+        }
+
+        public static TicketStatus statusCodeOf(String statusCode) {
+            TicketStatus mStatus = TicketStatus.Canceled;
+            for (TicketStatus status : values()) {
+                if (status.getStatusCode().equals(statusCode)) {
+                    mStatus = status;
+                    break;
+                }
+            }
+            return mStatus;
+        }
+
+        public String getStatusCode() {
+            return statusCode;
+        }
+
+        public String getStatusMsg() {
+            return statusMsg;
+        }
+    }
 }

@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
-import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
@@ -22,14 +21,12 @@ import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderDetailActivity;
 import com.huicheng.hotel.android.ui.activity.plane.PlaneOrderDetailActivity;
 import com.huicheng.hotel.android.ui.adapter.MainOrderAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,7 +38,7 @@ import butterknife.OnClick;
  */
 public class UcOrdersActivity extends BaseAppActivity {
 
-    private static final int PAGESIZE = 10;
+    private static final int PAGESIZE = 20;
 
     @BindView(R.id.iv_hotel)
     ImageView ivHotel;
@@ -62,10 +59,13 @@ public class UcOrdersActivity extends BaseAppActivity {
     private List<OrderDetailInfoBean> list = new ArrayList<>();
     private MainOrderAdapter adapter;
     private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
 
     private int pageIndex = 0;
     private String orderType;
     private boolean isLoadMore = false;
+    private boolean isNoMore = false;
+    private int lastVisibleItem = 0;
 
     @Override
     protected void setContentView() {
@@ -75,12 +75,21 @@ public class UcOrdersActivity extends BaseAppActivity {
     @Override
     protected void requestData() {
         super.requestData();
+        requestOrderListRefreshOrLoadMore(true, false);
+    }
+
+    private void requestOrderListRefreshOrLoadMore(final boolean isRequestSpend, boolean isLoadMore) {
+        this.isLoadMore = isLoadMore;
+        pageIndex = !isLoadMore ? 0 : ++pageIndex;
+
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 requestMyOrdersList(orderType, pageIndex);
-                requestSpendyearly();
+                if (isRequestSpend) {
+                    requestSpendyearly();
+                }
             }
         }, 500);
     }
@@ -88,14 +97,15 @@ public class UcOrdersActivity extends BaseAppActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        requestData();
+        requestOrderListRefreshOrLoadMore(true, false);
     }
 
     @Override
     public void initViews() {
         super.initViews();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new MainOrderAdapter(this, list);
         recyclerView.setAdapter(adapter);
     }
@@ -144,15 +154,28 @@ public class UcOrdersActivity extends BaseAppActivity {
     @Override
     public void onRefresh() {
         super.onRefresh();
-        swipeRefreshLayout.setRefreshing(true);
-        pageIndex = 0;
-        isLoadMore = false;
-        requestData();
+        requestOrderListRefreshOrLoadMore(true, false);
     }
 
     @Override
     public void initListeners() {
         super.initListeners();
+
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!isNoMore && newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
+                    requestOrderListRefreshOrLoadMore(false, true);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+            }
+        });
 
         adapter.setOnRecycleViewItemClickListener(new OnRecycleViewItemClickListener() {
             @Override
@@ -165,21 +188,12 @@ public class UcOrdersActivity extends BaseAppActivity {
                     startActivityForResult(intent, 0x01);
                 } else if (HotelCommDef.Order_Plane.equals(bean.orderType)) {
                     Intent intent = new Intent(UcOrdersActivity.this, PlaneOrderDetailActivity.class);
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("orderId", bean.orderId);
-                    params.put("orderType", bean.orderType);
-                    intent.putExtra("path", SessionContext.getUrl(NetURL.ORDER_PLANE, params));
+                    intent.putExtra("planeOrderNo", bean.orderNo);
+                    intent.putExtra("planeOrderType", bean.type);
                     startActivityForResult(intent, 0x01);
                 }
             }
         });
-    }
-
-    private void updateOrdersSpendInfo() {
-        if (ordersSpendInfoBean != null) {
-            tvSpendYear.setText(String.valueOf((int) ordersSpendInfoBean.spend));
-            tvSaveYear.setText(String.valueOf((int) ordersSpendInfoBean.totalsave));
-        }
     }
 
     @Override
@@ -190,15 +204,20 @@ public class UcOrdersActivity extends BaseAppActivity {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 List<OrderDetailInfoBean> temp = JSON.parseArray(response.body.toString(), OrderDetailInfoBean.class);
                 if (!isLoadMore) {
+                    recyclerView.smoothScrollToPosition(0);
                     list.clear();
-                }
-                if (temp.size() <= 0) {
-                    pageIndex--;
-                    CustomToast.show("没有更多数据", CustomToast.LENGTH_SHORT);
                 }
                 list.addAll(temp);
                 adapter.notifyDataSetChanged();
-                recyclerView.scrollToPosition(0);
+
+                if (temp.size() >= PAGESIZE) {
+                    isNoMore = false;
+                } else if (temp.size() <= 0) {
+                    pageIndex--;
+                } else {
+                    isNoMore = true;
+                }
+
                 if (list.size() <= 0) {
                     emptyLay.setVisibility(View.VISIBLE);
                 } else {
@@ -207,7 +226,10 @@ public class UcOrdersActivity extends BaseAppActivity {
             } else if (request.flag == AppConst.ORDER_SPEND) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 ordersSpendInfoBean = JSON.parseObject(response.body.toString(), OrdersSpendInfoBean.class);
-                updateOrdersSpendInfo();
+                if (ordersSpendInfoBean != null) {
+                    tvSpendYear.setText(String.valueOf((int) ordersSpendInfoBean.spend));
+                    tvSaveYear.setText(String.valueOf((int) ordersSpendInfoBean.totalsave));
+                }
             }
         }
     }
@@ -219,7 +241,7 @@ public class UcOrdersActivity extends BaseAppActivity {
             return;
         }
         if (requestCode == 0x01) {
-            requestData();
+            requestOrderListRefreshOrLoadMore(true, false);
         }
     }
 
@@ -229,17 +251,17 @@ public class UcOrdersActivity extends BaseAppActivity {
             case R.id.iv_hotel:
                 orderType = HotelCommDef.Order_Hotel;
                 refreshOrderTypeStatus(orderType);
-                requestData();
+                requestOrderListRefreshOrLoadMore(false, false);
                 break;
             case R.id.iv_plane:
                 orderType = HotelCommDef.Order_Plane;
                 refreshOrderTypeStatus(orderType);
-                requestData();
+                requestOrderListRefreshOrLoadMore(false, false);
                 break;
             case R.id.iv_trace:
                 orderType = "";
                 refreshOrderTypeStatus(orderType);
-                requestData();
+                requestOrderListRefreshOrLoadMore(false, false);
                 break;
             case R.id.consumption_lay:
                 Intent intent = new Intent(UcOrdersActivity.this, UcCostDetailActivity.class);
