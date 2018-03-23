@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingBottom="7dp"
-                        android:paddingTop="9dp" />
+                        android:paddingTop="7dp" />
                 </LinearLayout>
 
                 <!--第二步-->
@@ -119,13 +119,14 @@
                         android:background="@color/lineColor2" />
 
                     <TextView
+                        android:id="@+id/tv_back_reason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/iv_accessory_black"
                         android:gravity="center_vertical"
                         android:paddingBottom="14dp"
                         android:paddingTop="9dp"
-                        android:text="老子不想坐飞机"
+                        android:hint="请选择退票理由"
                         android:textColor="#666666"
                         android:textSize="@dimen/common_14sp" />
                 </LinearLayout>
@@ -217,9 +218,10 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_back_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥1999"
+                            android:text="@string/rmbStr2"
                             android:textColor="@color/plane_mainColor"
                             android:textSize="@dimen/common_16sp"
                             android:textStyle="bold" />

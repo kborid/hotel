@@ -260,6 +260,13 @@
         <item>其他</item>
     </string-array>
 
+    <string-array name="BackTicketReason">
+        <item>老子不坐飞机</item>
+        <item>老子不想坐飞机</item>
+        <item>老子就不想坐飞机</item>
+        <item>老子就不坐飞机</item>
+    </string-array>
+
     <string-array name="sex">
         <item>男</item>
         <item>女</item>

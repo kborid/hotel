@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="3dp"
+    android:paddingTop="3dp">
+
+    <ImageView
+        android:id="@+id/iv_flag"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginRight="12dp"
+        android:src="@drawable/consider_checkbox_flag_sel" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="段伟（成人）"
+        android:textColor="#666666"
+        android:textSize="@dimen/common_14sp" />
+</LinearLayout>

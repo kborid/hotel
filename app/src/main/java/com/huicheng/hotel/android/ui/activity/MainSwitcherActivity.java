@@ -82,10 +82,10 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     private LinearLayout tab_title_lay;
     private ViewPager tab_viewPager;
 
-    private int viewPagerIndex = 0;
     private AppInfoBean mAppInfoBean = null;
     private boolean isFirstLaunch = false;
     private long exitTime = 0;
+    private boolean isRebookPlane = false;
     private boolean isNeedCloseLeftDrawer = false;
     private long weatherTimestamp = 0;
 
@@ -162,8 +162,8 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
             });
         }
 
-        tab_title_lay.getChildAt(viewPagerIndex).setSelected(true);
-        tab_viewPager.setCurrentItem(viewPagerIndex);
+        tab_title_lay.getChildAt(0).setSelected(true);
+        tab_viewPager.setCurrentItem(0);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
             isNeedCloseLeftDrawer = bundle.getBoolean("isClosed");
-            viewPagerIndex = bundle.getInt("index");
+            isRebookPlane = bundle.getBoolean("rebookPlane");
         }
     }
 
@@ -251,6 +251,7 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.i(TAG, "onResume()");
         banner_lay.startBanner();
         boolean jump = false;
         if (isFirstLaunch) {
@@ -275,6 +276,10 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
             if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
                 isNeedCloseLeftDrawer = false;
                 drawer_layout.closeDrawers();
+            }
+
+            if (isRebookPlane) {
+                tab_viewPager.setCurrentItem(1);
             }
         }
     }

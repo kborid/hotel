@@ -21,6 +21,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -236,17 +237,18 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                 }
                                 TextView tv_back = (TextView) goPassengerActionLayout.findViewById(R.id.tv_back);
                                 TextView tv_change = (TextView) goPassengerActionLayout.findViewById(R.id.tv_change);
+                                final PlaneOrderDetailInfoBean.TripInfo finalGoTripInfo = goTripInfo;
                                 tv_back.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        backPlaneTicketAction(PlaneCommDef.STATUS_GO);
+                                        backPlaneTicketAction(finalGoTripInfo);
                                     }
                                 });
 
                                 tv_change.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        changePlaneTicketAction(PlaneCommDef.STATUS_GO);
+                                        changePlaneTicketAction(finalGoTripInfo);
                                     }
                                 });
                             }
@@ -358,17 +360,18 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                     }
                                     TextView tv_back = (TextView) backPassengerActionLayout.findViewById(R.id.tv_back);
                                     TextView tv_change = (TextView) backPassengerActionLayout.findViewById(R.id.tv_change);
+                                    final PlaneOrderDetailInfoBean.TripInfo finalBackTripInfo = backTripInfo;
                                     tv_back.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            backPlaneTicketAction(PlaneCommDef.STATUS_BACK);
+                                            backPlaneTicketAction(finalBackTripInfo);
                                         }
                                     });
 
                                     tv_change.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            changePlaneTicketAction(PlaneCommDef.STATUS_BACK);
+                                            changePlaneTicketAction(finalBackTripInfo);
                                         }
                                     });
                                 }
@@ -436,18 +439,22 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                 break;
             case R.id.tv_booking:
                 Intent rebookIntent = new Intent(this, MainSwitcherActivity.class);
-                rebookIntent.putExtra("index", 1);
+                rebookIntent.putExtra("rebookPlane", true);
+                rebookIntent.putExtra("isClosed", true);
                 startActivity(rebookIntent);
                 break;
         }
     }
 
-    private void backPlaneTicketAction(int flightType) {
-        System.out.println("backPlaneTicketAction flightType = " + flightType);
-        startActivity(new Intent(this, PlaneBackTicketActivity.class));
+    private void backPlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
+        System.out.println("backPlaneTicketAction()");
+        Intent intent = new Intent(this, PlaneBackTicketActivity.class);
+        intent.putExtra("tripInfo", tripInfo);
+        startActivity(intent);
     }
 
-    private void changePlaneTicketAction(int flightType) {
-        System.out.println("changePlaneTicketAction flightType = " + flightType);
+    private void changePlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
+        System.out.println("changePlaneTicketAction()");
+        CustomToast.show("翻滚吧，青年！现在还不能改签。", CustomToast.LENGTH_LONG);
     }
 }

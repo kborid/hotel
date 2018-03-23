@@ -500,10 +500,6 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 break;
             }
             case R.id.order_detail_layout:
-                Intent intent = new Intent(this, PlaneOrderDetailActivity.class);
-                intent.putExtra("goFlightDetailInfo", goFlightDetailInfo);
-                intent.putExtra("backFlightDetailInfo", backFlightDetailInfo);
-                startActivity(intent);
                 break;
         }
     }
