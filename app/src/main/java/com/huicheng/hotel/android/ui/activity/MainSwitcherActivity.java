@@ -279,6 +279,7 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
             }
 
             if (isRebookPlane) {
+                isRebookPlane = false;
                 tab_viewPager.setCurrentItem(1);
             }
         }
