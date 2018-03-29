@@ -62,6 +62,8 @@ public class UcCouponsActivity extends BaseAppActivity {
 
     private boolean isShowAll = true;
 
+    private int mMoney = 0;
+
     @Override
     protected void requestData() {
         super.requestData();
@@ -104,6 +106,7 @@ public class UcCouponsActivity extends BaseAppActivity {
         if (null != bundle) {
             boolean showUsefulCoupon = bundle.getBoolean("showUsefulCoupon");
             isShowAll = !showUsefulCoupon;
+            mMoney = bundle.getInt("couponCheckMoney");
         }
     }
 
@@ -123,6 +126,7 @@ public class UcCouponsActivity extends BaseAppActivity {
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
         b.addBody("hotelid", String.valueOf(HotelOrderManager.getInstance().getHotelDetailInfo().id));
+        b.addBody("money",String.valueOf(mMoney));
 
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.COUPON_USEFUL_LIST;

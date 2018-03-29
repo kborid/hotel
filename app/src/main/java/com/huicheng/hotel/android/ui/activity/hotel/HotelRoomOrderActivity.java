@@ -36,8 +36,8 @@ import com.huicheng.hotel.android.ui.custom.CustomInfoLayoutForHotel;
 import com.huicheng.hotel.android.ui.custom.RoundedAllImageView;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
-import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.data.DataLoader;
+import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
@@ -249,7 +249,7 @@ public class HotelRoomOrderActivity extends BaseAppActivity {
         b.addBody("beginDate", String.valueOf(HotelOrderManager.getInstance().getBeginTime()));
         b.addBody("endDate", String.valueOf(HotelOrderManager.getInstance().getEndTime()));
         b.addBody("hotelid", String.valueOf(hotelId));
-        b.addBody("money", String.valueOf(finalPrice));
+        b.addBody("money", String.valueOf(getDontUseYhqPrice(room_addsub_lay.getCount())));
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.COUPON_USEFUL_CHECK;
         d.flag = AppConst.COUPON_USEFUL_CHECK;
@@ -355,6 +355,7 @@ public class HotelRoomOrderActivity extends BaseAppActivity {
             case R.id.tv_coupon_info:
                 Intent intent1 = new Intent(this, UcCouponsActivity.class);
                 intent1.putExtra("showUsefulCoupon", true);
+                intent1.putExtra("couponCheckMoney", getDontUseYhqPrice(room_addsub_lay.getCount()));
                 startActivityForResult(intent1, 0x02);
                 break;
             case R.id.tv_submit:
@@ -504,11 +505,16 @@ public class HotelRoomOrderActivity extends BaseAppActivity {
     }
 
     private int calculatePayPrice(int count) {
-        int totalPrice = roomPrice * count + allChooseServicePrice;
+        int totalPrice = getDontUseYhqPrice(count);
         int yhqPrice = mYhqPrice;
         int bounty = switch_bounty.isChecked() ? mBountyPrice : 0;
+        //优先级：优惠券 > 旅行币
         int ret = (totalPrice <= yhqPrice) ? 0 : (((totalPrice - yhqPrice) <= bounty) ? 0 : (totalPrice - yhqPrice) - bounty);
         tv_final_price.setText(ret + "元");
         return ret;
+    }
+
+    private int getDontUseYhqPrice(int count){
+        return roomPrice * count + allChooseServicePrice;
     }
 }
