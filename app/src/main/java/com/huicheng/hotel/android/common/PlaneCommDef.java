@@ -175,22 +175,6 @@ public class PlaneCommDef {
         }
     }
 
-    //乘客类型
-    public enum PassengerType {
-        ADULT("成人"),
-        CHILD("儿童"),;
-
-        String type;
-
-        PassengerType(String type) {
-            this.type = type;
-        }
-
-        public String getPassengerType() {
-            return type;
-        }
-    }
-
     public static final String ORDER_TYPE_BUY = "00";//订单类型-购买
     public static final String ORDER_TYPE_CHANGE = "01";//订单类型-改签
 }

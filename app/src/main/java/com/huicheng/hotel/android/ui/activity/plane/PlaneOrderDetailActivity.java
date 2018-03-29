@@ -21,7 +21,6 @@ import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
-import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -225,6 +224,7 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                 flightLayout.addView(goPassengerActionLayout);
                                 LinearLayout goPassengerLayout = (LinearLayout) goPassengerActionLayout.findViewById(R.id.passenger_lay);
                                 goPassengerLayout.removeAllViews();
+                                boolean canBack = false, canChange = false;
                                 for (int i = 0; i < goTripInfo.passengerList.size(); i++) {
                                     View v = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_personinfo_item, null);
                                     goPassengerLayout.addView(v);
@@ -233,12 +233,17 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                     TextView tv_cardType = (TextView) v.findViewById(R.id.tv_cardType);
                                     TextView tv_cardId = (TextView) v.findViewById(R.id.tv_cardId);
                                     tv_name.setText(goTripInfo.passengerList.get(i).name);
-                                    tv_status.setText(PlaneCommDef.PassengerStatus.statusCodeOf(goTripInfo.passengerList.get(i).status).getStatusMsg());
+                                    PlaneCommDef.PassengerStatus status = PlaneCommDef.PassengerStatus.statusCodeOf(goTripInfo.passengerList.get(i).status);
+                                    tv_status.setText(status.getStatusMsg());
                                     tv_cardType.setText(PlaneCommDef.CardType.valueOf(goTripInfo.passengerList.get(i).cardType).getValueName());
                                     tv_cardId.setText(goTripInfo.passengerList.get(i).cardNo);
+                                    canBack = canBack || canBackTicket(status);
+                                    canChange = canChange || canChangeTicket(status);
                                 }
                                 TextView tv_back = (TextView) goPassengerActionLayout.findViewById(R.id.tv_back);
                                 TextView tv_change = (TextView) goPassengerActionLayout.findViewById(R.id.tv_change);
+                                tv_back.setEnabled(canBack);
+                                tv_change.setEnabled(canChange);
                                 final PlaneOrderDetailInfoBean.TripInfo finalGoTripInfo = goTripInfo;
                                 tv_back.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -346,6 +351,7 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                     flightLayout.addView(backPassengerActionLayout);
                                     LinearLayout backPassengerLayout = (LinearLayout) backPassengerActionLayout.findViewById(R.id.passenger_lay);
                                     backPassengerLayout.removeAllViews();
+                                    boolean canBack = false, canChange = false;
                                     for (int i = 0; i < backTripInfo.passengerList.size(); i++) {
                                         View v = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_personinfo_item, null);
                                         backPassengerLayout.addView(v);
@@ -356,12 +362,17 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                         TextView tv_cardId = (TextView) v.findViewById(R.id.tv_cardId);
 
                                         tv_name.setText(backTripInfo.passengerList.get(i).name);
-                                        tv_status.setText(PlaneCommDef.PassengerStatus.statusCodeOf(backTripInfo.passengerList.get(i).status).getStatusMsg());
+                                        PlaneCommDef.PassengerStatus status = PlaneCommDef.PassengerStatus.statusCodeOf(backTripInfo.passengerList.get(i).status);
+                                        tv_status.setText(status.getStatusMsg());
                                         tv_cardType.setText(PlaneCommDef.CardType.valueOf(backTripInfo.passengerList.get(i).cardType).getValueName());
                                         tv_cardId.setText(backTripInfo.passengerList.get(i).cardNo);
+                                        canBack = canBack || canBackTicket(status);
+                                        canChange = canChange || canChangeTicket(status);
                                     }
                                     TextView tv_back = (TextView) backPassengerActionLayout.findViewById(R.id.tv_back);
                                     TextView tv_change = (TextView) backPassengerActionLayout.findViewById(R.id.tv_change);
+                                    tv_back.setEnabled(canBack);
+                                    tv_change.setEnabled(canChange);
                                     final PlaneOrderDetailInfoBean.TripInfo finalBackTripInfo = backTripInfo;
                                     tv_back.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -484,12 +495,30 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
 
     private void changePlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
         System.out.println("changePlaneTicketAction()");
-        CustomToast.show("翻滚吧，青年！现在还不能改签。", CustomToast.LENGTH_LONG);
-        /**
-         * Intent intent = new Intent(this, PlaneBackTicketActivity.class);
-         * intent.putExtra("tripInfo", tripInfo);
-         * intent.putExtra("plane_action", 1);
-         * startActivity(intent);
-         */
+        Intent intent = new Intent(this, PlaneBackTicketActivity.class);
+        intent.putExtra("tripInfo", tripInfo);
+        intent.putExtra("plane_action", 1);
+        startActivity(intent);
+    }
+
+    private boolean canBackTicket(PlaneCommDef.PassengerStatus status) {
+        boolean tmpFlag = false;
+        switch (status) {
+            case Outed:
+            case Changed_Failed:
+            case Changed_Success:
+                tmpFlag = true;
+        }
+        return tmpFlag;
+    }
+
+    private boolean canChangeTicket(PlaneCommDef.PassengerStatus status) {
+        boolean tmpFlag = false;
+        switch (status) {
+            case Outed:
+            case Backed_Failed:
+                tmpFlag = true;
+        }
+        return tmpFlag;
     }
 }

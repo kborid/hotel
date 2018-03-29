@@ -6,12 +6,6 @@
             <corners android:topLeftRadius="10dp"/>
         </shape>
     </item>
-    <item android:state_enabled="true" android:state_pressed="true">
-        <shape>
-            <solid android:color="@color/plane_mainColor" />
-            <corners android:topLeftRadius="10dp"/>
-        </shape>
-    </item>
     <item>
         <shape>
             <solid android:color="@color/plane_mainColor" />

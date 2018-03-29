@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.PlaneCommDef;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
@@ -128,7 +127,7 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
                         passengerLay.addView(v);
                         TextView tv_name = (TextView) v.findViewById(R.id.tv_name);
                         tv_name.setText(passengerInfoList.get(i).name);
-                        tv_name.append(String.format("（%1$s）", PlaneCommDef.PassengerType.values()[Integer.valueOf(passengerInfoList.get(i).passengerType)].getPassengerType()));
+                        tv_name.append(String.format("（%1$s）", "0".equals(passengerInfoList.get(i).passengerType) ? "成人" : "儿童"));
                         v.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

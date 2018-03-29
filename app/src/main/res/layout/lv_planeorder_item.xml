@@ -189,11 +189,11 @@
 
         <!--背景icon-->
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_gravity="right|bottom"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/iv_hotel_logo_small" />
+            android:src="@drawable/iv_plane_logo_small" />
 
         <!--状态-->
         <TextView
