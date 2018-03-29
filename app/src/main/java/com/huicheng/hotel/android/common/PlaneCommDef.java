@@ -83,7 +83,60 @@ public class PlaneCommDef {
     }
 
     //机票订单状态
-    public enum TicketStatus {
+    public enum TicketOrderStatus {
+        /**
+         * 已取消
+         */
+        TICKET_CANCELED(-1),
+        /**
+         * 已完成
+         */
+        TICKET_FINISHED(1),
+        /**
+         * 待支付
+         */
+        TICKET_WAIT_PAY(2),
+        /**
+         * 已支付
+         */
+        TICKET_PAID(3),
+        /**
+         * 出票完成
+         */
+        TICKET_OUTED_COMP(13),
+        /**
+         * 改签完成
+         */
+        TICKET_CHANGED_COMP(16),
+        /**
+         * 退票成功
+         */
+        TICKET_BACKED_COMP(18),;
+
+        int status;
+
+        TicketOrderStatus(int status) {
+            this.status = status;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public static TicketOrderStatus statusCodeOf(int status) {
+            TicketOrderStatus orderStatus = TICKET_CANCELED;
+            for (TicketOrderStatus ss : values()) {
+                if (ss.getStatus() == status) {
+                    orderStatus = ss;
+                    break;
+                }
+            }
+            return orderStatus;
+        }
+    }
+
+    //机票乘客订票状态
+    public enum PassengerStatus {
         Outing("00", "出票中"),
         Outed("02", "已出票"),
         Changing("10", "改签中"),
@@ -97,14 +150,14 @@ public class PlaneCommDef {
 
         String statusCode, statusMsg;
 
-        TicketStatus(String statusCode, String statusMsg) {
+        PassengerStatus(String statusCode, String statusMsg) {
             this.statusCode = statusCode;
             this.statusMsg = statusMsg;
         }
 
-        public static TicketStatus statusCodeOf(String statusCode) {
-            TicketStatus mStatus = TicketStatus.Canceled;
-            for (TicketStatus status : values()) {
+        public static PassengerStatus statusCodeOf(String statusCode) {
+            PassengerStatus mStatus = PassengerStatus.Canceled;
+            for (PassengerStatus status : values()) {
                 if (status.getStatusCode().equals(statusCode)) {
                     mStatus = status;
                     break;
@@ -121,4 +174,23 @@ public class PlaneCommDef {
             return statusMsg;
         }
     }
+
+    //乘客类型
+    public enum PassengerType {
+        ADULT("成人"),
+        CHILD("儿童"),;
+
+        String type;
+
+        PassengerType(String type) {
+            this.type = type;
+        }
+
+        public String getPassengerType() {
+            return type;
+        }
+    }
+
+    public static final String ORDER_TYPE_BUY = "00";//订单类型-购买
+    public static final String ORDER_TYPE_CHANGE = "01";//订单类型-改签
 }

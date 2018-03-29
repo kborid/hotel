@@ -163,6 +163,7 @@
                             android:background="@drawable/orderdetail_btn_sel"
                             android:gravity="center"
                             android:text="@string/od_btn_pay"
+                            android:enabled="false"
                             android:textColor="@color/orderdetail_text_sel"
                             android:textSize="@dimen/common_18sp"
                             android:visibility="visible" />
@@ -174,6 +175,7 @@
                             android:layout_marginTop="6dp"
                             android:background="@drawable/orderdetail_btn_sel"
                             android:gravity="center"
+                            android:enabled="false"
                             android:text="@string/od_btn_order_cancel"
                             android:textColor="@color/orderdetail_text_sel"
                             android:textSize="@dimen/common_18sp" />

@@ -202,7 +202,7 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
         }
     }
 
-    public String getCustomInfoJsonString(int safeType) {
+    public String getCustomInfoJsonString() {
         List<PlanePassengerInfoBean> temp = new ArrayList<>();
         for (int i = 0; i < getChildCount(); i++) {
             final EditText ed_custom_name = (EditText) getChildAt(i).findViewById(R.id.ed_custom_name);
@@ -216,9 +216,7 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
                     PlaneCommDef.CardType.values()[spinner_cardType.getSelectedItemPosition()].getValueId(),
                     et_card_number.getText().toString(),
                     tv_birthday.getText().toString(),
-                    convertSexSpinnerSelection2Value(spinner_sex.getSelectedItemPosition()),
-                    safeType
-
+                    convertSexSpinnerSelection2Value(spinner_sex.getSelectedItemPosition())
             );
             temp.add(bean);
         }
