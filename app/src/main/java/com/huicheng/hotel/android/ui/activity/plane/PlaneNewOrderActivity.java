@@ -724,7 +724,9 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         String invoiceTax = JSON.toJSONString(invoiceTaxInfoBean);
         LogUtil.i(TAG, "invoiceTax:" + invoiceTax);
         b.addBody("invoiceTax", invoiceTax);
-        String passenger = custom_info_layout_plane.getCustomInfoJsonString(safeType);
+        b.addBody("insuranceType", String.valueOf(safeType));
+        LogUtil.i(TAG, "insuranceType:" + safeType);
+        String passenger = custom_info_layout_plane.getCustomInfoJsonString();
         LogUtil.i(TAG, "passengers:" + passenger);
         b.addBody("passengers", passenger);
 

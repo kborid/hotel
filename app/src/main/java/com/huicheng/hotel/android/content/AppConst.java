@@ -173,4 +173,8 @@ public final class AppConst {
     public static final int ADDRESS_DEFAULT = PLANE_HANDLE_FLAG + 11;
     public static final int ADDRESS_DELETE = PLANE_HANDLE_FLAG + 12;
     public static final int PLANE_ORDER_DETAIL = PLANE_HANDLE_FLAG + 13;
+    public static final int PLANE_BACK_QUERY = PLANE_HANDLE_FLAG + 14;
+    public static final int PLANE_BACK = PLANE_HANDLE_FLAG + 15;
+    public static final int PLANE_CHANGE_QUERY = PLANE_HANDLE_FLAG + 16;
+    public static final int PLANE_CHANGE = PLANE_HANDLE_FLAG + 17;
 }

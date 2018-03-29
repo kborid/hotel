@@ -89,5 +89,15 @@ public class PlaneOrderDetailInfoBean implements Serializable {
         public String status;
         public String ticketno;
         public String tripId;
+        public List<RefundAmountInfo> refundAmount;
+        public int insureAmount;
+    }
+
+    public static class RefundAmountInfo implements Serializable {
+        public int code;
+        public int nextRefundFee;
+        public int nextReturnRefundFee;
+        public int refundFee;
+        public int returnRefundFee;
     }
 }

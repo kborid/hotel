@@ -7,6 +7,7 @@
     <include layout="@layout/comm_title" />
 
     <FrameLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -24,6 +25,7 @@
 
                 <!--第一步-->
                 <LinearLayout
+                    android:id="@+id/first_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-3dp"
@@ -77,6 +79,7 @@
 
                 <!--第二步-->
                 <LinearLayout
+                    android:id="@+id/second_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/iv_plane_card_bg"
@@ -124,15 +127,16 @@
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/iv_accessory_black"
                         android:gravity="center_vertical"
+                        android:hint="请选择退票理由"
                         android:paddingBottom="14dp"
                         android:paddingTop="9dp"
-                        android:hint="请选择退票理由"
                         android:textColor="#666666"
                         android:textSize="@dimen/common_14sp" />
                 </LinearLayout>
 
                 <!--第三步-->
                 <LinearLayout
+                    android:id="@+id/third_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/iv_plane_card_bg"
@@ -158,6 +162,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_third_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="6dp"
@@ -175,6 +180,7 @@
                         android:background="@color/lineColor2" />
 
                     <LinearLayout
+                        android:id="@+id/third_content_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -182,10 +188,10 @@
                         android:paddingTop="11dp">
 
                         <TextView
+                            android:id="@+id/tv_reason_detail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="塑料袋解放立刻受到警方联手解放路街道妇联加拉塞克风流酷似发送到粉丝酒店分流塞德里克分解落实扩大飞机螺丝钉解放立刻受到家反抗螺丝钉机弗兰克三季度法律框架式独立开发塞德里克分解立刻受到警方立刻受到家弗兰克三季度法立刻受到法律框架式独立访客塞德里克分解我诶经过雷克萨独立开发那算了开关键时刻"
                             android:textColor="#666666"
                             android:textSize="@dimen/common_14sp" />
                     </LinearLayout>
@@ -226,16 +232,78 @@
                             android:textSize="@dimen/common_16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/lineColor2" />
+
+                    <!--已购产品-->
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp"
+                        android:paddingTop="6dp">
+
+                        <TableRow>
+
+                            <TextView
+                                android:text="已购产品"
+                                android:textColor="#666666"
+                                android:textSize="@dimen/common_14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_cost_money"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:text="@string/rmbStr2"
+                                android:textColor="@color/plane_mainColor"
+                                android:textSize="@dimen/common_14sp"
+                                android:textStyle="bold" />
+
+                        </TableRow>
+
+                        <LinearLayout
+                            android:id="@+id/cost_money_detail_lay"
+                            android:orientation="vertical" />
+
+                        <TableRow android:layout_marginTop="6dp">
+
+                            <TextView
+                                android:text="需扣款项"
+                                android:textColor="#666666"
+                                android:textSize="@dimen/common_14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_cut_money"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:text="@string/sub_rmbStr2"
+                                android:textColor="@color/plane_mainColor"
+                                android:textSize="@dimen/common_14sp"
+                                android:textStyle="bold" />
+
+                        </TableRow>
+
+                        <LinearLayout
+                            android:id="@+id/cut_money_detail_lay"
+                            android:orientation="vertical"/>
+                    </TableLayout>
                 </LinearLayout>
 
             </LinearLayout>
         </ScrollView>
 
+        <!--title shadow-->
         <View
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:background="@drawable/shadow_title_bottom" />
 
+        <!--bottom bar shadow-->
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
@@ -250,6 +318,7 @@
         android:padding="8dp">
 
         <TextView
+            android:id="@+id/tv_back_submit"
             android:layout_width="150dp"
             android:layout_height="42dp"
             android:layout_alignParentRight="true"

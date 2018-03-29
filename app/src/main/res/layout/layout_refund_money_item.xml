@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp">
+
+    <TextView
+        android:id="@+id/tv_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="项目名字"
+        android:textColor="#666666"
+        android:textSize="@dimen/common_12sp" />
+
+    <TextView
+        android:id="@+id/tv_item_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text="@string/rmbStr2"
+        android:textColor="#666666"
+        android:textSize="@dimen/common_12sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/multipleSign"
+        android:textColor="#666666"
+        android:textSize="@dimen/common_12sp" />
+
+    <TextView
+        android:id="@+id/tv_item_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="%1$d人"
+        android:textColor="#666666"
+        android:textSize="@dimen/common_12sp" />
+</LinearLayout>

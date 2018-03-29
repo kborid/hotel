@@ -105,6 +105,8 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
             tvContactsName.setText(orderDetailInfoBean.contactor);
             tvContactsMobile.setText(orderDetailInfoBean.mobile);
 
+            refreshBtnActionStatus(Integer.valueOf(orderDetailInfoBean.orderStatus));
+
             LinkedHashMap<String, String> orderTimeInfo = new LinkedHashMap<>();
             orderTimeInfo.put("订单编号：", orderDetailInfoBean.orderId);
             orderTimeInfo.put("创建日期：", DateUtil.getDay("yyyy年MM月dd日HH时mm分", orderDetailInfoBean.createTime));
@@ -231,7 +233,7 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                     TextView tv_cardType = (TextView) v.findViewById(R.id.tv_cardType);
                                     TextView tv_cardId = (TextView) v.findViewById(R.id.tv_cardId);
                                     tv_name.setText(goTripInfo.passengerList.get(i).name);
-                                    tv_status.setText(PlaneCommDef.TicketStatus.statusCodeOf(goTripInfo.passengerList.get(i).status).getStatusMsg());
+                                    tv_status.setText(PlaneCommDef.PassengerStatus.statusCodeOf(goTripInfo.passengerList.get(i).status).getStatusMsg());
                                     tv_cardType.setText(PlaneCommDef.CardType.valueOf(goTripInfo.passengerList.get(i).cardType).getValueName());
                                     tv_cardId.setText(goTripInfo.passengerList.get(i).cardNo);
                                 }
@@ -354,7 +356,7 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                         TextView tv_cardId = (TextView) v.findViewById(R.id.tv_cardId);
 
                                         tv_name.setText(backTripInfo.passengerList.get(i).name);
-                                        tv_status.setText(PlaneCommDef.TicketStatus.statusCodeOf(backTripInfo.passengerList.get(i).status).getStatusMsg());
+                                        tv_status.setText(PlaneCommDef.PassengerStatus.statusCodeOf(backTripInfo.passengerList.get(i).status).getStatusMsg());
                                         tv_cardType.setText(PlaneCommDef.CardType.valueOf(backTripInfo.passengerList.get(i).cardType).getValueName());
                                         tv_cardId.setText(backTripInfo.passengerList.get(i).cardNo);
                                     }
@@ -404,6 +406,28 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
         }
     }
 
+    private void refreshBtnActionStatus(int orderStatus) {
+        PlaneCommDef.TicketOrderStatus status = PlaneCommDef.TicketOrderStatus.statusCodeOf(orderStatus);
+        switch (status) {
+            case TICKET_CANCELED:
+            case TICKET_FINISHED:
+            case TICKET_OUTED_COMP:
+            case TICKET_BACKED_COMP:
+            case TICKET_CHANGED_COMP:
+                tvPay.setEnabled(false);
+                tvCancel.setEnabled(false);
+                break;
+            case TICKET_PAID:
+                tvPay.setEnabled(false);
+                tvCancel.setEnabled(true);
+                break;
+            case TICKET_WAIT_PAY:
+                tvPay.setEnabled(true);
+                tvCancel.setEnabled(true);
+                break;
+        }
+    }
+
     private void requestPlaneOrderDetailInfo(String orderId) {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("orderNum", orderId);
@@ -434,6 +458,10 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_pay:
+                Intent payIntent = new Intent(this, PlaneOrderPayActivity.class);
+                payIntent.putExtra("orderId", orderDetailInfoBean.orderId);
+                payIntent.putExtra("orderType", orderDetailInfoBean.orderType);
+                startActivity(payIntent);
                 break;
             case R.id.tv_cancel:
                 break;
@@ -450,11 +478,18 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
         System.out.println("backPlaneTicketAction()");
         Intent intent = new Intent(this, PlaneBackTicketActivity.class);
         intent.putExtra("tripInfo", tripInfo);
+        intent.putExtra("plane_action", 0);
         startActivity(intent);
     }
 
     private void changePlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
         System.out.println("changePlaneTicketAction()");
         CustomToast.show("翻滚吧，青年！现在还不能改签。", CustomToast.LENGTH_LONG);
+        /**
+         * Intent intent = new Intent(this, PlaneBackTicketActivity.class);
+         * intent.putExtra("tripInfo", tripInfo);
+         * intent.putExtra("plane_action", 1);
+         * startActivity(intent);
+         */
     }
 }

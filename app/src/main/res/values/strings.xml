@@ -26,6 +26,7 @@
     <string name="totalRMB">共 ¥</string>
     <string name="rmbStr"> ¥ %1$s </string>
     <string name="rmbStr2">¥%1$d</string>
+    <string name="sub_rmbStr2">-¥%1$d</string>
     <string name="titleCityDateStr">%1$s(%2$s)</string>
     <string name="duringDayStr">%1$d天</string>
     <string name="duringNightStr">%1$d晚</string>
