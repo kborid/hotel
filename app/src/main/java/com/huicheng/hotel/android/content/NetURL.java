@@ -136,9 +136,10 @@ public final class NetURL {
     public static final String PLANE_NEW_ORDER = PORTAL + "order.json"; //机票下单
     public static final String PLANE_ORDER_DETAIL = PORTAL + "search/order/detail.json"; //机票订单详情
     public static final String PLANE_BACK_QUERY = PORTAL + "search/cancel.json"; //机票退票查询
-    public static final String PLANE_BACK = PORTAL + "cancel.json"; //机票退票
+    public static final String PLANE_BACK = PORTAL + "refund.json"; //机票退票
     public static final String PLANE_CHANGE_QUERY = PORTAL + "search/change.json";//机票改签查询
     public static final String PLANE_CHANGE = PORTAL + "change.json";//机票改签
+    public static final String PLANE_ORDER_CANCEL = PORTAL + "cancel.json";//取消机票订单
 
     //-------------------------------------地址管理--------------------------------------------------
     public static final String ADDRESS_GET_DEFAULT = PORTAL + "user/getdefaultaddress.json";

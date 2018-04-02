@@ -177,4 +177,5 @@ public final class AppConst {
     public static final int PLANE_BACK = PLANE_HANDLE_FLAG + 15;
     public static final int PLANE_CHANGE_QUERY = PLANE_HANDLE_FLAG + 16;
     public static final int PLANE_CHANGE = PLANE_HANDLE_FLAG + 17;
+    public static final int PLANE_ORDER_CANCEL = PLANE_HANDLE_FLAG + 18;
 }

@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.TypedValue;
@@ -61,6 +63,7 @@ import com.prj.sdk.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -70,7 +73,6 @@ import java.util.List;
  * @date 2017/5/24 0024
  */
 public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerLayout.OnLeftDrawerListener {
-    private WeakReferenceHandler<MainSwitcherActivity> myHandler = new WeakReferenceHandler<>(this);
     private static final String[] tabTitle = {"酒店", "机票", "行程"};
     private static final int[] tabResId = {R.drawable.mainswitcher_hotel_sel, R.drawable.mainswitcher_plane_sel, R.drawable.mainswitcher_trace_sel};
 
@@ -549,6 +551,21 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     public static void unRegisterPermissionListener(OnUpdateSwitcherListener listener) {
         if (onUpdateSwitcherListeners.contains(listener)) {
             onUpdateSwitcherListeners.remove(listener);
+        }
+    }
+
+    private MyHandler myHandler = new MyHandler(this);
+
+    private static class MyHandler extends Handler {
+        private WeakReference<BaseAppActivity> activity = null;
+
+        MyHandler(BaseAppActivity ref) {
+            activity = new WeakReference<>(ref);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
         }
     }
 }

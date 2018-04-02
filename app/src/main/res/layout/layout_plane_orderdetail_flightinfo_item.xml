@@ -32,21 +32,13 @@
             android:textSize="@dimen/common_18sp" />
 
         <TextView
+            android:id="@+id/tv_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:text="@string/RMB"
-            android:textColor="@color/plane_mainColor"
-            android:textSize="@dimen/common_18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="9900"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
+            android:text="@string/rmbStr2"
             android:textColor="@color/plane_mainColor"
             android:textSize="@dimen/common_18sp"
             android:textStyle="bold" />
@@ -105,9 +97,9 @@
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:text="×2"
-                    android:visibility="gone"
                     android:textColor="#666666"
-                    android:textSize="@dimen/common_14sp" />
+                    android:textSize="@dimen/common_14sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
         </TableRow>
@@ -269,21 +261,12 @@
                 android:textSize="@dimen/common_10sp" />
 
             <TextView
+                android:id="@+id/tv_build_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:text="@string/RMB"
-                android:textColor="@color/plane_mainColor"
-                android:textSize="@dimen/common_18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_build_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="30"
+                android:gravity="right|center_vertical"
+                android:text="@string/rmbStr2"
                 android:textColor="@color/plane_mainColor"
                 android:textSize="@dimen/common_18sp"
                 android:textStyle="bold" />
@@ -323,25 +306,17 @@
                 android:textSize="@dimen/common_10sp" />
 
             <TextView
+                android:id="@+id/tv_yanwu_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:text="@string/RMB"
-                android:textColor="@color/plane_mainColor"
-                android:textSize="@dimen/common_18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_yanwu_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="20"
+                android:gravity="right|center_vertical"
+                android:text="@string/rmbStr2"
                 android:textColor="@color/plane_mainColor"
                 android:textSize="@dimen/common_18sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/yiwai_layout"
             android:layout_width="match_parent"
@@ -376,21 +351,12 @@
                 android:textSize="@dimen/common_10sp" />
 
             <TextView
+                android:id="@+id/tv_yiwai_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:text="@string/RMB"
-                android:textColor="@color/plane_mainColor"
-                android:textSize="@dimen/common_18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_yiwai_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="20"
+                android:gravity="right|center_vertical"
+                android:text="@string/rmbStr2"
                 android:textColor="@color/plane_mainColor"
                 android:textSize="@dimen/common_18sp"
                 android:textStyle="bold" />

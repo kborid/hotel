@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +60,6 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
-import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -575,24 +572,5 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
 
     protected void onNotifyError(ResponseData request, ResponseData response) {
         LogUtil.e(TAG, "onNotifyError()");
-    }
-
-    protected final static class WeakReferenceHandler<T> extends Handler {
-        public static final int CODE_FINISH = 0x01;
-        private WeakReference<T> weakReference;
-
-        public WeakReferenceHandler(T weakReference) {
-            this.weakReference = new WeakReference<T>(weakReference);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case CODE_FINISH:
-                    ((BaseAppActivity) weakReference.get()).finish();
-                    break;
-            }
-        }
     }
 }

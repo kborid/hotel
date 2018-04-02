@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -63,6 +65,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -120,8 +123,6 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
     private CustomSharePopup mCustomShareView = null;
 
     private boolean isSetDefaultPrePay = false;
-
-    private WeakReferenceHandler<HotelRoomDetailActivity> myHandle = new WeakReferenceHandler<HotelRoomDetailActivity>(this);
 
     @Override
     protected void requestData() {
@@ -780,9 +781,9 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
             tabHost.clearAllTabs();
             tabHost = null;
         }
-        if (myHandle != null) {
-            myHandle.removeCallbacksAndMessages(null);
-            myHandle = null;
+        if (myHandler != null) {
+            myHandler.removeCallbacksAndMessages(null);
+            myHandler = null;
         }
         ShareControl.getInstance().destroy();
     }
@@ -806,7 +807,7 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
             if (HotelErrorDef.ERR_HOTEL_ROOM_OFF.equals(response.code)              //006001 房型下架
                     || HotelErrorDef.ERR_HOTEL_HOTEL_OFF.equals(response.code)) {   //006000 酒店下架
                 CustomToast.show(response.data.toString(), CustomToast.LENGTH_LONG);
-                myHandle.sendEmptyMessageDelayed(WeakReferenceHandler.CODE_FINISH, 2000);
+                myHandler.sendEmptyMessageDelayed(0x01, 2000);
                 return true;
             }
         }
@@ -914,6 +915,24 @@ public class HotelRoomDetailActivity extends BaseAppActivity {
                 holder.tv_count.setText(getString(R.string.multipleSign) + count);
             }
             return convertView;
+        }
+    }
+
+    private MyHandler myHandler = new MyHandler(this);
+
+    private static class MyHandler extends Handler {
+        private WeakReference<BaseAppActivity> activity = null;
+
+        MyHandler(BaseAppActivity ref) {
+            activity = new WeakReference<>(ref);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0x01) {
+                activity.get().finish();
+            }
         }
     }
 }

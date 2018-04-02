@@ -10,7 +10,7 @@ android {
     buildToolsVersion '25.0.2'
 
     defaultConfig {
-        applicationId 'com.huicheng.hotel.android' //JPush上注册的包名.
+        applicationId 'com.huicheng.hotel.android'
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 29

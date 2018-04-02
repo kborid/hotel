@@ -10,6 +10,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
@@ -21,6 +22,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
@@ -155,7 +157,7 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
 
                         tv_flag.setText("去程");
                         tv_date.setText(DateUtil.getDay("MM月dd日", goTripInfo.sDate) + " " + goTripInfo.sTime);
-                        tv_price.setText(String.valueOf(goTripInfo.shouldPayAmount));
+                        tv_price.setText(String.format(getString(R.string.rmbStr2), goTripInfo.shouldPayAmount));
                         tv_off_time.setText(goTripInfo.sTime);
                         tv_on_time.setText(goTripInfo.eTime);
                         tv_during.setText(goTripInfo.flyTime);
@@ -197,9 +199,9 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                 TextView tv_yiwai_price = (TextView) goFlightView.findViewById(R.id.tv_yiwai_price);
                                 TextView tv_yiwai_detail = (TextView) goFlightView.findViewById(R.id.tv_yiwai_detail);
 
-                                tv_build_price.setText(String.valueOf(goTripInfo.buildAndFuelPrice));
-                                tv_yanwu_price.setText(String.valueOf(goTripInfo.delayMoney));
-                                tv_yiwai_price.setText(String.valueOf(goTripInfo.accidentMoney));
+                                tv_build_price.setText(String.format(getString(R.string.rmbStr2), goTripInfo.buildAndFuelPrice));
+                                tv_yanwu_price.setText(String.format(getString(R.string.rmbStr2), goTripInfo.delayMoney));
+                                tv_yiwai_price.setText(String.format(getString(R.string.rmbStr2), goTripInfo.accidentMoney));
 
                                 if (goTripInfo.delayCount > 0) {
                                     goFlightView.findViewById(R.id.yanwu_layout).setVisibility(View.VISIBLE);
@@ -282,7 +284,7 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
 
                             tv_flag.setText("返程");
                             tv_date.setText(DateUtil.getDay("MM月dd日", backTripInfo.sDate) + " " + backTripInfo.sTime);
-                            tv_price.setText(String.valueOf(backTripInfo.shouldPayAmount));
+                            tv_price.setText(String.format(getString(R.string.rmbStr2), backTripInfo.shouldPayAmount));
                             tv_off_time.setText(backTripInfo.sTime);
                             tv_on_time.setText(backTripInfo.eTime);
                             tv_during.setText(backTripInfo.flyTime);
@@ -324,9 +326,9 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                     TextView tv_yiwai_price = (TextView) backFlightView.findViewById(R.id.tv_yiwai_price);
                                     TextView tv_yiwai_detail = (TextView) backFlightView.findViewById(R.id.tv_yiwai_detail);
 
-                                    tv_build_price.setText(String.valueOf(backTripInfo.buildAndFuelPrice));
-                                    tv_yanwu_price.setText(String.valueOf(backTripInfo.delayMoney));
-                                    tv_yiwai_price.setText(String.valueOf(backTripInfo.accidentMoney));
+                                    tv_build_price.setText(String.format(getString(R.string.rmbStr2), backTripInfo.buildAndFuelPrice));
+                                    tv_yanwu_price.setText(String.format(getString(R.string.rmbStr2), backTripInfo.delayMoney));
+                                    tv_yiwai_price.setText(String.format(getString(R.string.rmbStr2), backTripInfo.accidentMoney));
 
                                     if (backTripInfo.delayCount > 0) {
                                         backFlightView.findViewById(R.id.yanwu_layout).setVisibility(View.VISIBLE);
@@ -425,12 +427,9 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
             case TICKET_OUTED_COMP:
             case TICKET_BACKED_COMP:
             case TICKET_CHANGED_COMP:
-                tvPay.setEnabled(false);
-                tvCancel.setEnabled(false);
-                break;
             case TICKET_PAID:
                 tvPay.setEnabled(false);
-                tvCancel.setEnabled(true);
+                tvCancel.setEnabled(false);
                 break;
             case TICKET_WAIT_PAY:
                 tvPay.setEnabled(true);
@@ -452,6 +451,19 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
+    private void requestPlaneOrderCancel(String orderId) {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("orderNum", orderId);
+        ResponseData d = b.syncRequest(b);
+        d.path = NetURL.PLANE_ORDER_CANCEL;
+        d.flag = AppConst.PLANE_ORDER_CANCEL;
+
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+        requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
     @Override
     protected void onNotifyMessage(ResponseData request, ResponseData response) {
         super.onNotifyMessage(request, response);
@@ -461,6 +473,22 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                 LogUtil.i(response.body.toString());
                 orderDetailInfoBean = JSON.parseObject(response.body.toString(), PlaneOrderDetailInfoBean.class);
                 refreshDetailInfo();
+            } else if (request.flag == AppConst.PLANE_ORDER_CANCEL) {
+                removeProgressDialog();
+                LogUtil.i(response.body.toString());
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                if (mJson.containsKey("SUCCESS")) {
+                    boolean isSuccess = mJson.getBoolean("SUCCESS");
+                    String msg = mJson.containsKey("MSG") ? mJson.getString("MSG") : "";
+                    if (StringUtil.isEmpty(msg)) {
+                        msg = isSuccess ? getString(R.string.order_cancel_success) : getString(R.string.order_cancel_fail);
+                    }
+                    CustomToast.show(msg, CustomToast.LENGTH_SHORT);
+                } else {
+                    CustomToast.show(getString(R.string.order_cancel_fail), CustomToast.LENGTH_SHORT);
+                }
+                setResult(RESULT_OK);
+                finish();
             }
         }
     }
@@ -475,6 +503,7 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                 startActivity(payIntent);
                 break;
             case R.id.tv_cancel:
+                requestPlaneOrderCancel(orderNo);
                 break;
             case R.id.tv_booking:
                 Intent rebookIntent = new Intent(this, MainSwitcherActivity.class);

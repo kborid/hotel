@@ -25,6 +25,7 @@ import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.LoggerUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -202,6 +203,7 @@ public class UcOrdersActivity extends BaseAppActivity {
             if (request.flag == AppConst.ORDER_LIST) {
                 swipeRefreshLayout.setRefreshing(false);
                 LogUtil.i(TAG, "json = " + response.body.toString());
+                LoggerUtil.i(response.body.toString());
                 List<OrderDetailInfoBean> temp = JSON.parseArray(response.body.toString(), OrderDetailInfoBean.class);
                 if (!isLoadMore) {
                     recyclerView.smoothScrollToPosition(0);

@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
@@ -59,6 +61,7 @@ import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +105,6 @@ public class HotelDetailActivity extends BaseAppActivity {
     private CheckBox cb_check;
 
     private CustomDialog mDialDialog = null;
-    private WeakReferenceHandler<HotelDetailActivity> myHandle = new WeakReferenceHandler<HotelDetailActivity>(this);
 
     @Override
     protected void requestData() {
@@ -740,9 +742,9 @@ public class HotelDetailActivity extends BaseAppActivity {
             tabHost.clearAllTabs();
             tabHost = null;
         }
-        if (myHandle != null) {
-            myHandle.removeCallbacksAndMessages(null);
-            myHandle = null;
+        if (myHandler != null) {
+            myHandler.removeCallbacksAndMessages(null);
+            myHandler = null;
         }
     }
 
@@ -855,7 +857,7 @@ public class HotelDetailActivity extends BaseAppActivity {
         if (response != null && response.data != null) {
             if (HotelErrorDef.ERR_HOTEL_HOTEL_OFF.equals(response.code)) { //006000 酒店下架
                 CustomToast.show(response.data.toString(), CustomToast.LENGTH_LONG);
-                myHandle.sendEmptyMessageDelayed(WeakReferenceHandler.CODE_FINISH, 2000);
+                myHandler.sendEmptyMessageDelayed(0x01, 2000);
                 return true;
             }
         }
@@ -921,6 +923,24 @@ public class HotelDetailActivity extends BaseAppActivity {
             TextView tv_title;
             TextView tv_price_note;
             TextView tv_price;
+        }
+    }
+
+    private MyHandler myHandler = new MyHandler(this);
+
+    private static class MyHandler extends Handler {
+        private WeakReference<BaseAppActivity> activity = null;
+
+        MyHandler(BaseAppActivity ref) {
+            activity = new WeakReference<>(ref);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0x01) {
+                activity.get().finish();
+            }
         }
     }
 }
