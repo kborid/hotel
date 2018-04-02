@@ -329,21 +329,21 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
             ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_cabin)).setText(tripInfo.airCabin);
             ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_airport)).setText(String.format("%1$s%2$s - %3$s%4$s", tripInfo.sAirport, tripInfo.sTerminal, tripInfo.eAirport, tripInfo.eTerminal));
 
-            FrameLayout new_ticket_lay = (FrameLayout) ticketLayout.findViewById(R.id.new_ticket_lay);
+            final FrameLayout new_ticket_lay = (FrameLayout) ticketLayout.findViewById(R.id.new_ticket_lay);
             TextView tv_choose_new = (TextView) ticketLayout.findViewById(R.id.tv_choose_new);
             tv_choose_new.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     LogUtil.i("get out here");
-                    View ticketLayout = LayoutInflater.from(PlaneBackTicketActivity.this).inflate(R.layout.layout_ticket_change_layout, null);
-                    thirdContentLayout.addView(ticketLayout);
-                    LinearLayout currentTicketLayout = (LinearLayout) ticketLayout.findViewById(R.id.current_ticket_lay);
-                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_flag)).setText("原航班信息：");
-                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_price)).setText(String.format(getString(R.string.rmbStr2), passengerInfoList.get(0).barePrice));
-                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_city)).setText(String.format("%1$s → %2$s", tripInfo.scity, tripInfo.ecity));
-                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_date)).setText(DateUtil.getDay("MM-dd", tripInfo.sDate) + " " + DateUtil.dateToWeek2(new Date(tripInfo.sDate)) + " " + tripInfo.sTime);
-                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_cabin)).setText(tripInfo.airCabin);
-                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_airport)).setText(String.format("%1$s%2$s - %3$s%4$s", tripInfo.sAirport, tripInfo.sTerminal, tripInfo.eAirport, tripInfo.eTerminal));
+                    new_ticket_lay.removeAllViews();
+                    View newTicketLayout = LayoutInflater.from(PlaneBackTicketActivity.this).inflate(R.layout.layout_ticket_change_item, null);
+                    new_ticket_lay.addView(newTicketLayout);
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_flag)).setText("改签航班信息：");
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_price)).setText(String.format(getString(R.string.rmbStr2), passengerInfoList.get(0).barePrice));
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_city)).setText(String.format("%1$s → %2$s", tripInfo.scity, tripInfo.ecity));
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_date)).setText(DateUtil.getDay("MM-dd", tripInfo.sDate) + " " + DateUtil.dateToWeek2(new Date(tripInfo.sDate)) + " " + tripInfo.sTime);
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_cabin)).setText(tripInfo.airCabin);
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_airport)).setText(String.format("%1$s%2$s - %3$s%4$s", tripInfo.sAirport, tripInfo.sTerminal, tripInfo.eAirport, tripInfo.eTerminal));
                 }
             });
         }
