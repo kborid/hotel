@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,11 @@ import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
+import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,6 +54,10 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
     TextView tvBackPrice;
     @BindView(R.id.third_layout)
     LinearLayout thirdLayout;
+    @BindView(R.id.tv_third_name)
+    TextView tvThirdTitleName;
+    @BindView(R.id.third_content_layout)
+    LinearLayout thirdContentLayout;
 
     @BindView(R.id.tv_cost_money)
     TextView tvCostMoney;
@@ -61,8 +68,9 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
     @BindView(R.id.cut_money_detail_lay)
     LinearLayout cutMoneyDetailLayout;
 
-    private PlaneOrderDetailInfoBean.TripInfo tripInfo = null;
+    private String mTripId = "";
     private int mActionFlag = BACK_TICKET;
+    private long mChangeTime = 0;
     private List<PlaneTgqReasonInfoBean> mPlaneTgqReasonList = null;
     private List<PlaneOrderDetailInfoBean.PassengerInfo> passengerInfoList = null;
 
@@ -85,8 +93,8 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
-            if (null != bundle.getSerializable("tripInfo")) {
-                tripInfo = (PlaneOrderDetailInfoBean.TripInfo) bundle.getSerializable("tripInfo");
+            if (bundle.getString("tripId") != null) {
+                mTripId = bundle.getString("tripId");
             }
             mActionFlag = bundle.getInt("plane_action");
         }
@@ -95,11 +103,12 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
     @Override
     protected void requestData() {
         super.requestData();
-        if (null != tripInfo) {
-            if (0 == mActionFlag) {
-                requestTicketBackQuery(tripInfo.tripId);
-            } else {
-//                requestTicketChangeQuery();
+        if (StringUtil.notEmpty(mTripId)) {
+            if (BACK_TICKET == mActionFlag) {
+                requestTicketBackQuery();
+            } else if (CHANGE_TICKET == mActionFlag) {
+                Intent intent = new Intent(this, PlaneCalendarChooseActivity.class);
+                startActivityForResult(intent, 0x01);
             }
         }
     }
@@ -113,7 +122,13 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
         root.setVisibility(View.INVISIBLE);
     }
 
-    private void refreshScreenTicketInfo(String jsonStr) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.i(TAG, "onResume()");
+    }
+
+    private void refreshScreenInfoAboutTicket(String jsonStr) {
         if (StringUtil.notEmpty(jsonStr)) {
             JSONObject mJson = JSON.parseObject(jsonStr);
             for (String key : mJson.keySet()) {
@@ -135,14 +150,18 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
                             public void onClick(View v) {
                                 v.setSelected(!v.isSelected());
                                 selectedPassengerIds = getSelectedPassengerIds();
-                                refreshMoneySimpleLayout();
-                                refreshMoneyDetailLayout();
+                                if (BACK_TICKET == mActionFlag) {
+                                    refreshMoneySimpleLayout();
+                                    refreshMoneyDetailLayout();
+                                } else if (CHANGE_TICKET == mActionFlag) {
+
+                                }
                             }
                         });
                     }
                 }
             }
-            //第二步：更新退票原因
+            //第二步：更新原因信息
             if (mJson.containsKey("tgqReasonList")) {
                 mPlaneTgqReasonList = JSON.parseArray(mJson.getString("tgqReasonList"), PlaneTgqReasonInfoBean.class);
                 if (mPlaneTgqReasonList != null && mPlaneTgqReasonList.size() > 0) {
@@ -154,9 +173,17 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
                 tvBackReason.setText(mReasonStr[mReasonSelectedIndex]);
             }
 
-            //第三步：更新退票凭证
-            if (mPlaneTgqReasonList != null && mPlaneTgqReasonList.size() > 0) {
-                updateThirdLayoutText(mPlaneTgqReasonList.get(mReasonSelectedIndex));
+            //第三步：更新退票凭证或当前ticket信息
+            if (BACK_TICKET == mActionFlag) {
+                tvThirdTitleName.setText("提交凭证");
+                if (mPlaneTgqReasonList != null && mPlaneTgqReasonList.size() > 0) {
+                    updateThirdLayoutForBackTicket(mPlaneTgqReasonList.get(mReasonSelectedIndex));
+                }
+            } else if (CHANGE_TICKET == mActionFlag) {
+                tvThirdTitleName.setText("选择新航班");
+                if (mJson.containsKey("trip")) {
+                    updateThirdLayoutForChangeTicket(mJson.getString("trip"));
+                }
             }
 
             //最后：预估退款金额
@@ -166,6 +193,7 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
             root.setVisibility(View.VISIBLE);
         }
     }
+
 
     private String getSelectedPassengerIds() {
         StringBuilder tmpStr = new StringBuilder();
@@ -276,7 +304,7 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
         cutAllFee = tmpCutFee;
     }
 
-    private void updateThirdLayoutText(PlaneTgqReasonInfoBean tgqReasonInfoBean) {
+    private void updateThirdLayoutForBackTicket(PlaneTgqReasonInfoBean tgqReasonInfoBean) {
         if (null != tgqReasonInfoBean) {
             if (StringUtil.notEmpty(tgqReasonInfoBean.note)) {
                 thirdLayout.setVisibility(View.VISIBLE);
@@ -287,9 +315,43 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
         }
     }
 
-    private void requestTicketBackQuery(String tripId) {
+    private void updateThirdLayoutForChangeTicket(String jsonStr) {
+        if (StringUtil.notEmpty(jsonStr)) {
+            final PlaneOrderDetailInfoBean.TripInfo tripInfo = JSON.parseObject(jsonStr, PlaneOrderDetailInfoBean.TripInfo.class);
+            thirdContentLayout.removeAllViews();
+            View ticketLayout = LayoutInflater.from(this).inflate(R.layout.layout_ticket_change_layout, null);
+            thirdContentLayout.addView(ticketLayout);
+            LinearLayout currentTicketLayout = (LinearLayout) ticketLayout.findViewById(R.id.current_ticket_lay);
+            ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_flag)).setText("原航班信息：");
+            ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_price)).setText(String.format(getString(R.string.rmbStr2), passengerInfoList.get(0).barePrice));
+            ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_city)).setText(String.format("%1$s → %2$s", tripInfo.scity, tripInfo.ecity));
+            ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_date)).setText(DateUtil.getDay("MM-dd", tripInfo.sDate) + " " + DateUtil.dateToWeek2(new Date(tripInfo.sDate)) + " " + tripInfo.sTime);
+            ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_cabin)).setText(tripInfo.airCabin);
+            ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_airport)).setText(String.format("%1$s%2$s - %3$s%4$s", tripInfo.sAirport, tripInfo.sTerminal, tripInfo.eAirport, tripInfo.eTerminal));
+
+            FrameLayout new_ticket_lay = (FrameLayout) ticketLayout.findViewById(R.id.new_ticket_lay);
+            TextView tv_choose_new = (TextView) ticketLayout.findViewById(R.id.tv_choose_new);
+            tv_choose_new.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogUtil.i("get out here");
+                    View ticketLayout = LayoutInflater.from(PlaneBackTicketActivity.this).inflate(R.layout.layout_ticket_change_layout, null);
+                    thirdContentLayout.addView(ticketLayout);
+                    LinearLayout currentTicketLayout = (LinearLayout) ticketLayout.findViewById(R.id.current_ticket_lay);
+                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_flag)).setText("原航班信息：");
+                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_price)).setText(String.format(getString(R.string.rmbStr2), passengerInfoList.get(0).barePrice));
+                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_city)).setText(String.format("%1$s → %2$s", tripInfo.scity, tripInfo.ecity));
+                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_date)).setText(DateUtil.getDay("MM-dd", tripInfo.sDate) + " " + DateUtil.dateToWeek2(new Date(tripInfo.sDate)) + " " + tripInfo.sTime);
+                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_cabin)).setText(tripInfo.airCabin);
+                    ((TextView) currentTicketLayout.findViewById(R.id.tv_ticket_airport)).setText(String.format("%1$s%2$s - %3$s%4$s", tripInfo.sAirport, tripInfo.sTerminal, tripInfo.eAirport, tripInfo.eTerminal));
+                }
+            });
+        }
+    }
+
+    private void requestTicketBackQuery() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("tripId", tripId);
+        b.addBody("tripId", mTripId);
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_BACK_QUERY;
         d.path = NetURL.PLANE_BACK_QUERY;
@@ -299,11 +361,11 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    private void requestTicketBackApply(String tripId) {
+    private void requestTicketBackApply() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         b.addBody("code", String.valueOf(mPlaneTgqReasonList.get(mReasonSelectedIndex).code));
         b.addBody("passengerIds", selectedPassengerIds);
-        b.addBody("tripId", tripId);
+        b.addBody("tripId", mTripId);
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_BACK;
         d.path = NetURL.PLANE_BACK;
@@ -313,11 +375,10 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    private void requestTicketChangeQuery(String tripId) {
+    private void requestTicketChangeQuery(long changeTime) {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("changeDate", tripId);
-        b.addBody("orderNum", tripId);
-        b.addBody("type", tripId);
+        b.addBody("changeDate", String.valueOf(changeTime));
+        b.addBody("tripId", mTripId);
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_CHANGE_QUERY;
         d.path = NetURL.PLANE_CHANGE_QUERY;
@@ -327,11 +388,10 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
-    private void requestTicketChangeApple(String tripId) {
+    private void requestTicketChangeApple() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("changeDate", tripId);
-        b.addBody("orderNum", tripId);
-        b.addBody("type", tripId);
+        b.addBody("changeDate", mTripId);
+        b.addBody("tripId", mTripId);
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_CHANGE;
         d.path = NetURL.PLANE_CHANGE;
@@ -345,10 +405,30 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
     protected void onNotifyMessage(ResponseData request, ResponseData response) {
         super.onNotifyMessage(request, response);
         if (response != null && response.body != null) {
-            if (request.flag == AppConst.PLANE_BACK_QUERY) {
+            if (request.flag == AppConst.PLANE_BACK_QUERY || request.flag == AppConst.PLANE_CHANGE_QUERY) {
                 removeProgressDialog();
                 LogUtil.i("json = " + response.body.toString());
-                refreshScreenTicketInfo(response.body.toString());
+                refreshScreenInfoAboutTicket(response.body.toString());
+            } else if (request.flag == AppConst.PLANE_BACK) {
+                removeProgressDialog();
+                LogUtil.i("json = " + response.body.toString());
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                boolean isSuccess = mJson.containsKey("SUCCESS") ? mJson.getBoolean("SUCCESS") : false;
+                boolean isNeedLoad = mJson.containsKey("NEEDUPLOAD") ? mJson.getBoolean("NEEDUPLOAD") : false;
+                if (isSuccess) {
+                    if (isNeedLoad) {
+                        CustomToast.show("尼玛，二货，要上传资料哟！", CustomToast.LENGTH_LONG);
+                    } else {
+                        CustomToast.show("退票申请成功", CustomToast.LENGTH_LONG);
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                } else {
+                    CustomToast.show("退票申请失败", CustomToast.LENGTH_LONG);
+                }
+            } else if (request.flag == AppConst.PLANE_CHANGE) {
+                removeProgressDialog();
+                LogUtil.i("json = " + response.body.toString());
             }
         }
     }
@@ -366,11 +446,16 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
                             dialog.dismiss();
                             mReasonSelectedIndex = which;
                             tvBackReason.setText(mReasonStr[mReasonSelectedIndex]);
-                            if (mPlaneTgqReasonList != null && mPlaneTgqReasonList.size() > 0) {
-                                updateThirdLayoutText(mPlaneTgqReasonList.get(mReasonSelectedIndex));
+                            if (BACK_TICKET == mActionFlag) {
+                                tvThirdTitleName.setText("提交凭证");
+                                if (mPlaneTgqReasonList != null && mPlaneTgqReasonList.size() > 0) {
+                                    updateThirdLayoutForBackTicket(mPlaneTgqReasonList.get(mReasonSelectedIndex));
+                                }
+                                refreshMoneySimpleLayout();
+                                refreshMoneyDetailLayout();
+                            } else if (CHANGE_TICKET == mActionFlag) {
+                                tvThirdTitleName.setText("选择新航班");
                             }
-                            refreshMoneySimpleLayout();
-                            refreshMoneyDetailLayout();
                         }
                     }
                 });
@@ -379,12 +464,32 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
                 break;
             case R.id.tv_back_submit:
                 CustomToast.show("翻滚吧，少年！", CustomToast.LENGTH_LONG);
-                if (mActionFlag == BACK_TICKET) {
-                    requestTicketBackApply(tripInfo.tripId);
-                } else {
-
+                if (BACK_TICKET == mActionFlag) {
+                    requestTicketBackApply();
+                } else if (CHANGE_TICKET == mActionFlag) {
+                    requestTicketChangeApple();
                 }
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.i(TAG, "onActivityResult()");
+        if (RESULT_OK != resultCode) {
+            if (CHANGE_TICKET == mActionFlag && mChangeTime == 0) {
+                finish();
+            }
+            return;
+        }
+
+        if (requestCode == 0x01) {
+            if (null != data) {
+                mChangeTime = data.getLongExtra("beginTime", 0);
+                LogUtil.i(TAG, "onActivityResult() mChangeTime = " + mChangeTime);
+                requestTicketChangeQuery(mChangeTime);
+            }
         }
     }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="6dp"
+    android:paddingTop="6dp">
+
+    <include
+        android:id="@+id/current_ticket_lay"
+        layout="@layout/layout_ticket_change_item" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="6dp"
+        android:background="#cccccc" />
+
+    <FrameLayout
+        android:id="@+id/new_ticket_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_choose_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@drawable/plane_detail_book_btn_bg"
+            android:gravity="center"
+            android:minHeight="38dp"
+            android:minWidth="120dp"
+            android:text="选择新航班"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_16sp" />
+    </FrameLayout>
+</LinearLayout>

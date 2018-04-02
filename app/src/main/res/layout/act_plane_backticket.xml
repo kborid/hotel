@@ -183,14 +183,14 @@
                         android:id="@+id/third_content_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="18dp"
-                        android:paddingTop="11dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_reason_detail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="18dp"
+                            android:layout_marginTop="11dp"
                             android:gravity="center_vertical"
                             android:textColor="#666666"
                             android:textSize="@dimen/common_14sp" />
@@ -290,7 +290,7 @@
 
                         <LinearLayout
                             android:id="@+id/cut_money_detail_lay"
-                            android:orientation="vertical"/>
+                            android:orientation="vertical" />
                     </TableLayout>
                 </LinearLayout>
 
@@ -324,7 +324,7 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/plane_detail_book_btn_bg"
             android:gravity="center"
-            android:text="提交订单"
+            android:text="提交申请"
             android:textColor="@color/white"
             android:textSize="@dimen/common_18sp"
             android:textStyle="bold" />

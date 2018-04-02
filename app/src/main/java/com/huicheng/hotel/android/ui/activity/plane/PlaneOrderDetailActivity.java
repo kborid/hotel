@@ -42,6 +42,8 @@ import butterknife.OnClick;
  */
 public class PlaneOrderDetailActivity extends BaseAppActivity {
 
+    private static final int BACK_TICKET = 0x003;
+    private static final int CHANGE_TICKET = 0x004;
     private static final int GO_TRIP = 1;
     private static final int BACK_TRIP = 2;
 
@@ -517,17 +519,17 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
     private void backPlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
         System.out.println("backPlaneTicketAction()");
         Intent intent = new Intent(this, PlaneBackTicketActivity.class);
-        intent.putExtra("tripInfo", tripInfo);
+        intent.putExtra("tripId", tripInfo.tripId);
         intent.putExtra("plane_action", 0);
-        startActivity(intent);
+        startActivityForResult(intent, BACK_TICKET);
     }
 
     private void changePlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
         System.out.println("changePlaneTicketAction()");
         Intent intent = new Intent(this, PlaneBackTicketActivity.class);
-        intent.putExtra("tripInfo", tripInfo);
+        intent.putExtra("tripId", tripInfo.tripId);
         intent.putExtra("plane_action", 1);
-        startActivity(intent);
+        startActivityForResult(intent, CHANGE_TICKET);
     }
 
     private boolean canBackTicket(PlaneCommDef.PassengerStatus status) {
@@ -549,5 +551,16 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                 tmpFlag = true;
         }
         return tmpFlag;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (RESULT_OK != resultCode) {
+            return;
+        }
+        if (requestCode == BACK_TICKET || requestCode == CHANGE_TICKET) {
+            requestPlaneOrderDetailInfo(orderNo);
+        }
     }
 }
