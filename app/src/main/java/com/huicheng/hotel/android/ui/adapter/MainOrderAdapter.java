@@ -24,9 +24,10 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private static final int TYPE_HOTEL = 1;
     private static final int TYPE_PLANE = 2;
-    private static final int ONE_MINUTE = 1000 * 60;
-    private static final int ONE_HOUR = ONE_MINUTE * 60;
-    private static final int ONE_DAY = ONE_HOUR * 24;
+    private static final long ONE_SECOND = 1000L;
+    private static final long ONE_MINUTE = ONE_SECOND * 60L;
+    private static final long ONE_HOUR = ONE_MINUTE * 60L;
+    private static final long ONE_DAY = ONE_HOUR * 24L;
 
     private Context context;
     private List<OrderDetailInfoBean> list;
@@ -82,11 +83,11 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 planeOVH.tv_flight.setText(orderDetailBean.flightNo);
                 planeOVH.tv_passenger.setText(orderDetailBean.passengerNames);
                 if (orderDetailBean.toFlyTime > 0) {
-                    int day = (int) orderDetailBean.toFlyTime / ONE_DAY;
-                    int hour = (int) (orderDetailBean.toFlyTime - day * ONE_DAY) / ONE_HOUR;
-                    int min = (int) (orderDetailBean.toFlyTime - day * ONE_DAY - hour * ONE_HOUR) / ONE_MINUTE;
+                    long day = orderDetailBean.toFlyTime / ONE_DAY;
+                    long hour = (orderDetailBean.toFlyTime - (day * ONE_DAY)) / ONE_HOUR;
+                    long min = (orderDetailBean.toFlyTime - day * ONE_DAY - hour * ONE_HOUR) / ONE_MINUTE;
                     if (day > 0) {
-                        planeOVH.tv_tofly.setText(String.format("%1$d天%2$d时%3$d分", day, hour, min));
+                        planeOVH.tv_tofly.setText(String.format("%1$d天%2$d时", day, hour));
                     } else {
                         planeOVH.tv_tofly.setText(String.format("%1$d时%2$d分", hour, min));
                     }

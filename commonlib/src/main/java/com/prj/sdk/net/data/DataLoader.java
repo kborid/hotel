@@ -176,15 +176,15 @@ public class DataLoader {
         private void doExecute() throws Exception {
             String url = request.path;
             if (NetworkUtil.isNetworkAvailable()) {
-                LogUtil.d(TAG, "Request:" + url);
-                LogUtil.d(TAG, "Request:" + request.data.toString());
+                LogUtil.i(TAG, "Request:" + url);
+                LogUtil.i(TAG, "Request:" + request.data.toString());
 
                 byte[] data = getDataFromNet();
 
                 if (data != null && data.length > 0) {
                     String json = new String(data, "UTF-8");
-                    LogUtil.d(TAG, "Response:" + url);
-                    LogUtil.d(TAG, "Response:" + json);
+                    LogUtil.i(TAG, "Response:" + url);
+                    LogUtil.i(TAG, "Response:" + json);
                     response = JSON.parseObject(json, ResponseData.class);
 
                     String key = request.key;
@@ -230,14 +230,14 @@ public class DataLoader {
                                 }
                                 LogUtil.i(TAG, "notify response data:" + response.data + ", code:" + response.code);
                             } else {
-                                LogUtil.i(TAG, "notify response = null || response.head = null");
+                                LogUtil.e(TAG, "notify response = null || response.head = null");
                                 callback.notifyError(request, response, mException);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                             response.data = "data parse error";
                             callback.notifyError(request, response, e);
-                            LogUtil.i(TAG, "notify response data:data parse error");
+                            LogUtil.e(TAG, "notify response data:data parse error");
                         }
                     }
                 }
