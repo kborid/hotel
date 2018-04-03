@@ -334,6 +334,7 @@ public class PlaneBackTicketActivity extends BaseAppActivity {
             tv_choose_new.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //TODO:改签新机票逻辑
                     LogUtil.i("get out here");
                     new_ticket_lay.removeAllViews();
                     View newTicketLayout = LayoutInflater.from(PlaneBackTicketActivity.this).inflate(R.layout.layout_ticket_change_item, null);

@@ -51,6 +51,8 @@
                 <TableRow>
 
                     <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -76,11 +78,15 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:contentDescription="@string/app_name"
                         android:src="@drawable/iv_order_plane_icon" />
 
                     <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">

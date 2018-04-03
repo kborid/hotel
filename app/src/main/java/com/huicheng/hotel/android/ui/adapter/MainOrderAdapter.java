@@ -87,9 +87,23 @@ public class MainOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     long hour = (orderDetailBean.toFlyTime - (day * ONE_DAY)) / ONE_HOUR;
                     long min = (orderDetailBean.toFlyTime - day * ONE_DAY - hour * ONE_HOUR) / ONE_MINUTE;
                     if (day > 0) {
-                        planeOVH.tv_tofly.setText(String.format("%1$d天%2$d时", day, hour));
+                        if (hour > 0) {
+                            planeOVH.tv_tofly.setText(String.format("%1$d天%2$d小时", day, hour));
+                        } else if (min > 0) {
+                            planeOVH.tv_tofly.setText(String.format("%1$d天%2$d分钟", day, min));
+                        } else {
+                            planeOVH.tv_tofly.setText(String.format("%1$d天", day));
+                        }
                     } else {
-                        planeOVH.tv_tofly.setText(String.format("%1$d时%2$d分", hour, min));
+                        if (hour > 0) {
+                            if (min > 0) {
+                                planeOVH.tv_tofly.setText(String.format("%1$d小时%2$d分钟", hour, min));
+                            } else {
+                                planeOVH.tv_tofly.setText(String.format("%1$d小时", hour));
+                            }
+                        } else {
+                            planeOVH.tv_tofly.setText(String.format("%1$d分钟", min));
+                        }
                     }
                 } else {
                     planeOVH.tv_tofly.setText("已起飞");
