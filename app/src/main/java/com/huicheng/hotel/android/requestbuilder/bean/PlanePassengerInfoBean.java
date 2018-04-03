@@ -26,4 +26,10 @@ public class PlanePassengerInfoBean {
         //        this.discountAmount = 0;    //默认0
 //        this.insuranceType = insuranceType;
     }
+
+    /*
+     * for fastjson default constructor
+     */
+    public PlanePassengerInfoBean() {
+    }
 }

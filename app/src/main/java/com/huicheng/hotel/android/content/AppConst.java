@@ -22,6 +22,8 @@ public final class AppConst {
     public static final String CITY_LIST_JSON_VERSION = "city_list_json_version"; //通用城市列表版本号
     public static final String CITY_PLANE_JSON = "plane_city_json_string"; //机场缓存
     public static final String AIR_COMPANY_JSON = "air_company_json"; //航司缓存
+    public static final String PLANE_ORDER_CONTACT_INFO = "plane_order_contact_info"; //创建机票订单时，保存的联系人信息，以|分割名字和电话
+    public static final String PLANE_ORDER_PASSENGERS_INFO = "plane_order_passengers_info"; //创建机票订单时，保存乘机人信息
 
     public static final String IN_PERSON_INFO = "in_person_info";
 

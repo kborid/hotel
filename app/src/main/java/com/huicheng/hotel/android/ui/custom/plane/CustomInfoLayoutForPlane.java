@@ -220,7 +220,7 @@ public class CustomInfoLayoutForPlane extends LinearLayout {
             );
             temp.add(bean);
         }
-        return JSON.toJSON(temp).toString();
+        return JSON.toJSONString(temp);
     }
 
     private void initializeFirstLayoutItem() {

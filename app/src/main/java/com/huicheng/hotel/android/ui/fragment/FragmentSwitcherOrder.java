@@ -181,6 +181,7 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
             return;
         }
         if (requestCode == 0x01) {
+            swipeRefreshLayout.setRefreshing(true);
             myHandler.sendEmptyMessageDelayed(0x01, 500);
         }
     }
@@ -231,7 +232,6 @@ public class FragmentSwitcherOrder extends BaseFragment implements View.OnClickL
             super.handleMessage(msg);
             if (msg.what == 0x01) {
                 fragment.get().requestMyOrdersList();
-                fragment.get().requestSpendyearly();
             }
         }
     }

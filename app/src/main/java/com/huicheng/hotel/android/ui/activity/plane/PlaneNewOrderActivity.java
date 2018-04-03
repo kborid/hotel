@@ -48,6 +48,7 @@ import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
+import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
@@ -289,7 +290,21 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         tv_invoice_type.setVisibility(View.GONE);
         invoice_lay.setVisibility(View.GONE);
         invoiceTaxInfoBean = new PlaneInvoiceTaxInfoBean();
-        mPassengerCount = custom_info_layout_plane.getChildCount();
+
+        //通过缓存，初始化联系人信息
+        String contactCache = SharedPreferenceUtil.getInstance().getString(AppConst.PLANE_ORDER_CONTACT_INFO, "", true);
+        if (StringUtil.notEmpty(contactCache)) {
+            et_contact.setText(contactCache.split("\\|")[0]);
+            et_contactMob.setText(contactCache.split("\\|")[1]);
+        }
+
+        //通过缓存，初始化乘机人信息
+        String passengerJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.PLANE_ORDER_PASSENGERS_INFO, "", true);
+        if (StringUtil.notEmpty(passengerJsonStr)){
+            mPassengerCount = custom_info_layout_plane.setPersonInfo(passengerJsonStr);
+        } else {
+            mPassengerCount = custom_info_layout_plane.getChildCount();
+        }
         calculateAmount(mPassengerCount);
     }
 
@@ -496,6 +511,12 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                     invoiceTaxInfoBean.setContact(et_contact.getText().toString());
                     invoiceTaxInfoBean.setContactMob(et_contactMob.getText().toString());
                     requestSubmitOrderInfo();
+                    //缓存机票订单联系人信息
+                    String contactCache = et_contact.getText().toString() + "|" + et_contactMob.getText().toString();
+                    SharedPreferenceUtil.getInstance().setString(AppConst.PLANE_ORDER_CONTACT_INFO, contactCache, true);
+                    //缓存机票乘机人信息
+                    String passengerJsonStr = custom_info_layout_plane.getCustomInfoJsonString();
+                    SharedPreferenceUtil.getInstance().setString(AppConst.PLANE_ORDER_PASSENGERS_INFO, passengerJsonStr, true);
                 }
                 break;
             }

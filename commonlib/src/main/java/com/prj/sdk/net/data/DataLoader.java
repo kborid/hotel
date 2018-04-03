@@ -101,7 +101,6 @@ public class DataLoader {
     }
 
     private synchronized void flushRequests() {
-        LogUtil.i(TAG, "flushRequests()");
         try {
             while (mActiveTaskCount < mMaxTaskCount && !mRequests.isEmpty()) {
                 mActiveTaskCount++;
@@ -118,7 +117,6 @@ public class DataLoader {
     }
 
     private void insertRequestQueue(Runnable request) {
-        LogUtil.i(TAG, "insertRequestQueue() id = " + ((RequestTask) request).id);
         mRequests.add(0, request);
         flushRequests();
     }
@@ -261,9 +259,7 @@ public class DataLoader {
      * 清除请求队列中的任务
      */
     public void clearRequests() {
-        LogUtil.i(TAG, "clearRequests()");
         try {
-            LogUtil.i(TAG, "ids.size = " + ids.size() + ", requests.size = " + mRequests.size());
             mRequests.clear();
             ids.clear();
             mActiveTaskCount = 0;
