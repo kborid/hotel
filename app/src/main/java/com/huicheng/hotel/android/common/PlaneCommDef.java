@@ -146,7 +146,8 @@ public class PlaneCommDef {
         Backing("20", "退票中"),
         Backed_Success("22", "退票完成"),
         Backed_Failed("23", "退票失败"),
-        Canceled("30", "已取消"),;
+        Canceled("30", "已取消"),//订单取消状态，乘客状态不显示
+        ;
 
         String statusCode, statusMsg;
 

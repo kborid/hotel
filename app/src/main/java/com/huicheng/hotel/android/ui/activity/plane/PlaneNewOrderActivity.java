@@ -242,7 +242,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 goCabinType = goFlightDetailInfo.vendorInfo.cabinType;
             }
             go_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[goCabinType].getValue());
-            go_tv_price.setText(String.valueOf((int) goFlightDetailInfo.vendorInfo.barePrice));
+            go_tv_price.setText(String.format(getString(R.string.rmbStr2), goFlightDetailInfo.vendorInfo.barePrice));
             go_tv_jj_price.setText(String.format(getString(R.string.rmbStr2), (goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof)));
 
             mTicketPrice += goFlightDetailInfo.vendorInfo.barePrice + goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof;
@@ -275,7 +275,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                     backCabinType = backFlightDetailInfo.vendorInfo.cabinType;
                 }
                 back_tv_cabin.setText(PlaneCommDef.CabinLevel.values()[backCabinType].getValue());
-                back_tv_price.setText(String.valueOf((int) backFlightDetailInfo.vendorInfo.barePrice));
+                back_tv_price.setText(String.format(getString(R.string.rmbStr2), backFlightDetailInfo.vendorInfo.barePrice));
                 back_tv_jj_price.setText(String.format(getString(R.string.rmbStr2), (backFlightDetailInfo.flightInfo.arf + backFlightDetailInfo.flightInfo.tof)));
 
                 mTicketPrice += backFlightDetailInfo.vendorInfo.barePrice + backFlightDetailInfo.flightInfo.arf + backFlightDetailInfo.flightInfo.tof;
@@ -376,7 +376,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                             tv_flag.setText("去程");
                             Date date = DateUtil.str2Date(goFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd");
                             tv_date.setText(DateUtil.getDay("MM月dd日", date.getTime()) + " " + goFlightDetailInfo.ticketInfo.btime);
-                            tv_price.setText(String.valueOf(goFlightDetailInfo.vendorInfo.barePrice));
+                            tv_price.setText(String.format(getString(R.string.rmbStr2), goFlightDetailInfo.vendorInfo.barePrice));
                             tv_off_time.setText(goFlightDetailInfo.flightInfo.dptTime);
                             tv_on_time.setText(goFlightDetailInfo.flightInfo.arrTime);
                             tv_during.setText(goFlightDetailInfo.flightInfo.flightTimes);
@@ -401,7 +401,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                             } else {
                                 iv_flight_icon.setVisibility(View.INVISIBLE);
                             }
-                            tv_build_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
+                            tv_build_price.setText(String.format(getString(R.string.rmbStr2), (goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof)));
                         }
 
                         //返程信息
@@ -425,7 +425,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                                 tv_flag.setText("返程");
                                 Date date = DateUtil.str2Date(backFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd");
                                 tv_date.setText(DateUtil.getDay("MM月dd日", date.getTime()) + " " + backFlightDetailInfo.ticketInfo.btime);
-                                tv_price.setText(String.valueOf(backFlightDetailInfo.vendorInfo.barePrice));
+                                tv_price.setText(String.format(getString(R.string.rmbStr2), backFlightDetailInfo.vendorInfo.barePrice));
                                 tv_off_time.setText(backFlightDetailInfo.flightInfo.dptTime);
                                 tv_on_time.setText(backFlightDetailInfo.flightInfo.arrTime);
                                 tv_during.setText(backFlightDetailInfo.flightInfo.flightTimes);
@@ -450,7 +450,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                                 } else {
                                     iv_flight_icon.setVisibility(View.INVISIBLE);
                                 }
-                                tv_build_price.setText(String.valueOf(goFlightDetailInfo.flightInfo.arf + goFlightDetailInfo.flightInfo.tof));
+                                tv_build_price.setText(String.format(getString(R.string.rmbStr2), (backFlightDetailInfo.flightInfo.arf + backFlightDetailInfo.flightInfo.tof)));
                             }
                         }
                     }
@@ -548,7 +548,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         mSafePrice = calculateSafePriceSingle();
         int totalSafePrice = passengers * mSafePrice;
         mAmount = totalTicketPrice + totalSafePrice + (btn_invoice_switch.isChecked() ? mExpressPrice : 0);
-        tv_amount.setText(String.format(getString(R.string.RMB) + "%1$d", mAmount));
+        tv_amount.setText(String.format(getString(R.string.rmbStr2), mAmount));
         tv_passenger.setText(String.format(getString(R.string.passengersStr), passengers));
         return mAmount;
     }

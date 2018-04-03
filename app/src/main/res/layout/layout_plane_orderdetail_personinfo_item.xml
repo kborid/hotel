@@ -37,6 +37,7 @@
             android:layout_toRightOf="@id/tv_name"
             android:background="@drawable/plane_detail_book_btn_bg"
             android:text="已改签"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:textSize="@dimen/common_10sp" />
 

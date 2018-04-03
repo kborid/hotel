@@ -83,7 +83,7 @@ public class PlaneTicketVendorItemAdapter extends BaseAdapter {
         }
 
         PlaneTicketInfoBean.VendorInfo vendorInfo = mList.get(position);
-        viewHolder.tv_price.setText(String.valueOf(vendorInfo.barePrice));
+        viewHolder.tv_price.setText(String.format(context.getString(R.string.rmbStr2), vendorInfo.barePrice));
         String discount_cabin = "";
         if (StringUtil.notEmpty(vendorInfo.discount)) {
             float discount = 0f;

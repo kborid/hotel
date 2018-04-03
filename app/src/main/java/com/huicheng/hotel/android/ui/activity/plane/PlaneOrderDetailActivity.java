@@ -108,7 +108,8 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
             tvContactsName.setText(orderDetailInfoBean.contactor);
             tvContactsMobile.setText(orderDetailInfoBean.mobile);
 
-            refreshBtnActionStatus(Integer.valueOf(orderDetailInfoBean.orderStatus));
+            PlaneCommDef.TicketOrderStatus ticketStatus = PlaneCommDef.TicketOrderStatus.statusCodeOf(Integer.valueOf(orderDetailInfoBean.orderStatus));
+            refreshBtnActionStatus(ticketStatus);
 
             LinkedHashMap<String, String> orderTimeInfo = new LinkedHashMap<>();
             orderTimeInfo.put("订单编号：", orderDetailInfoBean.orderId);
@@ -238,7 +239,11 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                     TextView tv_cardId = (TextView) v.findViewById(R.id.tv_cardId);
                                     tv_name.setText(goTripInfo.passengerList.get(i).name);
                                     PlaneCommDef.PassengerStatus status = PlaneCommDef.PassengerStatus.statusCodeOf(goTripInfo.passengerList.get(i).status);
-                                    tv_status.setText(status.getStatusMsg());
+                                    if (ticketStatus == PlaneCommDef.TicketOrderStatus.TICKET_CANCELED
+                                            || status != PlaneCommDef.PassengerStatus.Canceled) {
+                                        tv_status.setVisibility(View.VISIBLE);
+                                        tv_status.setText(status.getStatusMsg());
+                                    }
                                     tv_cardType.setText(PlaneCommDef.CardType.valueOf(goTripInfo.passengerList.get(i).cardType).getValueName());
                                     tv_cardId.setText(goTripInfo.passengerList.get(i).cardNo);
                                     canBack = canBack || canBackTicket(status);
@@ -367,7 +372,11 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
 
                                         tv_name.setText(backTripInfo.passengerList.get(i).name);
                                         PlaneCommDef.PassengerStatus status = PlaneCommDef.PassengerStatus.statusCodeOf(backTripInfo.passengerList.get(i).status);
-                                        tv_status.setText(status.getStatusMsg());
+                                        if (ticketStatus == PlaneCommDef.TicketOrderStatus.TICKET_CANCELED
+                                                || status != PlaneCommDef.PassengerStatus.Canceled) {
+                                            tv_status.setVisibility(View.VISIBLE);
+                                            tv_status.setText(status.getStatusMsg());
+                                        }
                                         tv_cardType.setText(PlaneCommDef.CardType.valueOf(backTripInfo.passengerList.get(i).cardType).getValueName());
                                         tv_cardId.setText(backTripInfo.passengerList.get(i).cardNo);
                                         canBack = canBack || canBackTicket(status);
@@ -421,8 +430,7 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
         }
     }
 
-    private void refreshBtnActionStatus(int orderStatus) {
-        PlaneCommDef.TicketOrderStatus status = PlaneCommDef.TicketOrderStatus.statusCodeOf(orderStatus);
+    private void refreshBtnActionStatus(PlaneCommDef.TicketOrderStatus status) {
         switch (status) {
             case TICKET_CANCELED:
             case TICKET_FINISHED:

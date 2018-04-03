@@ -67,7 +67,7 @@ public class PlaneFlightItemAdapter extends RecyclerView.Adapter<PlaneFlightItem
             viewHolder.stopover_lay.setVisibility(View.GONE);
         }
         viewHolder.tv_flight_during.setText(bean.flightTimes);
-        viewHolder.tv_flight_price.setText(String.valueOf((int) bean.barePrice));
+        viewHolder.tv_flight_price.setText(String.format(context.getString(R.string.rmbStr2), (int) bean.barePrice));
         viewHolder.tv_flight_code.setText(bean.flightNum);
         viewHolder.tv_flight_name.setText(bean.flightTypeFullName);
         if (StringUtil.notEmpty(bean.carrier)) {

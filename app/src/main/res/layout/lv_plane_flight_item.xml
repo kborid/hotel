@@ -57,9 +57,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="T2"
-                            android:visibility="gone"
                             android:textColor="#666666"
-                            android:textSize="@dimen/common_12sp" />
+                            android:textSize="@dimen/common_12sp"
+                            android:visibility="gone" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -157,31 +157,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="T1"
-                            android:visibility="gone"
                             android:textColor="#666666"
-                            android:textSize="@dimen/common_12sp" />
+                            android:textSize="@dimen/common_12sp"
+                            android:visibility="gone" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_flight_price"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical|right"
-                    android:text="@string/RMB"
+                    android:text="@string/rmbStr2"
                     android:textColor="@color/plane_mainColor"
                     android:textSize="@dimen/common_20sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_flight_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical|right"
-                    android:text="9900"
-                    android:textColor="@color/plane_mainColor"
-                    android:textSize="@dimen/common_20sp"
-                    android:textStyle="bold" />
             </LinearLayout>
 
             <!--航班基本信息-->
