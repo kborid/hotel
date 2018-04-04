@@ -31,6 +31,7 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 import butterknife.BindView;
@@ -508,8 +509,9 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
         switch (view.getId()) {
             case R.id.tv_pay:
                 Intent payIntent = new Intent(this, PlaneOrderPayActivity.class);
-                payIntent.putExtra("orderId", orderDetailInfoBean.orderId);
-                payIntent.putExtra("orderType", orderDetailInfoBean.orderType);
+                payIntent.putExtra("orderNo", orderDetailInfoBean.orderId);
+                payIntent.putExtra("amount", orderDetailInfoBean.shouldPayAmount);
+                payIntent.putExtra("tripInfoList", (Serializable) orderDetailInfoBean.tripList);
                 startActivity(payIntent);
                 break;
             case R.id.tv_cancel:

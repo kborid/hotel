@@ -300,7 +300,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
 
         //通过缓存，初始化乘机人信息
         String passengerJsonStr = SharedPreferenceUtil.getInstance().getString(AppConst.PLANE_ORDER_PASSENGERS_INFO, "", true);
-        if (StringUtil.notEmpty(passengerJsonStr)){
+        if (StringUtil.notEmpty(passengerJsonStr)) {
             mPassengerCount = custom_info_layout_plane.setPersonInfo(passengerJsonStr);
         } else {
             mPassengerCount = custom_info_layout_plane.getChildCount();
@@ -788,8 +788,17 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             } else if (request.flag == AppConst.PLANE_NEW_ORDER) {
                 removeProgressDialog();
                 LogUtil.i(TAG, "json = " + response.body.toString());
-                Intent intent = new Intent(this, PlaneOrderPayActivity.class);
-                startActivity(intent);
+                JSONObject mJson = JSON.parseObject(response.body.toString());
+                if (StringUtil.notEmpty(mJson) && mJson.containsKey("orderNum")) {
+                    Intent intent = new Intent(this, PlaneOrderPayActivity.class);
+                    intent.putExtra("orderNo", mJson.getString("orderNum"));
+                    intent.putExtra("amount", mAmount);
+                    intent.putExtra("goFlightDetailInfo", goFlightDetailInfo);
+                    intent.putExtra("backFlightDetailInfo", backFlightDetailInfo);
+                    startActivity(intent);
+                } else {
+                    CustomToast.show("创建订单失败", CustomToast.LENGTH_SHORT);
+                }
             }
 
             if (mTag.size() == requestTagCount) {
