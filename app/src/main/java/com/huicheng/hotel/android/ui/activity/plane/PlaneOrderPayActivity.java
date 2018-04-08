@@ -53,6 +53,9 @@ import butterknife.OnClick;
 
 public class PlaneOrderPayActivity extends BaseAppActivity {
 
+    private static final int BACK_TRIP = 1;
+    private static final int GO_TRIP = 2;
+
     @BindView(R.id.tv_amount)
     TextView tvAmount;
     @BindView(R.id.payChannelLay)
@@ -61,7 +64,6 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
     TextView tvComment;
     @BindView(R.id.flight_layout)
     LinearLayout flightLayout;
-    //<include layout="@layout/layout_plane_pay_item" />
 
     private PayResultReceiver mPayReceiver = new PayResultReceiver();
     private AlipayUtil alipay = null;
@@ -118,9 +120,9 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
             PlaneOrderDetailInfoBean.TripInfo goTripInfo = null, backTripInfo = null;
             for (int i = 0; i < tripInfoList.size(); i++) {
                 PlaneOrderDetailInfoBean.TripInfo tripInfo = tripInfoList.get(i);
-                if (tripInfo.tripType == 1) { //去程信息
+                if (tripInfo.tripType == GO_TRIP) { //去程信息
                     goTripInfo = tripInfo;
-                } else if (tripInfo.tripType == 2) { //返程信息
+                } else if (tripInfo.tripType == BACK_TRIP) { //返程信息
                     backTripInfo = tripInfo;
                 }
             }
