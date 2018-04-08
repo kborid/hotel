@@ -23,7 +23,6 @@ import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
-import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.adapter.PlaneFlightCalendarPriceAdapter;
@@ -142,6 +141,16 @@ public class PlaneFlightListActivity extends BaseAppActivity {
         status = PlaneOrderManager.instance.getStatus();
         LogUtil.i(TAG, "FlightType = " + PlaneOrderManager.instance.getFlightType() + ", FlowStatus = " + status);
 
+        mOffPiny = PlaneOrderManager.instance.getFlightOffAirportInfo().pinyin;
+        mOnPiny = PlaneOrderManager.instance.getFlightOnAirportInfo().pinyin;
+        tv_center_title.setText(
+                CityParseUtils.getPlaneOffOnCity(
+                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityname,
+                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityname,
+                        "→"
+                )
+        );
+
         Calendar curr = Calendar.getInstance(); //当前、今天日期Calendar
         Calendar max = Calendar.getInstance(); //应该显示最大日期Calendar
         Calendar start = Calendar.getInstance(); //航班列表头部起始日期显示calendar
@@ -169,11 +178,6 @@ public class PlaneFlightListActivity extends BaseAppActivity {
          */
         mOffTime = PlaneOrderManager.instance.getGoFlightOffDate();
         if (PlaneOrderManager.instance.isBackBookingTypeForGoBack()) {
-            //如果往返，则交换起飞着陆机场信息
-            CityAirportInfoBean tmp = PlaneOrderManager.instance.getFlightOnAirportInfo();
-            PlaneOrderManager.instance.setFlightOnAirportInfo(PlaneOrderManager.instance.getFlightOffAirportInfo());
-            PlaneOrderManager.instance.setFlightOffAirportInfo(tmp);
-
             long backOffTime = PlaneOrderManager.instance.getBackFlightOffDate();
             start.setTime(new Date(backOffTime));
             if (mOffTime >= backOffTime) {
@@ -200,16 +204,6 @@ public class PlaneFlightListActivity extends BaseAppActivity {
             calendar.add(Calendar.DATE, i);
             mDateList.add(calendar.getTime());
         }
-
-        mOffPiny = PlaneOrderManager.instance.getFlightOffAirportInfo().pinyin;
-        mOnPiny = PlaneOrderManager.instance.getFlightOnAirportInfo().pinyin;
-        tv_center_title.setText(
-                CityParseUtils.getPlaneOffOnCity(
-                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityname,
-                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityname,
-                        "→"
-                )
-        );
 
         selectedIndex = DateUtil.getGapCount(start.getTime(), new Date(mOffTime));
         planeFlightCalendarPriceAdapter = new PlaneFlightCalendarPriceAdapter(this, mDateList);

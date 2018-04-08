@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.broadcast.PayResultReceiver;
 import com.huicheng.hotel.android.common.HotelCommDef;
+import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.pay.PayCommDef;
@@ -23,6 +26,7 @@ import com.huicheng.hotel.android.pay.alipay.AlipayUtil;
 import com.huicheng.hotel.android.pay.unionpay.UnionPayUtil;
 import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
+import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonPayChannelLayout;
@@ -30,10 +34,13 @@ import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
+import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -120,6 +127,7 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
             if (null != goTripInfo) {
                 View goFlightView = LayoutInflater.from(this).inflate(R.layout.layout_plane_pay_item, null);
                 flightLayout.addView(goFlightView);
+                setFlightViewInfo(goFlightView, goTripInfo);
                 if (null != backTripInfo) {
                     View line = new View(this);
                     line.setBackgroundColor(Color.parseColor("#cccccc"));
@@ -127,12 +135,14 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
                     flightLayout.addView(line, llp);
                     View backFlightView = LayoutInflater.from(this).inflate(R.layout.layout_plane_pay_item, null);
                     flightLayout.addView(backFlightView);
+                    setFlightViewInfo(backFlightView, backTripInfo);
                 }
             }
         } else {
             if (null != goFlightDetailInfo) {
                 View goFlightView = LayoutInflater.from(this).inflate(R.layout.layout_plane_pay_item, null);
                 flightLayout.addView(goFlightView);
+                setFlightViewInfo(goFlightView, goFlightDetailInfo);
                 if (null != backFlightDetailInfo) {
                     View line = new View(this);
                     line.setBackgroundColor(Color.parseColor("#cccccc"));
@@ -140,6 +150,7 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
                     flightLayout.addView(line, llp);
                     View backFlightView = LayoutInflater.from(this).inflate(R.layout.layout_plane_pay_item, null);
                     flightLayout.addView(backFlightView);
+                    setFlightViewInfo(backFlightView, backFlightDetailInfo);
                 }
             }
         }
@@ -262,6 +273,116 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
         unionpay = null;
         if (null != mPayReceiver) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mPayReceiver);
+        }
+    }
+
+    private void setFlightViewInfo(View v, PlaneNewOrderActivity.FlightDetailInfo detailInfo) {
+        Date date = DateUtil.str2Date(detailInfo.ticketInfo.date, "yyyy-MM-dd");
+        ((TextView) v.findViewById(R.id.tv_flight_date)).setText(DateUtil.getDay("MM月dd日", date.getTime()) + " " + DateUtil.dateToWeek2(date));
+        String city = "";
+        if ("GO".equals(detailInfo.tag)) {
+            city = PlaneOrderManager.instance.getGoFlightOffAirportInfo().cityname + " - " + PlaneOrderManager.instance.getGoFlightOnAirportInfo().cityname;
+        } else if ("BACK".equals(detailInfo.tag)) {
+            city = PlaneOrderManager.instance.getBackFlightOffAirportInfo().cityname + " - " + PlaneOrderManager.instance.getBackFlightOnAirportInfo().cityname;
+        }
+        ((TextView) v.findViewById(R.id.tv_flight_city)).setText(city);
+        ((TextView) v.findViewById(R.id.tv_flight_cabin)).setText(detailInfo.flightInfo.cabin);
+        ((TextView) v.findViewById(R.id.tv_flight_off_time)).setText(detailInfo.flightInfo.dptTime);
+        ((TextView) v.findViewById(R.id.tv_flight_off_airport)).setText(detailInfo.flightInfo.dptAirport + detailInfo.flightInfo.dptTerminal);
+        ((TextView) v.findViewById(R.id.tv_flight_on_time)).setText(detailInfo.flightInfo.arrTime);
+        ((TextView) v.findViewById(R.id.tv_flight_on_airport)).setText(detailInfo.flightInfo.arrAirport + detailInfo.flightInfo.arrTerminal);
+        LinearLayout stopLayout = (LinearLayout) v.findViewById(R.id.stopover_lay);
+        if (!detailInfo.flightInfo.stop) {
+            stopLayout.setVisibility(View.GONE);
+        } else {
+            stopLayout.setVisibility(View.VISIBLE);
+            ((TextView) v.findViewById(R.id.tv_flight_stopover)).setText("经停" + detailInfo.flightInfo.stopCityName);
+        }
+        ((TextView) v.findViewById(R.id.tv_flight_during)).setText(detailInfo.flightInfo.flightTimes);
+
+        //航班基本信息
+        LinearLayout flightBaseInfoLay = (LinearLayout) v.findViewById(R.id.flight_base_info_lay);
+        flightBaseInfoLay.removeAllViews();
+        ArrayList<String> items = new ArrayList<>();
+        //航空公司、航班号
+        if (StringUtil.notEmpty(detailInfo.flightInfo.carrier)) {
+            String item = detailInfo.flightInfo.carrier;
+            if (SessionContext.getAirCompanyMap().size() > 0
+                    && SessionContext.getAirCompanyMap().containsKey(detailInfo.flightInfo.carrier)) {
+                AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(detailInfo.flightInfo.carrier);
+                item = companyInfoBean.company + " " + detailInfo.flightInfo.flightNum;
+            }
+            items.add(item);
+        }
+        //航班型号
+        if (StringUtil.notEmpty(detailInfo.flightInfo.flightTypeFullName)) {
+            items.add(detailInfo.flightInfo.flightTypeFullName);
+        }
+        //准点率
+        if (StringUtil.notEmpty(detailInfo.ticketInfo.correct)) {
+            items.add("准点率 " + detailInfo.ticketInfo.correct);
+        }
+        //有无餐食
+        items.add(detailInfo.flightInfo.meal ? "有餐食" : "无餐食");
+
+        for (int i = 0; i < items.size(); i++) {
+            TextView tv_item = new TextView(this);
+            tv_item.setTextColor(Color.parseColor("#666666"));
+            tv_item.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            tv_item.setText(items.get(i));
+            flightBaseInfoLay.addView(tv_item);
+            if (i < items.size() - 1) {
+                View line = new View(this);
+                line.setBackgroundColor(Color.parseColor("#666666"));
+                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(Utils.dp2px(0.5f), ViewGroup.LayoutParams.MATCH_PARENT);
+                llp.setMargins(Utils.dp2px(5), Utils.dp2px(2), Utils.dp2px(5), Utils.dp2px(2));
+                flightBaseInfoLay.addView(line, llp);
+            }
+        }
+    }
+
+    private void setFlightViewInfo(View v, PlaneOrderDetailInfoBean.TripInfo tripInfo) {
+        ((TextView) v.findViewById(R.id.tv_flight_date)).setText(DateUtil.getDay("MM月dd日", tripInfo.sDate) + " " + DateUtil.dateToWeek2(new Date(tripInfo.sDate)));
+        ((TextView) v.findViewById(R.id.tv_flight_city)).setText(tripInfo.scity + " - " + tripInfo.ecity);
+        ((TextView) v.findViewById(R.id.tv_flight_cabin)).setText(tripInfo.airCabin);
+        ((TextView) v.findViewById(R.id.tv_flight_off_time)).setText(tripInfo.sTime);
+        ((TextView) v.findViewById(R.id.tv_flight_off_airport)).setText(tripInfo.sAirport + tripInfo.sTerminal);
+        ((TextView) v.findViewById(R.id.tv_flight_on_time)).setText(tripInfo.eTime);
+        ((TextView) v.findViewById(R.id.tv_flight_on_airport)).setText(tripInfo.eAirport + tripInfo.eTerminal);
+        v.findViewById(R.id.stopover_lay).setVisibility(View.GONE);
+        ((TextView) v.findViewById(R.id.tv_flight_during)).setText(tripInfo.flyTime);
+
+        //航班基本信息
+        LinearLayout flightBaseInfoLay = (LinearLayout) v.findViewById(R.id.flight_base_info_lay);
+        flightBaseInfoLay.removeAllViews();
+        ArrayList<String> items = new ArrayList<>();
+        //航空公司、航班号
+        if (StringUtil.notEmpty(tripInfo.airco)) {
+            String item = tripInfo.airco;
+            if (SessionContext.getAirCompanyMap().size() > 0
+                    && SessionContext.getAirCompanyMap().containsKey(tripInfo.airco)) {
+                AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(tripInfo.airco);
+                item = companyInfoBean.company + " " + tripInfo.flightNo;
+            }
+            items.add(item);
+        }
+        //航班型号
+        //准点率
+        //有无餐食
+
+        for (int i = 0; i < items.size(); i++) {
+            TextView tv_item = new TextView(this);
+            tv_item.setTextColor(Color.parseColor("#666666"));
+            tv_item.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            tv_item.setText(items.get(i));
+            flightBaseInfoLay.addView(tv_item);
+            if (i < items.size() - 1) {
+                View line = new View(this);
+                line.setBackgroundColor(Color.parseColor("#666666"));
+                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(Utils.dp2px(0.5f), ViewGroup.LayoutParams.MATCH_PARENT);
+                llp.setMargins(Utils.dp2px(5), Utils.dp2px(2), Utils.dp2px(5), Utils.dp2px(2));
+                flightBaseInfoLay.addView(line, llp);
+            }
         }
     }
 }

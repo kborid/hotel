@@ -13,6 +13,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_flight_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10月10日 周六"
@@ -21,6 +22,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_flight_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -30,6 +32,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_flight_cabin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -54,6 +57,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_flight_off_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -62,6 +66,7 @@
                 android:textSize="@dimen/common_20sp" />
 
             <TextView
+                android:id="@+id/tv_flight_off_airport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -92,13 +97,15 @@
 
                 <!--航班经停信息-->
                 <LinearLayout
+                    android:id="@+id/stopover_lay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
+                        android:id="@+id/tv_flight_stopover"
                         android:layout_width="56dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -117,6 +124,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_flight_during"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="21小时40分钟"
@@ -141,6 +149,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_flight_on_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -149,6 +158,7 @@
                 android:textSize="@dimen/common_20sp" />
 
             <TextView
+                android:id="@+id/tv_flight_on_airport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -159,6 +169,7 @@
     </LinearLayout>
     <!--航班基本信息-->
     <LinearLayout
+        android:id="@+id/flight_base_info_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"

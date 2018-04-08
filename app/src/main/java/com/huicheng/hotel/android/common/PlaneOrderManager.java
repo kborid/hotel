@@ -17,16 +17,16 @@ public enum PlaneOrderManager {
     private int status = PlaneCommDef.STATUS_GO;
     private int flightType = PlaneCommDef.FLIGHT_SINGLE;
 
-    private CityAirportInfoBean offAirportInfo;
-    private CityAirportInfoBean onAirportInfo;
-
+    //往返航班机票信息
     private long goOffDate = 0;
-    private long backOffDate = 0;
-
-    //航班机票信息
+    private CityAirportInfoBean goOffAirportInfo;
+    private CityAirportInfoBean goOnAirportInfo;
     private PlaneFlightInfoBean goFlightInfo;
     private PlaneTicketInfoBean goTicketInfo;
     private PlaneTicketInfoBean.VendorInfo goVendorInfo;
+    private long backOffDate = 0;
+    private CityAirportInfoBean backOffAirportInfo;
+    private CityAirportInfoBean backOnAirportInfo;
     private PlaneFlightInfoBean backFlightInfo;
     private PlaneTicketInfoBean backTicketInfo;
     private PlaneTicketInfoBean.VendorInfo backVendorInfo;
@@ -56,19 +56,45 @@ public enum PlaneOrderManager {
     }
 
     public void setFlightOffAirportInfo(CityAirportInfoBean offAirportInfo) {
-        this.offAirportInfo = offAirportInfo;
+        this.goOffAirportInfo = offAirportInfo;
+        this.backOnAirportInfo = offAirportInfo;
+    }
+
+    public CityAirportInfoBean getGoFlightOffAirportInfo() {
+        return goOffAirportInfo;
+    }
+
+    public CityAirportInfoBean getBackFlightOffAirportInfo() {
+        return backOffAirportInfo;
     }
 
     public CityAirportInfoBean getFlightOffAirportInfo() {
-        return offAirportInfo;
+        if (isBackBookingTypeForGoBack()) {
+            return backOffAirportInfo;
+        } else {
+            return goOffAirportInfo;
+        }
     }
 
     public void setFlightOnAirportInfo(CityAirportInfoBean onAirportInfo) {
-        this.onAirportInfo = onAirportInfo;
+        this.goOnAirportInfo = onAirportInfo;
+        this.backOffAirportInfo = onAirportInfo;
+    }
+
+    public CityAirportInfoBean getGoFlightOnAirportInfo() {
+        return goOnAirportInfo;
+    }
+
+    public CityAirportInfoBean getBackFlightOnAirportInfo() {
+        return backOnAirportInfo;
     }
 
     public CityAirportInfoBean getFlightOnAirportInfo() {
-        return onAirportInfo;
+        if (isBackBookingTypeForGoBack()) {
+            return backOnAirportInfo;
+        } else {
+            return goOnAirportInfo;
+        }
     }
 
 
@@ -172,8 +198,8 @@ public enum PlaneOrderManager {
         flightType = PlaneCommDef.FLIGHT_SINGLE;
         goOffDate = 0;
         backOffDate = 0;
-        offAirportInfo = null;
-        onAirportInfo = null;
+        goOffAirportInfo = null;
+        goOnAirportInfo = null;
 
         goFlightInfo = null;
         backFlightInfo = null;

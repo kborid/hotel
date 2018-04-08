@@ -37,7 +37,6 @@ import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneInvoiceTaxInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
-import com.huicheng.hotel.android.tools.CityParseUtils;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane;
 import com.huicheng.hotel.android.ui.custom.plane.ICustomInfoLayoutPlaneCountListener;
@@ -193,13 +192,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     public void initParams() {
         super.initParams();
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
-        tv_center_title.setText(
-                CityParseUtils.getPlaneOffOnCity(
-                        PlaneOrderManager.instance.getFlightOffAirportInfo().cityname,
-                        PlaneOrderManager.instance.getFlightOnAirportInfo().cityname,
-                        "→"
-                )
-        );
+        tv_center_title.setText("创建订单");
 
         goFlightDetailInfo = new FlightDetailInfo(
                 "GO",
