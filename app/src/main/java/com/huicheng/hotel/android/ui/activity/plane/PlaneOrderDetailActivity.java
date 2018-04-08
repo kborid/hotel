@@ -45,8 +45,8 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
 
     private static final int BACK_TICKET = 0x003;
     private static final int CHANGE_TICKET = 0x004;
-    private static final int BACK_TRIP = 1;
-    private static final int GO_TRIP = 2;
+    private static final int GO_TRIP = 1;
+    private static final int BACK_TRIP = 2;
 
     @BindView(R.id.scroll_view)
     ScrollView scrollView;

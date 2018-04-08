@@ -1,6 +1,7 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.PlaneOrderManager;
+import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
+import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
 import com.prj.sdk.util.BitmapUtils;
+import com.prj.sdk.util.DateUtil;
+import com.prj.sdk.util.StringUtil;
 
 public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
 
@@ -26,6 +33,9 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
     private TextView tv_plane_name, tv_plane_name_back;
     private TextView tv_plane_code, tv_plane_code_back;
     private TextView tv_plane_date, tv_plane_date_back;
+
+    private PlaneNewOrderActivity.FlightDetailInfo goFlightDetailInfo = null, backFlightDetailInfo = null;
+    private PlaneOrderDetailInfoBean.TripInfo goTripInfo = null, backTripInfo = null;
 
     @Override
     protected void setContentView() {
@@ -42,6 +52,18 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
     }
 
     @Override
+    protected void dealIntent() {
+        super.dealIntent();
+        Bundle bundle = getIntent().getExtras();
+        if (null != bundle) {
+            goFlightDetailInfo = (PlaneNewOrderActivity.FlightDetailInfo) bundle.getSerializable("goFlightDetailInfo");
+            backFlightDetailInfo = (PlaneNewOrderActivity.FlightDetailInfo) bundle.getSerializable("backFlightDetailInfo");
+            goTripInfo = (PlaneOrderDetailInfoBean.TripInfo) bundle.getSerializable("goTripInfo");
+            backTripInfo = (PlaneOrderDetailInfoBean.TripInfo) bundle.getSerializable("backTripInfo");
+        }
+    }
+
+    @Override
     public void initParams() {
         super.initParams();
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
@@ -50,12 +72,31 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
 
         iv_pay_success.setImageBitmap(BitmapUtils.getAlphaBitmap(iv_pay_success.getDrawable(), getResources().getColor(R.color.plane_mainColor)));
         order_info_lay.removeAllViews();
-        if (PlaneOrderManager.instance.isFlightGoBack()) {
+        if (backTripInfo != null || backFlightDetailInfo != null) {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_goback_order_item, null);
             iv_plane_icon_back = (ImageView) orderLayout.findViewById(R.id.iv_plane_icon_back);
             tv_plane_name_back = (TextView) orderLayout.findViewById(R.id.tv_plane_name_back);
             tv_plane_code_back = (TextView) orderLayout.findViewById(R.id.tv_plane_code_back);
             tv_plane_date_back = (TextView) orderLayout.findViewById(R.id.tv_plane_date_back);
+            String flightCode = null != backTripInfo ? backTripInfo.airco : backFlightDetailInfo.flightInfo.carrier;
+            if (StringUtil.notEmpty(flightCode)) {
+                if (SessionContext.getAirCompanyMap().size() > 0
+                        && SessionContext.getAirCompanyMap().containsKey(flightCode)) {
+                    AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(flightCode);
+                    tv_plane_name_back.setText(companyInfoBean.company);
+                    iv_plane_icon_back.setVisibility(View.VISIBLE);
+                    Glide.with(this)
+                            .load(new CustomReqURLFormatModelImpl(companyInfoBean.logourl))
+                            .fitCenter()
+                            .into(iv_plane_icon_back);
+                } else {
+                    tv_plane_name_back.setText(flightCode);
+                    iv_plane_icon_back.setVisibility(View.GONE);
+                }
+            }
+            tv_plane_code_back.setText(null != backTripInfo ? backTripInfo.flightNo : backFlightDetailInfo.flightInfo.flightNum);
+            String date = null != backTripInfo ? DateUtil.getDay("MM月dd日", backTripInfo.sDate) + " " + backTripInfo.sTime : DateUtil.getDay("MM月dd日 HH:mm", DateUtil.str2Date(backFlightDetailInfo.ticketInfo.date).getTime());
+            tv_plane_date_back.setText(date);
         } else {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_gosingle_order_item, null);
         }
@@ -64,6 +105,25 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
         tv_plane_code = (TextView) orderLayout.findViewById(R.id.tv_plane_code);
         tv_plane_date = (TextView) orderLayout.findViewById(R.id.tv_plane_date);
         order_info_lay.addView(orderLayout);
+        String flightCode = null != goTripInfo ? goTripInfo.airco : goFlightDetailInfo.flightInfo.carrier;
+        if (StringUtil.notEmpty(flightCode)) {
+            if (SessionContext.getAirCompanyMap().size() > 0
+                    && SessionContext.getAirCompanyMap().containsKey(flightCode)) {
+                AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(flightCode);
+                tv_plane_name.setText(companyInfoBean.company);
+                iv_plane_icon.setVisibility(View.VISIBLE);
+                Glide.with(this)
+                        .load(new CustomReqURLFormatModelImpl(companyInfoBean.logourl))
+                        .fitCenter()
+                        .into(iv_plane_icon);
+            } else {
+                tv_plane_name.setText(flightCode);
+                iv_plane_icon.setVisibility(View.GONE);
+            }
+        }
+        tv_plane_code.setText(null != goTripInfo ? goTripInfo.flightNo : goFlightDetailInfo.flightInfo.flightNum);
+        String date = null != goTripInfo ? DateUtil.getDay("MM月dd日", goTripInfo.sDate) + " " + goTripInfo.sTime : DateUtil.getDay("MM月dd日 HH:mm", DateUtil.str2Date(goFlightDetailInfo.ticketInfo.date).getTime());
+        tv_plane_date.setText(date);
     }
 
     @Override

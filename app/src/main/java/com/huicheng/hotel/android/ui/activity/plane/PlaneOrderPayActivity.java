@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.ui.activity.plane;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -28,12 +29,15 @@ import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneOrderDetailInfoBean;
+import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonPayChannelLayout;
+import com.huicheng.hotel.android.ui.dialog.CustomDialog;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
+import com.prj.sdk.util.ActivityTack;
 import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.StringUtil;
@@ -53,8 +57,8 @@ import butterknife.OnClick;
 
 public class PlaneOrderPayActivity extends BaseAppActivity {
 
-    private static final int BACK_TRIP = 1;
-    private static final int GO_TRIP = 2;
+    private static final int GO_TRIP = 1;
+    private static final int BACK_TRIP = 2;
 
     @BindView(R.id.tv_amount)
     TextView tvAmount;
@@ -72,9 +76,9 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
 
     private int mAmount = 0;
     private String mOrderNo = "";
-    private PlaneNewOrderActivity.FlightDetailInfo goFlightDetailInfo = null;
-    private PlaneNewOrderActivity.FlightDetailInfo backFlightDetailInfo = null;
+    private PlaneNewOrderActivity.FlightDetailInfo goFlightDetailInfo = null, backFlightDetailInfo = null;
     private List<PlaneOrderDetailInfoBean.TripInfo> tripInfoList = null;
+    private PlaneOrderDetailInfoBean.TripInfo goTripInfo = null, backTripInfo = null;
 
     @Override
     protected void setContentView() {
@@ -91,6 +95,16 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
             goFlightDetailInfo = (PlaneNewOrderActivity.FlightDetailInfo) bundle.getSerializable("goFlightDetailInfo");
             backFlightDetailInfo = (PlaneNewOrderActivity.FlightDetailInfo) bundle.getSerializable("backFlightDetailInfo");
             tripInfoList = (List<PlaneOrderDetailInfoBean.TripInfo>) bundle.getSerializable("tripInfoList");
+            if (null != tripInfoList) {
+                for (int i = 0; i < tripInfoList.size(); i++) {
+                    PlaneOrderDetailInfoBean.TripInfo tripInfo = tripInfoList.get(i);
+                    if (tripInfo.tripType == GO_TRIP) { //去程信息
+                        goTripInfo = tripInfo;
+                    } else if (tripInfo.tripType == BACK_TRIP) { //返程信息
+                        backTripInfo = tripInfo;
+                    }
+                }
+            }
         }
     }
 
@@ -116,16 +130,7 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
 
     private void refreshFlightLayoutInfo() {
         flightLayout.removeAllViews();
-        if (null != tripInfoList && tripInfoList.size() > 0) {
-            PlaneOrderDetailInfoBean.TripInfo goTripInfo = null, backTripInfo = null;
-            for (int i = 0; i < tripInfoList.size(); i++) {
-                PlaneOrderDetailInfoBean.TripInfo tripInfo = tripInfoList.get(i);
-                if (tripInfo.tripType == GO_TRIP) { //去程信息
-                    goTripInfo = tripInfo;
-                } else if (tripInfo.tripType == BACK_TRIP) { //返程信息
-                    backTripInfo = tripInfo;
-                }
-            }
+        if (null != tripInfoList) {
             if (null != goTripInfo) {
                 View goFlightView = LayoutInflater.from(this).inflate(R.layout.layout_plane_pay_item, null);
                 flightLayout.addView(goFlightView);
@@ -189,15 +194,29 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.iv_back:
-//                startActivity(new Intent(this, MainSwitcherActivity.class));
-                CustomToast.show("要支付！", CustomToast.LENGTH_LONG);
-//                if (ActivityTack.getInstanse().isExitActivity(PlaneTicketListActivity.class)) {
-//                    Intent intent = new Intent(PlaneOrderPayActivity.this, MainSwitcherActivity.class);
-//                    intent.putExtra("isClosed", true);
-//                    startActivity(intent);
-//                } else {
-//                    finish();
-//                }
+                CustomDialog dialog = new CustomDialog(this);
+                dialog.setTitle("温馨提示");
+                dialog.setMessage("您将离开，该订单请在15分钟内完成支付，否则订单自动取消。\n\n离开之后，您可以在\n【个人中心】→【我的订单】中继续支付。");
+                dialog.setPositiveButton("继续支付", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.setNegativeButton("确认离开", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (ActivityTack.getInstanse().isExitActivity(PlaneTicketListActivity.class)) {
+                            Intent intent = new Intent(PlaneOrderPayActivity.this, MainSwitcherActivity.class);
+                            intent.putExtra("isClosed", true);
+                            startActivity(intent);
+                        } else {
+                            finish();
+                        }
+                    }
+                });
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
                 break;
         }
     }
@@ -211,7 +230,12 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
                 }
                 break;
             case R.id.tv_detail:
-                startActivity(new Intent(this, PlaneOrderPaySuccessActivity.class));
+                Intent intent = new Intent(this, PlaneOrderPaySuccessActivity.class);
+                intent.putExtra("goFlightDetailInfo", goFlightDetailInfo);
+                intent.putExtra("backFlightDetailInfo", backFlightDetailInfo);
+                intent.putExtra("goTripInfo", goTripInfo);
+                intent.putExtra("backTripInfo", backTripInfo);
+                startActivity(intent);
                 break;
         }
     }
@@ -351,8 +375,14 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
         ((TextView) v.findViewById(R.id.tv_flight_off_airport)).setText(tripInfo.sAirport + tripInfo.sTerminal);
         ((TextView) v.findViewById(R.id.tv_flight_on_time)).setText(tripInfo.eTime);
         ((TextView) v.findViewById(R.id.tv_flight_on_airport)).setText(tripInfo.eAirport + tripInfo.eTerminal);
-        v.findViewById(R.id.stopover_lay).setVisibility(View.GONE);
         ((TextView) v.findViewById(R.id.tv_flight_during)).setText(tripInfo.flyTime);
+        LinearLayout stopLayout = (LinearLayout) v.findViewById(R.id.stopover_lay);
+        if (!tripInfo.stop) {
+            stopLayout.setVisibility(View.GONE);
+        } else {
+            stopLayout.setVisibility(View.VISIBLE);
+            ((TextView) v.findViewById(R.id.tv_flight_stopover)).setText("经停" + tripInfo.stopCityName);
+        }
 
         //航班基本信息
         LinearLayout flightBaseInfoLay = (LinearLayout) v.findViewById(R.id.flight_base_info_lay);
