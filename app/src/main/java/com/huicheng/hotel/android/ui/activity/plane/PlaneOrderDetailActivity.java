@@ -172,7 +172,6 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                             if (SessionContext.getAirCompanyMap().size() > 0
                                     && SessionContext.getAirCompanyMap().containsKey(goTripInfo.airco)) {
                                 AirCompanyInfoBean companyInfoBean = SessionContext.getAirCompanyMap().get(goTripInfo.airco);
-                                System.out.println(companyInfoBean.toString());
                                 tv_company.setText(companyInfoBean.company);
                                 iv_flight_icon.setVisibility(View.VISIBLE);
                                 Glide.with(this)
@@ -527,7 +526,6 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
     }
 
     private void backPlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
-        System.out.println("backPlaneTicketAction()");
         Intent intent = new Intent(this, PlaneBackTicketActivity.class);
         intent.putExtra("tripId", tripInfo.tripId);
         intent.putExtra("plane_action", 0);
@@ -535,7 +533,6 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
     }
 
     private void changePlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
-        System.out.println("changePlaneTicketAction()");
         Intent intent = new Intent(this, PlaneBackTicketActivity.class);
         intent.putExtra("tripId", tripInfo.tripId);
         intent.putExtra("plane_action", 1);

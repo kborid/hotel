@@ -61,10 +61,6 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
             goTripInfo = (PlaneOrderDetailInfoBean.TripInfo) bundle.getSerializable("goTripInfo");
             backTripInfo = (PlaneOrderDetailInfoBean.TripInfo) bundle.getSerializable("backTripInfo");
         }
-        System.out.println("goTripInfo = " + goTripInfo);
-        System.out.println("backTripInfo = " + backTripInfo);
-        System.out.println("goFlightDetailInfo = " + goFlightDetailInfo);
-        System.out.println("backFlightDetailInfo = " + backFlightDetailInfo);
     }
 
     @Override

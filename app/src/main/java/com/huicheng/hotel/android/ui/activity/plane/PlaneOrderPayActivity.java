@@ -113,9 +113,6 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
         findViewById(R.id.comm_title_rl).setBackgroundColor(getResources().getColor(R.color.white));
         tv_center_title.setText("支付方式");
         tvAmount.setText(String.format(getString(R.string.rmbStr2), mAmount));
-        System.out.println("tripInfoList = " + tripInfoList);
-        System.out.println("goFlightDetailInfo = " + goFlightDetailInfo);
-        System.out.println("backFlightDetailInfo = " + backFlightDetailInfo);
         refreshFlightLayoutInfo();
 
         alipay = new AlipayUtil(this);
