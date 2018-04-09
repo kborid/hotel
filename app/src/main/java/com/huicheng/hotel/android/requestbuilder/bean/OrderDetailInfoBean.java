@@ -42,4 +42,7 @@ public class OrderDetailInfoBean implements Serializable {
     public String flightNo;
     public String passengerNames;
     public long toFlyTime;
+
+    public int stops;
+    public String stopCity;
 }

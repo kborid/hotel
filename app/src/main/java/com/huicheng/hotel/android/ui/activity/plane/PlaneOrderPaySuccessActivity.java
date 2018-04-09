@@ -61,6 +61,10 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
             goTripInfo = (PlaneOrderDetailInfoBean.TripInfo) bundle.getSerializable("goTripInfo");
             backTripInfo = (PlaneOrderDetailInfoBean.TripInfo) bundle.getSerializable("backTripInfo");
         }
+        System.out.println("goTripInfo = " + goTripInfo);
+        System.out.println("backTripInfo = " + backTripInfo);
+        System.out.println("goFlightDetailInfo = " + goFlightDetailInfo);
+        System.out.println("backFlightDetailInfo = " + backFlightDetailInfo);
     }
 
     @Override
@@ -95,7 +99,9 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
                 }
             }
             tv_plane_code_back.setText(null != backTripInfo ? backTripInfo.flightNo : backFlightDetailInfo.flightInfo.flightNum);
-            String date = null != backTripInfo ? DateUtil.getDay("MM月dd日", backTripInfo.sDate) + " " + backTripInfo.sTime : DateUtil.getDay("MM月dd日 HH:mm", DateUtil.str2Date(backFlightDetailInfo.ticketInfo.date).getTime());
+            String date = (null != backTripInfo)
+                    ? (DateUtil.getDay("MM月dd日", backTripInfo.sDate) + " " + backTripInfo.sTime)
+                    : (DateUtil.getDay("MM月dd日", DateUtil.str2Date(backFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd").getTime()) + " " + backFlightDetailInfo.ticketInfo.btime);
             tv_plane_date_back.setText(date);
         } else {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_gosingle_order_item, null);
@@ -122,7 +128,9 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
             }
         }
         tv_plane_code.setText(null != goTripInfo ? goTripInfo.flightNo : goFlightDetailInfo.flightInfo.flightNum);
-        String date = null != goTripInfo ? DateUtil.getDay("MM月dd日", goTripInfo.sDate) + " " + goTripInfo.sTime : DateUtil.getDay("MM月dd日 HH:mm", DateUtil.str2Date(goFlightDetailInfo.ticketInfo.date).getTime());
+        String date = (null != goTripInfo)
+                ? (DateUtil.getDay("MM月dd日", goTripInfo.sDate) + " " + goTripInfo.sTime)
+                : (DateUtil.getDay("MM月dd日", DateUtil.str2Date(goFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd").getTime()) + " " + goFlightDetailInfo.ticketInfo.btime);
         tv_plane_date.setText(date);
     }
 

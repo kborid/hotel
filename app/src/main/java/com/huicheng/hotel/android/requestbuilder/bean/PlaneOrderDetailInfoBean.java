@@ -71,8 +71,8 @@ public class PlaneOrderDetailInfoBean implements Serializable {
         public int tripType;
         public long updatetime;
         public List<PassengerInfo> passengerList;
-        public boolean stop;
-        public String stopCityName;
+        public int stops;
+        public String stopCity;
     }
 
     public static class PassengerInfo implements Serializable {

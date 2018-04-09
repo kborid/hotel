@@ -518,8 +518,7 @@ public class PlaneFlightListActivity extends BaseAppActivity {
         List<PlaneFlightInfoBean> temp = null;
         if (list != null && list.size() > 0) {
             temp = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                PlaneFlightInfoBean bean = list.get(i);
+            for (PlaneFlightInfoBean bean : list) {
                 //是否直达
                 {
                     if (mPlaneConsiderLayout.isStraight()) {

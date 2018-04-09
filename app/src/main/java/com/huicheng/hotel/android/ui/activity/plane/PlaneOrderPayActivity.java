@@ -96,8 +96,7 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
             backFlightDetailInfo = (PlaneNewOrderActivity.FlightDetailInfo) bundle.getSerializable("backFlightDetailInfo");
             tripInfoList = (List<PlaneOrderDetailInfoBean.TripInfo>) bundle.getSerializable("tripInfoList");
             if (null != tripInfoList) {
-                for (int i = 0; i < tripInfoList.size(); i++) {
-                    PlaneOrderDetailInfoBean.TripInfo tripInfo = tripInfoList.get(i);
+                for (PlaneOrderDetailInfoBean.TripInfo tripInfo : tripInfoList) {
                     if (tripInfo.tripType == GO_TRIP) { //去程信息
                         goTripInfo = tripInfo;
                     } else if (tripInfo.tripType == BACK_TRIP) { //返程信息
@@ -377,11 +376,11 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
         ((TextView) v.findViewById(R.id.tv_flight_on_airport)).setText(tripInfo.eAirport + tripInfo.eTerminal);
         ((TextView) v.findViewById(R.id.tv_flight_during)).setText(tripInfo.flyTime);
         LinearLayout stopLayout = (LinearLayout) v.findViewById(R.id.stopover_lay);
-        if (!tripInfo.stop) {
+        if (tripInfo.stops <= 0) {
             stopLayout.setVisibility(View.GONE);
         } else {
             stopLayout.setVisibility(View.VISIBLE);
-            ((TextView) v.findViewById(R.id.tv_flight_stopover)).setText("经停" + tripInfo.stopCityName);
+            ((TextView) v.findViewById(R.id.tv_flight_stopover)).setText("经停" + tripInfo.stopCity);
         }
 
         //航班基本信息
