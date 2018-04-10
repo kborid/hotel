@@ -232,6 +232,8 @@
     <string name="plane_double">往返</string>
     <string name="expressPrice">(邮费¥%1$d)</string>
     <string name="passengersStr">(共%1$d人)</string>
+    <string name="plane_agreement1">锂电池规定、禁止危险品乘机说明 及 特殊旅客购票须知</string>
+    <string name="plane_agreement2">ABC旅行预订会员服务协议（包括0元入住协议）</string>
 
     <string-array name="PlaneConditionItem">
         <item>起飞时段</item>

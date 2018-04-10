@@ -126,6 +126,11 @@ public final class NetURL {
     public static final String SZ_TAXI_HOME_DEBUG = "https://commonwappre.10101111.com/join";
     public static final String SZ_TAXI_HOME_RELEASE = "https://commonwap.10101111.com/join";
     public static final String BOUNTY_LXB_RULE = "http://pro.abcbooking.cn/wechat/rule/index.html";
+    public static final String PLANE_ACCIDENT_DETAIL = "http://pro.abcbooking.cn/hmp_website/pages/plain/pages/agreements/agreements-1.html";
+    public static final String PLANE_DELAY_DETAIL = "http://pro.abcbooking.cn/hmp_website/pages/plain/pages/agreements/agreements-3.html";
+    public static final String PLANE_LITHIUM_RULE = "http://pro.abcbooking.cn/hmp_website/pages/plain/pages/agreements/agreements-4.html";
+    public static final String PLANE_DANGEROUS_RULE = "http://pro.abcbooking.cn/hmp_website/pages/plain/pages/agreements/agreements-5.html";
+    public static final String PLANE_PASSENGER_RULE = "http://pro.abcbooking.cn/hmp_website/pages/plain/pages/agreements/agreements-2.html";
 
     //-------------------------------------机票-----------------------------------------------------
     public static final String PLANE_AIRPORT_LIST = PORTAL + "search/airports.json"; //查询机场列表

@@ -3,6 +3,12 @@ package com.huicheng.hotel.android.ui.activity.plane;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.IdRes;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,6 +43,8 @@ import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneInvoiceTaxInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
+import com.huicheng.hotel.android.ui.activity.HtmlActivity;
+import com.huicheng.hotel.android.ui.activity.UcAboutActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.plane.CustomInfoLayoutForPlane;
 import com.huicheng.hotel.android.ui.custom.plane.ICustomInfoLayoutPlaneCountListener;
@@ -95,6 +103,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
     private TextView tv_delay_price;
 
     private TextView tv_express_addr, tv_express_name, tv_express_phone, tv_express_chooser;
+    private TextView tv_plane_agreement1, tv_plane_agreement2;
 
     private TextView tv_amount;
     private TextView tv_passenger;
@@ -180,6 +189,9 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         tv_express_name = (TextView) findViewById(R.id.tv_express_name);
         tv_express_phone = (TextView) findViewById(R.id.tv_express_phone);
         tv_express_chooser = (TextView) findViewById(R.id.tv_express_chooser);
+
+        tv_plane_agreement1 = (TextView) findViewById(R.id.tv_plane_agreement1);
+        tv_plane_agreement2 = (TextView) findViewById(R.id.tv_plane_agreement2);
 
         tv_amount = (TextView) findViewById(R.id.tv_amount);
         tv_passenger = (TextView) findViewById(R.id.tv_passenger);
@@ -277,6 +289,8 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
 
         //initialize
+        setAgreement1TextSpan(getString(R.string.plane_agreement1));
+        setAgreement2TextSpan(getString(R.string.plane_agreement2));
         tv_express_price.setVisibility(View.GONE);
         btn_invoice_switch.setChecked(false);
         tv_invoice_tips.setVisibility(View.VISIBLE);
@@ -518,6 +532,88 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
         }
     }
 
+    private void setAgreement1TextSpan(String agreement) {
+        SpannableString ss = new SpannableString(agreement);
+        //锂电池规定
+        ss.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(PlaneNewOrderActivity.this, HtmlActivity.class);
+                intent.putExtra("path", NetURL.PLANE_LITHIUM_RULE);
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        }, 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getColor(R.color.plane_mainColor)), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        //禁止危险品乘机说明
+        ss.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(PlaneNewOrderActivity.this, HtmlActivity.class);
+                intent.putExtra("path", NetURL.PLANE_DANGEROUS_RULE);
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        }, 6, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getColor(R.color.plane_mainColor)), 6, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        //特殊旅客购票须知
+        ss.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(PlaneNewOrderActivity.this, HtmlActivity.class);
+                intent.putExtra("path", NetURL.PLANE_PASSENGER_RULE);
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        }, 18, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getColor(R.color.plane_mainColor)), 18, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        tv_plane_agreement1.setLinksClickable(true);
+        tv_plane_agreement1.setMovementMethod(LinkMovementMethod.getInstance());
+        tv_plane_agreement1.setText(ss);
+    }
+
+    private void setAgreement2TextSpan(String agreement) {
+        SpannableString ss = new SpannableString(agreement);
+        ss.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(PlaneNewOrderActivity.this, UcAboutActivity.class);
+                intent.putExtra("title", getResources().getString(R.string.setting_usage_condition));
+                intent.putExtra("index", UcAboutActivity.WORK_CONDITION);
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        }, 0, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getColor(R.color.plane_mainColor)), 0, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        tv_plane_agreement2.setLinksClickable(true);
+        tv_plane_agreement2.setMovementMethod(LinkMovementMethod.getInstance());
+        tv_plane_agreement2.setText(ss);
+    }
+
     private boolean checkRequestParamsValid() {
         boolean isValid = false;
         if (StringUtil.isEmpty(et_contact.getText().toString())) {
@@ -751,6 +847,18 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
             showProgressDialog(this);
         }
         requestID = DataLoader.getInstance().loadData(this, d);
+    }
+
+    public void showAccidentDetail(View v) {
+        Intent intent = new Intent(this, HtmlActivity.class);
+        intent.putExtra("path", NetURL.PLANE_ACCIDENT_DETAIL);
+        startActivity(intent);
+    }
+
+    public void showDelayDetail(View v) {
+        Intent intent = new Intent(this, HtmlActivity.class);
+        intent.putExtra("path", NetURL.PLANE_DELAY_DETAIL);
+        startActivity(intent);
     }
 
     @Override

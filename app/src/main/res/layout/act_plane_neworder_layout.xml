@@ -185,6 +185,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="16dp"
                                 android:text="详细说明"
+                                android:onClick="showAccidentDetail"
                                 android:textColor="@color/plane_mainColor"
                                 android:textSize="@dimen/common_12sp" />
 
@@ -228,6 +229,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="16dp"
                                 android:text="详细说明"
+                                android:onClick="showDelayDetail"
                                 android:textColor="@color/plane_mainColor"
                                 android:textSize="@dimen/common_12sp" />
 
@@ -530,12 +532,13 @@
                             android:textSize="@dimen/common_12sp" />
 
                         <TextView
+                            android:id="@+id/tv_plane_agreement1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="1dp"
                             android:gravity="bottom"
-                            android:text="锂电池规定、禁止危险品乘机说明 及 特殊旅客购票须知"
-                            android:textColor="@color/plane_mainColor"
+                            android:text="@string/plane_agreement1"
+                            android:textColor="#666666"
                             android:textSize="@dimen/common_12sp" />
 
                     </LinearLayout>
@@ -563,12 +566,13 @@
                             android:textSize="@dimen/common_12sp" />
 
                         <TextView
+                            android:id="@+id/tv_plane_agreement2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="1dp"
                             android:gravity="bottom"
-                            android:text="ABC旅行预订会员服务协议（包括0元入住协议）"
-                            android:textColor="@color/plane_mainColor"
+                            android:text="@string/plane_agreement2"
+                            android:textColor="#666666"
                             android:textSize="@dimen/common_12sp" />
                     </LinearLayout>
                 </LinearLayout>
