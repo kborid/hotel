@@ -257,6 +257,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:text="详细信息"
+                android:visibility="gone"
                 android:textColor="@color/plane_mainColor"
                 android:textSize="@dimen/common_10sp" />
 
@@ -273,7 +274,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/yanwu_layout"
+            android:id="@+id/delay_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
@@ -288,7 +289,7 @@
                 android:textSize="@dimen/common_16sp" />
 
             <TextView
-                android:id="@+id/tv_yanwu_count"
+                android:id="@+id/tv_delay_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="×2"
@@ -297,7 +298,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/tv_yanwu_detail"
+                android:id="@+id/tv_delay_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
@@ -306,7 +307,7 @@
                 android:textSize="@dimen/common_10sp" />
 
             <TextView
-                android:id="@+id/tv_yanwu_price"
+                android:id="@+id/tv_delay_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -318,7 +319,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/yiwai_layout"
+            android:id="@+id/accident_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
@@ -333,7 +334,7 @@
                 android:textSize="@dimen/common_16sp" />
 
             <TextView
-                android:id="@+id/tv_yiwai_count"
+                android:id="@+id/tv_accident_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="×2"
@@ -342,7 +343,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/tv_yiwai_detail"
+                android:id="@+id/tv_accident_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
@@ -351,7 +352,7 @@
                 android:textSize="@dimen/common_10sp" />
 
             <TextView
-                android:id="@+id/tv_yiwai_price"
+                android:id="@+id/tv_accident_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

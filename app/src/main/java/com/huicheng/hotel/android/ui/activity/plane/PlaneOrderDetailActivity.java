@@ -20,6 +20,7 @@ import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneOrderDetailInfoBean;
+import com.huicheng.hotel.android.ui.activity.HtmlActivity;
 import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -195,22 +196,38 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                 TextView tv_build_count = (TextView) goFlightView.findViewById(R.id.tv_build_count);
                                 TextView tv_build_price = (TextView) goFlightView.findViewById(R.id.tv_build_price);
                                 TextView tv_build_detail = (TextView) goFlightView.findViewById(R.id.tv_build_detail);
-                                TextView tv_yanwu_count = (TextView) goFlightView.findViewById(R.id.tv_yanwu_count);
-                                TextView tv_yanwu_price = (TextView) goFlightView.findViewById(R.id.tv_yanwu_price);
-                                TextView tv_yanwu_detail = (TextView) goFlightView.findViewById(R.id.tv_yanwu_detail);
-                                TextView tv_yiwai_count = (TextView) goFlightView.findViewById(R.id.tv_yiwai_count);
-                                TextView tv_yiwai_price = (TextView) goFlightView.findViewById(R.id.tv_yiwai_price);
-                                TextView tv_yiwai_detail = (TextView) goFlightView.findViewById(R.id.tv_yiwai_detail);
+                                TextView tv_delay_count = (TextView) goFlightView.findViewById(R.id.tv_delay_count);
+                                TextView tv_delay_price = (TextView) goFlightView.findViewById(R.id.tv_delay_price);
+                                TextView tv_delay_detail = (TextView) goFlightView.findViewById(R.id.tv_delay_detail);
+                                TextView tv_accident_count = (TextView) goFlightView.findViewById(R.id.tv_accident_count);
+                                TextView tv_accident_price = (TextView) goFlightView.findViewById(R.id.tv_accident_price);
+                                TextView tv_accident_detail = (TextView) goFlightView.findViewById(R.id.tv_accident_detail);
 
                                 tv_build_price.setText(String.format(getString(R.string.rmbStr2), goTripInfo.buildAndFuelPrice));
-                                tv_yanwu_price.setText(String.format(getString(R.string.rmbStr2), goTripInfo.delayMoney));
-                                tv_yiwai_price.setText(String.format(getString(R.string.rmbStr2), goTripInfo.accidentMoney));
+                                tv_delay_price.setText(String.format(getString(R.string.rmbStr2), goTripInfo.delayMoney));
+                                tv_accident_price.setText(String.format(getString(R.string.rmbStr2), goTripInfo.accidentMoney));
 
                                 if (goTripInfo.delayCount > 0) {
-                                    goFlightView.findViewById(R.id.yanwu_layout).setVisibility(View.VISIBLE);
+                                    goFlightView.findViewById(R.id.delay_layout).setVisibility(View.VISIBLE);
+                                    tv_delay_detail.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(PlaneOrderDetailActivity.this, HtmlActivity.class);
+                                            intent.putExtra("path", NetURL.PLANE_DELAY_DETAIL);
+                                            startActivity(intent);
+                                        }
+                                    });
                                 }
                                 if (goTripInfo.accidentCount > 0) {
-                                    goFlightView.findViewById(R.id.yiwai_layout).setVisibility(View.VISIBLE);
+                                    goFlightView.findViewById(R.id.accident_layout).setVisibility(View.VISIBLE);
+                                    tv_accident_detail.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(PlaneOrderDetailActivity.this, HtmlActivity.class);
+                                            intent.putExtra("path", NetURL.PLANE_ACCIDENT_DETAIL);
+                                            startActivity(intent);
+                                        }
+                                    });
                                 }
 
                                 int passengerCount = goTripInfo.passengerList.size();
@@ -219,10 +236,10 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                     tv_ticket_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
                                     tv_build_count.setVisibility(View.VISIBLE);
                                     tv_build_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
-                                    tv_yanwu_count.setVisibility(View.VISIBLE);
-                                    tv_yanwu_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
-                                    tv_yiwai_count.setVisibility(View.VISIBLE);
-                                    tv_yiwai_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
+                                    tv_delay_count.setVisibility(View.VISIBLE);
+                                    tv_delay_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
+                                    tv_accident_count.setVisibility(View.VISIBLE);
+                                    tv_accident_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
                                 }
 
                                 View goPassengerActionLayout = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_passenger_action_item, null);
@@ -326,22 +343,22 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                     TextView tv_build_count = (TextView) backFlightView.findViewById(R.id.tv_build_count);
                                     TextView tv_build_price = (TextView) backFlightView.findViewById(R.id.tv_build_price);
                                     TextView tv_build_detail = (TextView) backFlightView.findViewById(R.id.tv_build_detail);
-                                    TextView tv_yanwu_count = (TextView) backFlightView.findViewById(R.id.tv_yanwu_count);
-                                    TextView tv_yanwu_price = (TextView) backFlightView.findViewById(R.id.tv_yanwu_price);
-                                    TextView tv_yanwu_detail = (TextView) backFlightView.findViewById(R.id.tv_yanwu_detail);
-                                    TextView tv_yiwai_count = (TextView) backFlightView.findViewById(R.id.tv_yiwai_count);
-                                    TextView tv_yiwai_price = (TextView) backFlightView.findViewById(R.id.tv_yiwai_price);
-                                    TextView tv_yiwai_detail = (TextView) backFlightView.findViewById(R.id.tv_yiwai_detail);
+                                    TextView tv_delay_count = (TextView) backFlightView.findViewById(R.id.tv_delay_count);
+                                    TextView tv_delay_price = (TextView) backFlightView.findViewById(R.id.tv_delay_price);
+                                    TextView tv_delay_detail = (TextView) backFlightView.findViewById(R.id.tv_delay_detail);
+                                    TextView tv_accident_count = (TextView) backFlightView.findViewById(R.id.tv_accident_count);
+                                    TextView tv_accident_price = (TextView) backFlightView.findViewById(R.id.tv_accident_price);
+                                    TextView tv_accident_detail = (TextView) backFlightView.findViewById(R.id.tv_accident_detail);
 
                                     tv_build_price.setText(String.format(getString(R.string.rmbStr2), backTripInfo.buildAndFuelPrice));
-                                    tv_yanwu_price.setText(String.format(getString(R.string.rmbStr2), backTripInfo.delayMoney));
-                                    tv_yiwai_price.setText(String.format(getString(R.string.rmbStr2), backTripInfo.accidentMoney));
+                                    tv_delay_price.setText(String.format(getString(R.string.rmbStr2), backTripInfo.delayMoney));
+                                    tv_accident_price.setText(String.format(getString(R.string.rmbStr2), backTripInfo.accidentMoney));
 
                                     if (backTripInfo.delayCount > 0) {
-                                        backFlightView.findViewById(R.id.yanwu_layout).setVisibility(View.VISIBLE);
+                                        backFlightView.findViewById(R.id.delay_layout).setVisibility(View.VISIBLE);
                                     }
                                     if (backTripInfo.accidentCount > 0) {
-                                        backFlightView.findViewById(R.id.yiwai_layout).setVisibility(View.VISIBLE);
+                                        backFlightView.findViewById(R.id.accident_layout).setVisibility(View.VISIBLE);
                                     }
 
                                     int passengerCount = backTripInfo.passengerList.size();
@@ -350,10 +367,10 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                         tv_ticket_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
                                         tv_build_count.setVisibility(View.VISIBLE);
                                         tv_build_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
-                                        tv_yanwu_count.setVisibility(View.VISIBLE);
-                                        tv_yanwu_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
-                                        tv_yiwai_count.setVisibility(View.VISIBLE);
-                                        tv_yiwai_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
+                                        tv_delay_count.setVisibility(View.VISIBLE);
+                                        tv_delay_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
+                                        tv_accident_count.setVisibility(View.VISIBLE);
+                                        tv_accident_count.setText(String.format(getString(R.string.multipleSign) + "%1$d", passengerCount));
                                     }
 
                                     View backPassengerActionLayout = LayoutInflater.from(this).inflate(R.layout.layout_plane_orderdetail_passenger_action_item, null);
