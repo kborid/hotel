@@ -334,11 +334,15 @@
         <activity
             android:name=".ui.activity.plane.PlaneOrderDetailActivity"
             android:screenOrientation="portrait" />
-        <!--退票-->
+        <!--退票、改签-->
         <activity
-            android:name=".ui.activity.plane.PlaneBackTicketActivity"
+            android:name=".ui.activity.plane.PlaneBackChangeTicketActivity"
             android:screenOrientation="portrait" />
 
+        <!--改签航班列表-->
+        <activity
+            android:name=".ui.activity.plane.PlaneFlightChangeListActivity"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".pay.wxpay.AppRegister">
             <intent-filter>

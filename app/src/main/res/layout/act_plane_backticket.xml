@@ -136,7 +136,7 @@
 
                 <!--第三步-->
                 <LinearLayout
-                    android:id="@+id/third_layout"
+                    android:id="@+id/third_step_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/iv_plane_card_bg"

@@ -14,4 +14,5 @@ public class PlaneTgqReasonInfoBean implements Serializable {
     public String refundPassengerPriceInfoList;
     public String refundPassengerPriceInfoListObject;
     public boolean will;
+    public String changeFlightSegmentList;
 }

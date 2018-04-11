@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
@@ -483,6 +485,19 @@ public abstract class BaseAppActivity extends BaseActivity implements OnClickLis
         controller = new LayoutAnimationController(alphaAnim, 0.1f);
         controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
         return controller;
+    }
+
+    public void printJsonByKey(String jsonStr) {
+        if (!AppConst.ISDEVELOP) {
+            return;
+        }
+        if (StringUtil.notEmpty(jsonStr)) {
+            JSONObject mJson = JSON.parseObject(jsonStr);
+            for (String key : mJson.keySet()) {
+                LogUtil.i("JsonByKey", key + ":" + mJson.getString(key));
+
+            }
+        }
     }
 
     private void requestHotelVip2(String email, String idcode, String realname, String traveltype) {

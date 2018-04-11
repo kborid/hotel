@@ -543,14 +543,14 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
     }
 
     private void backPlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
-        Intent intent = new Intent(this, PlaneBackTicketActivity.class);
+        Intent intent = new Intent(this, PlaneBackChangeTicketActivity.class);
         intent.putExtra("tripId", tripInfo.tripId);
         intent.putExtra("plane_action", 0);
         startActivityForResult(intent, BACK_TICKET);
     }
 
     private void changePlaneTicketAction(PlaneOrderDetailInfoBean.TripInfo tripInfo) {
-        Intent intent = new Intent(this, PlaneBackTicketActivity.class);
+        Intent intent = new Intent(this, PlaneBackChangeTicketActivity.class);
         intent.putExtra("tripId", tripInfo.tripId);
         intent.putExtra("plane_action", 1);
         startActivityForResult(intent, CHANGE_TICKET);
