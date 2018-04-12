@@ -145,6 +145,7 @@ public final class NetURL {
     public static final String PLANE_CHANGE_QUERY = PORTAL + "search/change.json";//机票改签查询
     public static final String PLANE_CHANGE = PORTAL + "change.json";//机票改签
     public static final String PLANE_ORDER_CANCEL = PORTAL + "cancel.json";//取消机票订单
+    public static final String PLANE_ORDER_INFO = PORTAL + "orderPriceInfo.json ";//机票支付订单支付详情
 
     //-------------------------------------地址管理--------------------------------------------------
     public static final String ADDRESS_GET_DEFAULT = PORTAL + "user/getdefaultaddress.json";
