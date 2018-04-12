@@ -31,7 +31,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.PlaneCommDef;
-import com.huicheng.hotel.android.common.PlaneErrorDef;
 import com.huicheng.hotel.android.common.PlaneOrderManager;
 import com.huicheng.hotel.android.common.RequestCodeDef;
 import com.huicheng.hotel.android.common.SessionContext;
@@ -478,7 +477,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 ds.setUnderlineText(false);
             }
         }, 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new ForegroundColorSpan(getColor(R.color.plane_mainColor)), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.plane_mainColor)), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         //禁止危险品乘机说明
         ss.setSpan(new ClickableSpan() {
@@ -495,7 +494,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 ds.setUnderlineText(false);
             }
         }, 6, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new ForegroundColorSpan(getColor(R.color.plane_mainColor)), 6, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.plane_mainColor)), 6, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         //特殊旅客购票须知
         ss.setSpan(new ClickableSpan() {
@@ -512,7 +511,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 ds.setUnderlineText(false);
             }
         }, 18, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new ForegroundColorSpan(getColor(R.color.plane_mainColor)), 18, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.plane_mainColor)), 18, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         tv_plane_agreement1.setLinksClickable(true);
         tv_plane_agreement1.setMovementMethod(LinkMovementMethod.getInstance());
@@ -536,7 +535,7 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
                 ds.setUnderlineText(false);
             }
         }, 0, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new ForegroundColorSpan(getColor(R.color.plane_mainColor)), 0, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.plane_mainColor)), 0, agreement.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         tv_plane_agreement2.setLinksClickable(true);
         tv_plane_agreement2.setMovementMethod(LinkMovementMethod.getInstance());
@@ -932,11 +931,11 @@ public class PlaneNewOrderActivity extends BaseAppActivity {
 
     @Override
     protected boolean isCheckException(ResponseData request, ResponseData response) {
-        if (null != response && null != response.data) {
-            if (PlaneErrorDef.FLIGHT_REQUEST_IS_INVALID.equals(response.code)) {
-                return true;
-            }
-        }
+//        if (null != response && null != response.data) {
+//            if (PlaneErrorDef.FLIGHT_REQUEST_IS_INVALID.equals(response.code)) {
+//                return true;
+//            }
+//        }
         return super.isCheckException(request, response);
     }
 

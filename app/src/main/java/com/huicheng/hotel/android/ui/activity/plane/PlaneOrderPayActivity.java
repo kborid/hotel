@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.broadcast.PayResultReceiver;
@@ -236,14 +237,23 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
                 }
                 break;
             case R.id.tv_detail:
-                Intent intent = new Intent(this, PlaneOrderPaySuccessActivity.class);
-                intent.putExtra("goBookingInfo", goBookingInfo);
-                intent.putExtra("backBookingInfo", backBookingInfo);
-                intent.putExtra("goTripInfo", goTripInfo);
-                intent.putExtra("backTripInfo", backTripInfo);
-                startActivity(intent);
+                if (StringUtil.notEmpty(mOrderNo)) {
+                    requestOrderPayInfoDetail(mOrderNo);
+                }
                 break;
         }
+    }
+
+    private void requestOrderPayInfoDetail(String orderNo) {
+        RequestBeanBuilder b = RequestBeanBuilder.create(true);
+        b.addBody("orderNum", orderNo);
+        ResponseData d = b.syncRequest(b);
+        d.flag = AppConst.PLANE_ORDER_INFO;
+        d.path = NetURL.PLANE_ORDER_INFO;
+        if (!isProgressShowing()) {
+            showProgressDialog(this);
+        }
+        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     @Override
@@ -270,6 +280,10 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
                                     .putExtra("type", PayCommDef.CUSTOMPAY)
                                     .putExtra("module", PayResultReceiver.MODULE_PLANE));
                 }
+            } else if (request.flag == AppConst.PLANE_ORDER_INFO) {
+                removeProgressDialog();
+                LogUtil.i("json = " + response.body.toString());
+                showPlaneOrderDetailInfo(response.body.toString());
             }
         }
     }
@@ -417,6 +431,34 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
                 llp.setMargins(Utils.dp2px(5), Utils.dp2px(2), Utils.dp2px(5), Utils.dp2px(2));
                 flightBaseInfoLay.addView(line, llp);
             }
+        }
+    }
+
+    private void showPlaneOrderDetailInfo(String jsonStr) {
+        if (StringUtil.notEmpty(jsonStr)) {
+            final CustomDialog dialog = new CustomDialog(this);
+            View view = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_layout, null);
+            dialog.addView(view);
+            LinearLayout service_lay = (LinearLayout) view.findViewById(R.id.service_lay);
+            service_lay.removeAllViews();
+            JSONObject mJson = JSON.parseObject(jsonStr);
+            if (mJson.containsKey("priceInfos")) {
+                List<JSONObject> jsonArr = JSON.parseArray(mJson.getString("priceInfos"), JSONObject.class);
+                for (JSONObject json : jsonArr) {
+                    View commView = LayoutInflater.from(this).inflate(R.layout.dialog_order_detail_item, null);
+                    ((TextView) commView.findViewById(R.id.tv_title)).setText(json.getString("name"));
+                    ((TextView) commView.findViewById(R.id.tv_price)).setText(String.format(getString(R.string.rmbStr2), json.getInteger("price")));
+                    service_lay.addView(commView);
+                }
+            }
+            dialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.show();
         }
     }
 }
