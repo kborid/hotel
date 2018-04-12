@@ -32,6 +32,7 @@ import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo_FlightInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneOrderDetailInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlanePaySuccessFlightInfo;
 import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonPayChannelLayout;
@@ -99,8 +100,16 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
             bookingInfoList = (List<PlaneBookingInfo>) bundle.getSerializable("bookingInfoList");
             if (null != bookingInfoList) {
                 goBookingInfo = bookingInfoList.get(0);
+                PlaneOrderManager.instance.setGoPlanePaySuccessFlightInfo(new PlanePaySuccessFlightInfo(
+                        goBookingInfo.flightInfo.get(0).carrier,
+                        DateUtil.getDay("MM月dd日", DateUtil.str2Date(goBookingInfo.flightInfo.get(0).dptDate, "yyyy-MM-dd").getTime()) + " " + goBookingInfo.flightInfo.get(0).dptTime,
+                        goBookingInfo.flightInfo.get(0).flightNum));
                 if (bookingInfoList.size() > 1) {
                     backBookingInfo = bookingInfoList.get(1);
+                    PlaneOrderManager.instance.setBackPlanePaySuccessFlightInfo(new PlanePaySuccessFlightInfo(
+                            backBookingInfo.flightInfo.get(0).carrier,
+                            DateUtil.getDay("MM月dd日", DateUtil.str2Date(backBookingInfo.flightInfo.get(0).dptDate, "yyyy-MM-dd").getTime()) + " " + backBookingInfo.flightInfo.get(0).dptTime,
+                            backBookingInfo.flightInfo.get(0).flightNum));
                 }
             }
             tripInfoList = (List<PlaneOrderDetailInfoBean.TripInfo>) bundle.getSerializable("tripInfoList");
@@ -108,8 +117,16 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
                 for (PlaneOrderDetailInfoBean.TripInfo tripInfo : tripInfoList) {
                     if (tripInfo.tripType == GO_TRIP) { //去程信息
                         goTripInfo = tripInfo;
+                        PlaneOrderManager.instance.setGoPlanePaySuccessFlightInfo(new PlanePaySuccessFlightInfo(
+                                goTripInfo.airco,
+                                DateUtil.getDay("MM月dd日", tripInfo.sDate) + " " + DateUtil.dateToWeek2(new Date(tripInfo.sDate)),
+                                goTripInfo.flightNo));
                     } else if (tripInfo.tripType == BACK_TRIP) { //返程信息
                         backTripInfo = tripInfo;
+                        PlaneOrderManager.instance.setBackPlanePaySuccessFlightInfo(new PlanePaySuccessFlightInfo(
+                                backTripInfo.airco,
+                                DateUtil.getDay("MM月dd日", tripInfo.sDate) + " " + DateUtil.dateToWeek2(new Date(tripInfo.sDate)),
+                                backTripInfo.flightNo));
                     }
                 }
             }

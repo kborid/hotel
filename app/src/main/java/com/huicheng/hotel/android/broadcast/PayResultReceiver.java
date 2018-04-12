@@ -12,6 +12,7 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.pay.PayCommDef;
 import com.huicheng.hotel.android.requestbuilder.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.hotel.HotelOrderPaySuccessActivity;
+import com.huicheng.hotel.android.ui.activity.plane.PlaneOrderPaySuccessActivity;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
 import com.prj.sdk.constants.BroadCastConst;
 import com.prj.sdk.util.LogUtil;
@@ -88,23 +89,24 @@ public class PayResultReceiver extends BroadcastReceiver {
             if (PayCommDef.err_success == ret) {
                 switch (module) {
                     case MODULE_PLANE:
-
+                        Intent planeIntent = new Intent(context, PlaneOrderPaySuccessActivity.class);
+                        context.startActivity(planeIntent);
                         break;
                     case MODULE_HOTEL:
                     default:
                         OrderPayDetailInfoBean orderPayDetailInfoBean = HotelOrderManager.getInstance().getOrderPayDetailInfoBean();
                         LogUtil.i(TAG, "orderPayDetailInfoBean = " + orderPayDetailInfoBean);
                         if (null != orderPayDetailInfoBean) {
-                            Intent intent1 = new Intent(context, HotelOrderPaySuccessActivity.class);
-                            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent1.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
-                            intent1.putExtra("roomName", orderPayDetailInfoBean.roomName);
-                            intent1.putExtra("checkRoomDate", orderPayDetailInfoBean.checkRoomDate);
-                            intent1.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
-                            intent1.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
-                            intent1.putExtra("isPrePaySuccess", true);
-                            intent1.putExtra("showTipsOrNot", orderPayDetailInfoBean.showTipsOrNot);
-                            context.startActivity(intent1);
+                            Intent hotelIntent = new Intent(context, HotelOrderPaySuccessActivity.class);
+                            hotelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            hotelIntent.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
+                            hotelIntent.putExtra("roomName", orderPayDetailInfoBean.roomName);
+                            hotelIntent.putExtra("checkRoomDate", orderPayDetailInfoBean.checkRoomDate);
+                            hotelIntent.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
+                            hotelIntent.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
+                            hotelIntent.putExtra("isPrePaySuccess", true);
+                            hotelIntent.putExtra("showTipsOrNot", orderPayDetailInfoBean.showTipsOrNot);
+                            context.startActivity(hotelIntent);
                         } else {
                             CustomToast.show(context.getResources().getString(R.string.pay_error), CustomToast.LENGTH_SHORT);
                         }

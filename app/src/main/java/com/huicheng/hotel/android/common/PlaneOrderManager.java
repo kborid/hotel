@@ -2,6 +2,7 @@ package com.huicheng.hotel.android.common;
 
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlanePaySuccessFlightInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneVendorInfoBean;
 import com.prj.sdk.util.LogUtil;
@@ -31,6 +32,25 @@ public enum PlaneOrderManager {
     private PlaneFlightInfoBean backFlightInfo;
     private PlaneTicketInfoBean backTicketInfo;
     private PlaneVendorInfoBean backVendorInfo;
+
+    //only for 缓存支付成功画面需要显示的信息
+    private PlanePaySuccessFlightInfo goPlanePaySuccessFlightInfo, backPlanePaySuccessFlightInfo;
+
+    public void setGoPlanePaySuccessFlightInfo(PlanePaySuccessFlightInfo planePaySuccessFlightInfo){
+        this.goPlanePaySuccessFlightInfo = planePaySuccessFlightInfo;
+    }
+
+    public PlanePaySuccessFlightInfo getGoPlanePaySuccessFlightInfo(){
+        return goPlanePaySuccessFlightInfo;
+    }
+
+    public void setBackPlanePaySuccessFlightInfo(PlanePaySuccessFlightInfo planePaySuccessFlightInfo){
+        this.backPlanePaySuccessFlightInfo = planePaySuccessFlightInfo;
+    }
+
+    public PlanePaySuccessFlightInfo getBackPlanePaySuccessFlightInfo(){
+        return backPlanePaySuccessFlightInfo;
+    }
 
     public int getFlightType() {
         return flightType;
@@ -208,5 +228,8 @@ public enum PlaneOrderManager {
         backTicketInfo = null;
         goVendorInfo = null;
         backVendorInfo = null;
+
+        goPlanePaySuccessFlightInfo = null;
+        backPlanePaySuccessFlightInfo = null;
     }
 }
