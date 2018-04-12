@@ -136,6 +136,7 @@ public class PlaneAirportChooserActivity extends BaseAppActivity {
                     mAirportList.add(bean);
                 }
             }
+            Collections.sort(mFirstCharList);
         }
         cityIndexAdapter.notifyDataSetChanged();
         cityListAdapter.notifyDataSetChanged();
