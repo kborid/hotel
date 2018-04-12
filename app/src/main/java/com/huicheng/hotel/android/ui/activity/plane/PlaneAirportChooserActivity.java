@@ -15,13 +15,13 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
+import com.huicheng.hotel.android.content.AppConst;
+import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.MyGridViewWidget;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
-import com.huicheng.hotel.android.content.AppConst;
-import com.huicheng.hotel.android.content.NetURL;
 import com.prj.sdk.net.data.DataLoader;
 import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.util.LogUtil;
@@ -136,6 +136,7 @@ public class PlaneAirportChooserActivity extends BaseAppActivity {
                     mAirportList.add(bean);
                 }
             }
+            Collections.sort(mFirstCharList);
         }
         cityIndexAdapter.notifyDataSetChanged();
         cityListAdapter.notifyDataSetChanged();
