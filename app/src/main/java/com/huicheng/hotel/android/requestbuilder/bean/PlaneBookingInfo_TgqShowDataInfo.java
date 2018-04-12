@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.requestbuilder.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @date 2018/1/11 0011.
  */
 
-public class PlaneBookingInfo_TgqShowDataInfo {
+public class PlaneBookingInfo_TgqShowDataInfo implements Serializable {
     public boolean airlineTgq;
     public boolean allowChange;
     public boolean canCharge;
@@ -19,7 +20,7 @@ public class PlaneBookingInfo_TgqShowDataInfo {
     public List<TgqPointChargesInfo> tgqPointCharges;
     public String tgqText;
 
-    public static class TgqPointChargesInfo {
+    public static class TgqPointChargesInfo implements Serializable {
         public int changeFee;
         public int returnFee;
         public int time;

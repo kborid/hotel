@@ -21,6 +21,7 @@ import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneVendorInfoBean;
 import com.huicheng.hotel.android.ui.adapter.PlaneTicketVendorItemAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
@@ -52,7 +53,7 @@ public class PlaneTicketListActivity extends BaseAppActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView listview;
     private PlaneTicketInfoBean mTicketBean = null;
-    private List<PlaneTicketInfoBean.VendorInfo> mVendorList = new ArrayList<>();
+    private List<PlaneVendorInfoBean> mVendorList = new ArrayList<>();
     private PlaneTicketVendorItemAdapter adapter;
     private View mListHeaderView;
     private TextView tv_off_city, tv_on_city;

@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneVendorInfoBean;
 import com.huicheng.hotel.android.ui.listener.OnRecycleViewItemClickListener;
 import com.prj.sdk.util.StringUtil;
 
@@ -36,10 +36,10 @@ public class PlaneTicketVendorItemAdapter extends BaseAdapter {
     };
 
     private Context context;
-    private List<PlaneTicketInfoBean.VendorInfo> mList = new ArrayList<>();
+    private List<PlaneVendorInfoBean> mList = new ArrayList<>();
     private String com;
 
-    public PlaneTicketVendorItemAdapter(Context context, List<PlaneTicketInfoBean.VendorInfo> list) {
+    public PlaneTicketVendorItemAdapter(Context context, List<PlaneVendorInfoBean> list) {
         this.context = context;
         this.mList = list;
     }
@@ -82,7 +82,7 @@ public class PlaneTicketVendorItemAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        PlaneTicketInfoBean.VendorInfo vendorInfo = mList.get(position);
+        PlaneVendorInfoBean vendorInfo = mList.get(position);
         viewHolder.tv_price.setText(String.format(context.getString(R.string.rmbStr2), vendorInfo.barePrice));
         String discount_cabin = "";
         if (StringUtil.notEmpty(vendorInfo.discount)) {

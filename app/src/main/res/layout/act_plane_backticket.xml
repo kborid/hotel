@@ -199,12 +199,14 @@
 
                 <!--退款金额-->
                 <LinearLayout
+                    android:id="@+id/back_price_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/iv_plane_card_bg"
                     android:orientation="vertical"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp">
+                    android:paddingRight="20dp"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"

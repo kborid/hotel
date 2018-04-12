@@ -24,6 +24,9 @@ import com.prj.sdk.util.StringUtil;
 
 public class PayResultReceiver extends BroadcastReceiver {
 
+    public static final String MODULE_HOTEL = "module_hotel";
+    public static final String MODULE_PLANE = "module_plane";
+
     private final String TAG = getClass().getSimpleName();
 
     private Context context;
@@ -41,8 +44,10 @@ public class PayResultReceiver extends BroadcastReceiver {
     private void dealPayResult(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (null != bundle) {
+            String module = (null != bundle.getString("module")) ? bundle.getString("module") : "";
             String type = (null != bundle.getString("type")) ? bundle.getString("type") : "";
             String info = (null != bundle.getString("info")) ? bundle.getString("info") : "";
+            LogUtil.i(TAG, module);
             LogUtil.i(TAG, info);
             LogUtil.i(TAG, type);
 
@@ -81,21 +86,29 @@ public class PayResultReceiver extends BroadcastReceiver {
             }
             LogUtil.i(TAG, "pay result ret = " + ret);
             if (PayCommDef.err_success == ret) {
-                OrderPayDetailInfoBean orderPayDetailInfoBean = HotelOrderManager.getInstance().getOrderPayDetailInfoBean();
-                LogUtil.i(TAG, "orderPayDetailInfoBean = " + orderPayDetailInfoBean);
-                if (null != orderPayDetailInfoBean) {
-                    Intent intent1 = new Intent(context, HotelOrderPaySuccessActivity.class);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent1.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
-                    intent1.putExtra("roomName", orderPayDetailInfoBean.roomName);
-                    intent1.putExtra("checkRoomDate", orderPayDetailInfoBean.checkRoomDate);
-                    intent1.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
-                    intent1.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
-                    intent1.putExtra("isPrePaySuccess", true);
-                    intent1.putExtra("showTipsOrNot", orderPayDetailInfoBean.showTipsOrNot);
-                    context.startActivity(intent1);
-                } else {
-                    CustomToast.show(context.getResources().getString(R.string.pay_error), CustomToast.LENGTH_SHORT);
+                switch (module) {
+                    case MODULE_PLANE:
+
+                        break;
+                    case MODULE_HOTEL:
+                    default:
+                        OrderPayDetailInfoBean orderPayDetailInfoBean = HotelOrderManager.getInstance().getOrderPayDetailInfoBean();
+                        LogUtil.i(TAG, "orderPayDetailInfoBean = " + orderPayDetailInfoBean);
+                        if (null != orderPayDetailInfoBean) {
+                            Intent intent1 = new Intent(context, HotelOrderPaySuccessActivity.class);
+                            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent1.putExtra("hotelId", orderPayDetailInfoBean.hotelID);
+                            intent1.putExtra("roomName", orderPayDetailInfoBean.roomName);
+                            intent1.putExtra("checkRoomDate", orderPayDetailInfoBean.checkRoomDate);
+                            intent1.putExtra("beginTime", orderPayDetailInfoBean.timeStart);
+                            intent1.putExtra("endTime", orderPayDetailInfoBean.timeEnd);
+                            intent1.putExtra("isPrePaySuccess", true);
+                            intent1.putExtra("showTipsOrNot", orderPayDetailInfoBean.showTipsOrNot);
+                            context.startActivity(intent1);
+                        } else {
+                            CustomToast.show(context.getResources().getString(R.string.pay_error), CustomToast.LENGTH_SHORT);
+                        }
+                        break;
                 }
             }
 

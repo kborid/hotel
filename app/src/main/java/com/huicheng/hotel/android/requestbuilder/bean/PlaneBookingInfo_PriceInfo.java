@@ -1,11 +1,13 @@
 package com.huicheng.hotel.android.requestbuilder.bean;
 
+import java.io.Serializable;
+
 /**
  * @auth kborid
  * @date 2018/1/15 0015.
  */
 
-public class PlaneBookingInfo_PriceInfo {
+public class PlaneBookingInfo_PriceInfo implements Serializable {
     public String arf;
     public String babyPrice;
     public String babyServiceFee;
@@ -26,7 +28,7 @@ public class PlaneBookingInfo_PriceInfo {
     public String ticketPrice;
     public String tof;
 
-    public static class Inventory{
+    public static class Inventory implements Serializable{
         public String adult;
         public String all;
         public String baby;

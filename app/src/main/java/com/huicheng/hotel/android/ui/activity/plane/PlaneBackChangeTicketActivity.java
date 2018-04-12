@@ -62,6 +62,8 @@ public class PlaneBackChangeTicketActivity extends BaseAppActivity {
     @BindView(R.id.third_content_layout)
     LinearLayout thirdContentLayout;
 
+    @BindView(R.id.back_price_layout)
+    LinearLayout backPriceLayout;
     @BindView(R.id.tv_cost_money)
     TextView tvCostMoney;
     @BindView(R.id.tv_cut_money)
@@ -80,6 +82,7 @@ public class PlaneBackChangeTicketActivity extends BaseAppActivity {
     /*改签信息*/
     private LinearLayout new_ticket_lay = null;
     private String mDate, mStartCity, mEndCity;
+    private PlaneFlightChangeInfoBean mFlightChangeInfo = null;
 
     private String selectedPassengerIds = "";
     private int selectedPassengerCnt = 0;
@@ -189,16 +192,21 @@ public class PlaneBackChangeTicketActivity extends BaseAppActivity {
                 if (mPlaneTgqReasonList != null && mPlaneTgqReasonList.size() > 0) {
                     updateThirdStepLayoutForBack(mPlaneTgqReasonList.get(mReasonSelectedIndex));
                 }
+
+                //最后：预估退款金额
+                backPriceLayout.setVisibility(View.VISIBLE);
+                refreshMoneySimpleLayout();
+                refreshMoneyDetailLayout();
+
             } else if (CHANGE_TICKET == mActionFlag) {
                 tvThirdTitleName.setText("选择新航班");
                 if (mJson.containsKey("trip")) {
                     updateThirdStepLayoutForChange(mJson.getString("trip"));
                 }
-            }
 
-            //最后：预估退款金额
-            refreshMoneySimpleLayout();
-            refreshMoneyDetailLayout();
+                //最后：不需要显示预估退款金额
+                backPriceLayout.setVisibility(View.GONE);
+            }
 
             root.setVisibility(View.VISIBLE);
         }
@@ -403,8 +411,10 @@ public class PlaneBackChangeTicketActivity extends BaseAppActivity {
 
     private void requestTicketChangeApple() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
-        b.addBody("changeDate", mTripId);
+        b.addBody("passengerIds", selectedPassengerIds);
         b.addBody("tripId", mTripId);
+        b.addBody("changeCauseId", String.valueOf(mPlaneTgqReasonList.get(mReasonSelectedIndex).code));
+        b.addBody("flightSegment", JSON.toJSONString(mFlightChangeInfo));
         ResponseData d = b.syncRequest(b);
         d.flag = AppConst.PLANE_CHANGE;
         d.path = NetURL.PLANE_CHANGE;
@@ -477,6 +487,10 @@ public class PlaneBackChangeTicketActivity extends BaseAppActivity {
                 reasonDialog.show();
                 break;
             case R.id.tv_back_submit:
+                if (StringUtil.isEmpty(selectedPassengerIds)) {
+                    CustomToast.show("请选择联系人", CustomToast.LENGTH_SHORT);
+                    return;
+                }
                 if (BACK_TICKET == mActionFlag) {
                     requestTicketBackApply();
                 } else if (CHANGE_TICKET == mActionFlag) {
@@ -505,16 +519,18 @@ public class PlaneBackChangeTicketActivity extends BaseAppActivity {
             }
         } else if (requestCode == 0x02) {
             if (null != data) {
-                PlaneFlightChangeInfoBean flightInfo = (PlaneFlightChangeInfoBean) data.getSerializableExtra("flightInfo");
-                new_ticket_lay.removeAllViews();
-                View newTicketLayout = LayoutInflater.from(PlaneBackChangeTicketActivity.this).inflate(R.layout.layout_ticket_change_item, null);
-                new_ticket_lay.addView(newTicketLayout);
-                ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_flag)).setText("改签航班信息：");
-                ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_price)).setText(String.format(getString(R.string.rmbStr2), passengerInfoList.get(0).barePrice));
-                ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_city)).setText(String.format("%1$s → %2$s", mStartCity, mEndCity));
-                ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_date)).setText(mDate + " " + flightInfo.startTime);
-                ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_cabin)).setText(flightInfo.cabin);
-                ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_airport)).setText(String.format("%1$s%2$s - %3$s%4$s", flightInfo.startPlace, flightInfo.dptTerminal, flightInfo.endPlace, flightInfo.arrTerminal));
+                mFlightChangeInfo = (PlaneFlightChangeInfoBean) data.getSerializableExtra("flightInfo");
+                if (null != mFlightChangeInfo) {
+                    new_ticket_lay.removeAllViews();
+                    View newTicketLayout = LayoutInflater.from(PlaneBackChangeTicketActivity.this).inflate(R.layout.layout_ticket_change_item, null);
+                    new_ticket_lay.addView(newTicketLayout);
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_flag)).setText("改签航班信息：");
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_price)).setText(String.format(getString(R.string.rmbStr2), Integer.valueOf(mFlightChangeInfo.allFee)));
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_city)).setText(String.format("%1$s → %2$s", mStartCity, mEndCity));
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_date)).setText(mDate + " " + mFlightChangeInfo.startTime);
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_cabin)).setText(mFlightChangeInfo.cabin);
+                    ((TextView) newTicketLayout.findViewById(R.id.tv_ticket_airport)).setText(String.format("%1$s%2$s - %3$s%4$s", mFlightChangeInfo.startPlace, mFlightChangeInfo.dptTerminal, mFlightChangeInfo.endPlace, mFlightChangeInfo.arrTerminal));
+                }
             }
         }
     }

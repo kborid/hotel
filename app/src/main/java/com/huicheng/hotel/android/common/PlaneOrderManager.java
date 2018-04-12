@@ -3,6 +3,7 @@ package com.huicheng.hotel.android.common;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneTicketInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneVendorInfoBean;
 import com.prj.sdk.util.LogUtil;
 
 /**
@@ -23,13 +24,13 @@ public enum PlaneOrderManager {
     private CityAirportInfoBean goOnAirportInfo;
     private PlaneFlightInfoBean goFlightInfo;
     private PlaneTicketInfoBean goTicketInfo;
-    private PlaneTicketInfoBean.VendorInfo goVendorInfo;
+    private PlaneVendorInfoBean goVendorInfo;
     private long backOffDate = 0;
     private CityAirportInfoBean backOffAirportInfo;
     private CityAirportInfoBean backOnAirportInfo;
     private PlaneFlightInfoBean backFlightInfo;
     private PlaneTicketInfoBean backTicketInfo;
-    private PlaneTicketInfoBean.VendorInfo backVendorInfo;
+    private PlaneVendorInfoBean backVendorInfo;
 
     public int getFlightType() {
         return flightType;
@@ -114,11 +115,11 @@ public enum PlaneOrderManager {
         return backTicketInfo;
     }
 
-    public PlaneTicketInfoBean.VendorInfo getGoVendorInfo() {
+    public PlaneVendorInfoBean getGoVendorInfo() {
         return goVendorInfo;
     }
 
-    public PlaneTicketInfoBean.VendorInfo getBackVendorInfo() {
+    public PlaneVendorInfoBean getBackVendorInfo() {
         return backVendorInfo;
     }
 
@@ -163,7 +164,7 @@ public enum PlaneOrderManager {
         }
     }
 
-    public void setVendorInfo(PlaneTicketInfoBean.VendorInfo vendorInfo) {
+    public void setVendorInfo(PlaneVendorInfoBean vendorInfo) {
         if (isBackBookingTypeForGoBack()) {
             this.backVendorInfo = vendorInfo;
         } else {
@@ -171,7 +172,7 @@ public enum PlaneOrderManager {
         }
     }
 
-    public PlaneTicketInfoBean.VendorInfo getVendorInfo() {
+    public PlaneVendorInfoBean getVendorInfo() {
         if (isBackBookingTypeForGoBack()) {
             return backVendorInfo;
         } else {

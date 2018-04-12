@@ -22,10 +22,12 @@ import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneFlightChangeInfoBean;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.glide.CustomReqURLFormatModelImpl;
+import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -84,10 +86,12 @@ public class PlaneFlightChangeListActivity extends BaseAppActivity {
     private class FlightChangeAdapter extends BaseAdapter {
         private Context context;
         private List<PlaneFlightChangeInfoBean> mList = new ArrayList<>();
+        private Calendar c;
 
         FlightChangeAdapter(Context context, List<PlaneFlightChangeInfoBean> list) {
             this.context = context;
             this.mList = list;
+            c = Calendar.getInstance();
         }
 
         @Override
@@ -129,8 +133,30 @@ public class PlaneFlightChangeListActivity extends BaseAppActivity {
             } else {
                 viewHolder.stopover_lay.setVisibility(View.GONE);
             }
-            viewHolder.tv_flight_during.setVisibility(View.INVISIBLE);
-            viewHolder.tv_flight_price.setText(String.format(context.getString(R.string.rmbStr2), Integer.valueOf(bean.gqFee)));
+
+            String date = DateUtil.getDay("yyyy-MM-dd ", c.getTime().getTime());
+            if (StringUtil.notEmpty(bean.startTime) && StringUtil.notEmpty(bean.endTime)) {
+                String sTime = date + bean.startTime;
+                String eTime = date + bean.endTime;
+                long longTime = DateUtil.getTimeCount(DateUtil.str2Date(sTime, "yyyy-MM-dd HH:mm"), DateUtil.str2Date(eTime, "yyyy-MM-dd HH:mm"));
+                long hour = longTime / DateUtil.HOUR_UNIT;
+                long min = (longTime - hour * DateUtil.HOUR_UNIT) / DateUtil.MIN_UNIT;
+                String formatStr;
+                if (hour > 0) {
+                    if (min > 0) {
+                        formatStr = String.format("%1$d小时%1$d分钟", hour, min);
+                    } else {
+                        formatStr = String.format("%1$d小时", hour);
+                    }
+                } else {
+                    formatStr = String.format("%1$d分钟", min);
+                }
+                viewHolder.tv_flight_during.setText(formatStr);
+            } else {
+                viewHolder.tv_flight_during.setText("无法获取飞行时间");
+            }
+
+            viewHolder.tv_flight_price.setText(String.format(context.getString(R.string.rmbStr2), Integer.valueOf(bean.allFee)));
             viewHolder.tv_flight_code.setText(bean.flightNo);
             viewHolder.tv_flight_name.setText(bean.flightType);
             if (StringUtil.notEmpty(bean.carrier)) {

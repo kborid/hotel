@@ -1,11 +1,13 @@
 package com.huicheng.hotel.android.requestbuilder.bean;
 
+import java.io.Serializable;
+
 /**
  * @auth kborid
  * @date 2018/1/15 0015.
  */
 
-public class PlaneBookingInfo_FlightInfo {
+public class PlaneBookingInfo_FlightInfo implements Serializable {
     public String actFlightNum;
     public String arf;
     public String arr;

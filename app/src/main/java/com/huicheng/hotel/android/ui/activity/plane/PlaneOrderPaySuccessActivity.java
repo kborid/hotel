@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
+import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneOrderDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
 import com.huicheng.hotel.android.ui.activity.UcOrdersActivity;
@@ -34,7 +35,7 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
     private TextView tv_plane_code, tv_plane_code_back;
     private TextView tv_plane_date, tv_plane_date_back;
 
-    private PlaneNewOrderActivity.FlightDetailInfo goFlightDetailInfo = null, backFlightDetailInfo = null;
+    private PlaneBookingInfo goBookingInfo = null, backBookingInfo = null;
     private PlaneOrderDetailInfoBean.TripInfo goTripInfo = null, backTripInfo = null;
 
     @Override
@@ -56,8 +57,8 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
         super.dealIntent();
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
-            goFlightDetailInfo = (PlaneNewOrderActivity.FlightDetailInfo) bundle.getSerializable("goFlightDetailInfo");
-            backFlightDetailInfo = (PlaneNewOrderActivity.FlightDetailInfo) bundle.getSerializable("backFlightDetailInfo");
+            goBookingInfo = (PlaneBookingInfo) bundle.getSerializable("goBookingInfo");
+            backBookingInfo = (PlaneBookingInfo) bundle.getSerializable("backBookingInfo");
             goTripInfo = (PlaneOrderDetailInfoBean.TripInfo) bundle.getSerializable("goTripInfo");
             backTripInfo = (PlaneOrderDetailInfoBean.TripInfo) bundle.getSerializable("backTripInfo");
         }
@@ -72,13 +73,13 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
 
         iv_pay_success.setImageBitmap(BitmapUtils.getAlphaBitmap(iv_pay_success.getDrawable(), getResources().getColor(R.color.plane_mainColor)));
         order_info_lay.removeAllViews();
-        if (backTripInfo != null || backFlightDetailInfo != null) {
+        if (backTripInfo != null || backBookingInfo != null) {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_goback_order_item, null);
             iv_plane_icon_back = (ImageView) orderLayout.findViewById(R.id.iv_plane_icon_back);
             tv_plane_name_back = (TextView) orderLayout.findViewById(R.id.tv_plane_name_back);
             tv_plane_code_back = (TextView) orderLayout.findViewById(R.id.tv_plane_code_back);
             tv_plane_date_back = (TextView) orderLayout.findViewById(R.id.tv_plane_date_back);
-            String flightCode = null != backTripInfo ? backTripInfo.airco : backFlightDetailInfo.flightInfo.carrier;
+            String flightCode = null != backTripInfo ? backTripInfo.airco : backBookingInfo.flightInfo.get(0).carrier;
             if (StringUtil.notEmpty(flightCode)) {
                 if (SessionContext.getAirCompanyMap().size() > 0
                         && SessionContext.getAirCompanyMap().containsKey(flightCode)) {
@@ -94,10 +95,10 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
                     iv_plane_icon_back.setVisibility(View.GONE);
                 }
             }
-            tv_plane_code_back.setText(null != backTripInfo ? backTripInfo.flightNo : backFlightDetailInfo.flightInfo.flightNum);
+            tv_plane_code_back.setText(null != backTripInfo ? backTripInfo.flightNo : backBookingInfo.flightInfo.get(0).flightNum);
             String date = (null != backTripInfo)
                     ? (DateUtil.getDay("MM月dd日", backTripInfo.sDate) + " " + backTripInfo.sTime)
-                    : (DateUtil.getDay("MM月dd日", DateUtil.str2Date(backFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd").getTime()) + " " + backFlightDetailInfo.ticketInfo.btime);
+                    : (DateUtil.getDay("MM月dd日", DateUtil.str2Date(backBookingInfo.flightInfo.get(0).dptDate, "yyyy-MM-dd").getTime()) + " " + backBookingInfo.flightInfo.get(0).dptTime);
             tv_plane_date_back.setText(date);
         } else {
             orderLayout = LayoutInflater.from(this).inflate(R.layout.layout_gosingle_order_item, null);
@@ -107,7 +108,7 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
         tv_plane_code = (TextView) orderLayout.findViewById(R.id.tv_plane_code);
         tv_plane_date = (TextView) orderLayout.findViewById(R.id.tv_plane_date);
         order_info_lay.addView(orderLayout);
-        String flightCode = null != goTripInfo ? goTripInfo.airco : goFlightDetailInfo.flightInfo.carrier;
+        String flightCode = null != goTripInfo ? goTripInfo.airco : goBookingInfo.flightInfo.get(0).carrier;
         if (StringUtil.notEmpty(flightCode)) {
             if (SessionContext.getAirCompanyMap().size() > 0
                     && SessionContext.getAirCompanyMap().containsKey(flightCode)) {
@@ -123,10 +124,10 @@ public class PlaneOrderPaySuccessActivity extends BaseAppActivity {
                 iv_plane_icon.setVisibility(View.GONE);
             }
         }
-        tv_plane_code.setText(null != goTripInfo ? goTripInfo.flightNo : goFlightDetailInfo.flightInfo.flightNum);
+        tv_plane_code.setText(null != goTripInfo ? goTripInfo.flightNo : goBookingInfo.flightInfo.get(0).flightNum);
         String date = (null != goTripInfo)
                 ? (DateUtil.getDay("MM月dd日", goTripInfo.sDate) + " " + goTripInfo.sTime)
-                : (DateUtil.getDay("MM月dd日", DateUtil.str2Date(goFlightDetailInfo.ticketInfo.date, "yyyy-MM-dd").getTime()) + " " + goFlightDetailInfo.ticketInfo.btime);
+                : (DateUtil.getDay("MM月dd日", DateUtil.str2Date(goBookingInfo.flightInfo.get(0).dptDate, "yyyy-MM-dd").getTime()) + " " + goBookingInfo.flightInfo.get(0).dptTime);
         tv_plane_date.setText(date);
     }
 

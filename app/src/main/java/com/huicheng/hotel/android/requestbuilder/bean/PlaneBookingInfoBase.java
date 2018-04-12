@@ -1,5 +1,6 @@
 package com.huicheng.hotel.android.requestbuilder.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @date 2018/1/11 0011.
  */
 
-public class PlaneBookingInfoBase {
+public class PlaneBookingInfoBase implements Serializable{
     public String bookingTag;
     public PlaneBookingInfo_ExtInfo extInfo;
     public List<PlaneBookingInfo_FlightInfo> flightInfo;

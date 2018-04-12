@@ -424,12 +424,10 @@ public class PlaneOrderDetailActivity extends BaseAppActivity {
                                 @Override
                                 public void run() {
                                     backViewTop = backFlightView.getTop();
-                                    System.out.println("backViewTop = " + backViewTop);
                                 }
                             });
                         }
 
-                        System.out.println("orderType = " + orderType);
                         if (orderType == BACK_TRIP) {
                             scrollView.postDelayed(new Runnable() {
                                 @Override

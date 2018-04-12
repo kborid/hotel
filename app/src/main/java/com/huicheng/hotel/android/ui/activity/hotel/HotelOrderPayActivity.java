@@ -443,7 +443,8 @@ public class HotelOrderPayActivity extends BaseAppActivity {
             LocalBroadcastManager.getInstance(this).sendBroadcast(
                     new Intent(BroadCastConst.ACTION_PAY_STATUS)
                             .putExtra("type", PayCommDef.UNIONPAY)
-                            .putExtra("info", data.getExtras().getString("pay_result")));
+                            .putExtra("info", data.getExtras().getString("pay_result"))
+                            .putExtra("module", PayResultReceiver.MODULE_HOTEL));
         }
     }
 
@@ -465,14 +466,16 @@ public class HotelOrderPayActivity extends BaseAppActivity {
                         LocalBroadcastManager.getInstance(this).sendBroadcast(
                                 new Intent(BroadCastConst.ACTION_PAY_STATUS)
                                         .putExtra("type", "noneedpay")
-                                        .putExtra("info", "noneedpay"));
+                                        .putExtra("info", "noneedpay")
+                                        .putExtra("module", PayResultReceiver.MODULE_HOTEL));
                     } else {
                         startPay(json);
                     }
                 } else {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(
                             new Intent(BroadCastConst.ACTION_PAY_STATUS)
-                                    .putExtra("type", PayCommDef.CUSTOMPAY));
+                                    .putExtra("type", PayCommDef.CUSTOMPAY)
+                                    .putExtra("module", PayResultReceiver.MODULE_HOTEL));
                 }
             } else if (request.flag == AppConst.PAY_UNION) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
@@ -483,7 +486,8 @@ public class HotelOrderPayActivity extends BaseAppActivity {
                         LocalBroadcastManager.getInstance(this).sendBroadcast(
                                 new Intent(BroadCastConst.ACTION_PAY_STATUS)
                                         .putExtra("type", "noneedpay")
-                                        .putExtra("info", "noneedpay"));
+                                        .putExtra("info", "noneedpay")
+                                        .putExtra("module", PayResultReceiver.MODULE_HOTEL));
                     } else {
                         startPayQmf(json.toString());
                         if (payChannelLay.getPayIndex() == 0) {
@@ -495,7 +499,8 @@ public class HotelOrderPayActivity extends BaseAppActivity {
                 } else {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(
                             new Intent(BroadCastConst.ACTION_PAY_STATUS)
-                                    .putExtra("type", PayCommDef.CUSTOMPAY));
+                                    .putExtra("type", PayCommDef.CUSTOMPAY)
+                                    .putExtra("module", PayResultReceiver.MODULE_HOTEL));
                 }
             } else if (request.flag == AppConst.PAY_RESULT) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
@@ -505,7 +510,8 @@ public class HotelOrderPayActivity extends BaseAppActivity {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(
                             new Intent(BroadCastConst.ACTION_PAY_STATUS)
                                     .putExtra("type", PayCommDef.CUSTOMPAY)
-                                    .putExtra("info", json.getString("status")));
+                                    .putExtra("info", json.getString("status"))
+                                    .putExtra("module", PayResultReceiver.MODULE_HOTEL));
                 }
             }
         }
