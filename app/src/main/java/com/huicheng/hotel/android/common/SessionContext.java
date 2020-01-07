@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import com.alibaba.fastjson.JSON;
-import com.fm.openinstall.model.AppData;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.CityAirportInfoBean;
@@ -33,7 +32,6 @@ public class SessionContext {
 
     public static UserInfo mUser;                   // 用户信息
     private static String mTicket;                  // 票据信息
-    private static AppData mAppData;                // OpenInstall数据
 
     private static List<HomeBannerInfoBean> bannerList = new ArrayList<>();
     private static List<CityAirportInfoBean> airportList = new ArrayList<>(); //机场列表
@@ -60,15 +58,6 @@ public class SessionContext {
 
     public static void setTicket(String ticket) {
         mTicket = ticket;
-    }
-
-    public static AppData getOpenInstallAppData() {
-        return mAppData;
-    }
-
-    public static void setOpenInstallAppData(AppData appData) {
-        LogUtil.i(TAG, "setOpenInstallAppData() " + appData);
-        mAppData = appData;
     }
 
     /**

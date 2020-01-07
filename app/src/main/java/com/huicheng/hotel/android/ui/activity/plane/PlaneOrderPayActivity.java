@@ -24,9 +24,6 @@ import com.huicheng.hotel.android.common.SessionContext;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.pay.PayCommDef;
-import com.huicheng.hotel.android.pay.alipay.AlipayUtil;
-import com.huicheng.hotel.android.pay.unionpay.UnionPayUtil;
-import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AirCompanyInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.PlaneBookingInfo;
@@ -74,9 +71,6 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
     LinearLayout flightLayout;
 
     private PayResultReceiver mPayReceiver = new PayResultReceiver();
-    private AlipayUtil alipay = null;
-    private WXPayUtils wxpay = null;
-    private UnionPayUtil unionpay = null;
 
     private int mAmount = 0;
     private String mOrderNo = "";
@@ -141,9 +135,6 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
         tvAmount.setText(String.format(getString(R.string.rmbStr2), mAmount));
         refreshFlightLayoutInfo();
 
-        alipay = new AlipayUtil(this);
-        wxpay = new WXPayUtils(this);
-        unionpay = new UnionPayUtil(this);
         // 动态注册支付广播
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BroadCastConst.ACTION_PAY_STATUS);
@@ -307,24 +298,8 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
 
     private void startPay(JSONObject mJson) {
         if (mJson.containsKey(HotelCommDef.ALIPAY)) {
-            //支付宝第三方支付
-            alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
         } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
-            //微信第三方支付
-            JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
-            wxpay.sendPayReq(
-                    mmJson.getString("package"),
-                    mmJson.getString("appid"),
-                    mmJson.getString("sign"),
-                    mmJson.getString("partnerid"),
-                    mmJson.getString("prepayid"),
-                    mmJson.getString("noncestr"),
-                    mmJson.getString("timestamp"));
         } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
-            //银联第三方支付
-            JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
-            unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
-            unionpay.unionStartPay(mmJson.getString("tn"));
         } else {
             CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
         }
@@ -333,9 +308,6 @@ public class PlaneOrderPayActivity extends BaseAppActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        wxpay = null;
-        alipay = null;
-        unionpay = null;
         if (null != mPayReceiver) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mPayReceiver);
         }

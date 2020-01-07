@@ -13,10 +13,6 @@ import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.HotelCommDef;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
-import com.huicheng.hotel.android.pay.alipay.AlipayUtil;
-import com.huicheng.hotel.android.pay.unionpay.UnionPayActivity;
-import com.huicheng.hotel.android.pay.unionpay.UnionPayUtil;
-import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.ui.JSBridge.WVJBWebViewClient;
 import com.huicheng.hotel.android.ui.dialog.CustomToast;
@@ -116,12 +112,9 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
                         JSONObject mJson = JSON.parseObject(response.body.toString());
                         if (mJson.containsKey(HotelCommDef.WXPAY)) {
                             JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
-                            wechatPay(mmJson);
                         } else if (mJson.containsKey(HotelCommDef.ALIPAY)) {
-                            aliPay(mJson.getString(HotelCommDef.ALIPAY));
                         } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
                             JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
-                            unionPay(mmJson.getString("tn"));
                         } else {
                             CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
                         }
@@ -144,44 +137,6 @@ public class payPlaneTicket implements WVJBWebViewClient.WVJBHandler {
             }
         }, d);
     }
-
-    /**
-     * 阿里支付
-     */
-    private void aliPay(String orderInfo) {
-        AlipayUtil ali = new AlipayUtil((Activity) mContext);
-        ali.pay(orderInfo);
-        registerReceiver();
-    }
-
-    /**
-     * 微信支付
-     */
-    private void wechatPay(JSONObject mmJson) {
-        WXPayUtils wx = new WXPayUtils((Activity) mContext);
-        if (wx.isSupport()) {
-            wx.sendPayReq(mmJson.getString("package"),
-                    mmJson.getString("appid"),
-                    mmJson.getString("sign"),
-                    mmJson.getString("partnerid"),
-                    mmJson.getString("prepayid"),
-                    mmJson.getString("noncestr"),
-                    mmJson.getString("timestamp"));
-            registerReceiver();
-        }
-    }
-
-    private void unionPay(String tn) {
-//        UnionPayUtil unionpay = new UnionPayUtil(mContext);
-//        unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
-//        unionpay.unionStartPay(tn);
-        Intent intent = new Intent(mContext, UnionPayActivity.class);
-        intent.putExtra("ServerMode", UnionPayUtil.RELEASE_MODE);
-        intent.putExtra("tn", tn);
-        mContext.startActivity(intent);
-        registerReceiver();
-    }
-
 
     /**
      * 注册广播,获取支付结果

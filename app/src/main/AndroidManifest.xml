@@ -344,11 +344,6 @@
             android:name=".ui.activity.plane.PlaneFlightChangeListActivity"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".pay.wxpay.AppRegister">
-            <intent-filter>
-                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
-            </intent-filter>
-        </receiver>
         <!-- ###################注册SDK使用的Activity###################### -->
         <!-- 微信回调activity -->
         <activity

@@ -15,7 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-
 # This is a configuration file for ProGuard.
 # http://proguard.sourceforge.net/index.html#manual/usage.html
 
@@ -362,29 +361,3 @@ public <fields>;
   **[] $VALUES;
   public *;
 }
-
-#全民付
--dontwarn com.chinaums.pppay.**
--keep public class com.chinaums.pppay.*{*;}
-
-#全民花
-#-dontwarn com.dgonlam.**
-#-dontwarn org.apache.**
-#-dontwarn android.**
-#-dontwarn com.tencent.smtt.**
-#-keep class com.dgonlam.**{*;}
-#-keep class com.ums.xutils.**{*;}
-#-keep class com.ums.zxing.**{*;}
-#-keep class com.tencent.smtt.**{*;}
-#-keep class com.csii.powerenter**{*;}
-#-keep class com.github.Dgonlam.**{*;}
-#-keep class chihane.**{*;}
-#-keep class com.raizlabs.**{*;}
-#-keep class dgonlam.**{*;}
-#-keep class mlxy.utils.**{*;}
-#-keep class com.ums.iou.ui.**{*;}
-#-keep class com.ums.iou.entry.LimitRequestUtils{*;}
-#-keep class com.ums.iou.entry.OnLimitRequestResultListener{*;}
-#-keep class com.ums.iou.netapi.XUtilsHttpClient{*;}
-#-keep class com.ums.iou.entity.**{*;}
-#-keep class org.apache.**{*;}

@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.webkit.WebView;
 
-import com.fm.openinstall.OpenInstall;
 import com.huicheng.hotel.android.broadcast.UnLoginBroadcastReceiver;
 import com.huicheng.hotel.android.common.CrashHandler;
 import com.huicheng.hotel.android.common.SessionContext;
@@ -67,10 +66,6 @@ public class PRJApplication extends Application {
         // JPush
         JPushInterface.init(this); // 初始化 JPush
         JPushInterface.setDebugMode(AppConst.ISDEVELOP); // 设置开启日志,发布时请关闭日志
-
-        // openInstall
-        OpenInstall.init(this);
-        OpenInstall.setDebug(AppConst.ISDEVELOP);
 
         //科大讯飞语音识别初始化
         SpeechUtility.createUtility(this, SpeechConstant.APPID + "=" + getResources().getString(R.string.iflytek_appid));

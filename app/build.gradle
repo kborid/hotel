@@ -37,7 +37,6 @@ android {
             assets.srcDirs = ['src/main/assets']
             jniLibs.srcDirs = ['libs']
         }
-        instrumentTest.setRoot('tests')
 
         // Move the build types to build-types/<type>
         // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
@@ -92,18 +91,18 @@ android {
         exclude 'META-INF/NOTICE.txt'
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
-                def apkFile = new File(
-                        output.outputFile.getParent(),
-                        "${appName}_v${variant.versionName}_${variant.versionCode}_${currentDate}_${variant.buildType.name}.apk")
-                output.outputFile = apkFile
-                //App名字_v版本号_版本代码_当天日期_构建类型.apk
-                //例如：abc_v1.0.0_1_20171212_debug.apk
-            }
-        }
-    }
+//    applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+//                def apkFile = new File(
+//                        output.outputFile.getParent(),
+//                        "${appName}_v${variant.versionName}_${variant.versionCode}_${currentDate}_${variant.buildType.name}.apk")
+//                output.outputFile = apkFile
+//                //App名字_v版本号_版本代码_当天日期_构建类型.apk
+//                //例如：abc_v1.0.0_1_20171212_debug.apk
+//            }
+//        }
+//    }
 }
 
 repositories {
@@ -114,7 +113,6 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
     debugCompile project(path: ':commonlib', configuration: 'debug')
     releaseCompile project(path: ':commonlib', configuration: 'release')
     debugCompile project(path: ':citypickerview', configuration: 'debug')
@@ -149,14 +147,6 @@ dependencies {
     // Glide's OkHttp Integration
     compile 'com.github.bumptech.glide:okhttp-integration:1.3.1@aar'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
-    //银联全民付
-    compile(name: 'qmf-ppplugin-3.0.0', ext: 'aar')
-    //银联全民花
-    //compile(name: 'cfp-common-R-1101-1051', ext: 'aar')
-    //compile 'com.github.DgonLam:SelectAddress:v1.1.7'
-    //compile 'com.github.DgonLam:PhotoActivity:1.0.2'
-    //compile 'com.github.DgonLam:RollViewPager:1.0.0'
-    //compile 'com.github.DgonLam:RefreshLayout:1.0.3'
     //添加阴影工具类
     compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.2'
     //ButterKnife zelezny

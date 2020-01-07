@@ -14,11 +14,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.amap.api.location.AMapLocation;
-import com.fm.openinstall.OpenInstall;
-import com.fm.openinstall.listener.AppInstallListener;
-import com.fm.openinstall.listener.AppWakeUpListener;
-import com.fm.openinstall.model.AppData;
-import com.fm.openinstall.model.Error;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
@@ -60,7 +55,7 @@ import java.util.Map;
 /**
  * 欢迎页面
  */
-public class LauncherActivity extends BaseAppActivity implements AppInstallListener, AppWakeUpListener, AMapLocationControl.MyLocationListener {
+public class LauncherActivity extends BaseAppActivity implements AMapLocationControl.MyLocationListener {
 
     private int mTagCount = 0;
     private Map<Integer, Integer> mTag = new HashMap<>();
@@ -103,7 +98,6 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        OpenInstall.getWakeUp(intent, this);
     }
 
     @Override
@@ -113,24 +107,9 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
 
     public void initParams() {
         super.initParams();
-        //自OpenInstall SDK 2.0.0开始，SDK内部将会一直保存安装数据，每次调用getInstall方法都会返回值
-        LogUtil.i(TAG, "IS_FIRST_LAUNCH = " + SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true));
-        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
-            OpenInstall.getInstall(this);
-        }
         Utils.initScreenSize(this);// 设置手机屏幕大小
         SessionContext.initUserInfo();
         mTagCount = 0; //初始化接口请求个数
-    }
-
-    private void requestGDTInterface() {
-        LogUtil.i(TAG, "requestGDTInterface()");
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("muid", MD5Tool.getMD5(Utils.getIMEI()));
-        ResponseData d = b.syncRequestGET(b);
-        d.path = NetURL.AD_GDT_IF;
-        d.flag = AppConst.AD_GDT_IF;
-        requestID = DataLoader.getInstance().loadData(this, d);
     }
 
     private void requestAppVersionInfo() {
@@ -191,12 +170,7 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
 
     private void goToNext() {
         LogUtil.i(TAG, "goToNext()");
-        Intent intent;
-        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
-            SharedPreferenceUtil.getInstance().setBoolean(AppConst.IS_FIRST_LAUNCH, false);
-        }
-        intent = new Intent(this, MainSwitcherActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, MainSwitcherActivity.class));
         finish();
     }
 
@@ -212,32 +186,6 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
     }
 
     @Override
-    public void onInstallFinish(AppData appData, Error error) {
-        LogUtil.i(TAG, "onInstallFinish() appData = " + appData + ", error = " + error + ", do nothing!!!");
-        AppData tmp = null;
-        if (null != appData) {
-            LogUtil.i(TAG, "appData = " + appData.toString());
-            if (StringUtil.notEmpty(appData.getChannel()) || StringUtil.notEmpty(appData.getData())) {
-                tmp = appData;
-            }
-        }
-        SessionContext.setOpenInstallAppData(tmp);
-    }
-
-    @Override
-    public void onWakeUpFinish(AppData appData, Error error) {
-        LogUtil.i(TAG, "onWakeUpFinish() appData = " + appData + ", error = " + error);
-        AppData tmp = null;
-        if (null != appData) {
-            LogUtil.i(TAG, "appData = " + appData.toString());
-            if (StringUtil.notEmpty(appData.getChannel()) || StringUtil.notEmpty(appData.getData())) {
-                tmp = appData;
-            }
-        }
-        SessionContext.setOpenInstallAppData(tmp);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         // 缺少权限时, 进入权限配置页面
@@ -245,11 +193,6 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
             PermissionsActivity.startActivityForResult(this, PermissionsDef.PERMISSION_REQ_CODE, PermissionsDef.LAUNCH_REQUIRE_PERMISSIONS);
             return;
         }
-        //用户第一次启动时，调用后台封装的广点通的接口，统计激活量
-        if (SharedPreferenceUtil.getInstance().getBoolean(AppConst.IS_FIRST_LAUNCH, true)) {
-            requestGDTInterface();
-        }
-//        AMapLocationControl.getInstance().startLocationOnce(this);
         if (null == mHandlerThread) {
             mHandlerThread = new HandlerThread("dealJsonReqThread");
             mHandlerThread.start();
@@ -316,8 +259,6 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
                 LogUtil.i(TAG, "json = " + response.body.toString());
                 List<HomeBannerInfoBean> temp = JSON.parseArray(response.body.toString(), HomeBannerInfoBean.class);
                 SessionContext.setBannerList(temp);
-            } else if (request.flag == AppConst.AD_GDT_IF) {
-                LogUtil.i(TAG, "json = " + response.body.toString());
             } else if (request.flag == AppConst.PLANE_AIRPORT_LIST) {
                 mTag.put(AppConst.PLANE_AIRPORT_LIST, AppConst.PLANE_AIRPORT_LIST);
                 LogUtil.i(TAG, "json = " + response.body.toString());
@@ -341,9 +282,7 @@ public class LauncherActivity extends BaseAppActivity implements AppInstallListe
 
     @Override
     protected boolean isCheckException(ResponseData request, ResponseData response) {
-        if (request.flag == AppConst.AD_GDT_IF) {
-            return true;
-        } else if (request.flag == AppConst.PLANE_AIRPORT_LIST
+        if (request.flag == AppConst.PLANE_AIRPORT_LIST
                 || request.flag == AppConst.PLANE_COMPANY_LIST) {
             mTag.put(request.flag, request.flag);
             return true;

@@ -57,7 +57,8 @@
     <string name="orderListItemDateStr">入住时间：%1$s-%2$s (%3$d晚)</string>
     <string name="homeTemperatureStr">%1$s℃</string>
     <string name="roomCountStr">%1$d间</string>
-
+    <string name="login_btn">登录</string>
+    <string name="forget_pwd">忘记密码</string>
 
     <!--登录-->
     <string name="user_agree_agreement">我已阅读并同意</string>

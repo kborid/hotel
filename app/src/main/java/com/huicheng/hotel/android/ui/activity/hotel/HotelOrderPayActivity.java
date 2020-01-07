@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.chinaums.pppay.unify.UnifyUtils;
-import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.broadcast.PayResultReceiver;
 import com.huicheng.hotel.android.common.HotelCommDef;
@@ -26,10 +24,6 @@ import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.pay.PayCommDef;
-import com.huicheng.hotel.android.pay.alipay.AlipayUtil;
-import com.huicheng.hotel.android.pay.qmf.QmfPayHelper;
-import com.huicheng.hotel.android.pay.unionpay.UnionPayUtil;
-import com.huicheng.hotel.android.pay.wxpay.WXPayUtils;
 import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.OrderPayDetailInfoBean;
 import com.huicheng.hotel.android.ui.activity.MainSwitcherActivity;
@@ -65,11 +59,6 @@ public class HotelOrderPayActivity extends BaseAppActivity {
     private Button btn_pay;
 
     private CommonPayChannelLayout payChannelLay;
-    private AlipayUtil alipay = null;
-    private WXPayUtils wxpay = null;
-    private UnionPayUtil unionpay = null;
-    //qmf pay
-    private QmfPayHelper qmfPayHelper = null;
 
     private Handler myHandler = new Handler(Looper.getMainLooper());
 
@@ -122,11 +111,6 @@ public class HotelOrderPayActivity extends BaseAppActivity {
     public void initParams() {
         super.initParams();
         tv_center_title.setText("支付方式");
-
-        unionpay = new UnionPayUtil(this);
-        alipay = new AlipayUtil(this);
-        wxpay = new WXPayUtils(this);
-        qmfPayHelper = new QmfPayHelper(this);
 
         // 动态注册支付广播
         IntentFilter intentFilter = new IntentFilter();
@@ -315,29 +299,6 @@ public class HotelOrderPayActivity extends BaseAppActivity {
                 break;
             }
             case R.id.btn_pay: {
-                CustomDialog dialog = new CustomDialog(this);
-                dialog.setTitle("确认支付");
-                dialog.setMessage("是否确认支付该订单？\n\n支付后，若酒店确认订单则无法取消\n");
-                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.setPositiveButton("去支付", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (payChannelLay.getPayIndex() == 0 && !UnifyUtils.hasInstalledAlipayClient(PRJApplication.getInstance())) {
-                            CustomToast.show("没有安装支付宝", CustomToast.LENGTH_LONG);
-                            return;
-                        } else if (payChannelLay.getPayIndex() == 1 && !wxpay.isSupport()) {
-                            return;
-                        }
-//                        requestOrderPayInfo(orderPayDetailInfoBean.orderNO);
-                        requestOrderPayInfoByUnion(orderPayDetailInfoBean.orderNO);
-                    }
-                });
-                dialog.show();
                 break;
             }
             case R.id.iv_back: {
@@ -375,32 +336,11 @@ public class HotelOrderPayActivity extends BaseAppActivity {
 
     private void startPay(JSONObject mJson) {
         if (mJson.containsKey(HotelCommDef.ALIPAY)) {
-            //支付宝第三方支付
-            alipay.pay(mJson.getString(HotelCommDef.ALIPAY));
         } else if (mJson.containsKey(HotelCommDef.WXPAY)) {
-            //微信第三方支付
-            JSONObject mmJson = mJson.getJSONObject(HotelCommDef.WXPAY);
-            wxpay.sendPayReq(
-                    mmJson.getString("package"),
-                    mmJson.getString("appid"),
-                    mmJson.getString("sign"),
-                    mmJson.getString("partnerid"),
-                    mmJson.getString("prepayid"),
-                    mmJson.getString("noncestr"),
-                    mmJson.getString("timestamp"));
         } else if (mJson.containsKey(HotelCommDef.UNIONPAY)) {
-            //银联第三方支付
-            JSONObject mmJson = mJson.getJSONObject(HotelCommDef.UNIONPAY);
-            unionpay.setUnionPayServerMode(UnionPayUtil.RELEASE_MODE);
-            unionpay.unionStartPay(mmJson.getString("tn"));
         } else {
             CustomToast.show("支付失败", CustomToast.LENGTH_SHORT);
         }
-    }
-
-    private void startPayQmf(String ret) {
-        qmfPayHelper.setPayStrategy(payChannelLay.getPayIndex());
-        qmfPayHelper.startPay(ret);
     }
 
     @Override
@@ -415,13 +355,6 @@ public class HotelOrderPayActivity extends BaseAppActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        wxpay = null;
-        alipay = null;
-        unionpay = null;
-        if (null != qmfPayHelper) {
-            qmfPayHelper.destroy();
-            qmfPayHelper = null;
-        }
         if (null != mPayReceiver) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mPayReceiver);
         }
@@ -489,7 +422,6 @@ public class HotelOrderPayActivity extends BaseAppActivity {
                                         .putExtra("info", "noneedpay")
                                         .putExtra("module", PayResultReceiver.MODULE_HOTEL));
                     } else {
-                        startPayQmf(json.toString());
                         if (payChannelLay.getPayIndex() == 0) {
                             retry = 0;
                             myHandler.removeCallbacksAndMessages(null);

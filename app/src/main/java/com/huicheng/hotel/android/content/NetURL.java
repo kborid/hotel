@@ -6,7 +6,7 @@ public final class NetURL {
 
     public static String getApi() {
         if (AppConst.ISDEVELOP) {
-            int type = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 0);
+            int type = SharedPreferenceUtil.getInstance().getInt(AppConst.APPTYPE, 1);
             if (type == 4) {
                 return SharedPreferenceUtil.getInstance().getString(AppConst.DEV_URL, "", false);
             } else {

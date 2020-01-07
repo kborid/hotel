@@ -42,7 +42,6 @@ import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
 import com.prj.sdk.util.Utils;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
@@ -67,7 +66,6 @@ public class UcLoginActivity extends BaseAppActivity {
     private LinearLayout btn_layout;
     private TextView tv_action;
 
-    private UMShareAPI mShareAPI = null;
     private String mPlatform; //（01-新浪微博，02-腾讯QQ，03-微信，04-支付宝）
     private String thirdpartusername, thirdpartuserheadphotourl, openid, unionid;
     private String usertoken;
@@ -233,8 +231,6 @@ public class UcLoginActivity extends BaseAppActivity {
         }
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);
-        mShareAPI = UMShareAPI.get(this);
-        mShareAPI.setShareConfig(config);
         checkInputForActionBtnStatus();
     }
 
@@ -364,11 +360,7 @@ public class UcLoginActivity extends BaseAppActivity {
                 login(SHARE_MEDIA.QQ);
                 break;
             case R.id.tv_wx:
-                if (WXAPIFactory.createWXAPI(this, null).isWXAppInstalled()) {
-                    login(SHARE_MEDIA.WEIXIN);
-                } else {
-                    CustomToast.show(getString(R.string.not_install_wx), 0);
-                }
+                login(SHARE_MEDIA.WEIXIN);
                 break;
         }
     }
@@ -385,67 +377,6 @@ public class UcLoginActivity extends BaseAppActivity {
      * 授权。如果授权成功，则获取用户信息</br>
      */
     private void login(final SHARE_MEDIA platform) {
-        mShareAPI.getPlatformInfo(this, platform, new UMAuthListener() {
-            @Override
-            public void onStart(SHARE_MEDIA share_media) {
-                CustomToast.show("开始授权", CustomToast.LENGTH_SHORT);
-            }
-
-            @Override
-            public void onComplete(SHARE_MEDIA platform, int i, Map<String, String> info) {
-                try {
-                    if (platform == SHARE_MEDIA.QQ) { // QQ
-                        mPlatform = "02";
-                        openid = info.get("openid");
-                        usertoken = info.get("access_token");
-                        thirdpartusername = info.get("name");
-                        thirdpartuserheadphotourl = info.get("iconurl");
-                        if (AppConst.ISDEVELOP) {
-                            LogUtil.i(TAG, "QQ third name = " + thirdpartusername);
-                            LogUtil.i(TAG, "QQ third url = " + thirdpartuserheadphotourl);
-                            LogUtil.i(TAG, "QQ openid = " + openid);
-                            LogUtil.i(TAG, "QQ uid = " + info.get("uid"));
-                            LogUtil.i(TAG, "QQ usertoken = " + usertoken);
-                        }
-                    } else if (platform == SHARE_MEDIA.WEIXIN) { // 微信
-                        mPlatform = "03";
-//                        openid = info.get("openid");
-                        openid = info.get("unionid");
-                        usertoken = info.get("access_token");
-                        thirdpartusername = info.get("name");
-                        thirdpartuserheadphotourl = info.get("iconurl");
-                        if (AppConst.ISDEVELOP) {
-                            LogUtil.i(TAG, "WX third name = " + thirdpartusername);
-                            LogUtil.i(TAG, "WX third url = " + thirdpartuserheadphotourl);
-                            LogUtil.i(TAG, "WX openid = " + openid);
-                            LogUtil.i(TAG, "WX uid = " + info.get("unionid"));
-                            LogUtil.i(TAG, "WX usertoken = " + usertoken);
-                        }
-                    }
-
-                    checkThirdLogin();
-
-                    Set<String> keys = info.keySet();
-                    for (String key : keys) {
-                        LogUtil.i(TAG, key + "=" + info.get(key) + "\r\n");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    CustomToast.show("授权失败", Toast.LENGTH_SHORT);
-                }
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                CustomToast.show("授权错误", CustomToast.LENGTH_SHORT);
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA share_media, int i) {
-                CustomToast.show("取消授权", CustomToast.LENGTH_SHORT);
-            }
-
-        });
     }
 
     /**
@@ -597,15 +528,6 @@ public class UcLoginActivity extends BaseAppActivity {
 //                }
                 }
             }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (null != mShareAPI) {
-            mShareAPI.release();
-            mShareAPI = null;
         }
     }
 

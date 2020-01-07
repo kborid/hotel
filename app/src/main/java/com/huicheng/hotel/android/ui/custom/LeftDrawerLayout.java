@@ -280,11 +280,6 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
             case R.id.tv_feedback:
                 doActionIntent = new Intent(context, UcFeedbackActivity.class);
                 break;
-            case R.id.tv_qmh:
-                if (null != listener) {
-                    listener.doQmhAction();
-                }
-                break;
             case R.id.btn_logout:
                 clearTicket();
                 break;
@@ -383,8 +378,6 @@ public class LeftDrawerLayout extends RelativeLayout implements View.OnClickList
         void showProgressDialog(Context context);
 
         void removeProgressDialog();
-
-        void doQmhAction();
     }
 
     private OnLeftDrawerListener listener = null;

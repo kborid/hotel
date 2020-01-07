@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fm.openinstall.OpenInstall;
 import com.huicheng.hotel.android.PRJApplication;
 import com.huicheng.hotel.android.R;
 import com.huicheng.hotel.android.common.SessionContext;
@@ -102,22 +101,6 @@ public class UcRegisterActivity extends BaseAppActivity {
         super.initParams();
         setCountDownTimer(60 * 1000, 1000);
         checkInputForActionBtnStatus();
-
-        if (SessionContext.getOpenInstallAppData() != null
-                && StringUtil.notEmpty(SessionContext.getOpenInstallAppData().getData())) {
-            JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
-            recommendUserId = mJson.containsKey("userID") ? mJson.getString("userID") : "";
-            recommendChannel = mJson.containsKey("channel") ? mJson.getString("channel") : "";
-            recommendMobile = mJson.containsKey("mobile") ? mJson.getString("mobile") : "";
-            LogUtil.i(TAG, "OpenInstall Info:" + recommendChannel + ", " + recommendUserId + ", " + recommendMobile);
-            if (ShareTypeDef.SHARE_B2C.equals(recommendChannel) || ShareTypeDef.SHARE_P2C.equals(recommendChannel)) {
-                et_yqm.setVisibility(View.GONE);
-            } else if (ShareTypeDef.SHARE_C2C.equals(recommendChannel) && StringUtil.notEmpty(recommendMobile)) {
-                et_yqm.setVisibility(View.VISIBLE);
-                et_yqm.setEnabled(false);
-                et_yqm.setText(recommendMobile);
-            }
-        }
     }
 
     @Override
@@ -521,17 +504,11 @@ public class UcRegisterActivity extends BaseAppActivity {
                 //注册成功，自动登录，根据性别设置主题
                 int index = SessionContext.mUser.user.sex.equals("1") ? 0 : 1;
                 SharedPreferenceUtil.getInstance().setInt(AppConst.SKIN_INDEX, index);
-
-                if (SessionContext.getOpenInstallAppData() != null) {
-                    OpenInstall.reportRegister();
                     requestSaveRecommandData();
-                } else {
                     removeProgressDialog();
                     finish();
-                }
             } else if (request.flag == AppConst.SAVE_RECOMMAND) {
                 LogUtil.i(TAG, "json = " + response.body.toString());
-                SessionContext.setOpenInstallAppData(null);
                 removeProgressDialog();
                 finish();
             }

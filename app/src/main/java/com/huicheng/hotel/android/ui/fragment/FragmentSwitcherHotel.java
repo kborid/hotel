@@ -516,9 +516,6 @@ public class FragmentSwitcherHotel extends BaseFragment implements View.OnClickL
                 }
             }
             refreshCityDisplay(tmp);
-            if (null != listener) {
-                listener.requestWeather(beginTime);
-            }
         } else {
             tv_city.setHint("城市定位失败");
         }

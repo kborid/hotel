@@ -197,22 +197,20 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         banner_lay.setIndicatorLayoutMarginBottom(Utils.dp2px(8));
 
         //app更新提示
-        if (SessionContext.getOpenInstallAppData() == null) {
-            String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
-            if (StringUtil.notEmpty(appInfo)) {
-                mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
-                myHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        String ignoreVersion = SharedPreferenceUtil.getInstance().getString(AppConst.IGNORE_UPDATE_VERSION, "", false);
-                        String versionSer = mAppInfoBean.upid.split("（")[0];
-                        String versionLoc = BuildConfig.VERSION_NAME.split("（")[0];
-                        if ((1 <= SessionContext.VersionComparison(versionSer, versionLoc)) && !mAppInfoBean.upid.equals(ignoreVersion)) {
-                            showUpdateDialog(mAppInfoBean);
-                        }
+        String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
+        if (StringUtil.notEmpty(appInfo)) {
+            mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    String ignoreVersion = SharedPreferenceUtil.getInstance().getString(AppConst.IGNORE_UPDATE_VERSION, "", false);
+                    String versionSer = mAppInfoBean.upid.split("（")[0];
+                    String versionLoc = BuildConfig.VERSION_NAME.split("（")[0];
+                    if ((1 <= SessionContext.VersionComparison(versionSer, versionLoc)) && !mAppInfoBean.upid.equals(ignoreVersion)) {
+                        showUpdateDialog(mAppInfoBean);
                     }
-                }, 500);
-            }
+                }
+            }, 500);
         }
     }
 
@@ -258,11 +256,6 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         boolean jump = false;
         if (isFirstLaunch) {
             isFirstLaunch = false;
-            if (SessionContext.getOpenInstallAppData() != null) {
-                myHandler.removeCallbacksAndMessages(null);
-                //OpenInstall Event 分发
-                jump = dispatchOpenInstallEvent();
-            }
         }
 
         if (!jump) {
@@ -287,64 +280,6 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         }
     }
 
-    private boolean dispatchOpenInstallEvent() {
-        LogUtil.i(TAG, "dispatchOpenInstallEvent()");
-        if (SessionContext.getOpenInstallAppData() != null) {
-            JSONObject mJson = JSON.parseObject(SessionContext.getOpenInstallAppData().getData());
-            if (null != mJson && mJson.containsKey("channel")) {
-                String channel = mJson.getString("channel");
-                if (ShareTypeDef.SHARE_HOTEL.equals(channel)) {
-//                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
-//                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    Calendar calendar = Calendar.getInstance();
-                    long beginDate = calendar.getTime().getTime();
-                    calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
-                    long endDate = calendar.getTime().getTime();
-                    HotelOrderManager.getInstance().setBeginTime(beginDate);
-                    HotelOrderManager.getInstance().setEndTime(endDate);
-                    Intent intent = new Intent(this, HotelDetailActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                    startActivity(intent);
-                    SessionContext.setOpenInstallAppData(null);
-                    return true;
-                } else if (ShareTypeDef.SHARE_ROOM.equals(channel)) {
-//                    long beginDate = Long.valueOf(mJson.getString("beginDate"));
-//                    long endDate = Long.valueOf(mJson.getString("endDate"));
-                    Calendar calendar = Calendar.getInstance();
-                    long beginDate = calendar.getTime().getTime();
-                    calendar.add(Calendar.DAY_OF_MONTH, +1); //+1今天的时间加一天
-                    long endDate = calendar.getTime().getTime();
-                    HotelOrderManager.getInstance().setBeginTime(beginDate);
-                    HotelOrderManager.getInstance().setEndTime(endDate);
-                    Intent intent = new Intent(this, HotelRoomDetailActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                    intent.putExtra("roomId", Integer.valueOf(mJson.getString("roomID")));
-                    intent.putExtra("roomType", Integer.valueOf(mJson.getString("hotelType")));
-                    startActivity(intent);
-                    SessionContext.setOpenInstallAppData(null);
-                    return true;
-                } else if (ShareTypeDef.SHARE_FREE.equals(channel)) {
-                    Intent intent = new Intent(this, Hotel0YuanHomeActivity.class);
-                    startActivity(intent);
-                    SessionContext.setOpenInstallAppData(null);
-                    return true;
-                } else if (ShareTypeDef.SHARE_TIE.equals(channel)) {
-                    Intent intent = new Intent(this, HotelSpaceDetailActivity.class);
-                    intent.putExtra("hotelId", Integer.valueOf(mJson.getString("hotelID")));
-                    intent.putExtra("articleId", Integer.valueOf(mJson.getString("blogID")));
-                    startActivity(intent);
-                    SessionContext.setOpenInstallAppData(null);
-                    return true;
-                } else {
-                    LogUtil.d("HotelMainActivity", "warning~~~");
-                    return false;
-                }
-            }
-            return false;
-        }
-        return false;
-    }
-
     private void requestMessageCount() {
         RequestBeanBuilder b = RequestBeanBuilder.create(true);
         ResponseData d = b.syncRequest(b);
@@ -359,17 +294,6 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         ResponseData d = b.syncRequest(b);
         d.path = NetURL.HOTEL_BANNER;
         d.flag = AppConst.HOTEL_BANNER;
-        requestID = DataLoader.getInstance().loadData(this, d);
-    }
-
-    private void requestWeatherInfo(long timeStamp) {
-        RequestBeanBuilder b = RequestBeanBuilder.create(false);
-        b.addBody("cityname", LocationInfo.instance.getCity());
-        b.addBody("siteid", LocationInfo.instance.getCityCode());
-        b.addBody("date", DateUtil.getDay("yyyyMMdd", timeStamp));
-        ResponseData d = b.syncRequest(b);
-        d.path = NetURL.WEATHER;
-        d.flag = AppConst.WEATHER;
         requestID = DataLoader.getInstance().loadData(this, d);
     }
 
@@ -486,17 +410,6 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     }
 
     @Override
-    public void doQmhAction() {
-//////////全民化插件 platCode生产2003，测试8000///////////
-//        Intent intent = new Intent(HotelMainActivity.this, IOUAppVerifyActivity.class);
-//        intent.putExtra("appUserId", SessionContext.mUser.user.mobile);
-//        intent.putExtra("token", SessionContext.getTicket());
-//        intent.putExtra("platCode", "2003");
-//        intent.putExtra("isShowGuide", "true");
-//        startActivityForResult(intent, REQUEST_CODE_QMH);
-    }
-
-    @Override
     public void onNotifyMessage(ResponseData request, ResponseData response) {
         super.onNotifyMessage(request, response);
         if (null != response && response.body != null) {
@@ -525,7 +438,6 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         @Override
         public void requestWeather(long timestamp) {
             weatherTimestamp = timestamp;
-            requestWeatherInfo(weatherTimestamp);
         }
     };
 
