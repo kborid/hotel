@@ -1,4 +1,4 @@
-package com.prj.sdk.activity;
+package com.huicheng.hotel.android.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

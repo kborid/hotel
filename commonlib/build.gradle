@@ -14,15 +14,6 @@ android {
         versionName "1.0.0"
     }
 
-    sourceSets {
-        main {
-            manifest.srcFile 'src/main/AndroidManifest.xml'
-            java.srcDirs = ['src/main/java']
-            res.srcDirs = ['src/main/res']
-            jniLibs.srcDirs = ['libs']
-        }
-    }
-
     lintOptions {
         abortOnError false
     }
@@ -38,6 +29,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
     compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.alibaba:fastjson:1.2.56'
     //logger
     compile 'com.orhanobut:logger:1.8'
     compile 'com.android.support:appcompat-v7:25.3.1'

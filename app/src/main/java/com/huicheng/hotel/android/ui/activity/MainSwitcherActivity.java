@@ -4,8 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.TypedValue;
@@ -24,9 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huicheng.hotel.android.BuildConfig;
 import com.huicheng.hotel.android.R;
-import com.huicheng.hotel.android.common.HotelOrderManager;
 import com.huicheng.hotel.android.common.SessionContext;
-import com.huicheng.hotel.android.common.ShareTypeDef;
 import com.huicheng.hotel.android.content.AppConst;
 import com.huicheng.hotel.android.content.NetURL;
 import com.huicheng.hotel.android.control.DataCleanManager;
@@ -36,10 +32,6 @@ import com.huicheng.hotel.android.requestbuilder.RequestBeanBuilder;
 import com.huicheng.hotel.android.requestbuilder.bean.AppInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.HomeBannerInfoBean;
 import com.huicheng.hotel.android.requestbuilder.bean.WeatherInfoBean;
-import com.huicheng.hotel.android.ui.activity.hotel.Hotel0YuanHomeActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelDetailActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelRoomDetailActivity;
-import com.huicheng.hotel.android.ui.activity.hotel.HotelSpaceDetailActivity;
 import com.huicheng.hotel.android.ui.adapter.SwitcherContentAdapter;
 import com.huicheng.hotel.android.ui.base.BaseAppActivity;
 import com.huicheng.hotel.android.ui.custom.CommonBannerLayout;
@@ -55,7 +47,6 @@ import com.prj.sdk.net.data.ResponseData;
 import com.prj.sdk.net.down.DownCallback;
 import com.prj.sdk.net.down.DownLoaderTask;
 import com.prj.sdk.util.ActivityTack;
-import com.prj.sdk.util.DateUtil;
 import com.prj.sdk.util.LogUtil;
 import com.prj.sdk.util.SharedPreferenceUtil;
 import com.prj.sdk.util.StringUtil;
@@ -63,9 +54,7 @@ import com.prj.sdk.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -200,7 +189,7 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         String appInfo = SharedPreferenceUtil.getInstance().getString(AppConst.APPINFO, "", false);
         if (StringUtil.notEmpty(appInfo)) {
             mAppInfoBean = JSON.parseObject(appInfo, AppInfoBean.class);
-            myHandler.postDelayed(new Runnable() {
+            banner_lay.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     String ignoreVersion = SharedPreferenceUtil.getInstance().getString(AppConst.IGNORE_UPDATE_VERSION, "", false);
@@ -253,30 +242,27 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         super.onResume();
         LogUtil.i(TAG, "onResume()");
         banner_lay.startBanner();
-        boolean jump = false;
         if (isFirstLaunch) {
             isFirstLaunch = false;
         }
 
-        if (!jump) {
-            if (SessionContext.isLogin()) {
-                requestMessageCount();
-            } else {
-                //每次启动时，如果用户未登录，则显示侧滑
-                if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
-                    sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
-                }
+        if (SessionContext.isLogin()) {
+            requestMessageCount();
+        } else {
+            //每次启动时，如果用户未登录，则显示侧滑
+            if (SessionContext.isFirstLaunchDoAction(getClass().getSimpleName())) {
+                sendBroadcast(new Intent(BroadCastConst.UNLOGIN_ACTION));
             }
+        }
 
-            if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
-                isNeedCloseLeftDrawer = false;
-                drawer_layout.closeDrawers();
-            }
+        if (isNeedCloseLeftDrawer && drawer_layout.isDrawerOpen(left_layout)) {
+            isNeedCloseLeftDrawer = false;
+            drawer_layout.closeDrawers();
+        }
 
-            if (isRebookPlane) {
-                isRebookPlane = false;
-                tab_viewPager.setCurrentItem(1);
-            }
+        if (isRebookPlane) {
+            isRebookPlane = false;
+            tab_viewPager.setCurrentItem(1);
         }
     }
 
@@ -377,10 +363,6 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
         super.onDestroy();
         left_layout.unregisterBroadReceiver();
         LocationInfo.instance.reset();
-        if (myHandler != null) {
-            myHandler.removeCallbacksAndMessages(null);
-            myHandler = null;
-        }
     }
 
     @Override
@@ -461,23 +443,8 @@ public class MainSwitcherActivity extends BaseAppActivity implements LeftDrawerL
     }
 
     public static void unRegisterPermissionListener(OnUpdateSwitcherListener listener) {
-        if (onUpdateSwitcherListeners.contains(listener)) {
+        if (null != listener) {
             onUpdateSwitcherListeners.remove(listener);
-        }
-    }
-
-    private MyHandler myHandler = new MyHandler(this);
-
-    private static class MyHandler extends Handler {
-        private WeakReference<BaseAppActivity> activity = null;
-
-        MyHandler(BaseAppActivity ref) {
-            activity = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
         }
     }
 }
